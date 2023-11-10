@@ -47,7 +47,6 @@ class PostScreen extends ConsumerWidget {
                 ),
               ),
             ),
-
             AppPostTextField(
               controller: controller.commentTextController,
               hintText: 'Comment',
