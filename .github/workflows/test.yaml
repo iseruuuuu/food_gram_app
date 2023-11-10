@@ -1,0 +1,52 @@
+name: test
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [ opened, synchronize ]
+  push:
+    branches:
+      - main
+
+env:
+  FLUTTER_VERSION: '3.10.2'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: fvm
+        uses: kuhnroyal/flutter-fvm-config-action@v1
+        id: fvm-config-action
+
+      - name: install flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
+          channel: ${{ steps.fvm-config-action.outputs.FLUTTER_CHANNEL }}
+
+      - name: Install dependencies
+        run: |
+          flutter pub get
+
+      - name: build runner
+        run: |
+          flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Test
+        run: |
+          flutter test --machine > test_report.log
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: 'flutter test'
+          path: 'test_report.log'
+          reporter: 'flutter-json'
+          fail-on-error: 'false'
