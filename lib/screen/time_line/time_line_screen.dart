@@ -9,8 +9,9 @@ class TimeLineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF6750A4),
+        backgroundColor: Colors.white,
       ),
       body: GridView.builder(
         itemCount: 15,

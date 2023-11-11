@@ -46,7 +46,7 @@ class AppBottomNavigationBar extends StatelessWidget {
             icon: Padding(
               padding: EdgeInsets.only(top: 10),
               child: Icon(
-                Icons.search,
+                Icons.account_circle,
                 size: 35,
               ),
             ),
@@ -56,7 +56,7 @@ class AppBottomNavigationBar extends StatelessWidget {
             icon: Padding(
               padding: EdgeInsets.only(top: 10),
               child: Icon(
-                Icons.account_circle,
+                Icons.settings,
                 size: 35,
               ),
             ),
