@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/component/app_cell.dart';
+import 'package:food_gram_app/screen/edit/edit_screen.dart';
 
 class MyProfileScreen extends StatelessWidget {
   const MyProfileScreen({Key? key}) : super(key: key);
@@ -69,7 +70,30 @@ class MyProfileScreen extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EditScreen(),
+                    ),
+                  );
+                },
+                child: const Text('プロフィールを編集'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  //TODO シェアする
+                },
+                child: const Text('プロフィールをシェア'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
           Expanded(
             child: GridView.builder(
               itemCount: 15,
