@@ -106,7 +106,9 @@ class SettingScreen extends StatelessWidget with UrlLauncherMixin {
                   'ログアウト',
                   style: TextStyle(color: Colors.red),
                 ),
-                onPressed: (context) {},
+                onPressed: (context) {
+                  //TODO ログアウトする
+                },
               ),
               SettingsTile.navigation(
                 leading: const Icon(Icons.delete_outline),
@@ -114,7 +116,9 @@ class SettingScreen extends StatelessWidget with UrlLauncherMixin {
                   'アカウントの削除',
                   style: TextStyle(color: Colors.red),
                 ),
-                onPressed: (context) {},
+                onPressed: (context) {
+                  //TODO アカウントを削除する
+                },
               ),
             ],
           ),
