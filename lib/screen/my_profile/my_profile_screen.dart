@@ -86,7 +86,9 @@ class MyProfileScreen extends StatelessWidget {
                 child: const Text('プロフィールを編集'),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  //TODO シェアする
+                },
                 child: const Text('プロフィールをシェア'),
               ),
             ],
