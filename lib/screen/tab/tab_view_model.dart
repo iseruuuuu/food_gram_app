@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:food_gram_app/screen/my_profile/my_profile_screen.dart';
 import 'package:food_gram_app/screen/tab/tab_state.dart';
 import 'package:food_gram_app/screen/time_line/time_line_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -17,7 +18,7 @@ class TabViewModel extends _$TabViewModel {
   List<Widget> pageList = [
     const TimeLineScreen(),
     Container(),
-    Container(),
+    const MyProfileScreen(),
   ];
 
   void onTap(int index) {
