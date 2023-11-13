@@ -29,10 +29,10 @@ class AppPostTextField extends StatelessWidget {
           hintText: hintText,
           contentPadding: const EdgeInsets.all(15),
           focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFF6750A4)),
+            borderSide: BorderSide(color: Colors.black),
           ),
           enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFF6750A4)),
+            borderSide: BorderSide(color: Colors.black),
           ),
           alignLabelWithHint: true,
           labelText: hintText,

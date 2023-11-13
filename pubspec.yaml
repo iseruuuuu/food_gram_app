@@ -29,5 +29,8 @@ dev_dependencies:
   riverpod_lint: ^2.3.3
   freezed: ^2.4.5
   json_serializable: ^6.7.1
+
 flutter:
   uses-material-design: true
+  assets:
+    - assets/image/
