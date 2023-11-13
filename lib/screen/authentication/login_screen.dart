@@ -42,11 +42,6 @@ class LoginScreen extends StatelessWidget {
               hintText: 'メールアドレス',
               maxLines: 1,
             ),
-            AppPostTextField(
-              controller: controller,
-              hintText: 'パスワード',
-              maxLines: 1,
-            ),
             AppTextButton(
               onPressed: () {},
               title: '新規登録',
