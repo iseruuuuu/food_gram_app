@@ -4,7 +4,7 @@ import 'package:food_gram_app/component/app_floating_button.dart';
 import 'package:food_gram_app/screen/post/post_screen.dart';
 
 class TimeLineScreen extends StatelessWidget {
-  const TimeLineScreen({Key? key}) : super(key: key);
+  const TimeLineScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

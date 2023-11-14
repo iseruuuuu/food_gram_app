@@ -4,7 +4,7 @@ import 'package:food_gram_app/component/app_edit_text_field.dart';
 import 'package:food_gram_app/screen/edit/edit_view_model.dart';
 
 class EditScreen extends ConsumerWidget {
-  const EditScreen({Key? key}) : super(key: key);
+  const EditScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

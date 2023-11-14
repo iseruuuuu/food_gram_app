@@ -3,7 +3,7 @@ import 'package:food_gram_app/component/app_cell.dart';
 import 'package:food_gram_app/screen/edit/edit_screen.dart';
 
 class MyProfileScreen extends StatelessWidget {
-  const MyProfileScreen({Key? key}) : super(key: key);
+  const MyProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

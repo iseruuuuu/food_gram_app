@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppCell extends StatelessWidget {
-  const AppCell({Key? key}) : super(key: key);
+  const AppCell({super.key});
 
   @override
   Widget build(BuildContext context) {
