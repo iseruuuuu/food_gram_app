@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class AppTextButton extends StatelessWidget {
   const AppTextButton({
-    super.key,
     required this.onPressed,
     required this.title,
     required this.color,
+    super.key,
   });
 
   final VoidCallback onPressed;
