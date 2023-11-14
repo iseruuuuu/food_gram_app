@@ -35,7 +35,6 @@ class AppEditTextField extends StatelessWidget {
               Expanded(
                 child: TextField(
                   controller: controller,
-                  maxLines: 1,
                   autocorrect: false,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
@@ -95,7 +94,6 @@ class AppEditSelfIntroductionTextField extends StatelessWidget {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
-                      borderSide: const BorderSide(color: Colors.black),
                     ),
                     alignLabelWithHint: true,
                     filled: true,
