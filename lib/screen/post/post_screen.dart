@@ -4,7 +4,7 @@ import 'package:food_gram_app/component/app_post_text_field.dart';
 import 'package:food_gram_app/screen/post/post_view_model.dart';
 
 class PostScreen extends ConsumerWidget {
-  const PostScreen({Key? key}) : super(key: key);
+  const PostScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

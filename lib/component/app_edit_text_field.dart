@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class AppEditTextField extends StatelessWidget {
   const AppEditTextField({
-    Key? key,
     required this.title,
     required this.controller,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String title;
   final TextEditingController controller;
@@ -35,7 +35,6 @@ class AppEditTextField extends StatelessWidget {
               Expanded(
                 child: TextField(
                   controller: controller,
-                  maxLines: 1,
                   autocorrect: false,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
@@ -54,9 +53,9 @@ class AppEditTextField extends StatelessWidget {
 
 class AppEditSelfIntroductionTextField extends StatelessWidget {
   const AppEditSelfIntroductionTextField({
-    Key? key,
     required this.controller,
-  }) : super(key: key);
+    super.key,
+  });
 
   final TextEditingController controller;
 
@@ -95,7 +94,6 @@ class AppEditSelfIntroductionTextField extends StatelessWidget {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
-                      borderSide: const BorderSide(color: Colors.black),
                     ),
                     alignLabelWithHint: true,
                     filled: true,

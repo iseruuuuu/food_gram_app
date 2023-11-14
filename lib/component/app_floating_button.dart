@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 class AppFloatingButton extends StatelessWidget {
   const AppFloatingButton({
-    Key? key,
-    required this.onTap,
-  }) : super(key: key);
+    required this.onTap, super.key,
+  });
 
   final Function() onTap;
 

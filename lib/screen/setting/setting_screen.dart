@@ -4,7 +4,7 @@ import 'package:food_gram_app/mixin/url_launcher_mixin.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SettingScreen extends StatelessWidget with UrlLauncherMixin {
-  const SettingScreen({Key? key}) : super(key: key);
+  const SettingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class AppPostTextField extends StatelessWidget {
   const AppPostTextField({
-    super.key,
     required this.controller,
     required this.hintText,
     required this.maxLines,
+    super.key,
   });
 
   final TextEditingController controller;
@@ -28,12 +28,8 @@ class AppPostTextField extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hintText,
           contentPadding: const EdgeInsets.all(15),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black),
-          ),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black),
-          ),
+          focusedBorder: const OutlineInputBorder(),
+          enabledBorder: const OutlineInputBorder(),
           alignLabelWithHint: true,
           labelText: hintText,
           labelStyle: const TextStyle(

@@ -781,6 +781,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+  yumemi_lints:
+    dependency: "direct main"
+    description:
+      name: yumemi_lints
+      sha256: e191ffc2a1844c9c9ee206607475d58a87721310955356ac763c774dbd8c4128
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
 sdks:
   dart: ">=3.1.5 <4.0.0"
   flutter: ">=3.13.0"
