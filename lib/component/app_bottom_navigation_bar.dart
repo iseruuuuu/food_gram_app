@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppBottomNavigationBar extends StatelessWidget {
   const AppBottomNavigationBar({
-    super.key,
     required this.onTap,
     required this.currentIndex,
+    super.key,
   });
 
   final int currentIndex;

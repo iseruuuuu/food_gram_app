@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class AppPostTextField extends StatelessWidget {
   const AppPostTextField({
-    super.key,
     required this.controller,
     required this.hintText,
     required this.maxLines,
+    super.key,
   });
 
   final TextEditingController controller;

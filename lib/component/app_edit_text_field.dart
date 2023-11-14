@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppEditTextField extends StatelessWidget {
   const AppEditTextField({
-    super.key,
     required this.title,
     required this.controller,
+    super.key,
   });
 
   final String title;
@@ -54,8 +54,8 @@ class AppEditTextField extends StatelessWidget {
 
 class AppEditSelfIntroductionTextField extends StatelessWidget {
   const AppEditSelfIntroductionTextField({
-    super.key,
     required this.controller,
+    super.key,
   });
 
   final TextEditingController controller;
