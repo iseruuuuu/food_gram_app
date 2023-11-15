@@ -1,5 +1,7 @@
 PODS:
   - Flutter (1.0.0)
+  - flutter_native_splash (0.0.1):
+    - Flutter
   - package_info_plus (0.4.5):
     - Flutter
   - url_launcher_ios (0.0.1):
@@ -7,12 +9,15 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  flutter_native_splash:
+    :path: ".symlinks/plugins/flutter_native_splash/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   url_launcher_ios:
@@ -20,6 +25,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   url_launcher_ios: 68d46cc9766d0c41dbdc884310529557e3cd7a86
 
