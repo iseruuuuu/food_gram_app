@@ -3,9 +3,29 @@ import 'package:food_gram_app/component/app_elevated_button.dart';
 import 'package:food_gram_app/component/app_post_text_field.dart';
 import 'package:food_gram_app/component/app_text_button.dart';
 import 'package:food_gram_app/screen/tab/tab_screen.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  var appName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getInfo();
+  }
+
+  Future<void> getInfo() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    appName = packageInfo.appName;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +56,13 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+            Text(
+              appName,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
             ),
             AppPostTextField(
               controller: controller,
