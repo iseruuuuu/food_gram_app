@@ -6,14 +6,14 @@ import 'package:food_gram_app/screen/tab/tab_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  var appName = '';
+  String appName = '';
 
   @override
   void initState() {
