@@ -60,4 +60,5 @@ lib/generated_plugin_registrant.dart
 
 !*/.gitignore
 
-.env
+.env.dev
+.env.prod
