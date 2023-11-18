@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class AppEditTextField extends StatelessWidget {
-  const AppEditTextField({
+class AppNameTextField extends StatelessWidget {
+  const AppNameTextField({
     required this.title,
     required this.controller,
     super.key,
@@ -19,7 +20,6 @@ class AppEditTextField extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               SizedBox(
                 width: 80,
@@ -27,7 +27,7 @@ class AppEditTextField extends StatelessWidget {
                   title,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                    fontSize: 15,
                   ),
                 ),
               ),
@@ -51,8 +51,8 @@ class AppEditTextField extends StatelessWidget {
   }
 }
 
-class AppEditSelfIntroductionTextField extends StatelessWidget {
-  const AppEditSelfIntroductionTextField({
+class AppSelfIntroductionTextField extends StatelessWidget {
+  const AppSelfIntroductionTextField({
     required this.controller,
     super.key,
   });
@@ -100,6 +100,59 @@ class AppEditSelfIntroductionTextField extends StatelessWidget {
                     fillColor: Colors.white,
                     border: InputBorder.none,
                   ),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 17,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class AppUserNameTextField extends StatelessWidget {
+  const AppUserNameTextField({
+    required this.controller,
+    super.key,
+  });
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 80,
+                child: Text(
+                  'ユーザーID',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: TextField(
+                  controller: controller,
+                  autocorrect: false,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp('[a-zA-Z0-9@_.-]'),
+                    ),
+                  ],
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,

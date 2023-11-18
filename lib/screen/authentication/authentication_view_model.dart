@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/provider/loading.dart';
 import 'package:food_gram_app/screen/authentication/authentication_state.dart';
+import 'package:food_gram_app/screen/authentication/new_account_screen.dart';
+import 'package:food_gram_app/screen/tab/tab_screen.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -17,6 +19,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     return initState;
   }
 
+  final supabase = Supabase.instance.client;
   final emailTextField = TextEditingController();
   final _shouldCreateUser = true;
 
@@ -27,7 +30,6 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       try {
         primaryFocus?.unfocus();
         loading.state = true;
-        final supabase = Supabase.instance.client;
         await supabase.auth.signInWithOtp(
           email: emailTextField.text.trim(),
           shouldCreateUser: _shouldCreateUser,
@@ -41,13 +43,51 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         await Future.delayed(Duration(seconds: 2));
         await _openInMailApp(context);
         state = state.copyWith(loginStatus: 'ログインの成功');
+        if (!await doesAccountExist()) {
+          await Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NewAccountScreen(),
+            ),
+          );
+        } else {
+          await Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TabScreen(),
+            ),
+          );
+        }
+      } on AuthException catch (error) {
+        loading.state = false;
+        state = state.copyWith(loginStatus: error.message);
       } on Exception catch (error) {
         loading.state = false;
-        //TODO エラーハンドリングをする
         state = state.copyWith(loginStatus: error.toString());
       }
     } else {
       state = state.copyWith(loginStatus: 'メールアドレスが入力されていません');
+    }
+  }
+
+  Future<bool> doesAccountExist() async {
+    try {
+      final user = supabase.auth.currentUser;
+      if (user == null) {
+        return false;
+      }
+      final response = await supabase
+          .from('users')
+          .select()
+          .eq('user_id', user.id)
+          .execute();
+      final data = response.data;
+      if (data is List && data.isEmpty) {
+        return false;
+      }
+      return true;
+    } on Exception catch (_) {
+      return false;
     }
   }
 
