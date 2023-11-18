@@ -20,6 +20,7 @@ class AppPostTextField extends StatelessWidget {
         controller: controller,
         maxLines: maxLines,
         autocorrect: false,
+        keyboardType: TextInputType.emailAddress,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.black,
