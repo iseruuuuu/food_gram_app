@@ -8,12 +8,12 @@ part 'edit_view_model.g.dart';
 class EditViewModel extends _$EditViewModel {
   @override
   EditState build({
+    //TODO ユーザーのデータを初期値に入れる
     EditState initState = const EditState(),
   }) {
     return initState;
   }
 
-  //TODO データの初期値を入れる
   final nameTextController = TextEditingController();
   final idTextController = TextEditingController();
   final selfIntroduceTextController = TextEditingController();
@@ -22,7 +22,7 @@ class EditViewModel extends _$EditViewModel {
     //TODO 投稿の処理を追記
   }
 
-  void onTapImage() {
-    //TODO 画像の添付を追記
+  void selectIcon(int number) {
+    state = state.copyWith(number: number);
   }
 }

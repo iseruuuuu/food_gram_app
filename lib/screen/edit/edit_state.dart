@@ -6,5 +6,6 @@ part 'edit_state.freezed.dart';
 class EditState with _$EditState {
   const factory EditState({
     @Default('') String mage,
+    @Default(1) number,
   }) = _EditState;
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/component/app_edit_text_field.dart';
+import 'package:food_gram_app/component/app_account_text_field.dart';
+import 'package:food_gram_app/component/app_icon.dart';
 import 'package:food_gram_app/screen/edit/edit_view_model.dart';
 
 class EditScreen extends ConsumerWidget {
@@ -9,6 +10,7 @@ class EditScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(editViewModelProvider().notifier);
+    final state = ref.watch(editViewModelProvider());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -30,30 +32,41 @@ class EditScreen extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const CircleAvatar(
-              backgroundColor: Color(0xFFEADDFF),
+            CircleAvatar(
+              backgroundColor: Colors.white,
+              backgroundImage:
+                  AssetImage('assets/icon/icon${state.number}.png'),
               radius: 60,
             ),
-            TextButton(
-              onPressed: ref.read(editViewModelProvider().notifier).onTapImage,
-              child: const Text(
-                'プロフィール画像を変更',
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                'アイコンの設定',
                 style: TextStyle(
-                  fontSize: 15,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blueAccent,
+                  fontSize: 18,
                 ),
               ),
             ),
-            AppEditTextField(
+            Wrap(
+              children: List.generate(
+                6,
+                (index) {
+                  return AppIcon(
+                    onTap: () => ref
+                        .read(editViewModelProvider().notifier)
+                        .selectIcon(index + 1),
+                    number: index + 1,
+                  );
+                },
+              ),
+            ),
+            AppNameTextField(
               title: '名前',
               controller: controller.nameTextController,
             ),
-            AppEditTextField(
-              title: 'ID',
-              controller: controller.idTextController,
-            ),
-            AppEditSelfIntroductionTextField(
+            AppUserNameTextField(controller: controller.idTextController),
+            AppSelfIntroductionTextField(
               controller: controller.selfIntroduceTextController,
             ),
           ],

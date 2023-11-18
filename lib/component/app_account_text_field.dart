@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class AppEditTextField extends StatelessWidget {
-  const AppEditTextField({
+class AppNameTextField extends StatelessWidget {
+  const AppNameTextField({
     required this.title,
     required this.controller,
     super.key,
@@ -51,8 +51,8 @@ class AppEditTextField extends StatelessWidget {
   }
 }
 
-class AppEditSelfIntroductionTextField extends StatelessWidget {
-  const AppEditSelfIntroductionTextField({
+class AppSelfIntroductionTextField extends StatelessWidget {
+  const AppSelfIntroductionTextField({
     required this.controller,
     super.key,
   });
@@ -150,8 +150,8 @@ class AppUserNameTextField extends StatelessWidget {
                   autocorrect: false,
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(
-                        RegExp(r'[a-zA-Z0-9@_.-]') //英数字、@、_、.、-のみ入力可にする
-                        ),
+                      RegExp('[a-zA-Z0-9@_.-]'),
+                    ),
                   ],
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,

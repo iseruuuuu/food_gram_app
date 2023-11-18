@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/component/app_edit_text_field.dart';
+import 'package:food_gram_app/component/app_account_text_field.dart';
 import 'package:food_gram_app/component/app_elevated_button.dart';
 import 'package:food_gram_app/component/app_icon.dart';
 import 'package:food_gram_app/component/app_loading.dart';
@@ -54,7 +54,7 @@ class NewAccountScreen extends ConsumerWidget {
                       },
                     ),
                   ),
-                  AppEditTextField(
+                  AppNameTextField(
                     title: '名前',
                     controller: controller.nameTextController,
                   ),
