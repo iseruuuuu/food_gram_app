@@ -25,6 +25,29 @@
 			<string>sms</string>
 			<string>tel</string>
 		</array>
+		 <key>CFBundleURLTypes</key>
+              <array>
+                <dict>
+                  <key>CFBundleTypeRole</key>
+                  <string>Editor</string>
+                  <key>CFBundleURLSchemes</key>
+                  <array>
+                    <string>io.supabase.flutterquickstart</string>
+                  </array>
+                </dict>
+              </array>
+          <key>LSApplicationQueriesSchemes</key>
+             <array>
+                 <string>googlegmail</string>
+                 <string>x-dispatch</string>
+                 <string>readdle-spark</string>
+                 <string>airmail</string>
+                 <string>ms-outlook</string>
+                 <string>ymail</string>
+                 <string>fastmail</string>
+                 <string>superhuman</string>
+                 <string>protonmail</string>
+             </array>
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSRequiresIPhoneOS</key>
