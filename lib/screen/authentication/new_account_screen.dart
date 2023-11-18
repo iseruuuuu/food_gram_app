@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/component/app_edit_text_field.dart';
 import 'package:food_gram_app/component/app_elevated_button.dart';
+import 'package:food_gram_app/component/app_icon.dart';
 import 'package:food_gram_app/component/app_loading.dart';
 import 'package:food_gram_app/provider/loading.dart';
 import 'package:food_gram_app/screen/authentication/new_account_view_model.dart';
@@ -17,51 +18,54 @@ class NewAccountScreen extends ConsumerWidget {
     return GestureDetector(
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Profile')),
+        backgroundColor: Colors.white,
+        appBar: AppBar(backgroundColor: Colors.white),
         body: Stack(
           children: [
             SingleChildScrollView(
               child: Column(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     backgroundColor: Colors.white,
-                    backgroundImage: AssetImage('assets/image/food.png'),
+                    backgroundImage:
+                        AssetImage('assets/icon/icon${state.number}.png'),
                     radius: 60,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      //TODO 画像を選ぶ感じにする。
-                      Image.asset(
-                        'assets/image/food.png',
-                        width: 50,
-                        height: 50,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      'アイコンの設定',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
-                      Image.asset(
-                        'assets/image/food.png',
-                        width: 50,
-                        height: 50,
-                      ),
-                      Image.asset(
-                        'assets/image/food.png',
-                        width: 50,
-                        height: 50,
-                      ),
-                      Image.asset(
-                        'assets/image/food.png',
-                        width: 50,
-                        height: 50,
-                      ),
-                    ],
+                    ),
+                  ),
+                  Wrap(
+                    children: List.generate(
+                      6,
+                      (index) {
+                        return AppIcon(
+                          onTap: () => ref
+                              .read(newAccountViewModelProvider().notifier)
+                              .selectIcon(index + 1),
+                          number: index + 1,
+                        );
+                      },
+                    ),
                   ),
                   AppEditTextField(
                     title: '名前',
                     controller: controller.nameTextController,
                   ),
-                  //TODO これは英語のみにする
-                  AppEditTextField(
-                    title: 'ユーザー名',
+                  AppUserNameTextField(
                     controller: controller.userNameTextController,
+                  ),
+                  AppElevatedButton(
+                    onPressed: () => ref
+                        .read(newAccountViewModelProvider().notifier)
+                        .setUsers(context),
+                    title: '登録',
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 15),
@@ -72,12 +76,6 @@ class NewAccountScreen extends ConsumerWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  AppElevatedButton(
-                    onPressed: () => ref
-                        .read(newAccountViewModelProvider().notifier)
-                        .setUsers(context),
-                    title: '登録',
                   ),
                 ],
               ),

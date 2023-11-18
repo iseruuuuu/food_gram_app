@@ -26,6 +26,10 @@ class NewAccountViewModel extends _$NewAccountViewModel {
   final nameTextController = TextEditingController();
   final userNameTextController = TextEditingController();
 
+  void selectIcon(int number) {
+    state = state.copyWith(number: number);
+  }
+
   Future<void> setUsers(BuildContext context) async {
     state = state.copyWith(loginStatus: '');
     if (nameTextController.text.isNotEmpty &&
@@ -37,7 +41,7 @@ class NewAccountViewModel extends _$NewAccountViewModel {
         'name': name,
         'user_name': userName,
         'self_introduce': '',
-        'image': 'assets/image/food.png',
+        'image': 'assets/icon/icon${state.number}.png',
         'created_at': DateTime.now().toIso8601String(),
         'updated_at': DateTime.now().toIso8601String(),
       };

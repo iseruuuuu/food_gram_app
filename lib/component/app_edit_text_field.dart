@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AppEditTextField extends StatelessWidget {
   const AppEditTextField({
@@ -19,7 +20,6 @@ class AppEditTextField extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               SizedBox(
                 width: 80,
@@ -100,6 +100,59 @@ class AppEditSelfIntroductionTextField extends StatelessWidget {
                     fillColor: Colors.white,
                     border: InputBorder.none,
                   ),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 17,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class AppUserNameTextField extends StatelessWidget {
+  const AppUserNameTextField({
+    required this.controller,
+    super.key,
+  });
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 80,
+                child: Text(
+                  'ユーザーID',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: TextField(
+                  controller: controller,
+                  autocorrect: false,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'[a-zA-Z0-9@_.-]') //英数字、@、_、.、-のみ入力可にする
+                        ),
+                  ],
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,

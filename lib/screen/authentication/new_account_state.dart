@@ -6,5 +6,6 @@ part 'new_account_state.freezed.dart';
 class NewAccountState with _$NewAccountState {
   const factory NewAccountState({
     @Default('') loginStatus,
+    @Default(1) number,
   }) = _NewAccountState;
 }
