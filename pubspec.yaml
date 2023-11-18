@@ -43,7 +43,7 @@ flutter_icons:
 
 flutter_native_splash:
   image: assets/splash/splash.png
-  color: '#ffffff'
+  color: '#fffdd0'
   android: true
   ios: true
   fullscreen: true
