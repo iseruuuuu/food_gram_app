@@ -512,6 +512,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  loading_animation_widget:
+    dependency: "direct main"
+    description:
+      name: loading_animation_widget
+      sha256: "1901682600273a966c34cf44a85fc5355da92a8d08a8a43c11adc4e471993e3a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0+4"
   logging:
     dependency: transitive
     description:
@@ -552,6 +560,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  open_mail_app:
+    dependency: "direct main"
+    description:
+      name: open_mail_app
+      sha256: ffc93edc0590ef4586136f505187b25014a336fe0374ad3cc528e727b3f2e726
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.5"
   package_config:
     dependency: transitive
     description:
@@ -1190,7 +1206,7 @@ packages:
     source: hosted
     version: "1.1.1"
   yumemi_lints:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: yumemi_lints
       sha256: e191ffc2a1844c9c9ee206607475d58a87721310955356ac763c774dbd8c4128
