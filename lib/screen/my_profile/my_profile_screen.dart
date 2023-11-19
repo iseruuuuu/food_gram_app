@@ -85,7 +85,11 @@ class MyProfileScreen extends ConsumerWidget {
                     MaterialPageRoute(
                       builder: (context) => const EditScreen(),
                     ),
-                  );
+                  ).then((_) {
+                    ref
+                        .read(myProfileViewModelProvider().notifier)
+                        .getProfile();
+                  });
                 },
                 child: const Text('プロフィールを編集'),
               ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/component/app_account_text_field.dart';
 import 'package:food_gram_app/component/app_icon.dart';
+import 'package:food_gram_app/component/app_loading.dart';
+import 'package:food_gram_app/provider/loading.dart';
 import 'package:food_gram_app/screen/edit/edit_view_model.dart';
 
 class EditScreen extends ConsumerWidget {
@@ -11,64 +13,77 @@ class EditScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(editViewModelProvider().notifier);
     final state = ref.watch(editViewModelProvider());
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+    final loading = ref.watch(loadingProvider);
+    return GestureDetector(
+      onTap: () => primaryFocus?.unfocus(),
+      child: Scaffold(
         backgroundColor: Colors.white,
-        actions: [
-          TextButton(
-            onPressed: ref.read(editViewModelProvider().notifier).update,
-            child: const Text(
-              '更新',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.blueAccent,
-              ),
-            ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            CircleAvatar(
-              backgroundColor: Colors.white,
-              backgroundImage:
-                  AssetImage('assets/icon/icon${state.number}.png'),
-              radius: 60,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                'アイコンの設定',
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          actions: [
+            TextButton(
+              onPressed: () =>
+                  ref.read(editViewModelProvider().notifier).update(context),
+              child: const Text(
+                '更新',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
                   fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blueAccent,
                 ),
               ),
             ),
-            Wrap(
-              children: List.generate(
-                6,
-                (index) {
-                  return AppIcon(
-                    onTap: () => ref
-                        .read(editViewModelProvider().notifier)
-                        .selectIcon(index + 1),
-                    number: index + 1,
-                  );
-                },
+          ],
+        ),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.white,
+                    backgroundImage:
+                        AssetImage('assets/icon/icon${state.number}.png'),
+                    radius: 60,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      'アイコンの設定',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  Wrap(
+                    children: List.generate(
+                      6,
+                      (index) {
+                        return AppIcon(
+                          onTap: () => ref
+                              .read(editViewModelProvider().notifier)
+                              .selectIcon(index + 1),
+                          number: index + 1,
+                        );
+                      },
+                    ),
+                  ),
+                  AppNameTextField(
+                    title: '名前',
+                    controller: controller.nameTextController,
+                  ),
+                  AppUserNameTextField(
+                    controller: controller.useNameTextController,
+                  ),
+                  AppSelfIntroductionTextField(
+                    controller: controller.selfIntroduceTextController,
+                  ),
+                  Text(state.status),
+                ],
               ),
             ),
-            AppNameTextField(
-              title: '名前',
-              controller: controller.nameTextController,
-            ),
-            AppUserNameTextField(controller: controller.idTextController),
-            AppSelfIntroductionTextField(
-              controller: controller.selfIntroduceTextController,
-            ),
+            AppLoading(loading: loading),
           ],
         ),
       ),
