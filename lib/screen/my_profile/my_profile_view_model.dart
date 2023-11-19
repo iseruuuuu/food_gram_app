@@ -12,7 +12,7 @@ class MyProfileViewModel extends _$MyProfileViewModel {
       name: '',
       userName: '',
       selfIntroduce: '',
-      image: '',
+      image: 'assets/icon/icon0.png',
     ),
   }) {
     getProfile();
