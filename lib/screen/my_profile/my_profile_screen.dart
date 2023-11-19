@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/component/app_cell.dart';
 import 'package:food_gram_app/screen/edit/edit_screen.dart';
+import 'package:food_gram_app/screen/my_profile/my_profile_view_model.dart';
 
-class MyProfileScreen extends StatelessWidget {
+class MyProfileScreen extends ConsumerWidget {
   const MyProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(myProfileViewModelProvider());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(backgroundColor: Colors.white),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,7 +24,8 @@ class MyProfileScreen extends StatelessWidget {
                 Row(
                   children: [
                     CircleAvatar(
-                      backgroundColor: Color(0xFFEADDFF),
+                      backgroundColor: Colors.white,
+                      backgroundImage: AssetImage(state.image),
                       radius: 50,
                     ),
                     Spacer(),
@@ -49,20 +53,20 @@ class MyProfileScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  '井関竜太郎',
+                  state.name,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  '@isekiryu',
+                  '@${state.userName}',
                   style: TextStyle(
                     fontSize: 18,
                   ),
                 ),
                 Text(
-                  'YUMEMI Inc.のFlutter Engineer📱/立正大学院応用心理学専攻1年生/ Flutterと彼女が好きな文系大学院生 アプリを53個リリースしています🔥',
+                  state.selfIntroduce,
                   style: TextStyle(
                     fontSize: 16,
                   ),
