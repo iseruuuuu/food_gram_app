@@ -55,10 +55,8 @@ class EditViewModel extends _$EditViewModel {
     };
     try {
       await supabase.from('users').update(updates).match({'user_id': user!.id});
-      //TODO 画面を戻った後にMyProfileの状態更新をする。
       Navigator.pop(context);
     } on PostgrestException catch (error) {
-      print(error);
       state = state.copyWith(status: error.message);
     } finally {
       loading.state = false;
