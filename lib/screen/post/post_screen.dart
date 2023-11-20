@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/component/app_loading.dart';
 import 'package:food_gram_app/component/app_post_text_field.dart';
+import 'package:food_gram_app/provider/loading.dart';
 import 'package:food_gram_app/screen/post/post_view_model.dart';
 
 class PostScreen extends ConsumerWidget {
@@ -10,63 +12,103 @@ class PostScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final controller = ref.watch(postViewModelProvider().notifier);
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(backgroundColor: Colors.white),
-      body: SingleChildScrollView(
-        child: Column(
+    final state = ref.watch(postViewModelProvider());
+    final loading = ref.watch(loadingProvider);
+    return GestureDetector(
+      onTap: () => primaryFocus?.unfocus(),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          actions: [
+            TextButton(
+              onPressed: () =>
+                  ref.read(postViewModelProvider().notifier).post(context),
+              child: const Text(
+                '投稿',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
+        ),
+        body: Stack(
           children: [
-            GestureDetector(
-              onTap: ref.read(postViewModelProvider().notifier).onTapImage,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFFEADDFF),
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: const Color(0xFF6750A4)),
-                ),
-                width: deviceWidth - 20,
-                height: deviceWidth / 2,
-                child: const Icon(Icons.add, size: 50),
-              ),
-            ),
-            AppPostTextField(
-              controller: controller.foodTextController,
-              hintText: 'Food Name',
-              maxLines: 1,
-            ),
-            //TODO レストラン名（ボタンで検索させる）
-            GestureDetector(
-              onTap: ref.read(postViewModelProvider().notifier).post,
-              child: Container(
-                width: MediaQuery.of(context).size.width - 20,
-                height: 70,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: const Color(0xFF6750A4)),
-                ),
-              ),
-            ),
-            AppPostTextField(
-              controller: controller.commentTextController,
-              hintText: 'Comment',
-              maxLines: 10,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: ref.read(postViewModelProvider().notifier).post,
-                child: const Text(
-                  'POST',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () =>
+                        ref.read(postViewModelProvider().notifier).onTapImage(),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE9E7F1),
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: const Color(0xFF6750A4)),
+                      ),
+                      width: deviceWidth - 20,
+                      height: deviceWidth / 2,
+                      child: const Icon(Icons.add, size: 50),
+                    ),
                   ),
-                ),
+                  AppPostTextField(
+                    controller: controller.foodTextController,
+                    hintText: 'Food Name',
+                    maxLines: 1,
+                  ),
+                  GestureDetector(
+                    onTap: () => ref
+                        .read(postViewModelProvider().notifier)
+                        .onTapRestaurant(),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width - 20,
+                      height: 55,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: const Color(0xFF6750A4)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              state.restaurant,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: state.restaurant == 'レストランを選択'
+                                    ? Colors.grey
+                                    : Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  AppPostTextField(
+                    controller: controller.commentTextController,
+                    hintText: 'Comment',
+                    maxLines: 10,
+                  ),
+                  Text(
+                    state.status,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                    ),
+                  ),
+                ],
               ),
             ),
+            AppLoading(loading: loading),
           ],
         ),
       ),
