@@ -85,6 +85,9 @@ class MyProfileScreen extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                ),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -97,13 +100,28 @@ class MyProfileScreen extends ConsumerWidget {
                         .getProfile();
                   });
                 },
-                child: const Text('プロフィールを編集'),
+                child: const Text(
+                  'プロフィールを編集',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
               ),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                ),
                 onPressed: () {
                   //TODO シェアする
                 },
-                child: const Text('プロフィールをシェア'),
+                child: const Text(
+                  'プロフィールをシェア',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
               ),
             ],
           ),
