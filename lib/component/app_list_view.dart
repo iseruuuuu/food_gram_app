@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/model/post.dart';
 import 'package:food_gram_app/screen/detail/detail_post_screen.dart';
 
 class AppListView extends StatelessWidget {
@@ -31,10 +32,23 @@ class AppListView extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
+                  final post = Post(
+                    id: int.parse(data[index]['id'].toString()),
+                    foodImage: data[index]['food_image'],
+                    foodName: data[index]['food_name'],
+                    restaurant: data[index]['restaurant'],
+                    comment: data[index]['comment'],
+                    createdAt: DateTime.parse(data[index]['created_at']),
+                    lat: double.parse(data[index]['lat'].toString()),
+                    lng: double.parse(data[index]['lng'].toString()),
+                    heart: int.parse(data[index]['heart'].toString()),
+                  );
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DetailPostScreen(),
+                      builder: (context) => DetailPostScreen(
+                        post: post,
+                      ),
                     ),
                   );
                 },

@@ -36,6 +36,7 @@ class PostViewModel extends _$PostViewModel {
         'food_name': foodTextController.text,
         'comment': commentTextController.text,
         'created_at': DateTime.now().toIso8601String(),
+        'heart': 0,
         //TODO あとでレストラン名を入れる
         'restaurant': '吉野家',
         //TODO あとで画像を入れる

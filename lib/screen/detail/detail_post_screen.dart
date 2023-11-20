@@ -1,9 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/model/post.dart';
 import 'package:food_gram_app/screen/detail/detail_account_screen.dart';
 
 class DetailPostScreen extends StatelessWidget {
-  const DetailPostScreen({super.key});
+  const DetailPostScreen({
+    required this.post,
+    super.key,
+  });
+
+  final Post post;
 
   @override
   Widget build(BuildContext context) {
@@ -59,26 +65,51 @@ class DetailPostScreen extends StatelessWidget {
             width: deviceWidth,
             height: deviceWidth,
             color: Colors.blue,
+            child: Image.asset(post.foodImage),
           ),
           Row(
             children: [
+              SizedBox(width: 5),
               IconButton(
                 onPressed: () {},
-                icon: Icon(CupertinoIcons.heart),
+                icon: Icon(
+                  CupertinoIcons.heart,
+                  size: 30,
+                ),
               ),
               IconButton(
                 onPressed: () {},
-                icon: Icon(Icons.send),
+                icon: Icon(
+                  Icons.send,
+                  size: 30,
+                ),
               ),
             ],
           ),
           Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Text(
+              '${post.heart}いいね',
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Padding(
             padding: const EdgeInsets.all(15),
             child: Text(
-              '感想\n'
-              'aaaaaaaaaaaaaaaaaaa\n'
-              'aaaaaaaaaaaaaaaaaaa\n'
-              'aaaaaaaaaaaaaaaaaaa\n',
+              'In ${post.restaurant}',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Text(
+              post.comment,
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
