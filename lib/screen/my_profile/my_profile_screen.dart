@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/component/app_cell.dart';
+import 'package:food_gram_app/component/app_list_view.dart';
 import 'package:food_gram_app/screen/edit/edit_screen.dart';
 import 'package:food_gram_app/screen/my_profile/my_profile_view_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MyProfileScreen extends ConsumerWidget {
   const MyProfileScreen({super.key});
@@ -10,6 +11,10 @@ class MyProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(myProfileViewModelProvider());
+    final supabase = Supabase.instance.client;
+    final user = supabase.auth.currentUser?.id;
+    final stream =
+        supabase.from('posts').stream(primaryKey: ['id']).eq('user_id', user);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(backgroundColor: Colors.white),
@@ -33,6 +38,7 @@ class MyProfileScreen extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
+                          //TODO 投稿数を取得する
                           '13',
                           style: TextStyle(
                             fontSize: 22,
@@ -102,19 +108,7 @@ class MyProfileScreen extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 20),
-          Expanded(
-            child: GridView.builder(
-              itemCount: 15,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 1,
-                mainAxisSpacing: 1,
-              ),
-              itemBuilder: (context, index) {
-                return const AppCell();
-              },
-            ),
-          ),
+          AppListView(stream: stream),
         ],
       ),
     );
