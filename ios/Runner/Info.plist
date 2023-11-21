@@ -48,6 +48,10 @@
                  <string>superhuman</string>
                  <string>protonmail</string>
              </array>
+         	<key>NSPhotoLibraryUsageDescription</key>
+         	<string>写真の投稿のために許可が必要になります</string>
+            <key>NSCameraUsageDescription</key>
+            <string>写真の投稿のために許可が必要になります</string>
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSRequiresIPhoneOS</key>
