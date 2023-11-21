@@ -6,6 +6,7 @@ part 'post_state.freezed.dart';
 class PostState with _$PostState {
   const factory PostState({
     @Default('') String foodImage,
-    @Default('') String restaurant,
+    @Default('レストランを選択') String restaurant,
+    @Default('') String status,
   }) = _PostState;
 }

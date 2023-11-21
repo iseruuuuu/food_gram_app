@@ -32,6 +32,7 @@ class NewAccountViewModel extends _$NewAccountViewModel {
 
   Future<void> setUsers(BuildContext context) async {
     state = state.copyWith(loginStatus: '');
+    primaryFocus?.unfocus();
     if (nameTextController.text.isNotEmpty &&
         userNameTextController.text.isNotEmpty) {
       loading.state = true;

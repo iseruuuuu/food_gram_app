@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/component/app_cell.dart';
+import 'package:food_gram_app/component/app_list_view.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DetailAccountScreen extends StatelessWidget {
   const DetailAccountScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    //TODO　指定したIDから取得する
+    final stream =
+        Supabase.instance.client.from('posts').stream(primaryKey: ['id']);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(backgroundColor: Colors.white),
@@ -70,19 +74,7 @@ class DetailAccountScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          Expanded(
-            child: GridView.builder(
-              itemCount: 15,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 1,
-                mainAxisSpacing: 1,
-              ),
-              itemBuilder: (context, index) {
-                return const AppCell();
-              },
-            ),
-          ),
+          AppListView(stream: stream),
         ],
       ),
     );

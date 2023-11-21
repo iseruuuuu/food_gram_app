@@ -12,10 +12,10 @@ abstract class Post with _$Post {
     required String foodName,
     required String restaurant,
     required String comment,
-    required DateTime eatTime,
     required DateTime createdAt,
     required double lat,
     required double lng,
+    required int heart,
   }) = _Post;
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
