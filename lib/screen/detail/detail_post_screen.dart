@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/model/post.dart';
 import 'package:food_gram_app/screen/detail/detail_account_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DetailPostScreen extends StatelessWidget {
   const DetailPostScreen({
@@ -13,6 +14,7 @@ class DetailPostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final supabase = Supabase.instance.client.storage;
     final deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(),
@@ -65,7 +67,9 @@ class DetailPostScreen extends StatelessWidget {
             width: deviceWidth,
             height: deviceWidth,
             color: Colors.blue,
-            child: Image.asset(post.foodImage),
+            child: Image.network(
+              supabase.from('food').getPublicUrl(post.foodImage),
+            ),
           ),
           Row(
             children: [

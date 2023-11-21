@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/component/app_loading.dart';
@@ -41,17 +43,23 @@ class PostScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   GestureDetector(
-                    onTap: () =>
-                        ref.read(postViewModelProvider().notifier).onTapImage(),
+                    onTap: () => ref
+                        .read(postViewModelProvider().notifier)
+                        .onTapImage(context),
                     child: Container(
                       decoration: BoxDecoration(
                         color: const Color(0xFFE9E7F1),
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(color: const Color(0xFF6750A4)),
                       ),
-                      width: deviceWidth - 20,
+                      width: deviceWidth / 2,
                       height: deviceWidth / 2,
-                      child: const Icon(Icons.add, size: 50),
+                      child: state.foodImage != ''
+                          ? Image.file(
+                              File(state.foodImage),
+                              fit: BoxFit.cover,
+                            )
+                          : const Icon(Icons.add, size: 50),
                     ),
                   ),
                   AppPostTextField(
@@ -96,7 +104,7 @@ class PostScreen extends ConsumerWidget {
                   AppPostTextField(
                     controller: controller.commentTextController,
                     hintText: 'Comment',
-                    maxLines: 10,
+                    maxLines: 7,
                   ),
                   Text(
                     state.status,
