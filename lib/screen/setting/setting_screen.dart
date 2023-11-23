@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_gram_app/component/app_app_bar.dart';
 import 'package:food_gram_app/mixin/url_launcher_mixin.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -9,10 +11,8 @@ class SettingScreen extends StatelessWidget with UrlLauncherMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
+      backgroundColor: CupertinoColors.extraLightBackgroundGray,
+      appBar: AppAppBar(),
       body: SettingsList(
         sections: [
           SettingsSection(
@@ -23,7 +23,8 @@ class SettingScreen extends StatelessWidget with UrlLauncherMixin {
               //   onPressed: (context) {},
               // ),
               SettingsTile.navigation(
-                leading: const Icon(FontAwesomeIcons.twitter),
+                leading:
+                    const Icon(FontAwesomeIcons.twitter, color: Colors.blue),
                 title: const Text('開発者'),
                 onPressed: (context) {
                   launcherUrl('https://twitter.com/isekiryu');
@@ -123,6 +124,14 @@ class SettingScreen extends StatelessWidget with UrlLauncherMixin {
             ],
           ),
         ],
+        lightTheme: const SettingsThemeData(
+          settingsListBackground: CupertinoColors.extraLightBackgroundGray,
+          dividerColor: Colors.grey,
+          leadingIconsColor: Colors.black,
+        ),
+        darkTheme: const SettingsThemeData(
+          settingsListBackground: Colors.white,
+        ),
       ),
     );
   }
