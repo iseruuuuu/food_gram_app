@@ -69,6 +69,7 @@ class DetailPostScreen extends StatelessWidget {
             color: Colors.blue,
             child: Image.network(
               supabase.from('food').getPublicUrl(post.foodImage),
+              fit: BoxFit.cover,
             ),
           ),
           Row(
