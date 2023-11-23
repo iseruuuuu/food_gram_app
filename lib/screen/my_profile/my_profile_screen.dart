@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/component/app_app_bar.dart';
 import 'package:food_gram_app/component/app_list_view.dart';
+import 'package:food_gram_app/component/app_my_profile_button.dart';
 import 'package:food_gram_app/screen/edit/edit_screen.dart';
 import 'package:food_gram_app/screen/my_profile/my_profile_view_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -16,8 +19,8 @@ class MyProfileScreen extends ConsumerWidget {
     final stream =
         supabase.from('posts').stream(primaryKey: ['id']).eq('user_id', user);
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(backgroundColor: Colors.white),
+      backgroundColor: CupertinoColors.extraLightBackgroundGray,
+      appBar: AppAppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -57,7 +60,7 @@ class MyProfileScreen extends ConsumerWidget {
                     SizedBox(width: 10),
                   ],
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 Text(
                   state.name,
                   style: TextStyle(
@@ -71,6 +74,7 @@ class MyProfileScreen extends ConsumerWidget {
                     fontSize: 18,
                   ),
                 ),
+                SizedBox(height: 5),
                 Text(
                   state.selfIntroduce,
                   style: TextStyle(
@@ -80,15 +84,12 @@ class MyProfileScreen extends ConsumerWidget {
               ],
             ),
           ),
-          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                ),
-                onPressed: () {
+              AppMyProfileButton(
+                title: 'プロフィールを編集',
+                onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -100,32 +101,16 @@ class MyProfileScreen extends ConsumerWidget {
                         .getProfile();
                   });
                 },
-                child: const Text(
-                  'プロフィールを編集',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                ),
-                onPressed: () {
+              AppMyProfileButton(
+                title: 'プロフィールをシェア',
+                onTap: () {
                   //TODO シェアする
                 },
-                child: const Text(
-                  'プロフィールをシェア',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           AppListView(stream: stream),
         ],
       ),
