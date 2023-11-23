@@ -12,6 +12,7 @@ abstract class MyProfileState with _$MyProfileState {
     required String userName,
     required String selfIntroduce,
     required String image,
+    required int length,
   }) = _MyProfileState;
 
   factory MyProfileState.fromJson(Map<String, dynamic> json) =>

@@ -41,17 +41,16 @@ class MyProfileScreen extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          //TODO 投稿数を取得する
-                          '13',
+                          '${state.length}',
                           style: TextStyle(
-                            fontSize: 22,
+                            fontSize: 30,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
                           '投稿',
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

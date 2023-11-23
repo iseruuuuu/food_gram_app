@@ -13,9 +13,11 @@ class MyProfileViewModel extends _$MyProfileViewModel {
       userName: '',
       selfIntroduce: '',
       image: 'assets/icon/icon0.png',
+      length: 0,
     ),
   }) {
     getProfile();
+    getPostsLength();
     return initState;
   }
 
@@ -34,5 +36,13 @@ class MyProfileViewModel extends _$MyProfileViewModel {
       selfIntroduce: data['self_introduce'],
       image: data['image'],
     );
+  }
+
+  Future<void> getPostsLength() async {
+    final userId = supabase.auth.currentUser!.id;
+    final response =
+        await supabase.from('posts').select().eq('user_id', userId).execute();
+    final data = response.data as List<dynamic>;
+    state = state.copyWith(length: data.length);
   }
 }
