@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppBottomNavigationBar extends StatelessWidget {
@@ -14,39 +15,27 @@ class AppBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       elevation: 0,
-      backgroundColor: Colors.white,
+      backgroundColor: CupertinoColors.extraLightBackgroundGray,
       unselectedItemColor: Colors.grey,
       selectedItemColor: Colors.black,
-      selectedLabelStyle: TextStyle(
-        color: Colors.black,
-      ),
-      iconSize: 30,
-      selectedFontSize: 0,
-      unselectedFontSize: 0,
       type: BottomNavigationBarType.fixed,
       currentIndex: currentIndex,
+      showUnselectedLabels: false,
+      selectedFontSize: 0,
+      unselectedFontSize: 0,
       onTap: onTap,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(
-            Icons.home,
-            size: 35,
-          ),
-          label: 'home',
+          icon: Icon(Icons.home, size: 35),
+          label: '',
         ),
         BottomNavigationBarItem(
-          icon: Icon(
-            Icons.account_circle,
-            size: 35,
-          ),
-          label: 'profile',
+          icon: Icon(Icons.account_circle, size: 35),
+          label: '',
         ),
         BottomNavigationBarItem(
-          icon: Icon(
-            Icons.settings,
-            size: 35,
-          ),
-          label: 'setting',
+          icon: Icon(Icons.settings, size: 35),
+          label: '',
         ),
       ],
     );
