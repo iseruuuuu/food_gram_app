@@ -55,5 +55,6 @@ flutter:
     - assets/image/
     - assets/loading/
     - assets/icon/
+    - assets/error/
     - .env.dev
     - .env.prod
