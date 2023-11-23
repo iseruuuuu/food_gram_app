@@ -8,41 +8,35 @@ part 'my_profile_view_model.g.dart';
 class MyProfileViewModel extends _$MyProfileViewModel {
   @override
   MyProfileState build({
-    MyProfileState initState = const MyProfileState(
-      name: '',
-      userName: '',
-      selfIntroduce: '',
-      image: 'assets/icon/icon0.png',
-      length: 0,
-    ),
+    MyProfileState initState = const MyProfileStateLoading(),
   }) {
-    getProfile();
-    getPostsLength();
+    getData();
     return initState;
   }
 
   final supabase = Supabase.instance.client;
 
-  Future<void> getProfile() async {
-    final userId = supabase.auth.currentUser!.id;
-    final data = await supabase
-        .from('users')
-        .select<Map<String, dynamic>>()
-        .eq('user_id', userId)
-        .single();
-    state = state.copyWith(
-      name: data['name'],
-      userName: data['user_name'],
-      selfIntroduce: data['self_introduce'],
-      image: data['image'],
-    );
-  }
-
-  Future<void> getPostsLength() async {
-    final userId = supabase.auth.currentUser!.id;
-    final response =
-        await supabase.from('posts').select().eq('user_id', userId).execute();
-    final data = response.data as List<dynamic>;
-    state = state.copyWith(length: data.length);
+  Future<void> getData() async {
+    state = const MyProfileStateLoading();
+    try {
+      final userId = supabase.auth.currentUser!.id;
+      final data = await supabase
+          .from('users')
+          .select<Map<String, dynamic>>()
+          .eq('user_id', userId)
+          .single();
+      final response =
+          await supabase.from('posts').select().eq('user_id', userId).execute();
+      final post = response.data as List<dynamic>;
+      state = MyProfileState.data(
+        name: data['name'],
+        userName: data['user_name'],
+        selfIntroduce: data['self_introduce'],
+        image: data['image'],
+        length: post.length,
+      );
+    } on Exception catch (_) {
+      state = MyProfileStateError();
+    }
   }
 }
