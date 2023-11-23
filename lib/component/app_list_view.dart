@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/model/post.dart';
 import 'package:food_gram_app/screen/detail/detail_post_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppListView extends StatelessWidget {
   const AppListView({
@@ -12,6 +13,7 @@ class AppListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final supabase = Supabase.instance.client.storage;
     return Expanded(
       child: StreamBuilder<List<Map<String, dynamic>>>(
         stream: stream,
@@ -56,8 +58,12 @@ class AppListView extends StatelessWidget {
                   width: MediaQuery.of(context).size.width / 3,
                   height: MediaQuery.of(context).size.width / 3,
                   color: Colors.blue,
-                  //TODO あとでNetworkImageに変更する
-                  child: Image.asset(data[index]['food_image']),
+                  child: Image.network(
+                    supabase
+                        .from('food')
+                        .getPublicUrl(data[index]['food_image']),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               );
             },
