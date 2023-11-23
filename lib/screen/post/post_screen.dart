@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/component/app_loading.dart';
@@ -19,9 +20,9 @@ class PostScreen extends ConsumerWidget {
     return GestureDetector(
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: CupertinoColors.extraLightBackgroundGray,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: CupertinoColors.extraLightBackgroundGray,
           actions: [
             TextButton(
               onPressed: () =>
@@ -48,9 +49,9 @@ class PostScreen extends ConsumerWidget {
                         .onTapImage(context),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE9E7F1),
+                        color: CupertinoColors.extraLightBackgroundGray,
                         borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: const Color(0xFF6750A4)),
+                        border: Border.all(width: 2),
                       ),
                       width: deviceWidth / 2,
                       height: deviceWidth / 2,
