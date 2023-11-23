@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/screen/splash/splash_view_model.dart';
@@ -22,7 +23,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: CupertinoColors.extraLightBackgroundGray,
       body: Center(
         child: Image(
           image: AssetImage('assets/loading/loading.gif'),
