@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppFloatingButton extends StatelessWidget {
   const AppFloatingButton({
-    required this.onTap, super.key,
+    required this.onTap,
+    super.key,
   });
 
   final Function() onTap;
@@ -12,11 +14,10 @@ class AppFloatingButton extends StatelessWidget {
     return SizedBox(
       width: 70,
       height: 70,
-      child: FloatingActionButton(
-        backgroundColor: const Color(0xFFEADDFF),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(100),
-        ),
+      child: CupertinoButton(
+        borderRadius: BorderRadius.circular(100),
+        padding: EdgeInsets.zero,
+        color: const Color(0xFFEADDFF),
         onPressed: onTap,
         child: const Icon(
           Icons.add,
