@@ -1,19 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/model/post.dart';
 import 'package:food_gram_app/screen/detail/detail_account_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class DetailPostScreen extends StatelessWidget {
+class DetailPostScreen extends ConsumerWidget {
   const DetailPostScreen({
     required this.post,
+    required this.name,
+    required this.image,
+    required this.userName,
     super.key,
   });
 
   final Post post;
+  final String name;
+  final String image;
+  final String userName;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final supabase = Supabase.instance.client.storage;
     final deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -36,22 +43,26 @@ class DetailPostScreen extends StatelessWidget {
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(10),
-                    child: CircleAvatar(),
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.white,
+                      child: Image.asset(image),
+                    ),
                   ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '井関竜太郎',
+                      name,
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      '@Isekiryu',
-                      style: TextStyle(fontSize: 13),
+                      '@$userName',
+                      style: TextStyle(fontSize: 15),
                     ),
                   ],
                 ),
