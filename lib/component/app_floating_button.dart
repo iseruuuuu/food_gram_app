@@ -17,12 +17,12 @@ class AppFloatingButton extends StatelessWidget {
       child: CupertinoButton(
         borderRadius: BorderRadius.circular(100),
         padding: EdgeInsets.zero,
-        color: const Color(0xFFEADDFF),
+        color: Colors.black,
         onPressed: onTap,
         child: const Icon(
           Icons.add,
-          color: Colors.black,
-          size: 30,
+          color: Colors.white,
+          size: 35,
         ),
       ),
     );
