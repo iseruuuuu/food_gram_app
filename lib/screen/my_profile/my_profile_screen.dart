@@ -47,8 +47,8 @@ class MyProfileScreen extends ConsumerWidget {
                   ref.read(myProfileViewModelProvider().notifier).getData();
                 });
               },
-              onTapShare: () {
-                //TODO シェアする
+              onTapExchange: () {
+                //TODO ポイント交換に遷移する
               },
             ),
             const SizedBox(height: 10),

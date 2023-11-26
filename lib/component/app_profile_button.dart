@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class AppMyProfileButton extends StatelessWidget {
   const AppMyProfileButton({
     required this.onTapEdit,
-    required this.onTapShare,
+    required this.onTapExchange,
     super.key,
   });
 
   final Function() onTapEdit;
-  final Function() onTapShare;
+  final Function() onTapExchange;
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +20,21 @@ class AppMyProfileButton extends StatelessWidget {
           onTap: onTapEdit,
         ),
         ProfileButton(
-          title: 'プロフィールをシェア',
-          onTap: onTapShare,
+          title: 'ポイントを交換する',
+          onTap: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  '🙇　Coming Soon　🙇',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ],
     );
