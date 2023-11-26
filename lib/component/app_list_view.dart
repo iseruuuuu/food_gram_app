@@ -45,7 +45,6 @@ class AppListView extends StatelessWidget {
                     lng: double.parse(data[index]['lng'].toString()),
                     heart: int.parse(data[index]['heart'].toString()),
                   );
-
                   final supabase = Supabase.instance.client;
                   final dynamic postUserId = await supabase
                       .from('users')
@@ -60,6 +59,8 @@ class AppListView extends StatelessWidget {
                         name: postUserId['name'],
                         image: postUserId['image'],
                         userName: postUserId['user_name'],
+                        userId: postUserId['user_id'],
+                        id: data[index]['id'],
                       ),
                     ),
                   );
