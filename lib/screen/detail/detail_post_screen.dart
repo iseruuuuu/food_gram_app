@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/mixin/dialog_mixin.dart';
 import 'package:food_gram_app/mixin/url_launcher_mixin.dart';
 import 'package:food_gram_app/model/post.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DetailPostScreen extends ConsumerWidget
@@ -118,7 +119,11 @@ class DetailPostScreen extends ConsumerWidget
               ),
               IconButton(
                 onPressed: () {
-                  //TODO 共有機能を実装する
+                  Share.share(
+                    '${post.restaurant}で食べたレビューを投稿しました！'
+                    '\n詳しくはfoodGramで確認してみよう！'
+                    '\n#foodGram',
+                  );
                 },
                 icon: Icon(
                   Icons.send,
