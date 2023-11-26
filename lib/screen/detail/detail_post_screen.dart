@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/mixin/dialog_mixin.dart';
 import 'package:food_gram_app/mixin/url_launcher_mixin.dart';
 import 'package:food_gram_app/model/post.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class DetailPostScreen extends ConsumerWidget
+class DetailPostScreen extends StatefulWidget
     with UrlLauncherMixin, DialogMixin {
   const DetailPostScreen({
     required this.post,
@@ -27,9 +26,31 @@ class DetailPostScreen extends ConsumerWidget
   final int id;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final supabase = Supabase.instance.client.storage;
+  State<DetailPostScreen> createState() => _DetailPostScreenState();
+}
+
+class _DetailPostScreenState extends State<DetailPostScreen> {
+  bool isHeart = false;
+  int initialHeart = 0;
+
+  @override
+  void initState() {
+    initialHeart = widget.post.heart;
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    initialHeart = widget.post.heart;
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final storage = Supabase.instance.client.storage;
+    final supabase = Supabase.instance.client;
     final deviceWidth = MediaQuery.of(context).size.width;
+    final user = supabase.auth.currentUser?.id;
     return Scaffold(
       backgroundColor: CupertinoColors.extraLightBackgroundGray,
       appBar: AppBar(
@@ -47,21 +68,21 @@ class DetailPostScreen extends ConsumerWidget
                   child: CircleAvatar(
                     radius: 30,
                     backgroundColor: Colors.white,
-                    child: Image.asset(image),
+                    child: Image.asset(widget.image),
                   ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      name,
+                      widget.name,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      '@$userName',
+                      '@${widget.userName}',
                       style: TextStyle(fontSize: 15),
                     ),
                   ],
@@ -69,21 +90,22 @@ class DetailPostScreen extends ConsumerWidget
                 Spacer(),
                 IconButton(
                   onPressed: () async {
-                    final supabase = Supabase.instance.client;
-                    final user = supabase.auth.currentUser?.id;
-                    if (userId == user) {
-                      openDeleteDialog(
+                    if (widget.userId == user) {
+                      widget.openDeleteDialog(
                         context: context,
                         delete: () async {
-                          await supabase.from('posts').delete().eq('id', id);
+                          await supabase
+                              .from('posts')
+                              .delete()
+                              .eq('id', widget.id);
                           Navigator.pop(context);
                         },
                       );
                     } else {
-                      openReportDialog(
+                      widget.openReportDialog(
                         context: context,
                         openUrl: () async {
-                          await launcherUrl(
+                          await widget.launcherUrl(
                             'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
                             context,
                           );
@@ -96,31 +118,79 @@ class DetailPostScreen extends ConsumerWidget
               ],
             ),
           ),
-          Container(
-            width: deviceWidth,
-            height: deviceWidth,
-            color: Colors.blue,
-            child: Image.network(
-              supabase.from('food').getPublicUrl(post.foodImage),
-              fit: BoxFit.cover,
+          GestureDetector(
+            onDoubleTap: (widget.userId != user)
+                ? () async {
+                    if (isHeart) {
+                      await supabase.from('posts').update({
+                        'heart': widget.post.heart - 1,
+                      }).match({'id': widget.post.id});
+                      print(widget.post.heart);
+                      setState(() {
+                        initialHeart--;
+                        isHeart = false;
+                      });
+                    } else {
+                      await supabase.from('posts').update({
+                        'heart': widget.post.heart + 1,
+                      }).match({'id': widget.post.id});
+                      print(widget.post.heart + 1);
+                      setState(() {
+                        initialHeart++;
+                        isHeart = true;
+                      });
+                    }
+                  }
+                : null,
+            child: Container(
+              width: deviceWidth,
+              height: deviceWidth,
+              color: Colors.blue,
+              child: Image.network(
+                storage.from('food').getPublicUrl(widget.post.foodImage),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Row(
             children: [
               SizedBox(width: 5),
               IconButton(
-                onPressed: () {
-                  //TODO いいね機能を実装する
-                },
+                onPressed: (widget.userId != user)
+                    ? () async {
+                        if (isHeart) {
+                          await supabase.from('posts').update({
+                            'heart': widget.post.heart - 1,
+                          }).match({'id': widget.post.id});
+                          print(widget.post.heart);
+                          setState(() {
+                            initialHeart--;
+                            isHeart = false;
+                          });
+                        } else {
+                          await supabase.from('posts').update({
+                            'heart': widget.post.heart + 1,
+                          }).match({'id': widget.post.id});
+                          print(widget.post.heart + 1);
+                          setState(() {
+                            initialHeart++;
+                            isHeart = true;
+                          });
+                        }
+                      }
+                    : null,
                 icon: Icon(
-                  CupertinoIcons.heart,
+                  (isHeart || widget.userId == user)
+                      ? CupertinoIcons.heart_fill
+                      : CupertinoIcons.heart,
+                  color: isHeart ? Colors.red : Colors.black,
                   size: 30,
                 ),
               ),
               IconButton(
                 onPressed: () {
                   Share.share(
-                    '${post.restaurant}で食べたレビューを投稿しました！'
+                    '${widget.post.restaurant}で食べたレビューを投稿しました！'
                     '\n詳しくはfoodGramで確認してみよう！'
                     '\n#foodGram',
                   );
@@ -135,7 +205,7 @@ class DetailPostScreen extends ConsumerWidget
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(
-              '${post.heart}いいね',
+              '$initialHeart いいね',
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
@@ -145,7 +215,7 @@ class DetailPostScreen extends ConsumerWidget
           Padding(
             padding: const EdgeInsets.all(15),
             child: Text(
-              'In ${post.restaurant}',
+              'In ${widget.post.restaurant}',
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
@@ -155,7 +225,7 @@ class DetailPostScreen extends ConsumerWidget
           Padding(
             padding: const EdgeInsets.all(15),
             child: Text(
-              post.comment,
+              widget.post.comment,
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
