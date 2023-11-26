@@ -16,6 +16,7 @@ class SettingScreen extends StatelessWidget with UrlLauncherMixin {
       body: SettingsList(
         sections: [
           SettingsSection(
+            title: const Text('基本設定'),
             tiles: <SettingsTile>[
               // SettingsTile.navigation(
               //   leading: const Icon(Icons.store),
@@ -27,14 +28,21 @@ class SettingScreen extends StatelessWidget with UrlLauncherMixin {
                     const Icon(FontAwesomeIcons.twitter, color: Colors.blue),
                 title: const Text('開発者'),
                 onPressed: (context) {
-                  launcherUrl('https://twitter.com/isekiryu');
+                  openSNSUrl(
+                    'twitter://user?screen_name=isekiryu',
+                    'https://twitter.com/isekiryu',
+                    context,
+                  );
                 },
               ),
               SettingsTile.navigation(
                 leading: const Icon(FontAwesomeIcons.github),
                 title: const Text('コントレビュートする'),
                 onPressed: (context) {
-                  launcherUrl('https://github.com/iseruuuuu/food_gram_app');
+                  launcherUrl(
+                    'https://github.com/iseruuuuu/food_gram_app',
+                    context,
+                  );
                 },
               ),
               SettingsTile.navigation(
@@ -68,28 +76,40 @@ class SettingScreen extends StatelessWidget with UrlLauncherMixin {
                 leading: const Icon(Icons.question_answer),
                 title: const Text('FAQ'),
                 onPressed: (context) {
-                  //TODO URLを飛ばす(アプリ内Safari)
+                  launcherUrl(
+                    'https://succinct-may-e5e.notion.site/FAQ-256ae853b9ec4209a04f561449de8c1d',
+                    context,
+                  );
                 },
               ),
               SettingsTile.navigation(
                 leading: const Icon(Icons.lock),
                 title: const Text('プライバシーポリシー'),
                 onPressed: (context) {
-                  //TODO URLを飛ばす(アプリ内Safari)
+                  launcherUrl(
+                    'https://succinct-may-e5e.notion.site/fd5584426bf44c50bdb1eb4b376d165f',
+                    context,
+                  );
                 },
               ),
               SettingsTile.navigation(
                 leading: const Icon(Icons.call),
                 title: const Text('利用規約'),
                 onPressed: (context) {
-                  //TODO URLを飛ばす(アプリ内Safari)
+                  launcherUrl(
+                    'https://succinct-may-e5e.notion.site/a0ad75abf8244404b7a19cca0e2304f1',
+                    context,
+                  );
                 },
               ),
               SettingsTile.navigation(
                 leading: const Icon(Icons.mail),
                 title: const Text('お問い合わせ'),
                 onPressed: (context) {
-                  //TODO URLを飛ばす(アプリ内Safari)
+                  launcherUrl(
+                    'https://forms.gle/mjucjntt3c2SZsUc7',
+                    context,
+                  );
                 },
               ),
               SettingsTile(

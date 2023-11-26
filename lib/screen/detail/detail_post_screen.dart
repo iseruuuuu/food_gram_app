@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/model/post.dart';
-import 'package:food_gram_app/screen/detail/detail_account_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DetailPostScreen extends ConsumerWidget {
@@ -32,22 +31,12 @@ class DetailPostScreen extends ConsumerWidget {
             width: deviceWidth,
             child: Row(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailAccountScreen(),
-                      ),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.white,
-                      child: Image.asset(image),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    child: Image.asset(image),
                   ),
                 ),
                 Column(
