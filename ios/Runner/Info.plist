@@ -24,6 +24,7 @@
 		<array>
 			<string>sms</string>
 			<string>tel</string>
+			<string>twitter</string>
 		</array>
 		 <key>CFBundleURLTypes</key>
               <array>
