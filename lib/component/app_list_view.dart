@@ -33,7 +33,7 @@ class AppListView extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () {
+                onTap: () async {
                   final post = Post(
                     id: int.parse(data[index]['id'].toString()),
                     foodImage: data[index]['food_image'],
@@ -45,11 +45,21 @@ class AppListView extends StatelessWidget {
                     lng: double.parse(data[index]['lng'].toString()),
                     heart: int.parse(data[index]['heart'].toString()),
                   );
-                  Navigator.push(
+
+                  final supabase = Supabase.instance.client;
+                  final dynamic postUserId = await supabase
+                      .from('users')
+                      .select()
+                      .eq('user_id', data[index]['user_id'])
+                      .single();
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => DetailPostScreen(
                         post: post,
+                        name: postUserId['name'],
+                        image: postUserId['image'],
+                        userName: postUserId['user_name'],
                       ),
                     ),
                   );

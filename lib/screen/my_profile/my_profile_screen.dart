@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/component/app_app_bar.dart';
 import 'package:food_gram_app/component/app_error_widget.dart';
+import 'package:food_gram_app/component/app_floating_button.dart';
 import 'package:food_gram_app/component/app_header.dart';
 import 'package:food_gram_app/component/app_list_view.dart';
 import 'package:food_gram_app/component/app_profile_button.dart';
 import 'package:food_gram_app/screen/edit/edit_screen.dart';
 import 'package:food_gram_app/screen/my_profile/my_profile_view_model.dart';
+import 'package:food_gram_app/screen/post/post_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MyProfileScreen extends ConsumerWidget {
@@ -63,6 +65,16 @@ class MyProfileScreen extends ConsumerWidget {
         error: () => AppErrorWidget(
           onTap: ref.read(myProfileViewModelProvider().notifier).getData,
         ),
+      ),
+      floatingActionButton: AppFloatingButton(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const PostScreen(),
+            ),
+          );
+        },
       ),
     );
   }
