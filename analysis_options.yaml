@@ -5,6 +5,8 @@ analyzer:
     # By including all.yaml, some rules will conflict.
     # These warnings will be addressed within this file.
     included_file_warning: ignore
+    avoid_dynamic_calls: ignore
+    cancel_subscriptions: ignore
 
 linter:
   rules:
