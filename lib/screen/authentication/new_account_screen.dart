@@ -61,11 +61,14 @@ class NewAccountScreen extends ConsumerWidget {
                   AppUserNameTextField(
                     controller: controller.userNameTextController,
                   ),
-                  AppElevatedButton(
-                    onPressed: () => ref
-                        .read(newAccountViewModelProvider().notifier)
-                        .setUsers(context),
-                    title: '登録',
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30),
+                    child: AppElevatedButton(
+                      onPressed: () => ref
+                          .read(newAccountViewModelProvider().notifier)
+                          .setUsers(context),
+                      title: '登録',
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 15),
