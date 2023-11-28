@@ -672,14 +672,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  open_mail_app:
-    dependency: "direct main"
-    description:
-      name: open_mail_app
-      sha256: ffc93edc0590ef4586136f505187b25014a336fe0374ad3cc528e727b3f2e726
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.5"
   package_config:
     dependency: transitive
     description:
