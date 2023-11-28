@@ -68,4 +68,74 @@ mixin DialogMixin {
       },
     );
   }
+
+  void openLogOutDialog({
+    required BuildContext context,
+    required Function() logout,
+  }) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text('ログアウト'),
+          content: Text('ログアウトしますか?'),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: Text(
+                'キャンセル',
+                style: TextStyle(color: Colors.blueAccent),
+              ),
+              isDestructiveAction: true,
+              onPressed: () => Navigator.pop(context),
+            ),
+            CupertinoDialogAction(
+              child: Text(
+                'ログアウト',
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                logout();
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void openDeleteAccountDialog({
+    required BuildContext context,
+    required Function() deleteAccount,
+  }) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text('アカウントの削除'),
+          content: Text('アカウントの削除をしますか？\n削除を行うと、データの復旧はできません'),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: Text(
+                'キャンセル',
+                style: TextStyle(color: Colors.blueAccent),
+              ),
+              isDestructiveAction: true,
+              onPressed: () => Navigator.pop(context),
+            ),
+            CupertinoDialogAction(
+              child: Text(
+                'アカウント削除',
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                deleteAccount();
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

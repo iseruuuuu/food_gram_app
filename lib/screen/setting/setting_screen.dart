@@ -2,14 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/component/app_app_bar.dart';
+import 'package:food_gram_app/mixin/dialog_mixin.dart';
 import 'package:food_gram_app/mixin/url_launcher_mixin.dart';
+import 'package:food_gram_app/screen/authentication/authentication_screen.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class SettingScreen extends StatelessWidget with UrlLauncherMixin {
+class SettingScreen extends StatelessWidget with UrlLauncherMixin, DialogMixin {
   const SettingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final supabase = Supabase.instance.client;
     return Scaffold(
       backgroundColor: CupertinoColors.extraLightBackgroundGray,
       appBar: AppAppBar(),
@@ -128,7 +132,18 @@ class SettingScreen extends StatelessWidget with UrlLauncherMixin {
                   style: TextStyle(color: Colors.red),
                 ),
                 onPressed: (context) {
-                  //TODO ログアウトする
+                  openLogOutDialog(
+                    context: context,
+                    logout: () async {
+                      await supabase.auth.signOut();
+                      await Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AuthenticationScreen(),
+                        ),
+                      );
+                    },
+                  );
                 },
               ),
               SettingsTile.navigation(
@@ -138,7 +153,20 @@ class SettingScreen extends StatelessWidget with UrlLauncherMixin {
                   style: TextStyle(color: Colors.red),
                 ),
                 onPressed: (context) {
-                  //TODO アカウントを削除する
+                  openDeleteAccountDialog(
+                    context: context,
+                    deleteAccount: () {
+                      //TODO アカウントを削除する
+
+                      //TODO auth画面に遷移をする
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AuthenticationScreen(),
+                        ),
+                      );
+                    },
+                  );
                 },
               ),
             ],
