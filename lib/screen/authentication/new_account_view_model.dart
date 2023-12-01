@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/provider/loading.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/screen/authentication/new_account_state.dart';
-import 'package:food_gram_app/screen/tab/tab_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -50,12 +51,7 @@ class NewAccountViewModel extends _$NewAccountViewModel {
         await supabase.from('users').insert(updates);
         state = state.copyWith(loginStatus: 'アカウントの登録が完了しました');
         await Future.delayed(Duration(seconds: 2));
-        await Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TabScreen(),
-          ),
-        );
+        context.pushReplacementNamed(RouterPath.tab);
       } on PostgrestException catch (error) {
         state = state.copyWith(loginStatus: error.message);
         print(error);

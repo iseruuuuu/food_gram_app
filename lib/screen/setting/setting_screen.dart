@@ -4,7 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/component/app_app_bar.dart';
 import 'package:food_gram_app/mixin/dialog_mixin.dart';
 import 'package:food_gram_app/mixin/url_launcher_mixin.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/screen/authentication/authentication_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -53,12 +55,7 @@ class SettingScreen extends StatelessWidget with UrlLauncherMixin, DialogMixin {
                 leading: const Icon(Icons.account_balance_wallet_outlined),
                 title: const Text('ライセンス'),
                 onPressed: (context) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LicensePage(),
-                    ),
-                  );
+                  context.pushNamed(RouterPath.license);
                 },
               ),
               // SettingsTile.navigation(

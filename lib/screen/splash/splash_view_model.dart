@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/mixin/account_exist_mixin.dart';
-import 'package:food_gram_app/screen/authentication/authentication_screen.dart';
-import 'package:food_gram_app/screen/authentication/new_account_screen.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/screen/splash/splash_state.dart';
-import 'package:food_gram_app/screen/tab/tab_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'splash_view_model.g.dart';
@@ -21,26 +20,11 @@ class SplashViewModel extends _$SplashViewModel with AccountExistMixin {
     await Future.delayed(Duration.zero);
     final session = supabase.auth.currentSession;
     if (session == null || !await loginStatus()) {
-      await Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AuthenticationScreen(),
-        ),
-      );
+      context.pushReplacementNamed(RouterPath.authentication);
     } else if (!await doesAccountExist()) {
-      await Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => NewAccountScreen(),
-        ),
-      );
+      context.pushReplacementNamed(RouterPath.newAccount);
     } else {
-      await Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TabScreen(),
-        ),
-      );
+      context.pushReplacementNamed(RouterPath.tab);
     }
   }
 }
