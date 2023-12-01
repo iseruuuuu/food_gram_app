@@ -133,12 +133,7 @@ class SettingScreen extends StatelessWidget with UrlLauncherMixin, DialogMixin {
                     context: context,
                     logout: () async {
                       await supabase.auth.signOut();
-                      await Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AuthenticationScreen(),
-                        ),
-                      );
+                      context.pushReplacementNamed(RouterPath.authentication);
                     },
                   );
                 },
@@ -156,12 +151,7 @@ class SettingScreen extends StatelessWidget with UrlLauncherMixin, DialogMixin {
                       //TODO アカウントを削除する
 
                       //TODO auth画面に遷移をする
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AuthenticationScreen(),
-                        ),
-                      );
+                      context.pushReplacementNamed(RouterPath.authentication);
                     },
                   );
                 },
