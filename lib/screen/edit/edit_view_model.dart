@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/provider/loading.dart';
 import 'package:food_gram_app/screen/edit/edit_state.dart';
 import 'package:go_router/go_router.dart';
@@ -20,7 +21,6 @@ class EditViewModel extends _$EditViewModel {
   final nameTextController = TextEditingController();
   final useNameTextController = TextEditingController();
   final selfIntroduceTextController = TextEditingController();
-  final supabase = Supabase.instance.client;
 
   Loading get loading => ref.read(loadingProvider.notifier);
 

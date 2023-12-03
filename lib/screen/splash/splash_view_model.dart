@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/mixin/account_exist_mixin.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/screen/splash/splash_state.dart';

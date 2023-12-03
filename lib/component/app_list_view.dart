@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/model/model.dart';
 import 'package:food_gram_app/model/posts.dart';
 import 'package:food_gram_app/model/users.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppListView extends StatelessWidget {
   const AppListView({
@@ -17,7 +17,6 @@ class AppListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final supabase = Supabase.instance.client;
     return Expanded(
       child: StreamBuilder<List<Map<String, dynamic>>>(
         stream: stream,

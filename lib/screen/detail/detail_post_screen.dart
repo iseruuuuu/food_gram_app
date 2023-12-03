@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/mixin/dialog_mixin.dart';
 import 'package:food_gram_app/mixin/url_launcher_mixin.dart';
 import 'package:food_gram_app/model/posts.dart';
 import 'package:food_gram_app/model/users.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DetailPostScreen extends StatefulWidget
     with UrlLauncherMixin, DialogMixin {
@@ -41,8 +41,6 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final storage = Supabase.instance.client.storage;
-    final supabase = Supabase.instance.client;
     final deviceWidth = MediaQuery.of(context).size.width;
     final user = supabase.auth.currentUser?.id;
     return Scaffold(
@@ -141,7 +139,9 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
               height: deviceWidth,
               color: Colors.blue,
               child: Image.network(
-                storage.from('food').getPublicUrl(widget.posts.foodImage),
+                supabase.storage
+                    .from('food')
+                    .getPublicUrl(widget.posts.foodImage),
                 fit: BoxFit.cover,
               ),
             ),

@@ -1,10 +1,8 @@
 import 'dart:async';
-
+import 'package:food_gram_app/main.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 mixin AccountExistMixin {
-  final supabase = Supabase.instance.client;
-
   Future<bool> doesAccountExist() async {
     final user = supabase.auth.currentUser;
     if (user == null) {

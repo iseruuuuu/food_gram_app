@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/provider/loading.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/screen/authentication/new_account_state.dart';
@@ -23,7 +24,6 @@ class NewAccountViewModel extends _$NewAccountViewModel {
 
   Loading get loading => ref.read(loadingProvider.notifier);
 
-  final supabase = Supabase.instance.client;
   final nameTextController = TextEditingController();
   final userNameTextController = TextEditingController();
 
