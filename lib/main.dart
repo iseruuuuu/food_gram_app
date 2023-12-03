@@ -29,9 +29,8 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final routerProvider = ref.watch(router);
     return MaterialApp.router(
-      routerConfig: routerProvider,
+      routerConfig: ref.watch(routerProvider),
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: kReleaseMode,
       theme: ThemeData(
