@@ -2,19 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/main.dart';
-import 'package:food_gram_app/mixin/account_exist_mixin.dart';
 import 'package:food_gram_app/provider/loading.dart';
-import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/screen/authentication/authentication_state.dart';
-import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'authentication_view_model.g.dart';
 
 @riverpod
-class AuthenticationViewModel extends _$AuthenticationViewModel
-    with AccountExistMixin {
+class AuthenticationViewModel extends _$AuthenticationViewModel {
   @override
   AuthenticationState build({
     AuthenticationState initState = const AuthenticationState(),
@@ -27,23 +23,8 @@ class AuthenticationViewModel extends _$AuthenticationViewModel
   final _shouldCreateUser = true;
 
   Loading get loading => ref.read(loadingProvider.notifier);
-  late StreamSubscription<AuthState> authStateSubscription;
-  bool _redirecting = false;
 
-  void init(BuildContext context) {
-    authStateSubscription = supabase.auth.onAuthStateChange.listen((data) {
-      if (_redirecting) {
-        return;
-      }
-      final session = data.session;
-      if (session != null) {
-        _redirecting = true;
-        redirect(context);
-      }
-    });
-  }
-
-  Future<void> login(BuildContext context) async {
+  Future<void> login() async {
     if (emailTextField.text.isNotEmpty) {
       try {
         primaryFocus?.unfocus();
@@ -64,14 +45,6 @@ class AuthenticationViewModel extends _$AuthenticationViewModel
       }
     } else {
       state = state.copyWith(loginStatus: 'メールアドレスが入力されていません');
-    }
-  }
-
-  Future<void> redirect(BuildContext context) async {
-    if (!await doesAccountExist()) {
-      context.pushReplacementNamed(RouterPath.newAccount);
-    } else {
-      context.pushReplacementNamed(RouterPath.tab);
     }
   }
 }
