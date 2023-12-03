@@ -137,7 +137,6 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen> {
                           await supabase.from('posts').update({
                             'heart': widget.posts.heart - 1,
                           }).match({'id': widget.posts.id});
-                          print(widget.posts.heart);
                           setState(() {
                             initialHeart--;
                             isHeart = false;
@@ -146,7 +145,6 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen> {
                           await supabase.from('posts').update({
                             'heart': widget.posts.heart + 1,
                           }).match({'id': widget.posts.id});
-                          print(widget.posts.heart + 1);
                           setState(() {
                             initialHeart++;
                             isHeart = true;
