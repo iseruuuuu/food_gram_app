@@ -39,6 +39,7 @@ class AppListView extends StatelessWidget {
                 onTap: () async {
                   final posts = Posts(
                     id: int.parse(data[index]['id'].toString()),
+                    userId: data[index]['user_id'],
                     foodImage: data[index]['food_image'],
                     foodName: data[index]['food_name'],
                     restaurant: data[index]['restaurant'],
@@ -55,6 +56,7 @@ class AppListView extends StatelessWidget {
                       .single();
                   final users = Users(
                     id: postUserId['id'],
+                    userId: postUserId['user_id'],
                     name: postUserId['name'],
                     userName: postUserId['user_name'],
                     selfIntroduce: postUserId['self_introduce'],

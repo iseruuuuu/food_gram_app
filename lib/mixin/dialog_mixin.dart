@@ -39,7 +39,7 @@ mixin DialogMixin {
     required BuildContext context,
     required Function() delete,
   }) {
-    showDialog(
+    showCupertinoDialog(
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
@@ -74,7 +74,7 @@ mixin DialogMixin {
     required BuildContext context,
     required Function() logout,
   }) {
-    showDialog(
+    showCupertinoDialog(
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
