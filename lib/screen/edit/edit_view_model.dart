@@ -25,6 +25,8 @@ class EditViewModel extends _$EditViewModel {
   Loading get loading => ref.read(loadingProvider.notifier);
 
   Future<void> getProfile() async {
+    await Future.delayed(Duration.zero);
+    loading.state = true;
     final userId = supabase.auth.currentUser!.id;
     final data = await supabase
         .from('users')
@@ -35,6 +37,7 @@ class EditViewModel extends _$EditViewModel {
     useNameTextController.text = data['user_name'];
     selfIntroduceTextController.text = data['self_introduce'];
     state = state.copyWith(number: extractNumber(data['image']));
+    loading.state = false;
   }
 
   String extractNumber(String path) {

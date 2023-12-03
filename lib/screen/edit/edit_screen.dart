@@ -22,14 +22,17 @@ class EditScreen extends ConsumerWidget {
           backgroundColor: Colors.white,
           actions: [
             TextButton(
-              onPressed: () =>
-                  ref.read(editViewModelProvider().notifier).update(context),
-              child: const Text(
+              onPressed: loading
+                  ? null
+                  : () => ref
+                      .read(editViewModelProvider().notifier)
+                      .update(context),
+              child: Text(
                 '更新',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blueAccent,
+                  color: loading ? Colors.grey : Colors.blueAccent,
                 ),
               ),
             ),
