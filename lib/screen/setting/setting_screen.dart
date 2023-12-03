@@ -170,9 +170,6 @@ class SettingScreen extends ConsumerWidget with UrlLauncherMixin, DialogMixin {
                             .deleteAccount()
                             .then((value) {
                           if (value) {
-                            if (context.mounted) {
-                              return;
-                            }
                             context.pushReplacementNamed(
                               RouterPath.authentication,
                             );
