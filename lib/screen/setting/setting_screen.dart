@@ -146,9 +146,9 @@ class SettingScreen extends ConsumerWidget with UrlLauncherMixin, DialogMixin {
                               RouterPath.authentication,
                             );
                           } on AuthException catch (error) {
-                            print(error);
+                            debugPrint(error.message);
                           } on Exception catch (error) {
-                            print(error);
+                            debugPrint(error.toString());
                           } finally {}
                         },
                       );

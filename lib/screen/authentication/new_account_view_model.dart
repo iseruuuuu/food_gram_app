@@ -54,7 +54,7 @@ class NewAccountViewModel extends _$NewAccountViewModel {
         context.pushReplacementNamed(RouterPath.tab);
       } on PostgrestException catch (error) {
         state = state.copyWith(loginStatus: error.message);
-        print(error);
+
       } finally {
         loading.state = false;
       }

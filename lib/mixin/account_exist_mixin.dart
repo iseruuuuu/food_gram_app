@@ -10,7 +10,7 @@ mixin AccountExistMixin {
     }
     final response =
         await supabase.from('users').select().eq('user_id', user.id).execute();
-    print(response.data);
+
     if (response.data != null && response.data.isNotEmpty) {
       return true;
     }

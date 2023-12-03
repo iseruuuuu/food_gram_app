@@ -15,6 +15,7 @@ abstract class Posts with _$Posts {
     required DateTime createdAt,
     required double lat,
     required double lng,
+    required String userId,
     required int heart,
   }) = _Posts;
 

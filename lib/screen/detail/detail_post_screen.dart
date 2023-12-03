@@ -1,15 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/main.dart';
-import 'package:food_gram_app/mixin/dialog_mixin.dart';
-import 'package:food_gram_app/mixin/url_launcher_mixin.dart';
 import 'package:food_gram_app/model/posts.dart';
 import 'package:food_gram_app/model/users.dart';
-import 'package:go_router/go_router.dart';
+import 'package:food_gram_app/screen/detail/detail_post_view_model.dart';
 import 'package:share_plus/share_plus.dart';
 
-class DetailPostScreen extends StatefulWidget
-    with UrlLauncherMixin, DialogMixin {
+class DetailPostScreen extends ConsumerStatefulWidget {
   const DetailPostScreen({
     required this.posts,
     required this.users,
@@ -20,10 +18,10 @@ class DetailPostScreen extends StatefulWidget
   final Users users;
 
   @override
-  State<DetailPostScreen> createState() => _DetailPostScreenState();
+  DetailPostScreenState createState() => DetailPostScreenState();
 }
 
-class _DetailPostScreenState extends State<DetailPostScreen> {
+class DetailPostScreenState extends ConsumerState<DetailPostScreen> {
   bool isHeart = false;
   int initialHeart = 0;
 
@@ -81,29 +79,14 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
                 ),
                 Spacer(),
                 IconButton(
-                  onPressed: () async {
-                    if (widget.users.userName == user) {
-                      widget.openDeleteDialog(
-                        context: context,
-                        delete: () async {
-                          await supabase
-                              .from('posts')
-                              .delete()
-                              .eq('id', widget.users.id);
-                          context.pop();
-                        },
-                      );
-                    } else {
-                      widget.openReportDialog(
-                        context: context,
-                        openUrl: () async {
-                          await widget.launcherUrl(
-                            'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
-                            context,
-                          );
-                        },
-                      );
-                    }
+                  onPressed: () {
+                    (widget.users.userId == user)
+                        ? ref
+                            .read(detailPostViewModelProvider().notifier)
+                            .delete(context, widget.posts.id)
+                        : ref
+                            .read(detailPostViewModelProvider().notifier)
+                            .report(context);
                   },
                   icon: Icon(Icons.menu),
                 ),
@@ -111,13 +94,12 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
             ),
           ),
           GestureDetector(
-            onDoubleTap: (widget.users.userName != user)
+            onDoubleTap: (widget.users.userId != user)
                 ? () async {
                     if (isHeart) {
                       await supabase.from('posts').update({
                         'heart': widget.posts.heart - 1,
                       }).match({'id': widget.posts.id});
-                      print(widget.posts.heart);
                       setState(() {
                         initialHeart--;
                         isHeart = false;
@@ -126,7 +108,6 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
                       await supabase.from('posts').update({
                         'heart': widget.posts.heart + 1,
                       }).match({'id': widget.posts.id});
-                      print(widget.posts.heart + 1);
                       setState(() {
                         initialHeart++;
                         isHeart = true;
@@ -150,13 +131,12 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
             children: [
               SizedBox(width: 5),
               IconButton(
-                onPressed: (widget.users.userName != user)
+                onPressed: (widget.users.userId != user)
                     ? () async {
                         if (isHeart) {
                           await supabase.from('posts').update({
                             'heart': widget.posts.heart - 1,
                           }).match({'id': widget.posts.id});
-                          print(widget.posts.heart);
                           setState(() {
                             initialHeart--;
                             isHeart = false;
@@ -165,7 +145,6 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
                           await supabase.from('posts').update({
                             'heart': widget.posts.heart + 1,
                           }).match({'id': widget.posts.id});
-                          print(widget.posts.heart + 1);
                           setState(() {
                             initialHeart++;
                             isHeart = true;

@@ -15,6 +15,7 @@ class Users with _$Users {
     required String image,
     required DateTime createdAt,
     required DateTime updateTime,
+    required String userId,
   }) = _Users;
 
   const Users._();
