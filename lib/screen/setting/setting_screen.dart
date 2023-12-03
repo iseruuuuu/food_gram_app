@@ -8,16 +8,15 @@ import 'package:food_gram_app/mixin/dialog_mixin.dart';
 import 'package:food_gram_app/mixin/url_launcher_mixin.dart';
 import 'package:food_gram_app/provider/loading.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/screen/setting/setting_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SettingScreen extends ConsumerWidget with UrlLauncherMixin, DialogMixin {
   const SettingScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final supabase = Supabase.instance.client;
     final loading = ref.watch(loadingProvider);
     return Scaffold(
       backgroundColor: CupertinoColors.extraLightBackgroundGray,
@@ -138,19 +137,22 @@ class SettingScreen extends ConsumerWidget with UrlLauncherMixin, DialogMixin {
                     onPressed: (context) {
                       openLogOutDialog(
                         context: context,
-                        logout: () async {
-                          //TODO ローディングをつけたい
-                          try {
-                            await supabase.auth.signOut();
-                            context.pushReplacementNamed(
-                              RouterPath.authentication,
-                            );
-                          } on AuthException catch (error) {
-                            debugPrint(error.message);
-                          } on Exception catch (error) {
-                            debugPrint(error.toString());
-                          } finally {}
-                        },
+                        logout: () => ref
+                            .read(settingViewModelProvider().notifier)
+                            .logout()
+                            .then(
+                          (value) {
+                            if (value) {
+                              //TODO 以下のwarningを治す
+                              // Unhandled Exception: Looking up a deactivated widget's ancestor is unsafe.
+                              // At this point the state of the widget's element tree is no longer stable.
+                              // To safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.
+                              context.pushReplacementNamed(
+                                RouterPath.authentication,
+                              );
+                            }
+                          },
+                        ),
                       );
                     },
                   ),
@@ -163,12 +165,19 @@ class SettingScreen extends ConsumerWidget with UrlLauncherMixin, DialogMixin {
                     onPressed: (context) {
                       openDeleteAccountDialog(
                         context: context,
-                        deleteAccount: () {
-                          //TODO アカウントを削除する
-
-                          //TODO auth画面に遷移をする
-                          context.pushReplacementNamed(RouterPath.splash);
-                        },
+                        deleteAccount: () => ref
+                            .read(settingViewModelProvider().notifier)
+                            .deleteAccount()
+                            .then((value) {
+                          if (value) {
+                            if (context.mounted) {
+                              return;
+                            }
+                            context.pushReplacementNamed(
+                              RouterPath.authentication,
+                            );
+                          }
+                        }),
                       );
                     },
                   ),
