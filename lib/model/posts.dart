@@ -1,12 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'post.freezed.dart';
+part 'posts.freezed.dart';
 
-part 'post.g.dart';
+part 'posts.g.dart';
 
 @freezed
-abstract class Post with _$Post {
-  const factory Post({
+abstract class Posts with _$Posts {
+  const factory Posts({
     required int id,
     required String foodImage,
     required String foodName,
@@ -16,7 +16,7 @@ abstract class Post with _$Post {
     required double lat,
     required double lng,
     required int heart,
-  }) = _Post;
+  }) = _Posts;
 
-  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+  factory Posts.fromJson(Map<String, dynamic> json) => _$PostsFromJson(json);
 }

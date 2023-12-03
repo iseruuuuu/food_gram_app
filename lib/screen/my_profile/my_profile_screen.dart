@@ -7,9 +7,9 @@ import 'package:food_gram_app/component/app_floating_button.dart';
 import 'package:food_gram_app/component/app_header.dart';
 import 'package:food_gram_app/component/app_list_view.dart';
 import 'package:food_gram_app/component/app_profile_button.dart';
-import 'package:food_gram_app/screen/edit/edit_screen.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/screen/my_profile/my_profile_view_model.dart';
-import 'package:food_gram_app/screen/post/post_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MyProfileScreen extends ConsumerWidget {
@@ -38,12 +38,7 @@ class MyProfileScreen extends ConsumerWidget {
             ),
             AppMyProfileButton(
               onTapEdit: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const EditScreen(),
-                  ),
-                ).then((_) {
+                context.pushNamed(RouterPath.edit).then((value) {
                   ref.read(myProfileViewModelProvider().notifier).getData();
                 });
               },
@@ -52,7 +47,10 @@ class MyProfileScreen extends ConsumerWidget {
               },
             ),
             const SizedBox(height: 10),
-            AppListView(stream: stream),
+            AppListView(
+              stream: stream,
+              routerPath: RouterPath.myProfileDeitailPost,
+            ),
           ],
         ),
         loading: () => Center(
@@ -67,14 +65,7 @@ class MyProfileScreen extends ConsumerWidget {
         ),
       ),
       floatingActionButton: AppFloatingButton(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const PostScreen(),
-            ),
-          );
-        },
+        onTap: () => context.pushNamed(RouterPath.myProfilePost),
       ),
     );
   }

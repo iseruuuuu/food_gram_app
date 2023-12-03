@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 mixin DialogMixin {
   void openReportDialog({
@@ -19,7 +20,7 @@ mixin DialogMixin {
                 style: TextStyle(color: Colors.blueAccent),
               ),
               isDestructiveAction: true,
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.pop(),
             ),
             CupertinoDialogAction(
               child: Text(
@@ -51,7 +52,7 @@ mixin DialogMixin {
                 style: TextStyle(color: Colors.blueAccent),
               ),
               isDestructiveAction: true,
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.pop(),
             ),
             CupertinoDialogAction(
               child: Text(
@@ -60,7 +61,7 @@ mixin DialogMixin {
               ),
               onPressed: () {
                 delete();
-                Navigator.pop(context);
+                context.pop();
               },
             ),
           ],
@@ -86,7 +87,7 @@ mixin DialogMixin {
                 style: TextStyle(color: Colors.blueAccent),
               ),
               isDestructiveAction: true,
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.pop(),
             ),
             CupertinoDialogAction(
               child: Text(
@@ -95,7 +96,7 @@ mixin DialogMixin {
               ),
               onPressed: () {
                 logout();
-                Navigator.pop(context);
+                context.pop();
               },
             ),
           ],
@@ -121,7 +122,7 @@ mixin DialogMixin {
                 style: TextStyle(color: Colors.blueAccent),
               ),
               isDestructiveAction: true,
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.pop(),
             ),
             CupertinoDialogAction(
               child: Text(
@@ -130,7 +131,7 @@ mixin DialogMixin {
               ),
               onPressed: () {
                 deleteAccount();
-                Navigator.pop(context);
+                context.pop();
               },
             ),
           ],

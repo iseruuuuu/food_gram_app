@@ -1,0 +1,9 @@
+export 'package:food_gram_app/screen/authentication/authentication_screen.dart';
+export 'package:food_gram_app/screen/authentication/new_account_screen.dart';
+export 'package:food_gram_app/screen/edit/edit_screen.dart';
+export 'package:food_gram_app/screen/my_profile/my_profile_screen.dart';
+export 'package:food_gram_app/screen/post/post_screen.dart';
+export 'package:food_gram_app/screen/setting/setting_screen.dart';
+export 'package:food_gram_app/screen/splash/splash_screen.dart';
+export 'package:food_gram_app/screen/tab/tab_screen.dart';
+export 'package:food_gram_app/screen/time_line/time_line_screen.dart';

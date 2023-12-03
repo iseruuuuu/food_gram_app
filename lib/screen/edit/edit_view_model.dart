@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/provider/loading.dart';
 import 'package:food_gram_app/screen/edit/edit_state.dart';
+import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,7 +21,6 @@ class EditViewModel extends _$EditViewModel {
   final nameTextController = TextEditingController();
   final useNameTextController = TextEditingController();
   final selfIntroduceTextController = TextEditingController();
-  final supabase = Supabase.instance.client;
 
   Loading get loading => ref.read(loadingProvider.notifier);
 
@@ -55,7 +56,7 @@ class EditViewModel extends _$EditViewModel {
     };
     try {
       await supabase.from('users').update(updates).match({'user_id': user!.id});
-      Navigator.pop(context);
+      context.pop();
     } on PostgrestException catch (error) {
       state = state.copyWith(status: error.message);
     } finally {

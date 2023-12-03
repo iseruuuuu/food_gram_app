@@ -1,29 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/mixin/dialog_mixin.dart';
 import 'package:food_gram_app/mixin/url_launcher_mixin.dart';
-import 'package:food_gram_app/model/post.dart';
+import 'package:food_gram_app/model/posts.dart';
+import 'package:food_gram_app/model/users.dart';
+import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DetailPostScreen extends StatefulWidget
     with UrlLauncherMixin, DialogMixin {
   const DetailPostScreen({
-    required this.post,
-    required this.name,
-    required this.image,
-    required this.userName,
-    required this.userId,
-    required this.id,
+    required this.posts,
+    required this.users,
     super.key,
   });
 
-  final Post post;
-  final String name;
-  final String image;
-  final String userName;
-  final String userId;
-  final int id;
+  final Posts posts;
+  final Users users;
 
   @override
   State<DetailPostScreen> createState() => _DetailPostScreenState();
@@ -35,20 +29,18 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
 
   @override
   void initState() {
-    initialHeart = widget.post.heart;
+    initialHeart = widget.posts.heart;
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    initialHeart = widget.post.heart;
+    initialHeart = widget.posts.heart;
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    final storage = Supabase.instance.client.storage;
-    final supabase = Supabase.instance.client;
     final deviceWidth = MediaQuery.of(context).size.width;
     final user = supabase.auth.currentUser?.id;
     return Scaffold(
@@ -68,21 +60,21 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
                   child: CircleAvatar(
                     radius: 30,
                     backgroundColor: Colors.white,
-                    child: Image.asset(widget.image),
+                    child: Image.asset(widget.users.image),
                   ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.name,
+                      widget.users.name,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      '@${widget.userName}',
+                      '@${widget.users.userName}',
                       style: TextStyle(fontSize: 15),
                     ),
                   ],
@@ -90,15 +82,15 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
                 Spacer(),
                 IconButton(
                   onPressed: () async {
-                    if (widget.userId == user) {
+                    if (widget.users.userName == user) {
                       widget.openDeleteDialog(
                         context: context,
                         delete: () async {
                           await supabase
                               .from('posts')
                               .delete()
-                              .eq('id', widget.id);
-                          Navigator.pop(context);
+                              .eq('id', widget.users.id);
+                          context.pop();
                         },
                       );
                     } else {
@@ -119,22 +111,22 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
             ),
           ),
           GestureDetector(
-            onDoubleTap: (widget.userId != user)
+            onDoubleTap: (widget.users.userName != user)
                 ? () async {
                     if (isHeart) {
                       await supabase.from('posts').update({
-                        'heart': widget.post.heart - 1,
-                      }).match({'id': widget.post.id});
-                      print(widget.post.heart);
+                        'heart': widget.posts.heart - 1,
+                      }).match({'id': widget.posts.id});
+                      print(widget.posts.heart);
                       setState(() {
                         initialHeart--;
                         isHeart = false;
                       });
                     } else {
                       await supabase.from('posts').update({
-                        'heart': widget.post.heart + 1,
-                      }).match({'id': widget.post.id});
-                      print(widget.post.heart + 1);
+                        'heart': widget.posts.heart + 1,
+                      }).match({'id': widget.posts.id});
+                      print(widget.posts.heart + 1);
                       setState(() {
                         initialHeart++;
                         isHeart = true;
@@ -147,7 +139,9 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
               height: deviceWidth,
               color: Colors.blue,
               child: Image.network(
-                storage.from('food').getPublicUrl(widget.post.foodImage),
+                supabase.storage
+                    .from('food')
+                    .getPublicUrl(widget.posts.foodImage),
                 fit: BoxFit.cover,
               ),
             ),
@@ -156,22 +150,22 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
             children: [
               SizedBox(width: 5),
               IconButton(
-                onPressed: (widget.userId != user)
+                onPressed: (widget.users.userName != user)
                     ? () async {
                         if (isHeart) {
                           await supabase.from('posts').update({
-                            'heart': widget.post.heart - 1,
-                          }).match({'id': widget.post.id});
-                          print(widget.post.heart);
+                            'heart': widget.posts.heart - 1,
+                          }).match({'id': widget.posts.id});
+                          print(widget.posts.heart);
                           setState(() {
                             initialHeart--;
                             isHeart = false;
                           });
                         } else {
                           await supabase.from('posts').update({
-                            'heart': widget.post.heart + 1,
-                          }).match({'id': widget.post.id});
-                          print(widget.post.heart + 1);
+                            'heart': widget.posts.heart + 1,
+                          }).match({'id': widget.posts.id});
+                          print(widget.posts.heart + 1);
                           setState(() {
                             initialHeart++;
                             isHeart = true;
@@ -180,7 +174,7 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
                       }
                     : null,
                 icon: Icon(
-                  (isHeart || widget.userId == user)
+                  (isHeart || widget.users.userName == user)
                       ? CupertinoIcons.heart_fill
                       : CupertinoIcons.heart,
                   color: isHeart ? Colors.red : Colors.black,
@@ -190,7 +184,7 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
               IconButton(
                 onPressed: () {
                   Share.share(
-                    '${widget.post.restaurant}で食べたレビューを投稿しました！'
+                    '${widget.posts.restaurant}で食べたレビューを投稿しました！'
                     '\n詳しくはfoodGramで確認してみよう！'
                     '\n#foodGram',
                   );
@@ -215,7 +209,7 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
           Padding(
             padding: const EdgeInsets.all(15),
             child: Text(
-              'In ${widget.post.restaurant}',
+              'In ${widget.posts.restaurant}',
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
@@ -225,7 +219,7 @@ class _DetailPostScreenState extends State<DetailPostScreen> {
           Padding(
             padding: const EdgeInsets.all(15),
             child: Text(
-              widget.post.comment,
+              widget.posts.comment,
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w500,

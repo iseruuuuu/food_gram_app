@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/mixin/account_exist_mixin.dart';
 import 'package:food_gram_app/provider/loading.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/screen/authentication/authentication_state.dart';
-import 'package:food_gram_app/screen/authentication/new_account_screen.dart';
-import 'package:food_gram_app/screen/tab/tab_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -68,19 +69,9 @@ class AuthenticationViewModel extends _$AuthenticationViewModel
 
   Future<void> redirect(BuildContext context) async {
     if (!await doesAccountExist()) {
-      await Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => NewAccountScreen(),
-        ),
-      );
+      context.pushReplacementNamed(RouterPath.newAccount);
     } else {
-      await Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TabScreen(),
-        ),
-      );
+      context.pushReplacementNamed(RouterPath.tab);
     }
   }
 }

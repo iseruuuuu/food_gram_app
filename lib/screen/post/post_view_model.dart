@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/provider/loading.dart';
 import 'package:food_gram_app/screen/post/post_state.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -58,7 +59,7 @@ class PostViewModel extends _$PostViewModel {
         await supabase.from('posts').insert(updates);
         state = state.copyWith(status: '投稿が完了しました');
         await Future.delayed(Duration(seconds: 2));
-        Navigator.pop(context);
+        context.pop();
       } on PostgrestException catch (error) {
         state = state.copyWith(status: error.message);
         print(error);
@@ -79,7 +80,7 @@ class PostViewModel extends _$PostViewModel {
           CupertinoActionSheetAction(
             isDefaultAction: true,
             onPressed: () {
-              Navigator.pop(context);
+              context.pop();
               camera();
             },
             child: const Text(
@@ -92,7 +93,7 @@ class PostViewModel extends _$PostViewModel {
           ),
           CupertinoActionSheetAction(
             onPressed: () {
-              Navigator.pop(context);
+              context.pop();
               album();
             },
             child: const Text(
@@ -105,7 +106,7 @@ class PostViewModel extends _$PostViewModel {
           ),
           CupertinoActionSheetAction(
             isDestructiveAction: true,
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.pop(),
             child: const Text('閉じる'),
           ),
         ],

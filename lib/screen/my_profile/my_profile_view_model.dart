@@ -1,6 +1,6 @@
+import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/screen/my_profile/my_profile_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'my_profile_view_model.g.dart';
 
@@ -13,8 +13,6 @@ class MyProfileViewModel extends _$MyProfileViewModel {
     getData();
     return initState;
   }
-
-  final supabase = Supabase.instance.client;
 
   Future<void> getData() async {
     state = const MyProfileStateLoading();
