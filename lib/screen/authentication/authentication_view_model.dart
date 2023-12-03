@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/mixin/account_exist_mixin.dart';
 import 'package:food_gram_app/provider/loading.dart';
 import 'package:food_gram_app/router/router.dart';
