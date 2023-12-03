@@ -1,10 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/component/app_elevated_button.dart';
 import 'package:food_gram_app/component/app_loading.dart';
 import 'package:food_gram_app/component/app_post_text_field.dart';
+import 'package:food_gram_app/main.dart';
+import 'package:food_gram_app/mixin/account_exist_mixin.dart';
 import 'package:food_gram_app/provider/loading.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/screen/authentication/authentication_view_model.dart';
+import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthenticationScreen extends ConsumerStatefulWidget {
   const AuthenticationScreen({super.key});
@@ -13,11 +20,48 @@ class AuthenticationScreen extends ConsumerStatefulWidget {
   AuthenticationScreenState createState() => AuthenticationScreenState();
 }
 
-class AuthenticationScreenState extends ConsumerState<AuthenticationScreen> {
+class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
+    with AccountExistMixin {
   @override
   void initState() {
-    ref.read(authenticationViewModelProvider().notifier).init(context);
+    init(context);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    authStateSubscription.cancel();
+    super.dispose();
+  }
+
+  late StreamSubscription<AuthState> authStateSubscription;
+  bool _redirecting = false;
+
+  void init(BuildContext context) {
+    authStateSubscription = supabase.auth.onAuthStateChange.listen((data) {
+      if (!mounted || _redirecting) {
+        return;
+      }
+      final session = data.session;
+      if (session != null) {
+        _redirecting = true;
+        redirect(context);
+      }
+    });
+  }
+
+  Future<void> redirect(BuildContext context) async {
+    if (!await doesAccountExist()) {
+      if (!mounted) {
+        return;
+      }
+      context.pushReplacementNamed(RouterPath.newAccount);
+    } else {
+      if (!mounted) {
+        return;
+      }
+      context.pushReplacementNamed(RouterPath.tab);
+    }
   }
 
   @override
@@ -65,9 +109,9 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen> {
                     ),
                   ),
                   AppElevatedButton(
-                    onPressed: () => ref
+                    onPressed: ref
                         .read(authenticationViewModelProvider().notifier)
-                        .login(context),
+                        .login,
                     title: '新規作成  /  ログイン',
                   ),
                   Padding(

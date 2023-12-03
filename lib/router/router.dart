@@ -1,55 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/model/model.dart';
+import 'package:food_gram_app/provider/auth_state.dart';
 import 'package:food_gram_app/screen/detail/detail_post_screen.dart';
 import 'package:food_gram_app/screen/screen.dart';
 import 'package:go_router/go_router.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final router = Provider<GoRouter>(
-  (ref) {
-    return GoRouter(
-      initialLocation: '/',
-      routes: <RouteBase>[
-        GoRoute(
-          path: '/',
-          name: RouterPath.splash,
-          builder: (context, state) {
-            return const SplashScreen();
-          },
-        ),
-        GoRoute(
-          path: '/${RouterPath.authentication}',
-          name: RouterPath.authentication,
-          pageBuilder: (context, state) {
-            return MaterialPage(
-              key: state.pageKey,
-              child: const AuthenticationScreen(),
-            );
-          },
-        ),
-        GoRoute(
-          path: '/${RouterPath.newAccount}',
-          name: RouterPath.newAccount,
-          builder: (context, state) {
-            return const NewAccountScreen();
-          },
-        ),
-        GoRoute(
-          path: '/${RouterPath.tab}',
-          name: RouterPath.tab,
-          builder: (context, state) {
-            return const TabScreen();
-          },
-          routes: <RouteBase>[
-            timeLineRouter,
-            myProfileRouter,
-            settingRouter,
-          ],
-        ),
-      ],
-    );
-  },
-);
+part 'router.g.dart';
+
+@riverpod
+GoRouter router(RouterRef ref) {
+  final authState = ref.watch(authStateProvider);
+  return GoRouter(
+    initialLocation: '/${RouterPath.splash}',
+    redirect: (context, state) async {
+      final login = authState.value?.session?.user != null;
+      if (!login) {
+        return '/${RouterPath.authentication}';
+      }
+      return null;
+    },
+    routes: <RouteBase>[
+      GoRoute(
+        path: '/${RouterPath.splash}',
+        name: RouterPath.splash,
+        builder: (context, state) {
+          return const SplashScreen();
+        },
+      ),
+      GoRoute(
+        path: '/${RouterPath.authentication}',
+        name: RouterPath.authentication,
+        pageBuilder: (context, state) {
+          return MaterialPage(
+            key: state.pageKey,
+            child: const AuthenticationScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/${RouterPath.newAccount}',
+        name: RouterPath.newAccount,
+        builder: (context, state) {
+          return const NewAccountScreen();
+        },
+      ),
+      GoRoute(
+        path: '/${RouterPath.tab}',
+        name: RouterPath.tab,
+        builder: (context, state) {
+          return const TabScreen();
+        },
+        routes: <RouteBase>[
+          timeLineRouter,
+          myProfileRouter,
+          settingRouter,
+        ],
+      ),
+    ],
+  );
+}
 
 final timeLineRouter = GoRoute(
   path: RouterPath.timeLine,
