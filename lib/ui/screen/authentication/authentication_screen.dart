@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/component/app_elevated_button.dart';
-import 'package:food_gram_app/component/app_loading.dart';
-import 'package:food_gram_app/component/app_post_text_field.dart';
 import 'package:food_gram_app/main.dart';
-import 'package:food_gram_app/mixin/account_exist_mixin.dart';
-import 'package:food_gram_app/provider/loading.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/screen/authentication/authentication_view_model.dart';
+import 'package:food_gram_app/ui/component/app_elevated_button.dart';
+import 'package:food_gram_app/ui/component/app_loading.dart';
+import 'package:food_gram_app/ui/component/app_post_text_field.dart';
+import 'package:food_gram_app/ui/screen/authentication/authentication_view_model.dart';
+import 'package:food_gram_app/utils/mixin/account_exist_mixin.dart';
+import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

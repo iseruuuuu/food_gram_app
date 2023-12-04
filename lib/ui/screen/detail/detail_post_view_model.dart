@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:food_gram_app/main.dart';
-import 'package:food_gram_app/mixin/dialog_mixin.dart';
-import 'package:food_gram_app/mixin/url_launcher_mixin.dart';
-import 'package:food_gram_app/screen/detail/detail_post_state.dart';
+import 'package:food_gram_app/ui/screen/detail/detail_post_state.dart';
+import 'package:food_gram_app/utils/mixin/dialog_mixin.dart';
+import 'package:food_gram_app/utils/mixin/url_launcher_mixin.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

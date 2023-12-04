@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/screen/my_profile/my_profile_screen.dart';
-import 'package:food_gram_app/screen/setting/setting_screen.dart';
-import 'package:food_gram_app/screen/time_line/time_line_screen.dart';
+import 'package:food_gram_app/ui/screen/my_profile/my_profile_screen.dart';
+import 'package:food_gram_app/ui/screen/setting/setting_screen.dart';
+import 'package:food_gram_app/ui/screen/time_line/time_line_screen.dart';
 
 class TabScreen extends StatelessWidget {
   const TabScreen({super.key});

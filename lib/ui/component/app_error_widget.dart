@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/component/app_elevated_button.dart';
+import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 
 class AppErrorWidget extends StatelessWidget {
   const AppErrorWidget({required this.onTap, super.key});

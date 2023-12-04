@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/component/app_account_text_field.dart';
-import 'package:food_gram_app/component/app_elevated_button.dart';
-import 'package:food_gram_app/component/app_icon.dart';
-import 'package:food_gram_app/component/app_loading.dart';
-import 'package:food_gram_app/provider/loading.dart';
-import 'package:food_gram_app/screen/authentication/new_account_view_model.dart';
+import 'package:food_gram_app/ui/component/app_account_text_field.dart';
+import 'package:food_gram_app/ui/component/app_elevated_button.dart';
+import 'package:food_gram_app/ui/component/app_icon.dart';
+import 'package:food_gram_app/ui/component/app_loading.dart';
+import 'package:food_gram_app/ui/screen/authentication/new_account_view_model.dart';
+import 'package:food_gram_app/utils/provider/loading.dart';
 
 class NewAccountScreen extends ConsumerWidget {
   const NewAccountScreen({super.key});
