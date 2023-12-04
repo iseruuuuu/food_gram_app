@@ -12,7 +12,8 @@ class TimeLineScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final stream = supabase.from('posts').stream(primaryKey: ['id']);
+    final stream =
+        supabase.from('posts').stream(primaryKey: ['id']).order('created_at');
     return Scaffold(
       backgroundColor: CupertinoColors.extraLightBackgroundGray,
       appBar: AppAppBar(),

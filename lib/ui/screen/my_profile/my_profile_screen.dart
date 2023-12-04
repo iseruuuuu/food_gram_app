@@ -19,8 +19,11 @@ class MyProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(myProfileViewModelProvider());
     final user = supabase.auth.currentUser?.id;
-    final stream =
-        supabase.from('posts').stream(primaryKey: ['id']).eq('user_id', user);
+    final stream = supabase
+        .from('posts')
+        .stream(primaryKey: ['id'])
+        .eq('user_id', user)
+        .order('created_at');
     return Scaffold(
       backgroundColor: CupertinoColors.extraLightBackgroundGray,
       appBar: AppAppBar(),
