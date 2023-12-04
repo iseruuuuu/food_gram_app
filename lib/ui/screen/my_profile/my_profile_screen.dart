@@ -51,6 +51,8 @@ class MyProfileScreen extends ConsumerWidget {
             AppListView(
               stream: stream,
               routerPath: RouterPath.myProfileDeitailPost,
+              refresh: () =>
+                  ref.read(myProfileViewModelProvider().notifier).getData(),
             ),
           ],
         ),

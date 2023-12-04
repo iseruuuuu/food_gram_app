@@ -21,6 +21,9 @@ class TimeLineScreen extends StatelessWidget {
           AppListView(
             stream: stream,
             routerPath: RouterPath.timeLineDeitailPost,
+            refresh: () {
+              //TODO データが更新されたら、更新をする
+            },
           ),
         ],
       ),

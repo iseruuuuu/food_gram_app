@@ -5,6 +5,9 @@ import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/model/posts.dart';
 import 'package:food_gram_app/model/users.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
+import 'package:food_gram_app/utils/mixin/dialog_mixin.dart';
+import 'package:food_gram_app/utils/mixin/url_launcher_mixin.dart';
+import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
 class DetailPostScreen extends ConsumerStatefulWidget {
@@ -21,7 +24,8 @@ class DetailPostScreen extends ConsumerStatefulWidget {
   DetailPostScreenState createState() => DetailPostScreenState();
 }
 
-class DetailPostScreenState extends ConsumerState<DetailPostScreen> {
+class DetailPostScreenState extends ConsumerState<DetailPostScreen>
+    with DialogMixin, UrlLauncherMixin {
   bool isHeart = false;
   int initialHeart = 0;
 
@@ -82,12 +86,31 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen> {
                   IconButton(
                     onPressed: () {
                       (widget.users.userId == user)
-                          ? ref
-                              .read(detailPostViewModelProvider().notifier)
-                              .delete(context, widget.posts.id)
-                          : ref
-                              .read(detailPostViewModelProvider().notifier)
-                              .report(context);
+                          ? openDeleteDialog(
+                              context: context,
+                              delete: () async {
+                                await ref
+                                    .read(
+                                      detailPostViewModelProvider().notifier,
+                                    )
+                                    .delete(widget.posts.id)
+                                    .then((value) {
+                                  if (value) {
+                                    context.pop(true);
+                                  }
+                                });
+                              },
+                            )
+                          : openReportDialog(
+                              context: context,
+                              openUrl: () async {
+                                await launcherUrl(
+                                  'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
+                                  context,
+                                );
+                                context.pop();
+                              },
+                            );
                     },
                     icon: Icon(Icons.menu),
                   ),

@@ -9,11 +9,13 @@ class AppListView extends StatelessWidget {
   const AppListView({
     required this.stream,
     required this.routerPath,
+    required this.refresh,
     super.key,
   });
 
   final Stream<List<Map<String, dynamic>>>? stream;
   final String routerPath;
+  final Function() refresh;
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +66,16 @@ class AppListView extends StatelessWidget {
                     createdAt: DateTime.parse(postUserId['created_at']),
                     updateTime: DateTime.parse(postUserId['updated_at']),
                   );
-                  await context.pushNamed(
+                  await context
+                      .pushNamed(
                     routerPath,
                     extra: Model(users, posts),
-                  );
+                  )
+                      .then((value) {
+                    if (value != null) {
+                      refresh();
+                    }
+                  });
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width / 3,
