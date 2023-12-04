@@ -33,7 +33,8 @@ class MyProfileViewModel extends _$MyProfileViewModel {
         image: data['image'],
         length: post.length,
       );
-    } on Exception catch (_) {
+    } on Exception catch (error) {
+      logger.e(error);
       state = MyProfileStateError();
     }
   }

@@ -18,7 +18,8 @@ class DetailPostViewModel extends _$DetailPostViewModel {
     try {
       await supabase.from('posts').delete().eq('id', id);
       return true;
-    } on PostgrestException catch (_) {
+    } on PostgrestException catch (error) {
+      logger.e(error.message);
       return false;
     }
   }

@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/config/environment.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -23,6 +24,7 @@ void main() async {
 }
 
 final supabase = Supabase.instance.client;
+final logger = Logger();
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});

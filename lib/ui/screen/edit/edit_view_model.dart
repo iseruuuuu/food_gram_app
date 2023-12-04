@@ -60,6 +60,7 @@ class EditViewModel extends _$EditViewModel {
       await supabase.from('users').update(updates).match({'user_id': user!.id});
       return true;
     } on PostgrestException catch (error) {
+      logger.e(error.message);
       state = state.copyWith(status: error.message);
       return false;
     } finally {

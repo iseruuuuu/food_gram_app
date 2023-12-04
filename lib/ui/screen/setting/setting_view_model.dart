@@ -23,10 +23,10 @@ class SettingViewModel extends _$SettingViewModel {
       await supabase.auth.signOut();
       return true;
     } on AuthException catch (error) {
-      state = state.copyWith(status: error.message);
+      logger.e(error.message);
       return false;
     } on Exception catch (error) {
-      state = state.copyWith(status: error.toString());
+      logger.e(error);
       return false;
     } finally {
       loading.state = false;
@@ -39,10 +39,10 @@ class SettingViewModel extends _$SettingViewModel {
       //TODO アカウントを削除する
       return true;
     } on AuthException catch (error) {
-      state = state.copyWith(status: error.message);
+      logger.e(error.message);
       return false;
     } on Exception catch (error) {
-      state = state.copyWith(status: error.toString());
+      logger.e(error);
       return false;
     } finally {
       loading.state = false;

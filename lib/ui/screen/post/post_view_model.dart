@@ -61,6 +61,7 @@ class PostViewModel extends _$PostViewModel {
         await Future.delayed(Duration(seconds: 2));
         return true;
       } on PostgrestException catch (error) {
+        logger.e(error.message);
         state = state.copyWith(status: error.message);
         return false;
       } finally {
@@ -127,8 +128,9 @@ class PostViewModel extends _$PostViewModel {
         foodImage: image.path,
         status: '写真の添付が成功しました',
       );
-    } on PlatformException catch (e) {
-      state = state.copyWith(status: e.message!);
+    } on PlatformException catch (error) {
+      logger.e(error.message);
+      state = state.copyWith(status: error.message!);
     }
   }
 
@@ -144,8 +146,9 @@ class PostViewModel extends _$PostViewModel {
         foodImage: image.path,
         status: '写真の添付が成功しました',
       );
-    } on PlatformException catch (e) {
-      state = state.copyWith(status: e.message!);
+    } on PlatformException catch (error) {
+      logger.e(error.message);
+      state = state.copyWith(status: error.message!);
     }
   }
 

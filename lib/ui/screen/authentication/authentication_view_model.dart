@@ -37,8 +37,10 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         await Future.delayed(Duration(seconds: 2));
         state = state.copyWith(loginStatus: 'メールアプリで認証をしてください');
       } on AuthException catch (error) {
+        logger.e(error.message);
         state = state.copyWith(loginStatus: error.message);
       } on Exception catch (error) {
+        logger.e(error);
         state = state.copyWith(loginStatus: error.toString());
       } finally {
         loading.state = false;

@@ -23,6 +23,7 @@ class AppHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: 20),
           Row(
             children: [
               CircleAvatar(
@@ -37,14 +38,14 @@ class AppHeader extends StatelessWidget {
                   Text(
                     '$length',
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     '投稿',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -53,7 +54,6 @@ class AppHeader extends StatelessWidget {
               SizedBox(width: 10),
             ],
           ),
-          SizedBox(height: 10),
           Text(
             name,
             style: TextStyle(
@@ -74,6 +74,7 @@ class AppHeader extends StatelessWidget {
               fontSize: 16,
             ),
           ),
+          SizedBox(height: 5),
         ],
       ),
     );
