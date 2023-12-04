@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/config/supabase/auth_state.dart';
 import 'package:food_gram_app/model/model.dart';
-import 'package:food_gram_app/provider/auth_state.dart';
-import 'package:food_gram_app/screen/detail/detail_post_screen.dart';
-import 'package:food_gram_app/screen/screen.dart';
+import 'package:food_gram_app/ui/screen/detail/detail_post_screen.dart';
+import 'package:food_gram_app/ui/screen/screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
