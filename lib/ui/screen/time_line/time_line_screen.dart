@@ -7,13 +7,32 @@ import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
 import 'package:go_router/go_router.dart';
 
-class TimeLineScreen extends StatelessWidget {
+class TimeLineScreen extends StatefulWidget {
   const TimeLineScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final stream =
+  State<TimeLineScreen> createState() => _TimeLineScreenState();
+}
+
+class _TimeLineScreenState extends State<TimeLineScreen> {
+  late Stream<List<Map<String, dynamic>>> stream;
+
+  @override
+  void initState() {
+    super.initState();
+    stream =
         supabase.from('posts').stream(primaryKey: ['id']).order('created_at');
+  }
+
+  Future<void> refreshData() async {
+    setState(() {
+      stream =
+          supabase.from('posts').stream(primaryKey: ['id']).order('created_at');
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CupertinoColors.extraLightBackgroundGray,
       appBar: AppAppBar(),
@@ -23,7 +42,7 @@ class TimeLineScreen extends StatelessWidget {
             stream: stream,
             routerPath: RouterPath.timeLineDeitailPost,
             refresh: () {
-              //TODO データが更新されたら、更新をする
+              refreshData();
             },
           ),
         ],
@@ -32,7 +51,7 @@ class TimeLineScreen extends StatelessWidget {
         onTap: () async {
           await context.pushNamed(RouterPath.timeLinepost).then((value) async {
             if (value != null) {
-              //TODO データが更新されたら、更新をする
+              refreshData();
             }
           });
         },
