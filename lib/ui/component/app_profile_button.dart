@@ -61,7 +61,7 @@ class ProfileButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.black,
-        elevation: 0,
+        elevation: 5,
       ),
       onPressed: onTap,
       child: Row(
