@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppFloatingButton extends StatelessWidget {
@@ -14,10 +13,11 @@ class AppFloatingButton extends StatelessWidget {
     return SizedBox(
       width: 70,
       height: 70,
-      child: CupertinoButton(
-        borderRadius: BorderRadius.circular(100),
-        padding: EdgeInsets.zero,
-        color: Colors.black,
+      child: FloatingActionButton(
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.black,
+        elevation: 10,
+        shape: CircleBorder(side: BorderSide()),
         onPressed: onTap,
         child: const Icon(
           Icons.add,

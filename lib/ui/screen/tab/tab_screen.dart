@@ -1,47 +1,48 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/ui/screen/my_profile/my_profile_screen.dart';
-import 'package:food_gram_app/ui/screen/setting/setting_screen.dart';
-import 'package:food_gram_app/ui/screen/time_line/time_line_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
 
-class TabScreen extends StatelessWidget {
+class TabScreen extends ConsumerWidget {
   const TabScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return CupertinoTabScaffold(
-      tabBar: CupertinoTabBar(
-        border: const Border(),
-        iconSize: 40,
-        height: 60,
-        activeColor: Colors.black,
-        inactiveColor: Colors.grey,
-        backgroundColor: CupertinoColors.extraLightBackgroundGray,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-          ),
-        ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(tabViewModelProvider());
+    final controller = ref.watch(tabViewModelProvider().notifier);
+    return Scaffold(
+      body: controller.pageList[state.selectedIndex],
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        child: BottomNavigationBar(
+          currentIndex: state.selectedIndex,
+          onTap: controller.onTap,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.insert_emoticon),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: '',
+            ),
+          ],
+          type: BottomNavigationBarType.fixed,
+          iconSize: 30,
+          elevation: 0,
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.grey,
+          showUnselectedLabels: false,
+          showSelectedLabels: false,
+        ),
       ),
-      tabBuilder: (context, index) {
-        return CupertinoTabView(
-          builder: (context) {
-            return pageList[index];
-          },
-        );
-      },
     );
   }
 }
-
-List<Widget> pageList = [
-  const TimeLineScreen(),
-  const MyProfileScreen(),
-  const SettingScreen(),
-];

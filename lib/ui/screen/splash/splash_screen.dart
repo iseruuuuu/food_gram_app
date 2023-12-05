@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/utils/mixin/account_exist_mixin.dart';
@@ -30,7 +29,7 @@ class SplashScreenState extends State<SplashScreen> with AccountExistMixin {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: CupertinoColors.extraLightBackgroundGray,
+      backgroundColor: Colors.white,
       body: Center(
         child: Image(
           image: AssetImage('assets/loading/loading.gif'),

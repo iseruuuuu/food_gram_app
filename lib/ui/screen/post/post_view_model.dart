@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/post/post_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -71,49 +69,6 @@ class PostViewModel extends _$PostViewModel {
       state = state.copyWith(status: '必要な情報が入力されていません');
       return false;
     }
-  }
-
-  void onTapImage(BuildContext context) {
-    primaryFocus?.unfocus();
-    showCupertinoModalPopup(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-        actions: [
-          CupertinoActionSheetAction(
-            isDefaultAction: true,
-            onPressed: () {
-              context.pop();
-              camera();
-            },
-            child: const Text(
-              'カメラ',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () {
-              context.pop();
-              album();
-            },
-            child: const Text(
-              'アルバム',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          CupertinoActionSheetAction(
-            isDestructiveAction: true,
-            onPressed: () => context.pop(),
-            child: const Text('閉じる'),
-          ),
-        ],
-      ),
-    );
   }
 
   Future<void> camera() async {

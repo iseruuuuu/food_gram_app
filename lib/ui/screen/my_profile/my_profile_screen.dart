@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/main.dart';
@@ -25,7 +24,7 @@ class MyProfileScreen extends ConsumerWidget {
         .eq('user_id', user)
         .order('created_at');
     return Scaffold(
-      backgroundColor: CupertinoColors.extraLightBackgroundGray,
+      backgroundColor: Colors.white,
       appBar: AppAppBar(),
       body: state.when(
         data: (name, userName, selfIntroduce, image, length) => Column(
