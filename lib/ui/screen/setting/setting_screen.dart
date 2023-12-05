@@ -11,11 +11,17 @@ import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-class SettingScreen extends ConsumerWidget with UrlLauncherMixin, DialogMixin {
+class SettingScreen extends ConsumerStatefulWidget {
   const SettingScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  SettingScreenState createState() => SettingScreenState();
+}
+
+class SettingScreenState extends ConsumerState<SettingScreen>
+    with UrlLauncherMixin, DialogMixin {
+  @override
+  Widget build(BuildContext context) {
     final loading = ref.watch(loadingProvider);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -139,19 +145,15 @@ class SettingScreen extends ConsumerWidget with UrlLauncherMixin, DialogMixin {
                         logout: () => ref
                             .read(settingViewModelProvider().notifier)
                             .logout()
-                            .then(
-                          (value) {
-                            if (value) {
-                              //TODO 以下のwarningを治す
-                              // Unhandled Exception: Looking up a deactivated widget's ancestor is unsafe.
-                              // At this point the state of the widget's element tree is no longer stable.
-                              // To safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.
+                            .then((value) {
+                          if (value) {
+                            if (mounted) {
                               context.pushReplacementNamed(
                                 RouterPath.authentication,
                               );
                             }
-                          },
-                        ),
+                          }
+                        }),
                       );
                     },
                   ),

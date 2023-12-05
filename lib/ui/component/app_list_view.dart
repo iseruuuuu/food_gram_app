@@ -77,15 +77,22 @@ class AppListView extends StatelessWidget {
                     }
                   });
                 },
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 3,
-                  height: MediaQuery.of(context).size.width / 3,
-                  color: Colors.blue,
-                  child: Image.network(
-                    supabase.storage
-                        .from('food')
-                        .getPublicUrl(data[index]['food_image']),
-                    fit: BoxFit.cover,
+                child: Card(
+                  elevation: 20,
+                  color: Colors.black12,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 3,
+                      height: MediaQuery.of(context).size.width / 3,
+                      color: Colors.black12,
+                      child: Image.network(
+                        supabase.storage
+                            .from('food')
+                            .getPublicUrl(data[index]['food_image']),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 ),
               );
