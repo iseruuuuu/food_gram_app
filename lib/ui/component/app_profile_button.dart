@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AppMyProfileButton extends StatelessWidget {
   const AppMyProfileButton({
@@ -18,6 +19,7 @@ class AppMyProfileButton extends StatelessWidget {
         ProfileButton(
           title: 'プロフィールを編集',
           onTap: onTapEdit,
+          icon: Icons.edit,
         ),
         ProfileButton(
           title: 'ポイントを交換する',
@@ -35,6 +37,7 @@ class AppMyProfileButton extends StatelessWidget {
               ),
             );
           },
+          icon: FontAwesomeIcons.coins,
         ),
       ],
     );
@@ -45,11 +48,13 @@ class ProfileButton extends StatelessWidget {
   const ProfileButton({
     required this.title,
     required this.onTap,
+    required this.icon,
     super.key,
   });
 
   final String title;
   final Function() onTap;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -59,12 +64,23 @@ class ProfileButton extends StatelessWidget {
         elevation: 0,
       ),
       onPressed: onTap,
-      child: Text(
-        title,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: Colors.white,
+            size: 18,
+          ),
+          SizedBox(width: 5),
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
     );
   }
