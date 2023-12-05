@@ -50,7 +50,7 @@ class _TimeLineScreenState extends State<TimeLineScreen> {
         onTap: () async {
           await context.pushNamed(RouterPath.timeLinepost).then((value) async {
             if (value != null) {
-              refreshData();
+              await refreshData();
             }
           });
         },

@@ -9,187 +9,94 @@ mixin DialogMixin {
     required String subTitle,
   }) {
     showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.white,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24),
-                    child: Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    subTitle,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          elevation: 5,
-                          shape: const StadiumBorder(),
+                ),
+                Text(
+                  subTitle,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        elevation: 5,
+                        shape: const StadiumBorder(),
+                      ),
+                      onPressed: () => context.pop(),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 16,
+                          horizontal: 18,
                         ),
-                        onPressed: () => context.pop(),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 16,
-                            horizontal: 18,
-                          ),
-                          child: Text(
-                            'いいえ',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        child: Text(
+                          'いいえ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          elevation: 5,
-                          shape: const StadiumBorder(),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        elevation: 5,
+                        shape: const StadiumBorder(),
+                      ),
+                      onPressed: () {
+                        context.pop();
+                        onTap();
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 16,
+                          horizontal: 18,
                         ),
-                        onPressed: () {
-                          context.pop();
-                          onTap();
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 16,
-                            horizontal: 18,
-                          ),
-                          child: Text(
-                            'はい',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        child: Text(
+                          'はい',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
-
-  // void openDeleteDialog({
-  //   required BuildContext context,
-  //   required Function() delete,
-  // }) {
-  //   showDialog(
-  //     context: context,
-  //     barrierDismissible: false,
-  //     builder: (context) {
-  //       return Dialog(
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(10),
-  //         ),
-  //         child: DecoratedBox(
-  //           decoration: BoxDecoration(
-  //             color: Colors.white,
-  //             borderRadius: BorderRadius.circular(10),
-  //           ),
-  //           child: Column(
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: <Widget>[
-  //               Padding(
-  //                 padding: const EdgeInsets.symmetric(vertical: 24),
-  //                 child: Text(
-  //                   '投稿の削除',
-  //                   style: const TextStyle(
-  //                     fontSize: 18,
-  //                     fontWeight: FontWeight.bold,
-  //                   ),
-  //                 ),
-  //               ),
-  //               Text(
-  //                 'この投稿を削除しますか？\n一度削除してしまうと復元できません',
-  //                 textAlign: TextAlign.center,
-  //               ),
-  //               const SizedBox(height: 24),
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //                 children: [
-  //                   ElevatedButton(
-  //                     style: ElevatedButton.styleFrom(
-  //                       backgroundColor: Colors.red,
-  //                       elevation: 5,
-  //                       shape: const StadiumBorder(),
-  //                     ),
-  //                     onPressed: () => context.pop(),
-  //                     child: const Padding(
-  //                       padding: EdgeInsets.symmetric(
-  //                         vertical: 16,
-  //                         horizontal: 10,
-  //                       ),
-  //                       child: Text(
-  //                         'キャンセル',
-  //                         style: TextStyle(
-  //                           color: Colors.white,
-  //                           fontWeight: FontWeight.bold,
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   ElevatedButton(
-  //                     style: ElevatedButton.styleFrom(
-  //                       backgroundColor: Colors.blue,
-  //                       elevation: 5,
-  //                       shape: const StadiumBorder(),
-  //                     ),
-  //                     onPressed: () {
-  //                       context.pop();
-  //                       delete();
-  //                     },
-  //                     child: const Padding(
-  //                       padding: EdgeInsets.symmetric(
-  //                         vertical: 16,
-  //                         horizontal: 18,
-  //                       ),
-  //                       child: Text(
-  //                         '削除する',
-  //                         style: TextStyle(
-  //                           color: Colors.white,
-  //                           fontWeight: FontWeight.bold,
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //               const SizedBox(height: 24),
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 
   void openLogOutDialog({
     required BuildContext context,
