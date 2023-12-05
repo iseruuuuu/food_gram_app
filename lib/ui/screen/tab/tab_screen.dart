@@ -16,7 +16,7 @@ class TabScreen extends StatelessWidget {
         height: 60,
         activeColor: Colors.black,
         inactiveColor: Colors.grey,
-        backgroundColor: CupertinoColors.extraLightBackgroundGray,
+        backgroundColor: Colors.white,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

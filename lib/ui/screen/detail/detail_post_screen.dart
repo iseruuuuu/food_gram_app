@@ -46,9 +46,9 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
     final deviceWidth = MediaQuery.of(context).size.width;
     final user = supabase.auth.currentUser?.id;
     return Scaffold(
-      backgroundColor: CupertinoColors.extraLightBackgroundGray,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: CupertinoColors.extraLightBackgroundGray,
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Column(

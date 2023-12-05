@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,7 +18,7 @@ class SettingScreen extends ConsumerWidget with UrlLauncherMixin, DialogMixin {
   Widget build(BuildContext context, WidgetRef ref) {
     final loading = ref.watch(loadingProvider);
     return Scaffold(
-      backgroundColor: CupertinoColors.extraLightBackgroundGray,
+      backgroundColor: Colors.white,
       appBar: AppAppBar(),
       body: Stack(
         children: [
@@ -181,13 +180,17 @@ class SettingScreen extends ConsumerWidget with UrlLauncherMixin, DialogMixin {
                 ],
               ),
             ],
-            lightTheme: const SettingsThemeData(
-              settingsListBackground: CupertinoColors.extraLightBackgroundGray,
+            lightTheme: SettingsThemeData(
+              settingsSectionBackground: Colors.grey.shade100,
+              settingsListBackground: Colors.white,
               dividerColor: Colors.grey,
               leadingIconsColor: Colors.black,
             ),
-            darkTheme: const SettingsThemeData(
+            darkTheme: SettingsThemeData(
+              settingsSectionBackground: Colors.grey.shade100,
               settingsListBackground: Colors.white,
+              dividerColor: Colors.grey,
+              leadingIconsColor: Colors.black,
             ),
           ),
           AppLoading(loading: loading),
