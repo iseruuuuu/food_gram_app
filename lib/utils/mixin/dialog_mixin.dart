@@ -1,105 +1,286 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 mixin DialogMixin {
-  void openReportDialog({
+  void openDialog({
     required BuildContext context,
-    required Function() openUrl,
+    required Function() onTap,
+    required String title,
+    required String subTitle,
   }) {
     showDialog(
-      context: context,
-      builder: (context) {
-        return CupertinoAlertDialog(
-          title: Text('投稿の報告'),
-          content: Text('Googleフォームに遷移します'),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              child: Text(
-                'キャンセル',
-                style: TextStyle(color: Colors.blueAccent),
-              ),
-              isDestructiveAction: true,
-              onPressed: () => context.pop(),
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
-            CupertinoDialogAction(
-              child: Text(
-                '報告する',
-                style: TextStyle(color: Colors.red),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
               ),
-              onPressed: openUrl,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 24),
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    subTitle,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          elevation: 5,
+                          shape: const StadiumBorder(),
+                        ),
+                        onPressed: () => context.pop(),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 16,
+                            horizontal: 18,
+                          ),
+                          child: Text(
+                            'いいえ',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          elevation: 5,
+                          shape: const StadiumBorder(),
+                        ),
+                        onPressed: () {
+                          context.pop();
+                          onTap();
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 16,
+                            horizontal: 18,
+                          ),
+                          child: Text(
+                            'はい',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                ],
+              ),
             ),
-          ],
-        );
-      },
-    );
+          );
+        });
   }
 
-  void openDeleteDialog({
-    required BuildContext context,
-    required Function() delete,
-  }) {
-    showCupertinoDialog(
-      context: context,
-      builder: (context) {
-        return CupertinoAlertDialog(
-          title: Text('投稿の削除'),
-          content: Text('この投稿を削除しますか？\n一度削除してしまうと復元できません'),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              child: Text(
-                'キャンセル',
-                style: TextStyle(color: Colors.blueAccent),
-              ),
-              isDestructiveAction: true,
-              onPressed: () => context.pop(),
-            ),
-            CupertinoDialogAction(
-              child: Text(
-                '削除する',
-                style: TextStyle(color: Colors.red),
-              ),
-              onPressed: () {
-                delete();
-                context.pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void openDeleteDialog({
+  //   required BuildContext context,
+  //   required Function() delete,
+  // }) {
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (context) {
+  //       return Dialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(10),
+  //         ),
+  //         child: DecoratedBox(
+  //           decoration: BoxDecoration(
+  //             color: Colors.white,
+  //             borderRadius: BorderRadius.circular(10),
+  //           ),
+  //           child: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: <Widget>[
+  //               Padding(
+  //                 padding: const EdgeInsets.symmetric(vertical: 24),
+  //                 child: Text(
+  //                   '投稿の削除',
+  //                   style: const TextStyle(
+  //                     fontSize: 18,
+  //                     fontWeight: FontWeight.bold,
+  //                   ),
+  //                 ),
+  //               ),
+  //               Text(
+  //                 'この投稿を削除しますか？\n一度削除してしまうと復元できません',
+  //                 textAlign: TextAlign.center,
+  //               ),
+  //               const SizedBox(height: 24),
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                 children: [
+  //                   ElevatedButton(
+  //                     style: ElevatedButton.styleFrom(
+  //                       backgroundColor: Colors.red,
+  //                       elevation: 5,
+  //                       shape: const StadiumBorder(),
+  //                     ),
+  //                     onPressed: () => context.pop(),
+  //                     child: const Padding(
+  //                       padding: EdgeInsets.symmetric(
+  //                         vertical: 16,
+  //                         horizontal: 10,
+  //                       ),
+  //                       child: Text(
+  //                         'キャンセル',
+  //                         style: TextStyle(
+  //                           color: Colors.white,
+  //                           fontWeight: FontWeight.bold,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   ElevatedButton(
+  //                     style: ElevatedButton.styleFrom(
+  //                       backgroundColor: Colors.blue,
+  //                       elevation: 5,
+  //                       shape: const StadiumBorder(),
+  //                     ),
+  //                     onPressed: () {
+  //                       context.pop();
+  //                       delete();
+  //                     },
+  //                     child: const Padding(
+  //                       padding: EdgeInsets.symmetric(
+  //                         vertical: 16,
+  //                         horizontal: 18,
+  //                       ),
+  //                       child: Text(
+  //                         '削除する',
+  //                         style: TextStyle(
+  //                           color: Colors.white,
+  //                           fontWeight: FontWeight.bold,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //               const SizedBox(height: 24),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   void openLogOutDialog({
     required BuildContext context,
     required Function() logout,
   }) {
-    showCupertinoDialog(
+    showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
-        return CupertinoAlertDialog(
-          title: Text('ログアウト'),
-          content: Text('ログアウトしますか?'),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              child: Text(
-                'キャンセル',
-                style: TextStyle(color: Colors.blueAccent),
-              ),
-              isDestructiveAction: true,
-              onPressed: () => context.pop(),
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
             ),
-            CupertinoDialogAction(
-              child: Text(
-                'ログアウト',
-                style: TextStyle(color: Colors.red),
-              ),
-              onPressed: () {
-                logout();
-                context.pop();
-              },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Text(
+                    'ログアウトの確認',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text(
+                  'ログアウトしますか?\n'
+                  'アカウントの状態は保存されています。',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        elevation: 5,
+                        shape: const StadiumBorder(),
+                      ),
+                      onPressed: () => context.pop(),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 16,
+                          horizontal: 5,
+                        ),
+                        child: Text(
+                          'キャンセル',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        elevation: 5,
+                        shape: const StadiumBorder(),
+                      ),
+                      onPressed: () {
+                        context.pop();
+                        logout();
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 16,
+                          horizontal: 5,
+                        ),
+                        child: Text(
+                          'ログアウト',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+              ],
             ),
-          ],
+          ),
         );
       },
     );
@@ -111,30 +292,87 @@ mixin DialogMixin {
   }) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
-        return CupertinoAlertDialog(
-          title: Text('アカウントの削除'),
-          content: Text('アカウントの削除をしますか？\n削除を行うと、データの復旧はできません'),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              child: Text(
-                'キャンセル',
-                style: TextStyle(color: Colors.blueAccent),
-              ),
-              isDestructiveAction: true,
-              onPressed: () => context.pop(),
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
             ),
-            CupertinoDialogAction(
-              child: Text(
-                'アカウント削除',
-                style: TextStyle(color: Colors.red),
-              ),
-              onPressed: () {
-                deleteAccount();
-                context.pop();
-              },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Text(
+                    'アカウント削除の確認',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text(
+                  'アカウントの削除をしますか？\n削除を行うと、データの復旧はできません',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        elevation: 5,
+                        shape: const StadiumBorder(),
+                      ),
+                      onPressed: () => context.pop(),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 16,
+                        ),
+                        child: Text(
+                          'キャンセル',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        elevation: 5,
+                        shape: const StadiumBorder(),
+                      ),
+                      onPressed: () {
+                        context.pop();
+                        deleteAccount();
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 16,
+                        ),
+                        child: Text(
+                          'アカウント削除',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+              ],
             ),
-          ],
+          ),
         );
       },
     );

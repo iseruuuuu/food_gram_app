@@ -86,9 +86,11 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                   IconButton(
                     onPressed: () {
                       (widget.users.userId == user)
-                          ? openDeleteDialog(
+                          ? openDialog(
                               context: context,
-                              delete: () async {
+                              title: '投稿の削除',
+                              subTitle: 'この投稿を削除しますか？\n一度削除してしまうと復元できません',
+                              onTap: () async {
                                 await ref
                                     .read(
                                       detailPostViewModelProvider().notifier,
@@ -101,9 +103,11 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                                 });
                               },
                             )
-                          : openReportDialog(
+                          : openDialog(
                               context: context,
-                              openUrl: () async {
+                              title: '投稿の報告',
+                              subTitle: 'この投稿について報告を行います。\n Googleフォームに遷移します。',
+                              onTap: () async {
                                 await launcherUrl(
                                   'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
                                   context,
