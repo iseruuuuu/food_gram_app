@@ -35,6 +35,8 @@ class TabScreen extends ConsumerWidget {
           ],
           type: BottomNavigationBarType.fixed,
           iconSize: 30,
+          elevation: 0,
+          backgroundColor: Colors.white,
           selectedItemColor: Colors.black,
           unselectedItemColor: Colors.grey,
           showUnselectedLabels: false,
