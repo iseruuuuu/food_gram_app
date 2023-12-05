@@ -5,10 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_post_text_field.dart';
 import 'package:food_gram_app/ui/screen/post/post_view_model.dart';
+import 'package:food_gram_app/utils/mixin/show_modal_bottom_sheet_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:go_router/go_router.dart';
 
-class PostScreen extends ConsumerWidget {
+class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
   const PostScreen({super.key});
 
   @override
@@ -49,9 +50,14 @@ class PostScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   GestureDetector(
-                    onTap: () => ref
-                        .read(postViewModelProvider().notifier)
-                        .onTapImage(context),
+                    onTap: () {
+                      onTapImage(
+                        context: context,
+                        camera:
+                            ref.read(postViewModelProvider().notifier).camera,
+                        album: ref.read(postViewModelProvider().notifier).album,
+                      );
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
