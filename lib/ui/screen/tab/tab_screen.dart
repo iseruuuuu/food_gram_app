@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
@@ -25,7 +26,7 @@ class TabScreen extends ConsumerWidget {
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.insert_emoticon),
+              icon: Icon(CupertinoIcons.profile_circled),
               label: '',
             ),
             BottomNavigationBarItem(
@@ -34,7 +35,7 @@ class TabScreen extends ConsumerWidget {
             ),
           ],
           type: BottomNavigationBarType.fixed,
-          iconSize: 30,
+          iconSize: 35,
           elevation: 0,
           backgroundColor: Colors.white,
           selectedItemColor: Colors.black,
