@@ -25,4 +25,17 @@ class AuthService {
       return Failure(error);
     }
   }
+
+  Future<Result<void, Exception>> signOut() async {
+    try {
+      await supabase.auth.signOut();
+      return const Success(null);
+    } on AuthException catch (error) {
+      logger.e(error);
+      return Failure(error);
+    } on Exception catch (error) {
+      logger.e(error.toString());
+      return Failure(error);
+    }
+  }
 }
