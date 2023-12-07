@@ -49,8 +49,11 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       openSNSUrl(
                         'twitter://user?screen_name=isekiryu',
                         'https://twitter.com/isekiryu',
-                        context,
-                      );
+                      ).then((value) {
+                        if (!value) {
+                          openErrorSnackBar(context);
+                        }
+                      });
                     },
                   ),
                   SettingsTile.navigation(
@@ -59,8 +62,11 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     onPressed: (context) {
                       launcherUrl(
                         'https://github.com/iseruuuuu/food_gram_app',
-                        context,
-                      );
+                      ).then((value) {
+                        if (!value) {
+                          openErrorSnackBar(context);
+                        }
+                      });
                     },
                   ),
                   SettingsTile.navigation(
@@ -91,8 +97,11 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     onPressed: (context) {
                       launcherUrl(
                         'https://succinct-may-e5e.notion.site/FAQ-256ae853b9ec4209a04f561449de8c1d',
-                        context,
-                      );
+                      ).then((value) {
+                        if (!value) {
+                          openErrorSnackBar(context);
+                        }
+                      });
                     },
                   ),
                   SettingsTile.navigation(
@@ -101,8 +110,11 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     onPressed: (context) {
                       launcherUrl(
                         'https://succinct-may-e5e.notion.site/fd5584426bf44c50bdb1eb4b376d165f',
-                        context,
-                      );
+                      ).then((value) {
+                        if (!value) {
+                          openErrorSnackBar(context);
+                        }
+                      });
                     },
                   ),
                   SettingsTile.navigation(
@@ -111,8 +123,11 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     onPressed: (context) {
                       launcherUrl(
                         'https://succinct-may-e5e.notion.site/a0ad75abf8244404b7a19cca0e2304f1',
-                        context,
-                      );
+                      ).then((value) {
+                        if (!value) {
+                          openErrorSnackBar(context);
+                        }
+                      });
                     },
                   ),
                   SettingsTile.navigation(
@@ -121,8 +136,11 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     onPressed: (context) {
                       launcherUrl(
                         'https://forms.gle/mjucjntt3c2SZsUc7',
-                        context,
-                      );
+                      ).then((value) {
+                        if (!value) {
+                          openErrorSnackBar(context);
+                        }
+                      });
                     },
                   ),
                   SettingsTile(
@@ -153,7 +171,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                               );
                             }
                           } else {
-                            openSnackBar(context, 'エラーが発生しました');
+                            openErrorSnackBar(context);
                           }
                         }),
                       );

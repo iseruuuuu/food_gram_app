@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
 
-class AppMyProfileButton extends StatelessWidget {
+class AppMyProfileButton extends StatelessWidget with SnackBarMixin {
   const AppMyProfileButton({
     required this.onTapEdit,
     required this.onTapExchange,
@@ -24,18 +25,7 @@ class AppMyProfileButton extends StatelessWidget {
         ProfileButton(
           title: 'ポイントを交換する',
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  '🙇　Coming Soon　🙇',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            );
+            openComingSoonSnackBar(context);
           },
           icon: FontAwesomeIcons.coins,
         ),

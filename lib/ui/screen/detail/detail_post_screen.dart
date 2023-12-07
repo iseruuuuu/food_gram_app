@@ -6,6 +6,7 @@ import 'package:food_gram_app/model/posts.dart';
 import 'package:food_gram_app/model/users.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
 import 'package:food_gram_app/utils/mixin/dialog_mixin.dart';
+import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
 import 'package:food_gram_app/utils/mixin/url_launcher_mixin.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
@@ -25,7 +26,7 @@ class DetailPostScreen extends ConsumerStatefulWidget {
 }
 
 class DetailPostScreenState extends ConsumerState<DetailPostScreen>
-    with DialogMixin, UrlLauncherMixin {
+    with DialogMixin, UrlLauncherMixin, SnackBarMixin {
   bool isHeart = false;
   int initialHeart = 0;
 
@@ -110,9 +111,13 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                               onTap: () async {
                                 await launcherUrl(
                                   'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
-                                  context,
-                                );
-                                context.pop();
+                                ).then((value) {
+                                  if (!value) {
+                                    openErrorSnackBar(context);
+                                  } else {
+                                    context.pop();
+                                  }
+                                });
                               },
                             );
                     },

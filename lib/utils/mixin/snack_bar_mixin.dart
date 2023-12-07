@@ -1,15 +1,32 @@
 import 'package:flutter/material.dart';
 
 mixin SnackBarMixin {
-  void openSnackBar(BuildContext context, String message) {
+  void openErrorSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          message,
+          'エラー：ページが表示できませんでした',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
-            fontSize: 20,
+            fontSize: 15,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void openComingSoonSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Center(
+          child: Text(
+            '🙇　Coming Soon　🙇',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontSize: 20,
+            ),
           ),
         ),
       ),
