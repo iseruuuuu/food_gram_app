@@ -6,6 +6,7 @@ import 'package:food_gram_app/ui/component/app_app_bar.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
 import 'package:food_gram_app/utils/mixin/dialog_mixin.dart';
+import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
 import 'package:food_gram_app/utils/mixin/url_launcher_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:go_router/go_router.dart';
@@ -19,7 +20,7 @@ class SettingScreen extends ConsumerStatefulWidget {
 }
 
 class SettingScreenState extends ConsumerState<SettingScreen>
-    with UrlLauncherMixin, DialogMixin {
+    with UrlLauncherMixin, DialogMixin, SnackBarMixin {
   @override
   Widget build(BuildContext context) {
     final loading = ref.watch(loadingProvider);
@@ -48,8 +49,11 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       openSNSUrl(
                         'twitter://user?screen_name=isekiryu',
                         'https://twitter.com/isekiryu',
-                        context,
-                      );
+                      ).then((value) {
+                        if (!value) {
+                          openErrorSnackBar(context);
+                        }
+                      });
                     },
                   ),
                   SettingsTile.navigation(
@@ -58,8 +62,11 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     onPressed: (context) {
                       launcherUrl(
                         'https://github.com/iseruuuuu/food_gram_app',
-                        context,
-                      );
+                      ).then((value) {
+                        if (!value) {
+                          openErrorSnackBar(context);
+                        }
+                      });
                     },
                   ),
                   SettingsTile.navigation(
@@ -90,8 +97,11 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     onPressed: (context) {
                       launcherUrl(
                         'https://succinct-may-e5e.notion.site/FAQ-256ae853b9ec4209a04f561449de8c1d',
-                        context,
-                      );
+                      ).then((value) {
+                        if (!value) {
+                          openErrorSnackBar(context);
+                        }
+                      });
                     },
                   ),
                   SettingsTile.navigation(
@@ -100,8 +110,11 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     onPressed: (context) {
                       launcherUrl(
                         'https://succinct-may-e5e.notion.site/fd5584426bf44c50bdb1eb4b376d165f',
-                        context,
-                      );
+                      ).then((value) {
+                        if (!value) {
+                          openErrorSnackBar(context);
+                        }
+                      });
                     },
                   ),
                   SettingsTile.navigation(
@@ -110,8 +123,11 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     onPressed: (context) {
                       launcherUrl(
                         'https://succinct-may-e5e.notion.site/a0ad75abf8244404b7a19cca0e2304f1',
-                        context,
-                      );
+                      ).then((value) {
+                        if (!value) {
+                          openErrorSnackBar(context);
+                        }
+                      });
                     },
                   ),
                   SettingsTile.navigation(
@@ -120,8 +136,11 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     onPressed: (context) {
                       launcherUrl(
                         'https://forms.gle/mjucjntt3c2SZsUc7',
-                        context,
-                      );
+                      ).then((value) {
+                        if (!value) {
+                          openErrorSnackBar(context);
+                        }
+                      });
                     },
                   ),
                   SettingsTile(
@@ -136,15 +155,14 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                   SettingsTile.navigation(
                     leading: const Icon(Icons.logout),
                     title: const Text(
-                      'ログアウト',
-                      style: TextStyle(color: Colors.red),
+                      'サインアウト',
                     ),
                     onPressed: (context) {
                       openLogOutDialog(
                         context: context,
                         logout: () => ref
                             .read(settingViewModelProvider().notifier)
-                            .logout()
+                            .signOut()
                             .then((value) {
                           if (value) {
                             if (mounted) {
@@ -152,28 +170,8 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                                 RouterPath.authentication,
                               );
                             }
-                          }
-                        }),
-                      );
-                    },
-                  ),
-                  SettingsTile.navigation(
-                    leading: const Icon(Icons.delete_outline),
-                    title: const Text(
-                      'アカウントの削除',
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    onPressed: (context) {
-                      openDeleteAccountDialog(
-                        context: context,
-                        deleteAccount: () => ref
-                            .read(settingViewModelProvider().notifier)
-                            .deleteAccount()
-                            .then((value) {
-                          if (value) {
-                            context.pushReplacementNamed(
-                              RouterPath.authentication,
-                            );
+                          } else {
+                            openErrorSnackBar(context);
                           }
                         }),
                       );
