@@ -211,12 +211,23 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                     size: 30,
                   ),
                 ),
+                Spacer(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(
+                    '$initialHeart いいね',
+                    style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ],
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.all(15),
               child: Text(
-                '$initialHeart いいね',
+                widget.posts.foodName,
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
@@ -224,7 +235,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
                 'In ${widget.posts.restaurant}',
                 style: TextStyle(
