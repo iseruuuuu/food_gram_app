@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_app_bar.dart';
 import 'package:food_gram_app/ui/component/app_error_widget.dart';
@@ -9,6 +8,7 @@ import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
 import 'package:food_gram_app/ui/component/app_profile_button.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_view_model.dart';
+import 'package:food_gram_app/service/post_stream.dart';
 import 'package:go_router/go_router.dart';
 
 class MyProfileScreen extends ConsumerWidget {
@@ -16,17 +16,12 @@ class MyProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(myProfileViewModelProvider());
-    final user = supabase.auth.currentUser?.id;
-    final stream = supabase
-        .from('posts')
-        .stream(primaryKey: ['id'])
-        .eq('user_id', user)
-        .order('created_at');
+    final state = ref.watch(myPostStreamProvider);
+    final users = ref.watch(myProfileViewModelProvider());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppAppBar(),
-      body: state.when(
+      body: users.when(
         data: (name, userName, selfIntroduce, image, length) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -50,11 +45,28 @@ class MyProfileScreen extends ConsumerWidget {
               },
             ),
             const SizedBox(height: 10),
-            AppListView(
-              stream: stream,
-              routerPath: RouterPath.myProfileDeitailPost,
-              refresh: () =>
-                  ref.read(myProfileViewModelProvider().notifier).getData(),
+            state.when(
+              data: (data) {
+                return AppListView(
+                  data: data,
+                  routerPath: RouterPath.myProfileDeitailPost,
+                  refresh: () => ref.refresh(myPostStreamProvider),
+                );
+              },
+              error: (_, __) {
+                return AppErrorWidget(
+                  onTap: () => ref.refresh(myPostStreamProvider),
+                );
+              },
+              loading: () {
+                return Center(
+                  child: Image.asset(
+                    'assets/loading/loading.gif',
+                    width: 100,
+                    height: 100,
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -66,14 +78,14 @@ class MyProfileScreen extends ConsumerWidget {
           ),
         ),
         error: () => AppErrorWidget(
-          onTap: ref.read(myProfileViewModelProvider().notifier).getData,
+          onTap: () => ref.refresh(myPostStreamProvider),
         ),
       ),
       floatingActionButton: AppFloatingButton(
         onTap: () {
           context.pushNamed(RouterPath.myProfilePost).then((value) {
             if (value != null) {
-              ref.read(myProfileViewModelProvider().notifier).getData();
+              ref.refresh(myPostStreamProvider);
             }
           });
         },
