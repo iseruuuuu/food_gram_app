@@ -1,5 +1,6 @@
 {
   "flavor": "prod",
   "appName": "FoodGram",
-  "appIdSuffix": ""
+  "appIdSuffix": "",
+  "bundleId": "FoodGram"
 }
