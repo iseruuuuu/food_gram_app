@@ -155,7 +155,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                   SettingsTile.navigation(
                     leading: const Icon(Icons.logout),
                     title: const Text(
-                      'サインアウト',
+                      'ログアウト',
                     ),
                     onPressed: (context) {
                       openLogOutDialog(

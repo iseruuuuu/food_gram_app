@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/service/post_stream.dart';
 import 'package:food_gram_app/ui/component/app_app_bar.dart';
 import 'package:food_gram_app/ui/component/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/app_floating_button.dart';
@@ -8,7 +9,6 @@ import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
 import 'package:food_gram_app/ui/component/app_profile_button.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_view_model.dart';
-import 'package:food_gram_app/service/post_stream.dart';
 import 'package:go_router/go_router.dart';
 
 class MyProfileScreen extends ConsumerWidget {
@@ -57,7 +57,10 @@ class MyProfileScreen extends ConsumerWidget {
               },
               error: (_, __) {
                 return AppErrorWidget(
-                  onTap: () => ref.refresh(myPostStreamProvider),
+                  onTap: () {
+                    ref.refresh(myPostStreamProvider);
+                    ref.read(myProfileViewModelProvider().notifier).getData();
+                  },
                 );
               },
               loading: () {
@@ -88,6 +91,7 @@ class MyProfileScreen extends ConsumerWidget {
           context.pushNamed(RouterPath.myProfilePost).then((value) {
             if (value != null) {
               ref.refresh(myPostStreamProvider);
+              ref.read(myProfileViewModelProvider().notifier).getData();
             }
           });
         },
