@@ -9,6 +9,7 @@ abstract class DetailPostState with _$DetailPostState {
   const factory DetailPostState({
     @Default('') String status,
     @Default(0) heart,
+    @Default(false) isSuccess,
   }) = _DetailPostState;
 
   factory DetailPostState.fromJson(Map<String, dynamic> json) =>

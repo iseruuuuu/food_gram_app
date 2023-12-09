@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/main.dart';
+import 'package:food_gram_app/service/database_service.dart';
 import 'package:food_gram_app/ui/screen/post/post_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'post_view_model.g.dart';
 
@@ -31,41 +31,35 @@ class PostViewModel extends _$PostViewModel {
   late Uint8List imageBytes;
 
   Future<bool> post() async {
+    primaryFocus?.unfocus();
+    loading.state = true;
     if (foodTextController.text.isNotEmpty &&
         commentTextController.text.isNotEmpty) {
-      primaryFocus?.unfocus();
-      loading.state = true;
-      final user = supabase.auth.currentUser?.id;
-      final updates = {
-        'user_id': user,
-        'food_name': foodTextController.text,
-        'comment': commentTextController.text,
-        'created_at': DateTime.now().toIso8601String(),
-        'heart': 0,
-        //TODO あとでレストラン名を入れる
-        'restaurant': '吉野家',
-        'food_image': '/$user/$uploadImage',
-        //TODO　あとでレストランからの座標を入れる
-        'lat': 0.1,
-        //TODO　あとでレストランからの座標を入れる
-        'lng': 0.1,
-      };
-      try {
-        await supabase.storage
-            .from('food')
-            .uploadBinary('/$user/$uploadImage', imageBytes);
-        await supabase.from('posts').insert(updates);
-        state = state.copyWith(status: '投稿が完了しました');
-        await Future.delayed(Duration(seconds: 2));
-        return true;
-      } on PostgrestException catch (error) {
-        logger.e(error.message);
-        state = state.copyWith(status: error.message);
-        return false;
-      } finally {
-        loading.state = false;
-      }
+      final result = await ref.read(databaseServiceProvider).post(
+            foodName: foodTextController.text,
+            comment: commentTextController.text,
+            uploadImage: uploadImage,
+            imageBytes: imageBytes,
+          );
+      await result.when(
+        success: (_) async {
+          state = state.copyWith(
+            status: '投稿が完了しました',
+            isSuccess: true,
+          );
+          await Future.delayed(Duration(seconds: 2));
+        },
+        failure: (error) {
+          state = state.copyWith(
+            status: 'エラーが発生しました',
+            isSuccess: false,
+          );
+        },
+      );
+      loading.state = false;
+      return state.isSuccess;
     } else {
+      loading.state = false;
       state = state.copyWith(status: '必要な情報が入力されていません');
       return false;
     }

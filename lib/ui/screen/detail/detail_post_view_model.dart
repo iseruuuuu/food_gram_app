@@ -1,7 +1,6 @@
-import 'package:food_gram_app/main.dart';
+import 'package:food_gram_app/service/database_service.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'detail_post_view_model.g.dart';
 
@@ -15,12 +14,15 @@ class DetailPostViewModel extends _$DetailPostViewModel {
   }
 
   Future<bool> delete(int id) async {
-    try {
-      await supabase.from('posts').delete().eq('id', id);
-      return true;
-    } on PostgrestException catch (error) {
-      logger.e(error.message);
-      return false;
-    }
+    final result = await ref.read(databaseServiceProvider).delete(id);
+    result.when(
+      success: (_) {
+        state = state.copyWith(isSuccess: true);
+      },
+      failure: (_) {
+        state = state.copyWith(isSuccess: false);
+      },
+    );
+    return state.isSuccess;
   }
 }

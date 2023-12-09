@@ -97,9 +97,13 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                                       detailPostViewModelProvider().notifier,
                                     )
                                     .delete(widget.posts.id)
-                                    .then((value) {
+                                    .then((value) async {
                                   if (value) {
+                                    openSnackBar(context, '削除が成功しました');
+                                    await Future.delayed(Duration(seconds: 2));
                                     context.pop(true);
+                                  } else {
+                                    openSnackBar(context, '削除が失敗しました');
                                   }
                                 });
                               },
