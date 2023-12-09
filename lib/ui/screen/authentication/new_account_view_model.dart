@@ -34,7 +34,7 @@ class NewAccountViewModel extends _$NewAccountViewModel {
     loading.state = true;
     if (nameTextController.text.isNotEmpty &&
         userNameTextController.text.isNotEmpty) {
-      final result = await ref.read(databaseServiceProvider).postUsers(
+      final result = await ref.read(databaseServiceProvider).setUsers(
             name: nameTextController.text.trim(),
             userName: userNameTextController.text.trim(),
             image: state.number,

@@ -15,7 +15,7 @@ class DatabaseService {
 
   final user = supabase.auth.currentUser?.id;
 
-  Future<Result<void, Exception>> postFood({
+  Future<Result<void, Exception>> post({
     required String foodName,
     required String comment,
     required String uploadImage,
@@ -49,7 +49,7 @@ class DatabaseService {
     }
   }
 
-  Future<Result<void, Exception>> postUsers({
+  Future<Result<void, Exception>> setUsers({
     required String name,
     required String userName,
     required int image,
