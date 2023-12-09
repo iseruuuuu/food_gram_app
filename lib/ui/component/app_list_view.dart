@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/model/model.dart';
@@ -68,16 +69,15 @@ class AppListView extends StatelessWidget {
             });
           },
           child: Card(
-            elevation: 20,
-            color: Colors.black12,
+            elevation: 10,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 width: MediaQuery.of(context).size.width / 3,
                 height: MediaQuery.of(context).size.width / 3,
-                color: Colors.black12,
-                child: Image.network(
-                  supabase.storage
+                color: Colors.white,
+                child: CachedNetworkImage(
+                  imageUrl: supabase.storage
                       .from('food')
                       .getPublicUrl(data[index]['food_image']),
                   fit: BoxFit.cover,
