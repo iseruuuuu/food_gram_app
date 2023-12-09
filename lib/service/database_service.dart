@@ -57,4 +57,14 @@ class DatabaseService {
         .from('food')
         .uploadBinary('/$user/$uploadImage', imageBytes);
   }
+
+  Future<Result<void, Exception>> delete(int id) async {
+    try {
+      await supabase.from('posts').delete().eq('id', id);
+      return const Success(null);
+    } on PostgrestException catch (error) {
+      logger.e(error.message);
+      return Failure(error);
+    }
+  }
 }
