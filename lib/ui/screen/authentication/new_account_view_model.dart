@@ -28,7 +28,7 @@ class NewAccountViewModel extends _$NewAccountViewModel {
     state = state.copyWith(number: number);
   }
 
-  Future<bool> setUsers(BuildContext context) async {
+  Future<bool> setUsers() async {
     state = state.copyWith(loginStatus: '');
     primaryFocus?.unfocus();
     loading.state = true;

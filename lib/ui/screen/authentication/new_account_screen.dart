@@ -69,7 +69,7 @@ class NewAccountScreen extends ConsumerWidget {
                       onPressed: () {
                         ref
                             .read(newAccountViewModelProvider().notifier)
-                            .setUsers(context)
+                            .setUsers()
                             .then((value) {
                           if (value) {
                             context.pushReplacementNamed(RouterPath.tab);
