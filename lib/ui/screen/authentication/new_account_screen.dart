@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_account_text_field.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/app_icon.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/screen/authentication/new_account_view_model.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
+import 'package:go_router/go_router.dart';
 
 class NewAccountScreen extends ConsumerWidget {
   const NewAccountScreen({super.key});
@@ -64,9 +66,16 @@ class NewAccountScreen extends ConsumerWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 30),
                     child: AppElevatedButton(
-                      onPressed: () => ref
-                          .read(newAccountViewModelProvider().notifier)
-                          .setUsers(context),
+                      onPressed: () {
+                        ref
+                            .read(newAccountViewModelProvider().notifier)
+                            .setUsers(context)
+                            .then((value) {
+                          if (value) {
+                            context.pushReplacementNamed(RouterPath.tab);
+                          }
+                        });
+                      },
                       title: '登録',
                     ),
                   ),

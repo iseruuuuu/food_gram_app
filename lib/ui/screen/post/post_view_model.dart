@@ -35,7 +35,7 @@ class PostViewModel extends _$PostViewModel {
     loading.state = true;
     if (foodTextController.text.isNotEmpty &&
         commentTextController.text.isNotEmpty) {
-      final result = await ref.read(databaseServiceProvider).post(
+      final result = await ref.read(databaseServiceProvider).postFood(
             foodName: foodTextController.text,
             comment: commentTextController.text,
             uploadImage: uploadImage,

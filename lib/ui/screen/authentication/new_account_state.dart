@@ -7,5 +7,6 @@ class NewAccountState with _$NewAccountState {
   const factory NewAccountState({
     @Default('') loginStatus,
     @Default(1) number,
+    @Default(false) isSuccess,
   }) = _NewAccountState;
 }

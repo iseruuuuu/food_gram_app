@@ -15,7 +15,7 @@ class DatabaseService {
 
   final user = supabase.auth.currentUser?.id;
 
-  Future<Result<void, Exception>> post({
+  Future<Result<void, Exception>> postFood({
     required String foodName,
     required String comment,
     required String uploadImage,
@@ -45,6 +45,29 @@ class DatabaseService {
       return Failure(error);
     } on Exception catch (error) {
       logger.e(error);
+      return Failure(error);
+    }
+  }
+
+  Future<Result<void, Exception>> postUsers({
+    required String name,
+    required String userName,
+    required int image,
+  }) async {
+    final updates = {
+      'name': name,
+      'user_name': userName,
+      'self_introduce': '',
+      'image': 'assets/icon/icon$image.png',
+      'created_at': DateTime.now().toIso8601String(),
+      'updated_at': DateTime.now().toIso8601String(),
+    };
+    try {
+      await supabase.from('users').insert(updates);
+      await Future.delayed(Duration(seconds: 2));
+      return const Success(null);
+    } on PostgrestException catch (error) {
+      logger.e(error.message);
       return Failure(error);
     }
   }
