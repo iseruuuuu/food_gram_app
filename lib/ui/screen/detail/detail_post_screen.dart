@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -155,9 +156,9 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
               child: Container(
                 width: deviceWidth,
                 height: deviceWidth,
-                color: Colors.blue,
-                child: Image.network(
-                  supabase.storage
+                color: Colors.white,
+                child: CachedNetworkImage(
+                  imageUrl: supabase.storage
                       .from('food')
                       .getPublicUrl(widget.posts.foodImage),
                   fit: BoxFit.cover,
