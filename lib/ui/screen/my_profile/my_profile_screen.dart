@@ -47,10 +47,12 @@ class MyProfileScreen extends ConsumerWidget {
             const SizedBox(height: 10),
             state.when(
               data: (data) {
-                return AppListView(
-                  data: data,
-                  routerPath: RouterPath.myProfileDeitailPost,
-                  refresh: () => ref.refresh(myPostStreamProvider),
+                return Expanded(
+                  child: AppListView(
+                    data: data,
+                    routerPath: RouterPath.myProfileDeitailPost,
+                    refresh: () => ref.refresh(myPostStreamProvider),
+                  ),
                 );
               },
               error: (_, __) {
