@@ -15,11 +15,14 @@ class DetailPostViewModel extends _$DetailPostViewModel {
 
   Future<bool> delete(int id) async {
     final result = await ref.read(databaseServiceProvider).delete(id);
-    result.when(success: (_) {
-      state = state.copyWith(isSuccess: true);
-    }, failure: (_) {
-      state = state.copyWith(isSuccess: false);
-    });
+    result.when(
+      success: (_) {
+        state = state.copyWith(isSuccess: true);
+      },
+      failure: (_) {
+        state = state.copyWith(isSuccess: false);
+      },
+    );
     return state.isSuccess;
   }
 }
