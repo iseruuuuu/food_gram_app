@@ -33,8 +33,12 @@ We always welcome all contributions! See CONTRIBUTING.md for more information.
 
 We would be happy if you could create a branch with the following rules
 
-| branch prefix | label | | -- | -- | | `feature/*` | `feature` | | `fix/*`, `bugfix/*` | `bug` |
+| branch prefix | label |
+| -- | -- |
+| `feature/*` | `feature` |
+| `fix/*`, `bugfix/*` | `bug` |
 | `improvement/*`, `improve/*`, `migrate/*` | `improve` |
+
 
 # Thanks
 
