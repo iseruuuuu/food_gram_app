@@ -1,5 +1,8 @@
 # food_gram_app
 
+![app](https://github.com/iseruuuuu/food_gram_app/assets/67954894/4e5198cf-be5c-46e2-8490-fc32f689121e)
+
+
 ## Development Environment
 
 ### Flutter
@@ -7,6 +10,7 @@
 - Android Studio or Visual Studio Code
 - Flutter 3.13.9
 - Dart 3.1.5
+
 
 ### iOS
 
