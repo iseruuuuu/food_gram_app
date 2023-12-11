@@ -20,6 +20,9 @@ class DatabaseService {
     required String comment,
     required String uploadImage,
     required Uint8List imageBytes,
+    required double lat,
+    required double lng,
+    required String restaurant,
   }) async {
     try {
       final updates = {
@@ -28,13 +31,10 @@ class DatabaseService {
         'comment': comment,
         'created_at': DateTime.now().toIso8601String(),
         'heart': 0,
-        //TODO あとでレストラン名を入れる
-        'restaurant': '吉野家',
+        'restaurant': restaurant,
         'food_image': '/$user/$uploadImage',
-        //TODO　あとでレストランからの座標を入れる
-        'lat': 0.1,
-        //TODO　あとでレストランからの座標を入れる
-        'lng': 0.1,
+        'lat': lat,
+        'lng': lng,
       };
       await upload(uploadImage: uploadImage, imageBytes: imageBytes);
       await supabase.from('posts').insert(updates);
