@@ -9,5 +9,7 @@ class PostState with _$PostState {
     @Default('レストランを選択') String restaurant,
     @Default('') String status,
     @Default(false) isSuccess,
+    @Default(0.0) lat,
+    @Default(0.0) lng,
   }) = _PostState;
 }
