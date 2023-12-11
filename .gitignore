@@ -54,7 +54,6 @@ app.*.map.json
 
 # Web related
 lib/generated_plugin_registrant.dart
-lib/constants/api_key.dart
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
@@ -63,3 +62,5 @@ lib/constants/api_key.dart
 
 .env.dev
 .env.prod
+
+lib/constants/api_key.dart
