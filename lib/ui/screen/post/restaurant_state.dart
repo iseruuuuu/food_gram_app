@@ -10,6 +10,7 @@ abstract class RestaurantState with _$RestaurantState {
     @Default([]) List<String> restaurant,
     @Default([]) List<double> log,
     @Default([]) List<double> lat,
+    @Default([]) List<String> address,
     @Default('') String searchText,
     @Default(true) bool isApproval,
   }) = _RestaurantState;

@@ -77,6 +77,13 @@ class RestaurantScreen extends ConsumerWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        subtitle: Text(
+                          state.address[index],
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 10,
+                          ),
+                        ),
                       );
                     },
                   ),
