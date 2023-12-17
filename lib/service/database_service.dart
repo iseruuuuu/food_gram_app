@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:food_gram_app/main.dart';
+import 'package:food_gram_app/model/posts.dart';
 import 'package:food_gram_app/model/result.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -81,9 +82,11 @@ class DatabaseService {
         .uploadBinary('/$user/$uploadImage', imageBytes);
   }
 
-  Future<Result<void, Exception>> delete(int id) async {
+  Future<Result<void, Exception>> delete(Posts posts) async {
     try {
-      await supabase.from('posts').delete().eq('id', id);
+      final deleteImage = posts.foodImage.substring(1);
+      await supabase.storage.from('food').remove([deleteImage]);
+      await supabase.from('posts').delete().eq('id', posts.id);
       return const Success(null);
     } on PostgrestException catch (error) {
       logger.e(error.message);
