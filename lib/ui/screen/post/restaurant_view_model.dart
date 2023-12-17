@@ -51,17 +51,8 @@ class RestaurantViewModel extends _$RestaurantViewModel {
     final position = await Geolocator.getCurrentPosition();
     final latitude = position.latitude;
     final longitude = position.longitude;
-    late String url;
-    //TODO あとでいい感じに修正する
-    if (Platform.isIOS) {
-      url =
-          'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$latitude,$longitude&radius=1000&type=restaurant&key=$iOSKey';
-    } else {
-      //TODO Androidでちゃんとできるか確認をする
-
-      url =
-          'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$latitude,$longitude&radius=1000&type=restaurant&key=$androidKey';
-    }
+    final url =
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$latitude,$longitude&radius=1000&type=restaurant&key=${Platform.isIOS ? iOSKey : androidKey}';
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
