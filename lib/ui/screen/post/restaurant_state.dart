@@ -13,6 +13,7 @@ abstract class RestaurantState with _$RestaurantState {
     @Default([]) List<String> address,
     @Default('') String searchText,
     @Default(true) bool isApproval,
+    @Default('') String nextPageToken,
   }) = _RestaurantState;
 
   factory RestaurantState.fromJson(Map<String, dynamic> json) =>

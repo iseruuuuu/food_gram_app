@@ -21,6 +21,7 @@ class RestaurantViewModel extends _$RestaurantViewModel {
     ref.onDispose(controller.dispose);
     _determinePosition();
     _getInitialRestaurant();
+    //TODO　最初の許可画面でオンにしても読み込まない？
     return initState;
   }
 
@@ -85,36 +86,56 @@ class RestaurantViewModel extends _$RestaurantViewModel {
   }
 
   Future<void> search(String value) async {
+    clearList();
     if (value.isNotEmpty) {
       loading.state = true;
       state = state.copyWith(searchText: value);
       final query = value.toLowerCase();
-      final position = await Geolocator.getCurrentPosition();
-      final latitude = position.latitude;
-      final longitude = position.longitude;
+      final pageToken = state.nextPageToken.isNotEmpty
+          ? '&pagetoken=${state.nextPageToken}'
+          : '';
+      //TODO Androidだとエラーになる
+      //error_message: This API key is not authorized to use this service or API., html_attributions: [], results: [], status: REQUEST_DENIED
       final url =
-          'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurant+$query&location=$latitude,$longitude&radius=20000&key=${Platform.isIOS ? iOSKey : androidKey}';
+          'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurant+$query&key=${Platform.isIOS ? iOSKey : androidKey}$pageToken';
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        //TODO Androidだとエラーになる
-        //error_message: This API key is not authorized to use this service or API., html_attributions: [], results: [], status: REQUEST_DENIED
+        print(data);
         state = state.copyWith(
-          restaurant: List<String>.from(
-            data['results'].map((restaurant) => restaurant['name']),
-          ),
-          address: List<String>.from(
-            data['results']
-                .map((restaurant) => restaurant['formatted_address']),
-          ),
-          lat: List<double>.from(
-            data['results']
-                .map((restaurant) => restaurant['geometry']['location']['lat']),
-          ),
-          log: List<double>.from(
-            data['results']
-                .map((restaurant) => restaurant['geometry']['location']['lng']),
-          ),
+          restaurant: [
+            ...state.restaurant,
+            ...List<String>.from(
+              data['results'].map(
+                (restaurant) => restaurant['name'],
+              ),
+            ),
+          ],
+          address: [
+            ...state.address,
+            ...List<String>.from(
+              data['results'].map(
+                (restaurant) => restaurant['formatted_address'],
+              ),
+            ),
+          ],
+          lat: [
+            ...state.lat,
+            ...List<double>.from(
+              data['results'].map(
+                (restaurant) => restaurant['geometry']['location']['lat'],
+              ),
+            ),
+          ],
+          log: [
+            ...state.log,
+            ...List<double>.from(
+              data['results'].map(
+                (restaurant) => restaurant['geometry']['location']['lng'],
+              ),
+            )
+          ],
+          nextPageToken: data['next_page_token'] ?? '',
         );
         loading.state = false;
       } else {
@@ -124,5 +145,13 @@ class RestaurantViewModel extends _$RestaurantViewModel {
     } else {
       await _getInitialRestaurant();
     }
+  }
+
+  void clearList() {
+    state = state.copyWith(
+      restaurant: [],
+      log: [],
+      lat: [],
+    );
   }
 }
