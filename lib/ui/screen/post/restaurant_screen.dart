@@ -52,6 +52,31 @@ class RestaurantScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
+                GestureDetector(
+                  onTap: () {
+                    final restaurant = Restaurant(
+                      restaurant: '不明',
+                      lat: 0,
+                      lng: 0,
+                    );
+                    context.pop(restaurant);
+                  },
+                  child: ListTile(
+                    leading: Icon(Icons.restaurant_menu),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                    ),
+                    title: Text(
+                      'レストラン名が不明orヒットしない',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
                 //TODO Loadingをつける
                 Expanded(
                   child: ListView.builder(
