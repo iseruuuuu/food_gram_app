@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/model/restaurant.dart';
+import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_request.dart';
 import 'package:food_gram_app/ui/component/app_search_text_field.dart';
 import 'package:food_gram_app/ui/screen/post/restaurant_view_model.dart';
+import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:go_router/go_router.dart';
 
 class RestaurantScreen extends ConsumerWidget {
@@ -13,6 +15,7 @@ class RestaurantScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(restaurantViewModelProvider().notifier);
     final state = ref.watch(restaurantViewModelProvider());
+    final loading = ref.watch(loadingProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -77,42 +80,52 @@ class RestaurantScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-                //TODO Loadingをつける
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: state.restaurant.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        onTap: () {
-                          final restaurant = Restaurant(
-                            restaurant: state.restaurant[index],
-                            lat: state.lat[index],
-                            lng: state.log[index],
-                          );
-                          context.pop(restaurant);
-                        },
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 20,
-                        ),
-                        title: Text(
-                          state.restaurant[index],
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                if (!loading)
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: state.restaurant.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          onTap: () {
+                            final restaurant = Restaurant(
+                              restaurant: state.restaurant[index],
+                              lat: state.lat[index],
+                              lng: state.log[index],
+                            );
+                            context.pop(restaurant);
+                          },
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 20,
                           ),
-                        ),
-                        subtitle: Text(
-                          state.address[index],
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 10,
+                          title: Text(
+                            state.restaurant[index],
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                          subtitle: Text(
+                            state.address[index],
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 10,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                else
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Spacer(),
+                        AppLoading(loading: true),
+                        Spacer(),
+                      ],
+                    ),
                   ),
-                ),
               ],
             )
           : AppRequest(),
