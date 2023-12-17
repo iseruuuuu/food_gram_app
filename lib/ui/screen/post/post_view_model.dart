@@ -72,7 +72,12 @@ class PostViewModel extends _$PostViewModel {
 
   Future<void> camera() async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      final image = await ImagePicker().pickImage(
+        source: ImageSource.camera,
+        maxHeight: 960,
+        maxWidth: 960,
+        imageQuality: 10,
+      );
       if (image == null) {
         return;
       }
@@ -90,7 +95,12 @@ class PostViewModel extends _$PostViewModel {
 
   Future<void> album() async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final image = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 960,
+        maxWidth: 960,
+        imageQuality: 10,
+      );
       if (image == null) {
         return;
       }
