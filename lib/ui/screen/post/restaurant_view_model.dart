@@ -52,6 +52,7 @@ class RestaurantViewModel extends _$RestaurantViewModel {
     final latitude = position.latitude;
     final longitude = position.longitude;
     late String url;
+    //TODO あとでいい感じに修正する
     if (Platform.isIOS) {
       url =
           'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$latitude,$longitude&radius=1000&type=restaurant&key=$iOSKey';
@@ -66,7 +67,6 @@ class RestaurantViewModel extends _$RestaurantViewModel {
       final data = json.decode(response.body);
       //TODO Androidだとエラーになる
       //error_message: This API key is not authorized to use this service or API., html_attributions: [], results: [], status: REQUEST_DENIED
-      print(data);
       state = state.copyWith(
         restaurant: List<String>.from(
           data['results'].map((restaurant) => restaurant['name']),
@@ -85,8 +85,34 @@ class RestaurantViewModel extends _$RestaurantViewModel {
     }
   }
 
-  void search(String value) {
+  Future<void> search(String value) async {
     state = state.copyWith(searchText: value);
-    //TODO 検索したレストランを取得させる
+    final query = value.toLowerCase();
+    final position = await Geolocator.getCurrentPosition();
+    final latitude = position.latitude;
+    final longitude = position.longitude;
+    final url =
+        'https://maps.googleapis.com/maps/api/place/textsearch/json?query=$query&location=$latitude,$longitude&radius=1000&key=${Platform.isIOS ? iOSKey : androidKey}';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      //TODO Androidだとエラーになる
+      //error_message: This API key is not authorized to use this service or API., html_attributions: [], results: [], status: REQUEST_DENIED
+      state = state.copyWith(
+        restaurant: List<String>.from(
+          data['results'].map((restaurant) => restaurant['name']),
+        ),
+        lat: List<double>.from(
+          data['results']
+              .map((restaurant) => restaurant['geometry']['location']['lat']),
+        ),
+        log: List<double>.from(
+          data['results']
+              .map((restaurant) => restaurant['geometry']['location']['lng']),
+        ),
+      );
+    } else {
+      logger.e(response.statusCode);
+    }
   }
 }
