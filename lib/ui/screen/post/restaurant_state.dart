@@ -12,7 +12,7 @@ abstract class RestaurantState with _$RestaurantState {
     @Default([]) List<double> lat,
     @Default([]) List<String> address,
     @Default('') String searchText,
-    @Default(true) bool isApproval,
+    @Default(false) bool isApproval,
     @Default('') String nextPageToken,
   }) = _RestaurantState;
 

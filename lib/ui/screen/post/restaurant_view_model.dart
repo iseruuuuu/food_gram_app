@@ -20,8 +20,6 @@ class RestaurantViewModel extends _$RestaurantViewModel {
   }) {
     ref.onDispose(controller.dispose);
     _determinePosition();
-    _getInitialRestaurant();
-    //TODO　最初の許可画面でオンにしても読み込まない？
     return initState;
   }
 
@@ -36,17 +34,21 @@ class RestaurantViewModel extends _$RestaurantViewModel {
     LocationPermission permission;
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      //TODO  位置情報サービスを有効にするようアプリに要請する。
       state = state.copyWith(isApproval: false);
     }
-
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        //TODO  位置情報サービスを有効にするようアプリに要請する。
         state = state.copyWith(isApproval: false);
       }
+    }
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      state = state.copyWith(isApproval: true);
+    }
+    if (state.isApproval) {
+      await _getInitialRestaurant();
     }
   }
 
