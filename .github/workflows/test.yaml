@@ -29,7 +29,7 @@ jobs:
           echo $PROD_ENV_BASE64 | base64 --decode > .env.prod
           
 
-     - name: Retrieve the secret and decode it to a file ios and android
+      - name: Retrieve the secret and decode it to a file ios and android
         env:
           ANDROID_BASE64: ${{ secrets.ANDROIDMANIFEST_XML }}
           IOS_BASE64: ${{ secrets.INFO_PLIST }}
