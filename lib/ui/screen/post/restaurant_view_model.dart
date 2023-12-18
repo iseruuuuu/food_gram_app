@@ -131,7 +131,7 @@ class RestaurantViewModel extends _$RestaurantViewModel {
               data['results'].map(
                 (restaurant) => restaurant['geometry']['location']['lng'],
               ),
-            )
+            ),
           ],
           nextPageToken: data['next_page_token'] ?? '',
         );
