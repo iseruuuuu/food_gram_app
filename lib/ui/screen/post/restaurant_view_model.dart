@@ -60,8 +60,6 @@ class RestaurantViewModel extends _$RestaurantViewModel {
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      //TODO Androidだとエラーになる
-      //error_message: This API key is not authorized to use this service or API., html_attributions: [], results: [], status: REQUEST_DENIED
       state = state.copyWith(
         restaurant: List<String>.from(
           data['results'].map((restaurant) => restaurant['name']),
@@ -94,8 +92,6 @@ class RestaurantViewModel extends _$RestaurantViewModel {
       final pageToken = state.nextPageToken.isNotEmpty
           ? '&pagetoken=${state.nextPageToken}'
           : '';
-      //TODO Androidだとエラーになる
-      //error_message: This API key is not authorized to use this service or API., html_attributions: [], results: [], status: REQUEST_DENIED
       final url =
           'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurant+$query&key=${Platform.isIOS ? iOSKey : androidKey}$pageToken';
       final response = await http.get(Uri.parse(url));
