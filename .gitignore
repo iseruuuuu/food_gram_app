@@ -64,3 +64,7 @@ lib/generated_plugin_registrant.dart
 .env.prod
 
 lib/constants/api_key.dart
+
+# add gitginore why write google key
+ios/Runner/AppDelegate.swift
+android/app/src/main/AndroidManifest.xml
