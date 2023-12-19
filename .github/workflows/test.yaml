@@ -27,15 +27,6 @@ jobs:
         run: |
           echo $DEV_ENV_BASE64 | base64 --decode > .env.dev
           echo $PROD_ENV_BASE64 | base64 --decode > .env.prod
-          
-
-      - name: Retrieve the secret and decode it to a file ios and android
-        env:
-          ANDROID_BASE64: ${{ secrets.ANDROIDMANIFEST_XML }}
-          IOS_BASE64: ${{ secrets.APP_DELEGATE }}
-        run: |
-          echo $ANDROIDMANIFEST_XML_BASE64 | base64 --decode > android/app/src/main/AndroidManifest.xml
-          echo $APP_DELEGATE_BASE64 | base64 --decode > ios/Runner/AppDelegate.swift
 
       - name: fvm
         uses: kuhnroyal/flutter-fvm-config-action@v1
