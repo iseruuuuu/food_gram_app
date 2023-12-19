@@ -34,9 +34,8 @@ jobs:
           ANDROID_BASE64: ${{ secrets.ANDROIDMANIFEST_XML }}
           IOS_BASE64: ${{ secrets.INFO_PLIST }}
         run: |
-          echo $ANDROIDMANIFEST_XML_BASE64 | base64 --decode > AndroidManifest.xml
-          echo $INFO_PLIST_BASE64 | base64 --decode > Info.plist
-          
+          echo $ANDROIDMANIFEST_XML_BASE64 | base64 --decode > android/app/src/main/AndroidManifest.xml
+          echo $INFO_PLIST_BASE64 | base64 --decode > ios/Runner/AppDelegate.swift
 
       - name: fvm
         uses: kuhnroyal/flutter-fvm-config-action@v1
