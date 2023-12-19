@@ -54,6 +54,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        automaticallyImplyLeading: !loading,
       ),
       body: Stack(
         children: [
@@ -262,7 +263,10 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
               ],
             ),
           ),
-          AppLoading(loading: loading),
+          AppLoading(
+            loading: loading,
+            status: 'Loading...',
+          ),
         ],
       ),
     );

@@ -121,7 +121,7 @@ class RestaurantScreen extends ConsumerWidget {
                     child: Column(
                       children: [
                         Spacer(),
-                        AppLoading(loading: true),
+                        AppLoading(loading: true, status: ''),
                         Spacer(),
                       ],
                     ),

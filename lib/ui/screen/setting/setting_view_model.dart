@@ -18,6 +18,7 @@ class SettingViewModel extends _$SettingViewModel {
 
   Future<bool> signOut() async {
     loading.state = true;
+    await Future.delayed(Duration(seconds: 2));
     final result = await ref.read(authServiceProvider).signOut();
     result.whenOrNull(
       success: (_) {

@@ -58,6 +58,7 @@ class EditViewModel extends _$EditViewModel {
     };
     try {
       await supabase.from('users').update(updates).match({'user_id': user!.id});
+      await Future.delayed(Duration(seconds: 2));
       return true;
     } on PostgrestException catch (error) {
       logger.e(error.message);
