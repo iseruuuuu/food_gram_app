@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/main.dart';
+import 'package:food_gram_app/model/restaurant.dart';
 import 'package:food_gram_app/service/database_service.dart';
 import 'package:food_gram_app/ui/screen/post/post_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
@@ -34,12 +35,16 @@ class PostViewModel extends _$PostViewModel {
     primaryFocus?.unfocus();
     loading.state = true;
     if (foodTextController.text.isNotEmpty &&
-        commentTextController.text.isNotEmpty) {
+        commentTextController.text.isNotEmpty &&
+        state.restaurant != '') {
       final result = await ref.read(databaseServiceProvider).post(
             foodName: foodTextController.text,
             comment: commentTextController.text,
             uploadImage: uploadImage,
             imageBytes: imageBytes,
+            restaurant: state.restaurant,
+            lng: state.lng,
+            lat: state.lat,
           );
       await result.when(
         success: (_) async {
@@ -67,7 +72,12 @@ class PostViewModel extends _$PostViewModel {
 
   Future<void> camera() async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      final image = await ImagePicker().pickImage(
+        source: ImageSource.camera,
+        maxHeight: 960,
+        maxWidth: 960,
+        imageQuality: 10,
+      );
       if (image == null) {
         return;
       }
@@ -85,7 +95,12 @@ class PostViewModel extends _$PostViewModel {
 
   Future<void> album() async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final image = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 960,
+        maxWidth: 960,
+        imageQuality: 10,
+      );
       if (image == null) {
         return;
       }
@@ -101,7 +116,11 @@ class PostViewModel extends _$PostViewModel {
     }
   }
 
-  void onTapRestaurant() {
-    //TODO レストラン画面の選択の遷移を追記
+  void getPlace(Restaurant restaurant) {
+    state = state.copyWith(
+      restaurant: restaurant.restaurant,
+      lat: restaurant.lat,
+      lng: restaurant.lng,
+    );
   }
 }

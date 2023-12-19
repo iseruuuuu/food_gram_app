@@ -53,6 +53,10 @@
 	<string>写真の投稿のために許可が必要になります</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>写真の投稿のために許可が必要になります</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>レストランの取得のために許可が必要になります</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>レストランの取得のために許可が必要になります</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

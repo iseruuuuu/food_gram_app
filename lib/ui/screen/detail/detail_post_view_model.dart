@@ -1,3 +1,4 @@
+import 'package:food_gram_app/model/posts.dart';
 import 'package:food_gram_app/service/database_service.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
@@ -16,9 +17,9 @@ class DetailPostViewModel extends _$DetailPostViewModel {
 
   Loading get loading => ref.read(loadingProvider.notifier);
 
-  Future<bool> delete(int id) async {
+  Future<bool> delete(Posts posts) async {
     loading.state = true;
-    final result = await ref.read(databaseServiceProvider).delete(id);
+    final result = await ref.read(databaseServiceProvider).delete(posts);
     await result.when(
       success: (_) async {
         await Future.delayed(Duration(seconds: 3));

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/model/restaurant.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_post_text_field.dart';
 import 'package:food_gram_app/ui/screen/post/post_view_model.dart';
@@ -10,7 +11,12 @@ import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:go_router/go_router.dart';
 
 class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
-  const PostScreen({super.key});
+  const PostScreen({
+    required this.routerPath,
+    super.key,
+  });
+
+  final String routerPath;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -80,9 +86,17 @@ class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
                     maxLines: 1,
                   ),
                   GestureDetector(
-                    onTap: () => ref
-                        .read(postViewModelProvider().notifier)
-                        .onTapRestaurant(),
+                    onTap: () async {
+                      await context.pushNamed(routerPath).then(
+                        (value) {
+                          if (value != null) {
+                            ref
+                                .read(postViewModelProvider().notifier)
+                                .getPlace(value as Restaurant);
+                          }
+                        },
+                      );
+                    },
                     child: Container(
                       width: MediaQuery.of(context).size.width - 20,
                       height: 55,

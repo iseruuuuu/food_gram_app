@@ -103,7 +103,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                                           detailPostViewModelProvider()
                                               .notifier,
                                         )
-                                        .delete(widget.posts.id)
+                                        .delete(widget.posts)
                                         .then((value) async {
                                       if (value) {
                                         context.pop(true);

@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:food_gram_app/main.dart';
+import 'package:food_gram_app/model/posts.dart';
 import 'package:food_gram_app/model/result.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -20,6 +21,9 @@ class DatabaseService {
     required String comment,
     required String uploadImage,
     required Uint8List imageBytes,
+    required double lat,
+    required double lng,
+    required String restaurant,
   }) async {
     try {
       final updates = {
@@ -28,13 +32,10 @@ class DatabaseService {
         'comment': comment,
         'created_at': DateTime.now().toIso8601String(),
         'heart': 0,
-        //TODO あとでレストラン名を入れる
-        'restaurant': '吉野家',
+        'restaurant': restaurant,
         'food_image': '/$user/$uploadImage',
-        //TODO　あとでレストランからの座標を入れる
-        'lat': 0.1,
-        //TODO　あとでレストランからの座標を入れる
-        'lng': 0.1,
+        'lat': lat,
+        'lng': lng,
       };
       await upload(uploadImage: uploadImage, imageBytes: imageBytes);
       await supabase.from('posts').insert(updates);
@@ -81,9 +82,11 @@ class DatabaseService {
         .uploadBinary('/$user/$uploadImage', imageBytes);
   }
 
-  Future<Result<void, Exception>> delete(int id) async {
+  Future<Result<void, Exception>> delete(Posts posts) async {
     try {
-      await supabase.from('posts').delete().eq('id', id);
+      final deleteImage = posts.foodImage.substring(1);
+      await supabase.storage.from('food').remove([deleteImage]);
+      await supabase.from('posts').delete().eq('id', posts.id);
       return const Success(null);
     } on PostgrestException catch (error) {
       logger.e(error.message);

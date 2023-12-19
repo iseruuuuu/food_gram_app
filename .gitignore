@@ -62,3 +62,5 @@ lib/generated_plugin_registrant.dart
 
 .env.dev
 .env.prod
+
+lib/constants/api_key.dart
