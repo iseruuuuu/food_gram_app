@@ -7,6 +7,7 @@ import 'package:food_gram_app/ui/component/app_search_text_field.dart';
 import 'package:food_gram_app/ui/screen/post/restaurant_view_model.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class RestaurantScreen extends ConsumerWidget {
   const RestaurantScreen({super.key});
@@ -38,6 +39,7 @@ class RestaurantScreen extends ConsumerWidget {
                       lat: 0,
                       lng: 0,
                     );
+                    primaryFocus?.unfocus();
                     context.pop(restaurant);
                   },
                   child: ListTile(
@@ -62,6 +64,7 @@ class RestaurantScreen extends ConsumerWidget {
                       lat: 0,
                       lng: 0,
                     );
+                    primaryFocus?.unfocus();
                     context.pop(restaurant);
                   },
                   child: ListTile(
@@ -92,6 +95,7 @@ class RestaurantScreen extends ConsumerWidget {
                               lat: state.lat[index],
                               lng: state.log[index],
                             );
+                            primaryFocus?.unfocus();
                             context.pop(restaurant);
                           },
                           trailing: Icon(
@@ -121,7 +125,12 @@ class RestaurantScreen extends ConsumerWidget {
                     child: Column(
                       children: [
                         Spacer(),
-                        AppLoading(loading: true, status: ''),
+                        Center(
+                          child: LoadingAnimationWidget.dotsTriangle(
+                            color: Colors.deepPurple,
+                            size: 50,
+                          ),
+                        ),
                         Spacer(),
                       ],
                     ),
