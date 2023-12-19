@@ -107,40 +107,45 @@ class PostScreen extends ConsumerWidget
                         },
                       );
                     },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 20,
-                      height: 55,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: const Color(0xFF6750A4)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 30,
+                        vertical: 20,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              state.restaurant,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: state.restaurant == '食べた場所'
-                                    ? Colors.grey
-                                    : Colors.black,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 55,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: const Color(0xFF6750A4)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                state.restaurant,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: state.restaurant == '食べた場所'
+                                      ? Colors.grey
+                                      : Colors.black,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  AppPostTextField(
+                  AppPostCommentTextField(
                     controller: controller.commentTextController,
                     hintText: 'コメント',
-                    maxLines: 7,
                   ),
                 ],
               ),
