@@ -34,9 +34,10 @@ class PostViewModel extends _$PostViewModel {
   Future<bool> post() async {
     primaryFocus?.unfocus();
     loading.state = true;
+    state = state.copyWith(status: 'Loading...');
     if (foodTextController.text.isNotEmpty &&
-        commentTextController.text.isNotEmpty &&
-        state.restaurant != '') {
+        state.restaurant != '食べた場所' &&
+        uploadImage != '') {
       final result = await ref.read(databaseServiceProvider).post(
             foodName: foodTextController.text,
             comment: commentTextController.text,
@@ -49,7 +50,7 @@ class PostViewModel extends _$PostViewModel {
       await result.when(
         success: (_) async {
           state = state.copyWith(
-            status: '投稿が完了しました',
+            status: 'Success 🎉',
             isSuccess: true,
           );
           await Future.delayed(Duration(seconds: 2));
@@ -85,7 +86,6 @@ class PostViewModel extends _$PostViewModel {
       uploadImage = image.name;
       state = state.copyWith(
         foodImage: image.path,
-        status: '写真の添付が成功しました',
       );
     } on PlatformException catch (error) {
       logger.e(error.message);
