@@ -128,7 +128,10 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                 ],
               ),
             ),
-            AppLoading(loading: loading),
+            AppLoading(
+              loading: loading,
+              status: 'Loading...',
+            ),
           ],
         ),
       ),

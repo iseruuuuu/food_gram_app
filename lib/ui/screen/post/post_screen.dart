@@ -7,10 +7,12 @@ import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_post_text_field.dart';
 import 'package:food_gram_app/ui/screen/post/post_view_model.dart';
 import 'package:food_gram_app/utils/mixin/show_modal_bottom_sheet_mixin.dart';
+import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:go_router/go_router.dart';
 
-class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
+class PostScreen extends ConsumerWidget
+    with ShowModalBottomSheetMixin, SnackBarMixin {
   const PostScreen({
     required this.routerPath,
     super.key,
@@ -29,25 +31,33 @@ class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.transparent,
+          backgroundColor: !loading ? Colors.white : Colors.transparent,
+          automaticallyImplyLeading: !loading,
           actions: [
-            TextButton(
-              onPressed: () {
-                ref.read(postViewModelProvider().notifier).post().then((value) {
-                  if (value) {
+            if (!loading)
+              TextButton(
+                onPressed: () async {
+                  final result =
+                      await ref.read(postViewModelProvider().notifier).post();
+                  final updatedState = ref.read(postViewModelProvider());
+                  if (result) {
                     context.pop(true);
+                  } else {
+                    openSnackBar(context, updatedState.status);
                   }
-                });
-              },
-              child: const Text(
-                '投稿',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                },
+                child: const Text(
+                  'ツイート',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
                 ),
-              ),
-            ),
+              )
+            else
+              SizedBox(),
           ],
         ),
         body: Stack(
@@ -82,7 +92,7 @@ class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
                   ),
                   AppPostTextField(
                     controller: controller.foodTextController,
-                    hintText: 'Food Name',
+                    hintText: '食べたもの',
                     maxLines: 1,
                   ),
                   GestureDetector(
@@ -117,7 +127,7 @@ class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
                               style: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,
-                                color: state.restaurant == 'レストランを選択'
+                                color: state.restaurant == '食べた場所'
                                     ? Colors.grey
                                     : Colors.black,
                               ),
@@ -129,20 +139,16 @@ class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
                   ),
                   AppPostTextField(
                     controller: controller.commentTextController,
-                    hintText: 'Comment',
+                    hintText: 'コメント',
                     maxLines: 7,
-                  ),
-                  Text(
-                    state.status,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                    ),
                   ),
                 ],
               ),
             ),
-            AppLoading(loading: loading),
+            AppLoading(
+              loading: loading,
+              status: state.status,
+            ),
           ],
         ),
       ),
