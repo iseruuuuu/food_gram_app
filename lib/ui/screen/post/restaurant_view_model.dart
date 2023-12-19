@@ -99,7 +99,6 @@ class RestaurantViewModel extends _$RestaurantViewModel {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        print(data);
         state = state.copyWith(
           restaurant: [
             ...state.restaurant,
