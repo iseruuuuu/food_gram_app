@@ -31,6 +31,7 @@ class PostScreen extends ConsumerWidget
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           backgroundColor: !loading ? Colors.white : Colors.transparent,
           automaticallyImplyLeading: !loading,
           actions: [
