@@ -153,27 +153,31 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                 title: const Text('アカウント'),
                 tiles: <SettingsTile>[
                   SettingsTile.navigation(
-                    leading: const Icon(Icons.logout),
-                    title: const Text(
+                    title: Text(
                       'ログアウト',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     onPressed: (context) {
                       openLogOutDialog(
                         context: context,
-                        logout: () => ref
-                            .read(settingViewModelProvider().notifier)
-                            .signOut()
-                            .then((value) {
-                          if (value) {
-                            if (mounted) {
-                              context.pushReplacementNamed(
-                                RouterPath.authentication,
-                              );
-                            }
-                          } else {
-                            openErrorSnackBar(context);
-                          }
-                        }),
+                        logout: () =>
+                            ref
+                                .read(settingViewModelProvider().notifier)
+                                .signOut()
+                                .then((value) {
+                              if (value) {
+                                if (mounted) {
+                                  context.pushReplacementNamed(
+                                    RouterPath.authentication,
+                                  );
+                                }
+                              } else {
+                                openErrorSnackBar(context);
+                              }
+                            }),
                       );
                     },
                   ),
