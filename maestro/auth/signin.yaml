@@ -1,0 +1,20 @@
+appId: com.example.food_gram_app.dev
+---
+- launchApp:
+    clearState: true
+- assertVisible: Food Instagram
+- tapOn: メールアドレス
+- eraseText
+- inputText: iseryuuuuu3@gmail.com
+- tapOn: 新規作成  /  ログイン
+- waitForAnimationToEnd
+- assertVisible: メールアプリで認証をしてください
+- launchApp: com.google.android.gm
+- tapOn: Your Magic Link
+- runFlow:
+    when:
+      visible: 元のメッセージを表示
+    commands:
+      - tapOn: 元のメッセージを表示
+- tapOn: Log In
+

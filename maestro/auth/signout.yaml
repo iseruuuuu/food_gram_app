@@ -1,0 +1,14 @@
+appId: com.example.food_gram_app.dev
+---
+- tapOn: |-
+    settingIcon
+    Tab 3 of 3
+- tapOn: ログアウト
+- assertVisible: キャンセル
+- assertVisible: ログアウト
+- tapOn: キャンセル
+- tapOn: ログアウト
+- tapOn: ログアウト
+- assertVisible: Food Instagram
+- assertVisible: メールアドレス
+- assertVisible: 新規作成  /  ログイン
