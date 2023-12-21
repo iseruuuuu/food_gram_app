@@ -91,48 +91,51 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                         ],
                       ),
                       Spacer(),
-                      IconButton(
-                        onPressed: () {
-                          (widget.users.userId == user)
-                              ? openDialog(
-                                  context: context,
-                                  title: '投稿の削除',
-                                  subTitle: 'この投稿を削除しますか？\n一度削除してしまうと復元できません',
-                                  onTap: () async {
-                                    await ref
-                                        .read(
-                                          detailPostViewModelProvider()
-                                              .notifier,
-                                        )
-                                        .delete(widget.posts)
-                                        .then((value) async {
-                                      if (value) {
-                                        context.pop(true);
-                                      } else {
-                                        openSnackBar(context, '削除が失敗しました');
-                                      }
-                                    });
-                                  },
-                                )
-                              : openDialog(
-                                  context: context,
-                                  title: '投稿の報告',
-                                  subTitle:
-                                      'この投稿について報告を行います。\n Googleフォームに遷移します。',
-                                  onTap: () async {
-                                    await launcherUrl(
-                                      'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
-                                    ).then((value) {
-                                      if (!value) {
-                                        openErrorSnackBar(context);
-                                      } else {
-                                        context.pop();
-                                      }
-                                    });
-                                  },
-                                );
-                        },
-                        icon: Icon(Icons.menu),
+                      Semantics(
+                        label: 'menuIcon',
+                        child: IconButton(
+                          onPressed: () {
+                            (widget.users.userId == user)
+                                ? openDialog(
+                                    context: context,
+                                    title: '投稿の削除',
+                                    subTitle: 'この投稿を削除しますか？\n一度削除してしまうと復元できません',
+                                    onTap: () async {
+                                      await ref
+                                          .read(
+                                            detailPostViewModelProvider()
+                                                .notifier,
+                                          )
+                                          .delete(widget.posts)
+                                          .then((value) async {
+                                        if (value) {
+                                          context.pop(true);
+                                        } else {
+                                          openSnackBar(context, '削除が失敗しました');
+                                        }
+                                      });
+                                    },
+                                  )
+                                : openDialog(
+                                    context: context,
+                                    title: '投稿の報告',
+                                    subTitle:
+                                        'この投稿について報告を行います。\n Googleフォームに遷移します。',
+                                    onTap: () async {
+                                      await launcherUrl(
+                                        'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
+                                      ).then((value) {
+                                        if (!value) {
+                                          openErrorSnackBar(context);
+                                        } else {
+                                          context.pop();
+                                        }
+                                      });
+                                    },
+                                  );
+                          },
+                          icon: Icon(Icons.menu),
+                        ),
                       ),
                     ],
                   ),
