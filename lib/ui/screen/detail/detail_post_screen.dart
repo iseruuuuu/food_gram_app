@@ -204,15 +204,15 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                         size: 30,
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
+                    GestureDetector(
+                      onTap: () {
                         Share.share(
                           '${widget.posts.restaurant}で食べたレビューを投稿しました！'
                           '\n詳しくはfoodGramで確認してみよう！'
                           '\n#foodGram',
                         );
                       },
-                      icon: Icon(
+                      child: Icon(
                         Icons.send,
                         size: 30,
                       ),
