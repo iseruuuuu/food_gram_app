@@ -22,15 +22,24 @@ class TabScreen extends ConsumerWidget {
           onTap: controller.onTap,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(
+                Icons.home,
+                semanticLabel: 'homeIcon',
+              ),
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.profile_circled),
+              icon: Icon(
+                CupertinoIcons.profile_circled,
+                semanticLabel: 'profileIcon',
+              ),
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
+              icon: Icon(
+                Icons.settings,
+                semanticLabel: 'settingIcon',
+              ),
               label: '',
             ),
           ],
