@@ -1,5 +1,5 @@
 appId: com.example.food_gram_app.dev
 ---
 - runFlow: auth/signin.yaml
-- runFlow: show_profile/show-profile.yaml
+- runFlow: show/show-profile.yaml
 - runFlow: auth/signout.yaml
