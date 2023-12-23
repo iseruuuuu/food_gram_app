@@ -1,0 +1,20 @@
+appId: com.example.food_gram_app.dev
+---
+- tapOn:
+    point: 88%,87%
+- tapOn:
+    point: 50%,23%
+- tapOn: アルバム
+- tapOn:
+    point: 20%,50%
+- tapOn: 食べたもの
+- inputText: nash
+- hideKeyboard
+- tapOn: 食べた場所
+- tapOn: 自炊
+- tapOn: コメント
+- inputText: good
+- hideKeyboard
+- tapOn: 投稿
+- assertNotVisible: 投稿がありません
+

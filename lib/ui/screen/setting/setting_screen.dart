@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -24,6 +26,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
   @override
   Widget build(BuildContext context) {
     final loading = ref.watch(loadingProvider);
+    final state = ref.watch(settingViewModelProvider());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppAppBar(),
@@ -40,6 +43,10 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                   //   onPressed: (context) {},
                   // ),
                   SettingsTile.navigation(
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
                     leading: const Icon(
                       FontAwesomeIcons.twitter,
                       color: Colors.blue,
@@ -57,6 +64,10 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     },
                   ),
                   SettingsTile.navigation(
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
                     leading: const Icon(FontAwesomeIcons.github),
                     title: const Text('コントレビュートする'),
                     onPressed: (context) {
@@ -70,6 +81,10 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     },
                   ),
                   SettingsTile.navigation(
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
                     leading: const Icon(Icons.account_balance_wallet_outlined),
                     title: const Text('ライセンス'),
                     onPressed: (context) {
@@ -92,6 +107,10 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                   //   onPressed: (context) {},
                   // ),
                   SettingsTile.navigation(
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
                     leading: const Icon(Icons.question_answer),
                     title: const Text('FAQ'),
                     onPressed: (context) {
@@ -105,7 +124,14 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     },
                   ),
                   SettingsTile.navigation(
-                    leading: const Icon(Icons.lock),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
+                    leading: const Icon(
+                      Icons.lock,
+                      color: Colors.grey,
+                    ),
                     title: const Text('プライバシーポリシー'),
                     onPressed: (context) {
                       launcherUrl(
@@ -118,7 +144,14 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     },
                   ),
                   SettingsTile.navigation(
-                    leading: const Icon(Icons.call),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
+                    leading: Icon(
+                      Icons.call,
+                      color: Colors.green,
+                    ),
                     title: const Text('利用規約'),
                     onPressed: (context) {
                       launcherUrl(
@@ -131,7 +164,14 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     },
                   ),
                   SettingsTile.navigation(
-                    leading: const Icon(Icons.mail),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
+                    leading: Icon(
+                      Icons.mail,
+                      color: Colors.blue,
+                    ),
                     title: const Text('お問い合わせ'),
                     onPressed: (context) {
                       launcherUrl(
@@ -144,8 +184,42 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     },
                   ),
                   SettingsTile(
+                    leading: Icon(
+                      Icons.battery_4_bar_sharp,
+                      color: Colors.green,
+                    ),
+                    title: const Text('バッテリー残量'),
+                    trailing: Text(
+                      state.battery,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  SettingsTile(
+                    leading: Icon(Icons.phone_android),
+                    title: const Text('端末情報'),
+                    trailing: Text(
+                      state.model,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  SettingsTile(
+                    leading: Icon(
+                      Platform.isAndroid ? Icons.android : Icons.apple,
+                      color: Platform.isAndroid ? Colors.green : Colors.red,
+                    ),
+                    title: Text(Platform.isAndroid ? 'SDK' : 'iOSバージョン'),
+                    trailing: Text(
+                      state.sdk,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  SettingsTile(
+                    leading: Icon(Icons.settings, color: Colors.grey),
                     title: const Text('アプリのバージョン'),
-                    trailing: const Text('1.0.0'),
+                    trailing: Text(
+                      state.version,
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ),
                 ],
               ),
@@ -153,9 +227,16 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                 title: const Text('アカウント'),
                 tiles: <SettingsTile>[
                   SettingsTile.navigation(
-                    leading: const Icon(Icons.logout),
-                    title: const Text(
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
+                    title: Text(
                       'ログアウト',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     onPressed: (context) {
                       openLogOutDialog(

@@ -48,7 +48,7 @@ class PostScreen extends ConsumerWidget
                   }
                 },
                 child: const Text(
-                  'ツイート',
+                  '投稿',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -97,6 +97,7 @@ class PostScreen extends ConsumerWidget
                   ),
                   GestureDetector(
                     onTap: () async {
+                      primaryFocus?.unfocus();
                       await context.pushNamed(routerPath).then(
                         (value) {
                           if (value != null) {

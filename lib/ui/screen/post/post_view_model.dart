@@ -77,7 +77,7 @@ class PostViewModel extends _$PostViewModel {
         source: ImageSource.camera,
         maxHeight: 960,
         maxWidth: 960,
-        imageQuality: 10,
+        imageQuality: 100,
       );
       if (image == null) {
         return;
@@ -99,7 +99,7 @@ class PostViewModel extends _$PostViewModel {
         source: ImageSource.gallery,
         maxHeight: 960,
         maxWidth: 960,
-        imageQuality: 10,
+        imageQuality: 100,
       );
       if (image == null) {
         return;

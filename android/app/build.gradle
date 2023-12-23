@@ -7,8 +7,14 @@ plugins {
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
+    localPropertiesFile.withReader('UTF-8') { reader -> localProperties.load(reader)
+    }
+}
+
+def secretProperties = new Properties()
+def secretPropertiesFile = rootProject.file('secret.properties')
+if (secretPropertiesFile.exists()) {
+    secretPropertiesFile.withReader('UTF-8') { reader -> secretProperties.load(reader)
     }
 }
 
@@ -26,8 +32,7 @@ task copySources(type: Copy) {
     from "src/$flavor/res"
     into 'src/main/res'
 }
-tasks.whenTaskAdded { task ->
-    task.dependsOn copySources
+tasks.whenTaskAdded { task -> task.dependsOn copySources
 }
 
 android {
@@ -55,6 +60,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         resValue "string", "app_name", appName
+        manifestPlaceholders += [googleMapApiKey: secretProperties.getProperty('googleMap.apiKey'),]
     }
 
     buildTypes {

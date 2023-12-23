@@ -1,0 +1,5 @@
+appId: com.example.food_gram_app.dev
+---
+- runFlow: auth/signin.yaml
+- runFlow: show/show-timeline.yaml
+- runFlow: delete/delete-post.yaml

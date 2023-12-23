@@ -1,0 +1,18 @@
+appId: com.example.food_gram_app.dev
+---
+- tapOn:
+    point: 17%,13%
+- tapOn: menuIcon
+- tapOn: いいえ
+- tapOn: menuIcon
+- runFlow:
+    when:
+      visible: 投稿の削除
+    commands:
+      - tapOn: はい
+- runFlow:
+    when:
+      visible: 投稿の報告
+    commands:
+      - tapOn: はい
+- tapOn: はい
