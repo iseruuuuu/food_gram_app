@@ -97,6 +97,7 @@ class PostScreen extends ConsumerWidget
                   ),
                   GestureDetector(
                     onTap: () async {
+                      primaryFocus?.unfocus();
                       await context.pushNamed(routerPath).then(
                         (value) {
                           if (value != null) {
