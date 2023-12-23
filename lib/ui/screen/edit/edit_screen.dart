@@ -15,91 +15,94 @@ class EditScreen extends ConsumerWidget {
     final controller = ref.watch(editViewModelProvider().notifier);
     final state = ref.watch(editViewModelProvider());
     final loading = ref.watch(loadingProvider);
-    return GestureDetector(
-      onTap: () => primaryFocus?.unfocus(),
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          surfaceTintColor: Colors.transparent,
-          backgroundColor: !loading ? Colors.white : Colors.transparent,
-          automaticallyImplyLeading: !loading,
-          actions: [
-            if (!loading)
-              TextButton(
-                onPressed: () => ref
-                    .read(editViewModelProvider().notifier)
-                    .update()
-                    .then((value) {
-                  if (value) {
-                    context.pop(true);
-                  }
-                }),
-                child: Text(
-                  '更新',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: loading ? Colors.grey : Colors.blueAccent,
+    return PopScope(
+      canPop: !loading,
+      child: GestureDetector(
+        onTap: () => primaryFocus?.unfocus(),
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
+            backgroundColor: !loading ? Colors.white : Colors.transparent,
+            automaticallyImplyLeading: !loading,
+            actions: [
+              if (!loading)
+                TextButton(
+                  onPressed: () => ref
+                      .read(editViewModelProvider().notifier)
+                      .update()
+                      .then((value) {
+                    if (value) {
+                      context.pop(true);
+                    }
+                  }),
+                  child: Text(
+                    '更新',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: loading ? Colors.grey : Colors.blueAccent,
+                    ),
                   ),
-                ),
-              )
-            else
-              SizedBox(),
-          ],
-        ),
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.white,
-                    backgroundImage:
-                        AssetImage('assets/icon/icon${state.number}.png'),
-                    radius: 60,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      'アイコンの設定',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                )
+              else
+                SizedBox(),
+            ],
+          ),
+          body: Stack(
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.white,
+                      backgroundImage:
+                          AssetImage('assets/icon/icon${state.number}.png'),
+                      radius: 60,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Text(
+                        'アイコンの設定',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
                     ),
-                  ),
-                  Wrap(
-                    children: List.generate(
-                      6,
-                      (index) {
-                        return AppIcon(
-                          onTap: () => ref
-                              .read(editViewModelProvider().notifier)
-                              .selectIcon(index + 1),
-                          number: index + 1,
-                        );
-                      },
+                    Wrap(
+                      children: List.generate(
+                        6,
+                        (index) {
+                          return AppIcon(
+                            onTap: () => ref
+                                .read(editViewModelProvider().notifier)
+                                .selectIcon(index + 1),
+                            number: index + 1,
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  AppNameTextField(
-                    title: '名前',
-                    controller: controller.nameTextController,
-                  ),
-                  AppUserNameTextField(
-                    controller: controller.useNameTextController,
-                  ),
-                  AppSelfIntroductionTextField(
-                    controller: controller.selfIntroduceTextController,
-                  ),
-                  Text(state.status),
-                ],
+                    AppNameTextField(
+                      title: '名前',
+                      controller: controller.nameTextController,
+                    ),
+                    AppUserNameTextField(
+                      controller: controller.useNameTextController,
+                    ),
+                    AppSelfIntroductionTextField(
+                      controller: controller.selfIntroduceTextController,
+                    ),
+                    Text(state.status),
+                  ],
+                ),
               ),
-            ),
-            AppLoading(
-              loading: loading,
-              status: 'Loading...',
-            ),
-          ],
+              AppLoading(
+                loading: loading,
+                status: 'Loading...',
+              ),
+            ],
+          ),
         ),
       ),
     );
