@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/model/posts.dart';
 import 'package:food_gram_app/model/users.dart';
+import 'package:food_gram_app/ui/component/app_heart.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
 import 'package:food_gram_app/utils/mixin/dialog_mixin.dart';
@@ -31,6 +32,7 @@ class DetailPostScreen extends ConsumerStatefulWidget {
 class DetailPostScreenState extends ConsumerState<DetailPostScreen>
     with DialogMixin, UrlLauncherMixin, SnackBarMixin {
   bool isHeart = false;
+  bool doesHeart = false;
   int initialHeart = 0;
 
   @override
@@ -158,6 +160,11 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                             setState(() {
                               initialHeart++;
                               isHeart = true;
+                              doesHeart = true;
+                            });
+                            await Future.delayed(Duration(seconds: 2));
+                            setState(() {
+                              doesHeart = false;
                             });
                           }
                         }
@@ -195,6 +202,11 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                                 setState(() {
                                   initialHeart++;
                                   isHeart = true;
+                                  doesHeart = true;
+                                });
+                                await Future.delayed(Duration(seconds: 2));
+                                setState(() {
+                                  doesHeart = false;
                                 });
                               }
                             }
@@ -266,6 +278,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
               ],
             ),
           ),
+          AppHeart(isHeart: doesHeart),
           AppLoading(
             loading: loading,
             status: 'Loading...',
