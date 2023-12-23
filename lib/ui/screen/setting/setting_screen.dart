@@ -246,9 +246,11 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                             .signOut()
                             .then((value) {
                           if (value) {
-                            context.pushReplacementNamed(
-                              RouterPath.authentication,
-                            );
+                            if (mounted) {
+                              context.pushReplacementNamed(
+                                RouterPath.authentication,
+                              );
+                            }
                           } else {
                             openErrorSnackBar(context);
                           }
