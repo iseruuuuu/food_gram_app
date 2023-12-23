@@ -3,6 +3,7 @@ appId: com.example.food_gram_app.dev
 - tapOn: |-
     settingIcon
     Tab 3 of 3
+- scroll
 - tapOn: ログアウト
 - assertVisible: キャンセル
 - assertVisible: ログアウト
