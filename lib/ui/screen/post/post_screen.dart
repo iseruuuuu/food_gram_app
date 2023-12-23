@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/model/restaurant.dart';
@@ -37,15 +38,22 @@ class PostScreen extends ConsumerWidget
           actions: [
             if (!loading)
               TextButton(
-                onPressed: () async {
-                  final result =
-                      await ref.read(postViewModelProvider().notifier).post();
-                  final updatedState = ref.read(postViewModelProvider());
-                  if (result) {
-                    context.pop(true);
-                  } else {
-                    openSnackBar(context, updatedState.status);
-                  }
+                onPressed: () {
+                  EasyDebounce.debounce(
+                    'post',
+                    Duration(seconds: 1),
+                    () async {
+                      final result = await ref
+                          .read(postViewModelProvider().notifier)
+                          .post();
+                      final updatedState = ref.read(postViewModelProvider());
+                      if (result) {
+                        context.pop(true);
+                      } else {
+                        openSnackBar(context, updatedState.status);
+                      }
+                    },
+                  );
                 },
                 child: const Text(
                   '投稿',

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -221,11 +222,14 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                     ),
                     GestureDetector(
                       onTap: () {
-                        Share.share(
-                          '${widget.posts.restaurant}で食べたレビューを投稿しました！'
-                          '\n詳しくはfoodGramで確認してみよう！'
-                          '\n#foodGram',
-                        );
+                        EasyDebounce.debounce('post', Duration(seconds: 1),
+                            () async {
+                          await Share.share(
+                            '${widget.posts.restaurant}で食べたレビューを投稿しました！'
+                            '\n詳しくはfoodGramで確認してみよう！'
+                            '\n#foodGram',
+                          );
+                        });
                       },
                       child: Icon(
                         Icons.send,
