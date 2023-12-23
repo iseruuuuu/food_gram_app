@@ -28,7 +28,6 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   logger: ^2.0.2+1
   package_info_plus: ^5.0.1
-  path_provider: ^2.1.1
   riverpod_annotation: ^2.3.0
   settings_ui: ^2.0.2
   share_plus: ^7.2.1
