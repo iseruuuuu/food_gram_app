@@ -48,7 +48,7 @@ class PostScreen extends ConsumerWidget
                   }
                 },
                 child: const Text(
-                  'ツイート',
+                  '投稿',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
