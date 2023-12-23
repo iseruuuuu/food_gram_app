@@ -12,6 +12,7 @@ dependencies:
   cached_network_image: ^3.3.0
   cupertino_icons: ^1.0.2
   device_info_plus: ^9.1.1
+  easy_debounce: ^2.0.3
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.1.0

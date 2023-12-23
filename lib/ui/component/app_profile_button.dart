@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
@@ -25,7 +26,10 @@ class AppMyProfileButton extends StatelessWidget with SnackBarMixin {
         ProfileButton(
           title: 'ポイントを交換する',
           onTap: () {
-            openComingSoonSnackBar(context);
+            EasyDebounce.debounce('exchange point', Duration(seconds: 1),
+                () async {
+              openComingSoonSnackBar(context);
+            });
           },
           icon: FontAwesomeIcons.coins,
         ),
