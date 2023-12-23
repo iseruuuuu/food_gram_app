@@ -13,6 +13,7 @@ import 'package:food_gram_app/utils/mixin/dialog_mixin.dart';
 import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
 import 'package:food_gram_app/utils/mixin/url_launcher_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
+import 'package:gif/gif.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -31,14 +32,20 @@ class DetailPostScreen extends ConsumerStatefulWidget {
 }
 
 class DetailPostScreenState extends ConsumerState<DetailPostScreen>
-    with DialogMixin, UrlLauncherMixin, SnackBarMixin {
+    with
+        DialogMixin,
+        UrlLauncherMixin,
+        SnackBarMixin,
+        TickerProviderStateMixin {
   bool isHeart = false;
   bool doesHeart = false;
   int initialHeart = 0;
+  late GifController controller;
 
   @override
   void initState() {
     initialHeart = widget.posts.heart;
+    controller = GifController(vsync: this);
     super.initState();
   }
 
@@ -153,6 +160,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                             setState(() {
                               initialHeart--;
                               isHeart = false;
+                              doesHeart = false;
                             });
                           } else {
                             await supabase.from('posts').update({
@@ -162,10 +170,6 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                               initialHeart++;
                               isHeart = true;
                               doesHeart = true;
-                            });
-                            await Future.delayed(Duration(seconds: 2));
-                            setState(() {
-                              doesHeart = false;
                             });
                           }
                         }
@@ -195,6 +199,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                                 setState(() {
                                   initialHeart--;
                                   isHeart = false;
+                                  doesHeart = false;
                                 });
                               } else {
                                 await supabase.from('posts').update({
@@ -204,10 +209,6 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                                   initialHeart++;
                                   isHeart = true;
                                   doesHeart = true;
-                                });
-                                await Future.delayed(Duration(seconds: 2));
-                                setState(() {
-                                  doesHeart = false;
                                 });
                               }
                             }
@@ -282,7 +283,10 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
               ],
             ),
           ),
-          AppHeart(isHeart: doesHeart),
+          AppHeart(
+            isHeart: doesHeart,
+            controller: controller,
+          ),
           AppLoading(
             loading: loading,
             status: 'Loading...',
