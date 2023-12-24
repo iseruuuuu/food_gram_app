@@ -80,8 +80,8 @@ final timeLineRouter = GoRoute(
     GoRoute(
       path: '${RouterPath.timeLine}/${RouterPath.timeLineRestaurant}',
       name: RouterPath.timeLineRestaurant,
-      builder: (context, state) {
-        return const RestaurantScreen();
+      pageBuilder: (context, state) {
+        return slideIn(RestaurantScreen());
       },
     ),
     GoRoute(
