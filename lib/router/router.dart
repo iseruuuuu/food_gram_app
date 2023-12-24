@@ -4,6 +4,7 @@ import 'package:food_gram_app/model/model.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_screen.dart';
 import 'package:food_gram_app/ui/screen/post/restaurant_screen.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
+import 'package:food_gram_app/utils/amination.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -42,15 +43,15 @@ GoRouter router(RouterRef ref) {
       GoRoute(
         path: '/${RouterPath.newAccount}',
         name: RouterPath.newAccount,
-        builder: (context, state) {
-          return const NewAccountScreen();
+        pageBuilder: (context, state) {
+          return blackOut(NewAccountScreen());
         },
       ),
       GoRoute(
         path: '/${RouterPath.tab}',
         name: RouterPath.tab,
-        builder: (context, state) {
-          return const TabScreen();
+        pageBuilder: (context, state) {
+          return blackOut(TabScreen());
         },
         routes: <RouteBase>[
           timeLineRouter,
@@ -72,23 +73,25 @@ final timeLineRouter = GoRoute(
     GoRoute(
       path: '${RouterPath.timeLine}/${RouterPath.timeLinepost}',
       name: RouterPath.timeLinepost,
-      builder: (context, state) {
-        return const PostScreen(routerPath: RouterPath.timeLineRestaurant);
+      pageBuilder: (context, state) {
+        return whiteOut(PostScreen(routerPath: RouterPath.timeLineRestaurant));
       },
     ),
     GoRoute(
       path: '${RouterPath.timeLine}/${RouterPath.timeLineRestaurant}',
       name: RouterPath.timeLineRestaurant,
-      builder: (context, state) {
-        return const RestaurantScreen();
+      pageBuilder: (context, state) {
+        return slideIn(RestaurantScreen());
       },
     ),
     GoRoute(
       path: '${RouterPath.timeLine}/${RouterPath.timeLineDeitailPost}',
       name: RouterPath.timeLineDeitailPost,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final model = state.extra! as Model;
-        return DetailPostScreen(posts: model.posts, users: model.users);
+        return elasticTransition(
+          DetailPostScreen(posts: model.posts, users: model.users),
+        );
       },
     ),
   ],
@@ -104,15 +107,15 @@ final myProfileRouter = GoRoute(
     GoRoute(
       path: RouterPath.edit,
       name: RouterPath.edit,
-      builder: (context, state) {
-        return const EditScreen();
+      pageBuilder: (context, state) {
+        return slideIn(EditScreen());
       },
     ),
     GoRoute(
       path: '${RouterPath.myProfile}/${RouterPath.myProfilePost}',
       name: RouterPath.myProfilePost,
-      builder: (context, state) {
-        return const PostScreen(routerPath: RouterPath.myProfileRestaurant);
+      pageBuilder: (context, state) {
+        return whiteOut(PostScreen(routerPath: RouterPath.myProfileRestaurant));
       },
     ),
     GoRoute(
@@ -125,9 +128,11 @@ final myProfileRouter = GoRoute(
     GoRoute(
       path: '${RouterPath.myProfile}/${RouterPath.myProfileDeitailPost}',
       name: RouterPath.myProfileDeitailPost,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final model = state.extra! as Model;
-        return DetailPostScreen(posts: model.posts, users: model.users);
+        return elasticTransition(
+          DetailPostScreen(posts: model.posts, users: model.users),
+        );
       },
     ),
   ],
@@ -143,8 +148,8 @@ final settingRouter = GoRoute(
     GoRoute(
       path: RouterPath.license,
       name: RouterPath.license,
-      builder: (context, state) {
-        return const LicensePage();
+      pageBuilder: (context, state) {
+        return scaleUpTransition(LicensePage());
       },
     ),
   ],

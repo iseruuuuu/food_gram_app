@@ -24,6 +24,10 @@ class RestaurantScreen extends ConsumerWidget {
           elevation: 1,
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
+          leading: GestureDetector(
+            onTap: context.pop,
+            child: Icon(Icons.close),
+          ),
         ),
         body: state.isApproval
             ? Column(

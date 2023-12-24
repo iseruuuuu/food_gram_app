@@ -9,6 +9,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      surfaceTintColor: Colors.transparent,
       forceMaterialTransparency: true,
       elevation: 0,
     );
