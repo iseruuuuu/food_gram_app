@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -9,9 +10,10 @@ import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
 import 'package:food_gram_app/ui/component/app_profile_button.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_view_model.dart';
+import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
 import 'package:go_router/go_router.dart';
 
-class MyProfileScreen extends ConsumerWidget {
+class MyProfileScreen extends ConsumerWidget with SnackBarMixin {
   const MyProfileScreen({super.key});
 
   @override
@@ -41,7 +43,10 @@ class MyProfileScreen extends ConsumerWidget {
                 });
               },
               onTapExchange: () {
-                //TODO ポイント交換に遷移する
+                EasyDebounce.debounce('exchange point', Duration(seconds: 1),
+                    () async {
+                  openComingSoonSnackBar(context);
+                });
               },
             ),
             const SizedBox(height: 10),
