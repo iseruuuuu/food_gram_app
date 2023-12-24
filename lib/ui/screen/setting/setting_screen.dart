@@ -258,6 +258,28 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       );
                     },
                   ),
+                  SettingsTile.navigation(
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
+                    title: Text(
+                      'アカウントの削除申請',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: (context) {
+                      launcherUrl(
+                        'https://forms.gle/B2cG3FEynh1tbfUdA',
+                      ).then((value) {
+                        if (!value) {
+                          openErrorSnackBar(context);
+                        }
+                      });
+                    },
+                  ),
                 ],
               ),
             ],
