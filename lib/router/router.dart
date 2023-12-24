@@ -105,8 +105,8 @@ final myProfileRouter = GoRoute(
     GoRoute(
       path: RouterPath.edit,
       name: RouterPath.edit,
-      builder: (context, state) {
-        return const EditScreen();
+      pageBuilder: (context, state) {
+        return slideIn(EditScreen());
       },
     ),
     GoRoute(
