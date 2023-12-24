@@ -144,8 +144,8 @@ final settingRouter = GoRoute(
     GoRoute(
       path: RouterPath.license,
       name: RouterPath.license,
-      builder: (context, state) {
-        return const LicensePage();
+      pageBuilder: (context, state) {
+        return scaleUpTransition(LicensePage());
       },
     ),
   ],
