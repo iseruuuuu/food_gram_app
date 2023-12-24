@@ -48,3 +48,7 @@ mixin SnackBarMixin {
     );
   }
 }
+
+void hideSnackBar(BuildContext context) {
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+}

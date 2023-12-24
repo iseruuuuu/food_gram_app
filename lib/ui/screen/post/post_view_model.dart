@@ -71,7 +71,7 @@ class PostViewModel extends _$PostViewModel {
     }
   }
 
-  Future<void> camera() async {
+  Future<bool> camera() async {
     try {
       final image = await ImagePicker().pickImage(
         source: ImageSource.camera,
@@ -80,20 +80,22 @@ class PostViewModel extends _$PostViewModel {
         imageQuality: 100,
       );
       if (image == null) {
-        return;
+        return false;
       }
       imageBytes = await image.readAsBytes();
       uploadImage = image.name;
       state = state.copyWith(
         foodImage: image.path,
       );
+      return true;
     } on PlatformException catch (error) {
       logger.e(error.message);
-      state = state.copyWith(status: error.message!);
+      state = state.copyWith(status: 'カメラへのアクセス許可が必要です');
+      return false;
     }
   }
 
-  Future<void> album() async {
+  Future<bool> album() async {
     try {
       final image = await ImagePicker().pickImage(
         source: ImageSource.gallery,
@@ -102,7 +104,7 @@ class PostViewModel extends _$PostViewModel {
         imageQuality: 100,
       );
       if (image == null) {
-        return;
+        return false;
       }
       imageBytes = await image.readAsBytes();
       uploadImage = image.name;
@@ -110,9 +112,11 @@ class PostViewModel extends _$PostViewModel {
         foodImage: image.path,
         status: '写真の添付が成功しました',
       );
+      return true;
     } on PlatformException catch (error) {
       logger.e(error.message);
-      state = state.copyWith(status: error.message!);
+      state = state.copyWith(status: 'アルバムへのアクセス許可が必要です');
+      return false;
     }
   }
 
