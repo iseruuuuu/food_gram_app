@@ -132,8 +132,8 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                                   : openDialog(
                                       context: context,
                                       title: '投稿の報告',
-                                      subTitle:
-                                          'この投稿について報告を行います。\n Googleフォームに遷移します。',
+                                      subTitle: 'この投稿について報告を行います。'
+                                          '\n Googleフォームに遷移します。',
                                       onTap: () async {
                                         await launcherUrl(
                                           'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
@@ -229,9 +229,11 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                           EasyDebounce.debounce('post', Duration(seconds: 1),
                               () async {
                             await Share.share(
-                              '${widget.posts.restaurant}で食べたレビューを投稿しました！'
-                              '\n詳しくはfoodGramで確認してみよう！'
-                              '\n#foodGram',
+                              '${widget.users.name}さんが'
+                              '${widget.posts.restaurant}'
+                              'で食べたレビューを投稿しました！'
+                              '\n\n詳しくはfoodGramで確認してみよう！'
+                              '\n\n#foodGram',
                             );
                           });
                         },
