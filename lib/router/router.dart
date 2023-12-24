@@ -90,7 +90,8 @@ final timeLineRouter = GoRoute(
       pageBuilder: (context, state) {
         final model = state.extra! as Model;
         return elasticTransition(
-            DetailPostScreen(posts: model.posts, users: model.users));
+          DetailPostScreen(posts: model.posts, users: model.users),
+        );
       },
     ),
   ],
@@ -130,7 +131,8 @@ final myProfileRouter = GoRoute(
       pageBuilder: (context, state) {
         final model = state.extra! as Model;
         return elasticTransition(
-            DetailPostScreen(posts: model.posts, users: model.users));
+          DetailPostScreen(posts: model.posts, users: model.users),
+        );
       },
     ),
   ],
