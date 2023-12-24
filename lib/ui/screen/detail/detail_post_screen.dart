@@ -224,6 +224,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                           size: 30,
                         ),
                       ),
+                      SizedBox(width: 10),
                       GestureDetector(
                         onTap: () {
                           EasyDebounce.debounce('post', Duration(seconds: 1),
@@ -248,7 +249,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                         child: Text(
                           '$initialHeart いいね',
                           style: TextStyle(
-                            fontSize: 19,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -260,7 +261,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                     child: Text(
                       widget.posts.foodName,
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
