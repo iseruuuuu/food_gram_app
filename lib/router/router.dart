@@ -4,6 +4,7 @@ import 'package:food_gram_app/model/model.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_screen.dart';
 import 'package:food_gram_app/ui/screen/post/restaurant_screen.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
+import 'package:food_gram_app/utils/amination.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -49,8 +50,8 @@ GoRouter router(RouterRef ref) {
       GoRoute(
         path: '/${RouterPath.tab}',
         name: RouterPath.tab,
-        builder: (context, state) {
-          return const TabScreen();
+        pageBuilder: (context, state) {
+          return blackOut(TabScreen());
         },
         routes: <RouteBase>[
           timeLineRouter,
@@ -66,7 +67,7 @@ final timeLineRouter = GoRoute(
   path: RouterPath.timeLine,
   name: RouterPath.timeLine,
   builder: (context, state) {
-    return const TimeLineScreen();
+    return TimeLineScreen();
   },
   routes: <RouteBase>[
     GoRoute(
