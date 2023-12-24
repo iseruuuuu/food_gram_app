@@ -79,10 +79,28 @@ class PostScreen extends ConsumerWidget
                       onTap: () {
                         onTapImage(
                           context: context,
-                          camera:
-                              ref.read(postViewModelProvider().notifier).camera,
-                          album:
-                              ref.read(postViewModelProvider().notifier).album,
+                          camera: () async {
+                            final result = await ref
+                                .read(postViewModelProvider().notifier)
+                                .camera();
+                            final updatedState =
+                                ref.read(postViewModelProvider());
+                            if (!result) {
+                              hideSnackBar(context);
+                              openSnackBar(context, updatedState.status);
+                            }
+                          },
+                          album: () async {
+                            final result = await ref
+                                .read(postViewModelProvider().notifier)
+                                .album();
+                            final updatedState =
+                                ref.read(postViewModelProvider());
+                            if (!result) {
+                              hideSnackBar(context);
+                              openSnackBar(context, updatedState.status);
+                            }
+                          },
                         );
                       },
                       child: Container(
