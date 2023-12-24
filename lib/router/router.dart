@@ -67,7 +67,7 @@ final timeLineRouter = GoRoute(
   path: RouterPath.timeLine,
   name: RouterPath.timeLine,
   builder: (context, state) {
-    return TimeLineScreen();
+    return const TimeLineScreen();
   },
   routes: <RouteBase>[
     GoRoute(
