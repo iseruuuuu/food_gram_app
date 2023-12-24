@@ -87,9 +87,10 @@ final timeLineRouter = GoRoute(
     GoRoute(
       path: '${RouterPath.timeLine}/${RouterPath.timeLineDeitailPost}',
       name: RouterPath.timeLineDeitailPost,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final model = state.extra! as Model;
-        return DetailPostScreen(posts: model.posts, users: model.users);
+        return elasticTransition(
+            DetailPostScreen(posts: model.posts, users: model.users));
       },
     ),
   ],
@@ -126,9 +127,10 @@ final myProfileRouter = GoRoute(
     GoRoute(
       path: '${RouterPath.myProfile}/${RouterPath.myProfileDeitailPost}',
       name: RouterPath.myProfileDeitailPost,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final model = state.extra! as Model;
-        return DetailPostScreen(posts: model.posts, users: model.users);
+        return elasticTransition(
+            DetailPostScreen(posts: model.posts, users: model.users));
       },
     ),
   ],
