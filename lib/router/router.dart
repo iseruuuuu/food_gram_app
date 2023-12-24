@@ -43,8 +43,8 @@ GoRouter router(RouterRef ref) {
       GoRoute(
         path: '/${RouterPath.newAccount}',
         name: RouterPath.newAccount,
-        builder: (context, state) {
-          return const NewAccountScreen();
+        pageBuilder: (context, state) {
+          return blackOut(NewAccountScreen());
         },
       ),
       GoRoute(
