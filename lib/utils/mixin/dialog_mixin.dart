@@ -45,7 +45,7 @@ mixin DialogMixin {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
-                        elevation: 5,
+                        elevation: 3,
                         shape: const StadiumBorder(),
                       ),
                       onPressed: () => context.pop(),
@@ -66,7 +66,7 @@ mixin DialogMixin {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
-                        elevation: 5,
+                        elevation: 3,
                         shape: const StadiumBorder(),
                       ),
                       onPressed: () {
