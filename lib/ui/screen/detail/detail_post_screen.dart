@@ -3,6 +3,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/config/shared_preference/shared_preference.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/model/posts.dart';
 import 'package:food_gram_app/model/users.dart';
@@ -79,18 +80,13 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       title: 'ブロック確認',
                       subTitle: 'この投稿をユーザーをブロックしますか？\nこのユーザーの投稿を非表示にします',
                       onTap: () async {
-                        //   await ref
-                        //       .read(
-                        //         detailPostViewModelProvider().notifier,
-                        //       )
-                        //       .delete(widget.posts)
-                        //       .then((value) async {
-                        //     if (value) {
-                        //       context.pop(true);
-                        //     } else {
-                        //       openSnackBar(context, '削除が失敗しました');
-                        //     }
-                        //   });
+                        final preference = Preference();
+                        final blockList = await preference
+                            .getStringList(PreferenceKey.blockList);
+                        blockList.add(widget.posts.userId);
+                        await Preference()
+                            .setStringList(PreferenceKey.blockList, blockList);
+                        context.pop(true);
                       },
                     );
                   },
