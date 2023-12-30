@@ -69,84 +69,86 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
           automaticallyImplyLeading: !loading,
           surfaceTintColor: Colors.transparent,
           actions: [
-            if (widget.users.userId != user)
+            if (!loading)
+              if (widget.users.userId != user)
+                Semantics(
+                  label: 'block',
+                  child: IconButton(
+                    onPressed: () {
+                      openDialog(
+                        context: context,
+                        title: 'ブロック確認',
+                        subTitle: 'この投稿をユーザーをブロックしますか？'
+                            '\nこのユーザーの投稿を非表示にします。'
+                            '\nブロックしたユーザーはローカルで保存します。',
+                        onTap: () async {
+                          await ref
+                              .read(detailPostViewModelProvider().notifier)
+                              .block(widget.posts.userId)
+                              .then((value) async {
+                            if (value) {
+                              context.pop(true);
+                            }
+                          });
+                        },
+                      );
+                    },
+                    icon: Icon(Icons.visibility_off),
+                    color: Colors.black,
+                    iconSize: 30,
+                  ),
+                )
+              else
+                SizedBox(),
+            SizedBox(width: 5),
+            if (!loading)
               Semantics(
-                label: 'block',
+                label: 'menuIcon',
                 child: IconButton(
                   onPressed: () {
-                    openDialog(
-                      context: context,
-                      title: 'ブロック確認',
-                      subTitle: 'この投稿をユーザーをブロックしますか？'
-                          '\nこのユーザーの投稿を非表示にします。'
-                          '\nブロックしたユーザーはローカルで保存します。',
-                      onTap: () async {
-                        await ref
-                            .read(detailPostViewModelProvider().notifier)
-                            .block(widget.posts.userId)
-                            .then((value) async {
-                          if (value) {
-                            context.pop(true);
-                          }
-                        });
-                      },
-                    );
+                    (widget.users.userId == user)
+                        ? openDialog(
+                            context: context,
+                            title: '投稿の削除',
+                            subTitle: 'この投稿を削除しますか？\n一度削除してしまうと復元できません',
+                            onTap: () async {
+                              await ref
+                                  .read(detailPostViewModelProvider().notifier)
+                                  .delete(widget.posts)
+                                  .then((value) async {
+                                if (value) {
+                                  context.pop(true);
+                                } else {
+                                  openSnackBar(context, '削除が失敗しました');
+                                }
+                              });
+                            },
+                          )
+                        : openDialog(
+                            context: context,
+                            title: '投稿の報告',
+                            subTitle: 'この投稿について報告を行います。'
+                                '\n Googleフォームに遷移します。',
+                            onTap: () async {
+                              await launcherUrl(
+                                'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
+                              ).then((value) {
+                                if (!value) {
+                                  openErrorSnackBar(context);
+                                } else {
+                                  context.pop();
+                                }
+                              });
+                            },
+                          );
                   },
-                  icon: Icon(Icons.visibility_off),
+                  icon: (widget.users.userId == user)
+                      ? Icon(CupertinoIcons.trash)
+                      : Icon(Icons.announcement_outlined),
                   color: Colors.black,
                   iconSize: 30,
                 ),
-              )
-            else
-              SizedBox(),
-            SizedBox(width: 5),
-            Semantics(
-              label: 'menuIcon',
-              child: IconButton(
-                onPressed: () {
-                  (widget.users.userId == user)
-                      ? openDialog(
-                          context: context,
-                          title: '投稿の削除',
-                          subTitle: 'この投稿を削除しますか？\n一度削除してしまうと復元できません',
-                          onTap: () async {
-                            await ref
-                                .read(detailPostViewModelProvider().notifier)
-                                .delete(widget.posts)
-                                .then((value) async {
-                              if (value) {
-                                context.pop(true);
-                              } else {
-                                openSnackBar(context, '削除が失敗しました');
-                              }
-                            });
-                          },
-                        )
-                      : openDialog(
-                          context: context,
-                          title: '投稿の報告',
-                          subTitle: 'この投稿について報告を行います。'
-                              '\n Googleフォームに遷移します。',
-                          onTap: () async {
-                            await launcherUrl(
-                              'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
-                            ).then((value) {
-                              if (!value) {
-                                openErrorSnackBar(context);
-                              } else {
-                                context.pop();
-                              }
-                            });
-                          },
-                        );
-                },
-                icon: (widget.users.userId == user)
-                    ? Icon(CupertinoIcons.trash)
-                    : Icon(Icons.announcement_outlined),
-                color: Colors.black,
-                iconSize: 30,
               ),
-            ),
             SizedBox(width: 5),
           ],
         ),
@@ -261,8 +263,8 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       SizedBox(width: 10),
                       GestureDetector(
                         onTap: () {
-                          EasyDebounce.debounce('post', Duration(seconds: 1),
-                              () async {
+                          EasyDebounce.debounce(
+                              'post', Duration(milliseconds: 200), () async {
                             await Share.share(
                               '${widget.users.name}さんが'
                               '${widget.posts.restaurant}'
