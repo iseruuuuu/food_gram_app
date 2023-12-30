@@ -263,8 +263,8 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       SizedBox(width: 10),
                       GestureDetector(
                         onTap: () {
-                          EasyDebounce.debounce('post', Duration(seconds: 1),
-                              () async {
+                          EasyDebounce.debounce(
+                              'post', Duration(milliseconds: 200), () async {
                             await Share.share(
                               '${widget.users.name}さんが'
                               '${widget.posts.restaurant}'
