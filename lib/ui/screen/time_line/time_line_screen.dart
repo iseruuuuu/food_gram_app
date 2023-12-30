@@ -22,7 +22,9 @@ class TimeLineScreen extends ConsumerWidget {
           return AppListView(
             data: data,
             routerPath: RouterPath.timeLineDeitailPost,
-            refresh: () => ref.refresh(postStreamProvider),
+            refresh: () => ref
+              ..refresh(postStreamProvider)
+              ..refresh(blockListProvider),
           );
         },
         error: (_, __) {

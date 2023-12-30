@@ -3,7 +3,6 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/config/shared_preference/shared_preference.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/model/posts.dart';
 import 'package:food_gram_app/model/users.dart';
@@ -78,15 +77,18 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                     openDialog(
                       context: context,
                       title: 'ブロック確認',
-                      subTitle: 'この投稿をユーザーをブロックしますか？\nこのユーザーの投稿を非表示にします',
+                      subTitle: 'この投稿をユーザーをブロックしますか？'
+                          '\nこのユーザーの投稿を非表示にします。'
+                          '\nブロックしたユーザーはローカルで保存します。',
                       onTap: () async {
-                        final preference = Preference();
-                        final blockList = await preference
-                            .getStringList(PreferenceKey.blockList);
-                        blockList.add(widget.posts.userId);
-                        await Preference()
-                            .setStringList(PreferenceKey.blockList, blockList);
-                        context.pop(true);
+                        await ref
+                            .read(detailPostViewModelProvider().notifier)
+                            .block(widget.posts.userId)
+                            .then((value) async {
+                          if (value) {
+                            context.pop(true);
+                          }
+                        });
                       },
                     );
                   },
@@ -109,9 +111,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                           subTitle: 'この投稿を削除しますか？\n一度削除してしまうと復元できません',
                           onTap: () async {
                             await ref
-                                .read(
-                                  detailPostViewModelProvider().notifier,
-                                )
+                                .read(detailPostViewModelProvider().notifier)
                                 .delete(widget.posts)
                                 .then((value) async {
                               if (value) {

@@ -1,3 +1,4 @@
+import 'package:food_gram_app/config/shared_preference/shared_preference.dart';
 import 'package:food_gram_app/config/supabase/database_service.dart';
 import 'package:food_gram_app/model/posts.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_state.dart';
@@ -16,6 +17,7 @@ class DetailPostViewModel extends _$DetailPostViewModel {
   }
 
   Loading get loading => ref.read(loadingProvider.notifier);
+  final preference = Preference();
 
   Future<bool> delete(Posts posts) async {
     loading.state = true;
@@ -31,5 +33,15 @@ class DetailPostViewModel extends _$DetailPostViewModel {
     );
     loading.state = false;
     return state.isSuccess;
+  }
+
+  Future<bool> block(String userId) async {
+    loading.state = true;
+    final blockList = await preference.getStringList(PreferenceKey.blockList);
+    blockList.add(userId);
+    await Preference().setStringList(PreferenceKey.blockList, blockList);
+    await Future.delayed(Duration(seconds: 2));
+    loading.state = false;
+    return true;
   }
 }
