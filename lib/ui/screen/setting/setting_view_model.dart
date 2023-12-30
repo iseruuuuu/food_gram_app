@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:battery_info/battery_info_plugin.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:food_gram_app/service/auth_service.dart';
+import 'package:food_gram_app/config/supabase/auth_service.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:package_info_plus/package_info_plus.dart';
