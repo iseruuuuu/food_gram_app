@@ -35,7 +35,7 @@ class AppListView extends StatelessWidget {
                 onTap: () async {
                   EasyDebounce.debounce(
                     'click detail',
-                    Duration(seconds: 1),
+                    Duration(milliseconds: 200),
                     () async {
                       final posts = Posts(
                         id: int.parse(data[index]['id'].toString()),
