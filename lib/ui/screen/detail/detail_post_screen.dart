@@ -73,7 +73,27 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
               Semantics(
                 label: 'block',
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    openDialog(
+                      context: context,
+                      title: 'ブロック確認',
+                      subTitle: 'この投稿をユーザーをブロックしますか？\nこのユーザーの投稿を非表示にします',
+                      onTap: () async {
+                        //   await ref
+                        //       .read(
+                        //         detailPostViewModelProvider().notifier,
+                        //       )
+                        //       .delete(widget.posts)
+                        //       .then((value) async {
+                        //     if (value) {
+                        //       context.pop(true);
+                        //     } else {
+                        //       openSnackBar(context, '削除が失敗しました');
+                        //     }
+                        //   });
+                      },
+                    );
+                  },
                   icon: Icon(Icons.visibility_off),
                   color: Colors.black,
                   iconSize: 30,
