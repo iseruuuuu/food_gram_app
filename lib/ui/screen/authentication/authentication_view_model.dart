@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/config/supabase/auth_service.dart';
 import 'package:food_gram_app/main.dart';
-import 'package:food_gram_app/service/auth_service.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
