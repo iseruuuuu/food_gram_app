@@ -10,6 +10,7 @@ import 'package:food_gram_app/ui/component/app_heart.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
 import 'package:food_gram_app/utils/mixin/dialog_mixin.dart';
+import 'package:food_gram_app/utils/mixin/show_modal_bottom_sheet_mixin.dart';
 import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
 import 'package:food_gram_app/utils/mixin/url_launcher_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
@@ -36,6 +37,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
         DialogMixin,
         UrlLauncherMixin,
         SnackBarMixin,
+        ShowModalBottomSheetMixin,
         TickerProviderStateMixin {
   bool isHeart = false;
   bool doesHeart = false;
@@ -70,86 +72,115 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
           surfaceTintColor: Colors.transparent,
           actions: [
             if (!loading)
-              if (widget.users.userId != user)
-                Semantics(
-                  label: 'block',
-                  child: IconButton(
-                    onPressed: () {
-                      openDialog(
-                        context: context,
-                        title: 'ブロック確認',
-                        subTitle: 'この投稿をユーザーをブロックしますか？'
-                            '\nこのユーザーの投稿を非表示にします。'
-                            '\nブロックしたユーザーはローカルで保存します。',
-                        onTap: () async {
-                          await ref
-                              .read(detailPostViewModelProvider().notifier)
-                              .block(widget.posts.userId)
-                              .then((value) async {
-                            if (value) {
-                              context.pop(true);
-                            }
-                          });
-                        },
-                      );
-                    },
-                    icon: Icon(Icons.visibility_off),
-                    color: Colors.black,
-                    iconSize: 30,
-                  ),
-                )
-              else
-                SizedBox(),
-            SizedBox(width: 5),
-            if (!loading)
-              Semantics(
-                label: 'menuIcon',
-                child: IconButton(
-                  onPressed: () {
-                    (widget.users.userId == user)
-                        ? openDialog(
-                            context: context,
-                            title: '投稿の削除',
-                            subTitle: 'この投稿を削除しますか？\n一度削除してしまうと復元できません',
-                            onTap: () async {
-                              await ref
-                                  .read(detailPostViewModelProvider().notifier)
-                                  .delete(widget.posts)
-                                  .then((value) async {
-                                if (value) {
-                                  context.pop(true);
-                                } else {
-                                  openSnackBar(context, '削除が失敗しました');
-                                }
-                              });
-                            },
-                          )
-                        : openDialog(
-                            context: context,
-                            title: '投稿の報告',
-                            subTitle: 'この投稿について報告を行います。'
-                                '\n Googleフォームに遷移します。',
-                            onTap: () async {
-                              await launcherUrl(
-                                'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
-                              ).then((value) {
-                                if (!value) {
-                                  openErrorSnackBar(context);
-                                } else {
-                                  context.pop();
-                                }
-                              });
-                            },
+              IconButton(
+                onPressed: () {
+                  if (widget.users.userId != user) {
+                    onTapOtherDetail(
+                      context: context,
+                      share: () {
+                        Share.share(
+                          '${widget.users.name}さんが'
+                          '${widget.posts.restaurant}'
+                          'で食べたレビューを投稿しました！'
+                          '\n\n詳しくはfoodGramで確認してみよう！'
+                          '\n\n#foodGram',
+                        );
+                      },
+                      search: () async {
+                        if (widget.posts.restaurant != '不明' &&
+                            widget.posts.restaurant != '自炊') {
+                          await launcherUrl(
+                            'https://www.google.com/maps/search/?api=1&query=${widget.posts.restaurant}',
                           );
-                  },
-                  icon: (widget.users.userId == user)
-                      ? Icon(CupertinoIcons.trash)
-                      : Icon(Icons.announcement_outlined),
-                  color: Colors.black,
-                  iconSize: 30,
-                ),
+                        } else {
+                          openSnackBar(context, '場所名の検索ができません');
+                        }
+                      },
+                      report: () {
+                        openDialog(
+                          context: context,
+                          title: '投稿の報告',
+                          subTitle: 'この投稿について報告を行います。'
+                              '\n Googleフォームに遷移します。',
+                          onTap: () async {
+                            await launcherUrl(
+                              'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
+                            ).then((value) {
+                              if (!value) {
+                                openErrorSnackBar(context);
+                              } else {
+                                context.pop();
+                              }
+                            });
+                          },
+                        );
+                      },
+                      block: () {
+                        openDialog(
+                          context: context,
+                          title: 'ブロック確認',
+                          subTitle: 'この投稿をユーザーをブロックしますか？'
+                              '\nこのユーザーの投稿を非表示にします。'
+                              '\nブロックしたユーザーはローカルで保存します。',
+                          onTap: () async {
+                            await ref
+                                .read(detailPostViewModelProvider().notifier)
+                                .block(widget.posts.userId)
+                                .then((value) async {
+                              if (value) {
+                                context.pop(true);
+                              }
+                            });
+                          },
+                        );
+                      },
+                    );
+                  } else {
+                    onTapMyDetail(
+                      context: context,
+                      share: () {
+                        Share.share(
+                          '${widget.users.name}さんが'
+                          '${widget.posts.restaurant}'
+                          'で食べたレビューを投稿しました！'
+                          '\n\n詳しくはfoodGramで確認してみよう！'
+                          '\n\n#foodGram',
+                        );
+                      },
+                      search: () async {
+                        if (widget.posts.restaurant != '不明' &&
+                            widget.posts.restaurant != '自炊') {
+                          await launcherUrl(
+                            'https://www.google.com/maps/search/?api=1&query=${widget.posts.restaurant}',
+                          );
+                        } else {
+                          openSnackBar(context, '場所名の検索ができません');
+                        }
+                      },
+                      delete: () {
+                        openDialog(
+                          context: context,
+                          title: '投稿の削除',
+                          subTitle: 'この投稿を削除しますか？\n一度削除してしまうと復元できません',
+                          onTap: () async {
+                            await ref
+                                .read(detailPostViewModelProvider().notifier)
+                                .delete(widget.posts)
+                                .then((value) async {
+                              if (value) {
+                                context.pop(true);
+                              } else {
+                                openSnackBar(context, '削除が失敗しました');
+                              }
+                            });
+                          },
+                        );
+                      },
+                    );
+                  }
+                },
+                icon: Icon(Icons.menu),
               ),
-            SizedBox(width: 5),
           ],
         ),
         body: Stack(
