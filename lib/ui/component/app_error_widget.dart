@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 
 class AppErrorWidget extends StatelessWidget {
@@ -31,8 +32,7 @@ class AppErrorWidget extends StatelessWidget {
               ),
             ),
             SizedBox(height: 30),
-            Image.asset(
-              'assets/error/error.png',
+            Assets.image.error.image(
               width: 150,
               height: 150,
             ),
