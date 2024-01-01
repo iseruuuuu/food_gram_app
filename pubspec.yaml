@@ -27,6 +27,7 @@ dependencies:
   hooks_riverpod: ^2.4.9
   http: ^1.1.0
   image_picker: ^1.0.4
+  introduction_screen: ^3.1.12
   json_annotation: ^4.8.1
   loading_animation_widget: ^1.2.0+4
   logger: ^2.0.2+1
@@ -70,5 +71,6 @@ flutter:
     - assets/loading/
     - assets/icon/
     - assets/error/
+    - assets/tutorial/
     - .env.dev
     - .env.prod
