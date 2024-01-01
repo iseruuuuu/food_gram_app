@@ -183,6 +183,20 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       });
                     },
                   ),
+                  SettingsTile.navigation(
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
+                    leading: Icon(
+                      Icons.account_balance,
+                      color: Colors.black,
+                    ),
+                    title: const Text('チュートリアル'),
+                    onPressed: (context) {
+                      context.pushNamed(RouterPath.settingTutorial);
+                    },
+                  ),
                   SettingsTile(
                     leading: Icon(
                       Icons.battery_4_bar_sharp,
