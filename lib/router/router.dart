@@ -22,7 +22,7 @@ GoRouter router(RouterRef ref) {
       final isFinishedTutorial =
           await preference.getBool(PreferenceKey.isFinishedTutorial);
       if (!isFinishedTutorial) {
-        return '/${RouterPath.introduction}';
+        return '/${RouterPath.tutorial}';
       }
       final login = authState.value?.session?.user != null;
       if (!login) {
@@ -32,8 +32,8 @@ GoRouter router(RouterRef ref) {
     },
     routes: <RouteBase>[
       GoRoute(
-        path: '/${RouterPath.introduction}',
-        name: RouterPath.introduction,
+        path: '/${RouterPath.tutorial}',
+        name: RouterPath.tutorial,
         builder: (context, state) {
           return const TutorialScreen();
         },
@@ -167,6 +167,13 @@ final settingRouter = GoRoute(
         return scaleUpTransition(LicensePage());
       },
     ),
+    GoRoute(
+      path: '${RouterPath.setting}/${RouterPath.settingTutorial}',
+      name: RouterPath.settingTutorial,
+      builder: (context, state) {
+        return const TutorialScreen();
+      },
+    ),
   ],
 );
 
@@ -186,5 +193,6 @@ final class RouterPath {
   static const String setting = 'setting';
   static const String timeLine = 'time_line';
   static const String splash = 'splash';
-  static const String introduction = 'introduction';
+  static const String tutorial = 'introduction';
+  static const String settingTutorial = 'setting_tutorial';
 }

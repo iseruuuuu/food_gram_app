@@ -134,8 +134,15 @@ class TutorialScreen extends StatelessWidget {
           ],
           onDone: () async {
             final preference = Preference();
-            await preference.setBool(PreferenceKey.isFinishedTutorial);
-            context.pushReplacementNamed(RouterPath.splash);
+            final isFinishedTutorial = await preference.getBool(
+              PreferenceKey.isFinishedTutorial,
+            );
+            if (!isFinishedTutorial) {
+              await preference.setBool(PreferenceKey.isFinishedTutorial);
+              context.pushReplacementNamed(RouterPath.splash);
+            } else {
+              context.pop();
+            }
           },
           showBackButton: true,
           next: const Icon(
@@ -149,7 +156,7 @@ class TutorialScreen extends StatelessWidget {
             color: Colors.black,
           ),
           done: const Text(
-            'サインイン',
+            '閉じる',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.blue,
