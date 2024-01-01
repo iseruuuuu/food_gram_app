@@ -59,8 +59,7 @@ flutter_icons:
   ios: true
 
 flutter_native_splash:
-  image: assets/splash/splash.png
-  color: '#fffdd0'
+  color: '#ffffff'
   android: true
   ios: true
   fullscreen: true
@@ -69,5 +68,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icon/
+    - assets/image/
+    - assets/splash/
     - .env.dev
     - .env.prod
