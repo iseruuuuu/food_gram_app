@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
@@ -83,8 +84,7 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        'assets/image/food.png',
+                      Assets.image.food.image(
                         width: 70,
                         height: 70,
                       ),

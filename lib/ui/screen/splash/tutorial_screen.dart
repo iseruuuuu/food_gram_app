@@ -21,7 +21,7 @@ class TutorialScreen extends StatelessWidget {
               titleWidget: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/icon/icon1.png', width: 35),
+                  Assets.icon.icon1.image(width: 35),
                   SizedBox(width: 10),
                   Text(
                     'みんなの美味しいがここに',
@@ -32,7 +32,7 @@ class TutorialScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 10),
-                  Image.asset('assets/icon/icon1.png', width: 35),
+                  Assets.icon.icon1.image(width: 35),
                 ],
               ),
               bodyWidget: Column(
@@ -58,7 +58,7 @@ class TutorialScreen extends StatelessWidget {
               titleWidget: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/icon/icon2.png', width: 35),
+                  Assets.icon.icon2.image(width: 35),
                   SizedBox(width: 5),
                   Text(
                     '美味しい瞬間、シェアをしよう',
@@ -69,7 +69,7 @@ class TutorialScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 5),
-                  Image.asset('assets/icon/icon2.png', width: 35),
+                  Assets.icon.icon1.image(width: 35),
                 ],
               ),
               bodyWidget: Column(
@@ -93,7 +93,7 @@ class TutorialScreen extends StatelessWidget {
               titleWidget: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/icon/icon3.png', width: 35),
+                  Assets.icon.icon3.image(width: 35),
                   SizedBox(width: 5),
                   Text(
                     '注意事項',
@@ -104,7 +104,7 @@ class TutorialScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 5),
-                  Image.asset('assets/icon/icon3.png', width: 35),
+                  Assets.icon.icon3.image(width: 35),
                 ],
               ),
               bodyWidget: Padding(

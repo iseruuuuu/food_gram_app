@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 
 class AppEmpty extends StatelessWidget {
   const AppEmpty({super.key});
@@ -18,8 +19,7 @@ class AppEmpty extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20),
-          Image.asset(
-            'assets/image/empty.png',
+          Assets.image.empty.image(
             width: 100,
             height: 100,
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:gif/gif.dart';
 
 class AppHeart extends StatelessWidget {
@@ -22,7 +23,7 @@ class AppHeart extends StatelessWidget {
                   child: Gif(
                     controller: controller,
                     autostart: Autostart.once,
-                    image: AssetImage('assets/image/heart.gif'),
+                    image: AssetImage(Assets.image.heart.path),
                     onFetchCompleted: controller.stop,
                   ),
                 ),
