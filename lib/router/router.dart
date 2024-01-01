@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/config/shared_preference/shared_preference.dart';
 import 'package:food_gram_app/config/supabase/auth_state.dart';
 import 'package:food_gram_app/model/model.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_screen.dart';
 import 'package:food_gram_app/ui/screen/post/restaurant_screen.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
+import 'package:food_gram_app/ui/screen/splash/tutorial_screen.dart';
 import 'package:food_gram_app/utils/amination.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -16,6 +18,12 @@ GoRouter router(RouterRef ref) {
   return GoRouter(
     initialLocation: '/${RouterPath.splash}',
     redirect: (context, state) async {
+      final preference = Preference();
+      final isFinishedTutorial =
+          await preference.getBool(PreferenceKey.isFinishedTutorial);
+      if (!isFinishedTutorial) {
+        return '/${RouterPath.introduction}';
+      }
       final login = authState.value?.session?.user != null;
       if (!login) {
         return '/${RouterPath.authentication}';
@@ -23,6 +31,13 @@ GoRouter router(RouterRef ref) {
       return null;
     },
     routes: <RouteBase>[
+      GoRoute(
+        path: '/${RouterPath.introduction}',
+        name: RouterPath.introduction,
+        builder: (context, state) {
+          return const TutorialScreen();
+        },
+      ),
       GoRoute(
         path: '/${RouterPath.splash}',
         name: RouterPath.splash,
@@ -71,8 +86,8 @@ final timeLineRouter = GoRoute(
   },
   routes: <RouteBase>[
     GoRoute(
-      path: '${RouterPath.timeLine}/${RouterPath.timeLinepost}',
-      name: RouterPath.timeLinepost,
+      path: '${RouterPath.timeLine}/${RouterPath.timeLinePost}',
+      name: RouterPath.timeLinePost,
       pageBuilder: (context, state) {
         return whiteOut(PostScreen(routerPath: RouterPath.timeLineRestaurant));
       },
@@ -85,8 +100,8 @@ final timeLineRouter = GoRoute(
       },
     ),
     GoRoute(
-      path: '${RouterPath.timeLine}/${RouterPath.timeLineDeitailPost}',
-      name: RouterPath.timeLineDeitailPost,
+      path: '${RouterPath.timeLine}/${RouterPath.timeLineDetailPost}',
+      name: RouterPath.timeLineDetailPost,
       pageBuilder: (context, state) {
         final model = state.extra! as Model;
         return elasticTransition(
@@ -126,8 +141,8 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
-      path: '${RouterPath.myProfile}/${RouterPath.myProfileDeitailPost}',
-      name: RouterPath.myProfileDeitailPost,
+      path: '${RouterPath.myProfile}/${RouterPath.myProfileDetailPost}',
+      name: RouterPath.myProfileDetailPost,
       pageBuilder: (context, state) {
         final model = state.extra! as Model;
         return elasticTransition(
@@ -163,12 +178,13 @@ final class RouterPath {
   static const String edit = 'edit';
   static const String myProfile = 'my_profile';
   static const String myProfilePost = 'my_profile_post';
-  static const String myProfileDeitailPost = 'my_profile_detail_post';
+  static const String myProfileDetailPost = 'my_profile_detail_post';
   static const String myProfileRestaurant = 'my_profile_restaurant';
-  static const String timeLinepost = 'time_line_post';
-  static const String timeLineDeitailPost = 'time_line_detail_post';
+  static const String timeLinePost = 'time_line_post';
+  static const String timeLineDetailPost = 'time_line_detail_post';
   static const String timeLineRestaurant = 'time_line_restaurant';
   static const String setting = 'setting';
   static const String timeLine = 'time_line';
   static const String splash = 'splash';
+  static const String introduction = 'introduction';
 }
