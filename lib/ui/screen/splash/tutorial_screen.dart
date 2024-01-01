@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/config/shared_preference/shared_preference.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:go_router/go_router.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -47,10 +48,7 @@ class TutorialScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 30),
-                  Image.asset(
-                    'assets/tutorial/tutorial1.png',
-                    height: 340,
-                  ),
+                  Assets.image.tutorial1.image(height: 340),
                 ],
               ),
               // image:
@@ -87,10 +85,7 @@ class TutorialScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Image.asset(
-                    'assets/tutorial/tutorial2.png',
-                    height: 340,
-                  ),
+                  Assets.image.tutorial2.image(height: 340),
                 ],
               ),
             ),
