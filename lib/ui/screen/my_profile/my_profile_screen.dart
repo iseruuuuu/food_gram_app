@@ -74,7 +74,7 @@ class MyProfileScreen extends ConsumerWidget with SnackBarMixin {
                       data: (data) {
                         return AppListView(
                           data: data,
-                          routerPath: RouterPath.myProfileDeitailPost,
+                          routerPath: RouterPath.myProfileDetailPost,
                           refresh: () => ref.refresh(myPostStreamProvider),
                         );
                       },

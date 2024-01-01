@@ -21,7 +21,7 @@ class TimeLineScreen extends ConsumerWidget {
         data: (data) {
           return AppListView(
             data: data,
-            routerPath: RouterPath.timeLineDeitailPost,
+            routerPath: RouterPath.timeLineDetailPost,
             refresh: () => ref
               ..refresh(postStreamProvider)
               ..refresh(blockListProvider),
@@ -44,7 +44,7 @@ class TimeLineScreen extends ConsumerWidget {
       ),
       floatingActionButton: AppFloatingButton(
         onTap: () async {
-          await context.pushNamed(RouterPath.timeLinepost).then((value) async {
+          await context.pushNamed(RouterPath.timeLinePost).then((value) async {
             if (value != null) {
               ref.refresh(postStreamProvider);
             }
