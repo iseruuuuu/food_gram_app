@@ -19,7 +19,7 @@ class SplashScreenState extends State<SplashScreen> with AccountExistMixin {
   }
 
   Future<void> redirect(BuildContext context) async {
-    await Future.delayed(Duration.zero);
+    await Future.delayed(Duration(seconds: 3));
     if (!await doesAccountExist()) {
       context.pushReplacementNamed(RouterPath.newAccount);
     } else {
@@ -32,10 +32,11 @@ class SplashScreenState extends State<SplashScreen> with AccountExistMixin {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Assets.image.loading.image(
+        // child: Assets.image.loading.image(
+        child: Assets.splash.splashGif.image(
           fit: BoxFit.cover,
-          width: 120,
-          height: 120,
+          width: MediaQuery.sizeOf(context).width / 2,
+          height: MediaQuery.sizeOf(context).width / 2,
         ),
       ),
     );

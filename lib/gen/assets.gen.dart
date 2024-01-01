@@ -69,11 +69,27 @@ class $AssetsImageGen {
       [empty, error, food, heart, loading, tutorial1, tutorial2];
 }
 
+class $AssetsSplashGen {
+  const $AssetsSplashGen();
+
+  /// File path: assets/splash/splash.gif
+  AssetGenImage get splashGif =>
+      const AssetGenImage('assets/splash/splash.gif');
+
+  /// File path: assets/splash/splash.png
+  AssetGenImage get splashPng =>
+      const AssetGenImage('assets/splash/splash.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [splashGif, splashPng];
+}
+
 class Assets {
   Assets._();
 
   static const $AssetsIconGen icon = $AssetsIconGen();
   static const $AssetsImageGen image = $AssetsImageGen();
+  static const $AssetsSplashGen splash = $AssetsSplashGen();
 }
 
 class AssetGenImage {
