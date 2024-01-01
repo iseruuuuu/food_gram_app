@@ -52,49 +52,56 @@ class EditScreen extends ConsumerWidget {
           body: Stack(
             children: [
               SingleChildScrollView(
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.white,
-                      backgroundImage:
-                          AssetImage('assets/icon/icon${state.number}.png'),
-                      radius: 60,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Text(
-                        'アイコンの設定',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        backgroundImage:
+                            AssetImage('assets/icon/icon${state.number}.png'),
+                        radius: 60,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Text(
+                          'アイコンの設定',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
-                    ),
-                    Wrap(
-                      children: List.generate(
-                        6,
-                        (index) {
-                          return AppIcon(
-                            onTap: () => ref
-                                .read(editViewModelProvider().notifier)
-                                .selectIcon(index + 1),
-                            number: index + 1,
-                          );
-                        },
+                      Wrap(
+                        children: List.generate(
+                          6,
+                          (index) {
+                            return AppIcon(
+                              onTap: () => ref
+                                  .read(editViewModelProvider().notifier)
+                                  .selectIcon(index + 1),
+                              number: index + 1,
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                    AppNameTextField(
-                      title: '名前',
-                      controller: controller.nameTextController,
-                    ),
-                    AppUserNameTextField(
-                      controller: controller.useNameTextController,
-                    ),
-                    AppSelfIntroductionTextField(
-                      controller: controller.selfIntroduceTextController,
-                    ),
-                    Text(state.status),
-                  ],
+                      SizedBox(height: 30),
+                      Divider(),
+                      AppNameTextField(
+                        title: '名前',
+                        controller: controller.nameTextController,
+                      ),
+                      Divider(),
+                      AppUserNameTextField(
+                        controller: controller.useNameTextController,
+                      ),
+                      Divider(),
+                      AppSelfIntroductionTextField(
+                        controller: controller.selfIntroduceTextController,
+                      ),
+                      Divider(),
+                    ],
+                  ),
                 ),
               ),
               AppLoading(
