@@ -24,7 +24,15 @@ class EditScreen extends ConsumerWidget {
           appBar: AppBar(
             surfaceTintColor: Colors.transparent,
             backgroundColor: !loading ? Colors.white : Colors.transparent,
-            automaticallyImplyLeading: !loading,
+            leading: !loading
+                ? IconButton(
+                    onPressed: () => context.pop(),
+                    icon: Icon(
+                      Icons.close,
+                      size: 30,
+                    ),
+                  )
+                : Container(),
             actions: [
               if (!loading)
                 TextButton(
