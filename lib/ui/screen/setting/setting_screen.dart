@@ -85,7 +85,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       Icons.arrow_forward_ios_outlined,
                       size: 20,
                     ),
-                    leading: const Icon(Icons.account_balance_wallet_outlined),
+                    leading: const Icon(Icons.account_balance_wallet),
                     title: const Text('ライセンス'),
                     onPressed: (context) {
                       context.pushNamed(RouterPath.license);
@@ -130,7 +130,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     ),
                     leading: const Icon(
                       Icons.lock,
-                      color: Colors.grey,
+                      color: Colors.black,
                     ),
                     title: const Text('プライバシーポリシー'),
                     onPressed: (context) {
@@ -150,7 +150,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     ),
                     leading: Icon(
                       Icons.call,
-                      color: Colors.green,
+                      color: Colors.black,
                     ),
                     title: const Text('利用規約'),
                     onPressed: (context) {
@@ -170,7 +170,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     ),
                     leading: Icon(
                       Icons.mail,
-                      color: Colors.blue,
+                      color: Colors.black,
                     ),
                     title: const Text('お問い合わせ'),
                     onPressed: (context) {
@@ -200,7 +200,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                   SettingsTile(
                     leading: Icon(
                       Icons.battery_4_bar_sharp,
-                      color: Colors.green,
+                      color: Colors.black,
                     ),
                     title: const Text('バッテリー残量'),
                     trailing: Text(

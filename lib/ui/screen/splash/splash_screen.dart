@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/utils/mixin/account_exist_mixin.dart';
 import 'package:go_router/go_router.dart';
@@ -28,11 +29,10 @@ class SplashScreenState extends State<SplashScreen> with AccountExistMixin {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Image(
-          image: AssetImage('assets/loading/loading.gif'),
+        child: Assets.image.loading.image(
           fit: BoxFit.cover,
           width: 120,
           height: 120,
