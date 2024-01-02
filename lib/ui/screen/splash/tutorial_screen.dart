@@ -53,7 +53,6 @@ class TutorialScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              // image:
             ),
             PageViewModel(
               reverse: true,
