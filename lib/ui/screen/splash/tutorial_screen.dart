@@ -48,7 +48,9 @@ class TutorialScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 30),
-                  Assets.image.tutorial1.image(height: 450),
+                  Assets.image.tutorial1.image(
+                    height: MediaQuery.sizeOf(context).height / 2,
+                  ),
                 ],
               ),
               // image:
@@ -85,7 +87,9 @@ class TutorialScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Assets.image.tutorial2.image(height: 450),
+                  Assets.image.tutorial2.image(
+                    height: MediaQuery.sizeOf(context).height / 2,
+                  ),
                 ],
               ),
             ),
