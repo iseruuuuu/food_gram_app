@@ -14,34 +14,40 @@ class AppPostTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-      child: TextField(
-        controller: controller,
-        maxLines: maxLines,
-        autocorrect: false,
-        keyboardType: TextInputType.emailAddress,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-          fontSize: 17,
-        ),
-        decoration: InputDecoration(
-          hintText: hintText,
-          contentPadding: const EdgeInsets.all(15),
-          focusedBorder: const OutlineInputBorder(),
-          enabledBorder: const OutlineInputBorder(),
-          alignLabelWithHint: true,
-          labelText: hintText,
-          labelStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.grey,
-            fontSize: 17,
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 50,
+      child: Row(
+        children: [
+          SizedBox(
+            width: 80,
+            child: Text(
+              '食べたもの',
+              style: const TextStyle(
+                fontSize: 15,
+              ),
+            ),
           ),
-          filled: true,
-          fillColor: Colors.white,
-          border: InputBorder.none,
-        ),
+          SizedBox(width: 5),
+          Expanded(
+            child: Semantics(
+              label: 'postFoodField',
+              child: TextField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: '食べたもの',
+                ),
+                controller: controller,
+                autocorrect: false,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -59,33 +65,42 @@ class AppPostCommentTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-      child: TextField(
-        controller: controller,
-        maxLines: 7,
-        autocorrect: false,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-          fontSize: 17,
-        ),
-        decoration: InputDecoration(
-          hintText: hintText,
-          contentPadding: const EdgeInsets.all(15),
-          focusedBorder: const OutlineInputBorder(),
-          enabledBorder: const OutlineInputBorder(),
-          alignLabelWithHint: true,
-          labelText: hintText,
-          labelStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.grey,
-            fontSize: 17,
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: const SizedBox(
+              width: 80,
+              child: Text(
+                'コメント',
+                style: TextStyle(fontSize: 15),
+              ),
+            ),
           ),
-          filled: true,
-          fillColor: Colors.white,
-          border: InputBorder.none,
-        ),
+          const SizedBox(width: 5),
+          Expanded(
+            child: Semantics(
+              label: 'postCommentField',
+              child: TextField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'コメント',
+                ),
+                controller: controller,
+                maxLines: 8,
+                autocorrect: false,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
