@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'restaurant_state.freezed.dart';
-
 part 'restaurant_state.g.dart';
 
 @freezed
@@ -14,6 +13,7 @@ abstract class RestaurantState with _$RestaurantState {
     @Default('') String searchText,
     @Default(false) bool isApproval,
     @Default('') String nextPageToken,
+    @Default(false) bool isFirstLoading,
   }) = _RestaurantState;
 
   factory RestaurantState.fromJson(Map<String, dynamic> json) =>

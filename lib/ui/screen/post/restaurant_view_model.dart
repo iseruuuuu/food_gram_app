@@ -48,8 +48,10 @@ class RestaurantViewModel extends _$RestaurantViewModel {
       state = state.copyWith(isApproval: true);
     }
     if (state.isApproval) {
+      state = state.copyWith(isFirstLoading: true);
       await _getInitialRestaurant();
     }
+    state = state.copyWith(isFirstLoading: true);
   }
 
   Future<void> _getInitialRestaurant() async {
@@ -150,5 +152,9 @@ class RestaurantViewModel extends _$RestaurantViewModel {
       log: [],
       lat: [],
     );
+  }
+
+  void goBack() {
+    loading.state = false;
   }
 }

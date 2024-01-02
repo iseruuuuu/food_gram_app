@@ -26,7 +26,11 @@ class EditScreen extends ConsumerWidget {
             backgroundColor: !loading ? Colors.white : Colors.transparent,
             leading: !loading
                 ? IconButton(
-                    onPressed: () => context.pop(),
+                    onPressed: () async {
+                      primaryFocus?.unfocus();
+                      await Future.delayed(Duration(milliseconds: 100));
+                      context.pop();
+                    },
                     icon: Icon(
                       Icons.close,
                       size: 30,
@@ -96,7 +100,7 @@ class EditScreen extends ConsumerWidget {
                       SizedBox(height: 30),
                       Divider(),
                       AppNameTextField(
-                        title: '名前',
+                        title: 'ユーザー名',
                         controller: controller.nameTextController,
                       ),
                       Divider(),

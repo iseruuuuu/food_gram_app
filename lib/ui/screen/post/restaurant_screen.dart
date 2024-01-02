@@ -25,124 +25,140 @@ class RestaurantScreen extends ConsumerWidget {
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
           leading: GestureDetector(
-            onTap: context.pop,
+            onTap: () {
+              ref.read(restaurantViewModelProvider().notifier).goBack();
+              context.pop();
+            },
             child: Icon(Icons.close),
           ),
         ),
-        body: state.isApproval
-            ? Column(
-                children: [
-                  AppSearchTextField(
-                    controller: controller.controller,
-                    hintText: 'レストランを検索',
-                    onChanged: controller.search,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      final restaurant = Restaurant(
-                        restaurant: '自炊',
-                        lat: 0,
-                        lng: 0,
-                      );
-                      primaryFocus?.unfocus();
-                      context.pop(restaurant);
-                    },
-                    child: ListTile(
-                      leading: Icon(Icons.home),
-                      trailing: Icon(
-                        Icons.arrow_forward_ios,
-                        size: 20,
+        body: state.isFirstLoading
+            ? state.isApproval
+                ? Column(
+                    children: [
+                      AppSearchTextField(
+                        controller: controller.controller,
+                        hintText: 'レストランを検索',
+                        onChanged: controller.search,
                       ),
-                      title: Text(
-                        '自炊',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      final restaurant = Restaurant(
-                        restaurant: '不明',
-                        lat: 0,
-                        lng: 0,
-                      );
-                      primaryFocus?.unfocus();
-                      context.pop(restaurant);
-                    },
-                    child: ListTile(
-                      leading: Icon(Icons.restaurant_menu),
-                      trailing: Icon(
-                        Icons.arrow_forward_ios,
-                        size: 20,
-                      ),
-                      title: Text(
-                        'レストラン名が不明orヒットしない',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (!loading)
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: state.restaurant.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            onTap: () {
-                              final restaurant = Restaurant(
-                                restaurant: state.restaurant[index],
-                                lat: state.lat[index],
-                                lng: state.log[index],
-                              );
-                              primaryFocus?.unfocus();
-                              context.pop(restaurant);
-                            },
-                            trailing: Icon(
-                              Icons.arrow_forward_ios,
-                              size: 20,
-                            ),
-                            title: Text(
-                              state.restaurant[index],
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            subtitle: Text(
-                              state.address[index],
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 10,
-                              ),
-                            ),
+                      GestureDetector(
+                        onTap: () {
+                          final restaurant = Restaurant(
+                            restaurant: '自炊',
+                            lat: 0,
+                            lng: 0,
                           );
+                          primaryFocus?.unfocus();
+                          context.pop(restaurant);
                         },
-                      ),
-                    )
-                  else
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Spacer(),
-                          Center(
-                            child: LoadingAnimationWidget.dotsTriangle(
-                              color: Colors.deepPurple,
-                              size: 50,
+                        child: ListTile(
+                          leading: Icon(Icons.home),
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 20,
+                          ),
+                          title: Text(
+                            '自炊',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Spacer(),
-                        ],
+                        ),
                       ),
+                      GestureDetector(
+                        onTap: () {
+                          final restaurant = Restaurant(
+                            restaurant: '不明',
+                            lat: 0,
+                            lng: 0,
+                          );
+                          primaryFocus?.unfocus();
+                          context.pop(restaurant);
+                        },
+                        child: ListTile(
+                          leading: Icon(Icons.restaurant_menu),
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 20,
+                          ),
+                          title: Text(
+                            'レストラン名が不明orヒットしない',
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      if (!loading)
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: state.restaurant.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                onTap: () {
+                                  final restaurant = Restaurant(
+                                    restaurant: state.restaurant[index],
+                                    lat: state.lat[index],
+                                    lng: state.log[index],
+                                  );
+                                  primaryFocus?.unfocus();
+                                  context.pop(restaurant);
+                                },
+                                trailing: Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 20,
+                                ),
+                                title: Text(
+                                  state.restaurant[index],
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  state.address[index],
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      else
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Spacer(),
+                              Center(
+                                child: LoadingAnimationWidget.dotsTriangle(
+                                  color: Colors.deepPurple,
+                                  size: 50,
+                                ),
+                              ),
+                              Spacer(),
+                            ],
+                          ),
+                        ),
+                    ],
+                  )
+                : AppRequest()
+            : Column(
+                children: [
+                  Spacer(),
+                  Center(
+                    child: LoadingAnimationWidget.dotsTriangle(
+                      color: Colors.deepPurple,
+                      size: 50,
                     ),
+                  ),
+                  Spacer(),
                 ],
-              )
-            : AppRequest(),
+              ),
       ),
     );
   }
