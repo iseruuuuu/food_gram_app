@@ -36,7 +36,7 @@ class PostViewModel extends _$PostViewModel {
     loading.state = true;
     state = state.copyWith(status: 'Loading...');
     if (foodTextController.text.isNotEmpty &&
-        state.restaurant != '食べた場所' &&
+        state.restaurant != '場所を追加' &&
         uploadImage != '') {
       final result = await ref.read(databaseServiceProvider).post(
             foodName: foodTextController.text,
