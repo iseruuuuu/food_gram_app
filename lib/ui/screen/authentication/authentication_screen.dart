@@ -5,9 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/app_auth_text_field.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
-import 'package:food_gram_app/ui/component/app_post_text_field.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_view_model.dart';
 import 'package:food_gram_app/utils/mixin/account_exist_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
@@ -100,7 +100,7 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: AppPostTextField(
+                    child: AppAuthTextField(
                       controller: ref
                           .watch(authenticationViewModelProvider().notifier)
                           .emailTextField,
