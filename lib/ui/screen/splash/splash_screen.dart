@@ -32,7 +32,6 @@ class SplashScreenState extends State<SplashScreen> with AccountExistMixin {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        // child: Assets.image.loading.image(
         child: Assets.splash.splashGif.image(
           fit: BoxFit.cover,
           width: MediaQuery.sizeOf(context).width / 2,
