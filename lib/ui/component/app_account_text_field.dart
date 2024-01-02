@@ -31,7 +31,7 @@ class AppNameTextField extends StatelessWidget {
               child: TextField(
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: '名前',
+                  hintText: 'ユーザー名',
                 ),
                 controller: controller,
                 autocorrect: false,
