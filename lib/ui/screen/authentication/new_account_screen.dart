@@ -25,47 +25,52 @@ class NewAccountScreen extends ConsumerWidget {
         body: Stack(
           children: [
             SingleChildScrollView(
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.white,
-                    backgroundImage:
-                        AssetImage('assets/icon/icon${state.number}.png'),
-                    radius: 60,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      'アイコンの設定',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.white,
+                      backgroundImage:
+                          AssetImage('assets/icon/icon${state.number}.png'),
+                      radius: 60,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Text(
+                        'アイコンの設定',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
                     ),
-                  ),
-                  Wrap(
-                    children: List.generate(
-                      6,
-                      (index) {
-                        return AppIcon(
-                          onTap: () => ref
-                              .read(newAccountViewModelProvider().notifier)
-                              .selectIcon(index + 1),
-                          number: index + 1,
-                        );
-                      },
+                    Wrap(
+                      children: List.generate(
+                        6,
+                        (index) {
+                          return AppIcon(
+                            onTap: () => ref
+                                .read(newAccountViewModelProvider().notifier)
+                                .selectIcon(index + 1),
+                            number: index + 1,
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  AppNameTextField(
-                    title: '名前',
-                    controller: controller.nameTextController,
-                  ),
-                  AppUserNameTextField(
-                    controller: controller.userNameTextController,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 30),
-                    child: AppElevatedButton(
+                    SizedBox(height: 30),
+                    Divider(),
+                    AppNameTextField(
+                      title: 'ユーザー名',
+                      controller: controller.nameTextController,
+                    ),
+                    Divider(),
+                    AppUserNameTextField(
+                      controller: controller.userNameTextController,
+                    ),
+                    Divider(),
+                    SizedBox(height: 60),
+                    AppElevatedButton(
                       onPressed: () {
                         ref
                             .read(newAccountViewModelProvider().notifier)
@@ -78,18 +83,18 @@ class NewAccountScreen extends ConsumerWidget {
                       },
                       title: '登録',
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: Text(
-                      state.loginStatus,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: Text(
+                        state.loginStatus,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             AppLoading(
