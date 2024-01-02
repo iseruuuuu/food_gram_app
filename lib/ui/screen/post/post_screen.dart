@@ -36,7 +36,16 @@ class PostScreen extends ConsumerWidget
           appBar: AppBar(
             surfaceTintColor: Colors.transparent,
             backgroundColor: !loading ? Colors.white : Colors.transparent,
-            automaticallyImplyLeading: !loading,
+            leading: !loading
+                ? IconButton(
+                    onPressed: () async {
+                      primaryFocus?.unfocus();
+                      await Future.delayed(Duration(milliseconds: 100));
+                      context.pop();
+                    },
+                    icon: Icon(Icons.close),
+                  )
+                : SizedBox(),
             actions: [
               if (!loading)
                 TextButton(
