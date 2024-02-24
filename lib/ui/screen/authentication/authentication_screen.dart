@@ -142,9 +142,25 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                             ),
                           ),
                         ),
-                        Gap(40),
                       ],
                     ),
+                  Gap(30),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 100,
+                    height: 50,
+                    child: SignInButton(
+                      Buttons.google,
+                      onPressed: () async {
+                        await ref
+                            .read(authenticationViewModelProvider().notifier)
+                            .loginGoogle();
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                  ),
+                  Gap(40),
                   Text(
                     state.loginStatus,
                     textAlign: TextAlign.center,

@@ -59,4 +59,19 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       },
     );
   }
+
+  Future<void> loginGoogle() async {
+    primaryFocus?.unfocus();
+    final result = await ref.read(authServiceProvider).loginGoogle();
+    await result.when(
+      success: (_) async {
+        state = state.copyWith(loginStatus: 'ログイン成功');
+      },
+      failure: (error) {
+        logger.e(error);
+        state = state.copyWith(loginStatus: 'エラーが発生しました');
+        loading.state = false;
+      },
+    );
+  }
 }
