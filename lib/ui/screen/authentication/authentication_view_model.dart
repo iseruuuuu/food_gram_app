@@ -55,7 +55,6 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       failure: (error) {
         logger.e(error);
         state = state.copyWith(loginStatus: 'エラーが発生しました');
-        loading.state = false;
       },
     );
   }
@@ -70,7 +69,6 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       failure: (error) {
         logger.e(error);
         state = state.copyWith(loginStatus: 'エラーが発生しました');
-        loading.state = false;
       },
     );
   }
