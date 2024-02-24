@@ -28,7 +28,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     primaryFocus?.unfocus();
     if (emailTextField.text.isNotEmpty) {
       final result =
-          await ref.read(authServiceProvider).logIn(emailTextField.text.trim());
+          await ref.read(authServiceProvider).login(emailTextField.text.trim());
       await result.when(
         success: (_) async {
           await Future.delayed(Duration(seconds: 2));
@@ -43,5 +43,20 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       state = state.copyWith(loginStatus: 'メールアドレスが入力されていません');
     }
     loading.state = false;
+  }
+
+  Future<void> loginApple() async {
+    primaryFocus?.unfocus();
+    final result = await ref.read(authServiceProvider).loginApple();
+    await result.when(
+      success: (_) async {
+        state = state.copyWith(loginStatus: 'ログイン成功');
+      },
+      failure: (error) {
+        logger.e(error);
+        state = state.copyWith(loginStatus: 'エラーが発生しました');
+        loading.state = false;
+      },
+    );
   }
 }

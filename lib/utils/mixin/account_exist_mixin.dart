@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:food_gram_app/main.dart';
 
 mixin AccountExistMixin {
@@ -8,8 +9,8 @@ mixin AccountExistMixin {
       return false;
     }
     final response =
-        await supabase.from('users').select().eq('user_id', user.id).execute();
-    if (response.data != null && response.data.isNotEmpty) {
+        await supabase.from('users').select().eq('user_id', user.id).count();
+    if (response.data.isNotEmpty) {
       return true;
     }
     return false;

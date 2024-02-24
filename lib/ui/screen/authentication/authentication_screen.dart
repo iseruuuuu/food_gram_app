@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,12 +7,13 @@ import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_auth_text_field.dart';
-import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_view_model.dart';
 import 'package:food_gram_app/utils/mixin/account_exist_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthenticationScreen extends ConsumerStatefulWidget {
@@ -98,31 +100,57 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                       ),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: AppAuthTextField(
-                      controller: ref
-                          .watch(authenticationViewModelProvider().notifier)
-                          .emailTextField,
-                      hintText: 'メールアドレス',
-                      maxLines: 1,
+                  Gap(20),
+                  AppAuthTextField(
+                    controller: ref
+                        .watch(authenticationViewModelProvider().notifier)
+                        .emailTextField,
+                    hintText: 'メールアドレス',
+                    maxLines: 1,
+                  ),
+                  Gap(20),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 100,
+                    height: 50,
+                    child: SignInButton(
+                      Buttons.email,
+                      onPressed: ref
+                          .read(authenticationViewModelProvider().notifier)
+                          .login,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
                     ),
                   ),
-                  AppElevatedButton(
-                    onPressed: ref
-                        .read(authenticationViewModelProvider().notifier)
-                        .login,
-                    title: '新規作成  /  ログイン',
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(40),
-                    child: Text(
-                      state.loginStatus,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                  if (Platform.isIOS)
+                    Column(
+                      children: [
+                        Gap(30),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width - 100,
+                          height: 50,
+                          child: SignInButton(
+                            Buttons.apple,
+                            onPressed: () async {
+                              await ref
+                                  .read(authenticationViewModelProvider()
+                                      .notifier)
+                                  .loginApple();
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                        ),
+                        Gap(40),
+                      ],
+                    ),
+                  Text(
+                    state.loginStatus,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
                   ),
                 ],

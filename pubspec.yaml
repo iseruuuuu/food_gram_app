@@ -10,6 +10,7 @@ dependencies:
   app_settings: ^5.1.1
   battery_info: ^1.1.1
   cached_network_image: ^3.3.0
+  crypto: ^3.0.3
   cupertino_icons: ^1.0.2
   device_info_plus: ^9.1.1
   easy_debounce: ^2.0.3
@@ -21,6 +22,7 @@ dependencies:
   flutter_riverpod: ^2.4.5
   font_awesome_flutter: ^10.5.0
   freezed_annotation: ^2.4.1
+  gap: ^3.0.1
   geolocator: ^10.1.0
   gif: ^2.3.0
   go_router: ^12.1.1
@@ -37,7 +39,9 @@ dependencies:
   settings_ui: ^2.0.2
   share_plus: ^7.2.1
   shared_preferences: ^2.2.2
-  supabase_flutter: ^1.10.25
+  sign_in_button: ^3.2.0
+  sign_in_with_apple: ^5.0.0
+  supabase_flutter: ^2.3.3
   url_launcher: ^6.2.1
 
 dev_dependencies:

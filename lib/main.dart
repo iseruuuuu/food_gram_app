@@ -22,7 +22,6 @@ void main() async {
     anonKey: Environment().supabaseAnonKey,
     url: Environment().supabaseUrl,
     debug: kDebugMode,
-    authCallbackUrlHostname: 'login-callback',
   );
   runApp(const ProviderScope(child: MyApp()));
 }

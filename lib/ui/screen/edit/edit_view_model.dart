@@ -27,11 +27,8 @@ class EditViewModel extends _$EditViewModel {
     await Future.delayed(Duration.zero);
     loading.state = true;
     final userId = supabase.auth.currentUser!.id;
-    final data = await supabase
-        .from('users')
-        .select<Map<String, dynamic>>()
-        .eq('user_id', userId)
-        .single();
+    final data =
+        await supabase.from('users').select().eq('user_id', userId).single();
     nameTextController.text = data['name'];
     useNameTextController.text = data['user_name'];
     selfIntroduceTextController.text = data['self_introduce'];

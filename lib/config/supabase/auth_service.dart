@@ -1,6 +1,10 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/model/result.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'auth_service.g.dart';
@@ -11,7 +15,7 @@ AuthService authService(AuthServiceRef ref) => AuthService();
 class AuthService {
   AuthService();
 
-  Future<Result<void, Exception>> logIn(String email) async {
+  Future<Result<void, Exception>> login(String email) async {
     try {
       await supabase.auth.signInWithOtp(
         email: email,
@@ -23,6 +27,32 @@ class AuthService {
       return Failure(authError);
     } on Exception catch (error) {
       return Failure(error);
+    }
+  }
+
+  Future<Result<AuthResponse, Exception>> loginApple() async {
+    try {
+      final rawNonce = supabase.auth.generateRawNonce();
+      final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: hashedNonce,
+      );
+      final idToken = credential.identityToken;
+      if (idToken == null) {
+        throw const AuthException('idToken is null');
+      }
+      final signInWithIdToken = await supabase.auth.signInWithIdToken(
+        provider: OAuthProvider.apple,
+        idToken: idToken,
+        nonce: rawNonce,
+      );
+      return Success(signInWithIdToken);
+    } on AuthException catch (authError) {
+      return Failure(authError);
     }
   }
 
