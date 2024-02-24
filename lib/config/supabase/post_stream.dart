@@ -30,6 +30,6 @@ Stream<List<Map<String, dynamic>>> myPostStream(PostStreamRef ref) {
   return supabase
       .from('posts')
       .stream(primaryKey: ['id'])
-      .eq('user_id', user)
+      .eq('user_id', user!)
       .order('created_at');
 }
