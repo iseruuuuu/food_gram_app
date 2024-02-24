@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
+import 'package:food_gram_app/constants/api_key.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/model/result.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -52,6 +54,32 @@ class AuthService {
       );
       return Success(signInWithIdToken);
     } on AuthException catch (authError) {
+      return Failure(authError);
+    }
+  }
+
+  Future<Result<AuthResponse, Exception>> loginGoogle() async {
+    try {
+      const iosClientId = GoogleAuthKey.iOSAuthKey;
+      final googleSignIn = GoogleSignIn(clientId: iosClientId);
+      final googleUser = await googleSignIn.signIn();
+      final googleAuth = await googleUser!.authentication;
+      final accessToken = googleAuth.accessToken;
+      final idToken = googleAuth.idToken;
+      if (accessToken == null) {
+        throw const AuthException('No Access Token found');
+      }
+      if (idToken == null) {
+        throw const AuthException('No ID Token found');
+      }
+      final signInWithIdToken = await supabase.auth.signInWithIdToken(
+        provider: OAuthProvider.google,
+        idToken: idToken,
+        accessToken: accessToken,
+      );
+      return Success(signInWithIdToken);
+    } on AuthException catch (authError) {
+      logger.e(authError);
       return Failure(authError);
     }
   }
