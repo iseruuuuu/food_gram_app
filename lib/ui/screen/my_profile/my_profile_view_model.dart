@@ -18,20 +18,16 @@ class MyProfileViewModel extends _$MyProfileViewModel {
     state = const MyProfileStateLoading();
     try {
       final userId = supabase.auth.currentUser!.id;
-      final data = await supabase
-          .from('users')
-          .select<Map<String, dynamic>>()
-          .eq('user_id', userId)
-          .single();
+      final data =
+          await supabase.from('users').select().eq('user_id', userId).single();
       final response =
-          await supabase.from('posts').select().eq('user_id', userId).execute();
-      final post = response.data as List<dynamic>;
+          await supabase.from('posts').select().eq('user_id', userId);
       state = MyProfileState.data(
         name: data['name'],
         userName: data['user_name'],
         selfIntroduce: data['self_introduce'],
         image: data['image'],
-        length: post.length,
+        length: response.length,
       );
     } on Exception catch (error) {
       logger.e(error);
