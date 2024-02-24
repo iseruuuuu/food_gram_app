@@ -46,17 +46,13 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
   }
 
   Future<void> loginApple() async {
-    //TODO キャンセルをすると、ずっとローディングになってしまう。
-    loading.state = true;
     primaryFocus?.unfocus();
     final result = await ref.read(authServiceProvider).loginApple();
     await result.when(
       success: (_) async {
-        await Future.delayed(Duration(seconds: 2));
-        loading.state = false;
+        state = state.copyWith(loginStatus: 'ログイン成功');
       },
       failure: (error) {
-        print(error);
         logger.e(error);
         state = state.copyWith(loginStatus: 'エラーが発生しました');
         loading.state = false;
