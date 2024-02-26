@@ -1,4 +1,4 @@
-import 'package:food_gram_app/config/shared_preference/shared_preference.dart';
+import 'package:food_gram_app/core/config/shared_preference/shared_preference.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

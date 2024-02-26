@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:food_gram_app/config/supabase/database_service.dart';
+import 'package:food_gram_app/core/data/supabase/database_service.dart';
+import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/main.dart';
-import 'package:food_gram_app/model/restaurant.dart';
 import 'package:food_gram_app/ui/screen/post/post_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:image_picker/image_picker.dart';
