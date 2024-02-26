@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:food_gram_app/constants/api_key.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/main.dart';
-import 'package:food_gram_app/model/result.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';

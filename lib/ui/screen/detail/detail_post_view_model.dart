@@ -1,6 +1,6 @@
-import 'package:food_gram_app/config/shared_preference/shared_preference.dart';
-import 'package:food_gram_app/config/supabase/database_service.dart';
-import 'package:food_gram_app/model/posts.dart';
+import 'package:food_gram_app/core/config/shared_preference/shared_preference.dart';
+import 'package:food_gram_app/core/data/supabase/database_service.dart';
+import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

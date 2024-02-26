@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/model/model.dart';
+import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/main.dart';
-import 'package:food_gram_app/model/model.dart';
-import 'package:food_gram_app/model/posts.dart';
-import 'package:food_gram_app/model/users.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
 import 'package:go_router/go_router.dart';
 

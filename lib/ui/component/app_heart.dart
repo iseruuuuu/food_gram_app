@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/core/gen/assets.gen.dart';
 import 'package:gif/gif.dart';
 
 class AppHeart extends StatelessWidget {

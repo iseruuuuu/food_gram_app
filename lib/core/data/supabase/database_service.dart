@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
+import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/main.dart';
-import 'package:food_gram_app/model/posts.dart';
-import 'package:food_gram_app/model/result.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

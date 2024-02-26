@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/model/restaurant.dart';
+import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/ui/component/app_request.dart';
 import 'package:food_gram_app/ui/component/app_search_text_field.dart';
 import 'package:food_gram_app/ui/screen/post/restaurant_view_model.dart';

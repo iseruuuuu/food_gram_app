@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/model/restaurant.dart';
+import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_post_text_field.dart';
 import 'package:food_gram_app/ui/screen/post/post_view_model.dart';
