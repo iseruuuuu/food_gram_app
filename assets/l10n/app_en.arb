@@ -1,0 +1,10 @@
+
+{
+  "email_text_field": "Enter your email address",
+  "setting_icon": "Select Icon",
+  "user_name": "User Name",
+  "user_name_text_field": "Enter your user name",
+  "user_id": "User ID",
+  "user_id_text_field": "Enter your user id",
+  "register_button": "Register"
+}
