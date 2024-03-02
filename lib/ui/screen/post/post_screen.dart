@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
-import 'package:food_gram_app/ui/component/app_post_text_field.dart';
+import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/screen/post/post_view_model.dart';
 import 'package:food_gram_app/utils/mixin/show_modal_bottom_sheet_mixin.dart';
 import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
