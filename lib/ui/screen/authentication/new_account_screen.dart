@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_account_text_field.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
@@ -36,9 +37,9 @@ class NewAccountScreen extends ConsumerWidget {
                       radius: 60,
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.symmetric(vertical: 10),
                       child: Text(
-                        'アイコンの設定',
+                        L10n.of(context).setting_icon,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -59,16 +60,13 @@ class NewAccountScreen extends ConsumerWidget {
                       ),
                     ),
                     SizedBox(height: 30),
-                    Divider(),
-                    AppNameTextField(
-                      title: 'ユーザー名',
-                      controller: controller.nameTextController,
-                    ),
-                    Divider(),
+                    Divider(height: 0),
+                    AppNameTextField(controller: controller.nameTextController),
+                    Divider(height: 0),
                     AppUserNameTextField(
                       controller: controller.userNameTextController,
                     ),
-                    Divider(),
+                    Divider(height: 0),
                     SizedBox(height: 60),
                     AppElevatedButton(
                       onPressed: () {
@@ -81,7 +79,7 @@ class NewAccountScreen extends ConsumerWidget {
                           }
                         });
                       },
-                      title: '登録',
+                      title: L10n.of(context).register_button,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 15),
