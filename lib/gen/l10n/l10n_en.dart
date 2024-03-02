@@ -26,4 +26,55 @@ class L10nEn extends L10n {
 
   @override
   String get register_button => 'Register';
+
+  @override
+  String get setting_app_bar => 'Settings';
+
+  @override
+  String get setting_developer => 'Developer';
+
+  @override
+  String get setting_github => 'Github';
+
+  @override
+  String get setting_license => 'License';
+
+  @override
+  String get setting_faq => 'FAQ';
+
+  @override
+  String get setting_privacy_policy => 'Privacy Policy';
+
+  @override
+  String get setting_terms_of_use => 'Terms of use';
+
+  @override
+  String get setting_contact => 'Contact';
+
+  @override
+  String get setting_tutorial => 'Tutorial';
+
+  @override
+  String get setting_battery => 'Battery';
+
+  @override
+  String get setting_device => 'device';
+
+  @override
+  String get setting_ios => 'iOS Version';
+
+  @override
+  String get setting_android => 'SDK';
+
+  @override
+  String get setting_app_version => 'App Version';
+
+  @override
+  String get setting_account => 'Account';
+
+  @override
+  String get setting_logout_button => 'Logout';
+
+  @override
+  String get setting_delete_account_button => 'Request for deletion of account';
 }

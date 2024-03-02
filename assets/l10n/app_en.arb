@@ -6,5 +6,22 @@
   "user_name_text_field": "Enter your user name",
   "user_id": "User ID",
   "user_id_text_field": "Enter your user id",
-  "register_button": "Register"
+  "register_button": "Register",
+  "setting_app_bar": "Settings",
+  "setting_developer": "Developer",
+  "setting_github": "Github",
+  "setting_license": "License",
+  "setting_faq": "FAQ",
+  "setting_privacy_policy": "Privacy Policy",
+  "setting_terms_of_use": "Terms of use",
+  "setting_contact": "Contact",
+  "setting_tutorial": "Tutorial",
+  "setting_battery": "Battery",
+  "setting_device": "device",
+  "setting_ios": "iOS Version",
+  "setting_android": "SDK",
+  "setting_app_version": "App Version",
+  "setting_account": "Account",
+  "setting_logout_button": "Logout",
+  "setting_delete_account_button": "Request for deletion of account"
 }

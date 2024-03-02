@@ -135,6 +135,108 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'登録'**
   String get register_button;
+
+  /// No description provided for @setting_app_bar.
+  ///
+  /// In ja, this message translates to:
+  /// **'基本設定'**
+  String get setting_app_bar;
+
+  /// No description provided for @setting_developer.
+  ///
+  /// In ja, this message translates to:
+  /// **'開発者'**
+  String get setting_developer;
+
+  /// No description provided for @setting_github.
+  ///
+  /// In ja, this message translates to:
+  /// **'Github'**
+  String get setting_github;
+
+  /// No description provided for @setting_license.
+  ///
+  /// In ja, this message translates to:
+  /// **'ライセンス'**
+  String get setting_license;
+
+  /// No description provided for @setting_faq.
+  ///
+  /// In ja, this message translates to:
+  /// **'FAQ'**
+  String get setting_faq;
+
+  /// No description provided for @setting_privacy_policy.
+  ///
+  /// In ja, this message translates to:
+  /// **'プライバシーポリシー'**
+  String get setting_privacy_policy;
+
+  /// No description provided for @setting_terms_of_use.
+  ///
+  /// In ja, this message translates to:
+  /// **'利用規約'**
+  String get setting_terms_of_use;
+
+  /// No description provided for @setting_contact.
+  ///
+  /// In ja, this message translates to:
+  /// **'お問い合せ'**
+  String get setting_contact;
+
+  /// No description provided for @setting_tutorial.
+  ///
+  /// In ja, this message translates to:
+  /// **'チュートリアル'**
+  String get setting_tutorial;
+
+  /// No description provided for @setting_battery.
+  ///
+  /// In ja, this message translates to:
+  /// **'バッテリー残量'**
+  String get setting_battery;
+
+  /// No description provided for @setting_device.
+  ///
+  /// In ja, this message translates to:
+  /// **'端末情報'**
+  String get setting_device;
+
+  /// No description provided for @setting_ios.
+  ///
+  /// In ja, this message translates to:
+  /// **'iOSバージョン'**
+  String get setting_ios;
+
+  /// No description provided for @setting_android.
+  ///
+  /// In ja, this message translates to:
+  /// **'SDK'**
+  String get setting_android;
+
+  /// No description provided for @setting_app_version.
+  ///
+  /// In ja, this message translates to:
+  /// **'アプリバージョン'**
+  String get setting_app_version;
+
+  /// No description provided for @setting_account.
+  ///
+  /// In ja, this message translates to:
+  /// **'アカウント'**
+  String get setting_account;
+
+  /// No description provided for @setting_logout_button.
+  ///
+  /// In ja, this message translates to:
+  /// **'ログアウト'**
+  String get setting_logout_button;
+
+  /// No description provided for @setting_delete_account_button.
+  ///
+  /// In ja, this message translates to:
+  /// **'アカウントの削除申請'**
+  String get setting_delete_account_button;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

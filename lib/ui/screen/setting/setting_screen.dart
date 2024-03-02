@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_app_bar.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
@@ -35,7 +36,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
           SettingsList(
             sections: [
               SettingsSection(
-                title: const Text('基本設定'),
+                title: Text(L10n.of(context).setting_app_bar),
                 tiles: <SettingsTile>[
                   // SettingsTile.navigation(
                   //   leading: const Icon(Icons.store),
@@ -51,7 +52,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       FontAwesomeIcons.twitter,
                       color: Colors.blue,
                     ),
-                    title: const Text('開発者'),
+                    title: Text(L10n.of(context).setting_developer),
                     onPressed: (context) {
                       openSNSUrl(
                         'twitter://user?screen_name=isekiryu',
@@ -69,7 +70,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       size: 20,
                     ),
                     leading: const Icon(FontAwesomeIcons.github),
-                    title: const Text('コントレビュートする'),
+                    title: Text(L10n.of(context).setting_github),
                     onPressed: (context) {
                       launcherUrl(
                         'https://github.com/iseruuuuu/food_gram_app',
@@ -86,7 +87,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       size: 20,
                     ),
                     leading: const Icon(Icons.account_balance_wallet),
-                    title: const Text('ライセンス'),
+                    title: Text(L10n.of(context).setting_license),
                     onPressed: (context) {
                       context.pushNamed(RouterPath.license);
                     },
@@ -112,7 +113,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       size: 20,
                     ),
                     leading: const Icon(Icons.question_answer),
-                    title: const Text('FAQ'),
+                    title: Text(L10n.of(context).setting_faq),
                     onPressed: (context) {
                       launcherUrl(
                         'https://succinct-may-e5e.notion.site/FAQ-256ae853b9ec4209a04f561449de8c1d',
@@ -132,7 +133,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       Icons.lock,
                       color: Colors.black,
                     ),
-                    title: const Text('プライバシーポリシー'),
+                    title: Text(L10n.of(context).setting_privacy_policy),
                     onPressed: (context) {
                       launcherUrl(
                         'https://succinct-may-e5e.notion.site/fd5584426bf44c50bdb1eb4b376d165f',
@@ -152,7 +153,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       Icons.call,
                       color: Colors.black,
                     ),
-                    title: const Text('利用規約'),
+                    title: Text(L10n.of(context).setting_terms_of_use),
                     onPressed: (context) {
                       launcherUrl(
                         'https://succinct-may-e5e.notion.site/a0ad75abf8244404b7a19cca0e2304f1',
@@ -172,7 +173,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       Icons.mail,
                       color: Colors.black,
                     ),
-                    title: const Text('お問い合わせ'),
+                    title: Text(L10n.of(context).setting_contact),
                     onPressed: (context) {
                       launcherUrl(
                         'https://forms.gle/mjucjntt3c2SZsUc7',
@@ -192,7 +193,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       Icons.account_balance,
                       color: Colors.black,
                     ),
-                    title: const Text('チュートリアル'),
+                    title: Text(L10n.of(context).setting_tutorial),
                     onPressed: (context) {
                       context.pushNamed(RouterPath.settingTutorial);
                     },
@@ -202,7 +203,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       Icons.battery_4_bar_sharp,
                       color: Colors.black,
                     ),
-                    title: const Text('バッテリー残量'),
+                    title: Text(L10n.of(context).setting_battery),
                     trailing: Text(
                       state.battery,
                       style: TextStyle(fontSize: 18),
@@ -210,7 +211,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                   ),
                   SettingsTile(
                     leading: Icon(Icons.phone_android),
-                    title: const Text('端末情報'),
+                    title: Text(L10n.of(context).setting_device),
                     trailing: Text(
                       state.model,
                       style: TextStyle(fontSize: 18),
@@ -221,7 +222,11 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       Platform.isAndroid ? Icons.android : Icons.apple,
                       color: Platform.isAndroid ? Colors.green : Colors.red,
                     ),
-                    title: Text(Platform.isAndroid ? 'SDK' : 'iOSバージョン'),
+                    title: Text(
+                      Platform.isAndroid
+                          ? L10n.of(context).setting_android
+                          : L10n.of(context).setting_ios,
+                    ),
                     trailing: Text(
                       state.sdk,
                       style: TextStyle(fontSize: 18),
@@ -229,7 +234,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                   ),
                   SettingsTile(
                     leading: Icon(Icons.settings, color: Colors.grey),
-                    title: const Text('アプリのバージョン'),
+                    title: Text(L10n.of(context).setting_app_version),
                     trailing: Text(
                       state.version,
                       style: TextStyle(fontSize: 18),
@@ -238,7 +243,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                 ],
               ),
               SettingsSection(
-                title: const Text('アカウント'),
+                title: Text(L10n.of(context).setting_account),
                 tiles: <SettingsTile>[
                   SettingsTile.navigation(
                     trailing: Icon(
@@ -246,7 +251,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       size: 20,
                     ),
                     title: Text(
-                      'ログアウト',
+                      L10n.of(context).setting_logout_button,
                       style: TextStyle(
                         color: Colors.red,
                         fontWeight: FontWeight.bold,
@@ -278,7 +283,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       size: 20,
                     ),
                     title: Text(
-                      'アカウントの削除申請',
+                      L10n.of(context).setting_delete_account_button,
                       style: TextStyle(
                         color: Colors.red,
                         fontWeight: FontWeight.bold,
