@@ -23,5 +23,11 @@
   "setting_app_version": "App Version",
   "setting_account": "Account",
   "setting_logout_button": "Logout",
-  "setting_delete_account_button": "Request for deletion of account"
+  "setting_delete_account_button": "Request for deletion of account",
+  "post_share": "Share",
+  "post_food_name": "Food Name",
+  "post_food_name_text_field": "Enter food name",
+  "post_place": "Add Restaurant",
+  "post_comment": "Enter Comment",
+  "post_comment_text_field": "Comment(optional)"
 }

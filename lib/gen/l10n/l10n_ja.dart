@@ -77,4 +77,22 @@ class L10nJa extends L10n {
 
   @override
   String get setting_delete_account_button => 'アカウントの削除申請';
+
+  @override
+  String get post_share => 'シェア';
+
+  @override
+  String get post_food_name => '食べたもの';
+
+  @override
+  String get post_food_name_text_field => '食べたものを入力';
+
+  @override
+  String get post_place => 'レストラン名を追加';
+
+  @override
+  String get post_comment => 'コメントを入力';
+
+  @override
+  String get post_comment_text_field => 'コメント(任意)';
 }

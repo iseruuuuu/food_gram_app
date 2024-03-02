@@ -237,6 +237,42 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'アカウントの削除申請'**
   String get setting_delete_account_button;
+
+  /// No description provided for @post_share.
+  ///
+  /// In ja, this message translates to:
+  /// **'シェア'**
+  String get post_share;
+
+  /// No description provided for @post_food_name.
+  ///
+  /// In ja, this message translates to:
+  /// **'食べたもの'**
+  String get post_food_name;
+
+  /// No description provided for @post_food_name_text_field.
+  ///
+  /// In ja, this message translates to:
+  /// **'食べたものを入力'**
+  String get post_food_name_text_field;
+
+  /// No description provided for @post_place.
+  ///
+  /// In ja, this message translates to:
+  /// **'レストラン名を追加'**
+  String get post_place;
+
+  /// No description provided for @post_comment.
+  ///
+  /// In ja, this message translates to:
+  /// **'コメントを入力'**
+  String get post_comment;
+
+  /// No description provided for @post_comment_text_field.
+  ///
+  /// In ja, this message translates to:
+  /// **'コメント(任意)'**
+  String get post_comment_text_field;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

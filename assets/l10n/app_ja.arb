@@ -23,5 +23,11 @@
   "setting_app_version": "アプリバージョン",
   "setting_account": "アカウント",
   "setting_logout_button": "ログアウト",
-  "setting_delete_account_button": "アカウントの削除申請"
+  "setting_delete_account_button": "アカウントの削除申請",
+  "post_share": "シェア",
+  "post_food_name": "食べたもの",
+  "post_food_name_text_field": "食べたものを入力",
+  "post_place": "レストラン名を追加",
+  "post_comment": "コメントを入力",
+  "post_comment_text_field": "コメント(任意)"
 }

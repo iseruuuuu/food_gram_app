@@ -77,4 +77,22 @@ class L10nEn extends L10n {
 
   @override
   String get setting_delete_account_button => 'Request for deletion of account';
+
+  @override
+  String get post_share => 'Share';
+
+  @override
+  String get post_food_name => 'Food Name';
+
+  @override
+  String get post_food_name_text_field => 'Enter food name';
+
+  @override
+  String get post_place => 'Add Restaurant';
+
+  @override
+  String get post_comment => 'Enter Comment';
+
+  @override
+  String get post_comment_text_field => 'Comment(optional)';
 }
