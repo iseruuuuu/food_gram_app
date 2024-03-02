@@ -32,5 +32,6 @@
   "post_comment_text_field": "Comment(optional)",
   "edit_update_button": "Update",
   "edit_bio": "Bio(optional)",
-  "edit_bio_text_field": "Enter Bio"
+  "edit_bio_text_field": "Enter Bio",
+  "empty": "There are no posts"
 }

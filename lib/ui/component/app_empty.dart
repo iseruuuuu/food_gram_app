@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/gen/assets.gen.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 
 class AppEmpty extends StatelessWidget {
   const AppEmpty({super.key});
@@ -11,17 +12,17 @@ class AppEmpty extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            '投稿がありません',
+            L10n.of(context).empty,
             style: TextStyle(
               color: Colors.black,
-              fontSize: 20,
+              fontSize: 22,
               fontWeight: FontWeight.bold,
             ),
           ),
           SizedBox(height: 20),
           Assets.image.empty.image(
-            width: 100,
-            height: 100,
+            width: 110,
+            height: 110,
           ),
         ],
       ),

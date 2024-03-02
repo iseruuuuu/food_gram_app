@@ -104,4 +104,7 @@ class L10nEn extends L10n {
 
   @override
   String get edit_bio_text_field => 'Enter Bio';
+
+  @override
+  String get empty => 'There are no posts';
 }

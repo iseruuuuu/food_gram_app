@@ -104,4 +104,7 @@ class L10nJa extends L10n {
 
   @override
   String get edit_bio_text_field => '自己紹介を入力してください';
+
+  @override
+  String get empty => '投稿がありません';
 }

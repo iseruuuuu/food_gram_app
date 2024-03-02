@@ -32,5 +32,6 @@
   "post_comment_text_field": "コメント(任意)",
   "edit_update_button": "更新",
   "edit_bio": "自己紹介(任意)",
-  "edit_bio_text_field": "自己紹介を入力してください"
+  "edit_bio_text_field": "自己紹介を入力してください",
+  "empty": "投稿がありません"
 }

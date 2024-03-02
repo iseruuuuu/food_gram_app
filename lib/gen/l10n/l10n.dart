@@ -291,6 +291,12 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'自己紹介を入力してください'**
   String get edit_bio_text_field;
+
+  /// No description provided for @empty.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿がありません'**
+  String get empty;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
