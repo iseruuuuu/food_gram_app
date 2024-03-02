@@ -231,24 +231,19 @@ class AppSelfIntroductionTextField extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 15),
-            child: const SizedBox(
-              width: 80,
-              child: Text(
-                '自己紹介',
-                style: TextStyle(fontSize: 15),
-              ),
-            ),
-          ),
           const SizedBox(width: 10),
           Expanded(
             child: Semantics(
               label: 'selfIntroductionField',
               child: TextField(
                 decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
                   border: InputBorder.none,
-                  hintText: '自己紹介',
+                  hintText: L10n.of(context).edit_bio_text_field,
+                  label: Text(
+                    L10n.of(context).edit_bio,
+                    style: TextStyle(color: Colors.grey),
+                  ),
                 ),
                 controller: controller,
                 maxLines: 5,

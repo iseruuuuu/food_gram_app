@@ -95,4 +95,13 @@ class L10nEn extends L10n {
 
   @override
   String get post_comment_text_field => 'Comment(optional)';
+
+  @override
+  String get edit_update_button => 'Update';
+
+  @override
+  String get edit_bio => 'Bio(optional)';
+
+  @override
+  String get edit_bio_text_field => 'Enter Bio';
 }

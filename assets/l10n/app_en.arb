@@ -29,5 +29,8 @@
   "post_food_name_text_field": "Enter food name",
   "post_place": "Add Restaurant",
   "post_comment": "Enter Comment",
-  "post_comment_text_field": "Comment(optional)"
+  "post_comment_text_field": "Comment(optional)",
+  "edit_update_button": "Update",
+  "edit_bio": "Bio(optional)",
+  "edit_bio_text_field": "Enter Bio"
 }

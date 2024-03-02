@@ -29,5 +29,8 @@
   "post_food_name_text_field": "食べたものを入力",
   "post_place": "レストラン名を追加",
   "post_comment": "コメントを入力",
-  "post_comment_text_field": "コメント(任意)"
+  "post_comment_text_field": "コメント(任意)",
+  "edit_update_button": "更新",
+  "edit_bio": "自己紹介(任意)",
+  "edit_bio_text_field": "自己紹介を入力してください"
 }

@@ -95,4 +95,13 @@ class L10nJa extends L10n {
 
   @override
   String get post_comment_text_field => 'コメント(任意)';
+
+  @override
+  String get edit_update_button => '更新';
+
+  @override
+  String get edit_bio => '自己紹介(任意)';
+
+  @override
+  String get edit_bio_text_field => '自己紹介を入力してください';
 }

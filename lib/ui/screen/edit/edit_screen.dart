@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_icon.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/screen/edit/edit_view_model.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class EditScreen extends ConsumerWidget {
@@ -49,7 +51,7 @@ class EditScreen extends ConsumerWidget {
                     }
                   }),
                   child: Text(
-                    '更新',
+                    L10n.of(context).edit_update_button,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -77,7 +79,7 @@ class EditScreen extends ConsumerWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          'アイコンの設定',
+                          L10n.of(context).setting_icon,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -97,20 +99,20 @@ class EditScreen extends ConsumerWidget {
                           },
                         ),
                       ),
-                      SizedBox(height: 30),
-                      Divider(),
+                      Gap(30),
+                      Divider(height: 0),
                       AppNameTextField(
                         controller: controller.nameTextController,
                       ),
-                      Divider(),
+                      Divider(height: 0),
                       AppUserNameTextField(
                         controller: controller.useNameTextController,
                       ),
-                      Divider(),
+                      Divider(height: 0),
                       AppSelfIntroductionTextField(
                         controller: controller.selfIntroduceTextController,
                       ),
-                      Divider(),
+                      Divider(height: 0),
                     ],
                   ),
                 ),

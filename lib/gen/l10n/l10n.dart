@@ -273,6 +273,24 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'コメント(任意)'**
   String get post_comment_text_field;
+
+  /// No description provided for @edit_update_button.
+  ///
+  /// In ja, this message translates to:
+  /// **'更新'**
+  String get edit_update_button;
+
+  /// No description provided for @edit_bio.
+  ///
+  /// In ja, this message translates to:
+  /// **'自己紹介(任意)'**
+  String get edit_bio;
+
+  /// No description provided for @edit_bio_text_field.
+  ///
+  /// In ja, this message translates to:
+  /// **'自己紹介を入力してください'**
+  String get edit_bio_text_field;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
