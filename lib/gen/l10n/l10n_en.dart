@@ -107,4 +107,13 @@ class L10nEn extends L10n {
 
   @override
   String get empty => 'There are no posts';
+
+  @override
+  String get my_profile_post_length => 'POSTS';
+
+  @override
+  String get my_profile_edit_button => 'Edit  Profile';
+
+  @override
+  String get my_profile_exchange_point_button => 'Exchange Points';
 }

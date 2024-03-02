@@ -33,5 +33,8 @@
   "edit_update_button": "Update",
   "edit_bio": "Bio(optional)",
   "edit_bio_text_field": "Enter Bio",
-  "empty": "There are no posts"
+  "empty": "There are no posts",
+  "my_profile_post_length": "POSTS",
+  "my_profile_edit_button": "Edit Profile",
+  "my_profile_exchange_point_button": "Exchange Points"
 }

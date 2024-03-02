@@ -107,4 +107,13 @@ class L10nJa extends L10n {
 
   @override
   String get empty => '投稿がありません';
+
+  @override
+  String get my_profile_post_length => '投稿';
+
+  @override
+  String get my_profile_edit_button => 'プロフィールを編集';
+
+  @override
+  String get my_profile_exchange_point_button => 'ポイントを交換する';
 }

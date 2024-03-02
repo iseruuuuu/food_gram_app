@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 
 class AppHeader extends StatelessWidget {
   const AppHeader({
@@ -43,7 +44,7 @@ class AppHeader extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '投稿',
+                    L10n.of(context).my_profile_post_length,
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,

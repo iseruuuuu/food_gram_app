@@ -297,6 +297,24 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'投稿がありません'**
   String get empty;
+
+  /// No description provided for @my_profile_post_length.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿'**
+  String get my_profile_post_length;
+
+  /// No description provided for @my_profile_edit_button.
+  ///
+  /// In ja, this message translates to:
+  /// **'プロフィールを編集'**
+  String get my_profile_edit_button;
+
+  /// No description provided for @my_profile_exchange_point_button.
+  ///
+  /// In ja, this message translates to:
+  /// **'ポイントを交換する'**
+  String get my_profile_exchange_point_button;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

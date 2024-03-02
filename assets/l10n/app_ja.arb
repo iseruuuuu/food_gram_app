@@ -33,5 +33,8 @@
   "edit_update_button": "更新",
   "edit_bio": "自己紹介(任意)",
   "edit_bio_text_field": "自己紹介を入力してください",
-  "empty": "投稿がありません"
+  "empty": "投稿がありません",
+  "my_profile_post_length": "投稿",
+  "my_profile_edit_button": "プロフィールを編集",
+  "my_profile_exchange_point_button": "ポイントを交換する"
 }
