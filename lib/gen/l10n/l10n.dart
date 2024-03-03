@@ -94,6 +94,12 @@ abstract class L10n {
     Locale('en')
   ];
 
+  /// No description provided for @close.
+  ///
+  /// In ja, this message translates to:
+  /// **'閉じる'**
+  String get close;
+
   /// No description provided for @email_text_field.
   ///
   /// In ja, this message translates to:
@@ -315,6 +321,138 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'ポイントを交換する'**
   String get my_profile_exchange_point_button;
+
+  /// No description provided for @post_detail_heart.
+  ///
+  /// In ja, this message translates to:
+  /// **'いいね'**
+  String get post_detail_heart;
+
+  /// No description provided for @share_review_1.
+  ///
+  /// In ja, this message translates to:
+  /// **'で食べたレビューを投稿しました！'**
+  String get share_review_1;
+
+  /// No description provided for @share_review_2.
+  ///
+  /// In ja, this message translates to:
+  /// **'詳しくはfoodGramで確認してみよう！'**
+  String get share_review_2;
+
+  /// No description provided for @posts_detail_sheet_title.
+  ///
+  /// In ja, this message translates to:
+  /// **'この投稿について'**
+  String get posts_detail_sheet_title;
+
+  /// No description provided for @posts_detail_sheet_share.
+  ///
+  /// In ja, this message translates to:
+  /// **'この投稿をシェアする'**
+  String get posts_detail_sheet_share;
+
+  /// No description provided for @posts_detail_sheet_search.
+  ///
+  /// In ja, this message translates to:
+  /// **'この投稿をシェアする'**
+  String get posts_detail_sheet_search;
+
+  /// No description provided for @posts_detail_sheet_report.
+  ///
+  /// In ja, this message translates to:
+  /// **'この投稿を報告する'**
+  String get posts_detail_sheet_report;
+
+  /// No description provided for @posts_detail_sheet_block.
+  ///
+  /// In ja, this message translates to:
+  /// **'このユーザーをブロックする'**
+  String get posts_detail_sheet_block;
+
+  /// No description provided for @posts_search_error.
+  ///
+  /// In ja, this message translates to:
+  /// **'場所名の検索ができません'**
+  String get posts_search_error;
+
+  /// No description provided for @dialog_yes.
+  ///
+  /// In ja, this message translates to:
+  /// **'はい'**
+  String get dialog_yes;
+
+  /// No description provided for @dialog_no.
+  ///
+  /// In ja, this message translates to:
+  /// **'いいえ'**
+  String get dialog_no;
+
+  /// No description provided for @dialog_report_title.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿の報告'**
+  String get dialog_report_title;
+
+  /// No description provided for @dialog_report_description_1.
+  ///
+  /// In ja, this message translates to:
+  /// **'この投稿について報告を行います'**
+  String get dialog_report_description_1;
+
+  /// No description provided for @dialog_report_description_2.
+  ///
+  /// In ja, this message translates to:
+  /// **'Googleフォームに遷移します'**
+  String get dialog_report_description_2;
+
+  /// No description provided for @dialog_block_title.
+  ///
+  /// In ja, this message translates to:
+  /// **'ブロック確認'**
+  String get dialog_block_title;
+
+  /// No description provided for @dialog_block_description_1.
+  ///
+  /// In ja, this message translates to:
+  /// **'この投稿をユーザーをブロックしますか？'**
+  String get dialog_block_description_1;
+
+  /// No description provided for @dialog_block_description_2.
+  ///
+  /// In ja, this message translates to:
+  /// **'このユーザーの投稿を非表示にします'**
+  String get dialog_block_description_2;
+
+  /// No description provided for @dialog_block_description_3.
+  ///
+  /// In ja, this message translates to:
+  /// **'ブロックしたユーザーはローカルで保存します'**
+  String get dialog_block_description_3;
+
+  /// No description provided for @dialog_delete_title.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿の削除'**
+  String get dialog_delete_title;
+
+  /// No description provided for @dialog_delete_description_1.
+  ///
+  /// In ja, this message translates to:
+  /// **'この投稿を削除しますか？'**
+  String get dialog_delete_description_1;
+
+  /// No description provided for @dialog_delete_description_2.
+  ///
+  /// In ja, this message translates to:
+  /// **'一度削除してしまうと復元できません'**
+  String get dialog_delete_description_2;
+
+  /// No description provided for @dialog_delete_error.
+  ///
+  /// In ja, this message translates to:
+  /// **'削除が失敗しました'**
+  String get dialog_delete_error;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
@@ -79,11 +80,12 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       context: context,
                       share: () {
                         Share.share(
-                          '${widget.users.name}さんが'
+                          '${widget.users.name} post in '
                           '${widget.posts.restaurant}'
-                          'で食べたレビューを投稿しました！'
-                          '\n\n詳しくはfoodGramで確認してみよう！'
-                          '\n\n#foodGram',
+                          '\n\n${L10n.of(context).share_review_1}'
+                          '\n${L10n.of(context).share_review_2}'
+                          '\n\n#foodGram'
+                          '\n#FoodGram',
                         );
                       },
                       search: () async {
@@ -93,15 +95,20 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                             'https://www.google.com/maps/search/?api=1&query=${widget.posts.restaurant}',
                           );
                         } else {
-                          openSnackBar(context, '場所名の検索ができません');
+                          openSnackBar(
+                            context,
+                            L10n.of(context).posts_search_error,
+                          );
                         }
                       },
                       report: () {
                         openDialog(
                           context: context,
-                          title: '投稿の報告',
-                          subTitle: 'この投稿について報告を行います。'
-                              '\n Googleフォームに遷移します。',
+                          title: L10n.of(context).dialog_report_title,
+                          subTitle:
+                              '${L10n.of(context).dialog_report_description_1}'
+                              '\n '
+                              '${L10n.of(context).dialog_report_description_2}',
                           onTap: () async {
                             await launcherUrl(
                               'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
@@ -118,10 +125,13 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       block: () {
                         openDialog(
                           context: context,
-                          title: 'ブロック確認',
-                          subTitle: 'この投稿をユーザーをブロックしますか？'
-                              '\nこのユーザーの投稿を非表示にします。'
-                              '\nブロックしたユーザーはローカルで保存します。',
+                          title: L10n.of(context).dialog_block_title,
+                          subTitle:
+                              '${L10n.of(context).dialog_block_description_1}'
+                              '\n'
+                              '${L10n.of(context).dialog_block_description_2}'
+                              '\n'
+                              '${L10n.of(context).dialog_block_description_3}',
                           onTap: () async {
                             await ref
                                 .read(detailPostViewModelProvider().notifier)
@@ -140,11 +150,12 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       context: context,
                       share: () {
                         Share.share(
-                          '${widget.users.name}さんが'
+                          '${widget.users.name} post in '
                           '${widget.posts.restaurant}'
-                          'で食べたレビューを投稿しました！'
-                          '\n\n詳しくはfoodGramで確認してみよう！'
-                          '\n\n#foodGram',
+                          '\n\n${L10n.of(context).share_review_1}'
+                          '\n${L10n.of(context).share_review_2}'
+                          '\n\n#foodGram'
+                          '\n#FoodGram',
                         );
                       },
                       search: () async {
@@ -154,14 +165,20 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                             'https://www.google.com/maps/search/?api=1&query=${widget.posts.restaurant}',
                           );
                         } else {
-                          openSnackBar(context, '場所名の検索ができません');
+                          openSnackBar(
+                            context,
+                            L10n.of(context).posts_search_error,
+                          );
                         }
                       },
                       delete: () {
                         openDialog(
                           context: context,
-                          title: '投稿の削除',
-                          subTitle: 'この投稿を削除しますか？\n一度削除してしまうと復元できません',
+                          title: L10n.of(context).dialog_delete_title,
+                          subTitle:
+                              '${L10n.of(context).dialog_delete_description_1}'
+                              '\n'
+                              '${L10n.of(context).dialog_delete_description_2}',
                           onTap: () async {
                             await ref
                                 .read(detailPostViewModelProvider().notifier)
@@ -170,7 +187,10 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                               if (value) {
                                 context.pop(true);
                               } else {
-                                openSnackBar(context, '削除が失敗しました');
+                                openSnackBar(
+                                  context,
+                                  L10n.of(context).dialog_delete_error,
+                                );
                               }
                             });
                           },
@@ -297,11 +317,12 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                           EasyDebounce.debounce(
                               'post', Duration(milliseconds: 200), () async {
                             await Share.share(
-                              '${widget.users.name}さんが'
+                              '${widget.users.name} post in '
                               '${widget.posts.restaurant}'
-                              'で食べたレビューを投稿しました！'
-                              '\n\n詳しくはfoodGramで確認してみよう！'
-                              '\n\n#foodGram',
+                              '\n\n${L10n.of(context).share_review_1}'
+                              '\n${L10n.of(context).share_review_2}'
+                              '\n\n#foodGram'
+                              '\n#FoodGram',
                             );
                           });
                         },
@@ -314,7 +335,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Text(
-                          '$initialHeart いいね',
+                          '$initialHeart ${L10n.of(context).post_detail_heart}',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,

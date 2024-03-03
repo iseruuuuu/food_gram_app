@@ -7,6 +7,9 @@ class L10nJa extends L10n {
   L10nJa([String locale = 'ja']) : super(locale);
 
   @override
+  String get close => '閉じる';
+
+  @override
   String get email_text_field => 'メールアドレスを入力してください';
 
   @override
@@ -116,4 +119,70 @@ class L10nJa extends L10n {
 
   @override
   String get my_profile_exchange_point_button => 'ポイントを交換する';
+
+  @override
+  String get post_detail_heart => 'いいね';
+
+  @override
+  String get share_review_1 => 'で食べたレビューを投稿しました！';
+
+  @override
+  String get share_review_2 => '詳しくはfoodGramで確認してみよう！';
+
+  @override
+  String get posts_detail_sheet_title => 'この投稿について';
+
+  @override
+  String get posts_detail_sheet_share => 'この投稿をシェアする';
+
+  @override
+  String get posts_detail_sheet_search => 'この投稿をシェアする';
+
+  @override
+  String get posts_detail_sheet_report => 'この投稿を報告する';
+
+  @override
+  String get posts_detail_sheet_block => 'このユーザーをブロックする';
+
+  @override
+  String get posts_search_error => '場所名の検索ができません';
+
+  @override
+  String get dialog_yes => 'はい';
+
+  @override
+  String get dialog_no => 'いいえ';
+
+  @override
+  String get dialog_report_title => '投稿の報告';
+
+  @override
+  String get dialog_report_description_1 => 'この投稿について報告を行います';
+
+  @override
+  String get dialog_report_description_2 => 'Googleフォームに遷移します';
+
+  @override
+  String get dialog_block_title => 'ブロック確認';
+
+  @override
+  String get dialog_block_description_1 => 'この投稿をユーザーをブロックしますか？';
+
+  @override
+  String get dialog_block_description_2 => 'このユーザーの投稿を非表示にします';
+
+  @override
+  String get dialog_block_description_3 => 'ブロックしたユーザーはローカルで保存します';
+
+  @override
+  String get dialog_delete_title => '投稿の削除';
+
+  @override
+  String get dialog_delete_description_1 => 'この投稿を削除しますか？';
+
+  @override
+  String get dialog_delete_description_2 => '一度削除してしまうと復元できません';
+
+  @override
+  String get dialog_delete_error => '削除が失敗しました';
 }

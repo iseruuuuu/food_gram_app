@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 
 mixin DialogMixin {
@@ -49,13 +50,13 @@ mixin DialogMixin {
                         shape: const StadiumBorder(),
                       ),
                       onPressed: () => context.pop(),
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.symmetric(
                           vertical: 16,
                           horizontal: 18,
                         ),
                         child: Text(
-                          'いいえ',
+                          L10n.of(context).dialog_no,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -73,13 +74,13 @@ mixin DialogMixin {
                         context.pop();
                         onTap();
                       },
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.symmetric(
                           vertical: 16,
                           horizontal: 18,
                         ),
                         child: Text(
-                          'はい',
+                          L10n.of(context).dialog_yes,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,

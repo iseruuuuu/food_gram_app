@@ -7,6 +7,9 @@ class L10nEn extends L10n {
   L10nEn([String locale = 'en']) : super(locale);
 
   @override
+  String get close => 'Close';
+
+  @override
   String get email_text_field => 'Enter your email address';
 
   @override
@@ -112,8 +115,74 @@ class L10nEn extends L10n {
   String get my_profile_post_length => 'POSTS';
 
   @override
-  String get my_profile_edit_button => 'Edit  Profile';
+  String get my_profile_edit_button => 'Edit Profile';
 
   @override
   String get my_profile_exchange_point_button => 'Exchange Points';
+
+  @override
+  String get post_detail_heart => 'Like';
+
+  @override
+  String get share_review_1 => 'Just shared my review of what I ate!';
+
+  @override
+  String get share_review_2 => 'For more, take a look at foodGram!';
+
+  @override
+  String get posts_detail_sheet_title => 'About this post';
+
+  @override
+  String get posts_detail_sheet_share => 'Share this post';
+
+  @override
+  String get posts_detail_sheet_search => 'Search this post';
+
+  @override
+  String get posts_detail_sheet_report => 'Report this post';
+
+  @override
+  String get posts_detail_sheet_block => 'Block this user';
+
+  @override
+  String get posts_search_error => 'Unable to search for place names';
+
+  @override
+  String get dialog_yes => 'YES';
+
+  @override
+  String get dialog_no => 'NO';
+
+  @override
+  String get dialog_report_title => 'Report a post';
+
+  @override
+  String get dialog_report_description_1 => 'You will report this post';
+
+  @override
+  String get dialog_report_description_2 => 'You will proceed to a Google Form';
+
+  @override
+  String get dialog_block_title => 'Check to block this user';
+
+  @override
+  String get dialog_block_description_1 => 'Do you want to block this user for this post?';
+
+  @override
+  String get dialog_block_description_2 => 'To hide this user\'s posts';
+
+  @override
+  String get dialog_block_description_3 => 'Blocked users will be saved locally';
+
+  @override
+  String get dialog_delete_title => 'Delete this post';
+
+  @override
+  String get dialog_delete_description_1 => 'Do you delete this post?';
+
+  @override
+  String get dialog_delete_description_2 => 'Once deleted, it cannot be restored';
+
+  @override
+  String get dialog_delete_error => 'Deletion failed';
 }

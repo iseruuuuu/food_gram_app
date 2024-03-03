@@ -1,5 +1,6 @@
 
 {
+  "close": "閉じる",
   "email_text_field": "メールアドレスを入力してください",
   "setting_icon": "アイコンの設定",
   "user_name": "ユーザー名",
@@ -36,5 +37,30 @@
   "empty": "投稿がありません",
   "my_profile_post_length": "投稿",
   "my_profile_edit_button": "プロフィールを編集",
-  "my_profile_exchange_point_button": "ポイントを交換する"
+  "my_profile_exchange_point_button": "ポイントを交換する",
+  "post_detail_heart": "いいね",
+  "share_review_1": "で食べたレビューを投稿しました！",
+  "share_review_2": "詳しくはfoodGramで確認してみよう！",
+  "posts_detail_sheet_title": "この投稿について",
+  "posts_detail_sheet_share": "この投稿をシェアする",
+  "posts_detail_sheet_search": "この投稿をシェアする",
+  "posts_detail_sheet_report": "この投稿を報告する",
+  "posts_detail_sheet_block": "このユーザーをブロックする",
+  "posts_search_error": "場所名の検索ができません",
+
+  "dialog_yes": "はい",
+  "dialog_no": "いいえ",
+  "dialog_report_title": "投稿の報告",
+  "dialog_report_description_1": "この投稿について報告を行います",
+  "dialog_report_description_2": "Googleフォームに遷移します",
+
+  "dialog_block_title": "ブロック確認",
+  "dialog_block_description_1": "この投稿をユーザーをブロックしますか？",
+  "dialog_block_description_2": "このユーザーの投稿を非表示にします",
+  "dialog_block_description_3": "ブロックしたユーザーはローカルで保存します",
+
+  "dialog_delete_title": "投稿の削除",
+  "dialog_delete_description_1": "この投稿を削除しますか？",
+  "dialog_delete_description_2": "一度削除してしまうと復元できません",
+  "dialog_delete_error": "削除が失敗しました"
 }
