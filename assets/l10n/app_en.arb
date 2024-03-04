@@ -1,6 +1,7 @@
 
 {
   "close": "Close",
+  "cancel": "Cancel",
   "email_text_field": "Enter your email address",
   "setting_icon": "Select Icon",
   "user_name": "User Name",
@@ -59,5 +60,10 @@
   "dialog_delete_title": "Delete this post",
   "dialog_delete_description_1": "Do you delete this post?",
   "dialog_delete_description_2": "Once deleted, it cannot be restored",
-  "dialog_delete_error": "Deletion failed"
+  "dialog_delete_error": "Deletion failed",
+
+  "dialog_logout_title": "Confirm Logout",
+  "dialog_logout_description_1": "Would you like to log out?",
+  "dialog_logout_description_2": "Account status is stored on the server",
+  "dialog_logout": "Logout"
 }

@@ -10,6 +10,9 @@ class L10nEn extends L10n {
   String get close => 'Close';
 
   @override
+  String get cancel => 'Cancel';
+
+  @override
   String get email_text_field => 'Enter your email address';
 
   @override
@@ -185,4 +188,16 @@ class L10nEn extends L10n {
 
   @override
   String get dialog_delete_error => 'Deletion failed';
+
+  @override
+  String get dialog_logout_title => 'Confirm Logout';
+
+  @override
+  String get dialog_logout_description_1 => 'Would you like to log out?';
+
+  @override
+  String get dialog_logout_description_2 => 'Account status is stored on the server';
+
+  @override
+  String get dialog_logout => 'Logout';
 }

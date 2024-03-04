@@ -122,7 +122,7 @@ mixin DialogMixin {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24),
                   child: Text(
-                    'ログアウトの確認',
+                    L10n.of(context).dialog_logout_title,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -130,8 +130,8 @@ mixin DialogMixin {
                   ),
                 ),
                 Text(
-                  'ログアウトしますか?\n'
-                  'アカウントの状態は保存されています。',
+                  '${L10n.of(context).dialog_logout_description_1}\n'
+                  '${L10n.of(context).dialog_logout_description_2}',
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 24),
@@ -145,13 +145,13 @@ mixin DialogMixin {
                         shape: const StadiumBorder(),
                       ),
                       onPressed: () => context.pop(),
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.symmetric(
                           vertical: 16,
                           horizontal: 5,
                         ),
                         child: Text(
-                          'キャンセル',
+                          L10n.of(context).cancel,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -169,13 +169,13 @@ mixin DialogMixin {
                         context.pop();
                         logout();
                       },
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.symmetric(
                           vertical: 16,
                           horizontal: 5,
                         ),
                         child: Text(
-                          'ログアウト',
+                          L10n.of(context).dialog_logout,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,

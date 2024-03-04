@@ -1,6 +1,7 @@
 
 {
   "close": "閉じる",
+  "cancel": "キャンセル",
   "email_text_field": "メールアドレスを入力してください",
   "setting_icon": "アイコンの設定",
   "user_name": "ユーザー名",
@@ -62,5 +63,10 @@
   "dialog_delete_title": "投稿の削除",
   "dialog_delete_description_1": "この投稿を削除しますか？",
   "dialog_delete_description_2": "一度削除してしまうと復元できません",
-  "dialog_delete_error": "削除が失敗しました"
+  "dialog_delete_error": "削除が失敗しました",
+
+  "dialog_logout_title": "ログアウトの確認",
+  "dialog_logout_description_1": "ログアウトしますか?",
+  "dialog_logout_description_2": "アカウントの状態はサーバー上に保存されています。",
+  "dialog_logout": "ログアウト"
 }

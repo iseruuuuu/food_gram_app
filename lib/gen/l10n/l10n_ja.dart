@@ -10,6 +10,9 @@ class L10nJa extends L10n {
   String get close => '閉じる';
 
   @override
+  String get cancel => 'キャンセル';
+
+  @override
   String get email_text_field => 'メールアドレスを入力してください';
 
   @override
@@ -185,4 +188,16 @@ class L10nJa extends L10n {
 
   @override
   String get dialog_delete_error => '削除が失敗しました';
+
+  @override
+  String get dialog_logout_title => 'ログアウトの確認';
+
+  @override
+  String get dialog_logout_description_1 => 'ログアウトしますか?';
+
+  @override
+  String get dialog_logout_description_2 => 'アカウントの状態はサーバー上に保存されています。';
+
+  @override
+  String get dialog_logout => 'ログアウト';
 }

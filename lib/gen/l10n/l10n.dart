@@ -100,6 +100,12 @@ abstract class L10n {
   /// **'閉じる'**
   String get close;
 
+  /// No description provided for @cancel.
+  ///
+  /// In ja, this message translates to:
+  /// **'キャンセル'**
+  String get cancel;
+
   /// No description provided for @email_text_field.
   ///
   /// In ja, this message translates to:
@@ -453,6 +459,30 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'削除が失敗しました'**
   String get dialog_delete_error;
+
+  /// No description provided for @dialog_logout_title.
+  ///
+  /// In ja, this message translates to:
+  /// **'ログアウトの確認'**
+  String get dialog_logout_title;
+
+  /// No description provided for @dialog_logout_description_1.
+  ///
+  /// In ja, this message translates to:
+  /// **'ログアウトしますか?'**
+  String get dialog_logout_description_1;
+
+  /// No description provided for @dialog_logout_description_2.
+  ///
+  /// In ja, this message translates to:
+  /// **'アカウントの状態はサーバー上に保存されています。'**
+  String get dialog_logout_description_2;
+
+  /// No description provided for @dialog_logout.
+  ///
+  /// In ja, this message translates to:
+  /// **'ログアウト'**
+  String get dialog_logout;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
