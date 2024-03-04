@@ -65,5 +65,10 @@
   "dialog_logout_title": "Confirm Logout",
   "dialog_logout_description_1": "Would you like to log out?",
   "dialog_logout_description_2": "Account status is stored on the server",
-  "dialog_logout": "Logout"
+  "dialog_logout": "Logout",
+
+  "error_title": "Communication error",
+  "error_description_1": "A connection error has occurred.",
+  "error_description_2": "Check your network connection and try again",
+  "error_refresh": "Reloading"
 }

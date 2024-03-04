@@ -200,4 +200,16 @@ class L10nJa extends L10n {
 
   @override
   String get dialog_logout => 'ログアウト';
+
+  @override
+  String get error_title => '通信エラー';
+
+  @override
+  String get error_description_1 => '接続エラーが発生しました';
+
+  @override
+  String get error_description_2 => 'ネットワーク接続を確認し、もう一度試してください';
+
+  @override
+  String get error_refresh => '再読み込み';
 }

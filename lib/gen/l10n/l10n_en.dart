@@ -200,4 +200,16 @@ class L10nEn extends L10n {
 
   @override
   String get dialog_logout => 'Logout';
+
+  @override
+  String get error_title => 'Communication error';
+
+  @override
+  String get error_description_1 => 'A connection error has occurred.';
+
+  @override
+  String get error_description_2 => 'Check your network connection and try again';
+
+  @override
+  String get error_refresh => 'Reloading';
 }

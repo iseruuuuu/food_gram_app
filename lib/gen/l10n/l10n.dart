@@ -483,6 +483,30 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'ログアウト'**
   String get dialog_logout;
+
+  /// No description provided for @error_title.
+  ///
+  /// In ja, this message translates to:
+  /// **'通信エラー'**
+  String get error_title;
+
+  /// No description provided for @error_description_1.
+  ///
+  /// In ja, this message translates to:
+  /// **'接続エラーが発生しました'**
+  String get error_description_1;
+
+  /// No description provided for @error_description_2.
+  ///
+  /// In ja, this message translates to:
+  /// **'ネットワーク接続を確認し、もう一度試してください'**
+  String get error_description_2;
+
+  /// No description provided for @error_refresh.
+  ///
+  /// In ja, this message translates to:
+  /// **'再読み込み'**
+  String get error_refresh;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
