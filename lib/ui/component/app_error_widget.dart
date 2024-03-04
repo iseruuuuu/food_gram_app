@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/gen/assets.gen.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 
 class AppErrorWidget extends StatelessWidget {
@@ -16,7 +17,7 @@ class AppErrorWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '通信エラー',
+              L10n.of(context).error_title,
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
@@ -24,7 +25,9 @@ class AppErrorWidget extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              '接続エラーが発生しました。\nネットワーク接続を確認し、もう一度試してください。',
+              '${L10n.of(context).error_description_1}'
+              '\n'
+              '${L10n.of(context).error_description_2}',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,
@@ -39,7 +42,7 @@ class AppErrorWidget extends StatelessWidget {
             SizedBox(height: 50),
             AppElevatedButton(
               onPressed: onTap,
-              title: '再読み込み',
+              title: L10n.of(context).error_refresh,
             ),
           ],
         ),

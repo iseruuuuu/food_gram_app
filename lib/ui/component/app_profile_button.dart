@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 
 class AppMyProfileButton extends StatelessWidget {
   const AppMyProfileButton({
@@ -17,12 +18,12 @@ class AppMyProfileButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         ProfileButton(
-          title: 'プロフィールを編集',
+          title: L10n.of(context).my_profile_edit_button,
           onTap: onTapEdit,
           icon: Icons.edit,
         ),
         ProfileButton(
-          title: 'ポイントを交換する',
+          title: L10n.of(context).my_profile_exchange_point_button,
           onTap: onTapExchange,
           icon: FontAwesomeIcons.coins,
         ),

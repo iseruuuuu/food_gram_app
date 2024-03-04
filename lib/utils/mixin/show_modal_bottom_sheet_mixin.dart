@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 
 mixin ShowModalBottomSheetMixin {
@@ -110,7 +111,7 @@ mixin ShowModalBottomSheetMixin {
                 Padding(
                   padding: const EdgeInsets.only(top: 30, bottom: 20),
                   child: Text(
-                    'この投稿について',
+                    L10n.of(context).posts_detail_sheet_title,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -147,7 +148,7 @@ mixin ShowModalBottomSheetMixin {
                           ),
                           SizedBox(width: 20),
                           Text(
-                            'この投稿をシェアする',
+                            L10n.of(context).posts_detail_sheet_share,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -190,7 +191,7 @@ mixin ShowModalBottomSheetMixin {
                           ),
                           SizedBox(width: 20),
                           Text(
-                            'この投稿の場所を検索する',
+                            L10n.of(context).posts_detail_sheet_search,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -233,7 +234,7 @@ mixin ShowModalBottomSheetMixin {
                           ),
                           SizedBox(width: 20),
                           Text(
-                            'この投稿を報告する',
+                            L10n.of(context).posts_detail_sheet_report,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -276,7 +277,7 @@ mixin ShowModalBottomSheetMixin {
                           ),
                           SizedBox(width: 20),
                           Text(
-                            'このユーザーをブロックする',
+                            L10n.of(context).posts_detail_sheet_block,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -321,7 +322,7 @@ mixin ShowModalBottomSheetMixin {
                           ),
                           SizedBox(width: 20),
                           Text(
-                            '閉じる',
+                            L10n.of(context).close,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,

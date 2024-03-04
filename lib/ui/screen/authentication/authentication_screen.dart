@@ -4,10 +4,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/gen/assets.gen.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/component/app_auth_text_field.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
+import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_view_model.dart';
 import 'package:food_gram_app/utils/mixin/account_exist_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
@@ -105,7 +106,7 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                     controller: ref
                         .watch(authenticationViewModelProvider().notifier)
                         .emailTextField,
-                    hintText: 'メールアドレス',
+                    hintText: L10n.of(context).user_id_text_field,
                     maxLines: 1,
                   ),
                   Gap(20),
