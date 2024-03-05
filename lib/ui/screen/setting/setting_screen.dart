@@ -135,11 +135,6 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       }
                     },
                   ),
-                  // SettingsTile.navigation(
-                  //   leading: const Icon(Icons.star),
-                  //   title: const Text('このアプリを応援する'),
-                  //   onPressed: (context) {},
-                  // ),
                   SettingsTile.navigation(
                     trailing: Icon(
                       Icons.arrow_forward_ios_outlined,
