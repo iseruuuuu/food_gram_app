@@ -13,7 +13,10 @@ import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
 import 'package:food_gram_app/utils/mixin/url_launcher_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:in_app_review/in_app_review.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:share_plus/share_plus.dart';
 
 class SettingScreen extends ConsumerStatefulWidget {
   const SettingScreen({super.key});
@@ -38,11 +41,31 @@ class SettingScreenState extends ConsumerState<SettingScreen>
               SettingsSection(
                 title: Text(L10n.of(context).setting_app_bar),
                 tiles: <SettingsTile>[
-                  // SettingsTile.navigation(
-                  //   leading: const Icon(Icons.store),
-                  //   title: const Text('最新のバージョンを確認する'),
-                  //   onPressed: (context) {},
-                  // ),
+                  SettingsTile.navigation(
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
+                    leading: const Icon(Icons.store),
+                    title: Text(L10n.of(context).setting_check_version),
+                    onPressed: (context) async {
+                      final newVersion = NewVersionPlus();
+                      final status = await newVersion.getVersionStatus();
+                      if (status != null) {
+                        newVersion.showUpdateDialog(
+                          context: context,
+                          versionStatus: status,
+                          dialogTitle: L10n.of(context)
+                              .setting_check_version_dialog_title,
+                          dialogText:
+                              '${L10n.of(context).setting_check_version_dialog_text_1}'
+                              '\n'
+                              '${L10n.of(context).setting_check_version_dialog_text_2}',
+                          launchModeVersion: LaunchModeVersion.external,
+                        );
+                      }
+                    },
+                  ),
                   SettingsTile.navigation(
                     trailing: Icon(
                       Icons.arrow_forward_ios_outlined,
@@ -82,6 +105,37 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     },
                   ),
                   SettingsTile.navigation(
+                    leading: const Icon(Icons.rate_review_outlined),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
+                    title: Text(L10n.of(context).setting_review),
+                    onPressed: (context) async {
+                      final inAppReview = InAppReview.instance;
+                      if (await inAppReview.isAvailable()) {
+                        await inAppReview.requestReview();
+                      }
+                    },
+                  ),
+                  SettingsTile.navigation(
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
+                    leading: const Icon(Icons.share),
+                    title: Text(L10n.of(context).setting_share),
+                    onPressed: (context) {
+                      if (Platform.isIOS) {
+                        Share.share(
+                          'https://apps.apple.com/hu/app/foodgram/id6474065183',
+                        );
+                      } else {
+                        //TODO Androidは後の実装予定
+                      }
+                    },
+                  ),
+                  SettingsTile.navigation(
                     trailing: Icon(
                       Icons.arrow_forward_ios_outlined,
                       size: 20,
@@ -92,21 +146,6 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       context.pushNamed(RouterPath.license);
                     },
                   ),
-                  // SettingsTile.navigation(
-                  //   leading: const Icon(Icons.rate_review_outlined),
-                  //   title: const Text('レビューを書く'),
-                  //   onPressed: (context) {},
-                  // ),
-                  // SettingsTile.navigation(
-                  //   leading: const Icon(Icons.share),
-                  //   title: const Text('アプリを紹介する'),
-                  //   onPressed: (context) {},
-                  // ),
-                  // SettingsTile.navigation(
-                  //   leading: const Icon(Icons.star),
-                  //   title: const Text('このアプリを応援する'),
-                  //   onPressed: (context) {},
-                  // ),
                   SettingsTile.navigation(
                     trailing: Icon(
                       Icons.arrow_forward_ios_outlined,

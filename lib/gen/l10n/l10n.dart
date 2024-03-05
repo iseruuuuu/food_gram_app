@@ -154,6 +154,30 @@ abstract class L10n {
   /// **'基本設定'**
   String get setting_app_bar;
 
+  /// No description provided for @setting_check_version.
+  ///
+  /// In ja, this message translates to:
+  /// **'最新バージョンの確認'**
+  String get setting_check_version;
+
+  /// No description provided for @setting_check_version_dialog_title.
+  ///
+  /// In ja, this message translates to:
+  /// **'更新情報'**
+  String get setting_check_version_dialog_title;
+
+  /// No description provided for @setting_check_version_dialog_text_1.
+  ///
+  /// In ja, this message translates to:
+  /// **'新しいバージョンがご利用いただけます。'**
+  String get setting_check_version_dialog_text_1;
+
+  /// No description provided for @setting_check_version_dialog_text_2.
+  ///
+  /// In ja, this message translates to:
+  /// **'最新版にアップデートしてご利用ください。'**
+  String get setting_check_version_dialog_text_2;
+
   /// No description provided for @setting_developer.
   ///
   /// In ja, this message translates to:
@@ -166,11 +190,23 @@ abstract class L10n {
   /// **'Github'**
   String get setting_github;
 
+  /// No description provided for @setting_review.
+  ///
+  /// In ja, this message translates to:
+  /// **'レビューで応援する'**
+  String get setting_review;
+
   /// No description provided for @setting_license.
   ///
   /// In ja, this message translates to:
   /// **'ライセンス'**
   String get setting_license;
+
+  /// No description provided for @setting_share.
+  ///
+  /// In ja, this message translates to:
+  /// **'このアプリをシェアする'**
+  String get setting_share;
 
   /// No description provided for @setting_faq.
   ///

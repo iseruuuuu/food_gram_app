@@ -37,13 +37,31 @@ class L10nJa extends L10n {
   String get setting_app_bar => '基本設定';
 
   @override
+  String get setting_check_version => '最新バージョンの確認';
+
+  @override
+  String get setting_check_version_dialog_title => '更新情報';
+
+  @override
+  String get setting_check_version_dialog_text_1 => '新しいバージョンがご利用いただけます。';
+
+  @override
+  String get setting_check_version_dialog_text_2 => '最新版にアップデートしてご利用ください。';
+
+  @override
   String get setting_developer => '開発者';
 
   @override
   String get setting_github => 'Github';
 
   @override
+  String get setting_review => 'レビューで応援する';
+
+  @override
   String get setting_license => 'ライセンス';
+
+  @override
+  String get setting_share => 'このアプリをシェアする';
 
   @override
   String get setting_faq => 'FAQ';
