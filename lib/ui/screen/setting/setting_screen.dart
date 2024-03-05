@@ -13,6 +13,7 @@ import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
 import 'package:food_gram_app/utils/mixin/url_launcher_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SettingScreen extends ConsumerStatefulWidget {
@@ -38,11 +39,27 @@ class SettingScreenState extends ConsumerState<SettingScreen>
               SettingsSection(
                 title: Text(L10n.of(context).setting_app_bar),
                 tiles: <SettingsTile>[
-                  // SettingsTile.navigation(
-                  //   leading: const Icon(Icons.store),
-                  //   title: const Text('最新のバージョンを確認する'),
-                  //   onPressed: (context) {},
-                  // ),
+                  SettingsTile.navigation(
+                    leading: const Icon(Icons.store),
+                    title: Text(L10n.of(context).setting_check_version),
+                    onPressed: (context) async {
+                      final newVersion = NewVersionPlus();
+                      final status = await newVersion.getVersionStatus();
+                      if (status != null) {
+                        newVersion.showUpdateDialog(
+                          context: context,
+                          versionStatus: status,
+                          dialogTitle: L10n.of(context)
+                              .setting_check_version_dialog_title,
+                          dialogText:
+                              '${L10n.of(context).setting_check_version_dialog_text_1}'
+                              '\n'
+                              '${L10n.of(context).setting_check_version_dialog_text_2}',
+                          launchModeVersion: LaunchModeVersion.external,
+                        );
+                      }
+                    },
+                  ),
                   SettingsTile.navigation(
                     trailing: Icon(
                       Icons.arrow_forward_ios_outlined,

@@ -37,6 +37,18 @@ class L10nEn extends L10n {
   String get setting_app_bar => 'Settings';
 
   @override
+  String get setting_check_version => 'Check the latest version';
+
+  @override
+  String get setting_check_version_dialog_title => 'Update Information';
+
+  @override
+  String get setting_check_version_dialog_text_1 => 'Newer versions are available.';
+
+  @override
+  String get setting_check_version_dialog_text_2 => 'Please update to the latest version.';
+
+  @override
   String get setting_developer => 'Developer';
 
   @override
