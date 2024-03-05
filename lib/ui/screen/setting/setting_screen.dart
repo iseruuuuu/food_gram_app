@@ -13,6 +13,7 @@ import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
 import 'package:food_gram_app/utils/mixin/url_launcher_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:new_version_plus/new_version_plus.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -99,6 +100,16 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     },
                   ),
                   SettingsTile.navigation(
+                    leading: const Icon(Icons.rate_review_outlined),
+                    title: Text(L10n.of(context).setting_review),
+                    onPressed: (context) async {
+                      final inAppReview = InAppReview.instance;
+                      if (await inAppReview.isAvailable()) {
+                        await inAppReview.requestReview();
+                      }
+                    },
+                  ),
+                  SettingsTile.navigation(
                     trailing: Icon(
                       Icons.arrow_forward_ios_outlined,
                       size: 20,
@@ -109,11 +120,6 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       context.pushNamed(RouterPath.license);
                     },
                   ),
-                  // SettingsTile.navigation(
-                  //   leading: const Icon(Icons.rate_review_outlined),
-                  //   title: const Text('レビューを書く'),
-                  //   onPressed: (context) {},
-                  // ),
                   // SettingsTile.navigation(
                   //   leading: const Icon(Icons.share),
                   //   title: const Text('アプリを紹介する'),

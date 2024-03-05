@@ -55,6 +55,9 @@ class L10nJa extends L10n {
   String get setting_github => 'Github';
 
   @override
+  String get setting_review => 'レビューで応援する';
+
+  @override
   String get setting_license => 'ライセンス';
 
   @override

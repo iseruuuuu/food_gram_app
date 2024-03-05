@@ -190,6 +190,12 @@ abstract class L10n {
   /// **'Github'**
   String get setting_github;
 
+  /// No description provided for @setting_review.
+  ///
+  /// In ja, this message translates to:
+  /// **'レビューで応援する'**
+  String get setting_review;
+
   /// No description provided for @setting_license.
   ///
   /// In ja, this message translates to:
