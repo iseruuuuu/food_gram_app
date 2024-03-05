@@ -55,7 +55,7 @@ class L10nEn extends L10n {
   String get setting_github => 'Github';
 
   @override
-  String get setting_review => 'Support us with a review';
+  String get setting_review => 'Support with a Review';
 
   @override
   String get setting_license => 'License';
