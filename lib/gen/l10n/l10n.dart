@@ -202,6 +202,12 @@ abstract class L10n {
   /// **'ライセンス'**
   String get setting_license;
 
+  /// No description provided for @setting_share.
+  ///
+  /// In ja, this message translates to:
+  /// **'このアプリをシェアする'**
+  String get setting_share;
+
   /// No description provided for @setting_faq.
   ///
   /// In ja, this message translates to:

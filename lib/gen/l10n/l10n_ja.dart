@@ -61,6 +61,9 @@ class L10nJa extends L10n {
   String get setting_license => 'ライセンス';
 
   @override
+  String get setting_share => 'このアプリをシェアする';
+
+  @override
   String get setting_faq => 'FAQ';
 
   @override

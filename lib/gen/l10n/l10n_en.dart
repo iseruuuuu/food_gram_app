@@ -61,6 +61,9 @@ class L10nEn extends L10n {
   String get setting_license => 'License';
 
   @override
+  String get setting_share => 'Share this app';
+
+  @override
   String get setting_faq => 'FAQ';
 
   @override

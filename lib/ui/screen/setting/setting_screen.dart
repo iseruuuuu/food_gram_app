@@ -16,6 +16,7 @@ import 'package:go_router/go_router.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:new_version_plus/new_version_plus.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:share_plus/share_plus.dart';
 
 class SettingScreen extends ConsumerStatefulWidget {
   const SettingScreen({super.key});
@@ -41,6 +42,10 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                 title: Text(L10n.of(context).setting_app_bar),
                 tiles: <SettingsTile>[
                   SettingsTile.navigation(
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
                     leading: const Icon(Icons.store),
                     title: Text(L10n.of(context).setting_check_version),
                     onPressed: (context) async {
@@ -101,6 +106,10 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                   ),
                   SettingsTile.navigation(
                     leading: const Icon(Icons.rate_review_outlined),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
                     title: Text(L10n.of(context).setting_review),
                     onPressed: (context) async {
                       final inAppReview = InAppReview.instance;
@@ -114,22 +123,34 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       Icons.arrow_forward_ios_outlined,
                       size: 20,
                     ),
+                    leading: const Icon(Icons.share),
+                    title: Text(L10n.of(context).setting_share),
+                    onPressed: (context) {
+                      if (Platform.isIOS) {
+                        Share.share(
+                          'https://apps.apple.com/hu/app/foodgram/id6474065183',
+                        );
+                      } else {
+                        //TODO Androidは後の実装予定
+                      }
+                    },
+                  ),
+                  // SettingsTile.navigation(
+                  //   leading: const Icon(Icons.star),
+                  //   title: const Text('このアプリを応援する'),
+                  //   onPressed: (context) {},
+                  // ),
+                  SettingsTile.navigation(
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
                     leading: const Icon(Icons.account_balance_wallet),
                     title: Text(L10n.of(context).setting_license),
                     onPressed: (context) {
                       context.pushNamed(RouterPath.license);
                     },
                   ),
-                  // SettingsTile.navigation(
-                  //   leading: const Icon(Icons.share),
-                  //   title: const Text('アプリを紹介する'),
-                  //   onPressed: (context) {},
-                  // ),
-                  // SettingsTile.navigation(
-                  //   leading: const Icon(Icons.star),
-                  //   title: const Text('このアプリを応援する'),
-                  //   onPressed: (context) {},
-                  // ),
                   SettingsTile.navigation(
                     trailing: Icon(
                       Icons.arrow_forward_ios_outlined,
