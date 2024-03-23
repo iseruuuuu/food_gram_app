@@ -4,9 +4,10 @@ part 'restaurant.freezed.dart';
 part 'restaurant.g.dart';
 
 @freezed
-abstract class Restaurant with _$Restaurant {
+class Restaurant with _$Restaurant {
   const factory Restaurant({
-    required String restaurant,
+    required String name,
+    required String address,
     required double lat,
     required double lng,
   }) = _Restaurant;
