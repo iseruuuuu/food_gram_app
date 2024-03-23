@@ -133,6 +133,9 @@ class L10nEn extends L10n {
   String get empty => 'There are no posts';
 
   @override
+  String get search_empty => 'No results found for your search.';
+
+  @override
   String get my_profile_post_length => 'POSTS';
 
   @override
