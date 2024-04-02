@@ -1,3 +1,3 @@
-flavor=dev
-appName=FoodGram dev
-appId=jp.co.altive.fat.dev
+flavor=prod
+appName=FoodGram
+appId=jp.co.altive.fat
