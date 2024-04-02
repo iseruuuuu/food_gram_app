@@ -34,3 +34,6 @@ Runner/GeneratedPluginRegistrant.*
 !default.perspectivev3
 
 Runner/Environment.swift
+
+# Dart-Defines.xcconfig は、ビルド時に生成され、環境により内容が上書きされるので、Git管理対象外にします。
+**/ios/Flutter/Dart-Defines.xcconfig
