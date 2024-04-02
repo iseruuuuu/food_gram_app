@@ -21,7 +21,6 @@ Future<List<Restaurant>> restaurant(
     final url = 'http://webservice.recruit.co.jp/hotpepper/gourmet/v1/';
     final currentLocation = await _getCurrentLocation();
     if (currentLocation == LatLng(0, 0)) {
-      //TODO 本来でれば、座標が正しくないと伝えたい。
       return [];
     }
     final response = await dio.get(
@@ -31,7 +30,6 @@ Future<List<Restaurant>> restaurant(
         'lat': currentLocation.latitude,
         'lng': currentLocation.longitude,
         'keyword': keyword,
-        //TODO  3000mぐらい(もう少し広げたい)
         'range': 5,
       },
     );
