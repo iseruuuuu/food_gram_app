@@ -346,6 +346,12 @@ abstract class L10n {
   /// **'投稿がありません'**
   String get empty;
 
+  /// No description provided for @search_empty.
+  ///
+  /// In ja, this message translates to:
+  /// **'該当する場所が見つかりませんでした。'**
+  String get search_empty;
+
   /// No description provided for @my_profile_post_length.
   ///
   /// In ja, this message translates to:

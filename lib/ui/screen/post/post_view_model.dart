@@ -122,7 +122,7 @@ class PostViewModel extends _$PostViewModel {
 
   void getPlace(Restaurant restaurant) {
     state = state.copyWith(
-      restaurant: restaurant.restaurant,
+      restaurant: restaurant.name,
       lat: restaurant.lat,
       lng: restaurant.lng,
     );
