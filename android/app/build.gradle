@@ -4,6 +4,17 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+def dartDefines = [:];
+if (project.hasProperty('dart-defines')) {
+    // カンマ区切りかつBase64でエンコードされている dart-defines をデコードして変数に格納します。
+    dartDefines = dartDefines + project.property('dart-defines')
+            .split(',')
+            .collectEntries { entry ->
+                def pair = new String(entry.decodeBase64(), 'UTF-8').split('=')
+                [(pair.first()): pair.last()]
+            }
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -57,11 +68,19 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+//        sourceSets {
+//            main {
+//                java.srcDirs += 'src/main/kotlin'
+//                res.srcDirs = ['src/main/res', "src/${dartDefines.flavor}/res"]
+//            }
+//        }
     }
 
     defaultConfig {
-        applicationId "com.food_gram_app"
-        applicationIdSuffix appIdSuffix
+//        applicationId "com.food_gram_app"
+//        applicationIdSuffix appIdSuffix
+        applicationId "${dartDefines.appId}"
+        resValue "string", "app_name", "${dartDefines.appName}"
         minSdkVersion 26
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
