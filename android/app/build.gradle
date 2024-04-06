@@ -68,12 +68,6 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
-//        sourceSets {
-//            main {
-//                java.srcDirs += 'src/main/kotlin'
-//                res.srcDirs = ['src/main/res', "src/${dartDefines.flavor}/res"]
-//            }
-//        }
     }
 
     defaultConfig {
