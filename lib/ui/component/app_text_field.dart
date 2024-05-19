@@ -131,7 +131,8 @@ class AppAuthTextField extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       child: TextFormField(
         autovalidateMode: AutovalidateMode.always,
-        validator: (value) => value!.isValidEmail() ? null : '正しい形式で入力してください',
+        validator: (value) =>
+            value!.isValidEmail() || value.isEmpty ? null : '正しい形式で入力してください',
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9@.+_-]')),
         ],
