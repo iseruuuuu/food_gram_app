@@ -110,22 +110,18 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                         elevation: 2,
                         backgroundColor: Colors.black,
                       ),
-                      onPressed: ref
+                      onPressed: () => ref
                           .read(authenticationViewModelProvider().notifier)
-                          .login,
+                          .login(context),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.mail,
-                            color: Colors.white,
-                          ),
+                          Icon(Icons.mail, color: Colors.white),
                           Gap(10),
                           Text(
                             'Sign in with Mail',
-                            style: theme.textTheme.bodyLarge!.copyWith(
-                              color: Colors.white,
-                            ),
+                            style: theme.textTheme.bodyLarge!
+                                .copyWith(color: Colors.white),
                           ),
                         ],
                       ),
@@ -149,9 +145,9 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                     children: [
                       if (Platform.isIOS)
                         GestureDetector(
-                          onTap: ref
+                          onTap: () => ref
                               .read(authenticationViewModelProvider().notifier)
-                              .loginApple,
+                              .loginApple(context),
                           child: Container(
                             width: 64,
                             height: 64,
@@ -167,9 +163,9 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                         ),
                       Gap(50),
                       GestureDetector(
-                        onTap: ref
+                        onTap: () => ref
                             .read(authenticationViewModelProvider().notifier)
-                            .loginGoogle,
+                            .loginGoogle(context),
                         child: Container(
                           width: 64,
                           height: 64,

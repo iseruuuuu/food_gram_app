@@ -23,7 +23,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
 
   Loading get loading => ref.read(loadingProvider.notifier);
 
-  Future<void> login() async {
+  Future<void> login(BuildContext context) async {
     loading.state = true;
     primaryFocus?.unfocus();
     if (emailTextField.text.isNotEmpty) {
@@ -36,16 +36,25 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         },
         failure: (error) {
           logger.e(error);
-          state = state.copyWith(loginStatus: 'エラーが発生しました');
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('エラーが発生しました'),
+            ),
+          );
         },
       );
     } else {
       state = state.copyWith(loginStatus: 'メールアドレスが入力されていません');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('メールアドレスが入力されていません'),
+        ),
+      );
     }
     loading.state = false;
   }
 
-  Future<void> loginApple() async {
+  Future<void> loginApple(BuildContext context) async {
     primaryFocus?.unfocus();
     final result = await ref.read(authServiceProvider).loginApple();
     await result.when(
@@ -54,12 +63,16 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       },
       failure: (error) {
         logger.e(error);
-        state = state.copyWith(loginStatus: 'エラーが発生しました');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('エラーが発生しました'),
+          ),
+        );
       },
     );
   }
 
-  Future<void> loginGoogle() async {
+  Future<void> loginGoogle(BuildContext context) async {
     primaryFocus?.unfocus();
     final result = await ref.read(authServiceProvider).loginGoogle();
     await result.when(
@@ -68,7 +81,11 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       },
       failure: (error) {
         logger.e(error);
-        state = state.copyWith(loginStatus: 'エラーが発生しました');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('エラーが発生しました'),
+          ),
+        );
       },
     );
   }
