@@ -69,7 +69,6 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(authenticationViewModelProvider());
     final loading = ref.watch(loadingProvider);
     final theme = Theme.of(context);
     return GestureDetector(
