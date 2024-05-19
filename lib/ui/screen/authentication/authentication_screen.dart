@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/gen/assets.gen.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -13,7 +14,6 @@ import 'package:food_gram_app/utils/mixin/account_exist_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sign_button/sign_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthenticationScreen extends ConsumerStatefulWidget {
@@ -132,14 +132,12 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                       ),
                     ),
                   ),
-                  Gap(20),
+                  Gap(30),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 25,
-                      vertical: 10,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Divider(),
                   ),
+                  Gap(10),
                   Text(
                     'SNSログイン',
                     style: theme.textTheme.titleMedium!.copyWith(
@@ -147,21 +145,45 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                     ),
                   ),
                   Gap(20),
-                  Wrap(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (Platform.isIOS)
-                        SignInButton.mini(
-                          buttonType: ButtonType.appleDark,
-                          onPressed: ref
+                        GestureDetector(
+                          onTap: ref
                               .read(authenticationViewModelProvider().notifier)
                               .loginApple,
+                          child: Container(
+                            width: 64,
+                            height: 64,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black26),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(
+                              FontAwesomeIcons.apple,
+                              size: 35,
+                            ),
+                          ),
                         ),
-                      SignInButton.mini(
-                        buttonType: ButtonType.googleDark,
-                        onPressed: ref
+                      Gap(50),
+                      GestureDetector(
+                        onTap: ref
                             .read(authenticationViewModelProvider().notifier)
                             .loginGoogle,
-                      ),
+                        child: Container(
+                          width: 64,
+                          height: 64,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black26),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Icon(
+                            FontAwesomeIcons.google,
+                            size: 30,
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ],
