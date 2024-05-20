@@ -56,6 +56,10 @@ class $AssetsImageGen {
   /// File path: assets/image/loading.gif
   AssetGenImage get loading => const AssetGenImage('assets/image/loading.gif');
 
+  /// File path: assets/image/logo_google.png
+  AssetGenImage get logoGoogle =>
+      const AssetGenImage('assets/image/logo_google.png');
+
   /// File path: assets/image/tutorial1.png
   AssetGenImage get tutorial1 =>
       const AssetGenImage('assets/image/tutorial1.png');
@@ -66,7 +70,7 @@ class $AssetsImageGen {
 
   /// List of all assets
   List<AssetGenImage> get values =>
-      [empty, error, food, heart, loading, tutorial1, tutorial2];
+      [empty, error, food, heart, loading, logoGoogle, tutorial1, tutorial2];
 }
 
 class $AssetsSplashGen {

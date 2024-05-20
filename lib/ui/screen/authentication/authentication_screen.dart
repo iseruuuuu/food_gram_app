@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:food_gram_app/core/gen/assets.gen.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
@@ -88,7 +88,7 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                     children: [
                       Assets.image.food.image(width: 70, height: 70),
                       Text(
-                        'Food Instagram',
+                        ' FoodGram ',
                         style: theme.textTheme.headlineMedium!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -141,7 +141,7 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                   ),
                   Gap(20),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       if (Platform.isIOS)
                         GestureDetector(
@@ -161,7 +161,6 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                             ),
                           ),
                         ),
-                      Gap(50),
                       GestureDetector(
                         onTap: () => ref
                             .read(authenticationViewModelProvider().notifier)
@@ -173,12 +172,12 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                             border: Border.all(color: Colors.black26),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Icon(
-                            FontAwesomeIcons.google,
-                            size: 30,
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Assets.image.logoGoogle.image(),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ],
