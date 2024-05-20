@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/data/supabase/auth_service.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
+import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'authentication_view_model.g.dart';
@@ -25,31 +26,23 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
 
   Future<void> login(BuildContext context) async {
     loading.state = true;
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     primaryFocus?.unfocus();
     if (emailTextField.text.isNotEmpty) {
       final result =
-          await ref.read(authServiceProvider).login(emailTextField.text.trim());
+      await ref.read(authServiceProvider).login(emailTextField.text.trim());
       await result.when(
         success: (_) async {
           await Future.delayed(Duration(seconds: 2));
-          state = state.copyWith(loginStatus: 'メールアプリで認証をしてください');
+          openSuccessSnackBar(context, 'メールアプリで認証をしてください');
         },
         failure: (error) {
           logger.e(error);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('エラーが発生しました'),
-            ),
-          );
+          openErrorSnackBar(context, error.toString());
         },
       );
     } else {
-      state = state.copyWith(loginStatus: 'メールアドレスが入力されていません');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('メールアドレスが入力されていません'),
-        ),
-      );
+      openErrorSnackBar(context, 'メールアドレスが入力されていません');
     }
     loading.state = false;
   }
@@ -63,11 +56,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       },
       failure: (error) {
         logger.e(error);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('エラーが発生しました'),
-          ),
-        );
+        openErrorSnackBar(context, 'エラーが発生しました');
       },
     );
   }
@@ -83,11 +72,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       },
       failure: (error) {
         logger.e(error);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('エラーが発生しました'),
-          ),
-        );
+        openErrorSnackBar(context, 'エラーが発生しました');
       },
     );
   }

@@ -130,6 +130,7 @@ class AppAuthTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: TextFormField(
+        onTap: ScaffoldMessenger.of(context).hideCurrentSnackBar,
         autovalidateMode: AutovalidateMode.always,
         validator: (value) =>
             value!.isValidEmail() || value.isEmpty ? null : '正しい形式で入力してください',
