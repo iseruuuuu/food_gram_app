@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/config/shared_preference/shared_preference.dart';
-import 'package:food_gram_app/core/gen/assets.gen.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
 import 'package:go_router/go_router.dart';
