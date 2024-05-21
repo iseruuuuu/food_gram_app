@@ -26,11 +26,11 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
 
   Future<void> login(BuildContext context) async {
     loading.state = true;
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    hideSnackBar(context);
     primaryFocus?.unfocus();
     if (emailTextField.text.isNotEmpty) {
       final result =
-      await ref.read(authServiceProvider).login(emailTextField.text.trim());
+          await ref.read(authServiceProvider).login(emailTextField.text.trim());
       await result.when(
         success: (_) async {
           await Future.delayed(Duration(seconds: 2));

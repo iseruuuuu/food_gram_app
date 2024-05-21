@@ -158,7 +158,7 @@ class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
   }
 
   Future<void> redirect(BuildContext context, WidgetRef ref) async {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    hideSnackBar(context);
     if (!await doesAccountExist()) {
       context.pushReplacementNamed(RouterPath.tab);
     } else {
