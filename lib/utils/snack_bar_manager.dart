@@ -34,3 +34,7 @@ void openSuccessSnackBar(BuildContext context, String message) {
     ..hideCurrentSnackBar()
     ..showSnackBar(snackBar);
 }
+
+void hideSnackBar(BuildContext context) {
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+}
