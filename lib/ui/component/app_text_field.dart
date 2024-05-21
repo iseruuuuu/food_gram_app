@@ -31,8 +31,8 @@ class AppSearchTextField extends StatelessWidget {
   }
 }
 
-class AppPostTextField extends StatelessWidget {
-  const AppPostTextField({
+class AppFoodTextField extends StatelessWidget {
+  const AppFoodTextField({
     required this.controller,
     super.key,
   });
@@ -79,8 +79,8 @@ class AppPostTextField extends StatelessWidget {
   }
 }
 
-class AppPostCommentTextField extends StatelessWidget {
-  const AppPostCommentTextField({
+class AppCommentTextField extends StatelessWidget {
+  const AppCommentTextField({
     required this.controller,
     super.key,
   });
