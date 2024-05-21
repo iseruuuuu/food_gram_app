@@ -74,118 +74,112 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-        ),
+        appBar: AppBar(backgroundColor: Colors.white),
         body: Stack(
           children: [
             SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Assets.image.food.image(width: 70, height: 70),
-                      Text(
-                        ' FoodGram ',
-                        style: theme.textTheme.headlineMedium!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Gap(20),
-                  AppAuthTextField(
-                    controller: ref
-                        .watch(authenticationViewModelProvider().notifier)
-                        .emailTextField,
-                  ),
-                  Gap(20),
-                  SizedBox(
-                    width: MediaQuery.sizeOf(context).width - 80,
-                    height: 45,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 2,
-                        backgroundColor: Colors.black,
-                      ),
-                      onPressed: () => ref
-                          .read(authenticationViewModelProvider().notifier)
-                          .login(context),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.mail, color: Colors.white),
-                          Gap(10),
-                          Text(
-                            'Sign in with Mail',
-                            style: theme.textTheme.bodyLarge!
-                                .copyWith(color: Colors.white),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 28),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Assets.image.food.image(width: 72, height: 72),
+                        Gap(12),
+                        Text(
+                          'FoodGram',
+                          style: theme.textTheme.headlineLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
+                        ),
+                      ],
+                    ),
+                    Gap(12),
+                    AppAuthTextField(controller: controller.emailTextField),
+                    Gap(8),
+                    SizedBox(
+                      width: MediaQuery.sizeOf(context).width - 80,
+                      height: 48,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12),
+                            ),
+                          ),
+                        ),
+                        onPressed: () => controller.login(context),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.mail, color: Colors.white),
+                            Gap(12),
+                            Text(
+                              'Sign in with Mail',
+                              style: theme.textTheme.titleMedium!
+                                  .copyWith(color: Colors.white),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Gap(30),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: Divider(),
-                  ),
-                  Gap(10),
-                  Text(
-                    'SNSログイン',
-                    style: theme.textTheme.titleMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
+                    Gap(20),
+                    Divider(),
+                    Gap(12),
+                    Text(
+                      'SNSログイン',
+                      style: theme.textTheme.titleLarge!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Gap(20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () => ref
-                            .read(authenticationViewModelProvider().notifier)
-                            .loginApple(context),
-                        child: Container(
-                          width: 64,
-                          height: 64,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black26),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(
-                            FontAwesomeIcons.apple,
-                            size: 35,
-                          ),
-                        ),
-                      ),
-                      Gap(40),
-                      GestureDetector(
-                        onTap: () => ref
-                            .read(authenticationViewModelProvider().notifier)
-                            .loginGoogle(context),
-                        child: Container(
-                          width: 64,
-                          height: 64,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black26),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Assets.image.logoGoogle.image(),
+                    Gap(24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            if (Platform.isIOS) {
+                              controller.loginApple(context);
+                            } else {
+                              openErrorSnackBar(context, 'Appleログインはできません');
+                            }
+                          },
+                          child: Container(
+                            width: 64,
+                            height: 64,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black26),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(FontAwesomeIcons.apple, size: 35),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        Gap(40),
+                        GestureDetector(
+                          onTap: () => controller.loginGoogle(context),
+                          child: Container(
+                            width: 64,
+                            height: 64,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black26),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Assets.image.logoGoogle.image(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-            AppLoading(
-              loading: loading,
-              status: 'Loading...',
-            ),
+            AppLoading(loading: loading, status: 'Loading...'),
           ],
         ),
       ),

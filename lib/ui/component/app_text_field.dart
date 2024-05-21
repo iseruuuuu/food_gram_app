@@ -128,7 +128,7 @@ class AppAuthTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
       child: TextFormField(
         onTap: ScaffoldMessenger.of(context).hideCurrentSnackBar,
         autovalidateMode: AutovalidateMode.always,
@@ -147,10 +147,10 @@ class AppAuthTextField extends StatelessWidget {
         decoration: InputDecoration(
           alignLabelWithHint: true,
           labelText: 'メールアドレス',
-          labelStyle: Theme.of(context).textTheme.labelLarge!.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Colors.black54,
-              ),
+          labelStyle: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(fontWeight: FontWeight.bold, color: Colors.black54),
           filled: true,
           fillColor: Colors.white,
           border: InputBorder.none,
