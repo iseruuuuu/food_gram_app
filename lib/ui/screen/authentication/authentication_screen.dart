@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -141,26 +140,26 @@ class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
                   ),
                   Gap(20),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (Platform.isIOS)
-                        GestureDetector(
-                          onTap: () => ref
-                              .read(authenticationViewModelProvider().notifier)
-                              .loginApple(context),
-                          child: Container(
-                            width: 64,
-                            height: 64,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black26),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Icon(
-                              FontAwesomeIcons.apple,
-                              size: 35,
-                            ),
+                      GestureDetector(
+                        onTap: () => ref
+                            .read(authenticationViewModelProvider().notifier)
+                            .loginApple(context),
+                        child: Container(
+                          width: 64,
+                          height: 64,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black26),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Icon(
+                            FontAwesomeIcons.apple,
+                            size: 35,
                           ),
                         ),
+                      ),
+                      Gap(40),
                       GestureDetector(
                         onTap: () => ref
                             .read(authenticationViewModelProvider().notifier)
