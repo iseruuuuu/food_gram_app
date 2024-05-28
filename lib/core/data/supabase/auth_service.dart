@@ -62,8 +62,13 @@ class AuthService {
 
   Future<Result<AuthResponse, String>> loginGoogle() async {
     try {
-      const iosClientId = GoogleAuthKey.iOSAuthKey;
-      final googleSignIn = GoogleSignIn(clientId: iosClientId);
+      final iOSClientId = GoogleAuthKey.iOSAuthKey;
+      final webClientId = GoogleAuthKey.webAuthKey;
+      final googleSignIn = GoogleSignIn(
+        clientId: iOSClientId,
+        serverClientId: webClientId,
+        scopes: ['email'],
+      );
       final googleUser = await googleSignIn.signIn();
       final googleAuth = await googleUser!.authentication;
       final accessToken = googleAuth.accessToken;

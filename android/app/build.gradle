@@ -1,5 +1,8 @@
 plugins {
     id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
@@ -71,7 +74,6 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.food_gram_app"
         applicationId "${dartDefines.appId}"
         resValue "string", "app_name", "${dartDefines.appName}"
         minSdkVersion 26

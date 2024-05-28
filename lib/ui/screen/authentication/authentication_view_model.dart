@@ -64,8 +64,6 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
   Future<void> loginGoogle(BuildContext context) async {
     primaryFocus?.unfocus();
     final result = await ref.read(authServiceProvider).loginGoogle();
-    //[ERROR:flutter/runtime/dart_vm_initializer.cc(41)] Unhandled Exception: PlatformException(sign_in_failed, com.google.android.gms.common.api.ApiException: 10: , null, null)
-    // clientId is not supported on Android and is interpreted as serverClientId. Use serverClientId instead to suppress this warning.
     await result.when(
       success: (_) async {
         state = state.copyWith(loginStatus: 'ログイン成功');
