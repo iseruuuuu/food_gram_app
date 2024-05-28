@@ -12,4 +12,4 @@ gen:
 submit_android:
 	flutter clean
 	flutter pub get
-	flutter build appbundle
+	fvm flutter build appbundle --dart-define-from-file=dart_defines/prod.env
