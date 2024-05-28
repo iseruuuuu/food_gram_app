@@ -53,8 +53,8 @@ tasks.whenTaskAdded { task -> task.dependsOn copySources
 }
 
 android {
-    namespace "com.example.food_gram_app"
-    compileSdkVersion 33
+    namespace "com.food_gram_app"
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -71,12 +71,12 @@ android {
     }
 
     defaultConfig {
-//        applicationId "com.food_gram_app"
-//        applicationIdSuffix appIdSuffix
+        applicationId "com.food_gram_app"
         applicationId "${dartDefines.appId}"
         resValue "string", "app_name", "${dartDefines.appName}"
         minSdkVersion 26
-        targetSdkVersion 33
+        targetSdkVersion 34
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         resValue "string", "app_name", appName
@@ -103,4 +103,6 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation 'com.android.support:multidex:1.0.3'
+}
