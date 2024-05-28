@@ -9,26 +9,23 @@ import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/screen/post/post_view_model.dart';
 import 'package:food_gram_app/utils/mixin/show_modal_bottom_sheet_mixin.dart';
-import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
+import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class PostScreen extends ConsumerWidget
-    with ShowModalBottomSheetMixin, SnackBarMixin {
-  const PostScreen({
-    required this.routerPath,
-    super.key,
-  });
+class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
+  const PostScreen({required this.routerPath, super.key});
 
   final String routerPath;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = MediaQuery.of(context).size.width;
-    final controller = ref.watch(postViewModelProvider().notifier);
+    final textController = ref.watch(postViewModelProvider().notifier);
     final state = ref.watch(postViewModelProvider());
     final loading = ref.watch(loadingProvider);
+    final theme = Theme.of(context);
     return PopScope(
       canPop: !loading,
       child: GestureDetector(
@@ -38,6 +35,12 @@ class PostScreen extends ConsumerWidget
           appBar: AppBar(
             surfaceTintColor: Colors.transparent,
             backgroundColor: !loading ? Colors.white : Colors.transparent,
+            title: Text(
+              '投稿',
+              style: theme.textTheme.titleMedium!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+            centerTitle: true,
             leading: !loading
                 ? IconButton(
                     onPressed: () async {
@@ -45,7 +48,7 @@ class PostScreen extends ConsumerWidget
                       await Future.delayed(Duration(milliseconds: 100));
                       context.pop();
                     },
-                    icon: Icon(Icons.close),
+                    icon: Icon(Icons.close, size: 28),
                   )
                 : SizedBox(),
             actions: [
@@ -63,22 +66,21 @@ class PostScreen extends ConsumerWidget
                         if (result) {
                           context.pop(true);
                         } else {
-                          openSnackBar(context, updatedState.status);
+                          openErrorSnackBar(context, updatedState.status);
                         }
                       },
                     );
                   },
                   child: Text(
                     L10n.of(context).post_share,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                    style: theme.textTheme.titleMedium!.copyWith(
                       color: Colors.blue,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 )
               else
-                SizedBox(),
+                SizedBox.shrink(),
             ],
           ),
           body: Stack(
@@ -100,7 +102,7 @@ class PostScreen extends ConsumerWidget
                                   ref.read(postViewModelProvider());
                               if (!result) {
                                 hideSnackBar(context);
-                                openSnackBar(context, updatedState.status);
+                                openErrorSnackBar(context, updatedState.status);
                               }
                             },
                             album: () async {
@@ -111,7 +113,7 @@ class PostScreen extends ConsumerWidget
                                   ref.read(postViewModelProvider());
                               if (!result) {
                                 hideSnackBar(context);
-                                openSnackBar(context, updatedState.status);
+                                openErrorSnackBar(context, updatedState.status);
                               }
                             },
                           );
@@ -132,12 +134,9 @@ class PostScreen extends ConsumerWidget
                               : const Icon(Icons.add, size: 45),
                         ),
                       ),
-                      Gap(30),
-                      Divider(height: 0),
-                      AppPostTextField(
-                        controller: controller.foodTextController,
-                      ),
-                      Divider(height: 0),
+                      Gap(28),
+                      AppFoodTextField(controller: textController.food),
+                      Gap(28),
                       GestureDetector(
                         onTap: () async {
                           primaryFocus?.unfocus();
@@ -151,31 +150,15 @@ class PostScreen extends ConsumerWidget
                             },
                           );
                         },
-                        child: SizedBox(
-                          width: MediaQuery.sizeOf(context).width,
-                          height: 50,
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Icon(Icons.place, size: 30),
-                              ),
-                              Text(
-                                state.restaurant == '場所を追加'
-                                    ? L10n.of(context).post_place
-                                    : state.restaurant,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: state.restaurant == '場所を追加'
-                                      ? Colors.grey
-                                      : Colors.black,
-                                ),
-                              ),
-                              Spacer(),
-                              if (state.restaurant == '場所を追加')
-                                Padding(
+                        child: ListTile(
+                          contentPadding: EdgeInsets.all(4),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(color: Colors.black26),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          leading: Icon(Icons.place, size: 30),
+                          trailing: state.restaurant == '場所を追加'
+                              ? Padding(
                                   padding: const EdgeInsets.only(right: 10),
                                   child: Icon(
                                     Icons.arrow_forward_ios,
@@ -183,25 +166,29 @@ class PostScreen extends ConsumerWidget
                                     size: 20,
                                   ),
                                 )
-                              else
-                                SizedBox(),
-                            ],
+                              : SizedBox(),
+                          title: Text(
+                            state.restaurant == '場所を追加'
+                                ? L10n.of(context).post_place
+                                : state.restaurant,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: state.restaurant == '場所を追加'
+                                  ? Colors.grey
+                                  : Colors.black,
+                            ),
                           ),
                         ),
                       ),
-                      Divider(),
-                      AppPostCommentTextField(
-                        controller: controller.commentTextController,
-                      ),
-                      Divider(),
+                      Gap(28),
+                      AppCommentTextField(controller: textController.comment),
                     ],
                   ),
                 ),
               ),
-              AppLoading(
-                loading: loading,
-                status: state.status,
-              ),
+              AppLoading(loading: loading, status: state.status),
             ],
           ),
         ),

@@ -17,14 +17,14 @@ class PostViewModel extends _$PostViewModel {
     PostState initState = const PostState(),
   }) {
     ref.onDispose(() {
-      foodTextController.dispose();
-      commentTextController.dispose();
+      food.dispose();
+      comment.dispose();
     });
     return initState;
   }
 
-  final foodTextController = TextEditingController();
-  final commentTextController = TextEditingController();
+  final food = TextEditingController();
+  final comment = TextEditingController();
 
   Loading get loading => ref.read(loadingProvider.notifier);
   final picker = ImagePicker();
@@ -35,12 +35,12 @@ class PostViewModel extends _$PostViewModel {
     primaryFocus?.unfocus();
     loading.state = true;
     state = state.copyWith(status: 'Loading...');
-    if (foodTextController.text.isNotEmpty &&
+    if (food.text.isNotEmpty &&
         state.restaurant != '場所を追加' &&
         uploadImage != '') {
       final result = await ref.read(databaseServiceProvider).post(
-            foodName: foodTextController.text,
-            comment: commentTextController.text,
+            foodName: food.text,
+            comment: comment.text,
             uploadImage: uploadImage,
             imageBytes: imageBytes,
             restaurant: state.restaurant,

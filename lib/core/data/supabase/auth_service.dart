@@ -17,7 +17,7 @@ AuthService authService(AuthServiceRef ref) => AuthService();
 class AuthService {
   AuthService();
 
-  Future<Result<void, Exception>> login(String email) async {
+  Future<Result<void, String>> login(String email) async {
     try {
       await supabase.auth.signInWithOtp(
         email: email,
@@ -26,13 +26,14 @@ class AuthService {
       );
       return const Success(null);
     } on AuthException catch (authError) {
-      return Failure(authError);
+      logger.e(authError.message);
+      return Failure(authError.message);
     } on Exception catch (error) {
-      return Failure(error);
+      return Failure(error.toString());
     }
   }
 
-  Future<Result<AuthResponse, Exception>> loginApple() async {
+  Future<Result<AuthResponse, String>> loginApple() async {
     try {
       final rawNonce = supabase.auth.generateRawNonce();
       final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
@@ -54,14 +55,20 @@ class AuthService {
       );
       return Success(signInWithIdToken);
     } on AuthException catch (authError) {
-      return Failure(authError);
+      logger.e(authError.message);
+      return Failure(authError.message);
     }
   }
 
-  Future<Result<AuthResponse, Exception>> loginGoogle() async {
+  Future<Result<AuthResponse, String>> loginGoogle() async {
     try {
-      const iosClientId = GoogleAuthKey.iOSAuthKey;
-      final googleSignIn = GoogleSignIn(clientId: iosClientId);
+      final iOSClientId = GoogleAuthKey.iOSAuthKey;
+      final webClientId = GoogleAuthKey.webAuthKey;
+      final googleSignIn = GoogleSignIn(
+        clientId: iOSClientId,
+        serverClientId: webClientId,
+        scopes: ['email'],
+      );
       final googleUser = await googleSignIn.signIn();
       final googleAuth = await googleUser!.authentication;
       final accessToken = googleAuth.accessToken;
@@ -79,8 +86,8 @@ class AuthService {
       );
       return Success(signInWithIdToken);
     } on AuthException catch (authError) {
-      logger.e(authError);
-      return Failure(authError);
+      logger.e(authError.message);
+      return Failure(authError.message);
     }
   }
 

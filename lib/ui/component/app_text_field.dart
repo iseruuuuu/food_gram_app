@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/utils/email_validator.dart';
 import 'package:gap/gap.dart';
 
 class AppSearchTextField extends StatelessWidget {
@@ -30,8 +31,8 @@ class AppSearchTextField extends StatelessWidget {
   }
 }
 
-class AppPostTextField extends StatelessWidget {
-  const AppPostTextField({
+class AppFoodTextField extends StatelessWidget {
+  const AppFoodTextField({
     required this.controller,
     super.key,
   });
@@ -78,8 +79,8 @@ class AppPostTextField extends StatelessWidget {
   }
 }
 
-class AppPostCommentTextField extends StatelessWidget {
-  const AppPostCommentTextField({
+class AppCommentTextField extends StatelessWidget {
+  const AppCommentTextField({
     required this.controller,
     super.key,
   });
@@ -120,43 +121,36 @@ class AppPostCommentTextField extends StatelessWidget {
 }
 
 class AppAuthTextField extends StatelessWidget {
-  const AppAuthTextField({
-    required this.controller,
-    required this.hintText,
-    required this.maxLines,
-    super.key,
-  });
+  const AppAuthTextField({required this.controller, super.key});
 
   final TextEditingController controller;
-  final String hintText;
-  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20),
-      child: TextField(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+      child: TextFormField(
+        onTap: ScaffoldMessenger.of(context).hideCurrentSnackBar,
+        autovalidateMode: AutovalidateMode.always,
+        validator: (value) =>
+            value!.isValidEmail() || value.isEmpty ? null : '正しい形式で入力してください',
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9@.+_-]')),
+        ],
         controller: controller,
-        maxLines: maxLines,
         autocorrect: false,
         keyboardType: TextInputType.emailAddress,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-          fontSize: 17,
-        ),
+        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
         decoration: InputDecoration(
-          hintText: hintText,
-          contentPadding: const EdgeInsets.all(15),
-          focusedBorder: const OutlineInputBorder(),
-          enabledBorder: const OutlineInputBorder(),
           alignLabelWithHint: true,
-          labelText: hintText,
-          labelStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.grey,
-            fontSize: 17,
-          ),
+          labelText: 'メールアドレス',
+          labelStyle: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(fontWeight: FontWeight.bold, color: Colors.black54),
           filled: true,
           fillColor: Colors.white,
           border: InputBorder.none,

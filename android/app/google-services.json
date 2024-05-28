@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "505064710022",
+    "firebase_url": "https://food-gram-407205-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "food-gram-407205",
+    "storage_bucket": "food-gram-407205.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505064710022:android:870959193ff3c5e3145607",
+        "android_client_info": {
+          "package_name": "com.food_gram_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505064710022-044o916n89eu4jmng6q53hb7qjb6qg4n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmy8Qu1OUTmFzghPc5MK5kBFZKkQEmoyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505064710022-044o916n89eu4jmng6q53hb7qjb6qg4n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "505064710022-6mvrvudl1c5d7ve1onjcpdlvuqmpi7au.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.FoodGram.ios",
+                "app_store_id": "6474065183"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

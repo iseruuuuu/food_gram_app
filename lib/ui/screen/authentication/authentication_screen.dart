@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/gen/assets.gen.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
@@ -12,174 +12,157 @@ import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_view_model.dart';
 import 'package:food_gram_app/utils/mixin/account_exist_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
+import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sign_in_button/sign_in_button.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AuthenticationScreen extends ConsumerStatefulWidget {
+class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
   const AuthenticationScreen({super.key});
 
   @override
-  AuthenticationScreenState createState() => AuthenticationScreenState();
-}
-
-class AuthenticationScreenState extends ConsumerState<AuthenticationScreen>
-    with AccountExistMixin {
-  @override
-  void initState() {
-    init(context);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    authStateSubscription.cancel();
-    super.dispose();
-  }
-
-  late StreamSubscription<AuthState> authStateSubscription;
-  bool _redirecting = false;
-
-  void init(BuildContext context) {
-    authStateSubscription = supabase.auth.onAuthStateChange.listen((data) {
-      if (!mounted || _redirecting) {
-        return;
-      }
-      final session = data.session;
-      if (session != null) {
-        _redirecting = true;
-        redirect(context);
-      }
-    });
-  }
-
-  Future<void> redirect(BuildContext context) async {
-    if (!await doesAccountExist()) {
-      if (!mounted) {
-        return;
-      }
-      context.pushReplacementNamed(RouterPath.newAccount);
-    } else {
-      if (!mounted) {
-        return;
-      }
-      context.pushReplacementNamed(RouterPath.tab);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final state = ref.watch(authenticationViewModelProvider());
+  Widget build(BuildContext context, WidgetRef ref) {
     final loading = ref.watch(loadingProvider);
+    final theme = Theme.of(context);
+    final controller = ref.watch(authenticationViewModelProvider().notifier);
+    final authStateSubscription = useMemoized(
+      () => supabase.auth.onAuthStateChange.listen((data) {
+        final session = data.session;
+        if (session != null) {
+          redirect(context, ref);
+        }
+      }),
+    );
+
+    useEffect(
+      () {
+        return authStateSubscription.cancel;
+      },
+      [authStateSubscription],
+    );
+
     return GestureDetector(
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-        ),
+        appBar: AppBar(backgroundColor: Colors.white),
         body: Stack(
           children: [
             SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Assets.image.food.image(
-                        width: 70,
-                        height: 70,
-                      ),
-                      const Text(
-                        'Food Instagram',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 28),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Assets.image.food.image(width: 72, height: 72),
+                        Gap(12),
+                        Text(
+                          'FoodGram',
+                          style: theme.textTheme.headlineLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Gap(12),
+                    AppAuthTextField(controller: controller.emailTextField),
+                    Gap(8),
+                    SizedBox(
+                      width: MediaQuery.sizeOf(context).width - 80,
+                      height: 48,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12),
+                            ),
+                          ),
+                        ),
+                        onPressed: () => controller.login(context),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.mail, color: Colors.white),
+                            Gap(12),
+                            Text(
+                              'Sign in with Mail',
+                              style: theme.textTheme.titleMedium!
+                                  .copyWith(color: Colors.white),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                  Gap(20),
-                  AppAuthTextField(
-                    controller: ref
-                        .watch(authenticationViewModelProvider().notifier)
-                        .emailTextField,
-                    hintText: L10n.of(context).user_id_text_field,
-                    maxLines: 1,
-                  ),
-                  Gap(20),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width - 100,
-                    height: 50,
-                    child: SignInButton(
-                      Buttons.email,
-                      onPressed: ref
-                          .read(authenticationViewModelProvider().notifier)
-                          .login,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
+                    ),
+                    Gap(20),
+                    Divider(),
+                    Gap(12),
+                    Text(
+                      'SNSログイン',
+                      style: theme.textTheme.titleLarge!.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  if (Platform.isIOS)
-                    Column(
+                    Gap(24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Gap(30),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
-                          height: 50,
-                          child: SignInButton(
-                            Buttons.apple,
-                            onPressed: () async {
-                              await ref
-                                  .read(authenticationViewModelProvider()
-                                      .notifier)
-                                  .loginApple();
-                            },
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
+                        GestureDetector(
+                          onTap: () {
+                            if (Platform.isIOS) {
+                              controller.loginApple(context);
+                            } else {
+                              openErrorSnackBar(context, 'Appleログインはできません');
+                            }
+                          },
+                          child: Container(
+                            width: 64,
+                            height: 64,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black26),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(FontAwesomeIcons.apple, size: 35),
+                          ),
+                        ),
+                        Gap(40),
+                        GestureDetector(
+                          onTap: () => controller.loginGoogle(context),
+                          child: Container(
+                            width: 64,
+                            height: 64,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black26),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Assets.image.logoGoogle.image(),
                             ),
                           ),
                         ),
                       ],
                     ),
-                  Gap(30),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width - 100,
-                    height: 50,
-                    child: SignInButton(
-                      Buttons.google,
-                      onPressed: () async {
-                        await ref
-                            .read(authenticationViewModelProvider().notifier)
-                            .loginGoogle();
-                      },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
-                  ),
-                  Gap(40),
-                  Text(
-                    state.loginStatus,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            AppLoading(
-              loading: loading,
-              status: 'Loading...',
-            ),
+            AppLoading(loading: loading, status: 'Loading...'),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> redirect(BuildContext context, WidgetRef ref) async {
+    hideSnackBar(context);
+    if (!await doesAccountExist()) {
+      context.pushReplacementNamed(RouterPath.tab);
+    } else {
+      context.pushReplacementNamed(RouterPath.newAccount);
+    }
   }
 }

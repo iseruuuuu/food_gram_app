@@ -1,7 +1,21 @@
 plugins {
     id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+}
+
+def dartDefines = [:];
+if (project.hasProperty('dart-defines')) {
+    // カンマ区切りかつBase64でエンコードされている dart-defines をデコードして変数に格納します。
+    dartDefines = dartDefines + project.property('dart-defines')
+            .split(',')
+            .collectEntries { entry ->
+                def pair = new String(entry.decodeBase64(), 'UTF-8').split('=')
+                [(pair.first()): pair.last()]
+            }
 }
 
 def localProperties = new Properties()
@@ -42,8 +56,8 @@ tasks.whenTaskAdded { task -> task.dependsOn copySources
 }
 
 android {
-    namespace "com.example.food_gram_app"
-    compileSdkVersion 33
+    namespace "com.food_gram_app"
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -60,10 +74,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.food_gram_app"
-        applicationIdSuffix appIdSuffix
+        applicationId "${dartDefines.appId}"
+        resValue "string", "app_name", "${dartDefines.appName}"
         minSdkVersion 26
-        targetSdkVersion 33
+        targetSdkVersion 34
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         resValue "string", "app_name", appName
@@ -90,4 +105,6 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation 'com.android.support:multidex:1.0.3'
+}
