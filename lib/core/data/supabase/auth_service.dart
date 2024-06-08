@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:food_gram_app/constants/api_key.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/main.dart';
