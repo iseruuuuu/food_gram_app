@@ -57,9 +57,6 @@ class MapboxController extends _$MapboxController {
             );
           }
         },
-        error: (error, _) {
-          print(error);
-        },
       );
       await pointAnnotationManager.createMulti(options);
     });
