@@ -64,6 +64,9 @@ class $AssetsImageGen {
   AssetGenImage get logoGoogle =>
       const AssetGenImage('assets/image/logo_google.png');
 
+  /// File path: assets/image/pin.png
+  AssetGenImage get pin => const AssetGenImage('assets/image/pin.png');
+
   /// File path: assets/image/tutorial1.png
   AssetGenImage get tutorial1 =>
       const AssetGenImage('assets/image/tutorial1.png');
@@ -81,6 +84,7 @@ class $AssetsImageGen {
         heart,
         loading,
         logoGoogle,
+        pin,
         tutorial1,
         tutorial2
       ];
