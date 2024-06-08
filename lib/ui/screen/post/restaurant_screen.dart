@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/data/api/restaurant_api.dart';
+import 'package:food_gram_app/core/data/api/mapbox_restaurant_api.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
 import 'package:food_gram_app/ui/component/app_error_widget.dart';
@@ -16,7 +16,7 @@ class RestaurantScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final keyword = useState('');
-    final restaurant = ref.watch(restaurantProvider(keyword.value));
+    final restaurant = ref.watch(mapboxRestaurantProvider(keyword.value));
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
