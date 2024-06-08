@@ -17,35 +17,55 @@ Future<List<Restaurant>> restaurant(
   String keyword,
 ) async {
   final dio = ref.watch(dioProvider);
+  final url = 'http://webservice.recruit.co.jp/hotpepper/gourmet/v1/';
+  final currentLocation = ref.read(locationProvider).value;
+
+  if (currentLocation == LatLng(0, 0)) {
+    return [];
+  }
+
+  const resultsPerPage = 10;
+  const maxPages = 6; // 取得する最大ページ数
+  var start = 1;
+  var hasMoreData = true;
+  var currentPage = 0; // 現在のページ数
+  final restaurants = <Restaurant>[];
+
   try {
-    final url = 'http://webservice.recruit.co.jp/hotpepper/gourmet/v1/';
-    final currentLocation = ref.read(locationProvider).value;
-    if (currentLocation == LatLng(0, 0)) {
-      return [];
-    }
-    final response = await dio.get(
-      url,
-      queryParameters: {
-        'key': RecruitApiKey.apikey,
-        'lat': currentLocation!.latitude,
-        'lng': currentLocation.longitude,
-        'keyword': keyword,
-        'range': 5,
-      },
-    );
-    final data = response.data;
-    final document = xml.XmlDocument.parse(data);
-    final shopNodes = document.findAllElements('shop');
-    final restaurants = <Restaurant>[];
-    for (final shopNode in shopNodes) {
-      final restaurant = Restaurant(
-        name: shopNode.getElement('name')!.innerText,
-        address: shopNode.getElement('address')!.innerText,
-        lat: double.parse(shopNode.getElement('lat')!.innerText),
-        lng: double.parse(shopNode.getElement('lng')!.innerText),
+    while (hasMoreData && currentPage < maxPages) {
+      final response = await dio.get(
+        url,
+        queryParameters: {
+          'key': RecruitApiKey.apikey,
+          'lat': currentLocation!.latitude,
+          'lng': currentLocation.longitude,
+          'keyword': keyword,
+          'range': 5,
+          'start': start,
+          'count': resultsPerPage,
+        },
       );
-      restaurants.add(restaurant);
+
+      final data = response.data;
+      final document = xml.XmlDocument.parse(data);
+      final shopNodes = document.findAllElements('shop');
+      if (shopNodes.isEmpty) {
+        hasMoreData = false;
+      } else {
+        for (final shopNode in shopNodes) {
+          final restaurant = Restaurant(
+            name: shopNode.getElement('name')!.innerText,
+            address: shopNode.getElement('address')!.innerText,
+            lat: double.parse(shopNode.getElement('lat')!.innerText),
+            lng: double.parse(shopNode.getElement('lng')!.innerText),
+          );
+          restaurants.add(restaurant);
+        }
+        start += resultsPerPage;
+        currentPage++;
+      }
     }
+
     return restaurants;
   } on DioException catch (error) {
     print(error);
