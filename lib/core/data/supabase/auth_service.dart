@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:food_gram_app/constants/api_key.dart';
 import 'package:food_gram_app/core/model/result.dart';
+import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -62,8 +63,8 @@ class AuthService {
 
   Future<Result<AuthResponse, String>> loginGoogle() async {
     try {
-      final iOSClientId = GoogleAuthKey.iOSAuthKey;
-      final webClientId = GoogleAuthKey.webAuthKey;
+      final iOSClientId = Env.iOSAuthKey;
+      final webClientId = Env.webAuthKey;
       final googleSignIn = GoogleSignIn(
         clientId: iOSClientId,
         serverClientId: webClientId,

@@ -21,7 +21,7 @@ void main() async {
 }
 
 Future<void> initializeSystemSettings() async {
-  MapboxOptions.setAccessToken(Mapbox.mapbox);
+  MapboxOptions.setAccessToken(Env.mapbox);
   MapboxMapsOptions.setTileStoreUsageMode(TileStoreUsageMode.READ_ONLY);
   await SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.manual,

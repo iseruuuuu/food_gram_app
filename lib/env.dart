@@ -3,9 +3,16 @@ import 'package:envied/envied.dart';
 part 'env.g.dart';
 
 @Envied(path: '.env')
-abstract class Mapbox {
+abstract class Env {
   @EnviedField(varName: 'MAPBOX', obfuscate: true)
-  static final String mapbox = _Mapbox.mapbox;
+  static final String mapbox = _Env.mapbox;
+
+  @EnviedField(varName: 'IOS_AUTH_KEY', obfuscate: true)
+  static final String iOSAuthKey = _Env.iOSAuthKey;
+  @EnviedField(varName: 'ANDROID_AUTH_KEY', obfuscate: true)
+  static final String androidAuthKey = _Env.androidAuthKey;
+  @EnviedField(varName: 'WEB_AUTH_KEY', obfuscate: true)
+  static final String webAuthKey = _Env.webAuthKey;
 }
 
 @Envied(path: '.env.dev')
