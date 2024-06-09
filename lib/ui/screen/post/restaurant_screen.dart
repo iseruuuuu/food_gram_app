@@ -18,49 +18,60 @@ class RestaurantScreen extends HookConsumerWidget {
     final keyword = useState('');
     final restaurant = ref.watch(mapboxRestaurantProvider(keyword.value));
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(surfaceTintColor: Colors.white),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             AppSearchTextField(onChanged: (value) => keyword.value = value),
-            const Gap(20),
-            GestureDetector(
-              onTap: () {
-                final restaurant =
-                    Restaurant(name: '自炊', address: '', lat: 0, lng: 0);
-                primaryFocus?.unfocus();
-                context.pop(restaurant);
-              },
-              child: ListTile(
-                leading: Icon(Icons.home),
-                trailing: Icon(Icons.arrow_forward_ios, size: 20),
-                title: Text(
-                  '自炊',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                final restaurant =
-                    Restaurant(name: '不明', address: '', lat: 0, lng: 0);
-                primaryFocus?.unfocus();
-                context.pop(restaurant);
-              },
-              child: ListTile(
-                leading: Icon(Icons.restaurant_menu),
-                trailing: Icon(Icons.arrow_forward_ios, size: 20),
-                title: Text(
-                  '不明 or ヒットなし',
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
+            const Gap(10),
+            Flex(
+              direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    final restaurant =
+                        Restaurant(name: '自炊', address: '', lat: 0, lng: 0);
+                    primaryFocus?.unfocus();
+                    context.pop(restaurant);
+                  },
+                  child: Chip(
+                    label: Text('自炊'),
+                    labelStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                    avatar: Icon(
+                      Icons.home,
+                      size: 20,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
-              ),
+                GestureDetector(
+                  onTap: () {
+                    final restaurant =
+                        Restaurant(name: '不明', address: '', lat: 0, lng: 0);
+                    primaryFocus?.unfocus();
+                    context.pop(restaurant);
+                  },
+                  child: Chip(
+                    label: Text('不明・ヒットなし'),
+                    labelStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                    avatar: Icon(
+                      Icons.restaurant_menu,
+                      size: 20,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
             ),
+            const Gap(10),
             restaurant.when(
               data: (value) {
                 return Expanded(
