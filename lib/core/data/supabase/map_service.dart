@@ -13,5 +13,6 @@ Future<List<Posts>> mapService(MapServiceRef ref) async {
   return data
       .map(Posts.fromJson)
       .where((post) => !blockList.contains(post.userId))
+      .where((post) => post.lat != 0.0 && post.lng != 0)
       .toList();
 }
