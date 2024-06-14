@@ -8,15 +8,16 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'mapbox_restaurant_api.g.dart';
 
-typedef PaginationList<T> = (List<T> list,);
+typedef PaginationList<T> = List<T>;
 
 @riverpod
-Future<List<Restaurant>> mapboxRestaurant(
-  MapboxRestaurantRef ref,
+Future<PaginationList<Restaurant>> mapboxRestaurantApi(
+  MapboxRestaurantApiRef ref,
   String keyword,
 ) async {
   final dio = ref.watch(dioProvider);
-  final currentLocation = ref.read(locationProvider).value;
+  final currentLocationFuture = ref.read(locationProvider.future);
+  final currentLocation = await currentLocationFuture;
 
   if (currentLocation == LatLng(0, 0)) {
     return [];
@@ -27,8 +28,8 @@ Future<List<Restaurant>> mapboxRestaurant(
     '$keyword food',
     'restaurant near $keyword',
   ];
-  const resultsPerPage = 100;
-  const maxPages = 2;
+  const resultsPerPage = 10;
+  const maxPages = 1;
   final restaurants = <Restaurant>[];
   final restaurantNamesSet = <String>{};
   try {
