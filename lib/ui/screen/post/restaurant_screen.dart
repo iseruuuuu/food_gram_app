@@ -16,7 +16,7 @@ class RestaurantScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final keyword = useState('');
-    final restaurant = ref.watch(mapboxRestaurantProvider(keyword.value));
+    final restaurant = ref.watch(mapboxRestaurantApiProvider(keyword.value));
     return Scaffold(
       appBar: AppBar(surfaceTintColor: Colors.white),
       body: Padding(

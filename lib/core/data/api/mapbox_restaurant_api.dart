@@ -22,73 +22,73 @@ Future<PaginationList<Restaurant>> mapboxRestaurantApi(
   if (currentLocation == LatLng(0, 0)) {
     return [];
   }
+
   final queries = [
     keyword,
     '$keyword restaurant',
     '$keyword food',
     'restaurant near $keyword',
   ];
+
   const resultsPerPage = 10;
-  const maxPages = 1;
   final restaurants = <Restaurant>[];
   final restaurantNamesSet = <String>{};
+
   try {
-    restaurants.clear();
     for (final query in queries) {
-      var hasMoreData = true;
-      var currentPage = 0;
-      while (hasMoreData && currentPage < maxPages) {
-        final response = await dio.get(
-          'https://api.mapbox.com/geocoding/v5/mapbox.places/$query.json',
-          queryParameters: {
-            'proximity':
-                '${currentLocation!.longitude},${currentLocation.latitude}',
-            'access_token': Env.mapbox,
-            'limit': resultsPerPage,
-            'offset': (currentPage * resultsPerPage).toString(),
-            'types': 'poi',
-          },
-        );
-        if (response.statusCode == 200) {
-          final data = response.data;
-          final features = data['features'] as List<dynamic>;
-          if (features.isEmpty) {
-            hasMoreData = false;
-          } else {
-            for (final feature in features) {
-              final placeName = feature['text'] as String;
-              if (!restaurantNamesSet.contains(placeName)) {
-                final address = feature['place_name'] as String;
-                final geometry =
-                    feature['geometry']['coordinates'] as List<dynamic>;
-                final lat = geometry[1] as double;
-                final lng = geometry[0] as double;
-                final restaurant = Restaurant(
-                  name: placeName,
-                  address: address,
-                  lat: lat,
-                  lng: lng,
-                );
-                restaurants.add(restaurant);
-                restaurantNamesSet.add(placeName);
-              }
-            }
-            currentPage++;
+      final response = await dio.get(
+        'https://api.mapbox.com/geocoding/v5/mapbox.places/$query.json',
+        queryParameters: {
+          'proximity':
+              '${currentLocation.longitude},${currentLocation.latitude}',
+          'access_token': Env.mapbox,
+          'limit': resultsPerPage,
+          'types': 'poi',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+        final features = data['features'] as List<dynamic>;
+
+        for (final feature in features) {
+          final placeName = feature['text'] as String;
+          if (!restaurantNamesSet.contains(placeName)) {
+            final address = feature['place_name'] as String;
+            final geometry =
+                feature['geometry']['coordinates'] as List<dynamic>;
+            final lat = geometry[1] as double;
+            final lng = geometry[0] as double;
+
+            final restaurant = Restaurant(
+              name: placeName,
+              address: address,
+              lat: lat,
+              lng: lng,
+            );
+
+            restaurants.add(restaurant);
+            restaurantNamesSet.add(placeName);
           }
-        } else {
-          hasMoreData = false;
         }
+      } else {
+        print(
+            'Failed to fetch data for query: $query, Status code: ${response.statusCode}');
       }
     }
+
+    // Sort restaurants by distance to current location
     restaurants.sort((a, b) {
-      final distanceA = (a.lat - currentLocation!.latitude).abs() +
+      final distanceA = (a.lat - currentLocation.latitude).abs() +
           (a.lng - currentLocation.longitude).abs();
       final distanceB = (b.lat - currentLocation.latitude).abs() +
           (b.lng - currentLocation.longitude).abs();
       return distanceA.compareTo(distanceB);
     });
+
     return restaurants;
-  } on DioException catch (_) {
-    return throw UnimplementedError();
+  } on DioException catch (e) {
+    print('Failed to fetch restaurant data: ${e.message}');
+    return [];
   }
 }
