@@ -38,7 +38,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         },
         failure: (error) {
           logger.e(error);
-          openErrorSnackBar(context, error.toString());
+          openErrorSnackBar(context, error);
         },
       );
     } else {
