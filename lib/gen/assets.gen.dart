@@ -41,10 +41,6 @@ class $AssetsIconGen {
 class $AssetsImageGen {
   const $AssetsImageGen();
 
-  /// File path: assets/image/current_pin.png
-  AssetGenImage get currentPin =>
-      const AssetGenImage('assets/image/current_pin.png');
-
   /// File path: assets/image/empty.png
   AssetGenImage get empty => const AssetGenImage('assets/image/empty.png');
 
@@ -77,7 +73,6 @@ class $AssetsImageGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-        currentPin,
         empty,
         error,
         food,
