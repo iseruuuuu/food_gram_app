@@ -32,7 +32,6 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
       duration: duration,
-      //TODO: switchに移行
       child: asyncValue.when(
         skipLoadingOnReload: skipLoadingOnReload,
         skipLoadingOnRefresh: skipLoadingOnRefresh,
@@ -71,7 +70,7 @@ class AsyncValueGroup {
     }
     try {
       return AsyncData((t1.value as T1, t2.value as T2));
-    } catch (e, st) {
+    } on Exception catch (e, st) {
       return AsyncError(e, st);
     }
   }

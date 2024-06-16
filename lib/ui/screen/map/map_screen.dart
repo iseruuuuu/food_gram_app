@@ -31,8 +31,8 @@ class MapScreen extends ConsumerWidget {
             cameraOptions: CameraOptions(
               center: Point(
                 coordinates: Position(
-                  value.$1!.longitude,
-                  value.$1!.latitude,
+                  value.$1.longitude,
+                  value.$1.latitude,
                 ),
               ),
               zoom: 16.5,

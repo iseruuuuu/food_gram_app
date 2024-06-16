@@ -92,5 +92,5 @@ final category = [
   'cafe',
   'coffee',
   'bakery',
-  'tea'
+  'tea',
 ];
