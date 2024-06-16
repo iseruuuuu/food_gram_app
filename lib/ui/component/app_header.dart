@@ -52,7 +52,7 @@ class AppHeader extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(width: 10),
+              SizedBox(width: 12),
             ],
           ),
           Text(
@@ -68,14 +68,14 @@ class AppHeader extends StatelessWidget {
               fontSize: 18,
             ),
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 4),
           Text(
             selfIntroduce,
             style: TextStyle(
               fontSize: 16,
             ),
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 12),
         ],
       ),
     );

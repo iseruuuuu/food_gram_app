@@ -100,19 +100,17 @@ class EditScreen extends ConsumerWidget {
                         ),
                       ),
                       Gap(30),
-                      Divider(height: 0),
                       AppNameTextField(
                         controller: controller.nameTextController,
                       ),
-                      Divider(height: 0),
+                      Gap(30),
                       AppUserNameTextField(
                         controller: controller.useNameTextController,
                       ),
-                      Divider(height: 0),
+                      Gap(30),
                       AppSelfIntroductionTextField(
                         controller: controller.selfIntroduceTextController,
                       ),
-                      Divider(height: 0),
                     ],
                   ),
                 ),
