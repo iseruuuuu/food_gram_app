@@ -30,6 +30,13 @@ class TabScreen extends ConsumerWidget {
             ),
             BottomNavigationBarItem(
               icon: Icon(
+                CupertinoIcons.map,
+                semanticLabel: 'mapIcon',
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
                 CupertinoIcons.profile_circled,
                 semanticLabel: 'profileIcon',
               ),

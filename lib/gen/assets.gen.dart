@@ -60,6 +60,9 @@ class $AssetsImageGen {
   AssetGenImage get logoGoogle =>
       const AssetGenImage('assets/image/logo_google.png');
 
+  /// File path: assets/image/pin.png
+  AssetGenImage get pin => const AssetGenImage('assets/image/pin.png');
+
   /// File path: assets/image/tutorial1.png
   AssetGenImage get tutorial1 =>
       const AssetGenImage('assets/image/tutorial1.png');
@@ -69,8 +72,17 @@ class $AssetsImageGen {
       const AssetGenImage('assets/image/tutorial2.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [empty, error, food, heart, loading, logoGoogle, tutorial1, tutorial2];
+  List<AssetGenImage> get values => [
+        empty,
+        error,
+        food,
+        heart,
+        loading,
+        logoGoogle,
+        pin,
+        tutorial1,
+        tutorial2
+      ];
 }
 
 class $AssetsSplashGen {
@@ -97,9 +109,11 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(this._assetName);
+  const AssetGenImage(this._assetName, {this.size = null});
 
   final String _assetName;
+
+  final Size? size;
 
   Image image({
     Key? key,

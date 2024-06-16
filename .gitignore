@@ -60,7 +60,10 @@ lib/generated_plugin_registrant.dart
 
 !*/.gitignore
 
+# env
 .env.dev
 .env.prod
+*.env
+*env.g.dart
 
 lib/constants/api_key.dart

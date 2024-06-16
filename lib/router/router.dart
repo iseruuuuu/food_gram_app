@@ -3,6 +3,7 @@ import 'package:food_gram_app/core/config/shared_preference/shared_preference.da
 import 'package:food_gram_app/core/data/supabase/auth_state.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_screen.dart';
+import 'package:food_gram_app/ui/screen/map/map_screen.dart';
 import 'package:food_gram_app/ui/screen/post/restaurant_screen.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
 import 'package:food_gram_app/ui/screen/splash/tutorial_screen.dart';
@@ -173,6 +174,24 @@ final settingRouter = GoRoute(
   ],
 );
 
+final mapRouter = GoRoute(
+  path: RouterPath.map,
+  name: RouterPath.map,
+  builder: (context, state) {
+    return const MapScreen();
+  },
+  routes: <RouteBase>[
+    GoRoute(
+      path: '${RouterPath.timeLine}/${RouterPath.timeLineDetailPost}',
+      name: RouterPath.timeLineDetailPost,
+      builder: (context, state) {
+        final model = state.extra! as Model;
+        return DetailPostScreen(posts: model.posts, users: model.users);
+      },
+    ),
+  ],
+);
+
 final class RouterPath {
   static const String tab = 'tab';
   static const String authentication = 'authentication';
@@ -191,4 +210,5 @@ final class RouterPath {
   static const String splash = 'splash';
   static const String tutorial = 'introduction';
   static const String settingTutorial = 'setting_tutorial';
+  static const String map = 'map';
 }

@@ -19,7 +19,7 @@ class SplashScreenState extends State<SplashScreen> with AccountExistMixin {
   }
 
   Future<void> redirect(BuildContext context) async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration());
     if (!await doesAccountExist()) {
       context.pushReplacementNamed(RouterPath.newAccount);
     } else {
