@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:gap/gap.dart';
 
 class AppHeader extends StatelessWidget {
   const AppHeader({
@@ -33,6 +35,8 @@ class AppHeader extends StatelessWidget {
                 radius: 50,
               ),
               Spacer(),
+              Assets.gif.myProfile.image(width: 50, height: 50),
+              Gap(30),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
