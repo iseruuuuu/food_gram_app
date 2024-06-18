@@ -9,6 +9,37 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsGifGen {
+  const $AssetsGifGen();
+
+  /// File path: assets/gif/error.gif
+  AssetGenImage get error => const AssetGenImage('assets/gif/error.gif');
+
+  /// File path: assets/gif/login_1.gif
+  AssetGenImage get login1 => const AssetGenImage('assets/gif/login_1.gif');
+
+  /// File path: assets/gif/login_2.gif
+  AssetGenImage get login2 => const AssetGenImage('assets/gif/login_2.gif');
+
+  /// File path: assets/gif/login_3.gif
+  AssetGenImage get login3 => const AssetGenImage('assets/gif/login_3.gif');
+
+  /// File path: assets/gif/login_4.gif
+  AssetGenImage get login4 => const AssetGenImage('assets/gif/login_4.gif');
+
+  /// File path: assets/gif/my_profile.gif
+  AssetGenImage get myProfile =>
+      const AssetGenImage('assets/gif/my_profile.gif');
+
+  /// File path: assets/gif/profile_detail.gif
+  AssetGenImage get profileDetail =>
+      const AssetGenImage('assets/gif/profile_detail.gif');
+
+  /// List of all assets
+  List<AssetGenImage> get values =>
+      [error, login1, login2, login3, login4, myProfile, profileDetail];
+}
+
 class $AssetsIconGen {
   const $AssetsIconGen();
 
@@ -103,6 +134,7 @@ class $AssetsSplashGen {
 class Assets {
   Assets._();
 
+  static const $AssetsGifGen gif = $AssetsGifGen();
   static const $AssetsIconGen icon = $AssetsIconGen();
   static const $AssetsImageGen image = $AssetsImageGen();
   static const $AssetsSplashGen splash = $AssetsSplashGen();
