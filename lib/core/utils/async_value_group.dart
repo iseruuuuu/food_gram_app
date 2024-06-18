@@ -33,17 +33,17 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
       duration: duration,
       child: asyncValue.map(
         data: (data) => KeyedSubtree(
-          key: ValueKey('onData_${T.toString()}_${data.value}'),
+          key: const ValueKey('onData'),
           child: onData(data.value),
         ),
         error: (error) => KeyedSubtree(
-          key: ValueKey('onError_${T.toString()}_${error.error}'),
+          key: const ValueKey('onError'),
           child: AppErrorWidget(
             onTap: () => Navigator.pop(context),
           ),
         ),
         loading: (loading) => KeyedSubtree(
-          key: ValueKey('onLoading_${T.toString()}'),
+          key: const ValueKey('onLoading'),
           child: onLoading ??
               Center(
                 child: Assets.image.loading.image(
