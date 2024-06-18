@@ -12,6 +12,7 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
     required this.asyncValue,
     required this.onData,
     super.key,
+    this.onError,
     this.onLoading,
     this.skipLoadingOnReload = true,
     this.skipLoadingOnRefresh = true,
@@ -22,6 +23,7 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
   final AsyncValue<T> asyncValue;
   final Widget Function(T data) onData;
   final Widget? onLoading;
+  final Widget Function(Object, StackTrace)? onError;
   final bool skipLoadingOnReload;
   final bool skipLoadingOnRefresh;
   final bool skipError;
@@ -31,18 +33,21 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
       duration: duration,
-      child: asyncValue.map(
+      child: asyncValue.when(
+        skipLoadingOnReload: skipLoadingOnReload,
+        skipLoadingOnRefresh: skipLoadingOnRefresh,
+        skipError: skipError,
         data: (data) => KeyedSubtree(
           key: const ValueKey('onData'),
-          child: onData(data.value),
+          child: onData(data),
         ),
-        error: (error) => KeyedSubtree(
+        error: (e, s) => KeyedSubtree(
           key: const ValueKey('onError'),
           child: AppErrorWidget(
             onTap: () => Navigator.pop(context),
           ),
         ),
-        loading: (loading) => KeyedSubtree(
+        loading: () => KeyedSubtree(
           key: const ValueKey('onLoading'),
           child: onLoading ??
               Center(
