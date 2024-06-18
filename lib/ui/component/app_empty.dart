@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:gap/gap.dart';
 
 class AppEmpty extends StatelessWidget {
   const AppEmpty({super.key});
@@ -34,10 +33,9 @@ class AppSearchEmpty extends StatelessWidget {
       children: [
         Text(
           L10n.of(context).search_empty,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        Gap(30),
-        Assets.image.empty.image(width: 80, height: 80),
+        Assets.gif.error.image(width: 240, height: 240),
       ],
     );
   }
