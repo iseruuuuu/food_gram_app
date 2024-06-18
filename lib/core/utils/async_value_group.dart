@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/ui/component/app_error_widget.dart';
 
 /// 共通Widgetの一例
 /// これはあくまでサンプルで、実際の共通クラスの具体的な内容は
@@ -42,7 +43,9 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
         ),
         error: (e, s) => KeyedSubtree(
           key: const ValueKey('onError'),
-          child: onError?.call(e, s) ?? const SizedBox.shrink(),
+          child: AppErrorWidget(
+            onTap: () => Navigator.pop(context),
+          ),
         ),
         loading: () => KeyedSubtree(
           key: const ValueKey('onLoading'),

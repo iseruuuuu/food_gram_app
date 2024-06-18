@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/data/api/mapbox_restaurant_api.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/core/utils/async_value_group.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
-import 'package:food_gram_app/ui/component/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class RestaurantScreen extends HookConsumerWidget {
   const RestaurantScreen({super.key});
@@ -19,14 +18,14 @@ class RestaurantScreen extends HookConsumerWidget {
     final restaurant = ref.watch(mapboxRestaurantApiProvider(keyword.value));
     return Scaffold(
       appBar: AppBar(surfaceTintColor: Colors.white),
+      resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            AppSearchTextField(onChanged: (value) => keyword.value = value),
+            AppSearchTextField(onSubmitted: (value) => keyword.value = value),
             const Gap(10),
-            Flex(
-              direction: Axis.horizontal,
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 GestureDetector(
@@ -37,12 +36,12 @@ class RestaurantScreen extends HookConsumerWidget {
                     context.pop(restaurant);
                   },
                   child: Chip(
-                    label: Text('自炊'),
-                    labelStyle: TextStyle(
+                    label: const Text('自炊'),
+                    labelStyle: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
                     ),
-                    avatar: Icon(
+                    avatar: const Icon(
                       Icons.home,
                       size: 20,
                       color: Colors.black,
@@ -57,12 +56,12 @@ class RestaurantScreen extends HookConsumerWidget {
                     context.pop(restaurant);
                   },
                   child: Chip(
-                    label: Text('不明・ヒットなし'),
-                    labelStyle: TextStyle(
+                    label: const Text('不明・ヒットなし'),
+                    labelStyle: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
                     ),
-                    avatar: Icon(
+                    avatar: const Icon(
                       Icons.restaurant_menu,
                       size: 20,
                       color: Colors.black,
@@ -72,10 +71,12 @@ class RestaurantScreen extends HookConsumerWidget {
               ],
             ),
             const Gap(10),
-            restaurant.when(
-              data: (value) {
-                return Expanded(
-                  child: value.isNotEmpty
+            Expanded(
+              flex: 10,
+              child: AsyncValueSwitcher(
+                asyncValue: restaurant,
+                onData: (value) {
+                  return value.isNotEmpty
                       ? ListView.builder(
                           itemCount: value.length,
                           itemBuilder: (context, index) {
@@ -90,10 +91,11 @@ class RestaurantScreen extends HookConsumerWidget {
                                 primaryFocus?.unfocus();
                                 context.pop(restaurant);
                               },
-                              trailing: Icon(Icons.arrow_forward_ios, size: 20),
+                              trailing:
+                                  const Icon(Icons.arrow_forward_ios, size: 20),
                               title: Text(
                                 value[index].name,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -101,7 +103,7 @@ class RestaurantScreen extends HookConsumerWidget {
                               ),
                               subtitle: Text(
                                 value[index].address,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11,
                                 ),
@@ -109,19 +111,8 @@ class RestaurantScreen extends HookConsumerWidget {
                             );
                           },
                         )
-                      : AppSearchEmpty(),
-                );
-              },
-              error: (_, __) {
-                return AppErrorWidget(onTap: () => context.pop());
-              },
-              loading: () => Expanded(
-                child: Center(
-                  child: LoadingAnimationWidget.dotsTriangle(
-                    color: Colors.deepPurple,
-                    size: 50,
-                  ),
-                ),
+                      : const AppSearchEmpty();
+                },
               ),
             ),
           ],

@@ -7,7 +7,7 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
-import 'package:food_gram_app/ui/screen/post/post_view_model.dart';
+import 'package:food_gram_app/ui/screen/post/provider/post_screen_state_provider.dart';
 import 'package:food_gram_app/utils/mixin/show_modal_bottom_sheet_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:food_gram_app/utils/snack_bar_manager.dart';
@@ -22,8 +22,8 @@ class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = MediaQuery.of(context).size.width;
-    final textController = ref.watch(postViewModelProvider().notifier);
-    final state = ref.watch(postViewModelProvider());
+    final textController = ref.watch(postScreenStateProvider().notifier);
+    final state = ref.watch(postScreenStateProvider());
     final loading = ref.watch(loadingProvider);
     final theme = Theme.of(context);
     return PopScope(
@@ -60,9 +60,10 @@ class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
                       Duration(seconds: 1),
                       () async {
                         final result = await ref
-                            .read(postViewModelProvider().notifier)
+                            .read(postScreenStateProvider().notifier)
                             .post();
-                        final updatedState = ref.read(postViewModelProvider());
+                        final updatedState =
+                            ref.read(postScreenStateProvider());
                         if (result) {
                           context.pop(true);
                         } else {
@@ -96,10 +97,10 @@ class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
                             context: context,
                             camera: () async {
                               final result = await ref
-                                  .read(postViewModelProvider().notifier)
+                                  .read(postScreenStateProvider().notifier)
                                   .camera();
                               final updatedState =
-                                  ref.read(postViewModelProvider());
+                                  ref.read(postScreenStateProvider());
                               if (!result) {
                                 hideSnackBar(context);
                                 openErrorSnackBar(context, updatedState.status);
@@ -107,10 +108,10 @@ class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
                             },
                             album: () async {
                               final result = await ref
-                                  .read(postViewModelProvider().notifier)
+                                  .read(postScreenStateProvider().notifier)
                                   .album();
                               final updatedState =
-                                  ref.read(postViewModelProvider());
+                                  ref.read(postScreenStateProvider());
                               if (!result) {
                                 hideSnackBar(context);
                                 openErrorSnackBar(context, updatedState.status);
@@ -144,7 +145,7 @@ class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
                             (value) {
                               if (value != null) {
                                 ref
-                                    .read(postViewModelProvider().notifier)
+                                    .read(postScreenStateProvider().notifier)
                                     .getPlace(value as Restaurant);
                               }
                             },
