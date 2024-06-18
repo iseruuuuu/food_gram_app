@@ -3,18 +3,18 @@ import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/data/supabase/database_service.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/main.dart';
-import 'package:food_gram_app/ui/screen/post/post_state.dart';
+import 'package:food_gram_app/ui/screen/post/post_ui_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'post_view_model.g.dart';
+part 'post_screen_state_provider.g.dart';
 
 @riverpod
-class PostViewModel extends _$PostViewModel {
+class PostScreenState extends _$PostScreenState {
   @override
-  PostState build({
-    PostState initState = const PostState(),
+  PostUiState build({
+    PostUiState initState = const PostUiState(),
   }) {
     ref.onDispose(() {
       food.dispose();
