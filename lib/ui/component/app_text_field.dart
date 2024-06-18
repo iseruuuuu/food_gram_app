@@ -6,11 +6,11 @@ import 'package:gap/gap.dart';
 
 class AppSearchTextField extends StatelessWidget {
   const AppSearchTextField({
-    required this.onChanged,
+    required this.onSubmitted,
     super.key,
   });
 
-  final Function(String)? onChanged;
+  final Function(String)? onSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class AppSearchTextField extends StatelessWidget {
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.search,
       autocorrect: false,
-      onChanged: onChanged,
+      onSubmitted: onSubmitted,
     );
   }
 }

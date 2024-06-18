@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/ui/component/app_error_widget.dart';
 
 /// 共通Widgetの一例
 /// これはあくまでサンプルで、実際の共通クラスの具体的な内容は
@@ -11,7 +12,6 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
     required this.asyncValue,
     required this.onData,
     super.key,
-    this.onError,
     this.onLoading,
     this.skipLoadingOnReload = true,
     this.skipLoadingOnRefresh = true,
@@ -22,7 +22,6 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
   final AsyncValue<T> asyncValue;
   final Widget Function(T data) onData;
   final Widget? onLoading;
-  final Widget Function(Object, StackTrace)? onError;
   final bool skipLoadingOnReload;
   final bool skipLoadingOnRefresh;
   final bool skipError;
@@ -32,20 +31,19 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
       duration: duration,
-      child: asyncValue.when(
-        skipLoadingOnReload: skipLoadingOnReload,
-        skipLoadingOnRefresh: skipLoadingOnRefresh,
-        skipError: skipError,
+      child: asyncValue.map(
         data: (data) => KeyedSubtree(
-          key: const ValueKey('onData'),
-          child: onData(data),
+          key: ValueKey('onData_${T.toString()}_${data.value}'),
+          child: onData(data.value),
         ),
-        error: (e, s) => KeyedSubtree(
-          key: const ValueKey('onError'),
-          child: onError?.call(e, s) ?? const SizedBox.shrink(),
+        error: (error) => KeyedSubtree(
+          key: ValueKey('onError_${T.toString()}_${error.error}'),
+          child: AppErrorWidget(
+            onTap: () => Navigator.pop(context),
+          ),
         ),
-        loading: () => KeyedSubtree(
-          key: const ValueKey('onLoading'),
+        loading: (loading) => KeyedSubtree(
+          key: ValueKey('onLoading_${T.toString()}'),
           child: onLoading ??
               Center(
                 child: Assets.image.loading.image(
