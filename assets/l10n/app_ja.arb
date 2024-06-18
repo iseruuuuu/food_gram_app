@@ -42,7 +42,7 @@
   "edit_bio": "自己紹介(任意)",
   "edit_bio_text_field": "自己紹介を入力してください",
   "empty": "投稿がありません",
-  "search_empty": "該当する場所が見つかりませんでした。",
+  "search_empty": "該当する場所が見つかりませんでした",
   "my_profile_post_length": "投稿",
   "my_profile_edit_button": "プロフィールを編集",
   "my_profile_exchange_point_button": "ポイントを交換する",

@@ -133,7 +133,7 @@ class L10nJa extends L10n {
   String get empty => '投稿がありません';
 
   @override
-  String get search_empty => '該当する場所が見つかりませんでした。';
+  String get search_empty => '該当する場所が見つかりませんでした';
 
   @override
   String get my_profile_post_length => '投稿';

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
@@ -15,6 +16,7 @@ import 'package:food_gram_app/utils/mixin/show_modal_bottom_sheet_mixin.dart';
 import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
 import 'package:food_gram_app/utils/mixin/url_launcher_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
+import 'package:gap/gap.dart';
 import 'package:gif/gif.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
@@ -221,22 +223,29 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                             child: Image.asset(widget.users.image),
                           ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.users.name,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                        SizedBox(
+                          width: MediaQuery.sizeOf(context).width - 150,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.users.name,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                            Text(
-                              '@${widget.users.userName}',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                          ],
+                              Text(
+                                '@${widget.users.userName}',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
                         ),
+                        Spacer(),
+                        Assets.gif.profileDetail.image(width: 60, height: 60),
+                        Gap(10),
                       ],
                     ),
                   ),

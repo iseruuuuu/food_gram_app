@@ -97,9 +97,18 @@ class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
                         ),
                       ),
                     ),
-                    Gap(20),
-                    Divider(),
+                    Gap(24),
+                    Row(
+                      children: [
+                        Assets.gif.login1.image(width: 80, height: 80),
+                        Assets.gif.login2.image(width: 80, height: 80),
+                        Assets.gif.login3.image(width: 80, height: 80),
+                        Assets.gif.login4.image(width: 80, height: 80),
+                      ],
+                    ),
                     Gap(12),
+                    Divider(),
+                    Gap(24),
                     Text(
                       'SNSログイン',
                       style: theme.textTheme.titleLarge!.copyWith(
