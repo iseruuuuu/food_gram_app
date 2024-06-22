@@ -13,10 +13,6 @@ class MapboxController extends _$MapboxController {
 
   late MapboxMap mapboxMap;
 
-  void removeOtherPin() {
-    //TODO 駅名・地方名・大学　以外のピンを削除したい
-  }
-
   void getCurrentPin() {
     mapboxMap.location.updateSettings(
       LocationComponentSettings(

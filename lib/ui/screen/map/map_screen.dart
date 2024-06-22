@@ -24,10 +24,10 @@ class MapScreen extends ConsumerWidget {
               mapboxController
                 ..mapboxMap = mapboxMap
                 ..getCurrentPin()
-                ..setPin()
-                ..removeOtherPin();
+                ..setPin();
             },
             key: ValueKey('mapWidget'),
+            styleUri: 'mapbox://styles/ryuuuuu/clxpeougo00k001pu6d8o8tq3',
             cameraOptions: CameraOptions(
               center: Point(
                 coordinates: Position(
