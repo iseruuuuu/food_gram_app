@@ -77,5 +77,10 @@
   "error_title": "Communication error",
   "error_description_1": "A connection error has occurred.",
   "error_description_2": "Check your network connection and try again",
-  "error_refresh": "Reloading"
+  "error_refresh": "Reloading",
+
+    "app_share_title": "Share",
+    "app_share_share_store": "Share this store",
+    "app_share_go": "Go to this store",
+    "app_share_close": "閉じる"
 }

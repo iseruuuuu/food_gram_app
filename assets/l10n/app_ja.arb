@@ -80,6 +80,11 @@
   "error_title": "通信エラー",
   "error_description_1": "接続エラーが発生しました",
   "error_description_2": "ネットワーク接続を確認し、もう一度試してください",
-  "error_refresh": "再読み込み"
+  "error_refresh": "再読み込み",
+
+  "app_share_title": "共有",
+  "app_share_share_store": "このお店を共有する",
+  "app_share_go": "このお店に行ってみる",
+  "app_share_close": "閉じる"
 
 }
