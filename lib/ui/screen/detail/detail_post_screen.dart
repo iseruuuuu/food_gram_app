@@ -10,6 +10,7 @@ import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
+import 'package:food_gram_app/ui/component/app_share_dialog.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
 import 'package:food_gram_app/utils/mixin/dialog_mixin.dart';
 import 'package:food_gram_app/utils/mixin/show_modal_bottom_sheet_mixin.dart';
@@ -325,13 +326,16 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                         onTap: () {
                           EasyDebounce.debounce(
                               'post', Duration(milliseconds: 200), () async {
-                            await Share.share(
-                              '${widget.users.name} post in '
-                              '${widget.posts.restaurant}'
-                              '\n\n${L10n.of(context).share_review_1}'
-                              '\n${L10n.of(context).share_review_2}'
-                              '\n\n#foodGram'
-                              '\n#FoodGram',
+                            await showDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              useSafeArea: false,
+                              builder: (context) {
+                                return AppShareDialog(
+                                  posts: widget.posts,
+                                  users: widget.users,
+                                );
+                              },
                             );
                           });
                         },
