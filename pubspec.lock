@@ -1165,6 +1165,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  map_launcher:
+    dependency: "direct main"
+    description:
+      name: map_launcher
+      sha256: af59b9f79f641022e06761c9d4217c6c57b9ef9020af2fdb23155ec87af79e61
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.1"
   mapbox_maps_flutter:
     dependency: "direct main"
     description:
