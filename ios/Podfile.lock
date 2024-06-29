@@ -64,6 +64,8 @@ PODS:
     - Flutter
   - in_app_review (0.2.0):
     - Flutter
+  - map_launcher (0.0.1):
+    - Flutter
   - mapbox_maps_flutter (2.0.0):
     - Flutter
     - MapboxMaps (~> 11.4.0)
@@ -109,6 +111,7 @@ DEPENDENCIES:
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/darwin`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - in_app_review (from `.symlinks/plugins/in_app_review/ios`)
+  - map_launcher (from `.symlinks/plugins/map_launcher/ios`)
   - mapbox_maps_flutter (from `.symlinks/plugins/mapbox_maps_flutter/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -162,6 +165,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   in_app_review:
     :path: ".symlinks/plugins/in_app_review/ios"
+  map_launcher:
+    :path: ".symlinks/plugins/map_launcher/ios"
   mapbox_maps_flutter:
     :path: ".symlinks/plugins/mapbox_maps_flutter/ios"
   package_info_plus:
@@ -202,6 +207,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 8000756fc1c19d2e5697b90311f7832d2e33f6cd
   image_picker_ios: 99dfe1854b4fa34d0364e74a78448a0151025425
   in_app_review: 318597b3a06c22bb46dc454d56828c85f444f99d
+  map_launcher: 5fde49ac9a52672bf99da746599f507b4490d7b5
   mapbox_maps_flutter: 6b7ea767ed02514e0b796d5a2e48ba83b71bac01
   MapboxCommon: 6acbd8ff41d66abf498e1558b0739f25c562945a
   MapboxCoreMaps: f306bb1b10ebe995a2247b40e99322ab7f9b8071

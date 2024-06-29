@@ -549,6 +549,30 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'再読み込み'**
   String get error_refresh;
+
+  /// No description provided for @app_share_title.
+  ///
+  /// In ja, this message translates to:
+  /// **'共有'**
+  String get app_share_title;
+
+  /// No description provided for @app_share_share_store.
+  ///
+  /// In ja, this message translates to:
+  /// **'このお店を共有する'**
+  String get app_share_share_store;
+
+  /// No description provided for @app_share_go.
+  ///
+  /// In ja, this message translates to:
+  /// **'このお店に行ってみる'**
+  String get app_share_go;
+
+  /// No description provided for @app_share_close.
+  ///
+  /// In ja, this message translates to:
+  /// **'閉じる'**
+  String get app_share_close;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

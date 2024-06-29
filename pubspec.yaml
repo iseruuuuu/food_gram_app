@@ -45,6 +45,7 @@ dependencies:
   json_annotation: ^4.8.1
   loading_animation_widget: ^1.2.0+4
   logger: ^2.0.2+1
+  map_launcher: ^3.0.0
   mapbox_maps_flutter: ^2.0.0
   new_version_plus: ^0.0.11
   package_info_plus: ^4.0.1

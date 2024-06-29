@@ -233,4 +233,16 @@ class L10nJa extends L10n {
 
   @override
   String get error_refresh => '再読み込み';
+
+  @override
+  String get app_share_title => '共有';
+
+  @override
+  String get app_share_share_store => 'このお店を共有する';
+
+  @override
+  String get app_share_go => 'このお店に行ってみる';
+
+  @override
+  String get app_share_close => '閉じる';
 }

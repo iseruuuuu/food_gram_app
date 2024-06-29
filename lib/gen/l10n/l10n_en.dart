@@ -233,4 +233,16 @@ class L10nEn extends L10n {
 
   @override
   String get error_refresh => 'Reloading';
+
+  @override
+  String get app_share_title => 'Share';
+
+  @override
+  String get app_share_share_store => 'Share this store';
+
+  @override
+  String get app_share_go => 'Go to this store';
+
+  @override
+  String get app_share_close => '閉じる';
 }
