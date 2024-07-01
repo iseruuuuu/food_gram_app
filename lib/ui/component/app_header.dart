@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/ui/component/dialog/app_profile_dialog.dart';
 import 'package:gap/gap.dart';
 
 class AppHeader extends StatelessWidget {
@@ -29,10 +30,20 @@ class AppHeader extends StatelessWidget {
           SizedBox(height: 20),
           Row(
             children: [
-              CircleAvatar(
-                backgroundColor: Colors.white,
-                backgroundImage: AssetImage(image),
-                radius: 50,
+              GestureDetector(
+                onTap: () {
+                  showDialog<void>(
+                    context: context,
+                    builder: (_) {
+                      return AppProfileDialog(image: image);
+                    },
+                  );
+                },
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  backgroundImage: AssetImage(image),
+                  radius: 50,
+                ),
               ),
               Spacer(),
               Assets.gif.myProfile.image(width: 50, height: 50),
