@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/data/supabase/map_service.dart';
 import 'package:food_gram_app/core/utils/async_value_group.dart';
 import 'package:food_gram_app/core/utils/location.dart';
+import 'package:food_gram_app/ui/component/app_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/mapbox_controller.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
@@ -24,7 +25,17 @@ class MapScreen extends ConsumerWidget {
               mapboxController
                 ..mapboxMap = mapboxMap
                 ..getCurrentPin()
-                ..setPin();
+                ..setPin(
+                  openDialog: (posts) {
+                    print(posts);
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return RestaurantInfoModal(post: posts);
+                      },
+                    );
+                  },
+                );
             },
             key: ValueKey('mapWidget'),
             styleUri: 'mapbox://styles/ryuuuuu/clxpeougo00k001pu6d8o8tq3',

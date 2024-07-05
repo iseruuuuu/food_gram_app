@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/data/supabase/map_service.dart';
+import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -28,7 +29,7 @@ class MapboxController extends _$MapboxController {
     );
   }
 
-  Future<void> setPin() async {
+  Future<void> setPin({required void Function(Posts post) openDialog}) async {
     await mapboxMap.annotations
         .createPointAnnotationManager()
         .then((pointAnnotationManager) async {
@@ -55,6 +56,25 @@ class MapboxController extends _$MapboxController {
         },
       );
       await pointAnnotationManager.createMulti(options);
+      pointAnnotationManager.addOnPointAnnotationClickListener(
+        AnnotationClickListener(ref, openDialog),
+      );
     });
+  }
+}
+
+class AnnotationClickListener extends OnPointAnnotationClickListener {
+  AnnotationClickListener(this.ref, this.openDialog);
+
+  final NotifierProviderRef<void> ref;
+  final void Function(
+    Posts post,
+  ) openDialog;
+
+  @override
+  Future<void> onPointAnnotationClick(PointAnnotation annotation) async {
+    final result = await ref
+        .read(getRestaurantProvider(point: annotation.geometry).future);
+    openDialog(result);
   }
 }
