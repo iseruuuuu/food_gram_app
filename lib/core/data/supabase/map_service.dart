@@ -19,7 +19,7 @@ Future<List<Posts>> mapService(MapServiceRef ref) async {
 }
 
 @riverpod
-Future<Posts> getRestaurant(
+Future<List<Posts>> getRestaurant(
   GetRestaurantRef ref, {
   required Point point,
 }) async {
@@ -36,6 +36,6 @@ Future<Posts> getRestaurant(
         return Posts.fromJson(json);
       })
       .where((post) => !blockList.contains(post.userId))
-      .toList()[0];
+      .toList();
   return result;
 }
