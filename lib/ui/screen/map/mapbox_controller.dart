@@ -29,7 +29,9 @@ class MapboxController extends _$MapboxController {
     );
   }
 
-  Future<void> setPin({required void Function(Posts post) openDialog}) async {
+  Future<void> setPin({
+    required void Function(List<Posts> post) openDialog,
+  }) async {
     await mapboxMap.annotations
         .createPointAnnotationManager()
         .then((pointAnnotationManager) async {
@@ -40,7 +42,6 @@ class MapboxController extends _$MapboxController {
         data: (value) {
           for (var i = 0; i < value.length; i++) {
             options.add(
-              //TODO ピンをタップすると、投稿内容を取得できる
               PointAnnotationOptions(
                 geometry: Point(
                   coordinates: Position(
@@ -68,7 +69,7 @@ class AnnotationClickListener extends OnPointAnnotationClickListener {
 
   final NotifierProviderRef<void> ref;
   final void Function(
-    Posts post,
+    List<Posts> post,
   ) openDialog;
 
   @override
