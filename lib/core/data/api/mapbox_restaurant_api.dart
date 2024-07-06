@@ -31,7 +31,6 @@ Future<PaginationList<Restaurant>> mapboxRestaurantApi(
         'proximity': '${currentLocation.longitude},${currentLocation.latitude}',
         'access_token': Env.mapbox,
         'limit': resultsPerPage,
-        'types': 'poi',
       },
     );
     if (response.statusCode == 200) {
