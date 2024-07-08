@@ -22,13 +22,13 @@ jobs:
 
       - name: Retrieve the secret and decode it to a file
         env:
-          ACCONT_BASE64: ${{ secrets.DEV_ENV }}
-          ATTRACTION_BASE64: ${{ secrets.PROD_ENV }}
-          MAPBOX_BASE64: ${{ secrets.ENV }}
+          DEV_ENV_BASE64: ${{ secrets.DEV_ENV }}
+          PROD_ENV_BASE64: ${{ secrets.PROD_ENV }}
+          ENV_BASE64: ${{ secrets.ENV }}
         run: |
           echo $DEV_ENV_BASE64 | base64 --decode > .env.dev
           echo $PROD_ENV_BASE64 | base64 --decode > .env.prod
-      #          echo $MAPBOX_BASE64 | base64 --decode > .env
+          echo $ENV_BASE64 | base64 --decode > .env
 
       - name: fvm
         uses: kuhnroyal/flutter-fvm-config-action@v1
@@ -44,7 +44,7 @@ jobs:
         run: |
           flutter pub get
 
-      - name: build runner
+      - name: Generate envied files
         run: |
           flutter pub run build_runner build --delete-conflicting-outputs
 
