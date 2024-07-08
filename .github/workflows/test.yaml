@@ -42,12 +42,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          flutter pub get
+          fvm flutter pub get
 
       - name: build runner
         run: |
-          flutter pub run build_runner build --delete-conflicting-outputs
+          fvm flutter pub run build_runner build --delete-conflicting-outputs
 
       - name: Test
         run: |
-          flutter test
+          fvm flutter test
