@@ -24,7 +24,7 @@ jobs:
         env:
           ACCONT_BASE64: ${{ secrets.DEV_ENV }}
           ATTRACTION_BASE64: ${{ secrets.PROD_ENV }}
-        #          MAPBOX_BASE64: ${{ secrets.ENV }}
+          MAPBOX_BASE64: ${{ secrets.ENV }}
         run: |
           echo $DEV_ENV_BASE64 | base64 --decode > .env.dev
           echo $PROD_ENV_BASE64 | base64 --decode > .env.prod
