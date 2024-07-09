@@ -7,8 +7,8 @@ import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_app_bar.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
+import 'package:food_gram_app/ui/component/dialog/app_logout_dialog.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
-import 'package:food_gram_app/utils/mixin/dialog_mixin.dart';
 import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
 import 'package:food_gram_app/utils/mixin/url_launcher_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
@@ -26,7 +26,7 @@ class SettingScreen extends ConsumerStatefulWidget {
 }
 
 class SettingScreenState extends ConsumerState<SettingScreen>
-    with UrlLauncherMixin, DialogMixin, SnackBarMixin {
+    with UrlLauncherMixin, SnackBarMixin {
   @override
   Widget build(BuildContext context) {
     final loading = ref.watch(loadingProvider);
@@ -297,22 +297,31 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       ),
                     ),
                     onPressed: (context) {
-                      openLogOutDialog(
+                      showDialog(
                         context: context,
-                        logout: () => ref
-                            .read(settingViewModelProvider().notifier)
-                            .signOut()
-                            .then((value) {
-                          if (value) {
-                            if (mounted) {
-                              context.pushReplacementNamed(
-                                RouterPath.authentication,
+                        barrierDismissible: false,
+                        builder: (context) {
+                          return AppLogoutDialog(
+                            logout: () {
+                              ref
+                                  .read(settingViewModelProvider().notifier)
+                                  .signOut()
+                                  .then(
+                                (value) {
+                                  if (value) {
+                                    if (mounted) {
+                                      context.pushReplacementNamed(
+                                        RouterPath.authentication,
+                                      );
+                                    }
+                                  } else {
+                                    openErrorSnackBar(context);
+                                  }
+                                },
                               );
-                            }
-                          } else {
-                            openErrorSnackBar(context);
-                          }
-                        }),
+                            },
+                          );
+                        },
                       );
                     },
                   ),
