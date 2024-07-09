@@ -7,13 +7,13 @@ import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/dialog/app_dialog.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
 import 'package:food_gram_app/utils/mixin/show_modal_bottom_sheet_mixin.dart';
-import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
-import 'package:food_gram_app/utils/mixin/url_launcher_mixin.dart';
+import 'package:food_gram_app/utils/snack_bar_manager.dart';
+import 'package:food_gram_app/utils/url_launch.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
 class DetailPostBottomSheet extends ConsumerWidget
-    with UrlLauncherMixin, SnackBarMixin, ShowModalBottomSheetMixin {
+    with ShowModalBottomSheetMixin {
   const DetailPostBottomSheet({
     required this.posts,
     required this.users,
@@ -43,11 +43,11 @@ class DetailPostBottomSheet extends ConsumerWidget
             },
             search: () async {
               if (posts.restaurant != '不明' && posts.restaurant != '自炊') {
-                await launcherUrl(
+                await LaunchUrl().open(
                   'https://www.google.com/maps/search/?api=1&query=${posts.restaurant}',
                 );
               } else {
-                openSnackBar(
+                openErrorSnackBar(
                   context,
                   L10n.of(context).posts_search_error,
                 );
@@ -55,28 +55,26 @@ class DetailPostBottomSheet extends ConsumerWidget
             },
             report: () {
               showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) {
-                    return AppDialog(
-                      title: L10n.of(context).dialog_report_title,
-                      subTitle:
-                          '${L10n.of(context).dialog_report_description_1}'
-                          '\n '
-                          '${L10n.of(context).dialog_report_description_2}',
-                      onTap: () async {
-                        await launcherUrl(
-                          'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
-                        ).then((value) {
-                          if (!value) {
-                            openErrorSnackBar(context);
-                          } else {
-                            context.pop();
-                          }
-                        });
-                      },
-                    );
-                  });
+                context: context,
+                barrierDismissible: false,
+                builder: (context) {
+                  return AppDialog(
+                    title: L10n.of(context).dialog_report_title,
+                    subTitle: '${L10n.of(context).dialog_report_description_1}'
+                        '\n '
+                        '${L10n.of(context).dialog_report_description_2}',
+                    onTap: () async {
+                      await LaunchUrl()
+                          .open(
+                        'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
+                      )
+                          .then((value) {
+                        context.pop();
+                      });
+                    },
+                  );
+                },
+              );
             },
             block: () {
               showDialog(
@@ -120,11 +118,11 @@ class DetailPostBottomSheet extends ConsumerWidget
             },
             search: () async {
               if (posts.restaurant != '不明' && posts.restaurant != '自炊') {
-                await launcherUrl(
+                await LaunchUrl().open(
                   'https://www.google.com/maps/search/?api=1&query=${posts.restaurant}',
                 );
               } else {
-                openSnackBar(
+                openErrorSnackBar(
                   context,
                   L10n.of(context).posts_search_error,
                 );
@@ -148,7 +146,7 @@ class DetailPostBottomSheet extends ConsumerWidget
                         if (value) {
                           context.pop(true);
                         } else {
-                          openSnackBar(
+                          openErrorSnackBar(
                             context,
                             L10n.of(context).dialog_delete_error,
                           );

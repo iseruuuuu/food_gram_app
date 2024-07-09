@@ -9,9 +9,9 @@ import 'package:food_gram_app/ui/component/app_app_bar.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/dialog/app_logout_dialog.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
-import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
-import 'package:food_gram_app/utils/mixin/url_launcher_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
+import 'package:food_gram_app/utils/snack_bar_manager.dart';
+import 'package:food_gram_app/utils/url_launch.dart';
 import 'package:go_router/go_router.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:new_version_plus/new_version_plus.dart';
@@ -25,8 +25,7 @@ class SettingScreen extends ConsumerStatefulWidget {
   SettingScreenState createState() => SettingScreenState();
 }
 
-class SettingScreenState extends ConsumerState<SettingScreen>
-    with UrlLauncherMixin, SnackBarMixin {
+class SettingScreenState extends ConsumerState<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     final loading = ref.watch(loadingProvider);
@@ -77,14 +76,10 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     ),
                     title: Text(L10n.of(context).setting_developer),
                     onPressed: (context) {
-                      openSNSUrl(
+                      LaunchUrl().openSNSUrl(
                         'twitter://user?screen_name=isekiryu',
                         'https://twitter.com/isekiryu',
-                      ).then((value) {
-                        if (!value) {
-                          openErrorSnackBar(context);
-                        }
-                      });
+                      );
                     },
                   ),
                   SettingsTile.navigation(
@@ -95,13 +90,9 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     leading: const Icon(FontAwesomeIcons.github),
                     title: Text(L10n.of(context).setting_github),
                     onPressed: (context) {
-                      launcherUrl(
+                      LaunchUrl().open(
                         'https://github.com/iseruuuuu/food_gram_app',
-                      ).then((value) {
-                        if (!value) {
-                          openErrorSnackBar(context);
-                        }
-                      });
+                      );
                     },
                   ),
                   SettingsTile.navigation(
@@ -154,13 +145,9 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     leading: const Icon(Icons.question_answer),
                     title: Text(L10n.of(context).setting_faq),
                     onPressed: (context) {
-                      launcherUrl(
+                      LaunchUrl().open(
                         'https://succinct-may-e5e.notion.site/FAQ-256ae853b9ec4209a04f561449de8c1d',
-                      ).then((value) {
-                        if (!value) {
-                          openErrorSnackBar(context);
-                        }
-                      });
+                      );
                     },
                   ),
                   SettingsTile.navigation(
@@ -174,13 +161,9 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     ),
                     title: Text(L10n.of(context).setting_privacy_policy),
                     onPressed: (context) {
-                      launcherUrl(
+                      LaunchUrl().open(
                         'https://succinct-may-e5e.notion.site/fd5584426bf44c50bdb1eb4b376d165f',
-                      ).then((value) {
-                        if (!value) {
-                          openErrorSnackBar(context);
-                        }
-                      });
+                      );
                     },
                   ),
                   SettingsTile.navigation(
@@ -194,13 +177,9 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     ),
                     title: Text(L10n.of(context).setting_terms_of_use),
                     onPressed: (context) {
-                      launcherUrl(
+                      LaunchUrl().open(
                         'https://succinct-may-e5e.notion.site/a0ad75abf8244404b7a19cca0e2304f1',
-                      ).then((value) {
-                        if (!value) {
-                          openErrorSnackBar(context);
-                        }
-                      });
+                      );
                     },
                   ),
                   SettingsTile.navigation(
@@ -214,13 +193,9 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                     ),
                     title: Text(L10n.of(context).setting_contact),
                     onPressed: (context) {
-                      launcherUrl(
+                      LaunchUrl().open(
                         'https://forms.gle/mjucjntt3c2SZsUc7',
-                      ).then((value) {
-                        if (!value) {
-                          openErrorSnackBar(context);
-                        }
-                      });
+                      );
                     },
                   ),
                   SettingsTile.navigation(
@@ -315,7 +290,7 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                                       );
                                     }
                                   } else {
-                                    openErrorSnackBar(context);
+                                    openErrorSnackBar(context, 'ログアウト失敗');
                                   }
                                 },
                               );
@@ -338,11 +313,13 @@ class SettingScreenState extends ConsumerState<SettingScreen>
                       ),
                     ),
                     onPressed: (context) {
-                      launcherUrl(
+                      LaunchUrl()
+                          .open(
                         'https://forms.gle/B2cG3FEynh1tbfUdA',
-                      ).then((value) {
+                      )
+                          .then((value) {
                         if (!value) {
-                          openErrorSnackBar(context);
+                          openErrorSnackBar(context, 'アカウント削除失敗');
                         }
                       });
                     },

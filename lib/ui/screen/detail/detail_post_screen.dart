@@ -13,8 +13,6 @@ import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/dialog/app_share_dialog.dart';
 import 'package:food_gram_app/ui/screen/detail/component/detail_post_bottom_sheet.dart';
 import 'package:food_gram_app/utils/mixin/show_modal_bottom_sheet_mixin.dart';
-import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
-import 'package:food_gram_app/utils/mixin/url_launcher_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:gap/gap.dart';
 import 'package:gif/gif.dart';
@@ -34,11 +32,7 @@ class DetailPostScreen extends ConsumerStatefulWidget {
 }
 
 class DetailPostScreenState extends ConsumerState<DetailPostScreen>
-    with
-        UrlLauncherMixin,
-        SnackBarMixin,
-        ShowModalBottomSheetMixin,
-        TickerProviderStateMixin {
+    with ShowModalBottomSheetMixin, TickerProviderStateMixin {
   bool isHeart = false;
   bool doesHeart = false;
   int initialHeart = 0;
