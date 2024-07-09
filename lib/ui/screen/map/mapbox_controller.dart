@@ -58,24 +58,36 @@ class MapboxController extends _$MapboxController {
       );
       await pointAnnotationManager.createMulti(options);
       pointAnnotationManager.addOnPointAnnotationClickListener(
-        AnnotationClickListener(ref, openDialog),
+        AnnotationClickListener(ref, openDialog, mapboxMap),
       );
     });
   }
 }
 
 class AnnotationClickListener extends OnPointAnnotationClickListener {
-  AnnotationClickListener(this.ref, this.openDialog);
+  AnnotationClickListener(
+    this.ref,
+    this.openDialog,
+    this.controller,
+  );
 
   final NotifierProviderRef<void> ref;
-  final void Function(
-    List<Posts> post,
-  ) openDialog;
+  final void Function(List<Posts> post) openDialog;
+  final MapboxMap controller;
 
   @override
   Future<void> onPointAnnotationClick(PointAnnotation annotation) async {
     final result = await ref
         .read(getRestaurantProvider(point: annotation.geometry).future);
+    final lat = annotation.geometry.coordinates.lat.toDouble();
+    final lng = annotation.geometry.coordinates.lng.toDouble();
+    await controller.flyTo(
+      CameraOptions(
+        center: Point(coordinates: Position(lng, lat)),
+        zoom: 16.5,
+      ),
+      MapAnimationOptions(duration: 1000),
+    );
     openDialog(result);
   }
 }
