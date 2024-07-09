@@ -23,7 +23,6 @@ class MapScreen extends HookConsumerWidget {
       body: AsyncValueSwitcher(
         asyncValue: AsyncValueGroup.group2(location, mapService),
         onData: (value) {
-          //TODO 登録したレストラン以外のピンを外したい
           return Stack(
             alignment: Alignment.bottomCenter,
             children: [
