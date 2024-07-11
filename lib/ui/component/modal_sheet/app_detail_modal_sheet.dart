@@ -484,14 +484,28 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                     ),
                   ),
                   onPressed: () async {
-                    //TODO 投稿の削除のダイアログを出したい。
-                    context.pop();
-                    await ref
-                        .read(detailPostViewModelProvider().notifier)
-                        .delete(posts)
-                        .then((value) {
-                      context.pop(true);
-                    });
+                    //TODO 削除後にちゃんと画面に戻れない不具合を治す
+                    await showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return AppDialog(
+                          title: l10n.dialogDeleteTitle,
+                          subTitle: '${l10n.dialogDeleteDescription1}'
+                              '\n '
+                              '${l10n.dialogDeleteDescription2}',
+                          onTap: () async {
+                            context.pop();
+                            await ref
+                                .read(detailPostViewModelProvider().notifier)
+                                .delete(posts)
+                                .then((value) {
+                              context.pop(true);
+                            });
+                          },
+                        );
+                      },
+                    );
                   },
                   child: Row(
                     children: [
