@@ -60,7 +60,6 @@ class AppHeader extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    // l10n.my_profile_post_length,
                     l10n.profilePostCount,
                     style: TextStyle(
                       fontSize: 15,
