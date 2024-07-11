@@ -10,17 +10,11 @@ import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
-import 'package:food_gram_app/ui/component/dialog/app_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/app_share_dialog.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_modal_sheet.dart';
-import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
-import 'package:food_gram_app/utils/snack_bar_manager.dart';
-import 'package:food_gram_app/utils/url_launch.dart';
 import 'package:gap/gap.dart';
 import 'package:gif/gif.dart';
-import 'package:go_router/go_router.dart';
-import 'package:share_plus/share_plus.dart';
 
 class DetailPostScreen extends ConsumerStatefulWidget {
   const DetailPostScreen({
@@ -84,140 +78,13 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                     builder: (context) {
                       if (widget.users.userId != user) {
                         return AppDetailOtherInfoModalSheet(
-                          share: () {
-                            Share.share(
-                              '${widget.users.name} post in '
-                              '${widget.posts.restaurant}'
-                              '\n\n${L10n.of(context).share_review_1}'
-                              '\n${L10n.of(context).share_review_2}'
-                              '\n\n#foodGram'
-                              '\n#FoodGram',
-                            );
-                          },
-                          search: () async {
-                            if (widget.posts.restaurant != '不明' &&
-                                widget.posts.restaurant != '自炊') {
-                              await LaunchUrl().open(
-                                'https://www.google.com/maps/search/?api=1&query=${widget.posts.restaurant}',
-                              );
-                            } else {
-                              openErrorSnackBar(
-                                context,
-                                L10n.of(context).posts_search_error,
-                              );
-                            }
-                          },
-                          report: () {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return AppDialog(
-                                  title: L10n.of(context).dialog_report_title,
-                                  subTitle:
-                                      '${L10n.of(context).dialog_report_description_1}'
-                                      '\n '
-                                      '${L10n.of(context).dialog_report_description_2}',
-                                  onTap: () async {
-                                    await LaunchUrl()
-                                        .open(
-                                      'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
-                                    )
-                                        .then((value) {
-                                      context.pop();
-                                    });
-                                  },
-                                );
-                              },
-                            );
-                          },
-                          block: () {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return AppDialog(
-                                  title: L10n.of(context).dialog_block_title,
-                                  subTitle:
-                                      '${L10n.of(context).dialog_block_description_1}'
-                                      '\n'
-                                      '${L10n.of(context).dialog_block_description_2}'
-                                      '\n'
-                                      '${L10n.of(context).dialog_block_description_3}',
-                                  onTap: () async {
-                                    await ref
-                                        .read(detailPostViewModelProvider()
-                                            .notifier)
-                                        .block(widget.posts.userId)
-                                        .then((value) async {
-                                      if (value) {
-                                        context.pop(true);
-                                      }
-                                    });
-                                  },
-                                );
-                              },
-                            );
-                          },
+                          users: widget.users,
+                          posts: widget.posts,
                         );
                       } else {
                         return AppDetailMyInfoModalSheet(
-                          share: () {
-                            Share.share(
-                              '${widget.users.name} post in '
-                              '${widget.posts.restaurant}'
-                              '\n\n${L10n.of(context).share_review_1}'
-                              '\n${L10n.of(context).share_review_2}'
-                              '\n\n#foodGram'
-                              '\n#FoodGram',
-                            );
-                          },
-                          search: () async {
-                            if (widget.posts.restaurant != '不明' &&
-                                widget.posts.restaurant != '自炊') {
-                              await LaunchUrl().open(
-                                'https://www.google.com/maps/search/?api=1&query=${widget.posts.restaurant}',
-                              );
-                            } else {
-                              openErrorSnackBar(
-                                context,
-                                L10n.of(context).posts_search_error,
-                              );
-                            }
-                          },
-                          delete: () {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return AppDialog(
-                                  title: L10n.of(context).dialog_delete_title,
-                                  subTitle:
-                                      '${L10n.of(context).dialog_delete_description_1}'
-                                      '\n'
-                                      '${L10n.of(context).dialog_delete_description_2}',
-                                  onTap: () async {
-                                    await ref
-                                        .read(
-                                          detailPostViewModelProvider()
-                                              .notifier,
-                                        )
-                                        .delete(widget.posts)
-                                        .then((value) async {
-                                      if (value) {
-                                        context.pop(true);
-                                      } else {
-                                        openErrorSnackBar(
-                                          context,
-                                          L10n.of(context).dialog_delete_error,
-                                        );
-                                      }
-                                    });
-                                  },
-                                );
-                              },
-                            );
-                          },
+                          users: widget.users,
+                          posts: widget.posts,
                         );
                       }
                     },
