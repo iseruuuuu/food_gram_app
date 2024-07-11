@@ -7,15 +7,18 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/app_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/post/provider/post_screen_state_provider.dart';
-import 'package:food_gram_app/utils/mixin/show_modal_bottom_sheet_mixin.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
-  const PostScreen({required this.routerPath, super.key});
+class PostScreen extends ConsumerWidget {
+  const PostScreen({
+    required this.routerPath,
+    super.key,
+  });
 
   final String routerPath;
 
@@ -37,8 +40,9 @@ class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
             backgroundColor: !loading ? Colors.white : Colors.transparent,
             title: Text(
               '投稿',
-              style: theme.textTheme.titleMedium!
-                  .copyWith(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleMedium!.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             centerTitle: true,
             leading: !loading
@@ -93,29 +97,40 @@ class PostScreen extends ConsumerWidget with ShowModalBottomSheetMixin {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          onTapImage(
+                          primaryFocus?.unfocus();
+                          showModalBottomSheet(
                             context: context,
-                            camera: () async {
-                              final result = await ref
-                                  .read(postScreenStateProvider().notifier)
-                                  .camera();
-                              final updatedState =
-                                  ref.read(postScreenStateProvider());
-                              if (!result) {
-                                hideSnackBar(context);
-                                openErrorSnackBar(context, updatedState.status);
-                              }
-                            },
-                            album: () async {
-                              final result = await ref
-                                  .read(postScreenStateProvider().notifier)
-                                  .album();
-                              final updatedState =
-                                  ref.read(postScreenStateProvider());
-                              if (!result) {
-                                hideSnackBar(context);
-                                openErrorSnackBar(context, updatedState.status);
-                              }
+                            builder: (context) {
+                              return AppImageModalSheet(
+                                camera: () async {
+                                  final result = await ref
+                                      .read(postScreenStateProvider().notifier)
+                                      .camera();
+                                  final updatedState =
+                                      ref.read(postScreenStateProvider());
+                                  if (!result) {
+                                    hideSnackBar(context);
+                                    openErrorSnackBar(
+                                      context,
+                                      updatedState.status,
+                                    );
+                                  }
+                                },
+                                album: () async {
+                                  final result = await ref
+                                      .read(postScreenStateProvider().notifier)
+                                      .album();
+                                  final updatedState =
+                                      ref.read(postScreenStateProvider());
+                                  if (!result) {
+                                    hideSnackBar(context);
+                                    openErrorSnackBar(
+                                      context,
+                                      updatedState.status,
+                                    );
+                                  }
+                                },
+                              );
                             },
                           );
                         },
