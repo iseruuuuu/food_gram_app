@@ -54,9 +54,9 @@ class AppFoodTextField extends StatelessWidget {
               child: TextField(
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: L10n.of(context).post_food_name_text_field,
+                  hintText: L10n.of(context).postFoodName,
                   label: Text(
-                    L10n.of(context).post_food_name,
+                    L10n.of(context).postFoodNameInputField,
                     style: TextStyle(
                       color: Colors.grey,
                       fontWeight: FontWeight.bold,
@@ -97,9 +97,9 @@ class AppCommentTextField extends StatelessWidget {
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.always,
             border: InputBorder.none,
-            hintText: L10n.of(context).post_comment,
+            hintText: L10n.of(context).postCommentInputField,
             label: Text(
-              L10n.of(context).post_comment_text_field,
+              L10n.of(context).postComment,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.grey,
@@ -181,9 +181,9 @@ class AppNameTextField extends StatelessWidget {
               child: TextField(
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: L10n.of(context).user_name_text_field,
+                  hintText: L10n.of(context).userName,
                   label: Text(
-                    L10n.of(context).user_name,
+                    L10n.of(context).userNameInputField,
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),
@@ -226,9 +226,9 @@ class AppSelfIntroductionTextField extends StatelessWidget {
                 decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   border: InputBorder.none,
-                  hintText: L10n.of(context).edit_bio_text_field,
+                  hintText: L10n.of(context).editBioInputField,
                   label: Text(
-                    L10n.of(context).edit_bio,
+                    L10n.of(context).editBio,
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),
@@ -270,9 +270,9 @@ class AppUserNameTextField extends StatelessWidget {
               child: TextField(
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: L10n.of(context).user_id_text_field,
+                  hintText: L10n.of(context).userId,
                   label: Text(
-                    L10n.of(context).user_id,
+                    L10n.of(context).userIdInputField,
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),

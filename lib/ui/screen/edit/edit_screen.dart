@@ -51,7 +51,7 @@ class EditScreen extends ConsumerWidget {
                     }
                   }),
                   child: Text(
-                    L10n.of(context).edit_update_button,
+                    L10n.of(context).editUpdateButton,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -79,7 +79,7 @@ class EditScreen extends ConsumerWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          L10n.of(context).setting_icon,
+                          L10n.of(context).settingsIcon,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,

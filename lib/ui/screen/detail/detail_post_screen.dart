@@ -11,16 +11,10 @@ import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/dialog/app_share_dialog.dart';
-import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
-import 'package:food_gram_app/utils/mixin/dialog_mixin.dart';
-import 'package:food_gram_app/utils/mixin/show_modal_bottom_sheet_mixin.dart';
-import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
-import 'package:food_gram_app/utils/mixin/url_launcher_mixin.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/app_detail_modal_sheet.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:gap/gap.dart';
 import 'package:gif/gif.dart';
-import 'package:go_router/go_router.dart';
-import 'package:share_plus/share_plus.dart';
 
 class DetailPostScreen extends ConsumerStatefulWidget {
   const DetailPostScreen({
@@ -37,12 +31,7 @@ class DetailPostScreen extends ConsumerStatefulWidget {
 }
 
 class DetailPostScreenState extends ConsumerState<DetailPostScreen>
-    with
-        DialogMixin,
-        UrlLauncherMixin,
-        SnackBarMixin,
-        ShowModalBottomSheetMixin,
-        TickerProviderStateMixin {
+    with TickerProviderStateMixin {
   bool isHeart = false;
   bool doesHeart = false;
   int initialHeart = 0;
@@ -62,6 +51,12 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final user = supabase.auth.currentUser?.id;
@@ -78,129 +73,22 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
             if (!loading)
               IconButton(
                 onPressed: () {
-                  if (widget.users.userId != user) {
-                    onTapOtherDetail(
-                      context: context,
-                      share: () {
-                        Share.share(
-                          '${widget.users.name} post in '
-                          '${widget.posts.restaurant}'
-                          '\n\n${L10n.of(context).share_review_1}'
-                          '\n${L10n.of(context).share_review_2}'
-                          '\n\n#foodGram'
-                          '\n#FoodGram',
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      if (widget.users.userId != user) {
+                        return AppDetailOtherInfoModalSheet(
+                          users: widget.users,
+                          posts: widget.posts,
                         );
-                      },
-                      search: () async {
-                        if (widget.posts.restaurant != '不明' &&
-                            widget.posts.restaurant != '自炊') {
-                          await launcherUrl(
-                            'https://www.google.com/maps/search/?api=1&query=${widget.posts.restaurant}',
-                          );
-                        } else {
-                          openSnackBar(
-                            context,
-                            L10n.of(context).posts_search_error,
-                          );
-                        }
-                      },
-                      report: () {
-                        openDialog(
-                          context: context,
-                          title: L10n.of(context).dialog_report_title,
-                          subTitle:
-                              '${L10n.of(context).dialog_report_description_1}'
-                              '\n '
-                              '${L10n.of(context).dialog_report_description_2}',
-                          onTap: () async {
-                            await launcherUrl(
-                              'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
-                            ).then((value) {
-                              if (!value) {
-                                openErrorSnackBar(context);
-                              } else {
-                                context.pop();
-                              }
-                            });
-                          },
+                      } else {
+                        return AppDetailMyInfoModalSheet(
+                          users: widget.users,
+                          posts: widget.posts,
                         );
-                      },
-                      block: () {
-                        openDialog(
-                          context: context,
-                          title: L10n.of(context).dialog_block_title,
-                          subTitle:
-                              '${L10n.of(context).dialog_block_description_1}'
-                              '\n'
-                              '${L10n.of(context).dialog_block_description_2}'
-                              '\n'
-                              '${L10n.of(context).dialog_block_description_3}',
-                          onTap: () async {
-                            await ref
-                                .read(detailPostViewModelProvider().notifier)
-                                .block(widget.posts.userId)
-                                .then((value) async {
-                              if (value) {
-                                context.pop(true);
-                              }
-                            });
-                          },
-                        );
-                      },
-                    );
-                  } else {
-                    onTapMyDetail(
-                      context: context,
-                      share: () {
-                        Share.share(
-                          '${widget.users.name} post in '
-                          '${widget.posts.restaurant}'
-                          '\n\n${L10n.of(context).share_review_1}'
-                          '\n${L10n.of(context).share_review_2}'
-                          '\n\n#foodGram'
-                          '\n#FoodGram',
-                        );
-                      },
-                      search: () async {
-                        if (widget.posts.restaurant != '不明' &&
-                            widget.posts.restaurant != '自炊') {
-                          await launcherUrl(
-                            'https://www.google.com/maps/search/?api=1&query=${widget.posts.restaurant}',
-                          );
-                        } else {
-                          openSnackBar(
-                            context,
-                            L10n.of(context).posts_search_error,
-                          );
-                        }
-                      },
-                      delete: () {
-                        openDialog(
-                          context: context,
-                          title: L10n.of(context).dialog_delete_title,
-                          subTitle:
-                              '${L10n.of(context).dialog_delete_description_1}'
-                              '\n'
-                              '${L10n.of(context).dialog_delete_description_2}',
-                          onTap: () async {
-                            await ref
-                                .read(detailPostViewModelProvider().notifier)
-                                .delete(widget.posts)
-                                .then((value) async {
-                              if (value) {
-                                context.pop(true);
-                              } else {
-                                openSnackBar(
-                                  context,
-                                  L10n.of(context).dialog_delete_error,
-                                );
-                              }
-                            });
-                          },
-                        );
-                      },
-                    );
-                  }
+                      }
+                    },
+                  );
                 },
                 icon: Icon(Icons.menu),
               ),
@@ -348,7 +236,8 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Text(
-                          '$initialHeart ${L10n.of(context).post_detail_heart}',
+                          '$initialHeart'
+                          ' ${L10n.of(context).postDetailLikeButton}',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,

@@ -4,7 +4,7 @@ import 'package:food_gram_app/core/data/supabase/map_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/utils/async_value_group.dart';
 import 'package:food_gram_app/core/utils/location.dart';
-import 'package:food_gram_app/ui/component/app_modal_sheet.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/app_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/mapbox_controller.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mapbox;
@@ -23,7 +23,6 @@ class MapScreen extends HookConsumerWidget {
       body: AsyncValueSwitcher(
         asyncValue: AsyncValueGroup.group2(location, mapService),
         onData: (value) {
-          //TODO 登録したレストラン以外のピンを外したい
           return Stack(
             alignment: Alignment.bottomCenter,
             children: [
@@ -53,7 +52,7 @@ class MapScreen extends HookConsumerWidget {
               ),
               Visibility(
                 visible: isTapPin.value,
-                child: RestaurantInfoModal(post: post.value),
+                child: RestaurantInfoModalSheet(post: post.value),
               ),
             ],
           );

@@ -39,7 +39,7 @@ class NewAccountScreen extends ConsumerWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: Text(
-                        L10n.of(context).setting_icon,
+                        L10n.of(context).settingsIcon,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -79,7 +79,7 @@ class NewAccountScreen extends ConsumerWidget {
                           }
                         });
                       },
-                      title: L10n.of(context).register_button,
+                      title: L10n.of(context).registerButton,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 15),

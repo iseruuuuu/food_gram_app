@@ -12,7 +12,7 @@ class AppEmpty extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            L10n.of(context).empty,
+            L10n.of(context).emptyPosts,
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 20),
@@ -32,7 +32,7 @@ class AppSearchEmpty extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          L10n.of(context).search_empty,
+          L10n.of(context).searchEmptyResult,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
         Assets.gif.error.image(width: 180, height: 180),

@@ -22,6 +22,7 @@ class AppHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -59,7 +60,7 @@ class AppHeader extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    L10n.of(context).my_profile_post_length,
+                    l10n.profilePostCount,
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,

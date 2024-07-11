@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class AppProfileDialog extends StatelessWidget {
   const AppProfileDialog({
-    super.key,
     required this.image,
+    super.key,
   });
 
   final String image;

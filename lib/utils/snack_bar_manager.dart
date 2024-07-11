@@ -35,6 +35,23 @@ void openSuccessSnackBar(BuildContext context, String message) {
     ..showSnackBar(snackBar);
 }
 
+void openComingSoonSnackBar(BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Center(
+        child: Text(
+          '🙇　Coming Soon　🙇',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: 20,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
 void hideSnackBar(BuildContext context) {
   ScaffoldMessenger.of(context).hideCurrentSnackBar();
 }

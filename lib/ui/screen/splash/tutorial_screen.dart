@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/config/shared_preference/shared_preference.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/utils/mixin/snack_bar_mixin.dart';
+import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:go_router/go_router.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
@@ -13,7 +13,7 @@ class TutorialScreen extends StatefulWidget {
   State<TutorialScreen> createState() => _TutorialScreenState();
 }
 
-class _TutorialScreenState extends State<TutorialScreen> with SnackBarMixin {
+class _TutorialScreenState extends State<TutorialScreen> {
   bool isAccept = false;
   bool isFinishedTutorial = false;
   final preference = Preference();
@@ -213,7 +213,7 @@ class _TutorialScreenState extends State<TutorialScreen> with SnackBarMixin {
                 context.pop();
               }
             } else {
-              openSnackBar(context, '利用規約に同意してください。');
+              openErrorSnackBar(context, '利用規約に同意してください。');
             }
           },
           showBackButton: true,
