@@ -2,9 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/main.dart';
+import 'package:go_router/go_router.dart';
 
-class RestaurantInfoModal extends StatelessWidget {
-  const RestaurantInfoModal({
+class RestaurantInfoModalSheet extends StatelessWidget {
+  const RestaurantInfoModalSheet({
     required this.post,
     super.key,
   });
