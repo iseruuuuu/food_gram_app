@@ -77,7 +77,7 @@ class PostScreen extends ConsumerWidget {
                     );
                   },
                   child: Text(
-                    L10n.of(context).post_share,
+                    L10n.of(context).postShareButton,
                     style: theme.textTheme.titleMedium!.copyWith(
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,
@@ -185,7 +185,7 @@ class PostScreen extends ConsumerWidget {
                               : SizedBox(),
                           title: Text(
                             state.restaurant == '場所を追加'
-                                ? L10n.of(context).post_place
+                                ? L10n.of(context).postRestaurantNameInputField
                                 : state.restaurant,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(

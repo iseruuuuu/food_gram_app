@@ -10,6 +10,7 @@ class AppErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Center(
@@ -17,7 +18,7 @@ class AppErrorWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              L10n.of(context).error_title,
+              l10n.errorTitle,
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
@@ -25,9 +26,9 @@ class AppErrorWidget extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              '${L10n.of(context).error_description_1}'
+              '${l10n.errorDescription1}'
               '\n'
-              '${L10n.of(context).error_description_2}',
+              '${l10n.errorDescription2}',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,
@@ -42,7 +43,7 @@ class AppErrorWidget extends StatelessWidget {
             SizedBox(height: 50),
             AppElevatedButton(
               onPressed: onTap,
-              title: L10n.of(context).error_refresh,
+              title: l10n.errorRefreshButton,
             ),
           ],
         ),

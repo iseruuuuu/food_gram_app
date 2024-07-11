@@ -22,6 +22,7 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = L10n.of(context);
     return Container(
       height: MediaQuery.sizeOf(context).width - 20,
       decoration: BoxDecoration(
@@ -38,7 +39,7 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 20),
               child: Text(
-                L10n.of(context).posts_detail_sheet_title,
+                l10n.postDetailSheetTitle,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -67,8 +68,8 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                     Share.share(
                       '${users.name} post in '
                       '${posts.restaurant}'
-                      '\n\n${L10n.of(context).share_review_1}'
-                      '\n${L10n.of(context).share_review_2}'
+                      '\n\n${l10n.shareReviewPrefix}'
+                      '\n${l10n.shareReviewSuffix}'
                       '\n\n#foodGram'
                       '\n#FoodGram',
                     );
@@ -82,7 +83,7 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                       ),
                       SizedBox(width: 20),
                       Text(
-                        L10n.of(context).posts_detail_sheet_share,
+                        l10n.postDetailSheetShareButton,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -121,7 +122,7 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                     } else {
                       openErrorSnackBar(
                         context,
-                        L10n.of(context).posts_search_error,
+                        l10n.postSearchError,
                       );
                     }
                   },
@@ -134,7 +135,7 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                       ),
                       SizedBox(width: 20),
                       Text(
-                        L10n.of(context).posts_detail_sheet_search,
+                        l10n.appShareGoButton,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -171,11 +172,10 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                       barrierDismissible: false,
                       builder: (context) {
                         return AppDialog(
-                          title: L10n.of(context).dialog_report_title,
-                          subTitle:
-                              '${L10n.of(context).dialog_report_description_1}'
+                          title: l10n.dialogReportTitle,
+                          subTitle: '${l10n.dialogReportDescription1}'
                               '\n '
-                              '${L10n.of(context).dialog_report_description_2}',
+                              '${l10n.dialogReportDescription2}',
                           onTap: () async {
                             await LaunchUrl()
                                 .open(
@@ -198,7 +198,7 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                       ),
                       SizedBox(width: 20),
                       Text(
-                        L10n.of(context).posts_detail_sheet_report,
+                        l10n.postDetailSheetReportButton,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -235,13 +235,12 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                       barrierDismissible: false,
                       builder: (context) {
                         return AppDialog(
-                          title: L10n.of(context).dialog_block_title,
-                          subTitle:
-                              '${L10n.of(context).dialog_block_description_1}'
+                          title: l10n.dialogBlockTitle,
+                          subTitle: '${l10n.dialogBlockDescription1}'
                               '\n'
-                              '${L10n.of(context).dialog_block_description_2}'
+                              '${l10n.dialogBlockDescription2}'
                               '\n'
-                              '${L10n.of(context).dialog_block_description_3}',
+                              '${l10n.dialogBlockDescription3}',
                           onTap: () async {
                             await ref
                                 .read(detailPostViewModelProvider().notifier)
@@ -265,7 +264,7 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                       ),
                       SizedBox(width: 20),
                       Text(
-                        L10n.of(context).posts_detail_sheet_block,
+                        l10n.postDetailSheetBlockButton,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -310,7 +309,7 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                       ),
                       SizedBox(width: 20),
                       Text(
-                        L10n.of(context).close,
+                        l10n.close,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -341,6 +340,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = L10n.of(context);
     return Container(
       height: MediaQuery.sizeOf(context).width - 50,
       decoration: BoxDecoration(
@@ -357,7 +357,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 20),
               child: Text(
-                'この投稿について',
+                l10n.postDetailSheetTitle,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -386,8 +386,8 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                     Share.share(
                       '${users.name} post in '
                       '${posts.restaurant}'
-                      '\n\n${L10n.of(context).share_review_1}'
-                      '\n${L10n.of(context).share_review_2}'
+                      '\n\n${l10n.shareReviewPrefix}'
+                      '\n${l10n.shareReviewSuffix}'
                       '\n\n#foodGram'
                       '\n#FoodGram',
                     );
@@ -401,7 +401,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                       ),
                       SizedBox(width: 20),
                       Text(
-                        'この投稿をシェアする',
+                        l10n.postDetailSheetShareButton,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -440,7 +440,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                     } else {
                       openErrorSnackBar(
                         context,
-                        L10n.of(context).posts_search_error,
+                        l10n.postSearchError,
                       );
                     }
                   },
@@ -453,7 +453,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                       ),
                       SizedBox(width: 20),
                       Text(
-                        'この投稿の場所を検索する',
+                        l10n.appShareGoButton,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -483,49 +483,26 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(0),
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    //TODO 投稿の削除のダイアログを出したい。
                     context.pop();
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        return AppDialog(
-                          title: L10n.of(context).dialog_delete_title,
-                          subTitle:
-                              '${L10n.of(context).dialog_delete_description_1}'
-                              '\n'
-                              '${L10n.of(context).dialog_delete_description_2}',
-                          onTap: () async {
-                            await ref
-                                .read(
-                                  detailPostViewModelProvider().notifier,
-                                )
-                                .delete(posts)
-                                .then((value) async {
-                              if (value) {
-                                context.pop(true);
-                              } else {
-                                openErrorSnackBar(
-                                  context,
-                                  L10n.of(context).dialog_delete_error,
-                                );
-                              }
-                            });
-                          },
-                        );
-                      },
-                    );
+                    await ref
+                        .read(detailPostViewModelProvider().notifier)
+                        .delete(posts)
+                        .then((value) {
+                      context.pop(true);
+                    });
                   },
                   child: Row(
                     children: [
                       Icon(
-                        Icons.restore_from_trash,
+                        Icons.delete,
                         color: Colors.red,
                         size: 25,
                       ),
                       SizedBox(width: 20),
                       Text(
-                        'この投稿を削除する',
+                        l10n.dialogDeleteTitle,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -570,7 +547,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                       ),
                       SizedBox(width: 20),
                       Text(
-                        '閉じる',
+                        l10n.close,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,

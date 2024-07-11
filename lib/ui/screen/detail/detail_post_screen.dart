@@ -236,7 +236,8 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Text(
-                          '$initialHeart ${L10n.of(context).post_detail_heart}',
+                          '$initialHeart'
+                          ' ${L10n.of(context).postDetailLikeButton}',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,

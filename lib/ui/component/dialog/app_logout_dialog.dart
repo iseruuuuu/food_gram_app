@@ -12,6 +12,7 @@ class AppLogoutDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -27,7 +28,7 @@ class AppLogoutDialog extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 24),
               child: Text(
-                L10n.of(context).dialog_logout_title,
+                l10n.dialogLogoutTitle,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -35,8 +36,8 @@ class AppLogoutDialog extends StatelessWidget {
               ),
             ),
             Text(
-              '${L10n.of(context).dialog_logout_description_1}\n'
-              '${L10n.of(context).dialog_logout_description_2}',
+              '${l10n.dialogLogoutDescription1}\n'
+              '${l10n.dialogLogoutDescription2}',
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
@@ -80,7 +81,7 @@ class AppLogoutDialog extends StatelessWidget {
                       horizontal: 5,
                     ),
                     child: Text(
-                      L10n.of(context).dialog_logout,
+                      l10n.dialogLogoutButton,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

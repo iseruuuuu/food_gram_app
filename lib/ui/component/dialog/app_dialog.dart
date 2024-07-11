@@ -59,7 +59,7 @@ class AppDialog extends StatelessWidget {
                       horizontal: 18,
                     ),
                     child: Text(
-                      L10n.of(context).dialog_no,
+                      L10n.of(context).dialogNoButton,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -83,7 +83,7 @@ class AppDialog extends StatelessWidget {
                       horizontal: 18,
                     ),
                     child: Text(
-                      L10n.of(context).dialog_yes,
+                      L10n.of(context).dialogYesButton,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

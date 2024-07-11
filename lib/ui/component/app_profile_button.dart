@@ -18,12 +18,12 @@ class AppMyProfileButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         ProfileButton(
-          title: L10n.of(context).my_profile_edit_button,
+          title: L10n.of(context).profileEditButton,
           onTap: onTapEdit,
           icon: Icons.edit,
         ),
         ProfileButton(
-          title: L10n.of(context).my_profile_exchange_point_button,
+          title: L10n.of(context).profileExchangePointsButton,
           onTap: onTapExchange,
           icon: FontAwesomeIcons.coins,
         ),

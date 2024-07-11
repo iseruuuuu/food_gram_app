@@ -30,6 +30,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
   Widget build(BuildContext context) {
     final loading = ref.watch(loadingProvider);
     final state = ref.watch(settingViewModelProvider());
+    final l10n = L10n.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppAppBar(),
@@ -38,7 +39,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
           SettingsList(
             sections: [
               SettingsSection(
-                title: Text(L10n.of(context).setting_app_bar),
+                title: Text(l10n.settingsAppBar),
                 tiles: <SettingsTile>[
                   SettingsTile.navigation(
                     trailing: Icon(
@@ -46,7 +47,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       size: 20,
                     ),
                     leading: const Icon(Icons.store),
-                    title: Text(L10n.of(context).setting_check_version),
+                    title: Text(l10n.settingsCheckVersion),
                     onPressed: (context) async {
                       final newVersion = NewVersionPlus();
                       final status = await newVersion.getVersionStatus();
@@ -54,12 +55,10 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                         newVersion.showUpdateDialog(
                           context: context,
                           versionStatus: status,
-                          dialogTitle: L10n.of(context)
-                              .setting_check_version_dialog_title,
-                          dialogText:
-                              '${L10n.of(context).setting_check_version_dialog_text_1}'
+                          dialogTitle: l10n.settingsCheckVersionDialogTitle,
+                          dialogText: '${l10n.settingsCheckVersionDialogText1}'
                               '\n'
-                              '${L10n.of(context).setting_check_version_dialog_text_2}',
+                              '${l10n.settingsCheckVersionDialogText2}',
                           launchModeVersion: LaunchModeVersion.external,
                         );
                       }
@@ -74,7 +73,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       FontAwesomeIcons.twitter,
                       color: Colors.blue,
                     ),
-                    title: Text(L10n.of(context).setting_developer),
+                    title: Text(l10n.settingsDeveloper),
                     onPressed: (context) {
                       LaunchUrl().openSNSUrl(
                         'twitter://user?screen_name=isekiryu',
@@ -88,7 +87,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       size: 20,
                     ),
                     leading: const Icon(FontAwesomeIcons.github),
-                    title: Text(L10n.of(context).setting_github),
+                    title: Text(l10n.settingsGithub),
                     onPressed: (context) {
                       LaunchUrl().open(
                         'https://github.com/iseruuuuu/food_gram_app',
@@ -101,7 +100,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       Icons.arrow_forward_ios_outlined,
                       size: 20,
                     ),
-                    title: Text(L10n.of(context).setting_review),
+                    title: Text(l10n.settingsReview),
                     onPressed: (context) async {
                       final inAppReview = InAppReview.instance;
                       if (await inAppReview.isAvailable()) {
@@ -115,7 +114,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       size: 20,
                     ),
                     leading: const Icon(Icons.share),
-                    title: Text(L10n.of(context).setting_share),
+                    title: Text(l10n.settingsShareApp),
                     onPressed: (context) {
                       if (Platform.isIOS) {
                         Share.share(
@@ -132,7 +131,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       size: 20,
                     ),
                     leading: const Icon(Icons.account_balance_wallet),
-                    title: Text(L10n.of(context).setting_license),
+                    title: Text(l10n.settingsLicense),
                     onPressed: (context) {
                       context.pushNamed(RouterPath.license);
                     },
@@ -143,7 +142,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       size: 20,
                     ),
                     leading: const Icon(Icons.question_answer),
-                    title: Text(L10n.of(context).setting_faq),
+                    title: Text(l10n.settingsFaq),
                     onPressed: (context) {
                       LaunchUrl().open(
                         'https://succinct-may-e5e.notion.site/FAQ-256ae853b9ec4209a04f561449de8c1d',
@@ -155,11 +154,11 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       Icons.arrow_forward_ios_outlined,
                       size: 20,
                     ),
-                    leading: const Icon(
+                    leading: Icon(
                       Icons.lock,
                       color: Colors.black,
                     ),
-                    title: Text(L10n.of(context).setting_privacy_policy),
+                    title: Text(l10n.settingsPrivacyPolicy),
                     onPressed: (context) {
                       LaunchUrl().open(
                         'https://succinct-may-e5e.notion.site/fd5584426bf44c50bdb1eb4b376d165f',
@@ -175,7 +174,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       Icons.call,
                       color: Colors.black,
                     ),
-                    title: Text(L10n.of(context).setting_terms_of_use),
+                    title: Text(l10n.settingsTermsOfUse),
                     onPressed: (context) {
                       LaunchUrl().open(
                         'https://succinct-may-e5e.notion.site/a0ad75abf8244404b7a19cca0e2304f1',
@@ -191,7 +190,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       Icons.mail,
                       color: Colors.black,
                     ),
-                    title: Text(L10n.of(context).setting_contact),
+                    title: Text(l10n.settingsContact),
                     onPressed: (context) {
                       LaunchUrl().open(
                         'https://forms.gle/mjucjntt3c2SZsUc7',
@@ -207,7 +206,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       Icons.account_balance,
                       color: Colors.black,
                     ),
-                    title: Text(L10n.of(context).setting_tutorial),
+                    title: Text(l10n.settingsTutorial),
                     onPressed: (context) {
                       context.pushNamed(RouterPath.settingTutorial);
                     },
@@ -217,7 +216,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       Icons.battery_4_bar_sharp,
                       color: Colors.black,
                     ),
-                    title: Text(L10n.of(context).setting_battery),
+                    title: Text(l10n.settingsBatteryLevel),
                     trailing: Text(
                       state.battery,
                       style: TextStyle(fontSize: 18),
@@ -225,7 +224,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                   ),
                   SettingsTile(
                     leading: Icon(Icons.phone_android),
-                    title: Text(L10n.of(context).setting_device),
+                    title: Text(l10n.settingsDeviceInfo),
                     trailing: Text(
                       state.model,
                       style: TextStyle(fontSize: 18),
@@ -238,8 +237,8 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                     ),
                     title: Text(
                       Platform.isAndroid
-                          ? L10n.of(context).setting_android
-                          : L10n.of(context).setting_ios,
+                          ? l10n.settingsAndroidSdk
+                          : l10n.settingsIosVersion,
                     ),
                     trailing: Text(
                       state.sdk,
@@ -248,7 +247,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                   ),
                   SettingsTile(
                     leading: Icon(Icons.settings, color: Colors.grey),
-                    title: Text(L10n.of(context).setting_app_version),
+                    title: Text(l10n.settingsAppVersion),
                     trailing: Text(
                       state.version,
                       style: TextStyle(fontSize: 18),
@@ -257,7 +256,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                 ],
               ),
               SettingsSection(
-                title: Text(L10n.of(context).setting_account),
+                title: Text(l10n.settingsAccount),
                 tiles: <SettingsTile>[
                   SettingsTile.navigation(
                     trailing: Icon(
@@ -265,7 +264,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       size: 20,
                     ),
                     title: Text(
-                      L10n.of(context).setting_logout_button,
+                      l10n.settingsLogoutButton,
                       style: TextStyle(
                         color: Colors.red,
                         fontWeight: FontWeight.bold,
@@ -306,7 +305,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       size: 20,
                     ),
                     title: Text(
-                      L10n.of(context).setting_delete_account_button,
+                      l10n.settingsDeleteAccountButton,
                       style: TextStyle(
                         color: Colors.red,
                         fontWeight: FontWeight.bold,

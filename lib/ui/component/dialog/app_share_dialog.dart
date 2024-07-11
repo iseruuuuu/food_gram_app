@@ -47,7 +47,7 @@ class AppShareDialog extends StatelessWidget {
                 ),
               ),
               title: Text(
-                l10n.app_share_title,
+                l10n.appShareTitle,
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -125,8 +125,8 @@ class AppShareDialog extends StatelessWidget {
                         Share.share(
                           '${users.name} post in '
                           '${posts.restaurant}'
-                          '\n\n${L10n.of(context).share_review_1}'
-                          '\n${L10n.of(context).share_review_2}'
+                          '\n\n${L10n.of(context).shareReviewPrefix}'
+                          '\n${L10n.of(context).shareReviewSuffix}'
                           '\n\n#foodGram'
                           '\n#FoodGram',
                         );
@@ -140,7 +140,7 @@ class AppShareDialog extends StatelessWidget {
                           ),
                           Gap(15),
                           Text(
-                            l10n.app_share_share_store,
+                            l10n.appShareStoreButton,
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
@@ -175,7 +175,7 @@ class AppShareDialog extends StatelessWidget {
                           ),
                           Gap(15),
                           Text(
-                            l10n.app_share_go,
+                            l10n.appShareGoButton,
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
@@ -204,7 +204,7 @@ class AppShareDialog extends StatelessWidget {
                           ),
                           Gap(15),
                           Text(
-                            l10n.app_share_close,
+                            l10n.appShareCloseButton,
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
