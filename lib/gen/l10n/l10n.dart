@@ -106,473 +106,467 @@ abstract class L10n {
   /// **'キャンセル'**
   String get cancel;
 
-  /// No description provided for @email_text_field.
+  /// No description provided for @emailInputField.
   ///
   /// In ja, this message translates to:
   /// **'メールアドレスを入力してください'**
-  String get email_text_field;
+  String get emailInputField;
 
-  /// No description provided for @setting_icon.
+  /// No description provided for @settingsIcon.
   ///
   /// In ja, this message translates to:
   /// **'アイコンの設定'**
-  String get setting_icon;
+  String get settingsIcon;
 
-  /// No description provided for @user_name.
+  /// No description provided for @userName.
   ///
   /// In ja, this message translates to:
   /// **'ユーザー名'**
-  String get user_name;
+  String get userName;
 
-  /// No description provided for @user_name_text_field.
+  /// No description provided for @userNameInputField.
   ///
   /// In ja, this message translates to:
   /// **'ユーザー名を入力してください'**
-  String get user_name_text_field;
+  String get userNameInputField;
 
-  /// No description provided for @user_id.
+  /// No description provided for @userId.
   ///
   /// In ja, this message translates to:
   /// **'ユーザーID'**
-  String get user_id;
+  String get userId;
 
-  /// No description provided for @user_id_text_field.
+  /// No description provided for @userIdInputField.
   ///
   /// In ja, this message translates to:
   /// **'ユーザーIDを入力してください'**
-  String get user_id_text_field;
+  String get userIdInputField;
 
-  /// No description provided for @register_button.
+  /// No description provided for @registerButton.
   ///
   /// In ja, this message translates to:
   /// **'登録'**
-  String get register_button;
+  String get registerButton;
 
-  /// No description provided for @setting_app_bar.
+  /// No description provided for @settingsAppBar.
   ///
   /// In ja, this message translates to:
   /// **'基本設定'**
-  String get setting_app_bar;
+  String get settingsAppBar;
 
-  /// No description provided for @setting_check_version.
+  /// No description provided for @settingsCheckVersion.
   ///
   /// In ja, this message translates to:
   /// **'最新バージョンの確認'**
-  String get setting_check_version;
+  String get settingsCheckVersion;
 
-  /// No description provided for @setting_check_version_dialog_title.
+  /// No description provided for @settingsCheckVersionDialogTitle.
   ///
   /// In ja, this message translates to:
   /// **'更新情報'**
-  String get setting_check_version_dialog_title;
+  String get settingsCheckVersionDialogTitle;
 
-  /// No description provided for @setting_check_version_dialog_text_1.
+  /// No description provided for @settingsCheckVersionDialogText1.
   ///
   /// In ja, this message translates to:
   /// **'新しいバージョンがご利用いただけます。'**
-  String get setting_check_version_dialog_text_1;
+  String get settingsCheckVersionDialogText1;
 
-  /// No description provided for @setting_check_version_dialog_text_2.
+  /// No description provided for @settingsCheckVersionDialogText2.
   ///
   /// In ja, this message translates to:
   /// **'最新版にアップデートしてご利用ください。'**
-  String get setting_check_version_dialog_text_2;
+  String get settingsCheckVersionDialogText2;
 
-  /// No description provided for @setting_developer.
+  /// No description provided for @settingsDeveloper.
   ///
   /// In ja, this message translates to:
   /// **'開発者'**
-  String get setting_developer;
+  String get settingsDeveloper;
 
-  /// No description provided for @setting_github.
+  /// No description provided for @settingsGithub.
   ///
   /// In ja, this message translates to:
   /// **'Github'**
-  String get setting_github;
+  String get settingsGithub;
 
-  /// No description provided for @setting_review.
+  /// No description provided for @settingsReview.
   ///
   /// In ja, this message translates to:
   /// **'レビューで応援する'**
-  String get setting_review;
+  String get settingsReview;
 
-  /// No description provided for @setting_license.
+  /// No description provided for @settingsLicense.
   ///
   /// In ja, this message translates to:
   /// **'ライセンス'**
-  String get setting_license;
+  String get settingsLicense;
 
-  /// No description provided for @setting_share.
+  /// No description provided for @settingsShareApp.
   ///
   /// In ja, this message translates to:
   /// **'このアプリをシェアする'**
-  String get setting_share;
+  String get settingsShareApp;
 
-  /// No description provided for @setting_faq.
+  /// No description provided for @settingsFaq.
   ///
   /// In ja, this message translates to:
   /// **'FAQ'**
-  String get setting_faq;
+  String get settingsFaq;
 
-  /// No description provided for @setting_privacy_policy.
+  /// No description provided for @settingsPrivacyPolicy.
   ///
   /// In ja, this message translates to:
   /// **'プライバシーポリシー'**
-  String get setting_privacy_policy;
+  String get settingsPrivacyPolicy;
 
-  /// No description provided for @setting_terms_of_use.
+  /// No description provided for @settingsTermsOfUse.
   ///
   /// In ja, this message translates to:
   /// **'利用規約'**
-  String get setting_terms_of_use;
+  String get settingsTermsOfUse;
 
-  /// No description provided for @setting_contact.
+  /// No description provided for @settingsContact.
   ///
   /// In ja, this message translates to:
   /// **'お問い合せ'**
-  String get setting_contact;
+  String get settingsContact;
 
-  /// No description provided for @setting_tutorial.
+  /// No description provided for @settingsTutorial.
   ///
   /// In ja, this message translates to:
   /// **'チュートリアル'**
-  String get setting_tutorial;
+  String get settingsTutorial;
 
-  /// No description provided for @setting_battery.
+  /// No description provided for @settingsBatteryLevel.
   ///
   /// In ja, this message translates to:
   /// **'バッテリー残量'**
-  String get setting_battery;
+  String get settingsBatteryLevel;
 
-  /// No description provided for @setting_device.
+  /// No description provided for @settingsDeviceInfo.
   ///
   /// In ja, this message translates to:
   /// **'端末情報'**
-  String get setting_device;
+  String get settingsDeviceInfo;
 
-  /// No description provided for @setting_ios.
+  /// No description provided for @settingsIosVersion.
   ///
   /// In ja, this message translates to:
   /// **'iOSバージョン'**
-  String get setting_ios;
+  String get settingsIosVersion;
 
-  /// No description provided for @setting_android.
+  /// No description provided for @settingsAndroidSdk.
   ///
   /// In ja, this message translates to:
   /// **'SDK'**
-  String get setting_android;
+  String get settingsAndroidSdk;
 
-  /// No description provided for @setting_app_version.
+  /// No description provided for @settingsAppVersion.
   ///
   /// In ja, this message translates to:
   /// **'アプリバージョン'**
-  String get setting_app_version;
+  String get settingsAppVersion;
 
-  /// No description provided for @setting_account.
+  /// No description provided for @settingsAccount.
   ///
   /// In ja, this message translates to:
   /// **'アカウント'**
-  String get setting_account;
+  String get settingsAccount;
 
-  /// No description provided for @setting_logout_button.
+  /// No description provided for @settingsLogoutButton.
   ///
   /// In ja, this message translates to:
   /// **'ログアウト'**
-  String get setting_logout_button;
+  String get settingsLogoutButton;
 
-  /// No description provided for @setting_delete_account_button.
+  /// No description provided for @settingsDeleteAccountButton.
   ///
   /// In ja, this message translates to:
   /// **'アカウントの削除申請'**
-  String get setting_delete_account_button;
+  String get settingsDeleteAccountButton;
 
-  /// No description provided for @post_share.
+  /// No description provided for @postShareButton.
   ///
   /// In ja, this message translates to:
   /// **'シェア'**
-  String get post_share;
+  String get postShareButton;
 
-  /// No description provided for @post_food_name.
+  /// No description provided for @postFoodName.
   ///
   /// In ja, this message translates to:
   /// **'食べたもの'**
-  String get post_food_name;
+  String get postFoodName;
 
-  /// No description provided for @post_food_name_text_field.
+  /// No description provided for @postFoodNameInputField.
   ///
   /// In ja, this message translates to:
   /// **'食べたものを入力'**
-  String get post_food_name_text_field;
+  String get postFoodNameInputField;
 
-  /// No description provided for @post_place.
+  /// No description provided for @postRestaurantNameInputField.
   ///
   /// In ja, this message translates to:
   /// **'レストラン名を追加'**
-  String get post_place;
+  String get postRestaurantNameInputField;
 
-  /// No description provided for @post_comment.
+  /// No description provided for @postComment.
   ///
   /// In ja, this message translates to:
   /// **'コメントを入力'**
-  String get post_comment;
+  String get postComment;
 
-  /// No description provided for @post_comment_text_field.
+  /// No description provided for @postCommentInputField.
   ///
   /// In ja, this message translates to:
   /// **'コメント(任意)'**
-  String get post_comment_text_field;
+  String get postCommentInputField;
 
-  /// No description provided for @edit_update_button.
+  /// No description provided for @editUpdateButton.
   ///
   /// In ja, this message translates to:
   /// **'更新'**
-  String get edit_update_button;
+  String get editUpdateButton;
 
-  /// No description provided for @edit_bio.
+  /// No description provided for @editBio.
   ///
   /// In ja, this message translates to:
   /// **'自己紹介(任意)'**
-  String get edit_bio;
+  String get editBio;
 
-  /// No description provided for @edit_bio_text_field.
+  /// No description provided for @editBioInputField.
   ///
   /// In ja, this message translates to:
   /// **'自己紹介を入力してください'**
-  String get edit_bio_text_field;
+  String get editBioInputField;
 
-  /// No description provided for @empty.
+  /// No description provided for @emptyPosts.
   ///
   /// In ja, this message translates to:
   /// **'投稿がありません'**
-  String get empty;
+  String get emptyPosts;
 
-  /// No description provided for @search_empty.
+  /// No description provided for @searchEmptyResult.
   ///
   /// In ja, this message translates to:
   /// **'該当する場所が見つかりませんでした'**
-  String get search_empty;
+  String get searchEmptyResult;
 
-  /// No description provided for @my_profile_post_length.
+  /// No description provided for @profilePostCount.
   ///
   /// In ja, this message translates to:
   /// **'投稿'**
-  String get my_profile_post_length;
+  String get profilePostCount;
 
-  /// No description provided for @my_profile_edit_button.
+  /// No description provided for @profileEditButton.
   ///
   /// In ja, this message translates to:
   /// **'プロフィールを編集'**
-  String get my_profile_edit_button;
+  String get profileEditButton;
 
-  /// No description provided for @my_profile_exchange_point_button.
+  /// No description provided for @profileExchangePointsButton.
   ///
   /// In ja, this message translates to:
   /// **'ポイントを交換する'**
-  String get my_profile_exchange_point_button;
+  String get profileExchangePointsButton;
 
-  /// No description provided for @post_detail_heart.
+  /// No description provided for @postDetailLikeButton.
   ///
   /// In ja, this message translates to:
   /// **'いいね'**
-  String get post_detail_heart;
+  String get postDetailLikeButton;
 
-  /// No description provided for @share_review_1.
+  /// No description provided for @shareReviewPrefix.
   ///
   /// In ja, this message translates to:
   /// **'で食べたレビューを投稿しました！'**
-  String get share_review_1;
+  String get shareReviewPrefix;
 
-  /// No description provided for @share_review_2.
+  /// No description provided for @shareReviewSuffix.
   ///
   /// In ja, this message translates to:
   /// **'詳しくはfoodGramで確認してみよう！'**
-  String get share_review_2;
+  String get shareReviewSuffix;
 
-  /// No description provided for @posts_detail_sheet_title.
+  /// No description provided for @postDetailSheetTitle.
   ///
   /// In ja, this message translates to:
   /// **'この投稿について'**
-  String get posts_detail_sheet_title;
+  String get postDetailSheetTitle;
 
-  /// No description provided for @posts_detail_sheet_share.
+  /// No description provided for @postDetailSheetShareButton.
   ///
   /// In ja, this message translates to:
   /// **'この投稿をシェアする'**
-  String get posts_detail_sheet_share;
+  String get postDetailSheetShareButton;
 
-  /// No description provided for @posts_detail_sheet_search.
-  ///
-  /// In ja, this message translates to:
-  /// **'この投稿をシェアする'**
-  String get posts_detail_sheet_search;
-
-  /// No description provided for @posts_detail_sheet_report.
+  /// No description provided for @postDetailSheetReportButton.
   ///
   /// In ja, this message translates to:
   /// **'この投稿を報告する'**
-  String get posts_detail_sheet_report;
+  String get postDetailSheetReportButton;
 
-  /// No description provided for @posts_detail_sheet_block.
+  /// No description provided for @postDetailSheetBlockButton.
   ///
   /// In ja, this message translates to:
   /// **'このユーザーをブロックする'**
-  String get posts_detail_sheet_block;
+  String get postDetailSheetBlockButton;
 
-  /// No description provided for @posts_search_error.
+  /// No description provided for @postSearchError.
   ///
   /// In ja, this message translates to:
   /// **'場所名の検索ができません'**
-  String get posts_search_error;
+  String get postSearchError;
 
-  /// No description provided for @dialog_yes.
+  /// No description provided for @dialogYesButton.
   ///
   /// In ja, this message translates to:
   /// **'はい'**
-  String get dialog_yes;
+  String get dialogYesButton;
 
-  /// No description provided for @dialog_no.
+  /// No description provided for @dialogNoButton.
   ///
   /// In ja, this message translates to:
   /// **'いいえ'**
-  String get dialog_no;
+  String get dialogNoButton;
 
-  /// No description provided for @dialog_report_title.
+  /// No description provided for @dialogReportTitle.
   ///
   /// In ja, this message translates to:
   /// **'投稿の報告'**
-  String get dialog_report_title;
+  String get dialogReportTitle;
 
-  /// No description provided for @dialog_report_description_1.
+  /// No description provided for @dialogReportDescription1.
   ///
   /// In ja, this message translates to:
   /// **'この投稿について報告を行います'**
-  String get dialog_report_description_1;
+  String get dialogReportDescription1;
 
-  /// No description provided for @dialog_report_description_2.
+  /// No description provided for @dialogReportDescription2.
   ///
   /// In ja, this message translates to:
   /// **'Googleフォームに遷移します'**
-  String get dialog_report_description_2;
+  String get dialogReportDescription2;
 
-  /// No description provided for @dialog_block_title.
+  /// No description provided for @dialogBlockTitle.
   ///
   /// In ja, this message translates to:
   /// **'ブロック確認'**
-  String get dialog_block_title;
+  String get dialogBlockTitle;
 
-  /// No description provided for @dialog_block_description_1.
+  /// No description provided for @dialogBlockDescription1.
   ///
   /// In ja, this message translates to:
-  /// **'この投稿をユーザーをブロックしますか？'**
-  String get dialog_block_description_1;
+  /// **'このユーザーをブロックしますか？'**
+  String get dialogBlockDescription1;
 
-  /// No description provided for @dialog_block_description_2.
+  /// No description provided for @dialogBlockDescription2.
   ///
   /// In ja, this message translates to:
   /// **'このユーザーの投稿を非表示にします'**
-  String get dialog_block_description_2;
+  String get dialogBlockDescription2;
 
-  /// No description provided for @dialog_block_description_3.
+  /// No description provided for @dialogBlockDescription3.
   ///
   /// In ja, this message translates to:
   /// **'ブロックしたユーザーはローカルで保存します'**
-  String get dialog_block_description_3;
+  String get dialogBlockDescription3;
 
-  /// No description provided for @dialog_delete_title.
+  /// No description provided for @dialogDeleteTitle.
   ///
   /// In ja, this message translates to:
   /// **'投稿の削除'**
-  String get dialog_delete_title;
+  String get dialogDeleteTitle;
 
-  /// No description provided for @dialog_delete_description_1.
+  /// No description provided for @dialogDeleteDescription1.
   ///
   /// In ja, this message translates to:
   /// **'この投稿を削除しますか？'**
-  String get dialog_delete_description_1;
+  String get dialogDeleteDescription1;
 
-  /// No description provided for @dialog_delete_description_2.
+  /// No description provided for @dialogDeleteDescription2.
   ///
   /// In ja, this message translates to:
   /// **'一度削除してしまうと復元できません'**
-  String get dialog_delete_description_2;
+  String get dialogDeleteDescription2;
 
-  /// No description provided for @dialog_delete_error.
+  /// No description provided for @dialogDeleteError.
   ///
   /// In ja, this message translates to:
   /// **'削除が失敗しました'**
-  String get dialog_delete_error;
+  String get dialogDeleteError;
 
-  /// No description provided for @dialog_logout_title.
+  /// No description provided for @dialogLogoutTitle.
   ///
   /// In ja, this message translates to:
   /// **'ログアウトの確認'**
-  String get dialog_logout_title;
+  String get dialogLogoutTitle;
 
-  /// No description provided for @dialog_logout_description_1.
+  /// No description provided for @dialogLogoutDescription1.
   ///
   /// In ja, this message translates to:
   /// **'ログアウトしますか?'**
-  String get dialog_logout_description_1;
+  String get dialogLogoutDescription1;
 
-  /// No description provided for @dialog_logout_description_2.
+  /// No description provided for @dialogLogoutDescription2.
   ///
   /// In ja, this message translates to:
   /// **'アカウントの状態はサーバー上に保存されています。'**
-  String get dialog_logout_description_2;
+  String get dialogLogoutDescription2;
 
-  /// No description provided for @dialog_logout.
+  /// No description provided for @dialogLogoutButton.
   ///
   /// In ja, this message translates to:
   /// **'ログアウト'**
-  String get dialog_logout;
+  String get dialogLogoutButton;
 
-  /// No description provided for @error_title.
+  /// No description provided for @errorTitle.
   ///
   /// In ja, this message translates to:
   /// **'通信エラー'**
-  String get error_title;
+  String get errorTitle;
 
-  /// No description provided for @error_description_1.
+  /// No description provided for @errorDescription1.
   ///
   /// In ja, this message translates to:
   /// **'接続エラーが発生しました'**
-  String get error_description_1;
+  String get errorDescription1;
 
-  /// No description provided for @error_description_2.
+  /// No description provided for @errorDescription2.
   ///
   /// In ja, this message translates to:
   /// **'ネットワーク接続を確認し、もう一度試してください'**
-  String get error_description_2;
+  String get errorDescription2;
 
-  /// No description provided for @error_refresh.
+  /// No description provided for @errorRefreshButton.
   ///
   /// In ja, this message translates to:
   /// **'再読み込み'**
-  String get error_refresh;
+  String get errorRefreshButton;
 
-  /// No description provided for @app_share_title.
+  /// No description provided for @appShareTitle.
   ///
   /// In ja, this message translates to:
   /// **'共有'**
-  String get app_share_title;
+  String get appShareTitle;
 
-  /// No description provided for @app_share_share_store.
+  /// No description provided for @appShareStoreButton.
   ///
   /// In ja, this message translates to:
   /// **'このお店を共有する'**
-  String get app_share_share_store;
+  String get appShareStoreButton;
 
-  /// No description provided for @app_share_go.
+  /// No description provided for @appShareGoButton.
   ///
   /// In ja, this message translates to:
   /// **'このお店に行ってみる'**
-  String get app_share_go;
+  String get appShareGoButton;
 
-  /// No description provided for @app_share_close.
+  /// No description provided for @appShareCloseButton.
   ///
   /// In ja, this message translates to:
   /// **'閉じる'**
-  String get app_share_close;
+  String get appShareCloseButton;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
