@@ -43,6 +43,7 @@
   "emptyPosts": "There are no posts",
   "searchEmptyResult": "No results found for your search.",
   "profilePostCount": "Posts",
+  "profilePointCount": "Points",
   "profileEditButton": "Edit Profile",
   "profileExchangePointsButton": "Exchange Points",
   "postDetailLikeButton": "Like",

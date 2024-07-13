@@ -358,6 +358,12 @@ abstract class L10n {
   /// **'投稿'**
   String get profilePostCount;
 
+  /// No description provided for @profilePointCount.
+  ///
+  /// In ja, this message translates to:
+  /// **'ポイント'**
+  String get profilePointCount;
+
   /// No description provided for @profileEditButton.
   ///
   /// In ja, this message translates to:

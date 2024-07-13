@@ -12,8 +12,9 @@ class Users with _$Users {
     required String selfIntroduce,
     required String image,
     required DateTime createdAt,
-    required DateTime updateTime,
+    required DateTime updatedAt,
     required String userId,
+    required int exchangedPoint,
   }) = _Users;
 
   const Users._();

@@ -62,6 +62,7 @@ class DatabaseService {
       'image': 'assets/icon/icon$image.png',
       'created_at': DateTime.now().toIso8601String(),
       'updated_at': DateTime.now().toIso8601String(),
+      'exchanged_point': 0,
     };
     try {
       await supabase.from('users').insert(updates);

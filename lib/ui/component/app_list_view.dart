@@ -43,6 +43,7 @@ class AppListView extends StatelessWidget {
                       'click detail',
                       Duration(milliseconds: 200),
                       () async {
+                        //TODO ここもできれば、supabaseの中に入れたい
                         final posts = Posts(
                           id: int.parse(data[index]['id'].toString()),
                           userId: data[index]['user_id'],
@@ -68,7 +69,8 @@ class AppListView extends StatelessWidget {
                           selfIntroduce: postUserId['self_introduce'],
                           image: postUserId['image'],
                           createdAt: DateTime.parse(postUserId['created_at']),
-                          updateTime: DateTime.parse(postUserId['updated_at']),
+                          updatedAt: DateTime.parse(postUserId['updated_at']),
+                          exchangedPoint: postUserId['exchanged_point'],
                         );
                         await context
                             .pushNamed(
