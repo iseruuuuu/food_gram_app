@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:food_gram_app/core/model/users.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'my_profile_state.freezed.dart';
@@ -8,12 +9,7 @@ abstract class MyProfileState with _$MyProfileState {
   const factory MyProfileState.loading() = MyProfileStateLoading;
 
   const factory MyProfileState.data({
-    //TODO これをあとでUsersのモデルに変更する
-    required String name,
-    required String userName,
-    required String selfIntroduce,
-    required String image,
-    required int exchangedPoint,
+    required Users users,
     required int length,
   }) = _MyProfileStateData;
 

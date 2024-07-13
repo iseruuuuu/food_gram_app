@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/dialog/app_profile_dialog.dart';
@@ -6,21 +7,13 @@ import 'package:gap/gap.dart';
 
 class AppHeader extends StatelessWidget {
   const AppHeader({
-    required this.image,
+    required this.users,
     required this.length,
-    required this.name,
-    required this.userName,
-    required this.selfIntroduce,
-    required this.exchangedPoint,
     super.key,
   });
 
-  final String image;
+  final Users users;
   final int length;
-  final String name;
-  final String userName;
-  final String selfIntroduce;
-  final int exchangedPoint;
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +31,13 @@ class AppHeader extends StatelessWidget {
                   showDialog<void>(
                     context: context,
                     builder: (_) {
-                      return AppProfileDialog(image: image);
+                      return AppProfileDialog(image: users.image);
                     },
                   );
                 },
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
-                  backgroundImage: AssetImage(image),
+                  backgroundImage: AssetImage(users.image),
                   radius: 50,
                 ),
               ),
@@ -75,7 +68,7 @@ class AppHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '$exchangedPoint',
+                    '${users.exchangedPoint}',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -94,21 +87,21 @@ class AppHeader extends StatelessWidget {
             ],
           ),
           Text(
-            name,
+            users.name,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
           Text(
-            '@$userName',
+            '@${users.userName}',
             style: TextStyle(
               fontSize: 18,
             ),
           ),
           SizedBox(height: 4),
           Text(
-            selfIntroduce,
+            users.selfIntroduce,
             style: TextStyle(
               fontSize: 16,
             ),

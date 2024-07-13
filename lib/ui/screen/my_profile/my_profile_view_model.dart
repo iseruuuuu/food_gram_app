@@ -1,3 +1,4 @@
+import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -25,14 +26,9 @@ class MyProfileViewModel extends _$MyProfileViewModel {
           await supabase.from('posts').select().eq('user_id', userId);
 
       //TODO 投稿のいいね数を取得する
-
       state = MyProfileState.data(
-        name: data['name'],
-        userName: data['user_name'],
-        selfIntroduce: data['self_introduce'],
-        image: data['image'],
+        users: Users.fromJson(data),
         length: response.length,
-        exchangedPoint: data['exchanged_point'],
       );
     } on Exception catch (error) {
       logger.e(error);
