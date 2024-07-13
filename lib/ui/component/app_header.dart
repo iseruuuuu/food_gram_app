@@ -9,11 +9,13 @@ class AppHeader extends StatelessWidget {
   const AppHeader({
     required this.users,
     required this.length,
+    required this.heartAmount,
     super.key,
   });
 
   final Users users;
   final int length;
+  final int heartAmount;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class AppHeader extends StatelessWidget {
                   Text(
                     l10n.profilePostCount,
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -68,17 +70,16 @@ class AppHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '${users.exchangedPoint}',
+                    '${heartAmount - users.exchangedPoint}',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Gap(5),
                   Text(
                     l10n.profilePointCount,
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

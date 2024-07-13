@@ -23,6 +23,4 @@ class MyProfileService {
         await supabase.from('posts').select().eq('user_id', userId);
     return response.length;
   }
-
-//TODO いいね数を取得する
 }

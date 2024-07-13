@@ -1,4 +1,5 @@
 import 'package:food_gram_app/core/data/supabase/my_profile_service.dart';
+import 'package:food_gram_app/core/data/supabase/posts_service.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_state.dart';
@@ -21,12 +22,11 @@ class MyProfileViewModel extends _$MyProfileViewModel {
     try {
       final users = await ref.read(myProfileServiceProvider).getUsers();
       final length = await ref.read(myProfileServiceProvider).getLength();
-
-      //TODO 投稿のいいね数を取得する
-
+      final heartAmount = await ref.read(postsServiceProvider).getHeartAmount();
       state = MyProfileState.data(
         users: Users.fromJson(users),
         length: length,
+        heartAmount: heartAmount,
       );
     } on Exception catch (error) {
       logger.e(error);
