@@ -43,6 +43,7 @@
   "emptyPosts": "投稿がありません",
   "searchEmptyResult": "該当する場所が見つかりませんでした",
   "profilePostCount": "投稿",
+  "profilePointCount": "ポイント",
   "profileEditButton": "プロフィールを編集",
   "profileExchangePointsButton": "ポイントを交換する",
   "postDetailLikeButton": "いいね",

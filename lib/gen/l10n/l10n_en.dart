@@ -139,6 +139,9 @@ class L10nEn extends L10n {
   String get profilePostCount => 'Posts';
 
   @override
+  String get profilePointCount => 'Points';
+
+  @override
   String get profileEditButton => 'Edit Profile';
 
   @override

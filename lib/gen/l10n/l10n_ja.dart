@@ -139,6 +139,9 @@ class L10nJa extends L10n {
   String get profilePostCount => '投稿';
 
   @override
+  String get profilePointCount => 'ポイント';
+
+  @override
   String get profileEditButton => 'プロフィールを編集';
 
   @override
