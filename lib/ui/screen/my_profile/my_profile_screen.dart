@@ -28,7 +28,15 @@ class MyProfileScreen extends ConsumerWidget {
         backgroundColor: Colors.white,
         appBar: AppAppBar(),
         body: users.when(
-          data: (name, userName, selfIntroduce, image, length) => Column(
+          data: (
+            name,
+            userName,
+            selfIntroduce,
+            image,
+            exchangedPoint,
+            length,
+          ) =>
+              Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppHeader(
@@ -37,6 +45,7 @@ class MyProfileScreen extends ConsumerWidget {
                 name: name,
                 userName: userName,
                 selfIntroduce: selfIntroduce,
+                exchangedPoint: exchangedPoint,
               ),
               AppMyProfileButton(
                 onTapEdit: () {

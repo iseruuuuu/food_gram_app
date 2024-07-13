@@ -11,6 +11,7 @@ class AppHeader extends StatelessWidget {
     required this.name,
     required this.userName,
     required this.selfIntroduce,
+    required this.exchangedPoint,
     super.key,
   });
 
@@ -19,6 +20,7 @@ class AppHeader extends StatelessWidget {
   final String name;
   final String userName;
   final String selfIntroduce;
+  final int exchangedPoint;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +70,27 @@ class AppHeader extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(width: 12),
+              Gap(30),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '$exchangedPoint',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Gap(5),
+                  Text(
+                    l10n.profilePointCount,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
           Text(

@@ -8,10 +8,12 @@ abstract class MyProfileState with _$MyProfileState {
   const factory MyProfileState.loading() = MyProfileStateLoading;
 
   const factory MyProfileState.data({
+    //TODO これをあとでUsersのモデルに変更する
     required String name,
     required String userName,
     required String selfIntroduce,
     required String image,
+    required int exchangedPoint,
     required int length,
   }) = _MyProfileStateData;
 

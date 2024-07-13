@@ -69,6 +69,7 @@ class AppListView extends StatelessWidget {
                           image: postUserId['image'],
                           createdAt: DateTime.parse(postUserId['created_at']),
                           updateTime: DateTime.parse(postUserId['updated_at']),
+                          exchangedPoint: postUserId['exchanged_point'],
                         );
                         await context
                             .pushNamed(

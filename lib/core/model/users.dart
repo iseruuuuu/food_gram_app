@@ -14,6 +14,7 @@ class Users with _$Users {
     required DateTime createdAt,
     required DateTime updateTime,
     required String userId,
+    required int exchangedPoint,
   }) = _Users;
 
   const Users._();
