@@ -1,3 +1,4 @@
+import 'package:food_gram_app/core/data/supabase/my_profile_service.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_state.dart';
@@ -18,17 +19,14 @@ class MyProfileViewModel extends _$MyProfileViewModel {
   Future<void> getData() async {
     state = const MyProfileStateLoading();
     try {
-      //TODO この辺りをSupabaseのファイル内に記載する
-      final userId = supabase.auth.currentUser!.id;
-      final data =
-          await supabase.from('users').select().eq('user_id', userId).single();
-      final response =
-          await supabase.from('posts').select().eq('user_id', userId);
+      final users = await ref.read(myProfileServiceProvider).getUsers();
+      final length = await ref.read(myProfileServiceProvider).getLength();
 
       //TODO 投稿のいいね数を取得する
+
       state = MyProfileState.data(
-        users: Users.fromJson(data),
-        length: response.length,
+        users: Users.fromJson(users),
+        length: length,
       );
     } on Exception catch (error) {
       logger.e(error);
