@@ -13,3 +13,6 @@ submit_android:
 	flutter clean
 	flutter pub get
 	fvm flutter build appbundle --dart-define-from-file=dart_defines/prod.env
+
+widgetbook:
+	fvm flutter run -d macOS -t lib/widgetbook/widgetbook.dart
