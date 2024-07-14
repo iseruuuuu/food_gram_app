@@ -17,12 +17,24 @@ class RestaurantScreen extends HookConsumerWidget {
     final keyword = useState('');
     final restaurant = ref.watch(mapboxRestaurantApiProvider(keyword.value));
     return Scaffold(
-      appBar: AppBar(surfaceTintColor: Colors.white),
+      appBar: AppBar(
+        surfaceTintColor: Colors.white,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: context.pop,
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
+      ),
       resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
+            const Gap(5),
             AppSearchTextField(onSubmitted: (value) => keyword.value = value),
             const Gap(10),
             Row(
@@ -36,10 +48,12 @@ class RestaurantScreen extends HookConsumerWidget {
                     context.pop(restaurant);
                   },
                   child: Chip(
+                    backgroundColor: Colors.white,
                     label: const Text('自炊'),
                     labelStyle: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
+                      color: Colors.black,
                     ),
                     avatar: const Icon(
                       Icons.home,
@@ -56,10 +70,12 @@ class RestaurantScreen extends HookConsumerWidget {
                     context.pop(restaurant);
                   },
                   child: Chip(
+                    backgroundColor: Colors.white,
                     label: const Text('不明・ヒットなし'),
                     labelStyle: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
+                      color: Colors.black,
                     ),
                     avatar: const Icon(
                       Icons.restaurant_menu,

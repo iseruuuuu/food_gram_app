@@ -62,6 +62,7 @@ class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
                           'FoodGram',
                           style: theme.textTheme.headlineLarge!.copyWith(
                             fontWeight: FontWeight.bold,
+                            color: Colors.black,
                           ),
                         ),
                       ],
@@ -113,6 +114,7 @@ class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
                       'SNSログイン',
                       style: theme.textTheme.titleLarge!.copyWith(
                         fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
                     Gap(24),
@@ -134,7 +136,11 @@ class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
                               border: Border.all(color: Colors.black26),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Icon(FontAwesomeIcons.apple, size: 35),
+                            child: Icon(
+                              FontAwesomeIcons.apple,
+                              size: 35,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                         Gap(40),

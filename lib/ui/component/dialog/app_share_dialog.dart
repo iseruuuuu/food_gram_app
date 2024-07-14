@@ -61,6 +61,7 @@ class AppShareDialog extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
                       width: deviceWidth / 1.15,
@@ -89,6 +90,7 @@ class AppShareDialog extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
+                              color: Colors.black,
                             ),
                           ),
                           Gap(10),
@@ -97,6 +99,7 @@ class AppShareDialog extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
+                              color: Colors.black,
                             ),
                           ),
                           Gap(10),

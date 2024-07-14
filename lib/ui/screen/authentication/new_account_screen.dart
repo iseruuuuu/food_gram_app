@@ -43,6 +43,7 @@ class NewAccountScreen extends ConsumerWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
+                          color: Colors.black,
                         ),
                       ),
                     ),

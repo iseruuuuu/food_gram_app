@@ -33,7 +33,11 @@ class AppSearchEmpty extends StatelessWidget {
       children: [
         Text(
           L10n.of(context).searchEmptyResult,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            color: Colors.black,
+          ),
         ),
         Assets.gif.error.image(width: 180, height: 180),
       ],

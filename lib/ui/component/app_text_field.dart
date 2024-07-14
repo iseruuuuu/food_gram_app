@@ -16,12 +16,29 @@ class AppSearchTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
-        prefixIcon: const Icon(Icons.search),
-        hintText: 'レストランを検索',
-        hintStyle: Theme.of(context).textTheme.bodyMedium,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(128),
+        prefixIcon: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: const Icon(
+            Icons.search,
+            color: Colors.black,
+          ),
         ),
+        //TODO 多言語化する
+        hintText: 'レストランを検索',
+        hintStyle: Theme.of(context)
+            .textTheme
+            .bodyMedium!
+            .copyWith(color: Colors.grey),
+        label: Text('レストランを検索'),
+        labelStyle: Theme.of(context)
+            .textTheme
+            .bodyMedium!
+            .copyWith(color: Colors.black),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black87),
+        ),
+        focusedBorder:
+            OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
       ),
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.search,
@@ -46,14 +63,19 @@ class AppFoodTextField extends StatelessWidget {
       child: Row(
         children: [
           Gap(5),
-          Icon(Icons.fastfood),
+          Icon(Icons.fastfood, color: Colors.black),
           Gap(10),
           Expanded(
             child: Semantics(
               label: 'postFoodField',
               child: TextField(
                 decoration: InputDecoration(
-                  border: InputBorder.none,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black87),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
                   hintText: L10n.of(context).postFoodName,
                   label: Text(
                     L10n.of(context).postFoodNameInputField,
@@ -96,7 +118,11 @@ class AppCommentTextField extends StatelessWidget {
         child: TextField(
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.always,
-            border: InputBorder.none,
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black87),
+            ),
+            focusedBorder:
+                OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
             hintText: L10n.of(context).postCommentInputField,
             label: Text(
               L10n.of(context).postComment,
@@ -153,7 +179,10 @@ class AppAuthTextField extends StatelessWidget {
               .copyWith(fontWeight: FontWeight.bold, color: Colors.black54),
           filled: true,
           fillColor: Colors.white,
-          border: InputBorder.none,
+          enabledBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.black87)),
+          focusedBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
         ),
       ),
     );
@@ -192,7 +221,7 @@ class AppNameTextField extends StatelessWidget {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
-                  fontSize: 17,
+                  fontSize: 16,
                 ),
               ),
             ),

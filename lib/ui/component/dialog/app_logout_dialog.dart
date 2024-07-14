@@ -32,6 +32,7 @@ class AppLogoutDialog extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -39,6 +40,7 @@ class AppLogoutDialog extends StatelessWidget {
               '${l10n.dialogLogoutDescription1}\n'
               '${l10n.dialogLogoutDescription2}',
               textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.black),
             ),
             const SizedBox(height: 24),
             Row(

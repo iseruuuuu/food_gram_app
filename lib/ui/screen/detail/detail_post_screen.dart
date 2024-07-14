@@ -90,7 +90,10 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                     },
                   );
                 },
-                icon: Icon(Icons.menu),
+                icon: Icon(
+                  Icons.menu,
+                  color: Colors.black,
+                ),
               ),
           ],
         ),
@@ -122,12 +125,16 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
+                                  color: Colors.black,
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
                                 '@${widget.users.userName}',
-                                style: TextStyle(fontSize: 16),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
                               ),
                             ],
                           ),
@@ -230,6 +237,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                         child: Icon(
                           Icons.send,
                           size: 30,
+                          color: Colors.black,
                         ),
                       ),
                       Spacer(),
@@ -241,6 +249,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -253,6 +262,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -263,6 +273,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -273,6 +284,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
+                        color: Colors.black,
                       ),
                     ),
                   ),
