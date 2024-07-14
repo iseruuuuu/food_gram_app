@@ -35,16 +35,7 @@ class WidgetbookApp extends StatelessWidget {
           themes: <WidgetbookTheme<ThemeData>>[
             WidgetbookTheme<ThemeData>(
               name: 'Light',
-              data: ThemeData.dark(useMaterial3: true).copyWith(
-                appBarTheme: const AppBarTheme(
-                  backgroundColor: Colors.white,
-                  iconTheme: IconThemeData(color: Colors.black),
-                ),
-                scaffoldBackgroundColor: Colors.white,
-                canvasColor: Colors.white,
-                cardColor: Colors.white,
-                backgroundColor: Colors.white,
-              ),
+              data: ThemeData.light(useMaterial3: true),
             ),
             WidgetbookTheme<ThemeData>(
               name: 'Dark',
