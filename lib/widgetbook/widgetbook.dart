@@ -1,9 +1,22 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/env.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/widgetbook/widgetbook.directories.g.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeSystemSettings();
+  await Supabase.initialize(
+    anonKey: kReleaseMode ? Prod.supabaseAnonKey : Dev.supabaseAnonKey,
+    url: kReleaseMode ? Prod.supabaseUrl : Dev.supabaseUrl,
+    debug: kDebugMode,
+  );
   runApp(const WidgetbookApp());
 }
 
@@ -15,16 +28,27 @@ class WidgetbookApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Widgetbook.material(
       directories: directories,
+      appBuilder: (context, child) =>
+          ProviderScope(child: MaterialApp(home: child)),
       addons: <WidgetbookAddon>[
         MaterialThemeAddon(
           themes: <WidgetbookTheme<ThemeData>>[
             WidgetbookTheme<ThemeData>(
               name: 'Light',
-              data: ThemeData.light(),
+              data: ThemeData.dark(useMaterial3: true).copyWith(
+                appBarTheme: const AppBarTheme(
+                  backgroundColor: Colors.white,
+                  iconTheme: IconThemeData(color: Colors.black),
+                ),
+                scaffoldBackgroundColor: Colors.white,
+                canvasColor: Colors.white,
+                cardColor: Colors.white,
+                backgroundColor: Colors.white,
+              ),
             ),
             WidgetbookTheme<ThemeData>(
               name: 'Dark',
-              data: ThemeData.dark(),
+              data: ThemeData.dark(useMaterial3: true),
             ),
           ],
         ),
@@ -33,19 +57,15 @@ class WidgetbookApp extends StatelessWidget {
             Devices.ios.iPhoneSE,
             Devices.ios.iPhone13,
           ],
+          initialDevice: Devices.ios.iPhone13,
         ),
         TextScaleAddon(
-          scales: <double>[1.0, 2.0],
+          scales: <double>[1, 2],
         ),
         LocalizationAddon(
-          locales: <Locale>[
-            const Locale('en', 'US'),
-            const Locale('jp', 'JP'),
-          ],
-          localizationsDelegates: <LocalizationsDelegate<dynamic>>[
-            DefaultWidgetsLocalizations.delegate,
-            DefaultMaterialLocalizations.delegate,
-          ],
+          locales: L10n.supportedLocales,
+          localizationsDelegates: L10n.localizationsDelegates,
+          initialLocale: L10n.supportedLocales.last,
         ),
       ],
     );
