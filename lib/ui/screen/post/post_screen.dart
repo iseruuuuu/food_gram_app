@@ -42,6 +42,7 @@ class PostScreen extends ConsumerWidget {
               '投稿',
               style: theme.textTheme.titleMedium!.copyWith(
                 fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
             ),
             centerTitle: true,
@@ -52,7 +53,11 @@ class PostScreen extends ConsumerWidget {
                       await Future.delayed(Duration(milliseconds: 100));
                       context.pop();
                     },
-                    icon: Icon(Icons.close, size: 28),
+                    icon: Icon(
+                      Icons.close,
+                      size: 28,
+                      color: Colors.black,
+                    ),
                   )
                 : SizedBox(),
             actions: [
@@ -147,7 +152,11 @@ class PostScreen extends ConsumerWidget {
                                   File(state.foodImage),
                                   fit: BoxFit.cover,
                                 )
-                              : const Icon(Icons.add, size: 45),
+                              : const Icon(
+                                  Icons.add,
+                                  size: 45,
+                                  color: Colors.black,
+                                ),
                         ),
                       ),
                       Gap(28),
@@ -167,12 +176,19 @@ class PostScreen extends ConsumerWidget {
                           );
                         },
                         child: ListTile(
-                          contentPadding: EdgeInsets.all(4),
+                          contentPadding: EdgeInsets.all(5),
                           shape: RoundedRectangleBorder(
                             side: BorderSide(color: Colors.black26),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          leading: Icon(Icons.place, size: 30),
+                          leading: Padding(
+                            padding: const EdgeInsets.only(left: 5),
+                            child: Icon(
+                              Icons.place,
+                              size: 30,
+                              color: Colors.black,
+                            ),
+                          ),
                           trailing: state.restaurant == '場所を追加'
                               ? Padding(
                                   padding: const EdgeInsets.only(right: 10),
