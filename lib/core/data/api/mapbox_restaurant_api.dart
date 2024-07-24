@@ -33,18 +33,22 @@ Future<PaginationList<Restaurant>> mapboxRestaurantApi(
         'limit': resultsPerPage,
       },
     );
+
+    print(response.realUri);
     if (response.statusCode == 200) {
       final data = response.data;
       final features = data['features'] as List<dynamic>;
       for (final feature in features) {
         final placeName = feature['text'] as String;
-        final placeContext = feature['properties']['category'] as String? ?? '';
         final isCategoryMatched = category.any(
-          (category) =>
-              placeContext.contains(category) ||
-              placeName.toLowerCase().contains(category),
+          (category) => placeName.toLowerCase().contains(category),
         );
-        if (!restaurantNamesSet.contains(placeName) && isCategoryMatched) {
+
+        ///TODO ひとまずちゃんと検索が出るようにするために一度全部みれるようにする
+        ///TODO このあとしっかりと調査をする必要がありそう
+        final placeType =
+            (feature['place_type'] as List<dynamic>).contains('poi');
+        if (isCategoryMatched || placeType) {
           final address = feature['place_name'] as String;
           final geometry = feature['geometry']['coordinates'] as List<dynamic>;
           final lat = geometry[1] as double;
@@ -92,4 +96,7 @@ final category = [
   'coffee',
   'bakery',
   'tea',
+  'snack',
+  'burger joint',
+  'fast-food',
 ];
