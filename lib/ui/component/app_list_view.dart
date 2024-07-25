@@ -55,6 +55,8 @@ class AppListView extends StatelessWidget {
                           lat: double.parse(data[index]['lat'].toString()),
                           lng: double.parse(data[index]['lng'].toString()),
                           heart: int.parse(data[index]['heart'].toString()),
+                          restaurantTag: data[index]['restaurant_tag'],
+                          foodTag: data[index]['food_tag'],
                         );
                         final dynamic postUserId = await supabase
                             .from('users')

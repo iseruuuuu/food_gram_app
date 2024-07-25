@@ -31,7 +31,10 @@ class PostScreenState extends _$PostScreenState {
   String uploadImage = '';
   late Uint8List imageBytes;
 
-  Future<bool> post() async {
+  Future<bool> post({
+    required String restaurantTag,
+    required String foodTag,
+  }) async {
     primaryFocus?.unfocus();
     loading.state = true;
     state = state.copyWith(status: 'Loading...');
@@ -46,6 +49,8 @@ class PostScreenState extends _$PostScreenState {
             restaurant: state.restaurant,
             lng: state.lng,
             lat: state.lat,
+            restaurantTag: restaurantTag,
+            foodTag: foodTag,
           );
       await result.when(
         success: (_) async {

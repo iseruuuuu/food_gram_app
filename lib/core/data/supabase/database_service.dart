@@ -24,6 +24,8 @@ class DatabaseService {
     required double lat,
     required double lng,
     required String restaurant,
+    required String restaurantTag,
+    required String foodTag,
   }) async {
     try {
       final updates = {
@@ -36,6 +38,8 @@ class DatabaseService {
         'food_image': '/$user/$uploadImage',
         'lat': lat,
         'lng': lng,
+        'restaurant_tag': restaurantTag,
+        'food_tag': foodTag,
       };
       await upload(uploadImage: uploadImage, imageBytes: imageBytes);
       await supabase.from('posts').insert(updates);

@@ -277,6 +277,29 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       ),
                     ),
                   ),
+                  Column(
+                    children: [],
+                  ),
+                  Gap(10),
+                  Wrap(
+                    spacing: 10,
+                    children: [
+                      Gap(10),
+                      if (widget.posts.foodTag != '')
+                        Chip(
+                          backgroundColor: Colors.white,
+                          avatar: Icon(Icons.fastfood, color: Colors.black),
+                          label: Text(widget.posts.foodTag),
+                        ),
+                      Gap(10),
+                      if (widget.posts.restaurantTag != '')
+                        Chip(
+                          backgroundColor: Colors.white,
+                          avatar: Icon(Icons.restaurant, color: Colors.black),
+                          label: Text(widget.posts.restaurantTag),
+                        ),
+                    ],
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(15),
                     child: Text(
