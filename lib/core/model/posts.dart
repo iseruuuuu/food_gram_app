@@ -16,6 +16,8 @@ abstract class Posts with _$Posts {
     required double lng,
     required String userId,
     required int heart,
+    required String restaurantTag,
+    required String foodTag,
   }) = _Posts;
 
   factory Posts.fromJson(Map<String, dynamic> json) => _$PostsFromJson(json);

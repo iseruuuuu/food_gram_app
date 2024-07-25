@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/post/provider/post_screen_state_provider.dart';
@@ -13,8 +13,9 @@ import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class PostScreen extends ConsumerWidget {
+class PostScreen extends HookConsumerWidget {
   const PostScreen({
     required this.routerPath,
     super.key,
@@ -29,6 +30,9 @@ class PostScreen extends ConsumerWidget {
     final state = ref.watch(postScreenStateProvider());
     final loading = ref.watch(loadingProvider);
     final theme = Theme.of(context);
+    final restaurantTag = useState('');
+    final foodTag = useState('');
+
     return PopScope(
       canPop: !loading,
       child: GestureDetector(
@@ -70,7 +74,10 @@ class PostScreen extends ConsumerWidget {
                       () async {
                         final result = await ref
                             .read(postScreenStateProvider().notifier)
-                            .post();
+                            .post(
+                              restaurantTag: restaurantTag.value,
+                              foodTag: foodTag.value,
+                            );
                         final updatedState =
                             ref.read(postScreenStateProvider());
                         if (result) {
@@ -99,64 +106,69 @@ class PostScreen extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          primaryFocus?.unfocus();
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return AppImageModalSheet(
-                                camera: () async {
-                                  final result = await ref
-                                      .read(postScreenStateProvider().notifier)
-                                      .camera();
-                                  final updatedState =
-                                      ref.read(postScreenStateProvider());
-                                  if (!result) {
-                                    hideSnackBar(context);
-                                    openErrorSnackBar(
-                                      context,
-                                      updatedState.status,
-                                    );
-                                  }
-                                },
-                                album: () async {
-                                  final result = await ref
-                                      .read(postScreenStateProvider().notifier)
-                                      .album();
-                                  final updatedState =
-                                      ref.read(postScreenStateProvider());
-                                  if (!result) {
-                                    hideSnackBar(context);
-                                    openErrorSnackBar(
-                                      context,
-                                      updatedState.status,
-                                    );
-                                  }
-                                },
-                              );
-                            },
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(width: 2),
+                      Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            primaryFocus?.unfocus();
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return AppImageModalSheet(
+                                  camera: () async {
+                                    final result = await ref
+                                        .read(
+                                            postScreenStateProvider().notifier)
+                                        .camera();
+                                    final updatedState =
+                                        ref.read(postScreenStateProvider());
+                                    if (!result) {
+                                      hideSnackBar(context);
+                                      openErrorSnackBar(
+                                        context,
+                                        updatedState.status,
+                                      );
+                                    }
+                                  },
+                                  album: () async {
+                                    final result = await ref
+                                        .read(
+                                            postScreenStateProvider().notifier)
+                                        .album();
+                                    final updatedState =
+                                        ref.read(postScreenStateProvider());
+                                    if (!result) {
+                                      hideSnackBar(context);
+                                      openErrorSnackBar(
+                                        context,
+                                        updatedState.status,
+                                      );
+                                    }
+                                  },
+                                );
+                              },
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(width: 2),
+                            ),
+                            width: deviceWidth / 1.8,
+                            height: deviceWidth / 1.8,
+                            child: state.foodImage != ''
+                                ? Image.file(
+                                    File(state.foodImage),
+                                    fit: BoxFit.cover,
+                                  )
+                                : const Icon(
+                                    Icons.add,
+                                    size: 45,
+                                    color: Colors.black,
+                                  ),
                           ),
-                          width: deviceWidth / 1.8,
-                          height: deviceWidth / 1.8,
-                          child: state.foodImage != ''
-                              ? Image.file(
-                                  File(state.foodImage),
-                                  fit: BoxFit.cover,
-                                )
-                              : const Icon(
-                                  Icons.add,
-                                  size: 45,
-                                  color: Colors.black,
-                                ),
                         ),
                       ),
                       Gap(28),
@@ -216,11 +228,57 @@ class PostScreen extends ConsumerWidget {
                       ),
                       Gap(28),
                       AppCommentTextField(controller: textController.comment),
+                      Gap(20),
+                      Text(
+                        'レストランカテゴリ一覧',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Gap(10),
+                      Wrap(
+                        spacing: 10,
+                        children: restaurantCategory.map<Widget>((data) {
+                          return FilterChip(
+                            backgroundColor: Colors.white,
+                            label: Text(data),
+                            selected: restaurantTag.value == data,
+                            selectedColor: Colors.greenAccent,
+                            onSelected: (value) {
+                              restaurantTag.value = data;
+                            },
+                          );
+                        }).toList(),
+                      ),
+                      Gap(20),
+                      Text(
+                        '料理カテゴリ一覧',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Gap(10),
+                      Wrap(
+                        spacing: 10,
+                        children: foodCategory.map<Widget>((data) {
+                          return FilterChip(
+                            backgroundColor: Colors.white,
+                            selectedColor: Colors.greenAccent,
+                            label: Text(data),
+                            selected: foodTag.value == data,
+                            onSelected: (value) {
+                              foodTag.value = data;
+                            },
+                          );
+                        }).toList(),
+                      ),
+                      Gap(30),
                     ],
                   ),
                 ),
               ),
-              AppLoading(loading: loading, status: state.status),
             ],
           ),
         ),

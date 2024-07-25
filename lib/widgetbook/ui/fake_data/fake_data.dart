@@ -25,4 +25,6 @@ final fakePosts = Posts(
   lng: 139.7673068,
   userId: '1ee46691-2164-4832-86ac-8e5f847d1430',
   heart: 100,
+  foodTag: '肉',
+  restaurantTag: '日本食',
 );
