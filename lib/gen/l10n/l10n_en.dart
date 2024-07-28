@@ -245,4 +245,7 @@ class L10nEn extends L10n {
 
   @override
   String get appShareCloseButton => 'Close';
+
+  @override
+  String get agreeToTheTermsOfUse => 'Please agree to the Terms of Use';
 }
