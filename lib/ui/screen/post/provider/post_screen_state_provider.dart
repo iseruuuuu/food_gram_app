@@ -58,7 +58,6 @@ class PostScreenState extends _$PostScreenState {
             status: 'Success 🎉',
             isSuccess: true,
           );
-          await Future.delayed(Duration(seconds: 2));
         },
         failure: (error) {
           state = state.copyWith(
