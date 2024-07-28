@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/post/provider/post_screen_state_provider.dart';
@@ -32,7 +33,6 @@ class PostScreen extends HookConsumerWidget {
     final theme = Theme.of(context);
     final restaurantTag = useState('');
     final foodTag = useState('');
-
     return PopScope(
       canPop: !loading,
       child: GestureDetector(
@@ -117,34 +117,18 @@ class PostScreen extends HookConsumerWidget {
                               builder: (context) {
                                 return AppImageModalSheet(
                                   camera: () async {
-                                    final result = await ref
+                                    await ref
                                         .read(
                                             postScreenStateProvider().notifier)
                                         .camera();
-                                    final updatedState =
-                                        ref.read(postScreenStateProvider());
-                                    if (!result) {
-                                      hideSnackBar(context);
-                                      openErrorSnackBar(
-                                        context,
-                                        updatedState.status,
-                                      );
-                                    }
+                                    ref.read(postScreenStateProvider());
                                   },
                                   album: () async {
-                                    final result = await ref
+                                    await ref
                                         .read(
                                             postScreenStateProvider().notifier)
                                         .album();
-                                    final updatedState =
-                                        ref.read(postScreenStateProvider());
-                                    if (!result) {
-                                      hideSnackBar(context);
-                                      openErrorSnackBar(
-                                        context,
-                                        updatedState.status,
-                                      );
-                                    }
+                                    ref.read(postScreenStateProvider());
                                   },
                                 );
                               },
@@ -278,6 +262,10 @@ class PostScreen extends HookConsumerWidget {
                     ],
                   ),
                 ),
+              ),
+              AppLoading(
+                loading: loading,
+                status: state.status,
               ),
             ],
           ),

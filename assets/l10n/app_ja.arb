@@ -78,5 +78,6 @@
   "appShareTitle": "共有",
   "appShareStoreButton": "このお店を共有する",
   "appShareGoButton": "このお店に行ってみる",
-  "appShareCloseButton": "閉じる"
+  "appShareCloseButton": "閉じる",
+  "agreeToTheTermsOfUse": "利用規約に同意してください"
 }

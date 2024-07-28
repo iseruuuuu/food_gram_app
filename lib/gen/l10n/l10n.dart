@@ -573,6 +573,12 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'閉じる'**
   String get appShareCloseButton;
+
+  /// No description provided for @agreeToTheTermsOfUse.
+  ///
+  /// In ja, this message translates to:
+  /// **'利用規約に同意してください'**
+  String get agreeToTheTermsOfUse;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
