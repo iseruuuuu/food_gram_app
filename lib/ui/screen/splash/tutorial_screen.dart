@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/config/shared_preference/shared_preference.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:go_router/go_router.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
@@ -213,7 +213,11 @@ class _TutorialScreenState extends State<TutorialScreen> {
                 context.pop();
               }
             } else {
-              openErrorSnackBar(context, '利用規約に同意してください。');
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(L10n.of(context).agreeToTheTermsOfUse),
+                ),
+              );
             }
           },
           showBackButton: true,

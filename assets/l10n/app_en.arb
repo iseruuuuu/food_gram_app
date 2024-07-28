@@ -78,5 +78,6 @@
   "appShareTitle": "Share",
   "appShareStoreButton": "Share this store",
   "appShareGoButton": "Go to this store",
-  "appShareCloseButton": "Close"
+  "appShareCloseButton": "Close",
+  "agreeToTheTermsOfUse": "Please agree to the Terms of Use"
 }
