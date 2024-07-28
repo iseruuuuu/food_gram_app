@@ -117,34 +117,18 @@ class PostScreen extends HookConsumerWidget {
                               builder: (context) {
                                 return AppImageModalSheet(
                                   camera: () async {
-                                    final result = await ref
+                                    await ref
                                         .read(
                                             postScreenStateProvider().notifier)
                                         .camera();
-                                    final updatedState =
-                                        ref.read(postScreenStateProvider());
-                                    if (!result) {
-                                      hideSnackBar(context);
-                                      openErrorSnackBar(
-                                        context,
-                                        updatedState.status,
-                                      );
-                                    }
+                                    ref.read(postScreenStateProvider());
                                   },
                                   album: () async {
-                                    final result = await ref
+                                    await ref
                                         .read(
                                             postScreenStateProvider().notifier)
                                         .album();
-                                    final updatedState =
-                                        ref.read(postScreenStateProvider());
-                                    if (!result) {
-                                      hideSnackBar(context);
-                                      openErrorSnackBar(
-                                        context,
-                                        updatedState.status,
-                                      );
-                                    }
+                                    ref.read(postScreenStateProvider());
                                   },
                                 );
                               },
