@@ -1,14 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/core/model/model.dart';
-import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/core/model/users.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/data/supabase/posts_service.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
 import 'package:go_router/go_router.dart';
 
-class AppListView extends StatelessWidget {
+class AppListView extends ConsumerWidget {
   const AppListView({
     required this.data,
     required this.routerPath,
@@ -21,7 +20,7 @@ class AppListView extends StatelessWidget {
   final Function() refresh;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return data.isNotEmpty
         ? RefreshIndicator(
             color: Colors.black,
@@ -41,43 +40,15 @@ class AppListView extends StatelessWidget {
                   onTap: () async {
                     EasyDebounce.debounce(
                       'click detail',
-                      Duration(milliseconds: 200),
+                      Duration.zero,
                       () async {
-                        //TODO ここもできれば、supabaseの中に入れたい
-                        final posts = Posts(
-                          id: int.parse(data[index]['id'].toString()),
-                          userId: data[index]['user_id'],
-                          foodImage: data[index]['food_image'],
-                          foodName: data[index]['food_name'],
-                          restaurant: data[index]['restaurant'],
-                          comment: data[index]['comment'],
-                          createdAt: DateTime.parse(data[index]['created_at']),
-                          lat: double.parse(data[index]['lat'].toString()),
-                          lng: double.parse(data[index]['lng'].toString()),
-                          heart: int.parse(data[index]['heart'].toString()),
-                          restaurantTag: data[index]['restaurant_tag'],
-                          foodTag: data[index]['food_tag'],
-                        );
-                        final dynamic postUserId = await supabase
-                            .from('users')
-                            .select()
-                            .eq('user_id', data[index]['user_id'])
-                            .single();
-                        final users = Users(
-                          id: postUserId['id'],
-                          userId: postUserId['user_id'],
-                          name: postUserId['name'],
-                          userName: postUserId['user_name'],
-                          selfIntroduce: postUserId['self_introduce'],
-                          image: postUserId['image'],
-                          createdAt: DateTime.parse(postUserId['created_at']),
-                          updatedAt: DateTime.parse(postUserId['updated_at']),
-                          exchangedPoint: postUserId['exchanged_point'],
-                        );
+                        final post = await ref
+                            .read(postsServiceProvider)
+                            .getPost(data, index);
                         await context
                             .pushNamed(
                           routerPath,
-                          extra: Model(users, posts),
+                          extra: post,
                         )
                             .then((value) {
                           if (value != null) {
