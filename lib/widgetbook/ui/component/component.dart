@@ -205,7 +205,8 @@ AppNameTextField appNameTextField(BuildContext context) {
   type: AppSelfIntroductionTextField,
 )
 AppSelfIntroductionTextField appSelfIntroductionTextField(
-    BuildContext context) {
+  BuildContext context,
+) {
   final controller = TextEditingController();
   return AppSelfIntroductionTextField(controller: controller);
 }

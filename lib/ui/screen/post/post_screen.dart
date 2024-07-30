@@ -119,14 +119,16 @@ class PostScreen extends HookConsumerWidget {
                                   camera: () async {
                                     await ref
                                         .read(
-                                            postScreenStateProvider().notifier)
+                                          postScreenStateProvider().notifier,
+                                        )
                                         .camera();
                                     ref.read(postScreenStateProvider());
                                   },
                                   album: () async {
                                     await ref
                                         .read(
-                                            postScreenStateProvider().notifier)
+                                          postScreenStateProvider().notifier,
+                                        )
                                         .album();
                                     ref.read(postScreenStateProvider());
                                   },
