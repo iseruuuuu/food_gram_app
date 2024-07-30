@@ -1,10 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/data/supabase/my_profile_service.dart';
+import 'package:food_gram_app/core/data/supabase/post_stream.dart';
+import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/main.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:go_router/go_router.dart';
 
-class RestaurantInfoModalSheet extends StatelessWidget {
+class RestaurantInfoModalSheet extends ConsumerWidget {
   const RestaurantInfoModalSheet({
     required this.post,
     super.key,
@@ -13,7 +19,7 @@ class RestaurantInfoModalSheet extends StatelessWidget {
   final List<Posts?> post;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
     return Padding(
@@ -25,45 +31,71 @@ class RestaurantInfoModalSheet extends StatelessWidget {
           itemCount: post.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(24)),
-                child: Container(
-                  width: deviceWidth / 1.1,
-                  height: deviceHeight,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: deviceWidth,
-                        height: deviceWidth / 2.7,
-                        child: CachedNetworkImage(
-                          imageUrl: supabase.storage
-                              .from('food')
-                              .getPublicUrl(post[index]!.foodImage),
-                          fit: BoxFit.fitWidth,
-                        ),
-                      ),
-                      Spacer(),
-                      Material(
-                        color: Colors.white,
-                        child: ListTile(
-                          title: Text(post[index]!.restaurant),
-                          titleTextStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+            return GestureDetector(
+              onTap: () {
+                EasyDebounce.debounce(
+                  'click detail',
+                  Duration.zero,
+                  () async {
+                    final postUsers = await ref
+                        .read(myProfileServiceProvider)
+                        .getUsersFromPost(post[index]!);
+                    final model = Model(postUsers, post[index]!);
+                    await context
+                        .pushNamed(
+                      RouterPath.mapDetailPost,
+                      extra: model,
+                    )
+                        .then((value) {
+                      if (value != null) {
+                        ref
+                          ..refresh(postStreamProvider)
+                          ..refresh(blockListProvider);
+                      }
+                    });
+                  },
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(24)),
+                  child: Container(
+                    width: deviceWidth / 1.1,
+                    height: deviceHeight,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: deviceWidth,
+                          height: deviceWidth / 2.7,
+                          child: CachedNetworkImage(
+                            imageUrl: supabase.storage
+                                .from('food')
+                                .getPublicUrl(post[index]!.foodImage),
+                            fit: BoxFit.fitWidth,
                           ),
-                          subtitle: Text(post[index]!.foodName),
-                          subtitleTextStyle: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey.shade600,
+                        ),
+                        Spacer(),
+                        Material(
+                          color: Colors.white,
+                          child: ListTile(
+                            title: Text(post[index]!.restaurant),
+                            titleTextStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            subtitle: Text(post[index]!.foodName),
+                            subtitleTextStyle: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey.shade600,
+                            ),
                           ),
                         ),
-                      ),
-                      Spacer(),
-                    ],
+                        Spacer(),
+                      ],
+                    ),
                   ),
                 ),
               ),
