@@ -71,6 +71,7 @@ GoRouter router(RouterRef ref) {
         },
         routes: <RouteBase>[
           timeLineRouter,
+          mapRouter,
           myProfileRouter,
           settingRouter,
         ],
@@ -182,8 +183,8 @@ final mapRouter = GoRoute(
   },
   routes: <RouteBase>[
     GoRoute(
-      path: '${RouterPath.timeLine}/${RouterPath.timeLineDetailPost}',
-      name: RouterPath.timeLineDetailPost,
+      path: '${RouterPath.map}/${RouterPath.mapDetailPost}',
+      name: RouterPath.mapDetailPost,
       builder: (context, state) {
         final model = state.extra! as Model;
         return DetailPostScreen(posts: model.posts, users: model.users);
@@ -211,4 +212,5 @@ final class RouterPath {
   static const String tutorial = 'introduction';
   static const String settingTutorial = 'setting_tutorial';
   static const String map = 'map';
+  static const String mapDetailPost = 'map_detail_post';
 }

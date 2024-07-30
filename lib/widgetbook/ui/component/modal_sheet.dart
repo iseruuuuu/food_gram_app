@@ -10,7 +10,8 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
   type: AppDetailOtherInfoModalSheet,
 )
 AppDetailOtherInfoModalSheet appDetailOtherInfoModalSheet(
-    BuildContext context) {
+  BuildContext context,
+) {
   return AppDetailOtherInfoModalSheet(
     posts: fakePosts,
     users: fakeUsers,
