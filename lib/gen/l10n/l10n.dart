@@ -579,6 +579,12 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'利用規約に同意してください'**
   String get agreeToTheTermsOfUse;
+
+  /// No description provided for @appRestaurantLabel.
+  ///
+  /// In ja, this message translates to:
+  /// **'レストランを検索'**
+  String get appRestaurantLabel;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
