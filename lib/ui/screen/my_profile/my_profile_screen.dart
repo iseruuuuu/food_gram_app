@@ -5,11 +5,11 @@ import 'package:food_gram_app/core/data/supabase/post_stream.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_app_bar.dart';
+import 'package:food_gram_app/ui/component/app_calendar_view.dart';
 import 'package:food_gram_app/ui/component/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
-import 'package:food_gram_app/ui/component/app_place_list_view.dart';
 import 'package:food_gram_app/ui/component/app_profile_button.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_view_model.dart';
 import 'package:food_gram_app/utils/snack_bar_manager.dart';
@@ -80,7 +80,7 @@ class MyProfileScreen extends ConsumerWidget {
                       error: (_, __) {
                         return AppErrorWidget(
                           onTap: () {
-                            ref.refresh(myPostStreamProvider);
+                            ref.invalidate(myPostStreamProvider);
                             ref
                                 .read(myProfileViewModelProvider().notifier)
                                 .getData();
@@ -98,7 +98,7 @@ class MyProfileScreen extends ConsumerWidget {
                     ),
                     state.when(
                       data: (data) {
-                        return AppPlaceListView(
+                        return AppCalendarView(
                           data: data,
                           refresh: () => ref.refresh(myPostStreamProvider),
                         );
@@ -106,7 +106,7 @@ class MyProfileScreen extends ConsumerWidget {
                       error: (_, __) {
                         return AppErrorWidget(
                           onTap: () {
-                            ref.refresh(myPostStreamProvider);
+                            ref.invalidate(myPostStreamProvider);
                             ref
                                 .read(myProfileViewModelProvider().notifier)
                                 .getData();
@@ -143,7 +143,7 @@ class MyProfileScreen extends ConsumerWidget {
           onTap: () {
             context.pushNamed(RouterPath.myProfilePost).then((value) {
               if (value != null) {
-                ref.refresh(myPostStreamProvider);
+                ref.invalidate(myPostStreamProvider);
                 ref.read(myProfileViewModelProvider().notifier).getData();
               }
             });
