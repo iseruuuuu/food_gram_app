@@ -62,8 +62,8 @@ class MyProfileScreen extends ConsumerWidget {
                   color: Colors.black,
                 ),
                 tabs: [
-                  Tab(text: 'Food'),
-                  Tab(text: 'Place'),
+                  Tab(text: '🍽️ Food'),
+                  Tab(text: '🗓️ Calendar'),
                 ],
               ),
               Expanded(

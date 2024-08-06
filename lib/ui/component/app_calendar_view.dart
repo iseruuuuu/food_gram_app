@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/utils/get_event_loader.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class AppCalendarView extends StatelessWidget {
+class AppCalendarView extends ConsumerWidget {
   const AppCalendarView({
     required this.data,
     required this.refresh,
@@ -13,9 +15,7 @@ class AppCalendarView extends StatelessWidget {
   final Function() refresh;
 
   @override
-  Widget build(BuildContext context) {
-    //TODO カレンダーに切り替える
-
+  Widget build(BuildContext context, WidgetRef ref) {
     if (data.isNotEmpty) {
       return RefreshIndicator(
         color: Colors.black,
@@ -28,6 +28,10 @@ class AppCalendarView extends StatelessWidget {
             firstDay: DateTime.utc(2010),
             lastDay: DateTime.utc(2030),
             focusedDay: DateTime.now(),
+            daysOfWeekVisible: false,
+            eventLoader: (value) {
+              return ref.watch(getEventLoaderProvider(value, data));
+            },
             headerStyle: HeaderStyle(
               titleCentered: true,
               formatButtonVisible: false,
@@ -39,38 +43,8 @@ class AppCalendarView extends StatelessWidget {
               ),
               todayTextStyle: TextStyle(color: Colors.black),
             ),
-            //TODO 多言語化をする
-
-            //TODO 投稿した日にピンを落とす
           ),
         ),
-        // child: ListView.builder(
-        //   itemCount: data.length,
-        //   itemBuilder: (context, index) {
-        //     return ListTile(
-        //       title: Row(
-        //         children: [
-        //           Text(
-        //             'in ${data[index]['restaurant']}',
-        //             style: TextStyle(
-        //               fontWeight: FontWeight.bold,
-        //               fontSize: 15,
-        //               color: Colors.black,
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //       subtitle: Text(
-        //         data[index]['food_name'],
-        //         style: TextStyle(
-        //           color: Colors.grey,
-        //           fontSize: 13,
-        //           fontWeight: FontWeight.normal,
-        //         ),
-        //       ),
-        //     );
-        //   },
-        // ),
       );
     } else {
       return AppEmpty();
