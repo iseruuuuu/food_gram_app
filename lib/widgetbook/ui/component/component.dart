@@ -72,17 +72,6 @@ AppHeader appHeader(BuildContext context) {
   );
 }
 
-/// Heart
-//TODO GifControllerが使えなさそう
-// @widgetbook.UseCase(
-//   name: 'AppHeart',
-//   type: AppHeart,
-// )
-// AppHeart appHeart(BuildContext context) {
-//   final controller = GifController(vsync: TickerProvider);
-//   return AppHeart(isHeart: true, controller: );
-// }
-
 /// Icon
 @widgetbook.UseCase(
   name: 'AppIcon',
@@ -92,16 +81,6 @@ AppIcon appIcon(BuildContext context) {
   return AppIcon(onTap: () {}, number: 0);
 }
 
-/// ListView
-//TODO AppListViewがうまくいかない・・？
-// @widgetbook.UseCase(
-//   name: 'AppListView',
-//   type: AppListView,
-// )
-// AppListView appListView(BuildContext context) {
-//   return AppListView(data:  routerPath: routerPath, refresh: refresh);
-// }
-
 /// AppLoading
 @widgetbook.UseCase(
   name: 'AppLoading',
@@ -110,16 +89,6 @@ AppIcon appIcon(BuildContext context) {
 AppLoading appLoading(BuildContext context) {
   return AppLoading(loading: true, status: 'test');
 }
-
-/// PlaceListView
-//TODO これもううまくいかなさそう
-// @widgetbook.UseCase(
-//   name: 'AppPlaceListView',
-//   type: AppPlaceListView,
-// )
-// AppPlaceListView appPlaceListView(BuildContext context) {
-//   return AppPlaceListView(data: data, refresh: refresh);
-// }
 
 /// MyProfileButton
 @widgetbook.UseCase(

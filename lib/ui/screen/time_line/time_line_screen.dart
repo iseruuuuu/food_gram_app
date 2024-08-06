@@ -24,8 +24,8 @@ class TimeLineScreen extends ConsumerWidget {
             data: data,
             routerPath: RouterPath.timeLineDetailPost,
             refresh: () => ref
-              ..refresh(postStreamProvider)
-              ..refresh(blockListProvider),
+              ..invalidate(postStreamProvider)
+              ..invalidate(blockListProvider),
           );
         },
         error: (_, __) {
@@ -47,7 +47,7 @@ class TimeLineScreen extends ConsumerWidget {
         onTap: () async {
           await context.pushNamed(RouterPath.timeLinePost).then((value) async {
             if (value != null) {
-              ref.refresh(postStreamProvider);
+              ref.invalidate(postStreamProvider);
             }
           });
         },

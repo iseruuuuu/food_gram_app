@@ -79,5 +79,6 @@
   "appShareStoreButton": "Share this store",
   "appShareGoButton": "Go to this store",
   "appShareCloseButton": "Close",
-  "agreeToTheTermsOfUse": "Please agree to the Terms of Use"
+  "agreeToTheTermsOfUse": "Please agree to the Terms of Use",
+  "appRestaurantLabel" : "Search Restaurant"
 }

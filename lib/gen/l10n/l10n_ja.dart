@@ -248,4 +248,7 @@ class L10nJa extends L10n {
 
   @override
   String get agreeToTheTermsOfUse => '利用規約に同意してください';
+
+  @override
+  String get appRestaurantLabel => 'レストランを検索';
 }

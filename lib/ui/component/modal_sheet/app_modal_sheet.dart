@@ -49,8 +49,8 @@ class RestaurantInfoModalSheet extends ConsumerWidget {
                         .then((value) {
                       if (value != null) {
                         ref
-                          ..refresh(postStreamProvider)
-                          ..refresh(blockListProvider);
+                          ..invalidate(postStreamProvider)
+                          ..invalidate(blockListProvider);
                       }
                     });
                   },

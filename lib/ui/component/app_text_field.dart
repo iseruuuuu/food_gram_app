@@ -23,13 +23,11 @@ class AppSearchTextField extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        //TODO 多言語化する
-        hintText: 'レストランを検索',
         hintStyle: Theme.of(context)
             .textTheme
             .bodyMedium!
             .copyWith(color: Colors.grey),
-        label: Text('レストランを検索'),
+        label: Text(L10n.of(context).appRestaurantLabel),
         labelStyle: Theme.of(context)
             .textTheme
             .bodyMedium!

@@ -223,7 +223,6 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                               'post', Duration(milliseconds: 200), () async {
                             await showDialog(
                               context: context,
-                              barrierDismissible: true,
                               useSafeArea: false,
                               builder: (context) {
                                 return AppShareDialog(
