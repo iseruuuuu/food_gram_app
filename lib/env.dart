@@ -4,6 +4,9 @@ part 'env.g.dart';
 
 @Envied(path: '.env')
 abstract class Env {
+  @EnviedField(varName: 'MAP_LIBRE', obfuscate: true)
+  static final String mapLibre = _Env.mapLibre;
+
   @EnviedField(varName: 'MAPBOX', obfuscate: true)
   static final String mapbox = _Env.mapbox;
 

@@ -7,7 +7,6 @@ import 'package:food_gram_app/app.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/firebase_options.dart';
 import 'package:logger/logger.dart';
-import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final supabase = Supabase.instance.client;
@@ -21,8 +20,6 @@ void main() async {
 }
 
 Future<void> initializeSystemSettings() async {
-  MapboxOptions.setAccessToken(Env.mapbox);
-  MapboxMapsOptions.setTileStoreUsageMode(TileStoreUsageMode.READ_ONLY);
   await SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.manual,
     overlays: [SystemUiOverlay.top],

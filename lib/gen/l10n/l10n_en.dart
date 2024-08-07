@@ -251,4 +251,10 @@ class L10nEn extends L10n {
 
   @override
   String get appRestaurantLabel => 'Search Restaurant';
+
+  @override
+  String get restaurantCategoryList => 'Select a Cuisine by Country';
+
+  @override
+  String get cookingCategoryList => 'Select a food category';
 }

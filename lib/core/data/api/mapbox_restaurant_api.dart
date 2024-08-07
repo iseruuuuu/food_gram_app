@@ -2,10 +2,10 @@ import 'dart:core';
 
 import 'package:dio/dio.dart';
 import 'package:food_gram_app/core/data/api/dio.dart';
-import 'package:food_gram_app/core/model/lat_lng.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/utils/location.dart';
 import 'package:food_gram_app/env.dart';
+import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'mapbox_restaurant_api.g.dart';

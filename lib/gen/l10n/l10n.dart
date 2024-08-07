@@ -585,6 +585,18 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'レストランを検索'**
   String get appRestaurantLabel;
+
+  /// No description provided for @restaurantCategoryList.
+  ///
+  /// In ja, this message translates to:
+  /// **'国別料理を選ぶ'**
+  String get restaurantCategoryList;
+
+  /// No description provided for @cookingCategoryList.
+  ///
+  /// In ja, this message translates to:
+  /// **'料理カテゴリーを選ぶ'**
+  String get cookingCategoryList;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

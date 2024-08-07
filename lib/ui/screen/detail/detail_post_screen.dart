@@ -255,11 +255,12 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(15),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                     child: Text(
                       widget.posts.foodName,
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
@@ -270,14 +271,11 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                     child: Text(
                       'In ${widget.posts.restaurant}',
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
                     ),
-                  ),
-                  Column(
-                    children: [],
                   ),
                   Gap(10),
                   Wrap(
@@ -287,15 +285,15 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       if (widget.posts.foodTag != '')
                         Chip(
                           backgroundColor: Colors.white,
-                          avatar: Icon(Icons.fastfood, color: Colors.black),
                           label: Text(widget.posts.foodTag),
+                          labelStyle: TextStyle(fontSize: 20),
                         ),
                       Gap(10),
                       if (widget.posts.restaurantTag != '')
                         Chip(
                           backgroundColor: Colors.white,
-                          avatar: Icon(Icons.restaurant, color: Colors.black),
                           label: Text(widget.posts.restaurantTag),
+                          labelStyle: TextStyle(fontSize: 20),
                         ),
                     ],
                   ),

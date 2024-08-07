@@ -4,17 +4,22 @@ import 'package:food_gram_app/core/data/supabase/map_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/utils/async_value_group.dart';
 import 'package:food_gram_app/core/utils/location.dart';
+import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_modal_sheet.dart';
-import 'package:food_gram_app/ui/screen/map/mapbox_controller.dart';
+import 'package:food_gram_app/ui/screen/map/map_libre_controller.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mapbox;
+import 'package:maplibre_gl/maplibre_gl.dart';
+
+final String apiKey = Env.mapLibre;
+const styleUrl =
+    'https://tile.openstreetmap.jp/styles/maptiler-basic-ja/style.json';
 
 class MapScreen extends HookConsumerWidget {
   const MapScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mapboxController = ref.watch(mapboxControllerProvider.notifier);
+    final mapLibreController = ref.watch(mapLibreControllerProvider.notifier);
     final location = ref.watch(locationProvider);
     final mapService = ref.watch(mapServiceProvider);
     final isTapPin = useState(false);
@@ -26,11 +31,10 @@ class MapScreen extends HookConsumerWidget {
           return Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              mapbox.MapWidget(
-                onMapCreated: (mapboxMap) {
-                  mapboxController
-                    ..mapboxMap = mapboxMap
-                    ..getCurrentPin()
+              MapLibreMap(
+                onMapCreated: (mapLibre) {
+                  mapLibreController
+                    ..controller = mapLibre
                     ..setPin(
                       openDialog: (posts) {
                         isTapPin.value = true;
@@ -38,17 +42,21 @@ class MapScreen extends HookConsumerWidget {
                       },
                     );
                 },
+                onMapClick: (_, __) {
+                  isTapPin.value = false;
+                },
+                annotationOrder: const [AnnotationType.symbol],
                 key: ValueKey('mapWidget'),
-                styleUri: 'mapbox://styles/ryuuuuu/clxpeougo00k001pu6d8o8tq3',
-                cameraOptions: mapbox.CameraOptions(
-                  center: mapbox.Point(
-                    coordinates: mapbox.Position(
-                      value.$1.longitude,
-                      value.$1.latitude,
-                    ),
+                myLocationEnabled: true,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(
+                    value.$1.latitude,
+                    value.$1.longitude,
                   ),
-                  zoom: 16.5,
+                  zoom: 15,
                 ),
+                trackCameraPosition: true,
+                styleString: '$styleUrl?key=$apiKey',
               ),
               Visibility(
                 visible: isTapPin.value,

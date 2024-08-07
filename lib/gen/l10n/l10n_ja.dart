@@ -251,4 +251,10 @@ class L10nJa extends L10n {
 
   @override
   String get appRestaurantLabel => 'レストランを検索';
+
+  @override
+  String get restaurantCategoryList => '国別料理を選ぶ';
+
+  @override
+  String get cookingCategoryList => '料理カテゴリーを選ぶ';
 }
