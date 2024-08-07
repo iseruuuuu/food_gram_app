@@ -1,6 +1,7 @@
 import 'package:food_gram_app/core/data/supabase/post_stream.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/main.dart';
+import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'map_service.g.dart';
@@ -20,14 +21,14 @@ Future<List<Posts>> mapService(MapServiceRef ref) async {
 @riverpod
 Future<List<Posts>> getRestaurant(
   GetRestaurantRef ref, {
-  required Point point,
+  required LatLng point,
 }) async {
   final blockList = ref.watch(blockListProvider).asData?.value ?? [];
   final response = await supabase
       .from('posts')
       .select()
-      .eq('lat', point.coordinates.lat)
-      .eq('lng', point.coordinates.lng)
+      .eq('lat', point.latitude)
+      .eq('lng', point.longitude)
       .order('created_at');
   final data = response;
   final result = data

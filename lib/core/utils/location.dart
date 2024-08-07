@@ -1,5 +1,5 @@
-import 'package:food_gram_app/core/model/lat_lng.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'location.g.dart';
