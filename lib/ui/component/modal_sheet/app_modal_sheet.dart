@@ -61,7 +61,7 @@ class RestaurantInfoModalSheet extends ConsumerWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(24)),
                   child: Container(
-                    width: deviceWidth / 1.1,
+                    width: deviceWidth / 1.4,
                     height: deviceHeight,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +73,7 @@ class RestaurantInfoModalSheet extends ConsumerWidget {
                             imageUrl: supabase.storage
                                 .from('food')
                                 .getPublicUrl(post[index]!.foodImage),
-                            fit: BoxFit.fitWidth,
+                            fit: BoxFit.cover,
                           ),
                         ),
                         Spacer(),
