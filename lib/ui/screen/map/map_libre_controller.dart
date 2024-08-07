@@ -39,17 +39,13 @@ class MapLibreController extends _$MapLibreController {
       final latLng = symbol.options.geometry;
       final lat = latLng!.latitude;
       final lng = latLng.longitude;
-      await ref
-          .read(getRestaurantProvider(point: LatLng(lat, lng)).future)
-          .then((result) {
-        //TODO 投稿内容が取得できていない・・？
-        print(result);
-        openDialog(result);
-        controller.animateCamera(
-          CameraUpdate.newLatLngZoom(latLng, 16.5),
-          duration: Duration(seconds: 2),
-        );
-      });
+      final result =
+          await ref.read(getRestaurantProvider(lat: lat, lng: lng).future);
+      openDialog(result);
+      await controller.animateCamera(
+        CameraUpdate.newLatLngZoom(latLng, 16.5),
+        duration: Duration(seconds: 2),
+      );
     });
   }
 }
