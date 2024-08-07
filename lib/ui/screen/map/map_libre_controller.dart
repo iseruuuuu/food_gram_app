@@ -39,10 +39,6 @@ class MapLibreController extends _$MapLibreController {
       final latLng = symbol.options.geometry;
       final lat = latLng!.latitude;
       final lng = latLng.longitude;
-
-      print(latLng);
-      print(lng);
-
       await ref
           .read(getRestaurantProvider(point: LatLng(lat, lng)).future)
           .then((result) {

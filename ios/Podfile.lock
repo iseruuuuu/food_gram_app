@@ -13,12 +13,12 @@ PODS:
     - Flutter
   - device_info_plus (0.0.1):
     - Flutter
-  - Firebase/CoreOnly (10.25.0):
-    - FirebaseCore (= 10.25.0)
-  - firebase_core (2.32.0):
-    - Firebase/CoreOnly (= 10.25.0)
+  - Firebase/CoreOnly (10.18.0):
+    - FirebaseCore (= 10.18.0)
+  - firebase_core (2.24.2):
+    - Firebase/CoreOnly (= 10.18.0)
     - Flutter
-  - FirebaseCore (10.25.0):
+  - FirebaseCore (10.18.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.12)
     - GoogleUtilities/Logger (~> 7.12)
@@ -64,17 +64,6 @@ PODS:
     - Flutter
   - map_launcher (0.0.1):
     - Flutter
-  - mapbox_maps_flutter (2.1.0):
-    - Flutter
-    - MapboxMaps (~> 11.5.1)
-    - Turf (= 2.8.0)
-  - MapboxCommon (24.5.0)
-  - MapboxCoreMaps (11.5.3):
-    - MapboxCommon (~> 24.5)
-  - MapboxMaps (11.5.2):
-    - MapboxCommon (= 24.5.0)
-    - MapboxCoreMaps (= 11.5.3)
-    - Turf (= 2.8.0)
   - MapLibre (6.5.0)
   - maplibre_gl (0.0.1):
     - Flutter
@@ -95,7 +84,6 @@ PODS:
   - sqflite (0.0.3):
     - Flutter
     - FlutterMacOS
-  - Turf (2.8.0)
   - url_launcher_ios (0.0.1):
     - Flutter
 
@@ -113,7 +101,6 @@ DEPENDENCIES:
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - in_app_review (from `.symlinks/plugins/in_app_review/ios`)
   - map_launcher (from `.symlinks/plugins/map_launcher/ios`)
-  - mapbox_maps_flutter (from `.symlinks/plugins/mapbox_maps_flutter/ios`)
   - maplibre_gl (from `.symlinks/plugins/maplibre_gl/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -133,12 +120,8 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
-    - MapboxCommon
-    - MapboxCoreMaps
-    - MapboxMaps
     - MapLibre
     - PromisesObjC
-    - Turf
 
 EXTERNAL SOURCES:
   app_links:
@@ -167,8 +150,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/in_app_review/ios"
   map_launcher:
     :path: ".symlinks/plugins/map_launcher/ios"
-  mapbox_maps_flutter:
-    :path: ".symlinks/plugins/mapbox_maps_flutter/ios"
   maplibre_gl:
     :path: ".symlinks/plugins/maplibre_gl/ios"
   package_info_plus:
@@ -192,9 +173,9 @@ SPEC CHECKSUMS:
   AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
   battery_info: 09f5c9ee65394f2291c8c6227bedff345b8a730c
   device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
-  Firebase: 0312a2352584f782ea56f66d91606891d4607f06
-  firebase_core: a626d00494efa398e7c54f25f1454a64c8abf197
-  FirebaseCore: 7ec4d0484817f12c3373955bc87762d96842d483
+  Firebase: 414ad272f8d02dfbf12662a9d43f4bba9bec2a06
+  firebase_core: 0af4a2b24f62071f9bf283691c0ee41556dcb3f5
+  FirebaseCore: 2322423314d92f946219c8791674d2f3345b598f
   FirebaseCoreInternal: df84dd300b561c27d5571684f389bf60b0a5c934
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
@@ -208,10 +189,6 @@ SPEC CHECKSUMS:
   image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   in_app_review: 318597b3a06c22bb46dc454d56828c85f444f99d
   map_launcher: 5fde49ac9a52672bf99da746599f507b4490d7b5
-  mapbox_maps_flutter: c7e9ddad4b3e7e68397fc0f8643ff408913dc44f
-  MapboxCommon: c69a04a1accd77650372c96d8978a15ed1d95186
-  MapboxCoreMaps: 127a3a6f68bc54d21008835b1bdf94be7a79792a
-  MapboxMaps: c781bae1bcb8b17dd63b0f130ef80605ceb72ac9
   MapLibre: 0ebfa9329d313cec8bf0a5ba5a336a1dc903785e
   maplibre_gl: 943a491fffb3337c1b9de57fd377206d18c16e34
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
@@ -221,7 +198,6 @@ SPEC CHECKSUMS:
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec
-  Turf: aa2ede4298009639d10db36aba1a7ebaad072a5e
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
 
 PODFILE CHECKSUM: 7be2f5f74864d463a8ad433546ed1de7e0f29aef
