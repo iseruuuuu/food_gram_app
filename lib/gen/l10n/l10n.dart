@@ -589,13 +589,13 @@ abstract class L10n {
   /// No description provided for @restaurantCategoryList.
   ///
   /// In ja, this message translates to:
-  /// **'レストランカテゴリー選択'**
+  /// **'国別料理を選ぶ'**
   String get restaurantCategoryList;
 
   /// No description provided for @cookingCategoryList.
   ///
   /// In ja, this message translates to:
-  /// **'料理カテゴリー選択'**
+  /// **'料理カテゴリーを選ぶ'**
   String get cookingCategoryList;
 }
 

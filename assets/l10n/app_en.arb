@@ -81,6 +81,6 @@
   "appShareCloseButton": "Close",
   "agreeToTheTermsOfUse": "Please agree to the Terms of Use",
   "appRestaurantLabel" : "Search Restaurant",
-  "restaurantCategoryList": "Restaurant Category List",
-  "cookingCategoryList": "Cooking Category List"
+  "restaurantCategoryList": "Select a Cuisine by Country",
+  "cookingCategoryList": "Select a food category"
 }

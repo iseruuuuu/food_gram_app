@@ -81,6 +81,6 @@
   "appShareCloseButton": "閉じる",
   "agreeToTheTermsOfUse": "利用規約に同意してください",
   "appRestaurantLabel" : "レストランを検索",
-  "restaurantCategoryList": "レストランカテゴリー選択",
-  "cookingCategoryList": "料理カテゴリー選択"
+  "restaurantCategoryList": "国別料理を選ぶ",
+  "cookingCategoryList": "料理カテゴリーを選ぶ"
 }
