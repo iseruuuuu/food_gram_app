@@ -80,5 +80,7 @@
   "appShareGoButton": "このお店に行ってみる",
   "appShareCloseButton": "閉じる",
   "agreeToTheTermsOfUse": "利用規約に同意してください",
-  "appRestaurantLabel" : "レストランを検索"
+  "appRestaurantLabel" : "レストランを検索",
+  "restaurantCategoryList": "レストランカテゴリー選択",
+  "cookingCategoryList": "料理カテゴリー選択"
 }

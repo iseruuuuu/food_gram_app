@@ -216,10 +216,10 @@ class PostScreen extends HookConsumerWidget {
                       AppCommentTextField(controller: textController.comment),
                       Gap(20),
                       Text(
-                        'レストランカテゴリ一覧',
+                        L10n.of(context).restaurantCategoryList,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 18,
                         ),
                       ),
                       Gap(10),
@@ -227,8 +227,9 @@ class PostScreen extends HookConsumerWidget {
                         spacing: 10,
                         children: restaurantCategory.map<Widget>((data) {
                           return FilterChip(
+                            showCheckmark: false,
                             backgroundColor: Colors.white,
-                            label: Text(data),
+                            label: Text(data, style: TextStyle(fontSize: 24)),
                             selected: restaurantTag.value == data,
                             selectedColor: Colors.greenAccent,
                             onSelected: (value) {
@@ -239,10 +240,10 @@ class PostScreen extends HookConsumerWidget {
                       ),
                       Gap(20),
                       Text(
-                        '料理カテゴリ一覧',
+                        L10n.of(context).cookingCategoryList,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 18,
                         ),
                       ),
                       Gap(10),
@@ -250,9 +251,13 @@ class PostScreen extends HookConsumerWidget {
                         spacing: 10,
                         children: foodCategory.map<Widget>((data) {
                           return FilterChip(
+                            showCheckmark: false,
                             backgroundColor: Colors.white,
                             selectedColor: Colors.greenAccent,
-                            label: Text(data),
+                            label: Text(
+                              data,
+                              style: TextStyle(fontSize: 24),
+                            ),
                             selected: foodTag.value == data,
                             onSelected: (value) {
                               foodTag.value = data;

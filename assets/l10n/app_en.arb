@@ -80,5 +80,7 @@
   "appShareGoButton": "Go to this store",
   "appShareCloseButton": "Close",
   "agreeToTheTermsOfUse": "Please agree to the Terms of Use",
-  "appRestaurantLabel" : "Search Restaurant"
+  "appRestaurantLabel" : "Search Restaurant",
+  "restaurantCategoryList": "Restaurant Category List",
+  "cookingCategoryList": "Cooking Category List"
 }
