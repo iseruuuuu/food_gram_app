@@ -79,6 +79,9 @@ class L10nJa extends L10n {
   String get settingsTutorial => 'チュートリアル';
 
   @override
+  String get settingsCredit => 'クレジット';
+
+  @override
   String get settingsBatteryLevel => 'バッテリー残量';
 
   @override
