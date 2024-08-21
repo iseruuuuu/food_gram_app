@@ -35,8 +35,6 @@ Future<PaginationList<Restaurant>> mapboxRestaurantApi(
         'limit': resultsPerPage,
       },
     );
-
-    print(response.realUri);
     if (response.statusCode == 200) {
       final data = response.data;
       final features = data['features'] as List<dynamic>;
