@@ -238,6 +238,12 @@ abstract class L10n {
   /// **'チュートリアル'**
   String get settingsTutorial;
 
+  /// No description provided for @settingsCredit.
+  ///
+  /// In ja, this message translates to:
+  /// **'クレジット'**
+  String get settingsCredit;
+
   /// No description provided for @settingsBatteryLevel.
   ///
   /// In ja, this message translates to:
