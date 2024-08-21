@@ -6,16 +6,20 @@ part 'env.g.dart';
 abstract class Env {
   @EnviedField(varName: 'MAP_LIBRE', obfuscate: true)
   static final String mapLibre = _Env.mapLibre;
-
+  @EnviedField(varName: 'HOT_PEPPER', obfuscate: true)
+  static final String hotPepper = _Env.hotPepper;
   @EnviedField(varName: 'MAPBOX', obfuscate: true)
   static final String mapbox = _Env.mapbox;
-
   @EnviedField(varName: 'IOS_AUTH_KEY', obfuscate: true)
   static final String iOSAuthKey = _Env.iOSAuthKey;
   @EnviedField(varName: 'ANDROID_AUTH_KEY', obfuscate: true)
   static final String androidAuthKey = _Env.androidAuthKey;
   @EnviedField(varName: 'WEB_AUTH_KEY', obfuscate: true)
   static final String webAuthKey = _Env.webAuthKey;
+  @EnviedField(varName: 'IOS_GOOGLE_APIKEY', obfuscate: true)
+  static final String iOSGoogleApikey = _Env.iOSGoogleApikey;
+  @EnviedField(varName: 'ANDROID_GOOGLE_APIKEY', obfuscate: true)
+  static final String androidGoogleApikey = _Env.androidGoogleApikey;
 }
 
 @Envied(path: '.env.dev')
