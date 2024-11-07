@@ -15,4 +15,4 @@ submit_android:
 	fvm flutter build appbundle --dart-define-from-file=dart_defines/prod.env
 
 widgetbook:
-	fvm flutter run -d macOS -t lib/widgetbook/widgetbook.dart
+	fvm flutter run -d Chrome -t lib/widgetbook/widgetbook.dart

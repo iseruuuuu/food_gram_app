@@ -44,9 +44,6 @@ app.*.map.json
 /android/app/release
 **/android/app/src/main/res/mipmap*/
 
-
-.fvm/flutter_sdk
-
 # freezed
 *.freezed.dart
 *.g.dart
@@ -67,3 +64,6 @@ lib/generated_plugin_registrant.dart
 *env.g.dart
 
 lib/constants/api_key.dart
+
+# FVM Version Cache
+.fvm/

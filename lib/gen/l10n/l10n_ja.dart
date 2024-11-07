@@ -2,6 +2,8 @@
 
 import 'l10n.dart';
 
+// ignore_for_file: type=lint
+
 /// The translations for Japanese (`ja`).
 class L10nJa extends L10n {
   L10nJa([String locale = 'ja']) : super(locale);
@@ -37,7 +39,7 @@ class L10nJa extends L10n {
   String get settingsAppBar => '基本設定';
 
   @override
-  String get settingsCheckVersion => '最新バージョンの確認';
+  String get settingsCheckVersion => 'アップデート';
 
   @override
   String get settingsCheckVersionDialogTitle => '更新情報';
@@ -55,19 +57,19 @@ class L10nJa extends L10n {
   String get settingsGithub => 'Github';
 
   @override
-  String get settingsReview => 'レビューで応援する';
+  String get settingsReview => 'レビューする';
 
   @override
   String get settingsLicense => 'ライセンス';
 
   @override
-  String get settingsShareApp => 'このアプリをシェアする';
+  String get settingsShareApp => 'シェアする';
 
   @override
   String get settingsFaq => 'FAQ';
 
   @override
-  String get settingsPrivacyPolicy => 'プライバシーポリシー';
+  String get settingsPrivacyPolicy => 'プライバシー';
 
   @override
   String get settingsTermsOfUse => '利用規約';
@@ -103,7 +105,7 @@ class L10nJa extends L10n {
   String get settingsLogoutButton => 'ログアウト';
 
   @override
-  String get settingsDeleteAccountButton => 'アカウントの削除申請';
+  String get settingsDeleteAccountButton => 'アカウント削除申請';
 
   @override
   String get postShareButton => 'シェア';
