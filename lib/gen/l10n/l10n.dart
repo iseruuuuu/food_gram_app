@@ -9,6 +9,8 @@ import 'package:intl/intl.dart' as intl;
 import 'l10n_en.dart';
 import 'l10n_ja.dart';
 
+// ignore_for_file: type=lint
+
 /// Callers can lookup localized strings with an instance of L10n
 /// returned by `L10n.of(context)`.
 ///
@@ -157,7 +159,7 @@ abstract class L10n {
   /// No description provided for @settingsCheckVersion.
   ///
   /// In ja, this message translates to:
-  /// **'最新バージョンの確認'**
+  /// **'アップデート'**
   String get settingsCheckVersion;
 
   /// No description provided for @settingsCheckVersionDialogTitle.
@@ -193,7 +195,7 @@ abstract class L10n {
   /// No description provided for @settingsReview.
   ///
   /// In ja, this message translates to:
-  /// **'レビューで応援する'**
+  /// **'レビューする'**
   String get settingsReview;
 
   /// No description provided for @settingsLicense.
@@ -205,7 +207,7 @@ abstract class L10n {
   /// No description provided for @settingsShareApp.
   ///
   /// In ja, this message translates to:
-  /// **'このアプリをシェアする'**
+  /// **'シェアする'**
   String get settingsShareApp;
 
   /// No description provided for @settingsFaq.
@@ -217,7 +219,7 @@ abstract class L10n {
   /// No description provided for @settingsPrivacyPolicy.
   ///
   /// In ja, this message translates to:
-  /// **'プライバシーポリシー'**
+  /// **'プライバシー'**
   String get settingsPrivacyPolicy;
 
   /// No description provided for @settingsTermsOfUse.
@@ -289,7 +291,7 @@ abstract class L10n {
   /// No description provided for @settingsDeleteAccountButton.
   ///
   /// In ja, this message translates to:
-  /// **'アカウントの削除申請'**
+  /// **'アカウント削除申請'**
   String get settingsDeleteAccountButton;
 
   /// No description provided for @postShareButton.
