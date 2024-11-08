@@ -25,6 +25,7 @@ class MapScreen extends HookConsumerWidget {
     final isTapPin = useState(false);
     final post = useState<List<Posts?>>([]);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: AsyncValueSwitcher(
         asyncValue: AsyncValueGroup.group2(location, mapService),
         onData: (value) {

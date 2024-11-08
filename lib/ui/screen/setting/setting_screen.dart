@@ -33,7 +33,10 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
     final state = ref.watch(settingViewModelProvider());
     final l10n = L10n.of(context);
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       body: Stack(
         children: [
           SingleChildScrollView(
