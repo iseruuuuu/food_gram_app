@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
 
 class TabScreen extends ConsumerWidget {
@@ -10,6 +11,7 @@ class TabScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(tabViewModelProvider());
     final controller = ref.watch(tabViewModelProvider().notifier);
+    final l10n = L10n.of(context);
     return Scaffold(
       body: controller.pageList[state.selectedIndex],
       bottomNavigationBar: Theme(
@@ -20,44 +22,44 @@ class TabScreen extends ConsumerWidget {
         child: BottomNavigationBar(
           currentIndex: state.selectedIndex,
           onTap: controller.onTap,
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
                 semanticLabel: 'timelineIcon',
               ),
-              label: '',
+              label: l10n.tabHome,
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 CupertinoIcons.map,
                 semanticLabel: 'mapIcon',
               ),
-              label: '',
+              label: l10n.tabMap,
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 CupertinoIcons.profile_circled,
                 semanticLabel: 'profileIcon',
               ),
-              label: '',
+              label: l10n.tabMyPage,
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.settings,
                 semanticLabel: 'settingIcon',
               ),
-              label: '',
+              label: l10n.tabSetting,
             ),
           ],
           type: BottomNavigationBarType.fixed,
-          iconSize: 35,
+          iconSize: 28,
           elevation: 0,
           backgroundColor: Colors.white,
           selectedItemColor: Colors.black,
           unselectedItemColor: Colors.grey,
-          showUnselectedLabels: false,
-          showSelectedLabels: false,
+          selectedFontSize: 8,
+          unselectedFontSize: 8,
         ),
       ),
     );

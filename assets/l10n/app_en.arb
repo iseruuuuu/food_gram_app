@@ -83,5 +83,9 @@
   "agreeToTheTermsOfUse": "Please agree to the Terms of Use",
   "appRestaurantLabel" : "Search Restaurant",
   "restaurantCategoryList": "Select a Cuisine by Country",
-  "cookingCategoryList": "Select a food category"
+  "cookingCategoryList": "Select a food category",
+  "tabHome": "Home",
+  "tabMap": "Map",
+  "tabMyPage": "My Page",
+  "tabSetting": "Setting"
 }
