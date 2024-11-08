@@ -605,6 +605,30 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'料理カテゴリーを選ぶ'**
   String get cookingCategoryList;
+
+  /// No description provided for @tabHome.
+  ///
+  /// In ja, this message translates to:
+  /// **'ホーム'**
+  String get tabHome;
+
+  /// No description provided for @tabMap.
+  ///
+  /// In ja, this message translates to:
+  /// **'マップ'**
+  String get tabMap;
+
+  /// No description provided for @tabMyPage.
+  ///
+  /// In ja, this message translates to:
+  /// **'マイページ'**
+  String get tabMyPage;
+
+  /// No description provided for @tabSetting.
+  ///
+  /// In ja, this message translates to:
+  /// **'設定'**
+  String get tabSetting;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

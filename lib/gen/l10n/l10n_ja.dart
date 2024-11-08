@@ -262,4 +262,16 @@ class L10nJa extends L10n {
 
   @override
   String get cookingCategoryList => '料理カテゴリーを選ぶ';
+
+  @override
+  String get tabHome => 'ホーム';
+
+  @override
+  String get tabMap => 'マップ';
+
+  @override
+  String get tabMyPage => 'マイページ';
+
+  @override
+  String get tabSetting => '設定';
 }

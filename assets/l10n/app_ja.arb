@@ -83,5 +83,9 @@
   "agreeToTheTermsOfUse": "利用規約に同意してください",
   "appRestaurantLabel" : "レストランを検索",
   "restaurantCategoryList": "国別料理を選ぶ",
-  "cookingCategoryList": "料理カテゴリーを選ぶ"
+  "cookingCategoryList": "料理カテゴリーを選ぶ",
+  "tabHome": "ホーム",
+  "tabMap": "マップ",
+  "tabMyPage": "マイページ",
+  "tabSetting": "設定"
 }
