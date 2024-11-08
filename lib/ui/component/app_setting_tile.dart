@@ -19,32 +19,34 @@ class AppSettingTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width / 3,
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: onTap,
-            child: CircleAvatar(
+    return InkWell(
+      onTap: onTap,
+      customBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width / 3,
+        child: Column(
+          children: [
+            CircleAvatar(
               backgroundColor: Colors.transparent,
-              // child: icon,
               child: Icon(
                 icon,
                 size: size ?? 28,
                 color: color ?? Colors.black,
               ),
             ),
-          ),
-          Gap(5),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
+            Gap(5),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          Gap(10),
-        ],
+            Gap(10),
+          ],
+        ),
       ),
     );
   }
