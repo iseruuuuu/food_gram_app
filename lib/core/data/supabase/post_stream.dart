@@ -19,6 +19,22 @@ Stream<List<Map<String, dynamic>>> postStream(PostStreamRef ref) {
 }
 
 @riverpod
+Stream<List<Map<String, dynamic>>> postHomeMadeStream(
+    PostHomeMadeStreamRef ref) {
+  final blockList = ref.watch(blockListProvider).asData?.value ?? [];
+  return supabase
+      .from('posts')
+      .stream(primaryKey: ['id'])
+      .eq('restaurant', '自炊')
+      .order('created_at')
+      .asyncMap(
+        (events) => events.where((post) {
+          return !blockList.contains(post['user_id']);
+        }).toList(),
+      );
+}
+
+@riverpod
 Future<List<String>> blockList(BlockListRef ref) {
   final preference = Preference();
   return preference.getStringList(PreferenceKey.blockList);

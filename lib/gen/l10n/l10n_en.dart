@@ -264,7 +264,7 @@ class L10nEn extends L10n {
   String get cookingCategoryList => 'Select a food category';
 
   @override
-  String get tabHome => 'Home';
+  String get tabHome => 'Food';
 
   @override
   String get tabMap => 'Map';

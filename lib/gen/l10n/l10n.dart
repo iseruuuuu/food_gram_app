@@ -609,7 +609,7 @@ abstract class L10n {
   /// No description provided for @tabHome.
   ///
   /// In ja, this message translates to:
-  /// **'ホーム'**
+  /// **'フード'**
   String get tabHome;
 
   /// No description provided for @tabMap.

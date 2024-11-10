@@ -25,7 +25,7 @@ class TabScreen extends ConsumerWidget {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.home,
+                Icons.fastfood_outlined,
                 semanticLabel: 'timelineIcon',
               ),
               label: l10n.tabHome,
