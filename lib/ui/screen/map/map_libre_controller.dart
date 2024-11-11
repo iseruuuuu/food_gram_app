@@ -28,7 +28,7 @@ class MapLibreController extends _$MapLibreController {
             SymbolOptions(
               geometry: LatLng(value[i].lat, value[i].lng),
               iconImage: 'pin',
-              iconSize: 0.2,
+              iconSize: 0.4,
             ),
           );
         }
