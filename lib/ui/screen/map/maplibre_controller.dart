@@ -5,7 +5,7 @@ import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'map_libre_controller.g.dart';
+part 'maplibre_controller.g.dart';
 
 @Riverpod(keepAlive: true)
 class MapLibreController extends _$MapLibreController {
@@ -28,13 +28,14 @@ class MapLibreController extends _$MapLibreController {
             SymbolOptions(
               geometry: LatLng(value[i].lat, value[i].lng),
               iconImage: 'pin',
-              iconSize: 0.2,
+              iconSize: 0.6,
             ),
           );
         }
       },
     );
     await controller.addSymbols(symbols);
+    await controller.setSymbolIconAllowOverlap(true);
     controller.onSymbolTapped.add((symbol) async {
       final latLng = symbol.options.geometry;
       final lat = latLng!.latitude;
