@@ -28,13 +28,14 @@ class MapLibreController extends _$MapLibreController {
             SymbolOptions(
               geometry: LatLng(value[i].lat, value[i].lng),
               iconImage: 'pin',
-              iconSize: 0.4,
+              iconSize: 0.6,
             ),
           );
         }
       },
     );
     await controller.addSymbols(symbols);
+    await controller.setSymbolIconAllowOverlap(true);
     controller.onSymbolTapped.add((symbol) async {
       final latLng = symbol.options.geometry;
       final lat = latLng!.latitude;
