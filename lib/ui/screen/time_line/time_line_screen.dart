@@ -84,9 +84,12 @@ class FoodListView extends ConsumerWidget {
       data: (data) => AppListView(
         data: data,
         routerPath: RouterPath.timeLineDetailPost,
-        refresh: () => ref
-          ..invalidate(postStreamProvider)
-          ..invalidate(blockListProvider),
+        refresh: () {
+          ref
+            ..invalidate(postStreamProvider)
+            ..invalidate(postHomeMadeStreamProvider)
+            ..invalidate(blockListProvider);
+        },
       ),
       error: (_, __) => AppErrorWidget(
         onTap: () => ref.refresh(postStreamProvider),
