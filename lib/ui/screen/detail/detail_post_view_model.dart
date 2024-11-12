@@ -1,5 +1,6 @@
 import 'package:food_gram_app/core/config/shared_preference/shared_preference.dart';
 import 'package:food_gram_app/core/data/supabase/database_service.dart';
+import 'package:food_gram_app/core/data/supabase/post_stream.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
@@ -24,8 +25,11 @@ class DetailPostViewModel extends _$DetailPostViewModel {
     final result = await ref.read(databaseServiceProvider).delete(posts);
     await result.when(
       success: (_) async {
-        await Future.delayed(Duration(seconds: 3));
         state = state.copyWith(isSuccess: true);
+        ref
+          ..invalidate(postStreamProvider)
+          ..invalidate(postHomeMadeStreamProvider)
+          ..invalidate(blockListProvider);
       },
       failure: (_) {
         state = state.copyWith(isSuccess: false);

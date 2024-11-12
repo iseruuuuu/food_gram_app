@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/ui/component/modal_sheet/app_detail_modal_sheet.dart';
-import 'package:food_gram_app/ui/component/modal_sheet/app_modal_sheet.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/app_detail_my_info_modal_sheet.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/app_detail_other_info_modal_sheet.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
 import 'package:food_gram_app/widgetbook/ui/fake_data/fake_data.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
@@ -32,16 +34,16 @@ AppDetailMyInfoModalSheet appDetailMyInfoModalSheet(BuildContext context) {
 /// app_modal_sheet
 @widgetbook.UseCase(
   name: 'RestaurantInfoModalSheet',
-  type: RestaurantInfoModalSheet,
+  type: AppMapRestaurantModalSheet,
 )
-RestaurantInfoModalSheet restaurantInfoModalSheet(BuildContext context) {
-  return RestaurantInfoModalSheet(post: [fakePosts]);
+AppMapRestaurantModalSheet restaurantInfoModalSheet(BuildContext context) {
+  return AppMapRestaurantModalSheet(post: [fakePosts]);
 }
 
 @widgetbook.UseCase(
   name: 'AppImageModalSheet',
-  type: AppImageModalSheet,
+  type: AppPostImageModalSheet,
 )
-AppImageModalSheet appImageModalSheet(BuildContext context) {
-  return AppImageModalSheet(camera: () {}, album: () {});
+AppPostImageModalSheet appImageModalSheet(BuildContext context) {
+  return AppPostImageModalSheet(camera: () {}, album: () {});
 }
