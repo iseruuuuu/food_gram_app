@@ -120,10 +120,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                         'https://www.google.com/maps/search/?api=1&query=${posts.restaurant}',
                       );
                     } else {
-                      openErrorSnackBar(
-                        context,
-                        l10n.postSearchError,
-                      );
+                      openErrorSnackBar(context, l10n.postSearchError, '');
                     }
                   },
                   child: Row(

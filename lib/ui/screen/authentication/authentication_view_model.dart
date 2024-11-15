@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/data/supabase/auth_service.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
@@ -34,15 +35,23 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       await result.when(
         success: (_) async {
           await Future.delayed(Duration(seconds: 2));
-          openSuccessSnackBar(context, 'メールアプリで認証をしてください');
+          openSuccessSnackBar(context, L10n.of(context).emailAuthentication);
         },
         failure: (error) {
           logger.e(error);
-          openErrorSnackBar(context, error);
+          openErrorSnackBar(
+            context,
+            error,
+            L10n.of(context).emailAuthenticationFailure,
+          );
         },
       );
     } else {
-      openErrorSnackBar(context, 'メールアドレスが入力されていません');
+      openErrorSnackBar(
+        context,
+        L10n.of(context).emailEmpty,
+        L10n.of(context).loginError,
+      );
     }
     loading.state = false;
   }
@@ -52,11 +61,15 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     final result = await ref.read(authServiceProvider).loginApple();
     await result.when(
       success: (_) async {
-        state = state.copyWith(loginStatus: 'ログイン成功');
+        state = state.copyWith(loginStatus: L10n.of(context).loginSuccessful);
       },
       failure: (error) {
         logger.e(error);
-        openErrorSnackBar(context, 'エラーが発生しました');
+        openErrorSnackBar(
+          context,
+          L10n.of(context).error,
+          L10n.of(context).loginError,
+        );
       },
     );
   }
@@ -66,11 +79,17 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     final result = await ref.read(authServiceProvider).loginGoogle();
     await result.when(
       success: (_) async {
-        state = state.copyWith(loginStatus: 'ログイン成功');
+        state = state.copyWith(
+          loginStatus: L10n.of(context).loginSuccessful,
+        );
       },
       failure: (error) {
         logger.e(error);
-        openErrorSnackBar(context, 'エラーが発生しました');
+        openErrorSnackBar(
+          context,
+          L10n.of(context).error,
+          L10n.of(context).loginError,
+        );
       },
     );
   }

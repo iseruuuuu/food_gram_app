@@ -126,6 +126,9 @@ class L10nEn extends L10n {
   String get postCommentInputField => 'Comment (optional)';
 
   @override
+  String get postError => 'Submission failure';
+
+  @override
   String get editUpdateButton => 'Update';
 
   @override
@@ -274,4 +277,58 @@ class L10nEn extends L10n {
 
   @override
   String get tabSetting => 'Setting';
+
+  @override
+  String get logoutFailure => 'Logout failure';
+
+  @override
+  String get accountDeletionFailure => 'Account deletion failure';
+
+  @override
+  String get appleLoginFailure => 'Apple login not available';
+
+  @override
+  String get emailAuthenticationFailure => 'Email authentication failure';
+
+  @override
+  String get loginError => 'Login Error';
+
+  @override
+  String get loginSuccessful => 'Successful login';
+
+  @override
+  String get emailAuthentication => 'Authenticate with your email application';
+
+  @override
+  String get emailEmpty => 'No email address has been entered';
+
+  @override
+  String get error => 'Errors have occurred';
+
+  @override
+  String get appRequestTitle => '🙇 Turn on the current location 🙇';
+
+  @override
+  String get appRequestReason => 'Current location data is required for restaurant selection';
+
+  @override
+  String get appRequestInduction => 'The following buttons take you to the settings screen';
+
+  @override
+  String get appRequestOpenSetting => 'Open the settings screen';
+
+  @override
+  String get email => 'Email Address';
+
+  @override
+  String get enterTheCorrectFormat => 'Please enter the correct format';
+
+  @override
+  String get camera => 'Camera';
+
+  @override
+  String get album => 'Album';
+
+  @override
+  String get snsLogin => 'SNS login';
 }

@@ -156,8 +156,9 @@ class AppAuthTextField extends StatelessWidget {
       child: TextFormField(
         onTap: ScaffoldMessenger.of(context).hideCurrentSnackBar,
         autovalidateMode: AutovalidateMode.always,
-        validator: (value) =>
-            value!.isValidEmail() || value.isEmpty ? null : '正しい形式で入力してください',
+        validator: (value) => value!.isValidEmail() || value.isEmpty
+            ? null
+            : L10n.of(context).enterTheCorrectFormat,
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9@.+_-]')),
         ],
@@ -170,7 +171,7 @@ class AppAuthTextField extends StatelessWidget {
             ),
         decoration: InputDecoration(
           alignLabelWithHint: true,
-          labelText: 'メールアドレス',
+          labelText: L10n.of(context).email,
           labelStyle: Theme.of(context)
               .textTheme
               .bodyLarge!
