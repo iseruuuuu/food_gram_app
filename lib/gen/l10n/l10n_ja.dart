@@ -126,6 +126,9 @@ class L10nJa extends L10n {
   String get postCommentInputField => 'コメント(任意)';
 
   @override
+  String get postError => '投稿失敗';
+
+  @override
   String get editUpdateButton => '更新';
 
   @override
@@ -274,4 +277,19 @@ class L10nJa extends L10n {
 
   @override
   String get tabSetting => '設定';
+
+  @override
+  String get logoutFailure => 'ログアウト失敗';
+
+  @override
+  String get accountDeletionFailure => 'アカウント削除失敗';
+
+  @override
+  String get appleLoginFailure => 'Appleログインはできません';
+
+  @override
+  String get emailAuthenticationFailure => 'メール認証の失敗';
+
+  @override
+  String get loginError => 'ログインエラー';
 }

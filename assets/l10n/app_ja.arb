@@ -38,6 +38,7 @@
   "postRestaurantNameInputField": "レストラン名を追加",
   "postComment": "コメントを入力",
   "postCommentInputField": "コメント(任意)",
+  "postError": "投稿失敗",
   "editUpdateButton": "更新",
   "editBio": "自己紹介(任意)",
   "editBioInputField": "自己紹介を入力してください",
@@ -87,5 +88,10 @@
   "tabHome": "フード",
   "tabMap": "マップ",
   "tabMyPage": "マイページ",
-  "tabSetting": "設定"
+  "tabSetting": "設定",
+  "logoutFailure":"ログアウト失敗",
+  "accountDeletionFailure": "アカウント削除失敗",
+  "appleLoginFailure": "Appleログインはできません",
+  "emailAuthenticationFailure": "メール認証の失敗",
+  "loginError": "ログインエラー"
 }

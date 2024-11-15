@@ -330,6 +330,12 @@ abstract class L10n {
   /// **'コメント(任意)'**
   String get postCommentInputField;
 
+  /// No description provided for @postError.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿失敗'**
+  String get postError;
+
   /// No description provided for @editUpdateButton.
   ///
   /// In ja, this message translates to:
@@ -629,6 +635,36 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'設定'**
   String get tabSetting;
+
+  /// No description provided for @logoutFailure.
+  ///
+  /// In ja, this message translates to:
+  /// **'ログアウト失敗'**
+  String get logoutFailure;
+
+  /// No description provided for @accountDeletionFailure.
+  ///
+  /// In ja, this message translates to:
+  /// **'アカウント削除失敗'**
+  String get accountDeletionFailure;
+
+  /// No description provided for @appleLoginFailure.
+  ///
+  /// In ja, this message translates to:
+  /// **'Appleログインはできません'**
+  String get appleLoginFailure;
+
+  /// No description provided for @emailAuthenticationFailure.
+  ///
+  /// In ja, this message translates to:
+  /// **'メール認証の失敗'**
+  String get emailAuthenticationFailure;
+
+  /// No description provided for @loginError.
+  ///
+  /// In ja, this message translates to:
+  /// **'ログインエラー'**
+  String get loginError;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

@@ -126,6 +126,9 @@ class L10nEn extends L10n {
   String get postCommentInputField => 'Comment (optional)';
 
   @override
+  String get postError => 'Submission failure';
+
+  @override
   String get editUpdateButton => 'Update';
 
   @override
@@ -274,4 +277,19 @@ class L10nEn extends L10n {
 
   @override
   String get tabSetting => 'Setting';
+
+  @override
+  String get logoutFailure => 'Logout failure';
+
+  @override
+  String get accountDeletionFailure => 'Account deletion failure';
+
+  @override
+  String get appleLoginFailure => 'Apple login not available';
+
+  @override
+  String get emailAuthenticationFailure => 'Email authentication failure';
+
+  @override
+  String get loginError => 'Login Error';
 }
