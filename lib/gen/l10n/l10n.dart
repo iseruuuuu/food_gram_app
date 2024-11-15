@@ -665,6 +665,84 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'ログインエラー'**
   String get loginError;
+
+  /// No description provided for @loginSuccessful.
+  ///
+  /// In ja, this message translates to:
+  /// **'ログイン成功'**
+  String get loginSuccessful;
+
+  /// No description provided for @emailAuthentication.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールアプリで認証をしてください'**
+  String get emailAuthentication;
+
+  /// No description provided for @emailEmpty.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールアドレスが入力されていません'**
+  String get emailEmpty;
+
+  /// No description provided for @error.
+  ///
+  /// In ja, this message translates to:
+  /// **'エラーが発生しました'**
+  String get error;
+
+  /// No description provided for @appRequestTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'🙇現在地をオンにしてください🙇'**
+  String get appRequestTitle;
+
+  /// No description provided for @appRequestReason.
+  ///
+  /// In ja, this message translates to:
+  /// **'レストランの選択には現在地のデータが必要になります'**
+  String get appRequestReason;
+
+  /// No description provided for @appRequestInduction.
+  ///
+  /// In ja, this message translates to:
+  /// **'以下のボタンから設定画面に遷移します'**
+  String get appRequestInduction;
+
+  /// No description provided for @appRequestOpenSetting.
+  ///
+  /// In ja, this message translates to:
+  /// **'設定画面を開く'**
+  String get appRequestOpenSetting;
+
+  /// No description provided for @email.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールアドレス'**
+  String get email;
+
+  /// No description provided for @enterTheCorrectFormat.
+  ///
+  /// In ja, this message translates to:
+  /// **'正しい形式で入力してください'**
+  String get enterTheCorrectFormat;
+
+  /// No description provided for @camera.
+  ///
+  /// In ja, this message translates to:
+  /// **'カメラ'**
+  String get camera;
+
+  /// No description provided for @album.
+  ///
+  /// In ja, this message translates to:
+  /// **'アルバム'**
+  String get album;
+
+  /// No description provided for @snsLogin.
+  ///
+  /// In ja, this message translates to:
+  /// **'SNSログイン'**
+  String get snsLogin;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

@@ -93,5 +93,19 @@
   "accountDeletionFailure": "Account deletion failure",
   "appleLoginFailure": "Apple login not available",
   "emailAuthenticationFailure": "Email authentication failure",
-  "loginError": "Login Error"
+  "loginError": "Login Error",
+  "loginSuccessful": "Successful login",
+  "emailAuthentication": "Authenticate with your email application",
+  "emailEmpty": "No email address has been entered",
+  "error": "Errors have occurred",
+  "appRequestTitle": "🙇 Turn on the current location 🙇",
+  "appRequestReason":"Current location data is required for restaurant selection",
+  "appRequestInduction": "The following buttons take you to the settings screen",
+  "appRequestOpenSetting": "Open the settings screen",
+  "email": "Email Address",
+  "enterTheCorrectFormat": "Please enter the correct format",
+  "camera": "Camera",
+  "album": "Album",
+  "close": "Close",
+  "snsLogin": "SNS login"
 }

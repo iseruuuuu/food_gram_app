@@ -35,7 +35,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       await result.when(
         success: (_) async {
           await Future.delayed(Duration(seconds: 2));
-          openSuccessSnackBar(context, 'メールアプリで認証をしてください');
+          openSuccessSnackBar(context, L10n.of(context).emailAuthentication);
         },
         failure: (error) {
           logger.e(error);
@@ -49,7 +49,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     } else {
       openErrorSnackBar(
         context,
-        'メールアドレスが入力されていません',
+        L10n.of(context).emailEmpty,
         L10n.of(context).loginError,
       );
     }
@@ -61,13 +61,13 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     final result = await ref.read(authServiceProvider).loginApple();
     await result.when(
       success: (_) async {
-        state = state.copyWith(loginStatus: 'ログイン成功');
+        state = state.copyWith(loginStatus: L10n.of(context).loginSuccessful);
       },
       failure: (error) {
         logger.e(error);
         openErrorSnackBar(
           context,
-          'エラーが発生しました',
+          L10n.of(context).error,
           L10n.of(context).loginError,
         );
       },
@@ -79,13 +79,15 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     final result = await ref.read(authServiceProvider).loginGoogle();
     await result.when(
       success: (_) async {
-        state = state.copyWith(loginStatus: 'ログイン成功');
+        state = state.copyWith(
+          loginStatus: L10n.of(context).loginSuccessful,
+        );
       },
       failure: (error) {
         logger.e(error);
         openErrorSnackBar(
           context,
-          'エラーが発生しました',
+          L10n.of(context).error,
           L10n.of(context).loginError,
         );
       },

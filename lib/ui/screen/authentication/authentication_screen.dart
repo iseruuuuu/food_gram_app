@@ -112,7 +112,7 @@ class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
                     Divider(),
                     Gap(24),
                     Text(
-                      'SNSログイン',
+                      L10n.of(context).snsLogin,
                       style: theme.textTheme.titleLarge!.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,

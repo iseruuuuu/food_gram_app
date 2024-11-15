@@ -1,5 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 
 void openErrorSnackBar(BuildContext context, String message, String title) {
   final snackBar = SnackBar(
@@ -25,7 +26,7 @@ void openSuccessSnackBar(BuildContext context, String message) {
     backgroundColor: Colors.transparent,
     duration: const Duration(seconds: 2),
     content: AwesomeSnackbarContent(
-      title: 'ログイン成功',
+      title: L10n.of(context).loginSuccessful,
       message: message,
       contentType: ContentType.success,
     ),

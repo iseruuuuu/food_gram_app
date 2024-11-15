@@ -18,7 +18,6 @@ class MyApp extends ConsumerWidget {
         ...L10n.supportedLocales,
       ],
       routerConfig: ref.watch(routerProvider),
-      title: 'Flutter Demo',
       debugShowCheckedModeBanner: kReleaseMode,
       theme: ThemeData(
         inputDecorationTheme: const InputDecorationTheme(

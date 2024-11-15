@@ -292,4 +292,43 @@ class L10nJa extends L10n {
 
   @override
   String get loginError => 'ログインエラー';
+
+  @override
+  String get loginSuccessful => 'ログイン成功';
+
+  @override
+  String get emailAuthentication => 'メールアプリで認証をしてください';
+
+  @override
+  String get emailEmpty => 'メールアドレスが入力されていません';
+
+  @override
+  String get error => 'エラーが発生しました';
+
+  @override
+  String get appRequestTitle => '🙇現在地をオンにしてください🙇';
+
+  @override
+  String get appRequestReason => 'レストランの選択には現在地のデータが必要になります';
+
+  @override
+  String get appRequestInduction => '以下のボタンから設定画面に遷移します';
+
+  @override
+  String get appRequestOpenSetting => '設定画面を開く';
+
+  @override
+  String get email => 'メールアドレス';
+
+  @override
+  String get enterTheCorrectFormat => '正しい形式で入力してください';
+
+  @override
+  String get camera => 'カメラ';
+
+  @override
+  String get album => 'アルバム';
+
+  @override
+  String get snsLogin => 'SNSログイン';
 }

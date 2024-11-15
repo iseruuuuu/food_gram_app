@@ -93,5 +93,19 @@
   "accountDeletionFailure": "アカウント削除失敗",
   "appleLoginFailure": "Appleログインはできません",
   "emailAuthenticationFailure": "メール認証の失敗",
-  "loginError": "ログインエラー"
+  "loginError": "ログインエラー",
+  "loginSuccessful": "ログイン成功",
+  "emailAuthentication": "メールアプリで認証をしてください",
+  "emailEmpty": "メールアドレスが入力されていません",
+  "error": "エラーが発生しました",
+  "appRequestTitle": "🙇現在地をオンにしてください🙇",
+  "appRequestReason":"レストランの選択には現在地のデータが必要になります",
+  "appRequestInduction": "以下のボタンから設定画面に遷移します",
+  "appRequestOpenSetting": "設定画面を開く",
+  "email": "メールアドレス",
+  "enterTheCorrectFormat": "正しい形式で入力してください",
+  "camera": "カメラ",
+  "album": "アルバム",
+  "close": "閉じる",
+  "snsLogin": "SNSログイン"
 }

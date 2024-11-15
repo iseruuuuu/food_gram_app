@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 
 class AppPostImageModalSheet extends StatelessWidget {
@@ -35,7 +36,7 @@ class AppPostImageModalSheet extends StatelessWidget {
                     camera();
                   },
                   child: Text(
-                    'カメラ',
+                    L10n.of(context).camera,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -54,7 +55,7 @@ class AppPostImageModalSheet extends StatelessWidget {
                   album();
                 },
                 child: Text(
-                  'アルバム',
+                  L10n.of(context).album,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -69,7 +70,7 @@ class AppPostImageModalSheet extends StatelessWidget {
               child: TextButton(
                 onPressed: () => context.pop(),
                 child: Text(
-                  '閉じる',
+                  L10n.of(context).close,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,

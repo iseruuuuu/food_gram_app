@@ -1,11 +1,13 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 
 class AppRequest extends StatelessWidget {
   const AppRequest({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -13,7 +15,7 @@ class AppRequest extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '🙇現在地をオンにしてください🙇',
+              l10n.appRequestTitle,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -21,17 +23,13 @@ class AppRequest extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              'レストランの選択には現在地のデータが必要になります',
-              style: TextStyle(
-                fontSize: 15,
-              ),
+              l10n.appRequestReason,
+              style: TextStyle(fontSize: 15),
             ),
             SizedBox(height: 20),
             Text(
-              '以下のボタンから設定画面に遷移します',
-              style: TextStyle(
-                fontSize: 15,
-              ),
+              l10n.appRequestInduction,
+              style: TextStyle(fontSize: 15),
             ),
             SizedBox(height: 50),
             TextButton(
@@ -39,11 +37,8 @@ class AppRequest extends StatelessWidget {
                 AppSettings.openAppSettings(type: AppSettingsType.location);
               },
               child: Text(
-                '設定画面を開く',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 15,
-                ),
+                l10n.appRequestOpenSetting,
+                style: TextStyle(color: Colors.blue, fontSize: 15),
               ),
             ),
           ],
