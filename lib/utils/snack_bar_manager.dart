@@ -1,14 +1,14 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 
-void openErrorSnackBar(BuildContext context, String message) {
+void openErrorSnackBar(BuildContext context, String message, String title) {
   final snackBar = SnackBar(
     elevation: 0,
     behavior: SnackBarBehavior.floating,
     backgroundColor: Colors.transparent,
-    duration: const Duration(seconds: 100),
+    duration: const Duration(seconds: 2),
     content: AwesomeSnackbarContent(
-      title: 'ログイン失敗',
+      title: title,
       message: message,
       contentType: ContentType.failure,
     ),
@@ -23,7 +23,7 @@ void openSuccessSnackBar(BuildContext context, String message) {
     elevation: 0,
     behavior: SnackBarBehavior.floating,
     backgroundColor: Colors.transparent,
-    duration: const Duration(seconds: 100),
+    duration: const Duration(seconds: 2),
     content: AwesomeSnackbarContent(
       title: 'ログイン成功',
       message: message,
