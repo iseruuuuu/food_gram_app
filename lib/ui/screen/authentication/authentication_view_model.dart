@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/data/supabase/auth_service.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
@@ -38,11 +39,19 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         },
         failure: (error) {
           logger.e(error);
-          openErrorSnackBar(context, error);
+          openErrorSnackBar(
+            context,
+            error,
+            L10n.of(context).emailAuthenticationFailure,
+          );
         },
       );
     } else {
-      openErrorSnackBar(context, 'メールアドレスが入力されていません');
+      openErrorSnackBar(
+        context,
+        'メールアドレスが入力されていません',
+        L10n.of(context).loginError,
+      );
     }
     loading.state = false;
   }
@@ -56,7 +65,11 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       },
       failure: (error) {
         logger.e(error);
-        openErrorSnackBar(context, 'エラーが発生しました');
+        openErrorSnackBar(
+          context,
+          'エラーが発生しました',
+          L10n.of(context).loginError,
+        );
       },
     );
   }
@@ -70,7 +83,11 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       },
       failure: (error) {
         logger.e(error);
-        openErrorSnackBar(context, 'エラーが発生しました');
+        openErrorSnackBar(
+          context,
+          'エラーが発生しました',
+          L10n.of(context).loginError,
+        );
       },
     );
   }

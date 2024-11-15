@@ -83,7 +83,11 @@ class PostScreen extends HookConsumerWidget {
                         if (result) {
                           context.pop(true);
                         } else {
-                          openErrorSnackBar(context, updatedState.status);
+                          openErrorSnackBar(
+                            context,
+                            updatedState.status,
+                            L10n.of(context).postError,
+                          );
                         }
                       },
                     );

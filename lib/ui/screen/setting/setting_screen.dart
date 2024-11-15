@@ -265,7 +265,11 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                                         );
                                       }
                                     } else {
-                                      openErrorSnackBar(context, 'ログアウト失敗');
+                                      openErrorSnackBar(
+                                        context,
+                                        l10n.logoutFailure,
+                                        '',
+                                      );
                                     }
                                   },
                                 );
@@ -287,7 +291,11 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                         )
                             .then((value) {
                           if (!value) {
-                            openErrorSnackBar(context, 'アカウント削除失敗');
+                            openErrorSnackBar(
+                              context,
+                              l10n.accountDeletionFailure,
+                              '',
+                            );
                           }
                         });
                       },
