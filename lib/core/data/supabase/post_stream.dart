@@ -10,6 +10,7 @@ Stream<List<Map<String, dynamic>>> postStream(PostStreamRef ref) {
   return supabase
       .from('posts')
       .stream(primaryKey: ['id'])
+      .neq('restaurant', '自炊')
       .order('created_at')
       .asyncMap(
         (events) => events.where((post) {
