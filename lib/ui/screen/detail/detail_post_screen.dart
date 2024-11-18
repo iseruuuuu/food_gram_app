@@ -75,8 +75,8 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
           actions: [
             if (!loading)
               IconButton(
-                onPressed: () async {
-                  await showModalBottomSheet(
+                onPressed: () {
+                  showModalBottomSheet(
                     context: context,
                     builder: (context) {
                       if (user == Env.masterAccount) {
