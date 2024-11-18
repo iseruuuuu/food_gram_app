@@ -57,8 +57,8 @@ class AppDetailMasterModalSheet extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(0),
                     ),
                   ),
-                  onPressed: () async {
-                    await showDialog(
+                  onPressed: () {
+                    showDialog(
                       context: context,
                       barrierDismissible: false,
                       builder: (context) {
