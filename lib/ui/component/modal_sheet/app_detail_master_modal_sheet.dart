@@ -64,7 +64,7 @@ class AppDetailMasterModalSheet extends ConsumerWidget {
                       builder: (context) {
                         return AppDialog(
                           title: 'マスター権限の投稿削除',
-                          subTitle: '不正な投稿や',
+                          subTitle: '不正な投稿と自分の投稿を削除するために使用します',
                           onTap: () async {
                             context
                               ..pop()
