@@ -20,6 +20,8 @@ abstract class Env {
   static final String iOSGoogleApikey = _Env.iOSGoogleApikey;
   @EnviedField(varName: 'ANDROID_GOOGLE_APIKEY', obfuscate: true)
   static final String androidGoogleApikey = _Env.androidGoogleApikey;
+  @EnviedField(varName: 'MASTER_ACCOUNT', obfuscate: true)
+  static final String masterAccount = _Env.masterAccount;
 }
 
 @Envied(path: '.env.dev')
