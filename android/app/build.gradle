@@ -49,10 +49,12 @@ if (keystorePropertiesFile.exists()) {
 }
 
 task copySources(type: Copy) {
-    from "src/$flavor/res"
+    from "src/${dartDefines.flavor}/res"
     into 'src/main/res'
 }
-tasks.whenTaskAdded { task -> task.dependsOn copySources
+
+tasks.whenTaskAdded { task ->
+    task.dependsOn copySources
 }
 
 android {
@@ -81,7 +83,7 @@ android {
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        resValue "string", "app_name", appName
+        resValue "string", "app_name", "${dartDefines.appName}"
         manifestPlaceholders += [googleMapApiKey: secretProperties.getProperty('googleMap.apiKey'),]
     }
 
