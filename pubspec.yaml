@@ -28,6 +28,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_riverpod: ^2.4.5
+  flutter_sliding_tutorial: ^2.0.0+1
   font_awesome_flutter: ^10.7.0
   freezed_annotation: ^2.4.1
   gap: ^3.0.1
@@ -40,7 +41,6 @@ dependencies:
   image_picker: ^1.0.4
   in_app_review: ^2.0.8
   intl: ^0.19.0
-  introduction_screen: ^3.1.12
   json_annotation: ^4.8.1
   loading_animation_widget: ^1.2.0+4
   logger: ^2.0.2+1

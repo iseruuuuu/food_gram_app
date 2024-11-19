@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sliding_tutorial/flutter_sliding_tutorial.dart';
 import 'package:food_gram_app/core/config/shared_preference/shared_preference.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:introduction_screen/introduction_screen.dart';
 
 class TutorialScreen extends StatefulWidget {
   const TutorialScreen({super.key});
@@ -16,6 +17,8 @@ class TutorialScreen extends StatefulWidget {
 class _TutorialScreenState extends State<TutorialScreen> {
   bool isAccept = false;
   bool isFinishedTutorial = false;
+  final ValueNotifier<double> notifier = ValueNotifier(0);
+  final PageController pageController = PageController();
   final preference = Preference();
 
   @override
@@ -29,226 +32,213 @@ class _TutorialScreenState extends State<TutorialScreen> {
     isFinishedTutorial = await preference.getBool(
       PreferenceKey.isFinishedTutorial,
     );
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    final imageHeight = MediaQuery.sizeOf(context).height;
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: IntroductionScreen(
-          globalBackgroundColor: Colors.white,
-          pages: [
-            PageViewModel(
-              reverse: true,
-              titleWidget: Row(
+      body: Stack(
+        children: [
+          SlidingTutorial(
+            controller: pageController,
+            notifier: notifier,
+            pageCount: 3,
+            pages: [
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Assets.icon.icon1.image(width: 35),
-                  SizedBox(width: 10),
-                  Text(
-                    'みんなの美味しいがここに',
+                  Spacer(),
+                  const Text(
+                    '美味しい瞬間、シェアしよう',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
                       fontSize: 20,
-                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(width: 10),
-                  Assets.icon.icon1.image(width: 35),
-                ],
-              ),
-              bodyWidget: Column(
-                children: [
+                  Gap(10),
                   Text(
-                    'FoodGramで、毎日の食事がもっと特別に。\n'
-                    '新しい味との出会いを楽しみましょう。',
+                    'FoodGramで、毎日の食事がもっと特別に\n'
+                    '新しい味との出会いを楽しもう',
+                    style: TextStyle(fontSize: 14),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 15,
-                      color: Colors.black,
-                    ),
                   ),
-                  SizedBox(height: 30),
-                  Assets.image.tutorial1.image(
-                    height: MediaQuery.sizeOf(context).height / 2,
-                  ),
+                  Gap(20),
+                  Assets.image.tutorial1.image(height: imageHeight / 1.5),
+                  Spacer(),
                 ],
               ),
-            ),
-            PageViewModel(
-              reverse: true,
-              titleWidget: Row(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Assets.icon.icon2.image(width: 35),
-                  SizedBox(width: 5),
-                  Text(
-                    '美味しい瞬間、シェアをしよう',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
+                  Spacer(),
+                  const Text(
+                    'みんなで作る、特別なフードマップ',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(width: 5),
-                  Assets.icon.icon1.image(width: 35),
-                ],
-              ),
-              bodyWidget: Column(
-                children: [
-                  Text(
-                    'FoodGramで食の世界が広がる。\n'
-                    '今すぐ参加し、食の喜びを共有しよう。\n',
+                  Gap(10),
+                  const Text(
+                    'このアプリだけのマップ作りをしよう\n'
+                    'あなたの投稿でマップが進化していく',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 15,
-                      color: Colors.black,
-                    ),
+                    style: TextStyle(fontSize: 14),
                   ),
-                  SizedBox(height: 10),
-                  Assets.image.tutorial2.image(
-                    height: MediaQuery.sizeOf(context).height / 2,
-                  ),
+                  Gap(20),
+                  Assets.image.tutorial2.image(height: imageHeight / 1.5),
+                  Spacer(),
                 ],
               ),
-            ),
-            PageViewModel(
-              titleWidget: Row(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Assets.icon.icon3.image(width: 35),
-                  SizedBox(width: 5),
-                  Text(
-                    '利用規約',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 20,
-                    ),
-                  ),
-                  SizedBox(width: 5),
-                  Assets.icon.icon3.image(width: 35),
-                ],
-              ),
-              bodyWidget: DecoratedBox(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey, width: 2),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
-                  ),
-                  child: Column(
+                  Spacer(),
+                  Gap(30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        '・氏名、住所、電話番号などの個人情報を公開しないようにしましょう。'
-                        'また、位置情報の共有にも注意が必要です。\n\n'
-                        '・不適切なコンテンツへの注意：攻撃的、不適切、または有害なコンテンツを投稿したり、'
-                        '共有しないようにしましょう。\n\n'
-                        '・他人の作品を無断で使用したり、アプリの利用規約に反する行為は避けましょう。\n\n'
-                        '・食べ物以外の投稿が確認された場合は、運営側で削除させていただく場合がございます。\n\n'
-                        '・注意事項を何度も違反しているユーザーについては、運営側で削除させていただく場合がございます。\n\n'
-                        '・好ましくないコンテンツや虐待的なユーザー出会った場合についても運営側で削除させていただく'
-                        '場合がございます。\n\n'
-                        '・このアプリの開発は個人で行なっているため、不完全な部分があるかもしれません。\n\n'
-                        '・気になったことがあった場合は、運営側にお気軽にご連絡ください。\n\n'
-                        '・最後に、いいサービスにしていくためにご協力お願いします🙇  by 開発者',
+                      Gap(10),
+                      Assets.gif.tutorial1.image(width: 60),
+                      const Text(
+                        '利用規約',
                         style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 15,
-                          color: Colors.black,
-                        ),
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      if (!isFinishedTutorial)
-                        Padding(
-                          padding: const EdgeInsets.all(30),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Transform.scale(
-                                scale: 1.5,
-                                child: Checkbox(
-                                  checkColor: Colors.white,
-                                  activeColor: Colors.blue,
-                                  value: isAccept,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      isAccept = value!;
-                                    });
-                                  },
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                '利用規約に同意する',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      else
-                        SizedBox(),
+                      Assets.gif.tutorial1.image(width: 60),
+                      Gap(10),
                     ],
                   ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(
+                      '・氏名、住所、電話番号などの個人情報や位置情報の公開には注意しましょう。\n\n'
+                      '・攻撃的、不適切、または有害なコンテンツの投稿を避け、他人の作品を無断で使用しないようにしましょう。\n\n'
+                      '・食べ物以外の投稿は削除させていただく場合があります。\n\n'
+                      '・違反が繰り返されるユーザーや不快なコンテンツは運営側で削除します。\n\n'
+                      '・アプリには不完全な部分があるかもしれませんので、ご理解ください。\n\n'
+                      '・みなさんと一緒にこのアプリをより良くしていけることを楽しみにしています。\n\n'
+                      '・サービス向上のため、ご協力お願いします🙇 by 開発者',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '利用規約に同意する',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      Gap(10),
+                      Checkbox(
+                        checkColor: Colors.white,
+                        activeColor: Colors.black,
+                        value: isAccept,
+                        onChanged: (value) {
+                          setState(() {
+                            isAccept = value ?? false;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Spacer(),
+                  SizedBox(
+                    width: 200,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: isAccept
+                          ? () async {
+                              if (!isFinishedTutorial) {
+                                await preference
+                                    .setBool(PreferenceKey.isFinishedTutorial);
+                                context.go(RouterPath.splash);
+                              } else {
+                                context.pop();
+                              }
+                            }
+                          : null,
+                      child: const Text(
+                        '閉じる',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Spacer(),
+                ],
+              ),
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  icon: Icon(Icons.arrow_forward_ios),
+                  onPressed: () {
+                    if (pageController.page?.toInt() == 2 && !isAccept) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(L10n.of(context).agreeToTheTermsOfUse),
+                        ),
+                      );
+                    } else {
+                      pageController.nextPage(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeInOut,
+                      );
+                    }
+                  },
                 ),
               ),
-            ),
-          ],
-          onDone: () async {
-            if (isAccept) {
-              if (!isFinishedTutorial) {
-                await preference.setBool(PreferenceKey.isFinishedTutorial);
-                await preference.setBool(PreferenceKey.isAccept);
-                context.pushReplacementNamed(RouterPath.splash);
-              } else {
-                context.pop();
-              }
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(L10n.of(context).agreeToTheTermsOfUse),
-                ),
-              );
-            }
-          },
-          showBackButton: true,
-          next: const Icon(
-            Icons.arrow_forward_ios,
-            size: 18,
-            color: Colors.black,
+              const SizedBox(height: 20),
+            ],
           ),
-          back: const Icon(
-            Icons.arrow_back_ios,
-            size: 18,
-            color: Colors.black,
-          ),
-          done: const Text(
-            '閉じる',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
-            ),
-          ),
-          dotsDecorator: DotsDecorator(
-            size: const Size.square(10),
-            activeSize: const Size(50, 10),
-            activeColor: Colors.black,
-            color: Colors.black26,
-            spacing: const EdgeInsets.symmetric(horizontal: 3),
-            activeShape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-          ),
-        ),
+        ],
+      ),
+    );
+  }
+}
+
+class SlidingTutorial extends StatelessWidget {
+  const SlidingTutorial({
+    required this.controller,
+    required this.notifier,
+    required this.pageCount,
+    required this.pages,
+    super.key,
+  });
+
+  final PageController controller;
+  final ValueNotifier<double> notifier;
+  final int pageCount;
+  final List<Widget> pages;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBackgroundColor(
+      pageController: controller,
+      pageCount: pageCount,
+      colors: const [
+        Color(0xFFFFFDD0),
+        Color(0xFFFFFCC0),
+        Color(0xFFFFFBAC),
+      ],
+      child: PageView(
+        controller: controller,
+        children: pages,
       ),
     );
   }

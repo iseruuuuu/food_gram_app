@@ -35,9 +35,21 @@ class $AssetsGifGen {
   AssetGenImage get profileDetail =>
       const AssetGenImage('assets/gif/profile_detail.gif');
 
+  /// File path: assets/gif/tutorial1.gif
+  AssetGenImage get tutorial1 =>
+      const AssetGenImage('assets/gif/tutorial1.gif');
+
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [error, login1, login2, login3, login4, myProfile, profileDetail];
+  List<AssetGenImage> get values => [
+        error,
+        login1,
+        login2,
+        login3,
+        login4,
+        myProfile,
+        profileDetail,
+        tutorial1
+      ];
 }
 
 class $AssetsIconGen {
