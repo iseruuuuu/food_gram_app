@@ -53,10 +53,8 @@ class StoryWidget extends ConsumerWidget {
                       final post = await ref
                           .read(postsServiceProvider)
                           .getPost(data, randomIndex);
-                      //TODO ストーリーを表示する
                       await context.pushNamed(
                         RouterPath.storyPage,
-                        // extra: data[randomIndex],
                         extra: post,
                       );
                     },

@@ -102,7 +102,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
                       const Text(
                         '利用規約',
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Assets.gif.tutorial1.image(width: 60),
                       Gap(10),
