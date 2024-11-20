@@ -75,6 +75,7 @@ class MyProfileScreen extends ConsumerWidget {
                           data: data,
                           routerPath: RouterPath.myProfileDetailPost,
                           refresh: () => ref.refresh(myPostStreamProvider),
+                          isTimeLine: false,
                         );
                       },
                       error: (_, __) {

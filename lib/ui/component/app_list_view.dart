@@ -13,12 +13,14 @@ class AppListView extends ConsumerWidget {
     required this.data,
     required this.routerPath,
     required this.refresh,
+    required this.isTimeLine,
     super.key,
   });
 
   final List<Map<String, dynamic>> data;
   final String routerPath;
   final Function() refresh;
+  final bool isTimeLine;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,13 +33,16 @@ class AppListView extends ConsumerWidget {
             },
             child: CustomScrollView(
               slivers: [
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 100,
-                    child: StoryWidget(data: data),
-                  ),
-                ),
+                if (isTimeLine)
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 100,
+                      child: StoryWidget(data: data),
+                    ),
+                  )
+                else
+                  SliverToBoxAdapter(child: SizedBox()),
                 SliverGrid(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
