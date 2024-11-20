@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/env.dart';
-import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
@@ -148,9 +147,6 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                             ],
                           ),
                         ),
-                        Spacer(),
-                        Assets.gif.profileDetail.image(width: 60, height: 60),
-                        Gap(10),
                       ],
                     ),
                   ),
