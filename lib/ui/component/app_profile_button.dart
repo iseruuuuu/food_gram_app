@@ -49,16 +49,12 @@ class ProfileButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.black,
-        elevation: 5,
+        elevation: 0,
       ),
       onPressed: onTap,
       child: Row(
         children: [
-          Icon(
-            icon,
-            color: Colors.white,
-            size: 18,
-          ),
+          Icon(icon, color: Colors.white, size: 18),
           SizedBox(width: 5),
           Text(
             title,
