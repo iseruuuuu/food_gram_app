@@ -26,7 +26,7 @@ class AppListView extends ConsumerWidget {
         ? RefreshIndicator(
             color: Colors.black,
             onRefresh: () async {
-              await Future.delayed(Duration(seconds: 1));
+              await Future.delayed(const Duration(seconds: 1));
               refresh();
             },
             child: CustomScrollView(
@@ -39,11 +39,6 @@ class AppListView extends ConsumerWidget {
                   ),
                 ),
                 SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 1,
-                    mainAxisSpacing: 1,
-                  ),
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       return GestureDetector(
@@ -88,6 +83,11 @@ class AppListView extends ConsumerWidget {
                       );
                     },
                     childCount: data.length,
+                  ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 1,
+                    mainAxisSpacing: 1,
                   ),
                 ),
               ],
