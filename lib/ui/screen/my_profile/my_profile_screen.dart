@@ -13,6 +13,7 @@ import 'package:food_gram_app/ui/component/app_list_view.dart';
 import 'package:food_gram_app/ui/component/app_profile_button.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_view_model.dart';
 import 'package:food_gram_app/utils/snack_bar_manager.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class MyProfileScreen extends ConsumerWidget {
@@ -28,45 +29,57 @@ class MyProfileScreen extends ConsumerWidget {
         backgroundColor: Colors.white,
         appBar: AppAppBar(),
         body: users.when(
-          data: (users, length, heartAmount) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppHeader(
-                users: users,
-                length: length,
-                heartAmount: heartAmount,
+          data: (users, length, heartAmount) => CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: AppHeader(
+                  users: users,
+                  length: length,
+                  heartAmount: heartAmount,
+                ),
               ),
-              AppMyProfileButton(
-                onTapEdit: () {
-                  context.pushNamed(RouterPath.edit).then((value) {
-                    if (value != null) {
-                      ref.read(myProfileViewModelProvider().notifier).getData();
-                    }
-                  });
-                },
-                onTapExchange: () {
-                  EasyDebounce.debounce('exchange point', Duration(seconds: 1),
+              SliverToBoxAdapter(child: Gap(4)),
+              SliverToBoxAdapter(
+                child: AppMyProfileButton(
+                  onTapEdit: () {
+                    context.pushNamed(RouterPath.edit).then((value) {
+                      if (value != null) {
+                        ref
+                            .read(myProfileViewModelProvider().notifier)
+                            .getData();
+                      }
+                    });
+                  },
+                  onTapExchange: () {
+                    EasyDebounce.debounce(
+                      'exchange point',
+                      const Duration(seconds: 1),
                       () async {
-                    openComingSoonSnackBar(context);
-                  });
-                },
-              ),
-              TabBar(
-                indicator: UnderlineTabIndicator(
-                  borderSide: BorderSide(width: 3),
-                  insets: EdgeInsets.symmetric(horizontal: 110),
+                        openComingSoonSnackBar(context);
+                      },
+                    );
+                  },
                 ),
-                labelStyle: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.black,
-                ),
-                tabs: [
-                  Tab(text: '🍽️ Food'),
-                  Tab(text: '🗓️ Calendar'),
-                ],
               ),
-              Expanded(
+              SliverToBoxAdapter(child: Gap(4)),
+              SliverToBoxAdapter(
+                child: TabBar(
+                  indicator: const UnderlineTabIndicator(
+                    borderSide: BorderSide(width: 2),
+                    insets: EdgeInsets.symmetric(horizontal: 110),
+                  ),
+                  labelStyle: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.black,
+                  ),
+                  tabs: const [
+                    Tab(icon: Icon(Icons.fastfood_outlined)),
+                    Tab(icon: Icon(Icons.calendar_month_outlined)),
+                  ],
+                ),
+              ),
+              SliverFillRemaining(
                 child: TabBarView(
                   children: [
                     state.when(
@@ -129,12 +142,7 @@ class MyProfileScreen extends ConsumerWidget {
             ],
           ),
           loading: () => Center(
-            child: Center(
-              child: Assets.image.loading.image(
-                width: 100,
-                height: 100,
-              ),
-            ),
+            child: Assets.image.loading.image(width: 100, height: 100),
           ),
           error: () => AppErrorWidget(
             onTap: () => ref.refresh(myPostStreamProvider),
