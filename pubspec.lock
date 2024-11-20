@@ -1338,6 +1338,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.0"
+  provider:
+    dependency: transitive
+    description:
+      name: provider
+      sha256: c8a055ee5ce3fd98d6fc872478b03823ffdb448699c6ebdbbc71d59b596fd48c
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.2"
   pub_semver:
     dependency: transitive
     description:
@@ -1663,6 +1671,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
+  story:
+    dependency: "direct main"
+    description:
+      name: story
+      sha256: "0cff3c02d5ad1d9c1cf79481b8fe4a4f2f859e56b351644e96b8b209e6a110a5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   stream_channel:
     dependency: transitive
     description:
