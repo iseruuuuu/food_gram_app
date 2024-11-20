@@ -7,6 +7,7 @@ import 'package:food_gram_app/ui/screen/map/map_screen.dart';
 import 'package:food_gram_app/ui/screen/post/restaurant_screen.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
 import 'package:food_gram_app/ui/screen/splash/tutorial_screen.dart';
+import 'package:food_gram_app/ui/screen/time_line/component/story_page.dart';
 import 'package:food_gram_app/utils/amination.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -107,6 +108,14 @@ final timeLineRouter = GoRoute(
       builder: (context, state) {
         final model = state.extra! as Model;
         return DetailPostScreen(posts: model.posts, users: model.users);
+      },
+    ),
+    GoRoute(
+      path: '${RouterPath.timeLine}/${RouterPath.storyPage}',
+      name: RouterPath.storyPage,
+      builder: (context, state) {
+        final model = state.extra! as Model;
+        return StoryPage(posts: model.posts, users: model.users);
       },
     ),
   ],
@@ -213,4 +222,5 @@ final class RouterPath {
   static const String settingTutorial = 'setting_tutorial';
   static const String map = 'map';
   static const String mapDetailPost = 'map_detail_post';
+  static const String storyPage = 'story';
 }
