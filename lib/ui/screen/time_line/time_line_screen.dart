@@ -93,6 +93,7 @@ class FoodListView extends ConsumerWidget {
                   ..invalidate(postHomeMadeStreamProvider)
                   ..invalidate(blockListProvider);
               },
+              isTimeLine: true,
             ),
           ),
         ],

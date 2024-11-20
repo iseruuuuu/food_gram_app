@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/users.dart';
-import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/dialog/app_profile_dialog.dart';
 import 'package:gap/gap.dart';
@@ -21,94 +20,115 @@ class AppHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 20),
-          Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  showDialog<void>(
-                    context: context,
-                    builder: (_) {
-                      return AppProfileDialog(image: users.image);
-                    },
-                  );
-                },
-                child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  backgroundImage: AssetImage(users.image),
-                  radius: 50,
+      padding: const EdgeInsets.all(12),
+      child: Container(
+        height: 200,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              offset: Offset(0, -4),
+              blurRadius: 6,
+              spreadRadius: 1,
+            ),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              offset: Offset(0, 4),
+              blurRadius: 6,
+              spreadRadius: 1,
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    showDialog<void>(
+                      context: context,
+                      builder: (_) {
+                        return AppProfileDialog(image: users.image);
+                      },
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.transparent,
+                    backgroundImage: AssetImage(users.image),
+                  ),
                 ),
-              ),
-              Spacer(),
-              Assets.gif.myProfile.image(width: 50, height: 50),
-              Gap(30),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '$length',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
+                Spacer(),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '$length',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text(
-                    l10n.profilePostCount,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                    Text(
+                      l10n.profilePostCount,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Gap(30),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '${heartAmount - users.exchangedPoint}',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
+                  ],
+                ),
+                Gap(30),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${heartAmount - users.exchangedPoint}',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text(
-                    l10n.profilePointCount,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                    Text(
+                      l10n.profilePointCount,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Text(
-            users.name,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+                  ],
+                ),
+              ],
             ),
-          ),
-          Text(
-            '@${users.userName}',
-            style: TextStyle(
-              fontSize: 18,
+            Spacer(),
+            Text(
+              users.name,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
-          ),
-          SizedBox(height: 4),
-          Text(
-            users.selfIntroduce,
-            style: TextStyle(
-              fontSize: 16,
+            Text(
+              '@${users.userName}',
+              style: TextStyle(fontSize: 14, color: Colors.grey),
             ),
-          ),
-          SizedBox(height: 12),
-        ],
+            Gap(4),
+            Text(
+              users.selfIntroduce,
+              maxLines: 1,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
