@@ -23,118 +23,121 @@ class MyProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(myPostStreamProvider);
     final users = ref.watch(myProfileViewModelProvider());
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppAppBar(),
         body: users.when(
-          data: (users, length, heartAmount) => CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: AppHeader(
-                  users: users,
-                  length: length,
-                  heartAmount: heartAmount,
-                ),
+          data: (users, length, heartAmount) => Column(
+            children: [
+              AppHeader(
+                users: users,
+                length: length,
+                heartAmount: heartAmount,
               ),
-              SliverToBoxAdapter(child: Gap(4)),
-              SliverToBoxAdapter(
-                child: AppMyProfileButton(
-                  onTapEdit: () {
-                    context.pushNamed(RouterPath.edit).then((value) {
-                      if (value != null) {
-                        ref
-                            .read(myProfileViewModelProvider().notifier)
-                            .getData();
-                      }
-                    });
-                  },
-                  onTapExchange: () {
-                    EasyDebounce.debounce(
-                      'exchange point',
-                      const Duration(seconds: 1),
-                      () async {
-                        openComingSoonSnackBar(context);
-                      },
-                    );
-                  },
-                ),
+              const Gap(4),
+              AppMyProfileButton(
+                onTapEdit: () {
+                  context.pushNamed(RouterPath.edit).then((value) {
+                    if (value != null) {
+                      ref.read(myProfileViewModelProvider().notifier).getData();
+                    }
+                  });
+                },
+                onTapExchange: () {
+                  EasyDebounce.debounce(
+                    'exchange point',
+                    const Duration(seconds: 1),
+                    () async {
+                      openComingSoonSnackBar(context);
+                    },
+                  );
+                },
               ),
-              SliverToBoxAdapter(child: Gap(4)),
-              SliverToBoxAdapter(
-                child: TabBar(
-                  indicator: const UnderlineTabIndicator(
-                    borderSide: BorderSide(width: 2),
-                    insets: EdgeInsets.symmetric(horizontal: 110),
-                  ),
-                  labelStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.black,
-                  ),
-                  tabs: const [
-                    Tab(icon: Icon(Icons.fastfood_outlined)),
-                    Tab(icon: Icon(Icons.calendar_month_outlined)),
-                  ],
-                ),
-              ),
-              SliverFillRemaining(
-                child: TabBarView(
+              const Gap(4),
+              Expanded(
+                child: Column(
                   children: [
-                    state.when(
-                      data: (data) {
-                        return AppListView(
-                          data: data,
-                          routerPath: RouterPath.myProfileDetailPost,
-                          refresh: () => ref.refresh(myPostStreamProvider),
-                          isTimeLine: false,
-                        );
-                      },
-                      error: (_, __) {
-                        return AppErrorWidget(
-                          onTap: () {
-                            ref.invalidate(myPostStreamProvider);
-                            ref
-                                .read(myProfileViewModelProvider().notifier)
-                                .getData();
-                          },
-                        );
-                      },
-                      loading: () {
-                        return Center(
-                          child: Assets.image.loading.image(
-                            width: 100,
-                            height: 100,
-                          ),
-                        );
-                      },
+                    TabBar(
+                      indicator: const UnderlineTabIndicator(
+                        borderSide: BorderSide(width: 2),
+                        insets: EdgeInsets.symmetric(horizontal: 110),
+                      ),
+                      labelStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black,
+                      ),
+                      tabs: const [
+                        Tab(icon: Icon(Icons.fastfood_outlined)),
+                        Tab(icon: Icon(Icons.calendar_month_outlined)),
+                      ],
                     ),
-                    state.when(
-                      data: (data) {
-                        return AppCalendarView(
-                          data: data,
-                          refresh: () => ref.refresh(myPostStreamProvider),
-                        );
-                      },
-                      error: (_, __) {
-                        return AppErrorWidget(
-                          onTap: () {
-                            ref.invalidate(myPostStreamProvider);
-                            ref
-                                .read(myProfileViewModelProvider().notifier)
-                                .getData();
-                          },
-                        );
-                      },
-                      loading: () {
-                        return Center(
-                          child: Assets.image.loading.image(
-                            width: 100,
-                            height: 100,
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          state.when(
+                            data: (data) {
+                              return AppListView(
+                                data: data,
+                                routerPath: RouterPath.myProfileDetailPost,
+                                refresh: () =>
+                                    ref.refresh(myPostStreamProvider),
+                                isTimeLine: false,
+                              );
+                            },
+                            error: (_, __) {
+                              return AppErrorWidget(
+                                onTap: () {
+                                  ref.invalidate(myPostStreamProvider);
+                                  ref
+                                      .read(
+                                          myProfileViewModelProvider().notifier)
+                                      .getData();
+                                },
+                              );
+                            },
+                            loading: () {
+                              return Center(
+                                child: Assets.image.loading.image(
+                                  width: 100,
+                                  height: 100,
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
+                          state.when(
+                            data: (data) {
+                              return AppCalendarView(
+                                data: data,
+                                refresh: () =>
+                                    ref.refresh(myPostStreamProvider),
+                              );
+                            },
+                            error: (_, __) {
+                              return AppErrorWidget(
+                                onTap: () {
+                                  ref.invalidate(myPostStreamProvider);
+                                  ref
+                                      .read(
+                                          myProfileViewModelProvider().notifier)
+                                      .getData();
+                                },
+                              );
+                            },
+                            loading: () {
+                              return Center(
+                                child: Assets.image.loading.image(
+                                  width: 100,
+                                  height: 100,
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

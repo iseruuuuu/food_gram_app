@@ -1,13 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/ui/component/app_share_widget.dart';
 import 'package:food_gram_app/ui/component/dialog/app_dialog.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
 import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/utils/url_launch.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 
 class AppDetailOtherInfoModalSheet extends ConsumerWidget {
@@ -63,15 +68,25 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  onPressed: () {
-                    context.pop();
-                    Share.share(
-                      '${users.name} post in '
-                      '${posts.restaurant}'
-                      '\n\n${l10n.shareReviewPrefix}'
-                      '\n${l10n.shareReviewSuffix}'
-                      '\n\n#foodGram'
-                      '\n#FoodGram',
+                  onPressed: () async {
+                    final screenshotController = ScreenshotController();
+                    final screenshotBytes =
+                        await screenshotController.captureFromWidget(
+                      AppShareWidget(
+                        posts: posts,
+                        users: users,
+                      ),
+                    );
+
+                    /// 一時ディレクトリに保存
+                    final tempDir = await getTemporaryDirectory();
+                    final filePath = '${tempDir.path}/shared_image.png';
+                    final file = File(filePath);
+                    await file.writeAsBytes(screenshotBytes);
+                    await Share.shareXFiles(
+                      [XFile(file.path)],
+                      text: '${posts.foodName} in ${posts.restaurant}'
+                          '\n#FoodGram',
                     );
                   },
                   child: Row(
