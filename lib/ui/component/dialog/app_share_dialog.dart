@@ -1,12 +1,15 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/main.dart';
+import 'package:food_gram_app/ui/component/app_share_widget.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:map_launcher/map_launcher.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 
 class AppShareDialog extends StatelessWidget {
@@ -54,63 +57,9 @@ class AppShareDialog extends StatelessWidget {
               ),
             ),
             Spacer(),
-            Container(
-              width: deviceWidth / 1.15,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: deviceWidth / 1.15,
-                      height: deviceWidth / 2,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                        ),
-                        child: CachedNetworkImage(
-                          imageUrl: supabase.storage
-                              .from('food')
-                              .getPublicUrl(posts.foodImage),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Gap(10),
-                          Text(
-                            'IN ${posts.restaurant}',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Gap(10),
-                          Text(
-                            posts.comment,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Gap(10),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                color: Colors.white,
-                elevation: 0,
-              ),
+            AppShareWidget(
+              posts: posts,
+              users: users,
             ),
             Gap(40),
             Padding(
@@ -124,14 +73,25 @@ class AppShareDialog extends StatelessWidget {
                         backgroundColor: Colors.white,
                         foregroundColor: Colors.white,
                       ),
-                      onPressed: () {
-                        Share.share(
-                          '${users.name} post in '
-                          '${posts.restaurant}'
-                          '\n\n${L10n.of(context).shareReviewPrefix}'
-                          '\n${L10n.of(context).shareReviewSuffix}'
-                          '\n\n#foodGram'
-                          '\n#FoodGram',
+                      onPressed: () async {
+                        final screenshotController = ScreenshotController();
+                        final screenshotBytes =
+                            await screenshotController.captureFromWidget(
+                          AppShareWidget(
+                            posts: posts,
+                            users: users,
+                          ),
+                        );
+
+                        /// 一時ディレクトリに保存
+                        final tempDir = await getTemporaryDirectory();
+                        final filePath = '${tempDir.path}/shared_image.png';
+                        final file = File(filePath);
+                        await file.writeAsBytes(screenshotBytes);
+                        await Share.shareXFiles(
+                          [XFile(file.path)],
+                          text: '${posts.foodName} in ${posts.restaurant}'
+                              '\n#FoodGram',
                         );
                       },
                       child: Row(
