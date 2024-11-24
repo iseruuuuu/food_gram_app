@@ -48,6 +48,8 @@
   "editBioInputField": "Enter bio",
   "emptyPosts": "There are no posts",
   "searchEmptyResult": "No results found for your search.",
+  "homeCooking": "homeCooking",
+  "unknown": "Unknown・No Hits",
   "profilePostCount": "Posts",
   "profilePointCount": "Points",
   "profileEditButton": "Edit Profile",

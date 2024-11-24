@@ -156,6 +156,12 @@ class L10nEn extends L10n {
   String get searchEmptyResult => 'No results found for your search.';
 
   @override
+  String get homeCooking => 'homeCooking';
+
+  @override
+  String get unknown => 'Unknown・No Hits';
+
+  @override
   String get profilePostCount => 'Posts';
 
   @override

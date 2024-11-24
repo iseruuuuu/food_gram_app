@@ -390,6 +390,18 @@ abstract class L10n {
   /// **'該当する場所が見つかりませんでした'**
   String get searchEmptyResult;
 
+  /// No description provided for @homeCooking.
+  ///
+  /// In ja, this message translates to:
+  /// **'自炊'**
+  String get homeCooking;
+
+  /// No description provided for @unknown.
+  ///
+  /// In ja, this message translates to:
+  /// **'不明・ヒットなし'**
+  String get unknown;
+
   /// No description provided for @profilePostCount.
   ///
   /// In ja, this message translates to:

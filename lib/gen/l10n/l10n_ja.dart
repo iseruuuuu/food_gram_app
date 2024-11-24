@@ -156,6 +156,12 @@ class L10nJa extends L10n {
   String get searchEmptyResult => '該当する場所が見つかりませんでした';
 
   @override
+  String get homeCooking => '自炊';
+
+  @override
+  String get unknown => '不明・ヒットなし';
+
+  @override
   String get profilePostCount => '投稿';
 
   @override

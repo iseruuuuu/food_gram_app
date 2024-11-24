@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/data/api/restaurant_api.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/utils/async_value_group.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:gap/gap.dart';
@@ -49,10 +50,10 @@ class RestaurantScreen extends HookConsumerWidget {
                   },
                   child: Chip(
                     backgroundColor: Colors.white,
-                    label: const Text('自炊'),
+                    label: Text(L10n.of(context).homeCooking),
                     labelStyle: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 15,
+                      fontSize: 12,
                       color: Colors.black,
                     ),
                     avatar: const Icon(
@@ -71,10 +72,10 @@ class RestaurantScreen extends HookConsumerWidget {
                   },
                   child: Chip(
                     backgroundColor: Colors.white,
-                    label: const Text('不明・ヒットなし'),
+                    label: Text(L10n.of(context).unknown),
                     labelStyle: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 15,
+                      fontSize: 12,
                       color: Colors.black,
                     ),
                     avatar: const Icon(

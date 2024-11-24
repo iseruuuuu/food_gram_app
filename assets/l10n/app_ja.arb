@@ -48,6 +48,8 @@
   "editBioInputField": "自己紹介を入力してください",
   "emptyPosts": "投稿がありません",
   "searchEmptyResult": "該当する場所が見つかりませんでした",
+  "homeCooking": "自炊",
+  "unknown": "不明・ヒットなし",
   "profilePostCount": "投稿",
   "profilePointCount": "ポイント",
   "profileEditButton": "プロフィールを編集",
