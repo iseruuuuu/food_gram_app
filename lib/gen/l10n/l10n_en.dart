@@ -129,6 +129,18 @@ class L10nEn extends L10n {
   String get postError => 'Submission failure';
 
   @override
+  String get postCategoryTitle => 'Select country/cuisine category (optional)';
+
+  @override
+  String get postCountryCategory => 'Country';
+
+  @override
+  String get postCuisineCategory => 'Cuisine';
+
+  @override
+  String get postTitle => 'Post';
+
+  @override
   String get editUpdateButton => 'Update';
 
   @override
@@ -142,6 +154,12 @@ class L10nEn extends L10n {
 
   @override
   String get searchEmptyResult => 'No results found for your search.';
+
+  @override
+  String get homeCooking => 'homeCooking';
+
+  @override
+  String get unknown => 'Unknown・No Hits';
 
   @override
   String get profilePostCount => 'Posts';

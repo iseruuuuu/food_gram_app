@@ -131,7 +131,7 @@ class AppCommentTextField extends StatelessWidget {
             ),
           ),
           controller: controller,
-          maxLines: 8,
+          maxLines: 6,
           autocorrect: false,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
