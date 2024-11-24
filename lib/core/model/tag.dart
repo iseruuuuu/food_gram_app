@@ -1,4 +1,4 @@
-final restaurantCategory = [
+final countryCategory = [
   '🇯🇵', // 和食
   '🇮🇹', // イタリアン
   '🇫🇷', // フレンチ
