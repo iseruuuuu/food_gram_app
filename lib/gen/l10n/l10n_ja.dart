@@ -129,6 +129,18 @@ class L10nJa extends L10n {
   String get postError => '投稿失敗';
 
   @override
+  String get postCategoryTitle => '国・料理カテゴリーの選択(任意)';
+
+  @override
+  String get postCountryCategory => '国';
+
+  @override
+  String get postCuisineCategory => '料理';
+
+  @override
+  String get postTitle => '投稿';
+
+  @override
   String get editUpdateButton => '更新';
 
   @override

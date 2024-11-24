@@ -336,6 +336,30 @@ abstract class L10n {
   /// **'投稿失敗'**
   String get postError;
 
+  /// No description provided for @postCategoryTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'国・料理カテゴリーの選択(任意)'**
+  String get postCategoryTitle;
+
+  /// No description provided for @postCountryCategory.
+  ///
+  /// In ja, this message translates to:
+  /// **'国'**
+  String get postCountryCategory;
+
+  /// No description provided for @postCuisineCategory.
+  ///
+  /// In ja, this message translates to:
+  /// **'料理'**
+  String get postCuisineCategory;
+
+  /// No description provided for @postTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿'**
+  String get postTitle;
+
   /// No description provided for @editUpdateButton.
   ///
   /// In ja, this message translates to:

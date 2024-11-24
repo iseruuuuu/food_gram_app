@@ -129,6 +129,18 @@ class L10nEn extends L10n {
   String get postError => 'Submission failure';
 
   @override
+  String get postCategoryTitle => 'Select country/cuisine category (optional)';
+
+  @override
+  String get postCountryCategory => 'Country';
+
+  @override
+  String get postCuisineCategory => 'Cuisine';
+
+  @override
+  String get postTitle => 'Post';
+
+  @override
   String get editUpdateButton => 'Update';
 
   @override
