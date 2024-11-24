@@ -6,14 +6,12 @@ class PostCategoryWidget extends StatelessWidget {
     required this.tag,
     required this.category,
     required this.title,
-    required this.modalSheetHeight,
     super.key,
   });
 
   final ValueNotifier<String> tag;
   final List<String> category;
   final String title;
-  final double modalSheetHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,6 @@ class PostCategoryWidget extends StatelessWidget {
                 tag.value = value;
               },
               tagValue: tag.value,
-              height: modalSheetHeight,
             );
           },
         );

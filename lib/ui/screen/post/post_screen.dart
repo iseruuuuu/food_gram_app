@@ -201,15 +201,12 @@ class PostScreen extends HookConsumerWidget {
                           tag: countryTag,
                           category: countryCategory,
                           title: l10n.postCountryCategory,
-                          modalSheetHeight:
-                              MediaQuery.sizeOf(context).height / 2.3,
                         ),
                         const Gap(30),
                         PostCategoryWidget(
                           tag: foodTag,
                           category: foodCategory,
                           title: l10n.postCuisineCategory,
-                          modalSheetHeight: MediaQuery.sizeOf(context).height,
                         ),
                       ],
                     ),
