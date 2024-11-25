@@ -8,6 +8,7 @@ import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/screen/authentication/new_account_view_model.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class NewAccountScreen extends ConsumerWidget {
@@ -36,17 +37,16 @@ class NewAccountScreen extends ConsumerWidget {
                           AssetImage('assets/icon/icon${state.number}.png'),
                       radius: 60,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: Text(
-                        L10n.of(context).settingsIcon,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: Colors.black,
-                        ),
+                    Gap(10),
+                    Text(
+                      L10n.of(context).settingsIcon,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.black,
                       ),
                     ),
+                    Gap(10),
                     Wrap(
                       children: List.generate(
                         6,
@@ -61,14 +61,14 @@ class NewAccountScreen extends ConsumerWidget {
                       ),
                     ),
                     SizedBox(height: 30),
-                    Divider(height: 0),
+                    Divider(height: 10),
                     AppNameTextField(controller: controller.nameTextController),
-                    Divider(height: 0),
+                    Divider(height: 10),
                     AppUserNameTextField(
                       controller: controller.userNameTextController,
                     ),
-                    Divider(height: 0),
-                    SizedBox(height: 60),
+                    Divider(height: 10),
+                    SizedBox(height: 30),
                     AppElevatedButton(
                       onPressed: () {
                         ref
