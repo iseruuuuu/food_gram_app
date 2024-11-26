@@ -779,6 +779,54 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'SNSログイン'**
   String get snsLogin;
+
+  /// No description provided for @tutorialFirstPageTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'美味しい瞬間、シェアしよう'**
+  String get tutorialFirstPageTitle;
+
+  /// No description provided for @tutorialFirstPageSubTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'FoodGramで、毎日の食事がもっと特別に\n新しい味との出会いを楽しもう'**
+  String get tutorialFirstPageSubTitle;
+
+  /// No description provided for @tutorialSecondPageTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'このアプリだけのフードマップ'**
+  String get tutorialSecondPageTitle;
+
+  /// No description provided for @tutorialSecondPageSubTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'このアプリだけのマップ作りをしよう\nあなたの投稿でマップが進化していく'**
+  String get tutorialSecondPageSubTitle;
+
+  /// No description provided for @tutorialThirdPageTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'利用規約'**
+  String get tutorialThirdPageTitle;
+
+  /// No description provided for @tutorialThirdPageSubTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'・氏名、住所、電話番号などの個人情報や位置情報の公開には注意しましょう。\n\n・攻撃的、不適切、または有害なコンテンツの投稿を避け、他人の作品を無断で使用しないようにしましょう。\n\n・食べ物以外の投稿は削除させていただく場合があります。\n\n・違反が繰り返されるユーザーや不快なコンテンツは運営側で削除します。\n\n・アプリには不完全な部分があるかもしれませんので、ご理解ください。\n\n・みなさんと一緒にこのアプリをより良くしていけることを楽しみにしています。\n\n・サービス向上のため、ご協力お願いします🙇 by 開発者'**
+  String get tutorialThirdPageSubTitle;
+
+  /// No description provided for @tutorialThirdPageButton.
+  ///
+  /// In ja, this message translates to:
+  /// **'利用規約に同意する'**
+  String get tutorialThirdPageButton;
+
+  /// No description provided for @tutorialThirdPageClose.
+  ///
+  /// In ja, this message translates to:
+  /// **'閉じる'**
+  String get tutorialThirdPageClose;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

@@ -37,7 +37,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final imageHeight = MediaQuery.sizeOf(context).height;
+    final imageHeight = MediaQuery.sizeOf(context).width;
+    final l10n = L10n.of(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -47,25 +48,27 @@ class _TutorialScreenState extends State<TutorialScreen> {
             pageCount: 3,
             pages: [
               Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Spacer(),
-                  const Text(
-                    '美味しい瞬間、シェアしよう',
+                  Text(
+                    l10n.tutorialFirstPageTitle,
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Gap(10),
+                  Gap(52),
+                  Assets.image.tutorial1.image(height: imageHeight),
+                  Gap(52),
                   Text(
-                    'FoodGramで、毎日の食事がもっと特別に\n'
-                    '新しい味との出会いを楽しもう',
-                    style: TextStyle(fontSize: 14),
+                    l10n.tutorialFirstPageSubTitle,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
                     textAlign: TextAlign.center,
                   ),
-                  Gap(20),
-                  Assets.image.tutorial1.image(height: imageHeight / 1.5),
                   Spacer(),
                 ],
               ),
@@ -73,19 +76,25 @@ class _TutorialScreenState extends State<TutorialScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Spacer(),
-                  const Text(
-                    'みんなで作る、特別なフードマップ',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Text(
+                    l10n.tutorialSecondPageTitle,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  Gap(10),
-                  const Text(
-                    'このアプリだけのマップ作りをしよう\n'
-                    'あなたの投稿でマップが進化していく',
+                  Gap(52),
+                  Assets.image.tutorial2.image(height: imageHeight),
+                  Gap(52),
+                  Text(
+                    l10n.tutorialSecondPageSubTitle,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 14),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
                   ),
-                  Gap(20),
-                  Assets.image.tutorial2.image(height: imageHeight / 1.5),
                   Spacer(),
                 ],
               ),
@@ -99,8 +108,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
                     children: [
                       Gap(10),
                       Assets.gif.tutorial1.image(width: 60),
-                      const Text(
-                        '利用規約',
+                      Text(
+                        l10n.tutorialThirdPageTitle,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -114,13 +123,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: Text(
-                      '・氏名、住所、電話番号などの個人情報や位置情報の公開には注意しましょう。\n\n'
-                      '・攻撃的、不適切、または有害なコンテンツの投稿を避け、他人の作品を無断で使用しないようにしましょう。\n\n'
-                      '・食べ物以外の投稿は削除させていただく場合があります。\n\n'
-                      '・違反が繰り返されるユーザーや不快なコンテンツは運営側で削除します。\n\n'
-                      '・アプリには不完全な部分があるかもしれませんので、ご理解ください。\n\n'
-                      '・みなさんと一緒にこのアプリをより良くしていけることを楽しみにしています。\n\n'
-                      '・サービス向上のため、ご協力お願いします🙇 by 開発者',
+                      l10n.tutorialThirdPageSubTitle,
                       style: TextStyle(fontSize: 14),
                     ),
                   ),
@@ -129,7 +132,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '利用規約に同意する',
+                        l10n.tutorialThirdPageButton,
                         style: TextStyle(
                           fontSize: 18,
                         ),
@@ -169,8 +172,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
                               }
                             }
                           : null,
-                      child: const Text(
-                        '閉じる',
+                      child: Text(
+                        l10n.tutorialThirdPageClose,
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -233,11 +236,7 @@ class SlidingTutorial extends StatelessWidget {
     return AnimatedBackgroundColor(
       pageController: controller,
       pageCount: pageCount,
-      colors: const [
-        Color(0xFFFFFDD0),
-        Color(0xFFFFFCC0),
-        Color(0xFFFFFBAC),
-      ],
+      colors: const [Color(0xFFFFF3B0)],
       child: PageView(
         controller: controller,
         children: pages,

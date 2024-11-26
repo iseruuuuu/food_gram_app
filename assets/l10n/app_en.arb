@@ -113,5 +113,13 @@
   "camera": "Camera",
   "album": "Album",
   "close": "Close",
-  "snsLogin": "SNS login"
+  "snsLogin": "SNS login",
+  "tutorialFirstPageTitle": "Share your delicious moments",
+  "tutorialFirstPageSubTitle": "With FoodGram, make every meal more special.\nEnjoy discovering new flavors!",
+  "tutorialSecondPageTitle": "A unique food map for this app",
+  "tutorialSecondPageSubTitle": "Let's create a unique map for this app.\nYour posts will help evolve the map.",
+  "tutorialThirdPageTitle": "Terms of Use",
+  "tutorialThirdPageSubTitle": "・Be cautious about sharing personal information, such as your name, address, phone number, or location.\n\n・Avoid posting offensive, inappropriate, or harmful content, and do not use others' works without permission.\n\n・Non-food-related posts may be removed.\n\n・Users who repeatedly violate the rules or post objectionable content may be removed by the management team.\n\n・Please understand that the app might have some incomplete aspects.\n\n・We look forward to improving this app together with everyone.\n\n・Please cooperate with us to improve the service. 🙇 by the developers",
+  "tutorialThirdPageButton":"Agree to the terms of use",
+  "tutorialThirdPageClose":"Close"
 }
