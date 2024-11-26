@@ -60,15 +60,15 @@ class NewAccountScreen extends ConsumerWidget {
                         },
                       ),
                     ),
-                    SizedBox(height: 30),
-                    Divider(height: 10),
-                    AppNameTextField(controller: controller.nameTextController),
-                    Divider(height: 10),
+                    Gap(30),
+                    AppNameTextField(
+                      controller: controller.nameTextController,
+                    ),
+                    Gap(30),
                     AppUserNameTextField(
                       controller: controller.userNameTextController,
                     ),
-                    Divider(height: 10),
-                    SizedBox(height: 30),
+                    Gap(30),
                     AppElevatedButton(
                       onPressed: () {
                         ref
