@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/data/supabase/posts_service.dart';
+import 'package:food_gram_app/core/data/supabase/service/posts_service.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
 import 'package:food_gram_app/ui/screen/time_line/component/story_widget.dart';

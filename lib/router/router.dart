@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/config/shared_preference/shared_preference.dart';
-import 'package:food_gram_app/core/data/supabase/auth_state.dart';
+import 'package:food_gram_app/core/data/supabase/auth/auth_state.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_screen.dart';
 import 'package:food_gram_app/ui/screen/map/map_screen.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/data/supabase/auth/account_service.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/edit/edit_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'edit_view_model.g.dart';
 
@@ -45,25 +45,23 @@ class EditViewModel extends _$EditViewModel {
   Future<bool> update() async {
     primaryFocus?.unfocus();
     loading.state = true;
-    final user = supabase.auth.currentUser;
-    final updates = {
-      'name': nameTextController.text,
-      'user_name': useNameTextController.text,
-      'self_introduce': selfIntroduceTextController.text,
-      'image': 'assets/icon/icon${state.number}.png',
-      'updated_at': DateTime.now().toIso8601String(),
-    };
-    try {
-      await supabase.from('users').update(updates).match({'user_id': user!.id});
-      await Future.delayed(Duration(seconds: 2));
-      return true;
-    } on PostgrestException catch (error) {
-      logger.e(error.message);
-      state = state.copyWith(status: error.message);
-      return false;
-    } finally {
-      loading.state = false;
-    }
+    final result = await ref.read(accountServiceProvider).update(
+          nameTextController.text,
+          useNameTextController.text,
+          selfIntroduceTextController.text,
+          state.number,
+        );
+    result.when(
+      success: (_) {
+        return true;
+      },
+      failure: (error) {
+        state = state.copyWith(status: error.toString());
+        return false;
+      },
+    );
+    loading.state = false;
+    return true;
   }
 
   void selectIcon(int number) {

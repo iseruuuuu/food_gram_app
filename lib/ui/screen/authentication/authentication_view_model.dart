@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/core/data/supabase/auth_service.dart';
+import 'package:food_gram_app/core/data/supabase/auth/auth_service.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_state.dart';

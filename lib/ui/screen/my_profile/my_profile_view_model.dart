@@ -1,5 +1,5 @@
-import 'package:food_gram_app/core/data/supabase/my_profile_service.dart';
-import 'package:food_gram_app/core/data/supabase/posts_service.dart';
+import 'package:food_gram_app/core/data/supabase/service/posts_service.dart';
+import 'package:food_gram_app/core/data/supabase/service/users_service.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_state.dart';
@@ -20,8 +20,8 @@ class MyProfileViewModel extends _$MyProfileViewModel {
   Future<void> getData() async {
     state = const MyProfileStateLoading();
     try {
-      final users = await ref.read(myProfileServiceProvider).getUsers();
-      final length = await ref.read(myProfileServiceProvider).getLength();
+      final users = await ref.read(usersServiceProvider).getUsers();
+      final length = await ref.read(usersServiceProvider).getLength();
       final heartAmount = await ref.read(postsServiceProvider).getHeartAmount();
       state = MyProfileState.data(
         users: Users.fromJson(users),

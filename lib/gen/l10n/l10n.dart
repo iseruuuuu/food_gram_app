@@ -612,6 +612,12 @@ abstract class L10n {
   /// **'このお店を共有する'**
   String get appShareStoreButton;
 
+  /// No description provided for @appShareInstagramButton.
+  ///
+  /// In ja, this message translates to:
+  /// **'Instagramで共有する'**
+  String get appShareInstagramButton;
+
   /// No description provided for @appShareGoButton.
   ///
   /// In ja, this message translates to:

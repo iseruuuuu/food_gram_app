@@ -2,8 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/data/supabase/my_profile_service.dart';
+import 'package:food_gram_app/core/data/supabase/block_list.dart';
 import 'package:food_gram_app/core/data/supabase/post_stream.dart';
+import 'package:food_gram_app/core/data/supabase/service/users_service.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/main.dart';
@@ -38,7 +39,7 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
                   Duration.zero,
                   () async {
                     final postUsers = await ref
-                        .read(myProfileServiceProvider)
+                        .read(usersServiceProvider)
                         .getUsersFromPost(post[index]!);
                     final model = Model(postUsers, post[index]!);
                     await context

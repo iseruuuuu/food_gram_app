@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:food_gram_app/core/data/supabase/map_service.dart';
+import 'package:food_gram_app/core/data/supabase/service/posts_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';

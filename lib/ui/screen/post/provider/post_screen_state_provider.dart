@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:food_gram_app/core/data/supabase/database_service.dart';
+import 'package:food_gram_app/core/data/supabase/post/post_service.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/post/post_ui_state.dart';
@@ -41,7 +41,7 @@ class PostScreenState extends _$PostScreenState {
     if (food.text.isNotEmpty &&
         state.restaurant != '場所を追加' &&
         uploadImage != '') {
-      final result = await ref.read(databaseServiceProvider).post(
+      final result = await ref.read(postServiceProvider).post(
             foodName: food.text,
             comment: comment.text,
             uploadImage: uploadImage,
