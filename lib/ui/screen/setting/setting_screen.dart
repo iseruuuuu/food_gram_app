@@ -47,10 +47,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       color: Colors.blue,
                       title: l10n.settingsDeveloper,
                       onTap: () {
-                        LaunchUrl().openSNSUrl(
-                          'twitter://user?screen_name=isekiryu',
-                          'https://twitter.com/isekiryu',
-                        );
+                        LaunchUrl().openSNSUrl('https://x.com/FoodGram_dev');
                       },
                     ),
                     AppSettingTile(

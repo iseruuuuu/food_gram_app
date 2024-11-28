@@ -183,7 +183,7 @@ abstract class L10n {
   /// No description provided for @settingsDeveloper.
   ///
   /// In ja, this message translates to:
-  /// **'開発者'**
+  /// **'公式Twitter'**
   String get settingsDeveloper;
 
   /// No description provided for @settingsGithub.

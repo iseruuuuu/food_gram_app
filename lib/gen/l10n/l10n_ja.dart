@@ -51,7 +51,7 @@ class L10nJa extends L10n {
   String get settingsCheckVersionDialogText2 => '最新版にアップデートしてご利用ください。';
 
   @override
-  String get settingsDeveloper => '開発者';
+  String get settingsDeveloper => '公式Twitter';
 
   @override
   String get settingsGithub => 'Github';
