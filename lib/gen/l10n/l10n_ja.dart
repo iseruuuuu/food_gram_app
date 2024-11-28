@@ -267,6 +267,9 @@ class L10nJa extends L10n {
   String get appShareStoreButton => 'このお店を共有する';
 
   @override
+  String get appShareInstagramButton => 'Instagramで共有する';
+
+  @override
   String get appShareGoButton => 'このお店に行ってみる';
 
   @override

@@ -267,6 +267,9 @@ class L10nEn extends L10n {
   String get appShareStoreButton => 'Share this store';
 
   @override
+  String get appShareInstagramButton => 'Share on Instagram';
+
+  @override
   String get appShareGoButton => 'Go to this store';
 
   @override

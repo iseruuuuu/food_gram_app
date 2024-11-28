@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -62,7 +63,7 @@ class AppShareDialog extends StatelessWidget {
               posts: posts,
               users: users,
             ),
-            Gap(40),
+            Gap(20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
@@ -104,6 +105,51 @@ class AppShareDialog extends StatelessWidget {
                           Gap(15),
                           Text(
                             l10n.appShareStoreButton,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Gap(20),
+                  SizedBox(
+                    height: 48,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: () async {
+                        final screenshotController = ScreenshotController();
+                        final screenshotBytes =
+                            await screenshotController.captureFromWidget(
+                          AppShareWidget(
+                            posts: posts,
+                            users: users,
+                          ),
+                        );
+
+                        /// 一時ディレクトリに保存
+                        final tempDir = await getTemporaryDirectory();
+                        final filePath = '${tempDir.path}/shared_image.png';
+                        final file = File(filePath);
+                        await file.writeAsBytes(screenshotBytes);
+                        await sharePostsForInstagram([XFile(file.path)]);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.instagram,
+                            size: 25,
+                            color: Colors.black,
+                          ),
+                          Gap(15),
+                          Text(
+                            l10n.appShareInstagramButton,
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
