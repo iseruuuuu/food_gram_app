@@ -15,8 +15,6 @@ import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/utils/url_launch.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:in_app_review/in_app_review.dart';
-import 'package:new_version_plus/new_version_plus.dart';
 import 'package:share_plus/share_plus.dart';
 
 class SettingScreen extends ConsumerStatefulWidget {
@@ -90,31 +88,18 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       icon: Icons.rate_review_outlined,
                       color: Colors.indigoAccent,
                       title: l10n.settingsReview,
-                      onTap: () async {
-                        final inAppReview = InAppReview.instance;
-                        if (await inAppReview.isAvailable()) {
-                          await inAppReview.requestReview();
-                        }
+                      onTap: () {
+                        ref.read(settingViewModelProvider().notifier).review();
                       },
                     ),
                     AppSettingTile(
                       icon: Icons.system_update,
                       color: Colors.deepPurpleAccent,
                       title: l10n.settingsCheckVersion,
-                      onTap: () async {
-                        final newVersion = NewVersionPlus();
-                        final status = await newVersion.getVersionStatus();
-                        if (status != null) {
-                          newVersion.showUpdateDialog(
-                            context: context,
-                            versionStatus: status,
-                            dialogTitle: l10n.settingsCheckVersionDialogTitle,
-                            dialogText:
-                                '${l10n.settingsCheckVersionDialogText1}\n'
-                                '${l10n.settingsCheckVersionDialogText2}',
-                            launchModeVersion: LaunchModeVersion.external,
-                          );
-                        }
+                      onTap: () {
+                        ref
+                            .read(settingViewModelProvider().notifier)
+                            .checkNewVersion(context);
                       },
                     ),
                     AppSettingTile(
