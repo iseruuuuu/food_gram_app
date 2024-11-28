@@ -3,14 +3,13 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'my_profile_service.g.dart';
+part 'users_service.g.dart';
 
 @riverpod
-MyProfileService myProfileService(MyProfileServiceRef ref) =>
-    MyProfileService();
+UsersService usersService(UsersServiceRef ref) => UsersService();
 
-class MyProfileService {
-  MyProfileService();
+class UsersService {
+  UsersService();
 
   final userId = supabase.auth.currentUser!.id;
 
