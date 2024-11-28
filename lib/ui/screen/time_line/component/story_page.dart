@@ -19,88 +19,92 @@ class StoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StoryPageView(
-        itemBuilder: (context, pageIndex, storyIndex) {
-          return Stack(
-            children: [
-              Positioned.fill(child: Container(color: Colors.black)),
-              Positioned.fill(
-                child: CachedNetworkImage(
-                  imageUrl: supabase.storage
-                      .from('food')
-                      .getPublicUrl(posts.foodImage),
-                  fit: BoxFit.fitWidth,
+      backgroundColor: Colors.black,
+      body: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: StoryPageView(
+          itemBuilder: (context, pageIndex, storyIndex) {
+            return Stack(
+              children: [
+                Positioned.fill(child: Container(color: Colors.black)),
+                Positioned.fill(
+                  child: CachedNetworkImage(
+                    imageUrl: supabase.storage
+                        .from('food')
+                        .getPublicUrl(posts.foodImage),
+                    fit: BoxFit.fitWidth,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 44, left: 8),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 28,
-                      backgroundImage: AssetImage(users.image),
-                      backgroundColor: Colors.white,
-                    ),
-                    Gap(12),
-                    Text(
-                      users.name,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.only(top: 44, left: 8),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 28,
+                        backgroundImage: AssetImage(users.image),
+                        backgroundColor: Colors.white,
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Spacer(),
-                    Text(
-                      posts.restaurant,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                      Gap(12),
+                      Text(
+                        users.name,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      posts.foodTag,
-                      style: TextStyle(fontSize: 40),
-                    ),
-                    Gap(50),
-                  ],
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Spacer(),
+                      Text(
+                        posts.restaurant,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      Text(
+                        posts.foodTag,
+                        style: TextStyle(fontSize: 40),
+                      ),
+                      Gap(50),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+          gestureItemBuilder: (context, pageIndex, storyIndex) {
+            return Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 32),
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  color: Colors.white,
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
               ),
-            ],
-          );
-        },
-        gestureItemBuilder: (context, pageIndex, storyIndex) {
-          return Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 32),
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                color: Colors.white,
-                icon: Icon(Icons.close),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          );
-        },
-        pageLength: 1,
-        storyLength: (pageIndex) {
-          return 1;
-        },
-        onPageLimitReached: () {
-          Navigator.pop(context);
-        },
+            );
+          },
+          pageLength: 1,
+          storyLength: (pageIndex) {
+            return 1;
+          },
+          onPageLimitReached: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
     );
   }
