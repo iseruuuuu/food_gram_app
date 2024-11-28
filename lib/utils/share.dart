@@ -14,7 +14,6 @@ Future<void> sharePosts(
   );
 }
 
-//TODO インスタグラム用に画像のみの共有をしたい
 Future<void> sharePostsForInstagram(List<XFile> files) async {
   await Share.shareXFiles(files);
 }
