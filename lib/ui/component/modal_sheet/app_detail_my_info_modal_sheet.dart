@@ -8,6 +8,7 @@ import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_share_widget.dart';
 import 'package:food_gram_app/ui/component/dialog/app_dialog.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
+import 'package:food_gram_app/utils/share.dart';
 import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/utils/url_launch.dart';
 import 'package:go_router/go_router.dart';
@@ -83,10 +84,9 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                     final filePath = '${tempDir.path}/shared_image.png';
                     final file = File(filePath);
                     await file.writeAsBytes(screenshotBytes);
-                    await Share.shareXFiles(
+                    await sharePosts(
                       [XFile(file.path)],
-                      text: '${posts.foodName} in ${posts.restaurant}'
-                          '\n#FoodGram',
+                      '${posts.foodName} in ${posts.restaurant} \n#FoodGram',
                     );
                   },
                   child: Row(

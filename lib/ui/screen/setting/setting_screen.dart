@@ -11,6 +11,7 @@ import 'package:food_gram_app/ui/component/dialog/app_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/app_logout_dialog.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
+import 'package:food_gram_app/utils/share.dart';
 import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/utils/url_launch.dart';
 import 'package:gap/gap.dart';
@@ -73,7 +74,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                       title: l10n.settingsShareApp,
                       onTap: () {
                         if (Platform.isIOS) {
-                          Share.share(
+                          shareNormal(
                             'https://apps.apple.com/hu/app/foodgram/id6474065183',
                           );
                         } else {

@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_share_widget.dart';
+import 'package:food_gram_app/utils/share.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:map_launcher/map_launcher.dart';
@@ -88,10 +89,9 @@ class AppShareDialog extends StatelessWidget {
                         final filePath = '${tempDir.path}/shared_image.png';
                         final file = File(filePath);
                         await file.writeAsBytes(screenshotBytes);
-                        await Share.shareXFiles(
+                        await sharePosts(
                           [XFile(file.path)],
-                          text: '${posts.foodName} in ${posts.restaurant}'
-                              '\n#FoodGram',
+                          '${posts.foodName} in ${posts.restaurant} \n\n#FoodGram',
                         );
                       },
                       child: Row(
