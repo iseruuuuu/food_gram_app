@@ -51,7 +51,7 @@ class L10nEn extends L10n {
   String get settingsCheckVersionDialogText2 => 'Please update to the latest version.';
 
   @override
-  String get settingsDeveloper => 'Developer';
+  String get settingsDeveloper => 'Twitter';
 
   @override
   String get settingsGithub => 'Github';

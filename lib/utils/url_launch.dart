@@ -11,20 +11,15 @@ class LaunchUrl {
     }
   }
 
-  Future<bool> openSNSUrl(
-    String url,
-    String secondUrl,
-  ) async {
-    final snsUrl = Uri.parse(url);
-    final snsSecondUrk = Uri.parse(secondUrl);
-    if (await canLaunchUrl(snsUrl)) {
-      await launchUrl(snsUrl);
-      return true;
-    } else if (await canLaunchUrl(snsSecondUrk)) {
-      await launchUrl(snsSecondUrk);
-      return true;
-    } else {
+  Future<bool> openSNSUrl(String url) async {
+    final canLaunch = await canLaunchUrl(Uri.parse(url));
+    if (!canLaunch) {
       return false;
     }
+
+    return launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.externalApplication,
+    );
   }
 }

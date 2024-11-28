@@ -20,12 +20,12 @@ class TimeLineScreen extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(55),
+          preferredSize: Size.fromHeight(40),
           child: AppBar(
             surfaceTintColor: Colors.transparent,
             forceMaterialTransparency: true,
             elevation: 0,
-            bottom: const TabBar(
+            bottom: TabBar(
               indicatorWeight: 1,
               automaticIndicatorColorAdjustment: false,
               labelStyle: TextStyle(fontSize: 12),
@@ -35,14 +35,12 @@ class TimeLineScreen extends ConsumerWidget {
               indicatorSize: TabBarIndicatorSize.tab,
               tabs: <Widget>[
                 Tab(
-                  icon: Icon(Icons.dinner_dining),
-                  text: 'レストラン',
-                  height: 50,
+                  icon: Icon(Icons.dinner_dining, size: 30),
+                  height: 38,
                 ),
                 Tab(
-                  icon: Icon(Icons.restaurant_menu),
-                  text: '自炊',
-                  height: 50,
+                  icon: Icon(Icons.restaurant_menu, size: 30),
+                  height: 38,
                 ),
               ],
             ),
