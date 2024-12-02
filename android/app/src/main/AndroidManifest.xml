@@ -31,6 +31,68 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name">
 
+        <!--ホームWidget(小・Share)-->
+        <service
+            android:name="es.antonborri.home_widget.HomeWidgetBackgroundService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <receiver
+            android:name="MyAppWidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget_share_provider" />
+        </receiver>
+        <!--ホームWidget(小・Eat)-->
+        <service
+            android:name="es.antonborri.home_widget.HomeWidgetBackgroundService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <receiver
+            android:name="MyAppWidgetProvider2"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget_eat_provider" />
+        </receiver>
+        <!--ホームWidget(小・Search)-->
+        <service
+            android:name="es.antonborri.home_widget.HomeWidgetBackgroundService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <receiver
+            android:name="MyAppWidgetProvider3"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget_search_provider" />
+        </receiver>
+        <!--ホームWidget(中)-->
+        <service
+            android:name="es.antonborri.home_widget.HomeWidgetBackgroundService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <receiver
+            android:name="MyAppWidgetProvider4"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget_provider" />
+        </receiver>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${googleMapApiKey}" />
