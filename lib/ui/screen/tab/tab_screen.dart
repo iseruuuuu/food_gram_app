@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
 
 class TabScreen extends ConsumerWidget {
@@ -11,9 +10,11 @@ class TabScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(tabViewModelProvider());
     final controller = ref.watch(tabViewModelProvider().notifier);
-    final l10n = L10n.of(context);
     return Scaffold(
-      body: controller.pageList[state.selectedIndex],
+      body: IndexedStack(
+        index: state.selectedIndex,
+        children: controller.pageList,
+      ),
       bottomNavigationBar: SizedBox(
         height: 80,
         child: Theme(
