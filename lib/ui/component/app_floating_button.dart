@@ -14,6 +14,7 @@ class AppFloatingButton extends StatelessWidget {
       width: 70,
       height: 70,
       child: FloatingActionButton(
+        heroTag: null,
         foregroundColor: Colors.black,
         backgroundColor: Colors.black,
         elevation: 10,
