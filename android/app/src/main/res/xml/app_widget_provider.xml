@@ -1,0 +1,10 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:initialLayout="@layout/widget_layout"
+    android:minWidth="300dp"
+    android:minHeight="40dp"
+    android:previewImage="@drawable/app_widget"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="86400000"
+    android:widgetCategory="home_screen"
+    tools:targetApi="jelly_bean_mr1" />
