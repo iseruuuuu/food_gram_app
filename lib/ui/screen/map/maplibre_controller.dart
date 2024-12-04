@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/data/supabase/service/posts_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/utils/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -48,5 +49,20 @@ class MapLibreController extends _$MapLibreController {
         duration: Duration(seconds: 2),
       );
     });
+  }
+
+  Future<void> moveToCurrentLocation() async {
+    final currentLocation = ref.read(locationProvider);
+    await currentLocation.whenOrNull(
+      data: (location) async {
+        final currentLatLng = LatLng(
+          location.latitude,
+          location.longitude,
+        );
+        await controller.animateCamera(
+          CameraUpdate.newLatLngZoom(currentLatLng, 15),
+        );
+      },
+    );
   }
 }
