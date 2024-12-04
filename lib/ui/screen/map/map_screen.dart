@@ -6,6 +6,7 @@ import 'package:food_gram_app/core/utils/async_value_group.dart';
 import 'package:food_gram_app/core/utils/location.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
+import 'package:food_gram_app/ui/screen/map/component/map_floating_action_button.dart';
 import 'package:food_gram_app/ui/screen/map/maplibre_controller.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -66,6 +67,11 @@ class MapScreen extends HookConsumerWidget {
               ),
             ],
           );
+        },
+      ),
+      floatingActionButton: MapFloatingActionButton(
+        onPressed: () {
+          ref.read(mapLibreControllerProvider.notifier).moveToCurrentLocation();
         },
       ),
     );
