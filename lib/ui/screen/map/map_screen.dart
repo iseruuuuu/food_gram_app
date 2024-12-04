@@ -57,6 +57,7 @@ class MapScreen extends HookConsumerWidget {
                   zoom: 15,
                 ),
                 trackCameraPosition: true,
+                tiltGesturesEnabled: false,
                 styleString: '$styleUrl?key=$apiKey',
               ),
               Visibility(
