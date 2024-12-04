@@ -77,6 +77,9 @@ class AppListView extends ConsumerWidget {
                               fit: BoxFit.cover,
                               width: screenWidth,
                               height: screenWidth,
+                              placeholder: (context, url) => Container(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
