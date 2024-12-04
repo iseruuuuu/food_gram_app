@@ -49,8 +49,8 @@ class AppListView extends ConsumerWidget {
                       return GestureDetector(
                         onTap: () async {
                           EasyDebounce.debounce(
-                            'click detail',
-                            Duration.zero,
+                            'click_detail',
+                            const Duration(milliseconds: 300),
                             () async {
                               final post = await ref
                                   .read(postsServiceProvider)
