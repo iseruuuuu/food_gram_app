@@ -35,9 +35,6 @@ Future<PaginationList<Restaurant>> mapboxRestaurantApi(
             (b.lng - currentLocation.longitude).abs();
         return distanceA.compareTo(distanceB);
       });
-
-    print(sortedRestaurants);
-
     return sortedRestaurants;
   } on DioException catch (e) {
     print('Failed to fetch restaurant data: ${e.message}');
