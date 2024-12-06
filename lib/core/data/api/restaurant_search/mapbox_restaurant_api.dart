@@ -17,6 +17,35 @@ Future<PaginationList<Restaurant>> mapboxRestaurantApi(
   MapboxRestaurantApiRef ref,
   String keyword,
 ) async {
+  final currentLocationFuture = ref.read(locationProvider.future);
+  final currentLocation = await currentLocationFuture;
+  if (currentLocation == LatLng(0, 0) || keyword == '') {
+    return [];
+  }
+  final restaurants = <Restaurant>{};
+  try {
+    restaurants
+      ..addAll(await search(ref, toHiragana(keyword)))
+      ..addAll(await search(ref, toKatakana(keyword)));
+    final sortedRestaurants = restaurants.toList()
+      ..sort((a, b) {
+        final distanceA = (a.lat - currentLocation.latitude).abs() +
+            (a.lng - currentLocation.longitude).abs();
+        final distanceB = (b.lat - currentLocation.latitude).abs() +
+            (b.lng - currentLocation.longitude).abs();
+        return distanceA.compareTo(distanceB);
+      });
+    return sortedRestaurants;
+  } on DioException catch (e) {
+    print('Failed to fetch restaurant data: ${e.message}');
+    return [];
+  }
+}
+
+Future<List<Restaurant>> search(
+  MapboxRestaurantApiRef ref,
+  String keyword,
+) async {
   final dio = ref.watch(dioProvider);
   final currentLocationFuture = ref.read(locationProvider.future);
   final currentLocation = await currentLocationFuture;
@@ -25,78 +54,45 @@ Future<PaginationList<Restaurant>> mapboxRestaurantApi(
   }
   const resultsPerPage = 10;
   final restaurants = <Restaurant>[];
-  final restaurantNamesSet = <String>{};
-  try {
-    final response = await dio.get(
-      'https://api.mapbox.com/geocoding/v5/mapbox.places/$keyword.json',
-      queryParameters: {
-        'proximity': '${currentLocation.longitude},${currentLocation.latitude}',
-        'access_token': Env.mapbox,
-        'limit': resultsPerPage,
-      },
-    );
-    if (response.statusCode == 200) {
-      final data = response.data;
-      final features = data['features'] as List<dynamic>;
-      for (final feature in features) {
-        final placeName = feature['text'] as String;
-        final isCategoryMatched = category.any(
-          (category) => placeName.toLowerCase().contains(category),
-        );
-
-        ///TODO ひとまずちゃんと検索が出るようにするために一度全部みれるようにする
-        ///TODO このあとしっかりと調査をする必要がありそう
-        final placeType =
-            (feature['place_type'] as List<dynamic>).contains('poi');
-        if (isCategoryMatched || placeType) {
-          final address = feature['place_name'] as String;
-          final geometry = feature['geometry']['coordinates'] as List<dynamic>;
-          final lat = geometry[1] as double;
-          final lng = geometry[0] as double;
-          final restaurant = Restaurant(
-            name: placeName,
-            address: address,
-            lat: lat,
-            lng: lng,
-          );
-          restaurants.add(restaurant);
-          restaurantNamesSet.add(placeName);
-        }
-      }
+  final response = await dio.get(
+    'https://api.mapbox.com/geocoding/v5/mapbox.places/$keyword.json',
+    queryParameters: {
+      'proximity': '${currentLocation.longitude},${currentLocation.latitude}',
+      'access_token': Env.mapbox,
+      'limit': resultsPerPage,
+    },
+  );
+  if (response.statusCode == 200) {
+    final data = response.data;
+    final features = data['features'] as List<dynamic>;
+    for (final feature in features) {
+      final placeName = feature['text'] as String;
+      final address = feature['place_name'] as String;
+      final geometry = feature['geometry']['coordinates'] as List<dynamic>;
+      final lat = geometry[1] as double;
+      final lng = geometry[0] as double;
+      final restaurant = Restaurant(
+        name: placeName,
+        address: address,
+        lat: lat,
+        lng: lng,
+      );
+      restaurants.add(restaurant);
     }
-    restaurants.sort((a, b) {
-      final distanceA = (a.lat - currentLocation.latitude).abs() +
-          (a.lng - currentLocation.longitude).abs();
-      final distanceB = (b.lat - currentLocation.latitude).abs() +
-          (b.lng - currentLocation.longitude).abs();
-      return distanceA.compareTo(distanceB);
-    });
-    return restaurants;
-  } on DioException catch (e) {
-    print('Failed to fetch restaurant data: ${e.message}');
-    return [];
   }
+  return restaurants;
 }
 
-final category = [
-  'japanese food',
-  'food',
-  'bar',
-  'sake',
-  'alcohol',
-  'fast food',
-  'diner',
-  'steakhouse',
-  'steak',
-  'yoshoku',
-  'sweets',
-  'italian restaurant',
-  'chinese restaurant',
-  'cafe',
-  'coffee',
-  'bakery',
-  'tea',
-  'snack',
-  'burger joint',
-  'fast-food',
-];
+String toHiragana(String input) {
+  return input.replaceAllMapped(RegExp('[ァ-ン]'), (match) {
+    final char = match.group(0)!;
+    return String.fromCharCode(char.codeUnitAt(0) - 0x60);
+  });
+}
+
+String toKatakana(String input) {
+  return input.replaceAllMapped(RegExp('[ぁ-ん]'), (match) {
+    final char = match.group(0)!;
+    return String.fromCharCode(char.codeUnitAt(0) + 0x60);
+  });
+}

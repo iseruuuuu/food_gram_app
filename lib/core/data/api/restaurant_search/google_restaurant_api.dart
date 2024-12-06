@@ -43,6 +43,7 @@ Future<List<Restaurant>> _fetchFromGoogleMapsApi(
       'type': 'restaurant',
       'keyword': keyword,
       'key': Platform.isIOS ? Env.iOSGoogleApikey : Env.androidGoogleApikey,
+      'language': 'ja',
     },
   );
   if (response.statusCode == 200) {
