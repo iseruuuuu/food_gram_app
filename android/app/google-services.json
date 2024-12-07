@@ -117,6 +117,53 @@
       },
       "oauth_client": [
         {
+          "client_id": "505064710022-kc33atuv5taavo44vp5g1bs529garef3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.food_gram_app.com.com",
+            "certificate_hash": "dd50c3484ea53bb8181f2637bf040620e3e516a8"
+          }
+        },
+        {
+          "client_id": "505064710022-rqt7k1vm2o9htklicvn9e68pm0rl8m0d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmy8Qu1OUTmFzghPc5MK5kBFZKkQEmoyY"
+        },
+        {
+          "current_key": "AIzaSyBY15iC73bmVvdFChxkMi5cGif_fbaQOJM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505064710022-044o916n89eu4jmng6q53hb7qjb6qg4n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "505064710022-6bs17mpbknphc8sgu43nhhimi21h29e7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.foodGramApp.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505064710022:android:ba59a92d5ca85e2e145607",
+        "android_client_info": {
+          "package_name": "com.food_gram_app.com.com.com"
+        }
+      },
+      "oauth_client": [
+        {
           "client_id": "505064710022-rqt7k1vm2o9htklicvn9e68pm0rl8m0d.apps.googleusercontent.com",
           "client_type": 3
         }
