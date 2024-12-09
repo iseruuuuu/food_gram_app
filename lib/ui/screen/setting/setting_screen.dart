@@ -221,7 +221,56 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                     ),
                   ),
                 ),
-                Gap(40),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 16,
+                  ),
+                  child: Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      tileColor: Color(0xFFFFFDD0),
+                      leading: Icon(
+                        FontAwesomeIcons.crown,
+                        color: Colors.yellow,
+                        size: 32,
+                      ),
+                      trailing: Icon(
+                        FontAwesomeIcons.crown,
+                        color: Colors.yellow,
+                        size: 32,
+                      ),
+                      subtitleTextStyle: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      title: Center(
+                        child: Text(
+                          //TODO 多言語化する
+                          // 'プレミアムメンバーシップになる',
+                          'Get a Premium MemberShip',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        ref
+                            .read(settingViewModelProvider().notifier)
+                            .purchase();
+                      },
+                    ),
+                  ),
+                ),
+                Gap(12),
                 Wrap(
                   children: [
                     AppSettingTile(
