@@ -50,6 +50,7 @@ dependencies:
   new_version_plus: ^0.0.11
   package_info_plus: ^4.0.1
   path_provider: ^2.1.5
+  purchases_flutter: ^8.3.0
   riverpod_annotation: ^2.3.0
   screenshot: ^3.0.0
   settings_ui: ^2.0.2
