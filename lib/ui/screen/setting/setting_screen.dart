@@ -332,6 +332,15 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                         });
                       },
                     ),
+                    AppSettingTile(
+                      icon: Icons.restore,
+                      size: 32,
+                      color: Colors.black,
+                      title: '購入を復元',
+                      onTap: () {
+                        ref.read(settingViewModelProvider().notifier).restore();
+                      },
+                    ),
                   ],
                 ),
               ],
