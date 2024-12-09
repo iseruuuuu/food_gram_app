@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/app_app_bar.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_setting_tile.dart';
 import 'package:food_gram_app/ui/component/dialog/app_dialog.dart';
@@ -16,7 +17,6 @@ import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/utils/url_launch.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:share_plus/share_plus.dart';
 
 class SettingScreen extends ConsumerStatefulWidget {
   const SettingScreen({super.key});
@@ -33,14 +33,13 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
     final l10n = L10n.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
+      appBar: AppAppBar(),
       body: Stack(
         children: [
           SingleChildScrollView(
             child: Column(
               children: [
+                Gap(12),
                 Wrap(
                   children: [
                     AppSettingTile(
