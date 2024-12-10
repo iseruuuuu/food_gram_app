@@ -7,5 +7,8 @@ class EditState with _$EditState {
   const factory EditState({
     @Default('') String status,
     @Default(1) number,
+    @Default('') uploadImage,
+    @Default('') initialImage,
+    @Default(false) isSelectedIcon,
   }) = _EditState;
 }
