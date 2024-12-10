@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/dialog/app_profile_dialog.dart';
 import 'package:gap/gap.dart';
 

@@ -10,6 +10,7 @@ import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
+import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/dialog/app_share_dialog.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_master_modal_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_my_info_modal_sheet.dart';
@@ -117,10 +118,9 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(10),
-                          child: CircleAvatar(
+                          child: AppProfileImage(
+                            imagePath: widget.users.image,
                             radius: 30,
-                            backgroundColor: Colors.white,
-                            child: Image.asset(widget.users.image),
                           ),
                         ),
                         SizedBox(
