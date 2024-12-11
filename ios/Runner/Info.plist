@@ -82,6 +82,10 @@
 	<true/>
 	<key>NSUserTrackingUsageDescription</key>
     <string>This identifier will be used to deliver personalized ads to you.</string>
+    <key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-9259628471292536~9760884100</string>
+    <key>io.flutter.embedded_views_preview</key>
+    <true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
