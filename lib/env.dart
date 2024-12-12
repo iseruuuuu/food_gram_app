@@ -22,6 +22,10 @@ abstract class Env {
   static final String androidGoogleApikey = _Env.androidGoogleApikey;
   @EnviedField(varName: 'MASTER_ACCOUNT', obfuscate: true)
   static final String masterAccount = _Env.masterAccount;
+  @EnviedField(varName: 'IOS_BANNER', obfuscate: true)
+  static final String iOSBanner = _Env.iOSBanner;
+  @EnviedField(varName: 'IOS_INTERSTITIAL', obfuscate: true)
+  static final String iOSInterstitial = _Env.iOSInterstitial;
 }
 
 @Envied(path: '.env.dev')

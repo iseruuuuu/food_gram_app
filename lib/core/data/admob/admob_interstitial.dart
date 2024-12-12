@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:food_gram_app/env.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 String getAdmobInterstitialId() {
@@ -11,7 +12,7 @@ String getAdmobInterstitialId() {
   } else if (Platform.isIOS) {
     return kDebugMode
         ? 'ca-app-pub-3940256099942544/1033173712' // iOSデモ用バナー広告ID
-        : 'ca-app-pub-9259628471292536/6013873491';
+        : Env.iOSInterstitial;
   }
   throw UnsupportedError('Unsupported platform');
 }

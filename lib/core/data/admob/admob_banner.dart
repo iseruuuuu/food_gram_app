@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/env.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 // Banner ID を取得する関数
@@ -14,7 +15,7 @@ String getAdmobBannerId() {
   } else if (Platform.isIOS) {
     return kDebugMode
         ? 'ca-app-pub-3940256099942544/2934735716' // iOSデモ用バナー広告ID
-        : 'ca-app-pub-9259628471292536/6013873491';
+        : Env.iOSBanner;
   }
   throw UnsupportedError('Unsupported platform');
 }
