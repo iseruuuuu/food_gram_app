@@ -11,10 +11,7 @@ class TabScreen extends ConsumerWidget {
     final state = ref.watch(tabViewModelProvider());
     final controller = ref.watch(tabViewModelProvider().notifier);
     return Scaffold(
-      body: IndexedStack(
-        index: state.selectedIndex,
-        children: controller.pageList,
-      ),
+      body: controller.pageList[state.selectedIndex],
       bottomNavigationBar: SizedBox(
         height: 80,
         child: Theme(
