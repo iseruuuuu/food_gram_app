@@ -8,7 +8,7 @@ String getAdmobInterstitialId() {
   if (Platform.isAndroid) {
     return kDebugMode
         ? 'ca-app-pub-3940256099942544/1033173712' // Androidデモ用バナー広告ID
-        : 'YOUR_ADMOB_ANDROID_UNIT_ID';
+        : Env.androidInterstitial;
   } else if (Platform.isIOS) {
     return kDebugMode
         ? 'ca-app-pub-3940256099942544/1033173712' // iOSデモ用バナー広告ID

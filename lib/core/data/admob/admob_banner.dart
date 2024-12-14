@@ -11,7 +11,7 @@ String getAdmobBannerId() {
   if (Platform.isAndroid) {
     return kDebugMode
         ? 'ca-app-pub-3940256099942544/6300978111' // Androidデモ用バナー広告ID
-        : 'YOUR_ADMOB_ANDROID_UNIT_ID';
+        : Env.androidBanner;
   } else if (Platform.isIOS) {
     return kDebugMode
         ? 'ca-app-pub-3940256099942544/2934735716' // iOSデモ用バナー広告ID
