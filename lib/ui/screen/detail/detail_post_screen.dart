@@ -316,6 +316,7 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       ),
                     ),
                     AdmobBanner(),
+                    Gap(40),
                   ],
                 ),
               ),
