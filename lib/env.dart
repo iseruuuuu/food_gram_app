@@ -26,6 +26,10 @@ abstract class Env {
   static final String iOSBanner = _Env.iOSBanner;
   @EnviedField(varName: 'IOS_INTERSTITIAL', obfuscate: true)
   static final String iOSInterstitial = _Env.iOSInterstitial;
+  @EnviedField(varName: 'ANDROID_BANNER', obfuscate: true)
+  static final String androidBanner = _Env.androidBanner;
+  @EnviedField(varName: 'ANDROID_INTERSTITIAL', obfuscate: true)
+  static final String androidInterstitial = _Env.androidInterstitial;
 }
 
 @Envied(path: '.env.dev')
