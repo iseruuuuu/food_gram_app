@@ -78,6 +78,7 @@ class StoryPage extends StatelessWidget {
                         ),
                         Gap(50),
                         AdmobBanner(),
+                        Gap(20),
                       ],
                     ),
                   ),
