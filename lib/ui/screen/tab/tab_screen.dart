@@ -12,47 +12,57 @@ class TabScreen extends ConsumerWidget {
     final controller = ref.watch(tabViewModelProvider().notifier);
     return Scaffold(
       body: controller.pageList[state.selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: state.selectedIndex,
-        onTap: controller.onTap,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.fastfood_outlined,
-              semanticLabel: 'timelineIcon',
-            ),
-            label: '',
+      bottomNavigationBar: SizedBox(
+        height: 90,
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              CupertinoIcons.map,
-              semanticLabel: 'mapIcon',
-            ),
-            label: '',
+          child: BottomNavigationBar(
+            currentIndex: state.selectedIndex,
+            onTap: controller.onTap,
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.fastfood_outlined,
+                  semanticLabel: 'timelineIcon',
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  CupertinoIcons.map,
+                  semanticLabel: 'mapIcon',
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  CupertinoIcons.profile_circled,
+                  semanticLabel: 'profileIcon',
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.settings,
+                  semanticLabel: 'settingIcon',
+                ),
+                label: '',
+              ),
+            ],
+            type: BottomNavigationBarType.fixed,
+            iconSize: 28,
+            elevation: 0,
+            backgroundColor: Colors.white,
+            selectedItemColor: Colors.black,
+            unselectedItemColor: Colors.grey,
+            selectedFontSize: 0,
+            unselectedFontSize: 0,
+            enableFeedback: false,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              CupertinoIcons.profile_circled,
-              semanticLabel: 'profileIcon',
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.settings,
-              semanticLabel: 'settingIcon',
-            ),
-            label: '',
-          ),
-        ],
-        type: BottomNavigationBarType.fixed,
-        iconSize: 28,
-        elevation: 0,
-        backgroundColor: Colors.white,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        selectedFontSize: 0,
-        unselectedFontSize: 0,
+        ),
       ),
     );
   }
