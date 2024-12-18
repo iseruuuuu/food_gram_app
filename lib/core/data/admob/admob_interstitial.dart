@@ -1,8 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'admob_interstitial.g.dart';
 
 String getAdmobInterstitialId() {
   if (Platform.isAndroid) {
@@ -18,9 +22,14 @@ String getAdmobInterstitialId() {
 }
 
 class AdmobInterstitial {
+  // サブスク状態を管理
+
+  AdmobInterstitial({required this.isSubscribed});
+
   InterstitialAd? _interstitialAd;
   int numOfAttemptLoad = 0;
   bool? ready;
+  final bool isSubscribed;
 
   void createAd() {
     InterstitialAd.load(
@@ -50,6 +59,16 @@ class AdmobInterstitial {
       print('Warning: attempt to show interstitial before loaded.');
       return;
     }
+
+    print(isSubscribed);
+    // もし、サブスクに登録していたら、すぐにonAdClosedを呼び出す
+    if (isSubscribed) {
+      if (onAdClosed != null) {
+        onAdClosed();
+      }
+      return;
+    }
+
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
         print('Ad showed fullscreen');
@@ -72,4 +91,16 @@ class AdmobInterstitial {
     await _interstitialAd!.show();
     _interstitialAd = null;
   }
+}
+
+@riverpod
+AdmobInterstitial admobInterstitial(AdmobInterstitialRef ref) {
+  // サブスク状態を監視するプロバイダーから値を取得
+  final isSubscribed =
+      ref.watch(subscriptionProvider).whenOrNull(data: (value) => value) ??
+          false;
+  print(isSubscribed);
+  final openInterstitial = AdmobInterstitial(isSubscribed: isSubscribed)
+    ..createAd();
+  return openInterstitial;
 }
