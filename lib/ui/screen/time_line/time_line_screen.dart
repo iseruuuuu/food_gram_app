@@ -22,15 +22,20 @@ class TimeLineScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final restaurant = ref.watch(postStreamProvider);
     final homeMade = ref.watch(postHomeMadeStreamProvider);
-    final admobOpen = AdmobOpen();
     useEffect(
       () {
-        ref.read(purchaseProvider.notifier).initInAppPurchase();
         loadAppTrackingTransparency();
-        final value = math.Random().nextInt(5);
-        if (value == 4) {
-          admobOpen.loadAd();
-        }
+        ref
+            .read(purchaseProvider.notifier)
+            .initInAppPurchase()
+            .then((isSubscribed) {
+          final value = math.Random().nextInt(10);
+          if (value == 10) {
+            if (!isSubscribed) {
+              AdmobOpen().loadAd();
+            }
+          }
+        });
         return null;
       },
       [],
