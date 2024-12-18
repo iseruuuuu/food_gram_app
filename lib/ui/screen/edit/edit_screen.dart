@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/data/admob/admob_interstitial.dart';
 import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_icon.dart';
@@ -13,8 +14,9 @@ import 'package:food_gram_app/ui/screen/edit/edit_view_model.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class EditScreen extends ConsumerWidget {
+class EditScreen extends HookConsumerWidget {
   const EditScreen({super.key});
 
   @override
@@ -26,6 +28,14 @@ class EditScreen extends ConsumerWidget {
     final isSubscribed =
         subscriptionState.whenOrNull(data: (isSubscribed) => isSubscribed) ??
             false;
+    final adInterstitial = useMemoized(AdmobInterstitial.new, []);
+    useEffect(
+      () {
+        adInterstitial.createAd();
+        return null;
+      },
+      [],
+    );
     return PopScope(
       canPop: !loading,
       child: GestureDetector(
@@ -54,8 +64,9 @@ class EditScreen extends ConsumerWidget {
                   onPressed: () => ref
                       .read(editViewModelProvider().notifier)
                       .update()
-                      .then((value) {
+                      .then((value) async {
                     if (value) {
+                      await adInterstitial.showAd();
                       context.pop(true);
                     }
                   }),
