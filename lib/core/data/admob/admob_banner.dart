@@ -39,16 +39,23 @@ class AdmobBanner extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bannerAd = ref.watch(bannerAdProvider);
     final subscriptionState = ref.watch(subscriptionProvider);
-    final isSubscribed =
-        subscriptionState.whenOrNull(data: (isSubscribed) => isSubscribed) ??
-            false;
-    return !isSubscribed
-        ? Container(
-            width: double.infinity,
-            alignment: Alignment.center,
-            height: bannerAd.size.height.toDouble(),
-            child: AdWidget(ad: bannerAd),
-          )
-        : SizedBox.shrink();
+    return subscriptionState.when(
+      data: (isSubscribed) {
+        return !isSubscribed
+            ? Container(
+                width: double.infinity,
+                alignment: Alignment.center,
+                height: bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: bannerAd),
+              )
+            : SizedBox.shrink();
+      },
+      error: (_, __) {
+        return SizedBox.shrink();
+      },
+      loading: () {
+        return SizedBox.shrink();
+      },
+    );
   }
 }
