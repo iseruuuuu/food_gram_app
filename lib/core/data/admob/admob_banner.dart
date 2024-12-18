@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -37,11 +38,17 @@ class AdmobBanner extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bannerAd = ref.watch(bannerAdProvider);
-    return Container(
-      width: double.infinity,
-      alignment: Alignment.center,
-      height: bannerAd.size.height.toDouble(),
-      child: AdWidget(ad: bannerAd),
-    );
+    final subscriptionState = ref.watch(subscriptionProvider);
+    final isSubscribed =
+        subscriptionState.whenOrNull(data: (isSubscribed) => isSubscribed) ??
+            false;
+    return !isSubscribed
+        ? Container(
+            width: double.infinity,
+            alignment: Alignment.center,
+            height: bannerAd.size.height.toDouble(),
+            child: AdWidget(ad: bannerAd),
+          )
+        : SizedBox.shrink();
   }
 }
