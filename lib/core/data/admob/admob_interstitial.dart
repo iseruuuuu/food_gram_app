@@ -60,7 +60,6 @@ class AdmobInterstitial {
       return;
     }
 
-    print(isSubscribed);
     // もし、サブスクに登録していたら、すぐにonAdClosedを呼び出す
     if (isSubscribed) {
       if (onAdClosed != null) {
@@ -95,11 +94,9 @@ class AdmobInterstitial {
 
 @riverpod
 AdmobInterstitial admobInterstitial(AdmobInterstitialRef ref) {
-  // サブスク状態を監視するプロバイダーから値を取得
   final isSubscribed =
       ref.watch(subscriptionProvider).whenOrNull(data: (value) => value) ??
           false;
-  print(isSubscribed);
   final openInterstitial = AdmobInterstitial(isSubscribed: isSubscribed)
     ..createAd();
   return openInterstitial;
