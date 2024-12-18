@@ -3,6 +3,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/data/admob/admob_banner.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/env.dart';
@@ -105,226 +106,230 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
               ),
           ],
         ),
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: deviceWidth,
-                    child: Row(
+        body: SafeArea(
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: deviceWidth,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.white,
+                              child: Image.asset(widget.users.image),
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.sizeOf(context).width - 150,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.users.name,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  '@${widget.users.userName}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onDoubleTap: (widget.users.userId != user)
+                          ? () async {
+                              if (isHeart) {
+                                await supabase.from('posts').update({
+                                  'heart': widget.posts.heart - 1,
+                                }).match({'id': widget.posts.id});
+                                setState(() {
+                                  initialHeart--;
+                                  isHeart = false;
+                                  doesHeart = false;
+                                });
+                              } else {
+                                await supabase.from('posts').update({
+                                  'heart': widget.posts.heart + 1,
+                                }).match({'id': widget.posts.id});
+                                setState(() {
+                                  initialHeart++;
+                                  isHeart = true;
+                                  doesHeart = true;
+                                });
+                              }
+                            }
+                          : null,
+                      child: Container(
+                        width: deviceWidth,
+                        height: deviceWidth,
+                        color: Colors.white,
+                        child: CachedNetworkImage(
+                          imageUrl: supabase.storage
+                              .from('food')
+                              .getPublicUrl(widget.posts.foodImage),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: CircleAvatar(
-                            radius: 30,
-                            backgroundColor: Colors.white,
-                            child: Image.asset(widget.users.image),
+                        SizedBox(width: 5),
+                        IconButton(
+                          onPressed: (widget.users.userId != user)
+                              ? () async {
+                                  if (isHeart) {
+                                    await supabase.from('posts').update({
+                                      'heart': widget.posts.heart - 1,
+                                    }).match({'id': widget.posts.id});
+                                    setState(() {
+                                      initialHeart--;
+                                      isHeart = false;
+                                      doesHeart = false;
+                                    });
+                                  } else {
+                                    await supabase.from('posts').update({
+                                      'heart': widget.posts.heart + 1,
+                                    }).match({'id': widget.posts.id});
+                                    setState(() {
+                                      initialHeart++;
+                                      isHeart = true;
+                                      doesHeart = true;
+                                    });
+                                  }
+                                }
+                              : null,
+                          icon: Icon(
+                            (isHeart || widget.users.userName == user)
+                                ? CupertinoIcons.heart_fill
+                                : CupertinoIcons.heart,
+                            color: isHeart ? Colors.red : Colors.black,
+                            size: 30,
                           ),
                         ),
-                        SizedBox(
-                          width: MediaQuery.sizeOf(context).width - 150,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.users.name,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Text(
-                                '@${widget.users.userName}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
+                        SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: () {
+                            EasyDebounce.debounce(
+                                'post', Duration(milliseconds: 200), () async {
+                              await showDialog(
+                                context: context,
+                                useSafeArea: false,
+                                builder: (context) {
+                                  return AppShareDialog(
+                                    posts: widget.posts,
+                                    users: widget.users,
+                                  );
+                                },
+                              );
+                            });
+                          },
+                          child: Icon(
+                            Icons.send,
+                            size: 30,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Text(
+                            '$initialHeart'
+                            ' ${L10n.of(context).postDetailLikeButton}',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  GestureDetector(
-                    onDoubleTap: (widget.users.userId != user)
-                        ? () async {
-                            if (isHeart) {
-                              await supabase.from('posts').update({
-                                'heart': widget.posts.heart - 1,
-                              }).match({'id': widget.posts.id});
-                              setState(() {
-                                initialHeart--;
-                                isHeart = false;
-                                doesHeart = false;
-                              });
-                            } else {
-                              await supabase.from('posts').update({
-                                'heart': widget.posts.heart + 1,
-                              }).match({'id': widget.posts.id});
-                              setState(() {
-                                initialHeart++;
-                                isHeart = true;
-                                doesHeart = true;
-                              });
-                            }
-                          }
-                        : null,
-                    child: Container(
-                      width: deviceWidth,
-                      height: deviceWidth,
-                      color: Colors.white,
-                      child: CachedNetworkImage(
-                        imageUrl: supabase.storage
-                            .from('food')
-                            .getPublicUrl(widget.posts.foodImage),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(width: 5),
-                      IconButton(
-                        onPressed: (widget.users.userId != user)
-                            ? () async {
-                                if (isHeart) {
-                                  await supabase.from('posts').update({
-                                    'heart': widget.posts.heart - 1,
-                                  }).match({'id': widget.posts.id});
-                                  setState(() {
-                                    initialHeart--;
-                                    isHeart = false;
-                                    doesHeart = false;
-                                  });
-                                } else {
-                                  await supabase.from('posts').update({
-                                    'heart': widget.posts.heart + 1,
-                                  }).match({'id': widget.posts.id});
-                                  setState(() {
-                                    initialHeart++;
-                                    isHeart = true;
-                                    doesHeart = true;
-                                  });
-                                }
-                              }
-                            : null,
-                        icon: Icon(
-                          (isHeart || widget.users.userName == user)
-                              ? CupertinoIcons.heart_fill
-                              : CupertinoIcons.heart,
-                          color: isHeart ? Colors.red : Colors.black,
-                          size: 30,
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: () {
-                          EasyDebounce.debounce(
-                              'post', Duration(milliseconds: 200), () async {
-                            await showDialog(
-                              context: context,
-                              useSafeArea: false,
-                              builder: (context) {
-                                return AppShareDialog(
-                                  posts: widget.posts,
-                                  users: widget.users,
-                                );
-                              },
-                            );
-                          });
-                        },
-                        child: Icon(
-                          Icons.send,
-                          size: 30,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
+                      child: Text(
+                        widget.posts.foodName,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
                       ),
-                      Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Text(
-                          '$initialHeart'
-                          ' ${L10n.of(context).postDetailLikeButton}',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Text(
+                        'In ${widget.posts.restaurant}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    Gap(10),
+                    Wrap(
+                      spacing: 10,
+                      children: [
+                        Gap(10),
+                        if (widget.posts.foodTag != '')
+                          Chip(
+                            backgroundColor: Colors.white,
+                            label: Text(widget.posts.foodTag),
+                            labelStyle: TextStyle(fontSize: 20),
                           ),
+                        Gap(10),
+                        if (widget.posts.restaurantTag != '')
+                          Chip(
+                            backgroundColor: Colors.white,
+                            label: Text(widget.posts.restaurantTag),
+                            labelStyle: TextStyle(fontSize: 20),
+                          ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Text(
+                        widget.posts.comment,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
                         ),
                       ),
-                    ],
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                    child: Text(
-                      widget.posts.foodName,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Text(
-                      'In ${widget.posts.restaurant}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Gap(10),
-                  Wrap(
-                    spacing: 10,
-                    children: [
-                      Gap(10),
-                      if (widget.posts.foodTag != '')
-                        Chip(
-                          backgroundColor: Colors.white,
-                          label: Text(widget.posts.foodTag),
-                          labelStyle: TextStyle(fontSize: 20),
-                        ),
-                      Gap(10),
-                      if (widget.posts.restaurantTag != '')
-                        Chip(
-                          backgroundColor: Colors.white,
-                          label: Text(widget.posts.restaurantTag),
-                          labelStyle: TextStyle(fontSize: 20),
-                        ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Text(
-                      widget.posts.comment,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
+                    AdmobBanner(),
+                    Gap(40),
+                  ],
+                ),
               ),
-            ),
-            AppHeart(
-              isHeart: doesHeart,
-              controller: controller,
-            ),
-            AppLoading(
-              loading: loading,
-              status: 'Loading...',
-            ),
-          ],
+              AppHeart(
+                isHeart: doesHeart,
+                controller: controller,
+              ),
+              AppLoading(
+                loading: loading,
+                status: 'Loading...',
+              ),
+            ],
+          ),
         ),
       ),
     );
