@@ -95,23 +95,23 @@ class Purchase extends _$Purchase {
 
   /// 購入の復元
   /// iosの場合は、購入の復元（以前の購入履歴を復元する）を実装することが必要
-  Future<void> restorePurchase(String entitlement) async {
+  Future<bool> restorePurchase(String entitlement) async {
     try {
       /// Entitlements
       /// 「アイテムの保有状況（アイテムが購入済みで、アクティブになっているかどうか）」を確認するための設定項目
       final customerInfo = await Purchases.restorePurchases();
       final isActive = await updatePurchases(customerInfo, entitlement);
       if (!isActive) {
-        //TODO SnackBarとかを出す
         print('購入情報なし');
+        return false;
       } else {
         await getPurchaserInfo(customerInfo);
         print('$entitlement 購入情報あり　復元する');
-        //TODO 必要であれば復元の処理が必要そう・・・？
-        //TODO SnackBarとかを出す
+        return true;
       }
     } on PlatformException catch (e) {
       print('purchase repo  restorePurchase error ${e}');
+      return false;
     }
   }
 }

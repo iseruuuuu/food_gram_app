@@ -229,8 +229,6 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                           ),
                         ),
                       ),
-                      //TODO 購入している場合は、出現しないようにしたい
-
                       subscriptionState.when(
                         data: (isSubscribed) {
                           return !isSubscribed
@@ -291,7 +289,6 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                           return SizedBox.shrink();
                         },
                       ),
-
                       Gap(12),
                       Wrap(
                         children: [
@@ -359,11 +356,31 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                             icon: Icons.restore,
                             size: 32,
                             color: Colors.black,
+                            //TODO 多言語対応する
                             title: '購入を復元',
                             onTap: () {
                               ref
                                   .read(settingViewModelProvider().notifier)
-                                  .restore();
+                                  .restore()
+                                  .then(
+                                (isRestore) {
+                                  if (isRestore) {
+                                    //TODO 多言語対応する
+                                    openSuccessSnackBar(
+                                      context,
+                                      '復元が成功しました',
+                                      'プレミアム機能が有効になりました！',
+                                    );
+                                  } else {
+                                    //TODO 多言語対応する
+                                    openErrorSnackBar(
+                                      context,
+                                      '復元失敗',
+                                      '購入履歴がない場合はサポートにご連絡を',
+                                    );
+                                  }
+                                },
+                              );
                             },
                           ),
                         ],

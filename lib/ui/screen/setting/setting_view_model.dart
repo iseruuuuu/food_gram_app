@@ -99,12 +99,13 @@ class SettingViewModel extends _$SettingViewModel {
     return result;
   }
 
-  Future<void> restore() async {
+  Future<bool> restore() async {
     loading.state = true;
-    await ref
+    final result = await ref
         .read(purchaseProvider.notifier)
         .restorePurchase('foodgram_premium_membership');
     loading.state = false;
+    return result;
   }
 
   Future<bool> signOut() async {
