@@ -35,7 +35,11 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       await result.when(
         success: (_) async {
           await Future.delayed(Duration(seconds: 2));
-          openSuccessSnackBar(context, L10n.of(context).emailAuthentication);
+          openSuccessSnackBar(
+            context,
+            L10n.of(context).loginSuccessful,
+            L10n.of(context).emailAuthentication,
+          );
         },
         failure: (error) {
           logger.e(error);

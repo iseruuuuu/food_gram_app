@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/data/supabase/auth/account_service.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/edit/edit_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'edit_view_model.g.dart';
@@ -22,6 +24,9 @@ class EditViewModel extends _$EditViewModel {
   final selfIntroduceTextController = TextEditingController();
 
   Loading get loading => ref.read(loadingProvider.notifier);
+  final picker = ImagePicker();
+  String uploadImage = '';
+  late Uint8List imageBytes;
 
   Future<void> getProfile() async {
     await Future.delayed(Duration.zero);
@@ -32,7 +37,11 @@ class EditViewModel extends _$EditViewModel {
     nameTextController.text = data['name'];
     useNameTextController.text = data['user_name'];
     selfIntroduceTextController.text = data['self_introduce'];
-    state = state.copyWith(number: extractNumber(data['image']));
+    state = state.copyWith(
+      number: extractNumber(data['image']),
+      initialImage: data['image'],
+    );
+
     loading.state = false;
   }
 
@@ -46,10 +55,12 @@ class EditViewModel extends _$EditViewModel {
     primaryFocus?.unfocus();
     loading.state = true;
     final result = await ref.read(accountServiceProvider).update(
-          nameTextController.text,
-          useNameTextController.text,
-          selfIntroduceTextController.text,
-          state.number,
+          name: nameTextController.text,
+          userName: useNameTextController.text,
+          selfIntroduce: selfIntroduceTextController.text,
+          image: state.number,
+          uploadImage: uploadImage,
+          imageBytes: imageBytes,
         );
     result.when(
       success: (_) {
@@ -65,6 +76,59 @@ class EditViewModel extends _$EditViewModel {
   }
 
   void selectIcon(int number) {
-    state = state.copyWith(number: number);
+    state = state.copyWith(
+      number: number,
+      uploadImage: '',
+      isSelectedIcon: true,
+    );
+    print(state.uploadImage);
+    print(state.initialImage);
+  }
+
+  Future<bool> camera() async {
+    try {
+      final image = await ImagePicker().pickImage(
+        source: ImageSource.camera,
+        maxHeight: 960,
+        maxWidth: 960,
+        imageQuality: 100,
+      );
+      if (image == null) {
+        return false;
+      }
+      imageBytes = await image.readAsBytes();
+      uploadImage = image.name;
+      state = state.copyWith(
+        uploadImage: image.path,
+        isSelectedIcon: false,
+      );
+      return true;
+    } on PlatformException catch (error) {
+      return false;
+    }
+  }
+
+  Future<bool> album() async {
+    try {
+      final image = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 960,
+        maxWidth: 960,
+        imageQuality: 100,
+      );
+      if (image == null) {
+        return false;
+      }
+      imageBytes = await image.readAsBytes();
+      uploadImage = image.name;
+      state = state.copyWith(
+        uploadImage: image.path,
+        isSelectedIcon: false,
+      );
+      return true;
+    } on PlatformException catch (error) {
+      logger.e(error.message);
+      return false;
+    }
   }
 }

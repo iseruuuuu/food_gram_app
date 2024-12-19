@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/ui/component/app_profile_image.dart';
 
 class AppProfileDialog extends StatelessWidget {
   const AppProfileDialog({
@@ -18,10 +19,9 @@ class AppProfileDialog extends StatelessWidget {
       child: AlertDialog(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        content: CircleAvatar(
+        content: AppProfileImage(
+          imagePath: image,
           radius: deviceWidth / 3.5,
-          backgroundColor: Colors.white,
-          foregroundImage: AssetImage(image),
         ),
       ),
     );

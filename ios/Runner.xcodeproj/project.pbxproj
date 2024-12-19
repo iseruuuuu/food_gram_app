@@ -14,6 +14,7 @@
 		6D17F46C2CFDD8C3008B8435 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D17F46B2CFDD8C3008B8435 /* SwiftUI.framework */; };
 		6D17F47D2CFDD8C7008B8435 /* HomeWidgetSampleExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6D17F4682CFDD8C3008B8435 /* HomeWidgetSampleExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6D518B792B3168B7005D6CB9 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D518B782B3168B7005D6CB9 /* Environment.swift */; };
+		6DE199652D047DB30082E947 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DE199642D047DB30082E947 /* StoreKit.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		82D2413079220D5D3F75CD06 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7B5D1A9EFD654F3112B37FBC /* GoogleService-Info.plist */; };
 		89DD1E713A057071CB0A1F2D /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E22BC7CB4DC941AF48EB1DE9 /* Pods_RunnerTests.framework */; };
@@ -77,6 +78,7 @@
 		6D17F46B2CFDD8C3008B8435 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		6D518B782B3168B7005D6CB9 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		6DA003192B80D9E600250C4D /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
+		6DE199642D047DB30082E947 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2E94640A2FF0317F7DC3320 /* Pods_Runner.framework in Frameworks */,
+				6DE199652D047DB30082E947 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +205,7 @@
 		9F68371805663968F42DD2B9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6DE199642D047DB30082E947 /* StoreKit.framework */,
 				E309A6A1B6A8BDAE3F5ED942 /* Pods_Runner.framework */,
 				E22BC7CB4DC941AF48EB1DE9 /* Pods_RunnerTests.framework */,
 				6D17F4692CFDD8C3008B8435 /* WidgetKit.framework */,

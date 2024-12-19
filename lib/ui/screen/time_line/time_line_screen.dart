@@ -1,5 +1,10 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/data/admob/admob_open.dart';
+import 'package:food_gram_app/core/data/admob/app_tracking_transparency.dart';
+import 'package:food_gram_app/core/data/purchase/purchase_provider.dart';
 import 'package:food_gram_app/core/data/supabase/block_list.dart';
 import 'package:food_gram_app/core/data/supabase/post_stream.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
@@ -8,14 +13,34 @@ import 'package:food_gram_app/ui/component/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class TimeLineScreen extends ConsumerWidget {
+class TimeLineScreen extends HookConsumerWidget {
   const TimeLineScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final restaurant = ref.watch(postStreamProvider);
     final homeMade = ref.watch(postHomeMadeStreamProvider);
+    useEffect(
+      () {
+        loadAppTrackingTransparency();
+        ref
+            .read(purchaseProvider.notifier)
+            .initInAppPurchase()
+            .then((isSubscribed) {
+          final value = math.Random().nextInt(10);
+          if (value == 10) {
+            if (!isSubscribed) {
+              AdmobOpen().loadAd();
+            }
+          }
+        });
+        return null;
+      },
+      [],
+    );
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
