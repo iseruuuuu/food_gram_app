@@ -90,10 +90,13 @@ class SettingViewModel extends _$SettingViewModel {
     }
   }
 
-  Future<void> purchase() async {
+  Future<bool> purchase() async {
     loading.state = true;
-    await ref.read(purchaseProvider.notifier).makePurchase('FoodGramのメンバーシップ');
+    final result = await ref
+        .read(purchaseProvider.notifier)
+        .makePurchase('FoodGramのメンバーシップ');
     loading.state = false;
+    return result;
   }
 
   Future<void> restore() async {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/data/admob/admob_banner.dart';
+import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_app_bar.dart';
@@ -32,6 +33,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
     final loading = ref.watch(loadingProvider);
     final state = ref.watch(settingViewModelProvider());
     final l10n = L10n.of(context);
+    final subscriptionState = ref.watch(subscriptionProvider);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -227,55 +229,69 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 16,
-                        ),
-                        child: Card(
-                          elevation: 4,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: ListTile(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            tileColor: Color(0xFFFFFDD0),
-                            leading: Icon(
-                              FontAwesomeIcons.crown,
-                              color: Colors.yellow,
-                              size: 32,
-                            ),
-                            trailing: Icon(
-                              FontAwesomeIcons.crown,
-                              color: Colors.yellow,
-                              size: 32,
-                            ),
-                            subtitleTextStyle: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            title: Center(
-                              child: Text(
-                                //TODO 多言語化する
-                                // 'プレミアムメンバーシップになる',
-                                'Get a Premium MemberShip',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            onTap: () {
-                              ref
-                                  .read(settingViewModelProvider().notifier)
-                                  .purchase();
-                            },
-                          ),
-                        ),
+                      //TODO 購入している場合は、出現しないようにしたい
+
+                      subscriptionState.when(
+                        data: (isSubscribed) {
+                          return !isSubscribed
+                              ? Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 16,
+                                  ),
+                                  child: Card(
+                                    elevation: 4,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: ListTile(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      tileColor: Color(0xFFFFFDD0),
+                                      leading: Icon(
+                                        FontAwesomeIcons.crown,
+                                        color: Colors.yellow,
+                                        size: 32,
+                                      ),
+                                      trailing: Icon(
+                                        FontAwesomeIcons.crown,
+                                        color: Colors.yellow,
+                                        size: 32,
+                                      ),
+                                      subtitleTextStyle: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      title: Center(
+                                        child: Text(
+                                          //TODO 多言語化する
+                                          // 'プレミアムメンバーシップになる',
+                                          'Get a Premium MemberShip',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        context
+                                            .pushNamed(RouterPath.paywallPage);
+                                      },
+                                    ),
+                                  ),
+                                )
+                              : SizedBox.shrink();
+                        },
+                        error: (_, __) {
+                          return SizedBox.shrink();
+                        },
+                        loading: () {
+                          return SizedBox.shrink();
+                        },
                       ),
+
                       Gap(12),
                       Wrap(
                         children: [

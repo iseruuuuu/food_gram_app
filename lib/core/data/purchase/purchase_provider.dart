@@ -75,7 +75,7 @@ class Purchase extends _$Purchase {
 
   /// 購入処理
   /// makePurchase()を呼び出して実際に課金処理を行う
-  Future<void> makePurchase(String offeringsName) async {
+  Future<bool> makePurchase(String offeringsName) async {
     await initInAppPurchase();
     try {
       Package? package;
@@ -84,9 +84,12 @@ class Purchase extends _$Purchase {
         await Purchases.logIn(user!);
         final customerInfo = await Purchases.purchasePackage(package);
         await getPurchaserInfo(customerInfo);
+        return true;
       }
+      return false;
     } on PlatformException catch (e) {
       print(' makePurchase error $e');
+      return false;
     }
   }
 
