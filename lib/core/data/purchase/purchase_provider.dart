@@ -45,7 +45,7 @@ class Purchase extends _$Purchase {
       } else {
         return true;
       }
-    } catch (e) {
+    } on PlatformException catch (e) {
       print('initInAppPurchase error caught! ${e}');
       return false;
     }
@@ -61,7 +61,9 @@ class Purchase extends _$Purchase {
   }
 
   Future<bool> updatePurchases(
-      CustomerInfo purchaserInfo, String entitlement) async {
+    CustomerInfo purchaserInfo,
+    String entitlement,
+  ) async {
     var isPurchased = false;
     final entitlements = purchaserInfo.entitlements.all;
 
@@ -110,7 +112,7 @@ class Purchase extends _$Purchase {
         return true;
       }
     } on PlatformException catch (e) {
-      print('purchase repo  restorePurchase error ${e}');
+      print('purchase repo  restorePurchase error $e');
       return false;
     }
   }

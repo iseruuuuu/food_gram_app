@@ -170,7 +170,8 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                                 context: context,
                                 builder: (context) {
                                   return AppNormalDialog(
-                                      title: l10n.settingsCredit);
+                                    title: l10n.settingsCredit,
+                                  );
                                 },
                               );
                             },
@@ -233,10 +234,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                         data: (isSubscribed) {
                           return !isSubscribed
                               ? Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 16,
-                                  ),
+                                  padding: EdgeInsets.symmetric(horizontal: 12),
                                   child: Card(
                                     elevation: 4,
                                     shape: RoundedRectangleBorder(
@@ -263,8 +261,6 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                                       ),
                                       title: Center(
                                         child: Text(
-                                          //TODO 多言語化する
-                                          // 'プレミアムメンバーシップになる',
                                           'Get a Premium MemberShip',
                                           style: TextStyle(
                                             fontSize: 14,
@@ -305,8 +301,9 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                                   return AppLogoutDialog(
                                     logout: () {
                                       ref
-                                          .read(settingViewModelProvider()
-                                              .notifier)
+                                          .read(
+                                            settingViewModelProvider().notifier,
+                                          )
                                           .signOut()
                                           .then(
                                         (value) {
@@ -386,7 +383,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                   ),
                 ),
               ),
-              AdmobBanner(), // 最下部に配置
+              AdmobBanner(),
             ],
           ),
           AppLoading(
