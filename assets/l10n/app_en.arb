@@ -122,5 +122,10 @@
   "tutorialThirdPageTitle": "Terms of Use",
   "tutorialThirdPageSubTitle": "・Be cautious about sharing personal information, such as your name, address, phone number, or location.\n\n・Avoid posting offensive, inappropriate, or harmful content, and do not use others' works without permission.\n\n・Non-food-related posts may be removed.\n\n・Users who repeatedly violate the rules or post objectionable content may be removed by the management team.\n\n・Please understand that the app might have some incomplete aspects.\n\n・We look forward to improving this app together with everyone.\n\n・Please cooperate with us to improve the service. 🙇 by the developers",
   "tutorialThirdPageButton":"Agree to the terms of use",
-  "tutorialThirdPageClose":"Close"
+  "tutorialThirdPageClose":"Close",
+  "settingRestoreSuccessTitle": "Restore successful",
+  "settingRestoreSuccessSubtitle": "Premium features enabled!",
+  "settingRestoreFailureTitle": "Restore failed",
+  "settingRestoreFailureSubtitle": "No purchase history? Contact support",
+  "settingRestore": "購入を復元"
 }

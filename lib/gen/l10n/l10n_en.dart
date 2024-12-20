@@ -376,4 +376,19 @@ class L10nEn extends L10n {
 
   @override
   String get tutorialThirdPageClose => 'Close';
+
+  @override
+  String get settingRestoreSuccessTitle => 'Restore successful';
+
+  @override
+  String get settingRestoreSuccessSubtitle => 'Premium features enabled!';
+
+  @override
+  String get settingRestoreFailureTitle => 'Restore failed';
+
+  @override
+  String get settingRestoreFailureSubtitle => 'No purchase history? Contact support';
+
+  @override
+  String get settingRestore => '購入を復元';
 }

@@ -356,8 +356,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                             icon: Icons.restore,
                             size: 32,
                             color: Colors.black,
-                            //TODO 多言語対応する
-                            title: '購入を復元',
+                            title: l10n.settingRestore,
                             onTap: () {
                               ref
                                   .read(settingViewModelProvider().notifier)
@@ -365,18 +364,16 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                                   .then(
                                 (isRestore) {
                                   if (isRestore) {
-                                    //TODO 多言語対応する
                                     openSuccessSnackBar(
                                       context,
-                                      '復元が成功しました',
-                                      'プレミアム機能が有効になりました！',
+                                      l10n.settingRestoreSuccessTitle,
+                                      l10n.settingRestoreSuccessSubtitle,
                                     );
                                   } else {
-                                    //TODO 多言語対応する
                                     openErrorSnackBar(
                                       context,
-                                      '復元失敗',
-                                      '購入履歴がない場合はサポートにご連絡を',
+                                      l10n.settingRestoreFailureTitle,
+                                      l10n.settingRestoreFailureSubtitle,
                                     );
                                   }
                                 },
