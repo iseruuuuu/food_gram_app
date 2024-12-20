@@ -26,7 +26,7 @@ class EditViewModel extends _$EditViewModel {
   Loading get loading => ref.read(loadingProvider.notifier);
   final picker = ImagePicker();
   String uploadImage = '';
-  late Uint8List imageBytes;
+  Uint8List? imageBytes;
 
   Future<void> getProfile() async {
     await Future.delayed(Duration.zero);

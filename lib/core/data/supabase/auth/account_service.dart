@@ -42,7 +42,7 @@ class AccountService {
     required String userName,
     required String selfIntroduce,
     required String image,
-    required Uint8List imageBytes,
+    Uint8List? imageBytes,
     String? uploadImage,
   }) async {
     final user = supabase.auth.currentUser;
@@ -56,7 +56,7 @@ class AccountService {
       'updated_at': DateTime.now().toIso8601String(),
     };
     try {
-      if (uploadImage != '') {
+      if (uploadImage != '' && imageBytes != null) {
         await _upload(uploadImage: uploadImage!, imageBytes: imageBytes);
         final userData = await supabase
             .from('users')
