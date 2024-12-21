@@ -12,7 +12,7 @@ class AppIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageSize = MediaQuery.of(context).size.width / 7;
+    final imageSize = MediaQuery.of(context).size.width / 8;
     return GestureDetector(
       onTap: onTap,
       child: Image.asset(

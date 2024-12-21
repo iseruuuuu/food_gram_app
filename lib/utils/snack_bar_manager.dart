@@ -1,8 +1,11 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
 
-void openErrorSnackBar(BuildContext context, String message, String title) {
+void openErrorSnackBar(
+  BuildContext context,
+  String title,
+  String message,
+) {
   final snackBar = SnackBar(
     elevation: 0,
     behavior: SnackBarBehavior.floating,
@@ -19,14 +22,17 @@ void openErrorSnackBar(BuildContext context, String message, String title) {
     ..showSnackBar(snackBar);
 }
 
-void openSuccessSnackBar(BuildContext context, String message) {
+void openSuccessSnackBar(
+  BuildContext context,
+  String title,
+  String message,
+) {
   final snackBar = SnackBar(
     elevation: 0,
     behavior: SnackBarBehavior.floating,
     backgroundColor: Colors.transparent,
-    duration: const Duration(seconds: 2),
     content: AwesomeSnackbarContent(
-      title: L10n.of(context).loginSuccessful,
+      title: title,
       message: message,
       contentType: ContentType.success,
     ),

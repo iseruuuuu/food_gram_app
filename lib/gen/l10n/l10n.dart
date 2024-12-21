@@ -833,6 +833,36 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'閉じる'**
   String get tutorialThirdPageClose;
+
+  /// No description provided for @settingRestoreSuccessTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'復元が成功しました'**
+  String get settingRestoreSuccessTitle;
+
+  /// No description provided for @settingRestoreSuccessSubtitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'プレミアム機能が有効になりました！'**
+  String get settingRestoreSuccessSubtitle;
+
+  /// No description provided for @settingRestoreFailureTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'復元失敗'**
+  String get settingRestoreFailureTitle;
+
+  /// No description provided for @settingRestoreFailureSubtitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'購入履歴がない場合はサポートにご連絡を'**
+  String get settingRestoreFailureSubtitle;
+
+  /// No description provided for @settingRestore.
+  ///
+  /// In ja, this message translates to:
+  /// **'購入を復元'**
+  String get settingRestore;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
