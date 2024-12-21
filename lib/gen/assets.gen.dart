@@ -118,6 +118,9 @@ class $AssetsImageGen {
   /// File path: assets/image/pin.png
   AssetGenImage get pin => const AssetGenImage('assets/image/pin.png');
 
+  /// File path: assets/image/present.png
+  AssetGenImage get present => const AssetGenImage('assets/image/present.png');
+
   /// File path: assets/image/tutorial1.png
   AssetGenImage get tutorial1 =>
       const AssetGenImage('assets/image/tutorial1.png');
@@ -138,6 +141,7 @@ class $AssetsImageGen {
         paywall2,
         paywallBackground,
         pin,
+        present,
         tutorial1,
         tutorial2
       ];

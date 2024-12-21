@@ -13,6 +13,7 @@ dependencies:
   battery_info: ^1.1.1
   cached_network_image: ^3.3.0
   change_app_package_name: ^1.1.0
+  confetti: ^0.8.0
   crypto: ^3.0.3
   cupertino_icons: ^1.0.2
   device_info_plus: ^9.1.1
