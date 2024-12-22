@@ -4,7 +4,10 @@ import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 
 class AppErrorWidget extends StatelessWidget {
-  const AppErrorWidget({required this.onTap, super.key});
+  const AppErrorWidget({
+    required this.onTap,
+    super.key,
+  });
 
   final Function() onTap;
 
