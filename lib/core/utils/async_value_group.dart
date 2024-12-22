@@ -29,7 +29,7 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
   final bool skipLoadingOnRefresh;
   final bool skipError;
   final Duration duration;
-  final Function onErrorTap;
+  final Function() onErrorTap;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
         error: (e, s) => KeyedSubtree(
           key: const ValueKey('onError'),
           child: AppErrorWidget(
-            onTap: () => onErrorTap,
+            onTap: onErrorTap,
           ),
         ),
         loading: () => KeyedSubtree(

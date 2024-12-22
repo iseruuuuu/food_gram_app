@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
@@ -12,142 +11,136 @@ class AppHeader extends ConsumerWidget {
     required this.users,
     required this.length,
     required this.heartAmount,
+    required this.isSubscription,
     super.key,
   });
 
   final Users users;
   final int length;
   final int heartAmount;
+  final bool isSubscription;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
-    final subscriptionState = ref.watch(subscriptionProvider);
-    return subscriptionState.when(
-      data: (subscriptionData) {
-        return Padding(
-          padding: const EdgeInsets.all(12),
-          child: Container(
-            height: 200,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  offset: Offset(0, -4),
-                  blurRadius: 6,
-                  spreadRadius: 1,
-                ),
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  offset: Offset(0, 4),
-                  blurRadius: 6,
-                  spreadRadius: 1,
-                ),
-              ],
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: Container(
+        height: 200,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              offset: Offset(0, -4),
+              blurRadius: 6,
+              spreadRadius: 1,
             ),
-            child: Stack(
-              children: [
-                if (subscriptionData)
-                  Positioned.fill(child: AnimatedGradientBackground()),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              offset: Offset(0, 4),
+              blurRadius: 6,
+              spreadRadius: 1,
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            if (isSubscription)
+              Positioned.fill(child: AnimatedGradientBackground()),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              showDialog<void>(
-                                context: context,
-                                builder: (_) {
-                                  return AppProfileDialog(image: users.image);
-                                },
-                              );
+                      GestureDetector(
+                        onTap: () {
+                          showDialog<void>(
+                            context: context,
+                            builder: (_) {
+                              return AppProfileDialog(image: users.image);
                             },
-                            child: AppProfileImage(
-                              imagePath: users.image,
-                              radius: 42,
+                          );
+                        },
+                        child: AppProfileImage(
+                          imagePath: users.image,
+                          radius: 42,
+                        ),
+                      ),
+                      Spacer(),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '$length',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Spacer(),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '$length',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                l10n.profilePostCount,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Gap(30),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${heartAmount - users.exchangedPoint}',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                l10n.profilePointCount,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                          Text(
+                            l10n.profilePostCount,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
-                      Spacer(),
-                      Text(
-                        users.name,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Text(
-                        '@${users.userName}',
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                      Gap(4),
-                      Text(
-                        users.selfIntroduce,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                      Gap(30),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${heartAmount - users.exchangedPoint}',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            l10n.profilePointCount,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ),
-              ],
+                  Spacer(),
+                  Text(
+                    users.name,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    '@${users.userName}',
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                  Gap(4),
+                  Text(
+                    users.selfIntroduce,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      },
-      loading: () => Center(child: CircularProgressIndicator()),
-      error: (error, stack) =>
-          Center(child: Text('Error loading subscription data')),
+          ],
+        ),
+      ),
     );
   }
 }
