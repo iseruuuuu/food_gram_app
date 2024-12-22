@@ -108,34 +108,6 @@ class MyProfileScreen extends ConsumerWidget {
                               );
                             },
                           ),
-                          state.when(
-                            data: (data) {
-                              return AppCalendarView(
-                                data: data,
-                                refresh: () =>
-                                    ref.refresh(myPostStreamProvider),
-                              );
-                            },
-                            error: (_, __) {
-                              return AppErrorWidget(
-                                onTap: () {
-                                  ref.invalidate(myPostStreamProvider);
-                                  ref
-                                      .read(
-                                          myProfileViewModelProvider().notifier)
-                                      .getData();
-                                },
-                              );
-                            },
-                            loading: () {
-                              return Center(
-                                child: Assets.image.loading.image(
-                                  width: 100,
-                                  height: 100,
-                                ),
-                              );
-                            },
-                          ),
                         ],
                       ),
                     ),
