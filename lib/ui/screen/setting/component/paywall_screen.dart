@@ -370,7 +370,7 @@ class PaywallScreen extends ConsumerWidget {
                         } on TimeoutException {
                           context.pop();
                         }
-                        context.pop();
+                        context.pop(true);
                       }
                     });
                   },

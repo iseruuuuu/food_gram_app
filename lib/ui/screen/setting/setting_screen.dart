@@ -271,7 +271,10 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                                       ),
                                       onTap: () {
                                         context
-                                            .pushNamed(RouterPath.paywallPage);
+                                            .pushNamed(RouterPath.paywallPage)
+                                            .then((_) {
+                                          ref.refresh(subscriptionProvider);
+                                        });
                                       },
                                     ),
                                   ),
