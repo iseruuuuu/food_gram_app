@@ -81,8 +81,6 @@ class EditViewModel extends _$EditViewModel {
       uploadImage: '',
       isSelectedIcon: true,
     );
-    print(state.uploadImage);
-    print(state.initialImage);
   }
 
   Future<bool> camera() async {

@@ -159,7 +159,7 @@ class _AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 20), // 少し長めに設定
+      duration: const Duration(seconds: 20),
       vsync: this,
     )..repeat(reverse: true);
   }
