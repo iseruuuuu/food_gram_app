@@ -11,12 +11,9 @@ class TabScreen extends ConsumerWidget {
     final state = ref.watch(tabViewModelProvider());
     final controller = ref.watch(tabViewModelProvider().notifier);
     return Scaffold(
-      body: IndexedStack(
-        index: state.selectedIndex,
-        children: controller.pageList,
-      ),
+      body: controller.pageList[state.selectedIndex],
       bottomNavigationBar: SizedBox(
-        height: 80,
+        height: 90,
         child: Theme(
           data: Theme.of(context).copyWith(
             splashColor: Colors.transparent,
@@ -27,42 +24,30 @@ class TabScreen extends ConsumerWidget {
             onTap: controller.onTap,
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Padding(
-                  padding: const EdgeInsets.only(top: 18),
-                  child: Icon(
-                    Icons.fastfood_outlined,
-                    semanticLabel: 'timelineIcon',
-                  ),
+                icon: Icon(
+                  Icons.fastfood_outlined,
+                  semanticLabel: 'timelineIcon',
                 ),
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: Padding(
-                  padding: const EdgeInsets.only(top: 18),
-                  child: Icon(
-                    CupertinoIcons.map,
-                    semanticLabel: 'mapIcon',
-                  ),
+                icon: Icon(
+                  CupertinoIcons.map,
+                  semanticLabel: 'mapIcon',
                 ),
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: Padding(
-                  padding: const EdgeInsets.only(top: 18),
-                  child: Icon(
-                    CupertinoIcons.profile_circled,
-                    semanticLabel: 'profileIcon',
-                  ),
+                icon: Icon(
+                  CupertinoIcons.profile_circled,
+                  semanticLabel: 'profileIcon',
                 ),
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: Padding(
-                  padding: const EdgeInsets.only(top: 18),
-                  child: Icon(
-                    Icons.settings,
-                    semanticLabel: 'settingIcon',
-                  ),
+                icon: Icon(
+                  Icons.settings,
+                  semanticLabel: 'settingIcon',
                 ),
                 label: '',
               ),
@@ -75,6 +60,7 @@ class TabScreen extends ConsumerWidget {
             unselectedItemColor: Colors.grey,
             selectedFontSize: 0,
             unselectedFontSize: 0,
+            enableFeedback: false,
           ),
         ),
       ),

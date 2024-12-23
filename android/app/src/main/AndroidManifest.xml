@@ -31,6 +31,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name">
 
+        <!-- Google Admob-->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9259628471292536~5720970271" />
+
         <!--ホームWidget(小・Share)-->
         <service
             android:name="es.antonborri.home_widget.HomeWidgetBackgroundService"
