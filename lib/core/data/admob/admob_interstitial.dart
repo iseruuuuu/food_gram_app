@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'admob_interstitial.g.dart';
@@ -22,14 +23,13 @@ String getAdmobInterstitialId() {
 }
 
 class AdmobInterstitial {
-  // サブスク状態を管理
-
   AdmobInterstitial({required this.isSubscribed});
 
   InterstitialAd? _interstitialAd;
   int numOfAttemptLoad = 0;
   bool? ready;
   final bool isSubscribed;
+  final logger = Logger();
 
   void createAd() {
     InterstitialAd.load(
@@ -37,7 +37,7 @@ class AdmobInterstitial {
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
-          print('add loaded');
+          logger.d('add loaded');
           _interstitialAd = ad;
           numOfAttemptLoad = 0;
           ready = true;
@@ -56,11 +56,10 @@ class AdmobInterstitial {
   Future<void> showAd({VoidCallback? onAdClosed}) async {
     ready = false;
     if (_interstitialAd == null) {
-      print('Warning: attempt to show interstitial before loaded.');
+      logger.e('Warning: attempt to show interstitial before loaded');
       return;
     }
 
-    // もし、サブスクに登録していたら、すぐにonAdClosedを呼び出す
     if (isSubscribed) {
       if (onAdClosed != null) {
         onAdClosed();
@@ -70,18 +69,18 @@ class AdmobInterstitial {
 
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
-        print('Ad showed fullscreen');
+        logger.i('Ad showed fullscreen');
       },
       onAdDismissedFullScreenContent: (ad) {
-        print('Ad dismissed');
+        logger.i('Ad dismissed');
         ad.dispose();
-        createAd(); // 次の広告を準備
+        createAd();
         if (onAdClosed != null) {
-          onAdClosed(); // 広告が閉じた後の処理を実行
+          onAdClosed();
         }
       },
       onAdFailedToShowFullScreenContent: (ad, adError) {
-        print('Ad failed to show: $adError');
+        logger.e('Ad failed to show: $adError');
         ad.dispose();
         createAd();
       },
