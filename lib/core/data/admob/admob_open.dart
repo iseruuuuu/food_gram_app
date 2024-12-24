@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:logger/logger.dart';
 
 String getAdmobInterstitialId() {
   if (Platform.isAndroid) {
@@ -20,6 +21,7 @@ String getAdmobInterstitialId() {
 class AdmobOpen {
   AppOpenAd? _appOpenAd;
   bool _isAdLoaded = false;
+  final logger = Logger();
 
   void loadAd() {
     AppOpenAd.load(
@@ -32,7 +34,7 @@ class AdmobOpen {
           _appOpenAd?.show();
         },
         onAdFailedToLoad: (error) {
-          print('App open ad failed to load: $error');
+          logger.e('App open ad failed to load: $error');
         },
       ),
     );
@@ -53,7 +55,7 @@ class AdmobOpen {
   }
 
   void onAppOpenAdFailedToLoad(LoadAdError error) {
-    print('App open ad failed to load: $error');
+    logger.e('App open ad failed to load: $error');
   }
 
   void onAppOpenAdClosed() {
