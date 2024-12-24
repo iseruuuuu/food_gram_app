@@ -7,11 +7,9 @@ import 'package:food_gram_app/app.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/firebase_options.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final supabase = Supabase.instance.client;
-final logger = Logger();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
