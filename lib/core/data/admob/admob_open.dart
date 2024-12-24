@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:food_gram_app/env.dart';
+import 'package:food_gram_app/main.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:logger/logger.dart';
 
 String getAdmobInterstitialId() {
   if (Platform.isAndroid) {
@@ -21,7 +21,6 @@ String getAdmobInterstitialId() {
 class AdmobOpen {
   AppOpenAd? _appOpenAd;
   bool _isAdLoaded = false;
-  final logger = Logger();
 
   void loadAd() {
     AppOpenAd.load(

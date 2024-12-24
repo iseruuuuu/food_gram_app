@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
 import 'package:food_gram_app/env.dart';
+import 'package:food_gram_app/main.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'admob_interstitial.g.dart';
@@ -29,7 +29,6 @@ class AdmobInterstitial {
   int numOfAttemptLoad = 0;
   bool? ready;
   final bool isSubscribed;
-  final logger = Logger();
 
   void createAd() {
     InterstitialAd.load(
