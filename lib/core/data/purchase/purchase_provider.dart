@@ -46,7 +46,7 @@ class Purchase extends _$Purchase {
         return true;
       }
     } on PlatformException catch (e) {
-      print('initInAppPurchase error caught! ${e}');
+      logger.e('initInAppPurchase error caught! $e');
       return false;
     }
   }
@@ -56,7 +56,7 @@ class Purchase extends _$Purchase {
       isSubscribed =
           await updatePurchases(customerInfo, 'monthly_subscription');
     } on PlatformException catch (e) {
-      print('getPurchaserInfo error $e');
+      logger.e('getPurchaserInfo error $e');
     }
   }
 
@@ -90,7 +90,7 @@ class Purchase extends _$Purchase {
       }
       return false;
     } on PlatformException catch (e) {
-      print(' makePurchase error $e');
+      logger.e('makePurchase error $e');
       return false;
     }
   }
@@ -104,15 +104,15 @@ class Purchase extends _$Purchase {
       final customerInfo = await Purchases.restorePurchases();
       final isActive = await updatePurchases(customerInfo, entitlement);
       if (!isActive) {
-        print('購入情報なし');
+        logger.w('購入情報なし');
         return false;
       } else {
         await getPurchaserInfo(customerInfo);
-        print('$entitlement 購入情報あり　復元する');
+        logger.i('$entitlement 購入情報あり　復元可能');
         return true;
       }
     } on PlatformException catch (e) {
-      print('purchase repo  restorePurchase error $e');
+      logger.e('purchase repo  restorePurchase error $e');
       return false;
     }
   }

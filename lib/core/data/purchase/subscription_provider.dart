@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/data/purchase/purchase_provider.dart';
+import 'package:food_gram_app/main.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -18,12 +19,12 @@ Future<bool> subscription(
     final entitlements = customerInfo.entitlements.all;
     if (entitlements.containsKey('foodgram_premium_membership') &&
         entitlements['foodgram_premium_membership']!.isActive) {
-      print('サブスクできてる！！');
+      logger.i('サブスクできてる！！');
       return true;
     }
     return false;
   } on PlatformException catch (e) {
-    print('Error checking entitlement: $e');
-    return false; // エラー発生時はfalseを返す
+    logger.e('Error checking entitlement: $e');
+    return false;
   }
 }
