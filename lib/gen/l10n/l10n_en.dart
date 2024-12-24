@@ -390,5 +390,5 @@ class L10nEn extends L10n {
   String get settingRestoreFailureSubtitle => 'No purchase history? Contact support';
 
   @override
-  String get settingRestore => '購入を復元';
+  String get settingRestore => 'Restore purchase';
 }

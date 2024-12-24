@@ -127,5 +127,5 @@
   "settingRestoreSuccessSubtitle": "Premium features enabled!",
   "settingRestoreFailureTitle": "Restore failed",
   "settingRestoreFailureSubtitle": "No purchase history? Contact support",
-  "settingRestore": "購入を復元"
+  "settingRestore": "Restore purchase"
 }
