@@ -376,4 +376,19 @@ class L10nJa extends L10n {
 
   @override
   String get tutorialThirdPageClose => '閉じる';
+
+  @override
+  String get settingRestoreSuccessTitle => '復元が成功しました';
+
+  @override
+  String get settingRestoreSuccessSubtitle => 'プレミアム機能が有効になりました！';
+
+  @override
+  String get settingRestoreFailureTitle => '復元失敗';
+
+  @override
+  String get settingRestoreFailureSubtitle => '購入履歴がない場合はサポートにご連絡を';
+
+  @override
+  String get settingRestore => '購入を復元';
 }

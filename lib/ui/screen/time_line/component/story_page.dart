@@ -4,6 +4,7 @@ import 'package:food_gram_app/core/data/admob/admob_banner.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/main.dart';
+import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:gap/gap.dart';
 import 'package:story/story_page_view.dart';
 
@@ -29,23 +30,11 @@ class StoryPage extends StatelessWidget {
               return Stack(
                 children: [
                   Positioned.fill(child: Container(color: Colors.black)),
-                  Positioned.fill(
-                    child: CachedNetworkImage(
-                      imageUrl: supabase.storage
-                          .from('food')
-                          .getPublicUrl(posts.foodImage),
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 44, left: 8),
                     child: Row(
                       children: [
-                        CircleAvatar(
-                          radius: 28,
-                          backgroundImage: AssetImage(users.image),
-                          backgroundColor: Colors.white,
-                        ),
+                        AppProfileImage(imagePath: users.image, radius: 28),
                         Gap(12),
                         Text(
                           users.name,
@@ -56,6 +45,14 @@ class StoryPage extends StatelessWidget {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: CachedNetworkImage(
+                      imageUrl: supabase.storage
+                          .from('food')
+                          .getPublicUrl(posts.foodImage),
+                      fit: BoxFit.fitWidth,
                     ),
                   ),
                   Padding(

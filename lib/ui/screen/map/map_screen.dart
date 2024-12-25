@@ -29,6 +29,11 @@ class MapScreen extends HookConsumerWidget {
       backgroundColor: Colors.white,
       body: AsyncValueSwitcher(
         asyncValue: AsyncValueGroup.group2(location, mapService),
+        onErrorTap: () {
+          ref
+            ..refresh(locationProvider)
+            ..refresh(mapServiceProvider);
+        },
         onData: (value) {
           return Stack(
             alignment: Alignment.bottomCenter,

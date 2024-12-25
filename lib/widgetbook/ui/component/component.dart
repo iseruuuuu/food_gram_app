@@ -69,6 +69,7 @@ AppHeader appHeader(BuildContext context) {
     users: fakeUsers,
     length: 5,
     heartAmount: 5,
+    isSubscription: true,
   );
 }
 

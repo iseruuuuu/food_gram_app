@@ -1,8 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
 import 'package:food_gram_app/env.dart';
+import 'package:food_gram_app/main.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'admob_interstitial.g.dart';
 
 String getAdmobInterstitialId() {
   if (Platform.isAndroid) {
@@ -18,9 +23,12 @@ String getAdmobInterstitialId() {
 }
 
 class AdmobInterstitial {
+  AdmobInterstitial({required this.isSubscribed});
+
   InterstitialAd? _interstitialAd;
   int numOfAttemptLoad = 0;
   bool? ready;
+  final bool isSubscribed;
 
   void createAd() {
     InterstitialAd.load(
@@ -28,7 +36,7 @@ class AdmobInterstitial {
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
-          print('add loaded');
+          logger.d('add loaded');
           _interstitialAd = ad;
           numOfAttemptLoad = 0;
           ready = true;
@@ -47,23 +55,31 @@ class AdmobInterstitial {
   Future<void> showAd({VoidCallback? onAdClosed}) async {
     ready = false;
     if (_interstitialAd == null) {
-      print('Warning: attempt to show interstitial before loaded.');
+      logger.e('Warning: attempt to show interstitial before loaded');
       return;
     }
+
+    if (isSubscribed) {
+      if (onAdClosed != null) {
+        onAdClosed();
+      }
+      return;
+    }
+
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
-        print('Ad showed fullscreen');
+        logger.i('Ad showed fullscreen');
       },
       onAdDismissedFullScreenContent: (ad) {
-        print('Ad dismissed');
+        logger.i('Ad dismissed');
         ad.dispose();
-        createAd(); // 次の広告を準備
+        createAd();
         if (onAdClosed != null) {
-          onAdClosed(); // 広告が閉じた後の処理を実行
+          onAdClosed();
         }
       },
       onAdFailedToShowFullScreenContent: (ad, adError) {
-        print('Ad failed to show: $adError');
+        logger.e('Ad failed to show: $adError');
         ad.dispose();
         createAd();
       },
@@ -72,4 +88,14 @@ class AdmobInterstitial {
     await _interstitialAd!.show();
     _interstitialAd = null;
   }
+}
+
+@riverpod
+AdmobInterstitial admobInterstitial(AdmobInterstitialRef ref) {
+  final isSubscribed =
+      ref.watch(subscriptionProvider).whenOrNull(data: (value) => value) ??
+          false;
+  final openInterstitial = AdmobInterstitial(isSubscribed: isSubscribed)
+    ..createAd();
+  return openInterstitial;
 }

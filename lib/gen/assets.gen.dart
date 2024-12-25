@@ -103,8 +103,19 @@ class $AssetsImageGen {
   AssetGenImage get logoGoogle =>
       const AssetGenImage('assets/image/logo_google.png');
 
+  /// File path: assets/image/paywall2.gif
+  AssetGenImage get paywall2 =>
+      const AssetGenImage('assets/image/paywall2.gif');
+
+  /// File path: assets/image/paywall_background.png
+  AssetGenImage get paywallBackground =>
+      const AssetGenImage('assets/image/paywall_background.png');
+
   /// File path: assets/image/pin.png
   AssetGenImage get pin => const AssetGenImage('assets/image/pin.png');
+
+  /// File path: assets/image/present.png
+  AssetGenImage get present => const AssetGenImage('assets/image/present.png');
 
   /// File path: assets/image/tutorial1.png
   AssetGenImage get tutorial1 =>
@@ -122,7 +133,10 @@ class $AssetsImageGen {
         heart,
         loading,
         logoGoogle,
+        paywall2,
+        paywallBackground,
         pin,
+        present,
         tutorial1,
         tutorial2
       ];

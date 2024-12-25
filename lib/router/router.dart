@@ -6,6 +6,7 @@ import 'package:food_gram_app/ui/screen/detail/detail_post_screen.dart';
 import 'package:food_gram_app/ui/screen/map/map_screen.dart';
 import 'package:food_gram_app/ui/screen/post/restaurant_screen.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
+import 'package:food_gram_app/ui/screen/setting/component/paywall_screen.dart';
 import 'package:food_gram_app/ui/screen/splash/tutorial_screen.dart';
 import 'package:food_gram_app/ui/screen/time_line/component/story_page.dart';
 import 'package:food_gram_app/utils/amination.dart';
@@ -181,6 +182,13 @@ final settingRouter = GoRoute(
         return const TutorialScreen();
       },
     ),
+    GoRoute(
+      path: '${RouterPath.setting}/${RouterPath.paywallPage}',
+      name: RouterPath.paywallPage,
+      pageBuilder: (context, state) {
+        return slideIn(PaywallScreen());
+      },
+    ),
   ],
 );
 
@@ -223,4 +231,5 @@ final class RouterPath {
   static const String map = 'map';
   static const String mapDetailPost = 'map_detail_post';
   static const String storyPage = 'story';
+  static const String paywallPage = 'paywall';
 }

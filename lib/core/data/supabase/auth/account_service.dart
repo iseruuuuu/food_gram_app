@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -35,27 +37,53 @@ class AccountService {
     }
   }
 
-  Future<Result<void, Exception>> update(
-    String name,
-    String userName,
-    String selfIntroduce,
-    String image,
-  ) async {
+  Future<Result<void, Exception>> update({
+    required String name,
+    required String userName,
+    required String selfIntroduce,
+    required String image,
+    Uint8List? imageBytes,
+    String? uploadImage,
+  }) async {
     final user = supabase.auth.currentUser;
     final updates = {
       'name': name,
       'user_name': userName,
       'self_introduce': selfIntroduce,
-      'image': 'assets/icon/icon$image.png',
+      'image': (uploadImage == '')
+          ? 'assets/icon/icon$image.png'
+          : '/${user!.id}/$uploadImage',
       'updated_at': DateTime.now().toIso8601String(),
     };
     try {
+      if (uploadImage != '' && imageBytes != null) {
+        await _upload(uploadImage: uploadImage!, imageBytes: imageBytes);
+        final userData = await supabase
+            .from('users')
+            .select('image')
+            .eq('user_id', user!.id)
+            .single();
+        final currentImage = userData['image'] as String?;
+        final deleteImagePath = currentImage!.startsWith('/')
+            ? currentImage.substring(1)
+            : currentImage;
+        await supabase.storage.from('user').remove([deleteImagePath]);
+      }
       await supabase.from('users').update(updates).match({'user_id': user!.id});
-      await Future.delayed(Duration(seconds: 1));
       return const Success(null);
     } on PostgrestException catch (error) {
       logger.e(error.message);
       return Failure(error);
     }
+  }
+
+  Future<void> _upload({
+    required String uploadImage,
+    required Uint8List imageBytes,
+  }) async {
+    final user = supabase.auth.currentUser?.id;
+    await supabase.storage
+        .from('user')
+        .uploadBinary('/$user/$uploadImage', imageBytes);
   }
 }

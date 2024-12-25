@@ -30,7 +30,7 @@ class AppShareDialog extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
-    final adInterstitial = useMemoized(AdmobInterstitial.new, []);
+    final adInterstitial = ref.watch(admobInterstitialProvider);
     useEffect(
       () {
         adInterstitial.createAd();

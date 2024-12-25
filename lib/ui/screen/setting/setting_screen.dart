@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/data/admob/admob_banner.dart';
+import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/app_app_bar.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_setting_tile.dart';
 import 'package:food_gram_app/ui/component/dialog/app_dialog.dart';
@@ -31,12 +33,11 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
     final loading = ref.watch(loadingProvider);
     final state = ref.watch(settingViewModelProvider());
     final l10n = L10n.of(context);
+    final subscriptionState = ref.watch(subscriptionProvider);
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
+      appBar: AppAppBar(),
       body: Stack(
         children: [
           Column(
@@ -45,6 +46,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      Gap(12),
                       Wrap(
                         children: [
                           AppSettingTile(
@@ -168,7 +170,8 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                                 context: context,
                                 builder: (context) {
                                   return AppNormalDialog(
-                                      title: l10n.settingsCredit);
+                                    title: l10n.settingsCredit,
+                                  );
                                 },
                               );
                             },
@@ -227,7 +230,65 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                           ),
                         ),
                       ),
-                      Gap(40),
+                      subscriptionState.when(
+                        data: (isSubscribed) {
+                          return !isSubscribed
+                              ? Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 12),
+                                  child: Card(
+                                    elevation: 4,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: ListTile(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      tileColor: Color(0xFFFFFDD0),
+                                      leading: Icon(
+                                        FontAwesomeIcons.crown,
+                                        color: Colors.yellow,
+                                        size: 32,
+                                      ),
+                                      trailing: Icon(
+                                        FontAwesomeIcons.crown,
+                                        color: Colors.yellow,
+                                        size: 32,
+                                      ),
+                                      subtitleTextStyle: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      title: Center(
+                                        child: Text(
+                                          'Get a Premium MemberShip',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        context
+                                            .pushNamed(RouterPath.paywallPage)
+                                            .then((_) {
+                                          ref.refresh(subscriptionProvider);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                )
+                              : SizedBox.shrink();
+                        },
+                        error: (_, __) {
+                          return SizedBox.shrink();
+                        },
+                        loading: () {
+                          return SizedBox.shrink();
+                        },
+                      ),
+                      Gap(12),
                       Wrap(
                         children: [
                           AppSettingTile(
@@ -243,8 +304,9 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                                   return AppLogoutDialog(
                                     logout: () {
                                       ref
-                                          .read(settingViewModelProvider()
-                                              .notifier)
+                                          .read(
+                                            settingViewModelProvider().notifier,
+                                          )
                                           .signOut()
                                           .then(
                                         (value) {
@@ -290,13 +352,41 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                               });
                             },
                           ),
+                          AppSettingTile(
+                            icon: Icons.restore,
+                            size: 32,
+                            color: Colors.black,
+                            title: l10n.settingRestore,
+                            onTap: () {
+                              ref
+                                  .read(settingViewModelProvider().notifier)
+                                  .restore()
+                                  .then(
+                                (isRestore) {
+                                  if (isRestore) {
+                                    openSuccessSnackBar(
+                                      context,
+                                      l10n.settingRestoreSuccessTitle,
+                                      l10n.settingRestoreSuccessSubtitle,
+                                    );
+                                  } else {
+                                    openErrorSnackBar(
+                                      context,
+                                      l10n.settingRestoreFailureTitle,
+                                      l10n.settingRestoreFailureSubtitle,
+                                    );
+                                  }
+                                },
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ],
                   ),
                 ),
               ),
-              AdmobBanner(), // 最下部に配置
+              AdmobBanner(),
             ],
           ),
           AppLoading(
