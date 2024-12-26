@@ -46,7 +46,7 @@ class AppShareDialog extends HookConsumerWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(0),
       ),
-      child: Container(
+      child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -68,7 +68,6 @@ class AppShareDialog extends HookConsumerWidget {
                 ),
               ),
             ),
-            Spacer(),
             AppShareWidget(
               posts: posts,
               users: users,
@@ -247,10 +246,10 @@ class AppShareDialog extends HookConsumerWidget {
                       ),
                     ),
                   ),
+                  Gap(30),
                 ],
               ),
             ),
-            Spacer(flex: 2),
           ],
         ),
       ),
