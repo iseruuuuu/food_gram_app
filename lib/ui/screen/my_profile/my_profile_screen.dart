@@ -8,6 +8,7 @@ import 'package:food_gram_app/ui/component/app_app_bar.dart';
 import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
 import 'package:food_gram_app/ui/component/app_profile_button.dart';
+import 'package:food_gram_app/ui/component/app_skelton.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_view_model.dart';
 import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:gap/gap.dart';
@@ -47,8 +48,9 @@ class MyProfileScreen extends ConsumerWidget {
                       isSubscription: value.$2,
                     );
                   },
-                  //TODO スケルトンのLoadingを導入予定
-                  loading: SizedBox.shrink,
+                  loading: () {
+                    return AppHeaderSkeleton();
+                  },
                   error: SizedBox.shrink,
                 ),
                 const Gap(4),
