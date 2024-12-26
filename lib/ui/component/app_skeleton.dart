@@ -66,7 +66,7 @@ class AppHeaderSkeleton extends StatelessWidget {
                           style: TextStyle(fontSize: 24),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
                 Spacer(),
