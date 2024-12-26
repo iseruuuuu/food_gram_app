@@ -136,7 +136,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                             title: l10n.settingsTermsOfUse,
                             onTap: () {
                               LaunchUrl().open(
-                                'https://succinct-may-e5e.notion.site/a0ad75abf8244407b7a19cca0e2304f1',
+                                'https://succinct-may-e5e.notion.site/a0ad75abf8244404b7a19cca0e2304f1',
                               );
                             },
                           ),
