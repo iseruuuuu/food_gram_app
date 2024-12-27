@@ -159,9 +159,6 @@ class AppAuthTextField extends StatelessWidget {
         validator: (value) => value!.isValidEmail() || value.isEmpty
             ? null
             : L10n.of(context).enterTheCorrectFormat,
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9@.+_-]')),
-        ],
         controller: controller,
         autocorrect: false,
         keyboardType: TextInputType.emailAddress,
