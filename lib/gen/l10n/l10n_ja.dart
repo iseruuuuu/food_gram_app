@@ -391,4 +391,10 @@ class L10nJa extends L10n {
 
   @override
   String get settingRestore => '購入を復元';
+
+  @override
+  String get authInvalidFormat => 'メールアドレスのフォーマットが間違っています';
+
+  @override
+  String get authSocketException => 'ネットワークに問題があります。接続を確認してください';
 }

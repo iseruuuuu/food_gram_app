@@ -10,11 +10,13 @@ void openErrorSnackBar(
     elevation: 0,
     behavior: SnackBarBehavior.floating,
     backgroundColor: Colors.transparent,
-    duration: const Duration(seconds: 2),
+    duration: const Duration(seconds: 5),
     content: AwesomeSnackbarContent(
       title: title,
       message: message,
       contentType: ContentType.failure,
+      titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      messageTextStyle: TextStyle(fontSize: 12),
     ),
   );
   ScaffoldMessenger.of(context)

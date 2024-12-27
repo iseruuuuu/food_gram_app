@@ -863,6 +863,18 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'購入を復元'**
   String get settingRestore;
+
+  /// No description provided for @authInvalidFormat.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールアドレスのフォーマットが間違っています'**
+  String get authInvalidFormat;
+
+  /// No description provided for @authSocketException.
+  ///
+  /// In ja, this message translates to:
+  /// **'ネットワークに問題があります。接続を確認してください'**
+  String get authSocketException;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

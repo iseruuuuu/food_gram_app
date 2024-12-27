@@ -127,5 +127,7 @@
   "settingRestoreSuccessSubtitle": "プレミアム機能が有効になりました！",
   "settingRestoreFailureTitle": "復元失敗",
   "settingRestoreFailureSubtitle": "購入履歴がない場合はサポートにご連絡を",
-  "settingRestore": "購入を復元"
+  "settingRestore": "購入を復元",
+  "authInvalidFormat": "メールアドレスのフォーマットが間違っています",
+  "authSocketException": "ネットワークに問題があります。接続を確認してください"
 }
