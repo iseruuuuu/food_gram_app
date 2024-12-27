@@ -415,12 +415,16 @@ Path drawStar(Size size) {
   final fullAngle = degToRad(360);
   path.moveTo(size.width, halfWidth);
 
-  for (double step = 0; step < fullAngle; step += degreesPerStep) {
+  for (var step = 0.0; step < fullAngle; step += degreesPerStep) {
     path
-      ..lineTo(halfWidth + externalRadius * cos(step),
-          halfWidth + externalRadius * sin(step))
-      ..lineTo(halfWidth + internalRadius * cos(step + halfDegreesPerStep),
-          halfWidth + internalRadius * sin(step + halfDegreesPerStep));
+      ..lineTo(
+        halfWidth + externalRadius * cos(step),
+        halfWidth + externalRadius * sin(step),
+      )
+      ..lineTo(
+        halfWidth + internalRadius * cos(step + halfDegreesPerStep),
+        halfWidth + internalRadius * sin(step + halfDegreesPerStep),
+      );
   }
   path.close();
   return path;

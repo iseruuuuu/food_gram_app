@@ -263,7 +263,9 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
+                        horizontal: 15,
+                        vertical: 5,
+                      ),
                       child: Text(
                         widget.posts.foodName,
                         style: TextStyle(
