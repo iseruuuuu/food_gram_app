@@ -40,7 +40,7 @@ class AppSettingTile extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 13.5,
                 fontWeight: FontWeight.w600,
               ),
             ),

@@ -60,6 +60,7 @@ dependencies:
   share_plus: ^7.2.1
   shared_preferences: ^2.2.2
   sign_in_with_apple: ^5.0.0
+  skeletonizer: ^1.4.2
   story: ^1.1.0
   supabase_flutter: ^2.3.3
   url_launcher: ^6.2.1

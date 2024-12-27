@@ -391,4 +391,10 @@ class L10nEn extends L10n {
 
   @override
   String get settingRestore => 'Restore purchase';
+
+  @override
+  String get authInvalidFormat => 'Email address format is incorrect.';
+
+  @override
+  String get authSocketException => 'There is a problem with the network. Please check the connection.';
 }

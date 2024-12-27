@@ -127,5 +127,7 @@
   "settingRestoreSuccessSubtitle": "Premium features enabled!",
   "settingRestoreFailureTitle": "Restore failed",
   "settingRestoreFailureSubtitle": "No purchase history? Contact support",
-  "settingRestore": "Restore purchase"
+  "settingRestore": "Restore purchase",
+  "authInvalidFormat": "Email address format is incorrect.",
+  "authSocketException": "There is a problem with the network. Please check the connection."
 }

@@ -29,6 +29,7 @@ class AuthService {
       logger.e(authError.message);
       return Failure(authError.message);
     } on Exception catch (error) {
+      logger.e(error);
       return Failure(error.toString());
     }
   }

@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/data/supabase/auth/auth_service.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_state.dart';
+import 'package:food_gram_app/utils/auth_manager.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -34,7 +35,6 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
           await ref.read(authServiceProvider).login(emailTextField.text.trim());
       await result.when(
         success: (_) async {
-          await Future.delayed(Duration(seconds: 2));
           openSuccessSnackBar(
             context,
             L10n.of(context).loginSuccessful,
@@ -45,16 +45,16 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
           logger.e(error);
           openErrorSnackBar(
             context,
-            error,
             L10n.of(context).emailAuthenticationFailure,
+            authErrorManager(error, context),
           );
         },
       );
     } else {
       openErrorSnackBar(
         context,
-        L10n.of(context).emailEmpty,
         L10n.of(context).loginError,
+        L10n.of(context).emailEmpty,
       );
     }
     loading.state = false;
@@ -71,8 +71,8 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         logger.e(error);
         openErrorSnackBar(
           context,
-          L10n.of(context).error,
           L10n.of(context).loginError,
+          L10n.of(context).error,
         );
       },
     );
@@ -91,8 +91,8 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         logger.e(error);
         openErrorSnackBar(
           context,
-          L10n.of(context).error,
           L10n.of(context).loginError,
+          L10n.of(context).error,
         );
       },
     );
