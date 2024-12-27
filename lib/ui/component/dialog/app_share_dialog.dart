@@ -103,7 +103,8 @@ class AppShareDialog extends HookConsumerWidget {
                             await file.writeAsBytes(screenshotBytes);
                             await sharePosts(
                               [XFile(file.path)],
-                              '${posts.foodName} in ${posts.restaurant} \n\n#FoodGram',
+                              '${posts.foodName} in ${posts.restaurant} '
+                              '\n\n#FoodGram',
                             );
                           },
                         );
