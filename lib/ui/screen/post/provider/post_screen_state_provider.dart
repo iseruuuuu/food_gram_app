@@ -31,6 +31,17 @@ class PostScreenState extends _$PostScreenState {
   String uploadImage = '';
   late Uint8List imageBytes;
 
+  void loadRestaurant(Restaurant? restaurant) {
+    if (restaurant == null) {
+      return;
+    }
+    state = state.copyWith(
+      restaurant: restaurant.name,
+      lat: restaurant.lat,
+      lng: restaurant.lng,
+    );
+  }
+
   Future<bool> post({
     required String restaurantTag,
     required String foodTag,

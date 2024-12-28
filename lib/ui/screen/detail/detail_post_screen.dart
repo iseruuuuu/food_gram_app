@@ -4,11 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/data/admob/admob_banner.dart';
+import 'package:food_gram_app/core/data/supabase/post_stream.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
+import 'package:food_gram_app/router/go_router_extension.dart';
+import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
@@ -19,6 +23,7 @@ import 'package:food_gram_app/ui/component/modal_sheet/app_detail_other_info_mod
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:gap/gap.dart';
 import 'package:gif/gif.dart';
+import 'package:go_router/go_router.dart';
 
 class DetailPostScreen extends ConsumerStatefulWidget {
   const DetailPostScreen({
@@ -263,7 +268,9 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
+                        horizontal: 15,
+                        vertical: 5,
+                      ),
                       child: Text(
                         widget.posts.foodName,
                         style: TextStyle(
@@ -330,6 +337,26 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
               ),
             ],
           ),
+        ),
+        floatingActionButton: AppFloatingButton(
+          onTap: () async {
+            final currentPath = GoRouter.of(context).isCurrentLocation();
+            await context
+                .pushNamed(
+              currentPath,
+              extra: Restaurant(
+                name: widget.posts.restaurant,
+                lat: widget.posts.lat,
+                lng: widget.posts.lng,
+                address: '',
+              ),
+            )
+                .then((value) async {
+              if (value != null) {
+                ref.invalidate(postStreamProvider);
+              }
+            });
+          },
         ),
       ),
     );

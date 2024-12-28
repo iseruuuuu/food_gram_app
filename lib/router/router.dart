@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/config/shared_preference/shared_preference.dart';
 import 'package:food_gram_app/core/data/supabase/auth/auth_state.dart';
 import 'package:food_gram_app/core/model/model.dart';
+import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_screen.dart';
 import 'package:food_gram_app/ui/screen/map/map_screen.dart';
 import 'package:food_gram_app/ui/screen/post/restaurant_screen.dart';
@@ -104,8 +105,8 @@ final timeLineRouter = GoRoute(
       },
     ),
     GoRoute(
-      path: '${RouterPath.timeLine}/${RouterPath.timeLineDetailPost}',
-      name: RouterPath.timeLineDetailPost,
+      path: '${RouterPath.timeLine}/${RouterPath.timeLineDetail}',
+      name: RouterPath.timeLineDetail,
       builder: (context, state) {
         final model = state.extra! as Model;
         return DetailPostScreen(posts: model.posts, users: model.users);
@@ -117,6 +118,20 @@ final timeLineRouter = GoRoute(
       builder: (context, state) {
         final model = state.extra! as Model;
         return StoryPage(posts: model.posts, users: model.users);
+      },
+    ),
+    GoRoute(
+      path:
+          '${RouterPath.timeLine}/${RouterPath.timeLineDetail}/${RouterPath.timeLineDetailPost}',
+      name: RouterPath.timeLineDetailPost,
+      pageBuilder: (context, state) {
+        final model = state.extra! as Restaurant;
+        return whiteOut(
+          PostScreen(
+            routerPath: RouterPath.timeLineDetailPost,
+            restaurant: model,
+          ),
+        );
       },
     ),
   ],
@@ -151,11 +166,25 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
-      path: '${RouterPath.myProfile}/${RouterPath.myProfileDetailPost}',
-      name: RouterPath.myProfileDetailPost,
+      path: '${RouterPath.myProfile}/${RouterPath.myProfileDetail}',
+      name: RouterPath.myProfileDetail,
       builder: (context, state) {
         final model = state.extra! as Model;
         return DetailPostScreen(posts: model.posts, users: model.users);
+      },
+    ),
+    GoRoute(
+      path:
+          '${RouterPath.myProfile}/${RouterPath.myProfileDetail}/${RouterPath.myProfileDetailPost}',
+      name: RouterPath.myProfileDetailPost,
+      pageBuilder: (context, state) {
+        final model = state.extra! as Restaurant;
+        return whiteOut(
+          PostScreen(
+            routerPath: RouterPath.myProfileRestaurant,
+            restaurant: model,
+          ),
+        );
       },
     ),
   ],
@@ -200,11 +229,25 @@ final mapRouter = GoRoute(
   },
   routes: <RouteBase>[
     GoRoute(
-      path: '${RouterPath.map}/${RouterPath.mapDetailPost}',
-      name: RouterPath.mapDetailPost,
+      path: '${RouterPath.map}/${RouterPath.mapDetail}',
+      name: RouterPath.mapDetail,
       builder: (context, state) {
         final model = state.extra! as Model;
         return DetailPostScreen(posts: model.posts, users: model.users);
+      },
+    ),
+    GoRoute(
+      path:
+          '${RouterPath.map}/${RouterPath.mapDetail}/${RouterPath.mapDetailPost}',
+      name: RouterPath.mapDetailPost,
+      pageBuilder: (context, state) {
+        final model = state.extra! as Restaurant;
+        return whiteOut(
+          PostScreen(
+            routerPath: RouterPath.myProfileRestaurant,
+            restaurant: model,
+          ),
+        );
       },
     ),
   ],
@@ -218,10 +261,10 @@ final class RouterPath {
   static const String edit = 'edit';
   static const String myProfile = 'my_profile';
   static const String myProfilePost = 'my_profile_post';
-  static const String myProfileDetailPost = 'my_profile_detail_post';
+  static const String myProfileDetail = 'my_profile_detail';
   static const String myProfileRestaurant = 'my_profile_restaurant';
   static const String timeLinePost = 'time_line_post';
-  static const String timeLineDetailPost = 'time_line_detail_post';
+  static const String timeLineDetail = 'time_line_detail';
   static const String timeLineRestaurant = 'time_line_restaurant';
   static const String setting = 'setting';
   static const String timeLine = 'time_line';
@@ -229,7 +272,10 @@ final class RouterPath {
   static const String tutorial = 'introduction';
   static const String settingTutorial = 'setting_tutorial';
   static const String map = 'map';
-  static const String mapDetailPost = 'map_detail_post';
+  static const String mapDetail = 'map_detail';
   static const String storyPage = 'story';
   static const String paywallPage = 'paywall';
+  static const String timeLineDetailPost = 'time_line_detail_post';
+  static const String myProfileDetailPost = 'my_profile_detail_post';
+  static const String mapDetailPost = 'map_detail_post';
 }

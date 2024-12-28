@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/data/supabase/post_stream.dart';
 import 'package:food_gram_app/core/utils/async_value_group.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_app_bar.dart';
+import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
 import 'package:food_gram_app/ui/component/app_profile_button.dart';
@@ -78,13 +79,24 @@ class MyProfileScreen extends ConsumerWidget {
                 Expanded(
                   child: AppListView(
                     data: value.$1,
-                    routerPath: RouterPath.myProfileDetailPost,
+                    routerPath: RouterPath.myProfileDetail,
                     refresh: () => ref.refresh(myPostStreamProvider),
                     isTimeLine: false,
                   ),
                 ),
               ],
             );
+          },
+        ),
+        floatingActionButton: AppFloatingButton(
+          onTap: () async {
+            await context
+                .pushNamed(RouterPath.myProfilePost)
+                .then((value) async {
+              if (value != null) {
+                ref.invalidate(myPostStreamProvider);
+              }
+            });
           },
         ),
       ),

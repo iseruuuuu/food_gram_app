@@ -44,7 +44,7 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
                     final model = Model(postUsers, post[index]!);
                     await context
                         .pushNamed(
-                      RouterPath.mapDetailPost,
+                      RouterPath.mapDetail,
                       extra: model,
                     )
                         .then((value) {
