@@ -110,7 +110,7 @@ class FoodListView extends ConsumerWidget {
           Expanded(
             child: AppListView(
               data: data,
-              routerPath: RouterPath.timeLineDetailPost,
+              routerPath: RouterPath.timeLineDetail,
               refresh: () {
                 ref
                   ..invalidate(postStreamProvider)

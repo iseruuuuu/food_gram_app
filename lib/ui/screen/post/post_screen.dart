@@ -17,12 +17,14 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PostScreen extends HookConsumerWidget {
-  const PostScreen({
+  PostScreen({
     required this.routerPath,
+    this.restaurant,
     super.key,
   });
 
   final String routerPath;
+  Restaurant? restaurant;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,6 +35,18 @@ class PostScreen extends HookConsumerWidget {
     final loading = ref.watch(loadingProvider);
     final countryTag = useState('');
     final foodTag = useState('');
+    useEffect(
+      () {
+        if (restaurant != null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            notifier.loadRestaurant(restaurant);
+          });
+        }
+        return null;
+      },
+      [restaurant],
+    );
+
     return GestureDetector(
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
