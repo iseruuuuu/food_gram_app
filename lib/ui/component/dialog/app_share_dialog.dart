@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:food_gram_app/core/data/admob/admob_interstitial.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -17,7 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 
-class AppShareDialog extends HookConsumerWidget {
+class AppShareDialog extends ConsumerWidget {
   const AppShareDialog({
     required this.posts,
     required this.users,
@@ -30,14 +28,6 @@ class AppShareDialog extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
-    final adInterstitial = ref.watch(admobInterstitialProvider);
-    useEffect(
-      () {
-        adInterstitial.createAd();
-        return null;
-      },
-      [],
-    );
     return Dialog(
       backgroundColor: Colors.black.withOpacity(0.8),
       shadowColor: Colors.white,
@@ -85,28 +75,24 @@ class AppShareDialog extends HookConsumerWidget {
                         foregroundColor: Colors.white,
                       ),
                       onPressed: () async {
-                        await adInterstitial.showAd(
-                          onAdClosed: () async {
-                            final screenshotController = ScreenshotController();
-                            final screenshotBytes =
-                                await screenshotController.captureFromWidget(
-                              AppShareWidget(
-                                posts: posts,
-                                users: users,
-                              ),
-                            );
+                        final screenshotController = ScreenshotController();
+                        final screenshotBytes =
+                            await screenshotController.captureFromWidget(
+                          AppShareWidget(
+                            posts: posts,
+                            users: users,
+                          ),
+                        );
 
-                            /// 一時ディレクトリに保存
-                            final tempDir = await getTemporaryDirectory();
-                            final filePath = '${tempDir.path}/shared_image.png';
-                            final file = File(filePath);
-                            await file.writeAsBytes(screenshotBytes);
-                            await sharePosts(
-                              [XFile(file.path)],
-                              '${posts.foodName} in ${posts.restaurant} '
-                              '\n\n#FoodGram',
-                            );
-                          },
+                        /// 一時ディレクトリに保存
+                        final tempDir = await getTemporaryDirectory();
+                        final filePath = '${tempDir.path}/shared_image.png';
+                        final file = File(filePath);
+                        await file.writeAsBytes(screenshotBytes);
+                        await sharePosts(
+                          [XFile(file.path)],
+                          '${posts.foodName} in ${posts.restaurant} '
+                          '\n\n#FoodGram',
                         );
                       },
                       child: Row(
@@ -138,25 +124,21 @@ class AppShareDialog extends HookConsumerWidget {
                         foregroundColor: Colors.white,
                       ),
                       onPressed: () async {
-                        await adInterstitial.showAd(
-                          onAdClosed: () async {
-                            final screenshotController = ScreenshotController();
-                            final screenshotBytes =
-                                await screenshotController.captureFromWidget(
-                              AppShareWidget(
-                                posts: posts,
-                                users: users,
-                              ),
-                            );
-
-                            /// 一時ディレクトリに保存
-                            final tempDir = await getTemporaryDirectory();
-                            final filePath = '${tempDir.path}/shared_image.png';
-                            final file = File(filePath);
-                            await file.writeAsBytes(screenshotBytes);
-                            await sharePostsForInstagram([XFile(file.path)]);
-                          },
+                        final screenshotController = ScreenshotController();
+                        final screenshotBytes =
+                            await screenshotController.captureFromWidget(
+                          AppShareWidget(
+                            posts: posts,
+                            users: users,
+                          ),
                         );
+
+                        /// 一時ディレクトリに保存
+                        final tempDir = await getTemporaryDirectory();
+                        final filePath = '${tempDir.path}/shared_image.png';
+                        final file = File(filePath);
+                        await file.writeAsBytes(screenshotBytes);
+                        await sharePostsForInstagram([XFile(file.path)]);
                       },
                       child: Row(
                         children: [
@@ -187,15 +169,10 @@ class AppShareDialog extends HookConsumerWidget {
                         foregroundColor: Colors.white,
                       ),
                       onPressed: () async {
-                        await adInterstitial.showAd(
-                          onAdClosed: () async {
-                            final availableMaps =
-                                await MapLauncher.installedMaps;
-                            await availableMaps.first.showMarker(
-                              coords: Coords(posts.lat, posts.lng),
-                              title: posts.restaurant,
-                            );
-                          },
+                        final availableMaps = await MapLauncher.installedMaps;
+                        await availableMaps.first.showMarker(
+                          coords: Coords(posts.lat, posts.lng),
+                          title: posts.restaurant,
                         );
                       },
                       child: Row(
