@@ -28,15 +28,9 @@ class AppShareDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
-    return Dialog(
+    return Scaffold(
       backgroundColor: Colors.black.withOpacity(0.8),
-      shadowColor: Colors.white,
-      surfaceTintColor: Colors.white,
-      insetPadding: EdgeInsets.all(0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0),
-      ),
-      child: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

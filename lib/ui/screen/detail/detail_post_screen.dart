@@ -232,18 +232,20 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                         GestureDetector(
                           onTap: () {
                             EasyDebounce.debounce(
-                                'post', Duration(milliseconds: 200), () async {
-                              await showDialog(
-                                context: context,
-                                useSafeArea: false,
-                                builder: (context) {
-                                  return AppShareDialog(
-                                    posts: widget.posts,
-                                    users: widget.users,
-                                  );
-                                },
-                              );
-                            });
+                              'post',
+                              Duration.zero,
+                              () async {
+                                await showGeneralDialog(
+                                  context: context,
+                                  pageBuilder: (context, anim1, anim2) {
+                                    return AppShareDialog(
+                                      posts: widget.posts,
+                                      users: widget.users,
+                                    );
+                                  },
+                                );
+                              },
+                            );
                           },
                           child: Icon(
                             Icons.send,
