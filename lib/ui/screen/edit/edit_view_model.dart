@@ -42,13 +42,29 @@ class EditViewModel extends _$EditViewModel {
       initialImage: data['image'],
     );
 
+    print(extractNumber(data['image']));
+
     loading.state = false;
   }
 
   String extractNumber(String path) {
-    final regExp = RegExp(r'\d+');
-    final Match? match = regExp.firstMatch(path);
-    return match?.group(0) ?? '';
+    switch (path) {
+      case 'assets/icon/icon0.png':
+        return '0';
+      case 'assets/icon/icon1.png':
+        return '1';
+      case 'assets/icon/icon2.png':
+        return '2';
+      case 'assets/icon/icon3.png':
+        return '3';
+      case 'assets/icon/icon4.png':
+        return '4';
+      case 'assets/icon/icon5.png':
+        return '5';
+      case 'assets/icon/icon6.png':
+        return '6';
+    }
+    return '0';
   }
 
   Future<bool> update() async {
@@ -58,7 +74,7 @@ class EditViewModel extends _$EditViewModel {
           name: nameTextController.text,
           userName: useNameTextController.text,
           selfIntroduce: selfIntroduceTextController.text,
-          image: state.number,
+          image: state.number.toString(),
           uploadImage: uploadImage,
           imageBytes: imageBytes,
         );
