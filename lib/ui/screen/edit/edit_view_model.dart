@@ -45,23 +45,9 @@ class EditViewModel extends _$EditViewModel {
   }
 
   String extractNumber(String path) {
-    switch (path) {
-      case 'assets/icon/icon0.png':
-        return '0';
-      case 'assets/icon/icon1.png':
-        return '1';
-      case 'assets/icon/icon2.png':
-        return '2';
-      case 'assets/icon/icon3.png':
-        return '3';
-      case 'assets/icon/icon4.png':
-        return '4';
-      case 'assets/icon/icon5.png':
-        return '5';
-      case 'assets/icon/icon6.png':
-        return '6';
-    }
-    return '0';
+    final regExp = RegExp(r'\d+');
+    final Match? match = regExp.firstMatch(path);
+    return match?.group(0) ?? '';
   }
 
   Future<bool> update() async {
