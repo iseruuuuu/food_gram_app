@@ -41,7 +41,6 @@ class EditViewModel extends _$EditViewModel {
       number: extractNumber(data['image']),
       initialImage: data['image'],
     );
-
     loading.state = false;
   }
 
@@ -58,7 +57,7 @@ class EditViewModel extends _$EditViewModel {
           name: nameTextController.text,
           userName: useNameTextController.text,
           selfIntroduce: selfIntroduceTextController.text,
-          image: state.number,
+          image: state.number.toString(),
           uploadImage: uploadImage,
           imageBytes: imageBytes,
         );

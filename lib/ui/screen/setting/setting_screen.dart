@@ -263,7 +263,7 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                                         child: Text(
                                           'Get a Premium MemberShip',
                                           style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 13,
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
                                           ),
