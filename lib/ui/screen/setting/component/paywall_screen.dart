@@ -312,7 +312,7 @@ class PaywallScreen extends ConsumerWidget {
                               return AlertDialog(
                                 backgroundColor: Colors.transparent,
                                 title: SizedBox(
-                                  height: 600,
+                                  height: 550,
                                   child: Column(
                                     children: [
                                       Center(
