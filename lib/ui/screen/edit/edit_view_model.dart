@@ -41,9 +41,6 @@ class EditViewModel extends _$EditViewModel {
       number: extractNumber(data['image']),
       initialImage: data['image'],
     );
-
-    print(extractNumber(data['image']));
-
     loading.state = false;
   }
 
