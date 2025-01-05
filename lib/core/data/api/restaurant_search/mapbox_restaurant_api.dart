@@ -1,12 +1,15 @@
 import 'dart:core';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:food_gram_app/core/data/api/dio.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/utils/location.dart';
 import 'package:food_gram_app/env.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 part 'mapbox_restaurant_api.g.dart';
 
@@ -19,22 +22,29 @@ Future<PaginationList<Restaurant>> mapboxRestaurantApi(
 ) async {
   final currentLocationFuture = ref.read(locationProvider.future);
   final currentLocation = await currentLocationFuture;
-  if (currentLocation == LatLng(0, 0) || keyword == '') {
+  if (currentLocation == LatLng(0, 0) || keyword.isEmpty) {
     return [];
   }
   final restaurants = <Restaurant>{};
   try {
-    restaurants
-      ..addAll(await search(ref, toHiragana(keyword)))
-      ..addAll(await search(ref, toKatakana(keyword)));
+    restaurants.addAll(await search(ref, keyword));
     final sortedRestaurants = restaurants.toList()
       ..sort((a, b) {
-        final distanceA = (a.lat - currentLocation.latitude).abs() +
-            (a.lng - currentLocation.longitude).abs();
-        final distanceB = (b.lat - currentLocation.latitude).abs() +
-            (b.lng - currentLocation.longitude).abs();
+        final distanceA = calculateDistance(
+          currentLocation.latitude,
+          currentLocation.longitude,
+          a.lat,
+          a.lng,
+        );
+        final distanceB = calculateDistance(
+          currentLocation.latitude,
+          currentLocation.longitude,
+          b.lat,
+          b.lng,
+        );
         return distanceA.compareTo(distanceB);
       });
+
     return sortedRestaurants;
   } on DioException catch (e) {
     print('Failed to fetch restaurant data: ${e.message}');
@@ -49,50 +59,83 @@ Future<List<Restaurant>> search(
   final dio = ref.watch(dioProvider);
   final currentLocationFuture = ref.read(locationProvider.future);
   final currentLocation = await currentLocationFuture;
-  if (currentLocation == LatLng(0, 0) || keyword == '') {
+
+  if (currentLocation == LatLng(0, 0) || keyword.isEmpty) {
     return [];
   }
+
   const resultsPerPage = 10;
   final restaurants = <Restaurant>[];
-  final response = await dio.get(
-    'https://api.mapbox.com/geocoding/v5/mapbox.places/$keyword.json',
-    queryParameters: {
-      'proximity': '${currentLocation.longitude},${currentLocation.latitude}',
-      'access_token': Env.mapbox,
-      'limit': resultsPerPage,
-    },
-  );
-  if (response.statusCode == 200) {
-    final data = response.data;
-    final features = data['features'] as List<dynamic>;
-    for (final feature in features) {
-      final placeName = feature['text'] as String;
-      final address = feature['place_name'] as String;
-      final geometry = feature['geometry']['coordinates'] as List<dynamic>;
-      final lat = geometry[1] as double;
-      final lng = geometry[0] as double;
-      final restaurant = Restaurant(
-        name: placeName,
-        address: address,
-        lat: lat,
-        lng: lng,
-      );
-      restaurants.add(restaurant);
+  final uuid = Uuid();
+  final sessionToken = uuid.v4();
+
+  try {
+    final response = await dio.get(
+      'https://api.mapbox.com/search/searchbox/v1/suggest',
+      queryParameters: {
+        'q': keyword,
+        'proximity': '${currentLocation.longitude},${currentLocation.latitude}',
+        'access_token': Env.mapbox,
+        'limit': resultsPerPage,
+        'language': 'ja',
+        'session_token': sessionToken,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = response.data;
+      final suggestions = data['suggestions'] as List<dynamic>?;
+
+      if (suggestions == null) {
+        print('No suggestions found in the response');
+        return [];
+      }
+
+      for (final suggestion in suggestions) {
+        final placeName = suggestion['name'] as String?;
+        final address = suggestion['address'] as String?;
+        if (placeName == null || address == null) {
+          continue;
+        }
+        final locationResults = await locationFromAddress(address);
+        if (locationResults.isEmpty) {
+          continue;
+        }
+        final lat = locationResults.first.latitude;
+        final lng = locationResults.first.longitude;
+        final restaurant = Restaurant(
+          name: placeName,
+          address: address,
+          lat: lat,
+          lng: lng,
+        );
+        restaurants.add(restaurant);
+      }
+    } else {
+      print('Failed to fetch suggestions: ${response.statusCode}');
     }
+  } on DioException catch (e) {
+    print('DioException occurred: ${e.message}');
+  } catch (e) {
+    print('Unexpected error: $e');
   }
+
   return restaurants;
 }
 
-String toHiragana(String input) {
-  return input.replaceAllMapped(RegExp('[ァ-ン]'), (match) {
-    final char = match.group(0)!;
-    return String.fromCharCode(char.codeUnitAt(0) - 0x60);
-  });
+/// Haversine Formulaを用いた距離計算
+double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+  const earthRadius = 6371; // km
+  final dLat = _degToRad(lat2 - lat1);
+  final dLon = _degToRad(lon2 - lon1);
+
+  final a = (sin(dLat / 2) * sin(dLat / 2)) +
+      cos(_degToRad(lat1)) *
+          cos(_degToRad(lat2)) *
+          (sin(dLon / 2) * sin(dLon / 2));
+  final c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+  return earthRadius * c;
 }
 
-String toKatakana(String input) {
-  return input.replaceAllMapped(RegExp('[ぁ-ん]'), (match) {
-    final char = match.group(0)!;
-    return String.fromCharCode(char.codeUnitAt(0) + 0x60);
-  });
-}
+double _degToRad(double deg) => deg * (pi / 180);
