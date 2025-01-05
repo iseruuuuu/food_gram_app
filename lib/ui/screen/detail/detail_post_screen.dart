@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/data/admob/admob_banner.dart';
 import 'package:food_gram_app/core/data/supabase/post_stream.dart';
 import 'package:food_gram_app/core/model/posts.dart';
@@ -24,8 +24,10 @@ import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:gap/gap.dart';
 import 'package:gif/gif.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:snow_fall_animation/snow_fall_animation.dart';
 
-class DetailPostScreen extends ConsumerStatefulWidget {
+class DetailPostScreen extends HookConsumerWidget {
   const DetailPostScreen({
     required this.posts,
     required this.users,
@@ -36,37 +38,17 @@ class DetailPostScreen extends ConsumerStatefulWidget {
   final Users users;
 
   @override
-  DetailPostScreenState createState() => DetailPostScreenState();
-}
-
-class DetailPostScreenState extends ConsumerState<DetailPostScreen>
-    with TickerProviderStateMixin {
-  bool isHeart = false;
-  bool doesHeart = false;
-  int initialHeart = 0;
-  late GifController controller;
-
-  @override
-  void initState() {
-    initialHeart = widget.posts.heart;
-    controller = GifController(vsync: this);
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    initialHeart = widget.posts.heart;
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isHeart = useState(false);
+    final initialHeart = useState(posts.heart);
+    final tickerProvider = useSingleTickerProvider();
+    final gifController = useMemoized(
+      () => GifController(vsync: tickerProvider),
+      [tickerProvider],
+    );
+    useEffect(() {
+      return gifController.dispose;
+    }, [gifController]);
     final deviceWidth = MediaQuery.of(context).size.width;
     final user = supabase.auth.currentUser?.id;
     final loading = ref.watch(loadingProvider);
@@ -87,25 +69,25 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                     builder: (context) {
                       if (user == Env.masterAccount) {
                         return AppDetailMasterModalSheet(
-                          posts: widget.posts,
-                          users: widget.users,
+                          posts: posts,
+                          users: users,
                         );
                       }
-                      if (widget.users.userId != user) {
+                      if (users.userId != user) {
                         return AppDetailOtherInfoModalSheet(
-                          users: widget.users,
-                          posts: widget.posts,
+                          users: users,
+                          posts: posts,
                         );
                       } else {
                         return AppDetailMyInfoModalSheet(
-                          users: widget.users,
-                          posts: widget.posts,
+                          users: users,
+                          posts: posts,
                         );
                       }
                     },
                   );
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.menu,
                   color: Colors.black,
                 ),
@@ -119,65 +101,57 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: deviceWidth,
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: AppProfileImage(
-                              imagePath: widget.users.image,
-                              radius: 30,
-                            ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: AppProfileImage(
+                            imagePath: users.image,
+                            radius: 30,
                           ),
-                          SizedBox(
-                            width: MediaQuery.sizeOf(context).width - 150,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  widget.users.name,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width - 150,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                users.name,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
                                 ),
-                                Text(
-                                  '@${widget.users.userName}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                  ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                '@${users.userName}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     GestureDetector(
-                      onDoubleTap: (widget.users.userId != user)
+                      onDoubleTap: users.userId != user
                           ? () async {
-                              if (isHeart) {
+                              final currentHeart = initialHeart.value;
+                              if (isHeart.value) {
                                 await supabase.from('posts').update({
-                                  'heart': widget.posts.heart - 1,
-                                }).match({'id': widget.posts.id});
-                                setState(() {
-                                  initialHeart--;
-                                  isHeart = false;
-                                  doesHeart = false;
-                                });
+                                  'heart': currentHeart - 1,
+                                }).match({'id': posts.id});
+                                initialHeart.value--;
+                                isHeart.value = false;
                               } else {
                                 await supabase.from('posts').update({
-                                  'heart': widget.posts.heart + 1,
-                                }).match({'id': widget.posts.id});
-                                setState(() {
-                                  initialHeart++;
-                                  isHeart = true;
-                                  doesHeart = true;
-                                });
+                                  'heart': currentHeart + 1,
+                                }).match({'id': posts.id});
+                                initialHeart.value++;
+                                isHeart.value = true;
                               }
                             }
                           : null,
@@ -188,47 +162,42 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                         child: CachedNetworkImage(
                           imageUrl: supabase.storage
                               .from('food')
-                              .getPublicUrl(widget.posts.foodImage),
+                              .getPublicUrl(posts.foodImage),
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
                     Row(
                       children: [
-                        SizedBox(width: 5),
+                        Gap(5),
                         IconButton(
-                          onPressed: (widget.users.userId != user)
+                          onPressed: users.userId != user
                               ? () async {
-                                  if (isHeart) {
+                                  final currentHeart = initialHeart.value;
+                                  if (isHeart.value) {
                                     await supabase.from('posts').update({
-                                      'heart': widget.posts.heart - 1,
-                                    }).match({'id': widget.posts.id});
-                                    setState(() {
-                                      initialHeart--;
-                                      isHeart = false;
-                                      doesHeart = false;
-                                    });
+                                      'heart': currentHeart - 1,
+                                    }).match({'id': posts.id});
+                                    initialHeart.value--;
+                                    isHeart.value = false;
                                   } else {
                                     await supabase.from('posts').update({
-                                      'heart': widget.posts.heart + 1,
-                                    }).match({'id': widget.posts.id});
-                                    setState(() {
-                                      initialHeart++;
-                                      isHeart = true;
-                                      doesHeart = true;
-                                    });
+                                      'heart': currentHeart + 1,
+                                    }).match({'id': posts.id});
+                                    initialHeart.value++;
+                                    isHeart.value = true;
                                   }
                                 }
                               : null,
                           icon: Icon(
-                            (isHeart || widget.users.userName == user)
+                            isHeart.value
                                 ? CupertinoIcons.heart_fill
                                 : CupertinoIcons.heart,
-                            color: isHeart ? Colors.red : Colors.black,
+                            color: isHeart.value ? Colors.red : Colors.black,
                             size: 30,
                           ),
                         ),
-                        SizedBox(width: 10),
+                        Gap(10),
                         GestureDetector(
                           onTap: () {
                             EasyDebounce.debounce(
@@ -239,27 +208,26 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                                   context: context,
                                   pageBuilder: (context, anim1, anim2) {
                                     return AppShareDialog(
-                                      posts: widget.posts,
-                                      users: widget.users,
+                                      posts: posts,
+                                      users: users,
                                     );
                                   },
                                 );
                               },
                             );
                           },
-                          child: Icon(
+                          child: const Icon(
                             Icons.send,
                             size: 30,
                             color: Colors.black,
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Text(
-                            '$initialHeart'
-                            ' ${L10n.of(context).postDetailLikeButton}',
-                            style: TextStyle(
+                            '${initialHeart.value} ${L10n.of(context).postDetailLikeButton}',
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -269,69 +237,63 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 5,
-                      ),
-                      child: Text(
-                        widget.posts.foodName,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Text(
-                        'In ${widget.posts.restaurant}',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    Gap(10),
-                    Wrap(
-                      spacing: 10,
-                      children: [
-                        Gap(10),
-                        if (widget.posts.foodTag != '')
-                          Chip(
-                            backgroundColor: Colors.white,
-                            label: Text(widget.posts.foodTag),
-                            labelStyle: TextStyle(fontSize: 20),
-                          ),
-                        Gap(10),
-                        if (widget.posts.restaurantTag != '')
-                          Chip(
-                            backgroundColor: Colors.white,
-                            label: Text(widget.posts.restaurantTag),
-                            labelStyle: TextStyle(fontSize: 20),
-                          ),
-                      ],
-                    ),
-                    Padding(
                       padding: const EdgeInsets.all(15),
-                      child: Text(
-                        widget.posts.comment,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            posts.foodName,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            'In ${posts.restaurant}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const Gap(10),
+                          Wrap(
+                            spacing: 10,
+                            children: [
+                              if (posts.foodTag.isNotEmpty)
+                                Chip(
+                                  backgroundColor: Colors.white,
+                                  label: Text(posts.foodTag),
+                                  labelStyle: const TextStyle(fontSize: 20),
+                                ),
+                              if (posts.restaurantTag.isNotEmpty)
+                                Chip(
+                                  backgroundColor: Colors.white,
+                                  label: Text(posts.restaurantTag),
+                                  labelStyle: const TextStyle(fontSize: 20),
+                                ),
+                            ],
+                          ),
+                          const Gap(10),
+                          Text(
+                            posts.comment,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    AdmobBanner(),
-                    Gap(40),
+                    const AdmobBanner(),
                   ],
                 ),
               ),
               AppHeart(
-                isHeart: doesHeart,
-                controller: controller,
+                isHeart: isHeart.value,
+                controller: gifController,
               ),
               AppLoading(
                 loading: loading,
@@ -347,9 +309,9 @@ class DetailPostScreenState extends ConsumerState<DetailPostScreen>
                 .pushNamed(
               currentPath,
               extra: Restaurant(
-                name: widget.posts.restaurant,
-                lat: widget.posts.lat,
-                lng: widget.posts.lng,
+                name: posts.restaurant,
+                lat: posts.lat,
+                lng: posts.lng,
                 address: '',
               ),
             )
