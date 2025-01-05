@@ -17,6 +17,7 @@ import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:snow_fall_animation/snow_fall_animation.dart';
 
 class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
   const AuthenticationScreen({super.key});
@@ -46,14 +47,23 @@ class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(backgroundColor: Colors.white),
         body: Stack(
           children: [
+            SnowFallAnimation(
+              config: SnowfallConfig(
+                numberOfSnowflakes: 300,
+                enableRandomOpacity: false,
+                enableSnowDrift: false,
+                customEmojis: ['❄️', '❅', '❆'],
+                holdSnowAtBottom: false,
+              ),
+            ),
             SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 28),
                 child: Column(
                   children: [
+                    Gap(80),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
