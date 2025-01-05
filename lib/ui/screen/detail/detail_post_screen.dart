@@ -41,6 +41,7 @@ class DetailPostScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isHeart = useState(false);
     final initialHeart = useState(posts.heart);
+    final isSnowing = useState(false);
     final tickerProvider = useSingleTickerProvider();
     final gifController = useMemoized(
       () => GifController(vsync: tickerProvider),
@@ -60,6 +61,10 @@ class DetailPostScreen extends HookConsumerWidget {
           backgroundColor: Colors.white,
           automaticallyImplyLeading: !loading,
           surfaceTintColor: Colors.transparent,
+          title: GestureDetector(
+            onTap: () => isSnowing.value = !isSnowing.value,
+            child: Text('     '),
+          ),
           actions: [
             if (!loading)
               IconButton(
@@ -97,6 +102,15 @@ class DetailPostScreen extends HookConsumerWidget {
         body: SafeArea(
           child: Stack(
             children: [
+              if (isSnowing.value)
+                const SnowFallAnimation(
+                  config: SnowfallConfig(
+                    numberOfSnowflakes: 300,
+                    enableRandomOpacity: false,
+                    enableSnowDrift: false,
+                    holdSnowAtBottom: false,
+                  ),
+                ),
               SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
