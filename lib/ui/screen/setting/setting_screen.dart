@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/data/admob/admob_banner.dart';
 import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
@@ -19,27 +19,33 @@ import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/utils/url_launch.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:snow_fall_animation/snow_fall_animation.dart';
 
-class SettingScreen extends ConsumerStatefulWidget {
+class SettingScreen extends HookConsumerWidget {
   const SettingScreen({super.key});
 
   @override
-  SettingScreenState createState() => SettingScreenState();
-}
-
-class SettingScreenState extends ConsumerState<SettingScreen> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final loading = ref.watch(loadingProvider);
     final state = ref.watch(settingViewModelProvider());
     final l10n = L10n.of(context);
     final subscriptionState = ref.watch(subscriptionProvider);
-
+    final isSnowing = useState(false);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppAppBar(),
       body: Stack(
         children: [
+          if (isSnowing.value)
+            const SnowFallAnimation(
+              config: SnowfallConfig(
+                numberOfSnowflakes: 300,
+                enableRandomOpacity: false,
+                enableSnowDrift: false,
+                holdSnowAtBottom: false,
+              ),
+            ),
           Column(
             children: [
               Expanded(
@@ -210,9 +216,13 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                                 : l10n.settingsIosVersion,
                             style: TextStyle(color: Colors.black),
                           ),
-                          trailing: Text(
-                            state.sdk,
-                            style: TextStyle(fontSize: 18, color: Colors.black),
+                          trailing: GestureDetector(
+                            onTap: () => isSnowing.value = !isSnowing.value,
+                            child: Text(
+                              state.sdk,
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.black),
+                            ),
                           ),
                         ),
                       ),
@@ -311,11 +321,9 @@ class SettingScreenState extends ConsumerState<SettingScreen> {
                                           .then(
                                         (value) {
                                           if (value) {
-                                            if (mounted) {
-                                              context.pushReplacementNamed(
-                                                RouterPath.authentication,
-                                              );
-                                            }
+                                            context.pushReplacementNamed(
+                                              RouterPath.authentication,
+                                            );
                                           } else {
                                             openErrorSnackBar(
                                               context,
