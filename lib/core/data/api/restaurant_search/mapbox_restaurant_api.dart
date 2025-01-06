@@ -24,9 +24,7 @@ Future<PaginationList<Restaurant>> mapboxRestaurantApi(
   }
   final restaurants = <Restaurant>{};
   try {
-    restaurants
-      ..addAll(await search(ref, toHiragana(keyword)))
-      ..addAll(await search(ref, toKatakana(keyword)));
+    restaurants.addAll(await search(ref, keyword));
     final sortedRestaurants = restaurants.toList()
       ..sort((a, b) {
         final distanceA = (a.lat - currentLocation.latitude).abs() +
@@ -81,18 +79,4 @@ Future<List<Restaurant>> search(
     }
   }
   return restaurants;
-}
-
-String toHiragana(String input) {
-  return input.replaceAllMapped(RegExp('[ァ-ン]'), (match) {
-    final char = match.group(0)!;
-    return String.fromCharCode(char.codeUnitAt(0) - 0x60);
-  });
-}
-
-String toKatakana(String input) {
-  return input.replaceAllMapped(RegExp('[ぁ-ん]'), (match) {
-    final char = match.group(0)!;
-    return String.fromCharCode(char.codeUnitAt(0) + 0x60);
-  });
 }
