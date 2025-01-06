@@ -24,24 +24,19 @@ Future<PaginationList<Restaurant>> googleRestaurantApi(
     return [];
   }
   final restaurants = <Restaurant>[];
-  final googleRestaurants =
-      await _fetchFromGoogleMapsApi(dio, currentLocation, keyword);
+  final googleRestaurants = await _search(dio, keyword);
   restaurants.addAll(googleRestaurants);
   return restaurants;
 }
 
-Future<List<Restaurant>> _fetchFromGoogleMapsApi(
+Future<List<Restaurant>> _search(
   Dio dio,
-  LatLng location,
   String keyword,
 ) async {
   final response = await dio.get(
-    'https://maps.googleapis.com/maps/api/place/nearbysearch/json',
+    'https://maps.googleapis.com/maps/api/place/textsearch/json',
     queryParameters: {
-      'location': '${location.latitude},${location.longitude}',
-      'radius': '50000',
-      'type': 'restaurant',
-      'keyword': keyword,
+      'query': keyword,
       'key': Platform.isIOS ? Env.iOSGoogleApikey : Env.androidGoogleApikey,
       'language': 'ja',
     },
@@ -52,7 +47,7 @@ Future<List<Restaurant>> _fetchFromGoogleMapsApi(
       data['results'].map(
         (restaurant) => Restaurant(
           name: restaurant['name'],
-          address: restaurant['vicinity'],
+          address: restaurant['formatted_address'],
           lat: restaurant['geometry']['location']['lat'],
           lng: restaurant['geometry']['location']['lng'],
         ),
