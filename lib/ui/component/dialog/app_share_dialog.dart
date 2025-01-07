@@ -30,6 +30,7 @@ class AppShareDialog extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
+    final loading = useState(false);
     final adInterstitial = ref.watch(admobInterstitialProvider);
     useEffect(
       () {
@@ -40,217 +41,182 @@ class AppShareDialog extends HookConsumerWidget {
     );
     return Scaffold(
       backgroundColor: Colors.black.withOpacity(0.8),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AppBar(
-              backgroundColor: Colors.transparent,
-              centerTitle: true,
-              leading: IconButton(
-                onPressed: context.pop,
-                icon: Icon(
-                  Icons.close,
-                  color: Colors.white,
-                  size: 30,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AppBar(
+                  backgroundColor: Colors.transparent,
+                  centerTitle: true,
+                  leading: IconButton(
+                    onPressed: context.pop,
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
+                  title: Text(
+                    l10n.appShareTitle,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
-              ),
-              title: Text(
-                l10n.appShareTitle,
-                style: TextStyle(
-                  color: Colors.white,
+                AppShareWidget(posts: posts, users: users),
+                Gap(20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 48,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.white,
+                          ),
+                          onPressed: () async {
+                            await adInterstitial.showAd(
+                              onAdClosed: () async {
+                              },
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.ios_share,
+                                size: 25,
+                                color: Colors.black,
+                              ),
+                              Gap(15),
+                              Text(
+                                l10n.appShareStoreButton,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Gap(20),
+                      SizedBox(
+                        height: 48,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.white,
+                          ),
+                          onPressed: () async {
+                            await adInterstitial.showAd(
+                              onAdClosed: () async {
+                              },
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.instagram,
+                                size: 25,
+                                color: Colors.black,
+                              ),
+                              Gap(15),
+                              Text(
+                                l10n.appShareInstagramButton,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Gap(20),
+                      SizedBox(
+                        height: 48,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.white,
+                          ),
+                          onPressed: () async {
+                            await adInterstitial.showAd(
+                              onAdClosed: () async {
+                                final availableMaps =
+                                    await MapLauncher.installedMaps;
+                                await availableMaps.first.showMarker(
+                                  coords: Coords(posts.lat, posts.lng),
+                                  title: posts.restaurant,
+                                );
+                              },
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.directions_walk,
+                                size: 25,
+                                color: Colors.black,
+                              ),
+                              Gap(15),
+                              Text(
+                                l10n.appShareGoButton,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Gap(20),
+                      SizedBox(
+                        height: 48,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.white,
+                          ),
+                          onPressed: context.pop,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.close,
+                                size: 25,
+                                color: Colors.black,
+                              ),
+                              Gap(15),
+                              Text(
+                                l10n.appShareCloseButton,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Gap(30),
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
-            AppShareWidget(
-              posts: posts,
-              users: users,
-            ),
-            Gap(20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 48,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.white,
-                      ),
-                      onPressed: () async {
-                        await adInterstitial.showAd(
-                          onAdClosed: () async {
-                            final screenshotController = ScreenshotController();
-                            final screenshotBytes =
-                                await screenshotController.captureFromWidget(
-                              AppShareWidget(
-                                posts: posts,
-                                users: users,
-                              ),
-                            );
-
-                            /// 一時ディレクトリに保存
-                            final tempDir = await getTemporaryDirectory();
-                            final filePath = '${tempDir.path}/shared_image.png';
-                            final file = File(filePath);
-                            await file.writeAsBytes(screenshotBytes);
-                            await sharePosts(
-                              [XFile(file.path)],
-                              '${posts.foodName} in ${posts.restaurant} '
-                              '\n\n#FoodGram',
-                            );
-                          },
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.ios_share,
-                            size: 25,
-                            color: Colors.black,
-                          ),
-                          Gap(15),
-                          Text(
-                            l10n.appShareStoreButton,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Gap(20),
-                  SizedBox(
-                    height: 48,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.white,
-                      ),
-                      onPressed: () async {
-                        await adInterstitial.showAd(
-                          onAdClosed: () async {
-                            final screenshotController = ScreenshotController();
-                            final screenshotBytes =
-                                await screenshotController.captureFromWidget(
-                              AppShareWidget(
-                                posts: posts,
-                                users: users,
-                              ),
-                            );
-
-                            /// 一時ディレクトリに保存
-                            final tempDir = await getTemporaryDirectory();
-                            final filePath = '${tempDir.path}/shared_image.png';
-                            final file = File(filePath);
-                            await file.writeAsBytes(screenshotBytes);
-                            await sharePosts(
-                              [XFile(file.path)],
-                              '${posts.foodName} in ${posts.restaurant} '
-                              '\n\n#FoodGram',
-                            );
-                          },
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.instagram,
-                            size: 25,
-                            color: Colors.black,
-                          ),
-                          Gap(15),
-                          Text(
-                            l10n.appShareInstagramButton,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Gap(20),
-                  SizedBox(
-                    height: 48,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.white,
-                      ),
-                      onPressed: () async {
-                        await adInterstitial.showAd(
-                          onAdClosed: () async {
-                            final availableMaps =
-                                await MapLauncher.installedMaps;
-                            await availableMaps.first.showMarker(
-                              coords: Coords(posts.lat, posts.lng),
-                              title: posts.restaurant,
-                            );
-                          },
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.directions_walk,
-                            size: 25,
-                            color: Colors.black,
-                          ),
-                          Gap(15),
-                          Text(
-                            l10n.appShareGoButton,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Gap(20),
-                  SizedBox(
-                    height: 48,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.white,
-                      ),
-                      onPressed: context.pop,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.close,
-                            size: 25,
-                            color: Colors.black,
-                          ),
-                          Gap(15),
-                          Text(
-                            l10n.appShareCloseButton,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Gap(30),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+          AppLoading(loading: loading.value, status: 'Loading...'),
+        ],
       ),
     );
   }
