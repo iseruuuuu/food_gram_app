@@ -54,11 +54,13 @@ class TimeLineScreen extends HookConsumerWidget {
             bottom: TabBar(
               indicatorWeight: 1,
               automaticIndicatorColorAdjustment: false,
-              labelStyle: TextStyle(fontSize: 12),
               unselectedLabelColor: Colors.grey,
               labelColor: Colors.black,
               indicatorColor: Colors.black,
               indicatorSize: TabBarIndicatorSize.tab,
+              splashFactory: NoSplash.splashFactory,
+              overlayColor: WidgetStateProperty.all(Colors.transparent),
+              enableFeedback: true,
               tabs: <Widget>[
                 Tab(
                   icon: Icon(Icons.dinner_dining, size: 30),
