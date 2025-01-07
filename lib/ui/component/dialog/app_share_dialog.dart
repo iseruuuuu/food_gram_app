@@ -7,6 +7,7 @@ import 'package:food_gram_app/core/data/admob/admob_interstitial.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_share_widget.dart';
 import 'package:food_gram_app/utils/share.dart';
 import 'package:gap/gap.dart';
@@ -82,6 +83,15 @@ class AppShareDialog extends HookConsumerWidget {
                           onPressed: () async {
                             await adInterstitial.showAd(
                               onAdClosed: () async {
+                                await captureAndShare(
+                                  widget: AppShareWidget(
+                                    posts: posts,
+                                    users: users,
+                                  ),
+                                  shareText: '${posts.foodName} '
+                                      'in ${posts.restaurant}',
+                                  loading: loading,
+                                );
                               },
                             );
                           },
@@ -116,6 +126,15 @@ class AppShareDialog extends HookConsumerWidget {
                           onPressed: () async {
                             await adInterstitial.showAd(
                               onAdClosed: () async {
+                                await captureAndShare(
+                                  widget: AppShareWidget(
+                                    posts: posts,
+                                    users: users,
+                                  ),
+                                  shareText: '${posts.foodName} '
+                                      'in ${posts.restaurant}',
+                                  loading: loading,
+                                );
                               },
                             );
                           },
@@ -219,5 +238,27 @@ class AppShareDialog extends HookConsumerWidget {
         ],
       ),
     );
+  }
+}
+
+Future<void> captureAndShare({
+  required Widget widget,
+  required String shareText,
+  required ValueNotifier<bool> loading,
+}) async {
+  try {
+    loading.value = true;
+    final screenshotController = ScreenshotController();
+    final screenshotBytes =
+        await screenshotController.captureFromWidget(widget);
+
+    // 一時ディレクトリに保存
+    final tempDir = await getTemporaryDirectory();
+    final filePath = '${tempDir.path}/shared_image.png';
+    final file = File(filePath);
+    await file.writeAsBytes(screenshotBytes);
+    await sharePosts([XFile(file.path)], shareText);
+  } finally {
+    loading.value = false;
   }
 }
