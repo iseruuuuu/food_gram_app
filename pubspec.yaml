@@ -40,6 +40,7 @@ dependencies:
   go_router: ^12.1.1
   google_mobile_ads: ^5.2.0
   google_sign_in: ^6.2.1
+  heroine: ^0.1.1
   home_widget: ^0.7.0
   hooks_riverpod: ^2.4.9
   http: ^1.1.0

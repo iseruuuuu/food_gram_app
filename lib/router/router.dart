@@ -12,6 +12,7 @@ import 'package:food_gram_app/ui/screen/splash/tutorial_screen.dart';
 import 'package:food_gram_app/ui/screen/time_line/component/story_page.dart';
 import 'package:food_gram_app/utils/amination.dart';
 import 'package:go_router/go_router.dart';
+import 'package:heroine/heroine.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'router.g.dart';
@@ -20,6 +21,7 @@ part 'router.g.dart';
 GoRouter router(RouterRef ref) {
   final authState = ref.watch(authStateProvider);
   return GoRouter(
+    observers: [HeroineController()],
     initialLocation: '/${RouterPath.splash}',
     redirect: (context, state) async {
       final preference = Preference();

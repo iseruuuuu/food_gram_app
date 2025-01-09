@@ -24,6 +24,7 @@ import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:gap/gap.dart';
 import 'package:gif/gif.dart';
 import 'package:go_router/go_router.dart';
+import 'package:heroine/heroine.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:snow_fall_animation/snow_fall_animation.dart';
 
@@ -169,15 +170,21 @@ class DetailPostScreen extends HookConsumerWidget {
                               }
                             }
                           : null,
-                      child: Container(
-                        width: deviceWidth,
-                        height: deviceWidth,
-                        color: Colors.white,
-                        child: CachedNetworkImage(
-                          imageUrl: supabase.storage
-                              .from('food')
-                              .getPublicUrl(posts.foodImage),
-                          fit: BoxFit.cover,
+                      child: DragDismissable(
+                        onDismiss: () => context.pop(),
+                        child: Heroine(
+                          tag: 'image-${posts.id}',
+                          child: Container(
+                            width: deviceWidth,
+                            height: deviceWidth,
+                            color: Colors.white,
+                            child: CachedNetworkImage(
+                              imageUrl: supabase.storage
+                                  .from('food')
+                                  .getPublicUrl(posts.foodImage),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                       ),
                     ),
