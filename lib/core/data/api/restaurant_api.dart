@@ -3,9 +3,6 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:food_gram_app/core/data/api/restaurant_search/google_restaurant_api.dart';
-import 'package:food_gram_app/core/data/api/restaurant_search/hotpepper_restaurant_api.dart';
-import 'package:food_gram_app/core/data/api/restaurant_search/mapbox_restaurant_api.dart';
-import 'package:food_gram_app/core/data/api/restaurant_search/open_street_map_api.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/utils/location.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -27,12 +24,7 @@ Future<PaginationList<Restaurant>> restaurantApi(
   try {
     final restaurants = <Restaurant>[];
     final addedLocations = <String>{};
-    final mapbox = await ref.read(mapboxRestaurantApiProvider(keyword).future);
     final google = await ref.read(googleRestaurantApiProvider(keyword).future);
-    final hotpepper =
-        await ref.read(hotPepperRestaurantProvider(keyword).future);
-    final openStreetMap =
-        await ref.read(openStreetMapApiProvider(keyword).future);
     void addUniqueRestaurants(List<Restaurant> source) {
       for (final restaurant in source) {
         final locationKey = '${restaurant.lat},${restaurant.lng}';
@@ -43,11 +35,7 @@ Future<PaginationList<Restaurant>> restaurantApi(
       }
     }
 
-    /// 各APIの結果を重複を避けながら追加
-    addUniqueRestaurants(mapbox);
     addUniqueRestaurants(google);
-    addUniqueRestaurants(hotpepper);
-    addUniqueRestaurants(openStreetMap);
 
     /// 現在地からの距離でソート
     restaurants.sort((a, b) {
