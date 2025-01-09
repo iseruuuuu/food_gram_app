@@ -54,7 +54,7 @@ class AppListView extends ConsumerWidget {
                         onTap: () {
                           EasyDebounce.debounce(
                             'click_detail',
-                            const Duration(milliseconds: 300),
+                            const Duration(milliseconds: 200),
                             () async {
                               final post = await ref
                                   .read(postsServiceProvider)
