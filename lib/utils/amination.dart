@@ -132,3 +132,40 @@ CustomTransitionPage<Object?> elasticTransition(Widget screen) {
     },
   );
 }
+
+CustomTransitionPage<Object?> slideUpTransition(Widget screen) {
+  return CustomTransitionPage<Object?>(
+    child: screen,
+    transitionDuration: const Duration(milliseconds: 400), // 遷移速度を調整
+    reverseTransitionDuration: const Duration(milliseconds: 400), // 閉じるときの速度
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      final slideAnimation = Tween<Offset>(
+        begin: const Offset(0, 1), // 下から上へ
+        end: Offset.zero, // 画面の中央に到達
+      ).animate(
+        CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeInOut, // 滑らかなスライド効果
+        ),
+      );
+
+      final fadeAnimation = Tween<double>(
+        begin: 0,
+        end: 1,
+      ).animate(
+        CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeInOut,
+        ),
+      );
+
+      return SlideTransition(
+        position: slideAnimation,
+        child: FadeTransition(
+          opacity: fadeAnimation,
+          child: child,
+        ),
+      );
+    },
+  );
+}

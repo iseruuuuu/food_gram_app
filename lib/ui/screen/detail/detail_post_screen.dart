@@ -62,6 +62,15 @@ class DetailPostScreen extends HookConsumerWidget {
           backgroundColor: Colors.white,
           automaticallyImplyLeading: !loading,
           surfaceTintColor: Colors.transparent,
+          leading: !loading
+              ? GestureDetector(
+                  onTap: () => context.pop(),
+                  child: Icon(
+                    Icons.close,
+                    size: 30,
+                  ),
+                )
+              : SizedBox.shrink(),
           title: GestureDetector(
             onTap: () => isSnowing.value = !isSnowing.value,
             child: Text('     '),

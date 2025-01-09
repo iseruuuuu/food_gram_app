@@ -71,11 +71,8 @@ class AppListView extends ConsumerWidget {
                         },
                         child: Heroine(
                           tag: 'image-${data[index]['id']}',
-                          flightShuttleBuilder: const FlipShuttleBuilder(
-                            invertFlipOnReturn: true,
-                            halfFlips: 0,
-                          ),
-                          spring: SimpleSpring.interactive,
+                          flightShuttleBuilder: FlipShuttleBuilder(),
+                          spring: SimpleSpring.bouncy,
                           child: Card(
                             elevation: 10,
                             child: ClipRRect(
