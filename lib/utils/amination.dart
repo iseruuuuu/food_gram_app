@@ -145,7 +145,7 @@ CustomTransitionPage<Object?> slideUpTransition(Widget screen) {
       ).animate(
         CurvedAnimation(
           parent: animation,
-          curve: Curves.easeInOut, // 滑らかなスライド効果
+          curve: Curves.ease,
         ),
       );
 
@@ -155,7 +155,7 @@ CustomTransitionPage<Object?> slideUpTransition(Widget screen) {
       ).animate(
         CurvedAnimation(
           parent: animation,
-          curve: Curves.easeInOut,
+          curve: Curves.ease,
         ),
       );
 
