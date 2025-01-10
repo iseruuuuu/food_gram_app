@@ -136,12 +136,12 @@ CustomTransitionPage<Object?> elasticTransition(Widget screen) {
 CustomTransitionPage<Object?> slideUpTransition(Widget screen) {
   return CustomTransitionPage<Object?>(
     child: screen,
-    transitionDuration: const Duration(milliseconds: 400), // 遷移速度を調整
-    reverseTransitionDuration: const Duration(milliseconds: 400), // 閉じるときの速度
+    transitionDuration: const Duration(milliseconds: 400),
+    reverseTransitionDuration: const Duration(milliseconds: 400),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       final slideAnimation = Tween<Offset>(
-        begin: const Offset(0, 1), // 下から上へ
-        end: Offset.zero, // 画面の中央に到達
+        begin: const Offset(0, 1),
+        end: Offset.zero,
       ).animate(
         CurvedAnimation(
           parent: animation,
