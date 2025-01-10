@@ -7,6 +7,7 @@ import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
 import 'package:food_gram_app/ui/screen/time_line/component/story_widget.dart';
 import 'package:go_router/go_router.dart';
+import 'package:heroine/heroine.dart';
 
 class AppListView extends ConsumerWidget {
   const AppListView({
@@ -53,7 +54,7 @@ class AppListView extends ConsumerWidget {
                         onTap: () {
                           EasyDebounce.debounce(
                             'click_detail',
-                            const Duration(milliseconds: 300),
+                            const Duration(milliseconds: 200),
                             () async {
                               final post = await ref
                                   .read(postsServiceProvider)
@@ -68,17 +69,22 @@ class AppListView extends ConsumerWidget {
                             },
                           );
                         },
-                        child: Card(
-                          elevation: 10,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: CachedNetworkImage(
-                              imageUrl: foodImageUrl,
-                              fit: BoxFit.cover,
-                              width: screenWidth,
-                              height: screenWidth,
-                              placeholder: (context, url) => Container(
-                                color: Colors.white,
+                        child: Heroine(
+                          tag: 'image-${data[index]['id']}',
+                          flightShuttleBuilder: FlipShuttleBuilder(),
+                          spring: SimpleSpring.bouncy,
+                          child: Card(
+                            elevation: 10,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                imageUrl: foodImageUrl,
+                                fit: BoxFit.cover,
+                                width: screenWidth,
+                                height: screenWidth,
+                                placeholder: (context, url) => Container(
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),

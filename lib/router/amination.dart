@@ -132,3 +132,80 @@ CustomTransitionPage<Object?> elasticTransition(Widget screen) {
     },
   );
 }
+
+CustomTransitionPage<Object?> slideUpTransition(Widget screen) {
+  return CustomTransitionPage<Object?>(
+    child: screen,
+    transitionDuration: const Duration(milliseconds: 400),
+    reverseTransitionDuration: const Duration(milliseconds: 400),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      final slideAnimation = Tween<Offset>(
+        begin: const Offset(0, 1),
+        end: Offset.zero,
+      ).animate(
+        CurvedAnimation(
+          parent: animation,
+          curve: Curves.ease,
+        ),
+      );
+
+      final fadeAnimation = Tween<double>(
+        begin: 0,
+        end: 1,
+      ).animate(
+        CurvedAnimation(
+          parent: animation,
+          curve: Curves.ease,
+        ),
+      );
+
+      return SlideTransition(
+        position: slideAnimation,
+        child: FadeTransition(
+          opacity: fadeAnimation,
+          child: child,
+        ),
+      );
+    },
+  );
+}
+
+CustomTransitionPage<Object?> zoomTransition(Widget screen) {
+  return CustomTransitionPage<Object?>(
+    child: screen,
+    transitionDuration: const Duration(milliseconds: 400),
+    reverseTransitionDuration: const Duration(milliseconds: 400),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      final scaleAnimation = Tween<double>(
+        begin: 0.8,
+        end: 1,
+      ).animate(
+        CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutExpo,
+        ),
+      );
+
+      final fadeAnimation = Tween<double>(
+        begin: 0,
+        end: 1,
+      ).animate(
+        CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeInOut,
+        ),
+      );
+
+      return FadeTransition(
+        opacity: fadeAnimation,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: ScaleTransition(
+            scale: scaleAnimation,
+            child: child,
+          ),
+        ),
+      );
+    },
+  );
+}
