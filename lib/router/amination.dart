@@ -178,7 +178,7 @@ CustomTransitionPage<Object?> zoomTransition(Widget screen) {
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       final scaleAnimation = Tween<double>(
         begin: 0.8,
-        end: 1.0,
+        end: 1,
       ).animate(
         CurvedAnimation(
           parent: animation,

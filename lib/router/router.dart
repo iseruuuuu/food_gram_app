@@ -3,6 +3,7 @@ import 'package:food_gram_app/core/config/shared_preference/shared_preference.da
 import 'package:food_gram_app/core/data/supabase/auth/auth_state.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/router/amination.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_screen.dart';
 import 'package:food_gram_app/ui/screen/map/map_screen.dart';
 import 'package:food_gram_app/ui/screen/post/restaurant_screen.dart';
@@ -10,7 +11,6 @@ import 'package:food_gram_app/ui/screen/screen.dart';
 import 'package:food_gram_app/ui/screen/setting/component/paywall_screen.dart';
 import 'package:food_gram_app/ui/screen/splash/tutorial_screen.dart';
 import 'package:food_gram_app/ui/screen/time_line/component/story_page.dart';
-import 'package:food_gram_app/utils/amination.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
