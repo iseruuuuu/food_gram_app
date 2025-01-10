@@ -122,9 +122,11 @@ final timeLineRouter = GoRoute(
     GoRoute(
       path: '${RouterPath.timeLine}/${RouterPath.storyPage}',
       name: RouterPath.storyPage,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final model = state.extra! as Model;
-        return StoryPage(posts: model.posts, users: model.users);
+        return zoomTransition(
+          StoryPage(posts: model.posts, users: model.users),
+        );
       },
     ),
     GoRoute(

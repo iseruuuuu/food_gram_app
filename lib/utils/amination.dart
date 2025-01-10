@@ -169,3 +169,43 @@ CustomTransitionPage<Object?> slideUpTransition(Widget screen) {
     },
   );
 }
+
+CustomTransitionPage<Object?> zoomTransition(Widget screen) {
+  return CustomTransitionPage<Object?>(
+    child: screen,
+    transitionDuration: const Duration(milliseconds: 400),
+    reverseTransitionDuration: const Duration(milliseconds: 400),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      final scaleAnimation = Tween<double>(
+        begin: 0.8,
+        end: 1.0,
+      ).animate(
+        CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutExpo,
+        ),
+      );
+
+      final fadeAnimation = Tween<double>(
+        begin: 0,
+        end: 1,
+      ).animate(
+        CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeInOut,
+        ),
+      );
+
+      return FadeTransition(
+        opacity: fadeAnimation,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: ScaleTransition(
+            scale: scaleAnimation,
+            child: child,
+          ),
+        ),
+      );
+    },
+  );
+}
