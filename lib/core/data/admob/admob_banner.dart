@@ -54,7 +54,10 @@ class AdmobBanner extends ConsumerWidget {
         return SizedBox.shrink();
       },
       loading: () {
-        return SizedBox.shrink();
+        return SizedBox(
+          width: double.infinity,
+          height: bannerAd.size.height.toDouble(),
+        );
       },
     );
   }
