@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -15,6 +17,15 @@ class AppSearchTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      contextMenuBuilder: (context, state) {
+        if (SystemContextMenu.isSupported(context)) {
+          return SystemContextMenu.editableText(editableTextState: state);
+        }
+        return AdaptiveTextSelectionToolbar.editableText(
+          editableTextState: state,
+        );
+      },
+      selectionHeightStyle: BoxHeightStyle.strut,
       decoration: InputDecoration(
         prefixIcon: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -67,6 +78,17 @@ class AppFoodTextField extends StatelessWidget {
             child: Semantics(
               label: 'postFoodField',
               child: TextField(
+                contextMenuBuilder: (context, state) {
+                  if (SystemContextMenu.isSupported(context)) {
+                    return SystemContextMenu.editableText(
+                      editableTextState: state,
+                    );
+                  }
+                  return AdaptiveTextSelectionToolbar.editableText(
+                    editableTextState: state,
+                  );
+                },
+                selectionHeightStyle: BoxHeightStyle.strut,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black87),
@@ -114,6 +136,15 @@ class AppCommentTextField extends StatelessWidget {
       child: Semantics(
         label: 'postCommentField',
         child: TextField(
+          contextMenuBuilder: (context, state) {
+            if (SystemContextMenu.isSupported(context)) {
+              return SystemContextMenu.editableText(editableTextState: state);
+            }
+            return AdaptiveTextSelectionToolbar.editableText(
+              editableTextState: state,
+            );
+          },
+          selectionHeightStyle: BoxHeightStyle.strut,
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.always,
             enabledBorder: OutlineInputBorder(
@@ -154,6 +185,15 @@ class AppAuthTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
       child: TextFormField(
+        contextMenuBuilder: (context, state) {
+          if (SystemContextMenu.isSupported(context)) {
+            return SystemContextMenu.editableText(editableTextState: state);
+          }
+          return AdaptiveTextSelectionToolbar.editableText(
+            editableTextState: state,
+          );
+        },
+        selectionHeightStyle: BoxHeightStyle.strut,
         onTap: ScaffoldMessenger.of(context).hideCurrentSnackBar,
         autovalidateMode: AutovalidateMode.always,
         validator: (value) => value!.isValidEmail() || value.isEmpty
@@ -204,6 +244,17 @@ class AppNameTextField extends StatelessWidget {
             child: Semantics(
               label: 'nameField',
               child: TextField(
+                contextMenuBuilder: (context, state) {
+                  if (SystemContextMenu.isSupported(context)) {
+                    return SystemContextMenu.editableText(
+                      editableTextState: state,
+                    );
+                  }
+                  return AdaptiveTextSelectionToolbar.editableText(
+                    editableTextState: state,
+                  );
+                },
+                selectionHeightStyle: BoxHeightStyle.strut,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: L10n.of(context).userName,
@@ -248,6 +299,17 @@ class AppSelfIntroductionTextField extends StatelessWidget {
             child: Semantics(
               label: 'selfIntroductionField',
               child: TextField(
+                contextMenuBuilder: (context, state) {
+                  if (SystemContextMenu.isSupported(context)) {
+                    return SystemContextMenu.editableText(
+                      editableTextState: state,
+                    );
+                  }
+                  return AdaptiveTextSelectionToolbar.editableText(
+                    editableTextState: state,
+                  );
+                },
+                selectionHeightStyle: BoxHeightStyle.strut,
                 decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   border: InputBorder.none,
@@ -293,6 +355,17 @@ class AppUserNameTextField extends StatelessWidget {
             child: Semantics(
               label: 'userNameField',
               child: TextField(
+                contextMenuBuilder: (context, state) {
+                  if (SystemContextMenu.isSupported(context)) {
+                    return SystemContextMenu.editableText(
+                      editableTextState: state,
+                    );
+                  }
+                  return AdaptiveTextSelectionToolbar.editableText(
+                    editableTextState: state,
+                  );
+                },
+                selectionHeightStyle: BoxHeightStyle.strut,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: L10n.of(context).userId,
