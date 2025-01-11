@@ -47,6 +47,7 @@ class MapScreen extends HookConsumerWidget {
                         isTapPin.value = true;
                         post.value = posts;
                       },
+                      context: context,
                     );
                 },
                 onMapClick: (_, __) {

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/data/supabase/service/posts_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
@@ -17,11 +18,13 @@ class MapLibreController extends _$MapLibreController {
 
   Future<void> setPin({
     required void Function(List<Posts> post) openDialog,
+    required BuildContext context,
   }) async {
     final bytes = await rootBundle.load(Assets.image.pin.path);
     final list = bytes.buffer.asUint8List();
     await controller.addImage('pin', list);
     final symbols = <SymbolOptions>[];
+    final iconSize = _calculateIconSize(context);
     ref.read(mapServiceProvider).whenOrNull(
       data: (value) {
         for (var i = 0; i < value.length; i++) {
@@ -29,7 +32,7 @@ class MapLibreController extends _$MapLibreController {
             SymbolOptions(
               geometry: LatLng(value[i].lat, value[i].lng),
               iconImage: 'pin',
-              iconSize: 0.6,
+              iconSize: iconSize,
             ),
           );
         }
@@ -64,5 +67,16 @@ class MapLibreController extends _$MapLibreController {
         );
       },
     );
+  }
+}
+
+double _calculateIconSize(BuildContext context) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  if (screenWidth <= 375) {
+    return 0.4;
+  } else if (screenWidth < 720) {
+    return 0.6;
+  } else {
+    return 0.8;
   }
 }
