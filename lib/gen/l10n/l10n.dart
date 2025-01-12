@@ -1,4 +1,4 @@
-// ignore_for_file: type=lint
+// ignore_for_file
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';

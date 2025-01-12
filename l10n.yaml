@@ -7,5 +7,5 @@ synthetic-package: false
 preferred-supported-locales:
   - ja
   - en
-header: '// ignore_for_file: type=lint'
+header: '// ignore_for_file'
 nullable-getter: false
