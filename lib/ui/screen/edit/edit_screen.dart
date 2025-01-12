@@ -28,7 +28,7 @@ class EditScreen extends HookConsumerWidget {
     final isSubscribed =
         subscriptionState.whenOrNull(data: (isSubscribed) => isSubscribed) ??
             false;
-    final adInterstitial = ref.watch(admobInterstitialProvider);
+    final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
     useEffect(
       () {
         adInterstitial.createAd();
