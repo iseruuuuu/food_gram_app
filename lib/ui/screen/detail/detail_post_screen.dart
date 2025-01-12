@@ -48,9 +48,12 @@ class DetailPostScreen extends HookConsumerWidget {
       () => GifController(vsync: tickerProvider),
       [tickerProvider],
     );
-    useEffect(() {
-      return gifController.dispose;
-    }, [gifController]);
+    useEffect(
+      () {
+        return gifController.dispose;
+      },
+      [gifController],
+    );
     final deviceWidth = MediaQuery.of(context).size.width;
     final user = supabase.auth.currentUser?.id;
     final loading = ref.watch(loadingProvider);
@@ -256,7 +259,8 @@ class DetailPostScreen extends HookConsumerWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Text(
-                            '${initialHeart.value} ${L10n.of(context).postDetailLikeButton}',
+                            '${initialHeart.value} '
+                            '${L10n.of(context).postDetailLikeButton}',
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,

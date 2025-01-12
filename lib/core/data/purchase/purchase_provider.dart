@@ -23,7 +23,7 @@ class Purchase extends _$Purchase {
     try {
       late PurchasesConfiguration configuration;
       if (Platform.isAndroid) {
-        // TODO Android用のRevenuecat APIキーを入れる必要がありそう
+        // TODOAndroid用のRevenuecat APIキーを入れる必要がありそう
         configuration = PurchasesConfiguration('');
       } else if (Platform.isIOS) {
         configuration = PurchasesConfiguration(Env.iOSPurchaseKey);

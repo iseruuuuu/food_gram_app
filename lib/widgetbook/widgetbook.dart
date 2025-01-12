@@ -50,9 +50,7 @@ class WidgetbookApp extends StatelessWidget {
           ],
           initialDevice: Devices.ios.iPhone13,
         ),
-        TextScaleAddon(
-          scales: <double>[1, 2],
-        ),
+        TextScaleAddon(),
         LocalizationAddon(
           locales: L10n.supportedLocales,
           localizationsDelegates: L10n.localizationsDelegates,

@@ -147,11 +147,11 @@ class AppHeader extends ConsumerWidget {
 
 class AnimatedGradientBackground extends StatefulWidget {
   @override
-  _AnimatedGradientBackgroundState createState() =>
-      _AnimatedGradientBackgroundState();
+  AnimatedGradientBackgroundState createState() =>
+      AnimatedGradientBackgroundState();
 }
 
-class _AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
+class AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 

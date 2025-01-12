@@ -100,7 +100,7 @@ class EditViewModel extends _$EditViewModel {
         isSelectedIcon: false,
       );
       return true;
-    } on PlatformException catch (error) {
+    } on PlatformException {
       return false;
     }
   }

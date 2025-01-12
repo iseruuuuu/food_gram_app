@@ -35,7 +35,9 @@ class AdmobInterstitial {
   bool get isAdReady => _isAdReady;
 
   void createAd() {
-    if (_isAdReady || _loadAttempts >= 2) return;
+    if (_isAdReady || _loadAttempts >= 2) {
+      return;
+    }
 
     InterstitialAd.load(
       adUnitId: getAdmobInterstitialId(),
@@ -116,9 +118,7 @@ class AdmobInterstitialNotifier extends _$AdmobInterstitialNotifier {
     return _admobInterstitial!;
   }
 
-  @override
   void dispose() {
     _admobInterstitial?.dispose();
-    // super.dispose();
   }
 }
