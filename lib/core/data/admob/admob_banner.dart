@@ -21,16 +21,34 @@ String getAdmobBannerId() {
   throw UnsupportedError('Unsupported platform');
 }
 
-// BannerAd を管理する Provider
-final bannerAdProvider = Provider<BannerAd>((ref) {
-  final bannerId = getAdmobBannerId();
-  return BannerAd(
-    adUnitId: bannerId,
-    size: AdSize.banner,
-    request: const AdRequest(),
-    listener: const BannerAdListener(),
-  )..load();
+// BannerAd を管理する StateNotifierProvider
+final bannerAdProvider =
+    StateNotifierProvider<BannerAdNotifier, BannerAd?>((ref) {
+  return BannerAdNotifier();
 });
+
+class BannerAdNotifier extends StateNotifier<BannerAd?> {
+  BannerAdNotifier() : super(null) {
+    _loadAd();
+  }
+
+  void _loadAd() {
+    final bannerId = getAdmobBannerId();
+    final bannerAd = BannerAd(
+      adUnitId: bannerId,
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: const BannerAdListener(),
+    )..load();
+    state = bannerAd;
+  }
+
+  @override
+  void dispose() {
+    state?.dispose();
+    super.dispose();
+  }
+}
 
 class AdmobBanner extends ConsumerWidget {
   const AdmobBanner({super.key});
@@ -41,22 +59,22 @@ class AdmobBanner extends ConsumerWidget {
     final subscriptionState = ref.watch(subscriptionProvider);
     return subscriptionState.when(
       data: (isSubscribed) {
-        return !isSubscribed
+        return !isSubscribed && bannerAd != null
             ? Container(
                 width: double.infinity,
                 alignment: Alignment.center,
                 height: bannerAd.size.height.toDouble(),
                 child: AdWidget(ad: bannerAd),
               )
-            : SizedBox.shrink();
+            : const SizedBox.shrink();
       },
       error: (_, __) {
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
       },
       loading: () {
         return SizedBox(
           width: double.infinity,
-          height: bannerAd.size.height.toDouble(),
+          height: bannerAd?.size.height.toDouble() ?? 50.0,
         );
       },
     );
