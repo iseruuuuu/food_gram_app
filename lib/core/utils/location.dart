@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -5,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'location.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<LatLng> location(LocationRef ref) async {
+Future<LatLng> location(Ref ref) async {
   return getLocation();
 }
 

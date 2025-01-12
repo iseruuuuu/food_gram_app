@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/data/supabase/block_list.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -5,21 +6,21 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'post_stream.g.dart';
 
 @riverpod
-Stream<List<Map<String, dynamic>>> postStream(PostStreamRef ref) {
+Stream<List<Map<String, dynamic>>> postStream(Ref ref) {
   final blockList = ref.watch(blockListProvider).asData?.value ?? [];
   return _filteredPostStream(null, blockList);
 }
 
 @riverpod
 Stream<List<Map<String, dynamic>>> postHomeMadeStream(
-  PostHomeMadeStreamRef ref,
+  Ref ref,
 ) {
   final blockList = ref.watch(blockListProvider).asData?.value ?? [];
   return _filteredPostStream('自炊', blockList);
 }
 
 @riverpod
-Stream<List<Map<String, dynamic>>> myPostStream(PostStreamRef ref) {
+Stream<List<Map<String, dynamic>>> myPostStream(Ref ref) {
   final user = supabase.auth.currentUser?.id;
   if (user == null) {
     return const Stream.empty();

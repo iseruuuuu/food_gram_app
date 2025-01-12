@@ -2,6 +2,7 @@ import 'dart:core';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/data/api/restaurant_search/google_restaurant_api.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/utils/location.dart';
@@ -13,7 +14,7 @@ typedef PaginationList<T> = List<T>;
 
 @riverpod
 Future<PaginationList<Restaurant>> restaurantApi(
-  RestaurantApiRef ref,
+  Ref ref,
   String keyword,
 ) async {
   final currentLocationFuture = ref.read(locationProvider.future);
