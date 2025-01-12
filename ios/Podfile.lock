@@ -85,12 +85,12 @@ PODS:
     - Flutter
     - FlutterMacOS
   - PromisesObjC (2.4.0)
-  - purchases_flutter (8.3.1):
+  - purchases_flutter (8.4.0):
     - Flutter
-    - PurchasesHybridCommon (= 13.12.1)
-  - PurchasesHybridCommon (13.12.1):
-    - RevenueCat (= 5.12.1)
-  - RevenueCat (5.12.1)
+    - PurchasesHybridCommon (= 13.13.0)
+  - PurchasesHybridCommon (13.13.0):
+    - RevenueCat (= 5.14.0)
+  - RevenueCat (5.14.0)
   - share_plus (0.0.1):
     - Flutter
   - shared_preferences_foundation (0.0.1):
@@ -218,7 +218,7 @@ SPEC CHECKSUMS:
   FirebaseCore: 7ec4d0484817f12c3373955bc87762d96842d483
   FirebaseCoreInternal: df84dd300b561c27d5571684f389bf60b0a5c934
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_native_splash: 576fbd69b830a63594ae678396fa17e43abbc5f8
+  flutter_native_splash: 6cad9122ea0fad137d23137dd14b937f3e90b145
   geocoding_ios: bcbdaa6bddd7d3129c9bcb8acddc5d8778689768
   geolocator_apple: 1560c3c875af2a412242c7a923e15d0d401966ff
   Google-Mobile-Ads-SDK: 13e6e98edfd78ad8d8a791edb927658cc260a56f
@@ -238,9 +238,9 @@ SPEC CHECKSUMS:
   package_info_plus: 566e1b7a2f3900e4b0020914ad3fc051dcc95596
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
-  purchases_flutter: 38f4da1791882895e16d793ec44d98e6513fc5fc
-  PurchasesHybridCommon: 6c07c9abb12b96413ee583c017957f52f5f4ceaa
-  RevenueCat: c6a6faaaab1ca8903416b36a51470cca0ea6b5b5
+  purchases_flutter: 7fa39c345afbb5a33f6c9c13676bc6d6de96ca2a
+  PurchasesHybridCommon: a712dcce0d81fa39dada521292408816146ca58c
+  RevenueCat: 34f4147c8d26d2f3c691be4e3c9f033698e557f2
   share_plus: de6030e33b4e106470e09322d87cf2a4258d2d1d
   shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
   sign_in_with_apple: c5dcc141574c8c54d5ac99dd2163c0c72ad22418
