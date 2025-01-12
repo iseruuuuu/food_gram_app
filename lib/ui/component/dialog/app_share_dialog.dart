@@ -32,7 +32,7 @@ class AppShareDialog extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
     final loading = useState(false);
-    final adInterstitial = ref.watch(admobInterstitialProvider);
+    final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
     useEffect(
       () {
         adInterstitial.createAd();
