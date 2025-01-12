@@ -33,8 +33,8 @@ class MyProfileScreen extends ConsumerWidget {
           asyncValue: AsyncValueGroup.group2(state, isSubscription),
           onErrorTap: () {
             ref
-              ..refresh(myPostStreamProvider)
-              ..refresh(subscriptionProvider);
+              ..invalidate(myPostStreamProvider)
+              ..invalidate(subscriptionProvider);
             ref.read(myProfileViewModelProvider().notifier).getData();
           },
           onData: (value) {
