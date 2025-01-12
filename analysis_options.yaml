@@ -34,3 +34,5 @@ linter:
     diagnostic_describe_all_properties: false
 
     avoid_classes_with_only_static_members: false
+
+    require_trailing_commas: true
