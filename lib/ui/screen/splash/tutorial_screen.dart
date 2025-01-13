@@ -98,90 +98,88 @@ class _TutorialScreenState extends State<TutorialScreen> {
                   Spacer(),
                 ],
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Spacer(),
-                  Gap(30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Gap(10),
-                      Assets.gif.tutorial1.image(width: 60),
-                      Text(
-                        l10n.tutorialThirdPageTitle,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Gap(30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Gap(10),
+                        Assets.gif.tutorial1.image(width: 60),
+                        Text(
+                          l10n.tutorialThirdPageTitle,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      Assets.gif.tutorial1.image(width: 60),
-                      Gap(10),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      l10n.tutorialThirdPageSubTitle,
-                      style: TextStyle(fontSize: 14),
+                        Assets.gif.tutorial1.image(width: 60),
+                        Gap(10),
+                      ],
                     ),
-                  ),
-                  Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        l10n.tutorialThirdPageButton,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                      Gap(10),
-                      Checkbox(
-                        checkColor: Colors.white,
-                        activeColor: Colors.black,
-                        value: isAccept,
-                        onChanged: (value) {
-                          setState(() {
-                            isAccept = value ?? false;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Spacer(),
-                  SizedBox(
-                    width: 200,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: isAccept
-                          ? () async {
-                              if (!isFinishedTutorial) {
-                                await preference
-                                    .setBool(PreferenceKey.isFinishedTutorial);
-                                context.go(RouterPath.splash);
-                              } else {
-                                context.pop();
-                              }
-                            }
-                          : null,
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: Text(
-                        l10n.tutorialThirdPageClose,
-                        style: TextStyle(
-                          color: Colors.white,
+                        l10n.tutorialThirdPageSubTitle,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          l10n.tutorialThirdPageButton,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        Gap(10),
+                        Checkbox(
+                          checkColor: Colors.white,
+                          activeColor: Colors.black,
+                          value: isAccept,
+                          onChanged: (value) {
+                            setState(() {
+                              isAccept = value ?? false;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: 200,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: isAccept
+                            ? () async {
+                                if (!isFinishedTutorial) {
+                                  await preference.setBool(
+                                      PreferenceKey.isFinishedTutorial);
+                                  context.go(RouterPath.splash);
+                                } else {
+                                  context.pop();
+                                }
+                              }
+                            : null,
+                        child: Text(
+                          l10n.tutorialThirdPageClose,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Spacer(),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
