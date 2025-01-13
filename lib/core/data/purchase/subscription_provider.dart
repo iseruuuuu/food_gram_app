@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/data/purchase/purchase_provider.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -8,7 +9,7 @@ part 'subscription_provider.g.dart';
 
 @riverpod
 Future<bool> subscription(
-  SubscriptionRef ref,
+  Ref ref,
 ) async {
   try {
     await ref.read(purchaseProvider.notifier).initInAppPurchase();

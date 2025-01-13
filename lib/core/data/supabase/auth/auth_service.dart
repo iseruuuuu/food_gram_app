@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/main.dart';
@@ -12,7 +13,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 part 'auth_service.g.dart';
 
 @riverpod
-AuthService authService(AuthServiceRef ref) => AuthService();
+AuthService authService(Ref ref) => AuthService();
 
 class AuthService {
   AuthService();

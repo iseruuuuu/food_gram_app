@@ -93,7 +93,7 @@ class RestaurantScreen extends HookConsumerWidget {
               child: AsyncValueSwitcher(
                 asyncValue: restaurant,
                 onErrorTap: () {
-                  ref.refresh(restaurantApiProvider(keyword.value));
+                  ref.invalidate(restaurantApiProvider(keyword.value));
                 },
                 onData: (value) {
                   return value.isNotEmpty

@@ -32,13 +32,13 @@ class AppHeader extends ConsumerWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: Colors.black.withValues(alpha: 0.2),
               offset: Offset(0, -4),
               blurRadius: 6,
               spreadRadius: 1,
             ),
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: Colors.black.withValues(alpha: 0.2),
               offset: Offset(0, 4),
               blurRadius: 6,
               spreadRadius: 1,
@@ -147,11 +147,11 @@ class AppHeader extends ConsumerWidget {
 
 class AnimatedGradientBackground extends StatefulWidget {
   @override
-  _AnimatedGradientBackgroundState createState() =>
-      _AnimatedGradientBackgroundState();
+  AnimatedGradientBackgroundState createState() =>
+      AnimatedGradientBackgroundState();
 }
 
-class _AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
+class AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
@@ -179,9 +179,9 @@ class _AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
           shaderCallback: (rect) {
             return LinearGradient(
               colors: [
-                Colors.white.withOpacity(0.6),
-                Colors.grey.withOpacity(0.4),
-                Colors.blueGrey.withOpacity(0.4),
+                Colors.white.withValues(alpha: 0.6),
+                Colors.grey.withValues(alpha: 0.4),
+                Colors.blueGrey.withValues(alpha: 0.4),
               ],
               stops: [
                 0.3,

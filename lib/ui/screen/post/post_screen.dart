@@ -24,7 +24,7 @@ class PostScreen extends HookConsumerWidget {
   });
 
   final String routerPath;
-  Restaurant? restaurant;
+  final Restaurant? restaurant;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

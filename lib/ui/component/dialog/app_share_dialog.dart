@@ -41,7 +41,7 @@ class AppShareDialog extends HookConsumerWidget {
       [],
     );
     return Scaffold(
-      backgroundColor: Colors.black.withOpacity(0.8),
+      backgroundColor: Colors.black.withValues(alpha: 0.8),
       body: Stack(
         children: [
           SingleChildScrollView(

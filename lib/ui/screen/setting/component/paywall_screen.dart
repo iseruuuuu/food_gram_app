@@ -36,7 +36,7 @@ class PaywallScreen extends ConsumerWidget {
             child: BackdropFilter(
               filter: ImageFilter.blur(),
               child: Container(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withValues(alpha: 0.3),
               ),
             ),
           ),
@@ -65,13 +65,13 @@ class PaywallScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withValues(alpha: 0.2),
                             offset: Offset(0, -4),
                             blurRadius: 6,
                             spreadRadius: 1,
                           ),
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withValues(alpha: 0.2),
                             offset: Offset(0, 4),
                             blurRadius: 6,
                             spreadRadius: 1,

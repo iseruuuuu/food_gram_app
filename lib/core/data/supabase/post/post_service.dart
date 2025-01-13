@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -8,7 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 part 'post_service.g.dart';
 
 @riverpod
-PostService postService(PostServiceRef ref) => PostService();
+PostService postService(Ref ref) => PostService();
 
 class PostService {
   PostService();

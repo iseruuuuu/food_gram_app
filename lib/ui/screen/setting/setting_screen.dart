@@ -91,7 +91,9 @@ class SettingScreen extends HookConsumerWidget {
                                   'https://apps.apple.com/hu/app/foodgram/id6474065183',
                                 );
                               } else {
-                                // TODO: Androidは後の実装予定
+                                shareNormal(
+                                  'https://play.google.com/store/apps/details?id=com.food_gram_app.com.com.com',
+                                );
                               }
                             },
                           ),
@@ -283,7 +285,7 @@ class SettingScreen extends HookConsumerWidget {
                                         context
                                             .pushNamed(RouterPath.paywallPage)
                                             .then((_) {
-                                          ref.refresh(subscriptionProvider);
+                                          ref.invalidate(subscriptionProvider);
                                         });
                                       },
                                     ),

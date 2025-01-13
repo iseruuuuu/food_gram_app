@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/data/supabase/block_list.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
@@ -8,7 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'posts_service.g.dart';
 
 @riverpod
-PostsService postsService(PostsServiceRef ref) => PostsService();
+PostsService postsService(Ref ref) => PostsService();
 
 class PostsService {
   PostsService();
@@ -62,7 +63,7 @@ class PostsService {
 }
 
 @riverpod
-Future<List<Posts>> mapService(MapServiceRef ref) async {
+Future<List<Posts>> mapService(Ref ref) async {
   final blockList = ref.watch(blockListProvider).asData?.value ?? [];
   final response = await supabase.from('posts').select().order('created_at');
   final data = response;
@@ -75,7 +76,7 @@ Future<List<Posts>> mapService(MapServiceRef ref) async {
 
 @riverpod
 Future<List<Posts>> getRestaurant(
-  GetRestaurantRef ref, {
+  Ref ref, {
   required double lat,
   required double lng,
 }) async {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/config/shared_preference/shared_preference.dart';
 import 'package:food_gram_app/core/data/supabase/auth/auth_state.dart';
 import 'package:food_gram_app/core/model/model.dart';
@@ -18,7 +19,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'router.g.dart';
 
 @riverpod
-GoRouter router(RouterRef ref) {
+GoRouter router(Ref ref) {
   final authState = ref.watch(authStateProvider);
   return GoRouter(
     observers: [HeroineController()],

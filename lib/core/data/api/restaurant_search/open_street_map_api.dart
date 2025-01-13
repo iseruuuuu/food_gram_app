@@ -2,6 +2,7 @@ import 'dart:core';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/data/api/dio.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/utils/location.dart';
@@ -16,7 +17,7 @@ typedef PaginationList<T> = List<T>;
 /// nominatim.openstreetmap.org
 @riverpod
 Future<PaginationList<Restaurant>> openStreetMapApi(
-  OpenStreetMapApiRef ref,
+  Ref ref,
   String keyword,
 ) async {
   final currentLocationFuture = ref.read(locationProvider.future);
@@ -55,7 +56,7 @@ Future<PaginationList<Restaurant>> openStreetMapApi(
 }
 
 Future<List<Restaurant>> search(
-  OpenStreetMapApiRef ref,
+  Ref ref,
   String keyword,
 ) async {
   final dio = ref.watch(dioProvider);
@@ -100,8 +101,6 @@ Future<List<Restaurant>> search(
     }
   } on DioException catch (e) {
     print('DioException occurred: ${e.message}');
-  } catch (e) {
-    print('Unexpected error: $e');
   }
   return restaurants;
 }
@@ -122,20 +121,3 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
 }
 
 double _degToRad(double deg) => deg * (pi / 180);
-
-// void main() async {
-//   final dio = Dio();
-//   final api = OpenStreetMapApi(dio);
-//
-//   // 検索クエリを指定
-//   final query = 'ガスト';
-//   final results = await api.searchPlaces(query);
-//
-//   for (var result in results) {
-//     print('Name: ${result.displayName}');
-//     print('Lat: ${result.lat}');
-//     print('Lon: ${result.lon}');
-//     print('Address: ${result.address}');
-//     print('---');
-//   }
-// }
