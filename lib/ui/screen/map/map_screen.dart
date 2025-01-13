@@ -31,8 +31,8 @@ class MapScreen extends HookConsumerWidget {
         asyncValue: AsyncValueGroup.group2(location, mapService),
         onErrorTap: () {
           ref
-            ..refresh(locationProvider)
-            ..refresh(mapServiceProvider);
+            ..invalidate(locationProvider)
+            ..invalidate(mapServiceProvider);
         },
         onData: (value) {
           return Stack(

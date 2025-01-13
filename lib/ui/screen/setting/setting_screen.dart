@@ -285,7 +285,7 @@ class SettingScreen extends HookConsumerWidget {
                                         context
                                             .pushNamed(RouterPath.paywallPage)
                                             .then((_) {
-                                          ref.refresh(subscriptionProvider);
+                                          ref.invalidate(subscriptionProvider);
                                         });
                                       },
                                     ),
