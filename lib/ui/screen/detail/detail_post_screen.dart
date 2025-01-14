@@ -281,7 +281,7 @@ class DetailPostScreen extends HookConsumerWidget {
                     Gap(6),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Container(
+                      child: SizedBox(
                         height: 40,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
