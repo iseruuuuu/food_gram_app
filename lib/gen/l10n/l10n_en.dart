@@ -397,4 +397,13 @@ class L10nEn extends L10n {
 
   @override
   String get authSocketException => 'There is a problem with the network. Please check the connection.';
+
+  @override
+  String get detailMenuShare => 'Share';
+
+  @override
+  String get detailMenuVisit => 'Visit';
+
+  @override
+  String get detailMenuPost => 'Post';
 }

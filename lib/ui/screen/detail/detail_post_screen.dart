@@ -64,6 +64,7 @@ class DetailPostScreen extends HookConsumerWidget {
     final user = supabase.auth.currentUser?.id;
     final loading = ref.watch(loadingProvider);
     final menuLoading = useState(false);
+    final l10n = L10n.of(context);
     return PopScope(
       canPop: !loading,
       child: Scaffold(
@@ -301,6 +302,7 @@ class DetailPostScreen extends HookConsumerWidget {
                                   },
                                 );
                               },
+                              title: l10n.detailMenuShare,
                               icon: Icons.share,
                             ),
                             AppDetailElevatedButton(
@@ -316,6 +318,7 @@ class DetailPostScreen extends HookConsumerWidget {
                                   },
                                 );
                               },
+                              title: l10n.detailMenuVisit,
                               icon: Icons.directions_walk,
                             ),
                             AppDetailElevatedButton(
@@ -338,6 +341,7 @@ class DetailPostScreen extends HookConsumerWidget {
                                   }
                                 });
                               },
+                              title: l10n.detailMenuPost,
                               icon: Icons.restaurant,
                             ),
                           ],

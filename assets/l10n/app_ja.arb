@@ -129,5 +129,8 @@
   "settingRestoreFailureSubtitle": "購入履歴がない場合はサポートにご連絡を",
   "settingRestore": "購入を復元",
   "authInvalidFormat": "メールアドレスのフォーマットが間違っています",
-  "authSocketException": "ネットワークに問題があります。接続を確認してください"
+  "authSocketException": "ネットワークに問題があります。接続を確認してください",
+  "detailMenuShare":"シェア",
+  "detailMenuVisit":"行く",
+  "detailMenuPost":"投稿"
 }
