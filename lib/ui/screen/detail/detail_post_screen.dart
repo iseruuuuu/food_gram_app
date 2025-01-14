@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/data/admob/admob_banner.dart';
+import 'package:food_gram_app/core/data/admob/admob_interstitial.dart';
 import 'package:food_gram_app/core/data/supabase/post_stream.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
@@ -12,10 +13,12 @@ import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/go_router_extension.dart';
+import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
+import 'package:food_gram_app/ui/component/app_share_widget.dart';
 import 'package:food_gram_app/ui/component/dialog/app_share_dialog.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_master_modal_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_my_info_modal_sheet.dart';
@@ -26,6 +29,7 @@ import 'package:gif/gif.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:snow_fall_animation/snow_fall_animation.dart';
 
 class DetailPostScreen extends HookConsumerWidget {
@@ -44,12 +48,14 @@ class DetailPostScreen extends HookConsumerWidget {
     final initialHeart = useState(posts.heart);
     final isSnowing = useState(false);
     final tickerProvider = useSingleTickerProvider();
+    final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
     final gifController = useMemoized(
       () => GifController(vsync: tickerProvider),
       [tickerProvider],
     );
     useEffect(
       () {
+        adInterstitial.createAd();
         return gifController.dispose;
       },
       [gifController],
@@ -57,6 +63,7 @@ class DetailPostScreen extends HookConsumerWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
     final user = supabase.auth.currentUser?.id;
     final loading = ref.watch(loadingProvider);
+    final menuLoading = useState(false);
     return PopScope(
       canPop: !loading,
       child: Scaffold(
@@ -270,6 +277,73 @@ class DetailPostScreen extends HookConsumerWidget {
                         ),
                       ],
                     ),
+                    Gap(6),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Container(
+                        height: 40,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            AppDetailElevatedButton(
+                              onPressed: () async {
+                                await adInterstitial.showAd(
+                                  onAdClosed: () async {
+                                    await captureAndShare(
+                                      widget: AppShareWidget(
+                                        posts: posts,
+                                        users: users,
+                                      ),
+                                      shareText: '${posts.foodName} '
+                                          'in ${posts.restaurant}',
+                                      loading: menuLoading,
+                                    );
+                                  },
+                                );
+                              },
+                              icon: Icons.share,
+                            ),
+                            AppDetailElevatedButton(
+                              onPressed: () async {
+                                await adInterstitial.showAd(
+                                  onAdClosed: () async {
+                                    final availableMaps =
+                                        await MapLauncher.installedMaps;
+                                    await availableMaps.first.showMarker(
+                                      coords: Coords(posts.lat, posts.lng),
+                                      title: posts.restaurant,
+                                    );
+                                  },
+                                );
+                              },
+                              icon: Icons.directions_walk,
+                            ),
+                            AppDetailElevatedButton(
+                              onPressed: () async {
+                                final currentPath =
+                                    GoRouter.of(context).isCurrentLocation();
+                                await context
+                                    .pushNamed(
+                                  currentPath,
+                                  extra: Restaurant(
+                                    name: posts.restaurant,
+                                    lat: posts.lat,
+                                    lng: posts.lng,
+                                    address: '',
+                                  ),
+                                )
+                                    .then((value) async {
+                                  if (value != null) {
+                                    ref.invalidate(postStreamProvider);
+                                  }
+                                });
+                              },
+                              icon: Icons.restaurant,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(15),
                       child: Column(
@@ -292,6 +366,14 @@ class DetailPostScreen extends HookConsumerWidget {
                             ),
                           ),
                           const Gap(10),
+                          Text(
+                            posts.comment,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                          ),
                           Wrap(
                             spacing: 10,
                             children: [
@@ -308,15 +390,6 @@ class DetailPostScreen extends HookConsumerWidget {
                                   labelStyle: const TextStyle(fontSize: 20),
                                 ),
                             ],
-                          ),
-                          const Gap(10),
-                          Text(
-                            posts.comment,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                            ),
                           ),
                         ],
                       ),
