@@ -407,7 +407,7 @@ class DetailPostScreen extends HookConsumerWidget {
                 controller: gifController,
               ),
               AppLoading(
-                loading: loading,
+                loading: menuLoading.value || loading,
                 status: 'Loading...',
               ),
             ],
