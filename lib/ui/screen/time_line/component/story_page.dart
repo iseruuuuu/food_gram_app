@@ -119,7 +119,7 @@ class StoryPage extends StatelessWidget {
                         color: Colors.white,
                         icon: Icon(Icons.close),
                         onPressed: () {
-                          Navigator.pop(context);
+                          context.pop();
                         },
                       ),
                     ),
@@ -130,7 +130,7 @@ class StoryPage extends StatelessWidget {
                   return 1;
                 },
                 onPageLimitReached: () {
-                  Navigator.pop(context);
+                  context.pop();
                 },
               ),
             ),
