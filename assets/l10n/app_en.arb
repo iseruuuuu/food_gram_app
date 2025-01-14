@@ -129,5 +129,8 @@
   "settingRestoreFailureSubtitle": "No purchase history? Contact support",
   "settingRestore": "Restore purchase",
   "authInvalidFormat": "Email address format is incorrect.",
-  "authSocketException": "There is a problem with the network. Please check the connection."
+  "authSocketException": "There is a problem with the network. Please check the connection.",
+  "detailMenuShare":"Share",
+  "detailMenuVisit":"Visit",
+  "detailMenuPost":"Post"
 }

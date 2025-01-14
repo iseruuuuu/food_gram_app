@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 class AppElevatedButton extends StatelessWidget {
   const AppElevatedButton({
@@ -31,6 +32,54 @@ class AppElevatedButton extends StatelessWidget {
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class AppDetailElevatedButton extends StatelessWidget {
+  const AppDetailElevatedButton({
+    required this.onPressed,
+    required this.title,
+    required this.icon,
+    super.key,
+  });
+
+  final VoidCallback onPressed;
+  final String title;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          backgroundColor: Color(0xFFEFEFEF),
+          foregroundColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        onPressed: onPressed,
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color: Colors.black,
+              size: 24,
+            ),
+            Gap(8),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
       ),
     );

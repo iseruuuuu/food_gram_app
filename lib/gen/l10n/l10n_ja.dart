@@ -397,4 +397,13 @@ class L10nJa extends L10n {
 
   @override
   String get authSocketException => 'ネットワークに問題があります。接続を確認してください';
+
+  @override
+  String get detailMenuShare => 'シェア';
+
+  @override
+  String get detailMenuVisit => '行く';
+
+  @override
+  String get detailMenuPost => '投稿';
 }

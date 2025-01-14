@@ -875,6 +875,24 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'ネットワークに問題があります。接続を確認してください'**
   String get authSocketException;
+
+  /// No description provided for @detailMenuShare.
+  ///
+  /// In ja, this message translates to:
+  /// **'シェア'**
+  String get detailMenuShare;
+
+  /// No description provided for @detailMenuVisit.
+  ///
+  /// In ja, this message translates to:
+  /// **'行く'**
+  String get detailMenuVisit;
+
+  /// No description provided for @detailMenuPost.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿'**
+  String get detailMenuPost;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
