@@ -1,19 +1,25 @@
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/config/app_update_checker.dart';
 import 'package:food_gram_app/core/data/admob/admob_open.dart';
 import 'package:food_gram_app/core/data/admob/app_tracking_transparency.dart';
 import 'package:food_gram_app/core/data/purchase/purchase_provider.dart';
 import 'package:food_gram_app/core/data/supabase/block_list.dart';
 import 'package:food_gram_app/core/data/supabase/post_stream.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
+import 'package:food_gram_app/utils/url_launch.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 class TimeLineScreen extends HookConsumerWidget {
   const TimeLineScreen({super.key});
@@ -22,6 +28,7 @@ class TimeLineScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final restaurant = ref.watch(postStreamProvider);
     final homeMade = ref.watch(postHomeMadeStreamProvider);
+    final l10n = L10n.of(context);
     useEffect(
       () {
         loadAppTrackingTransparency();
@@ -36,6 +43,31 @@ class TimeLineScreen extends HookConsumerWidget {
             }
           }
         });
+        ref.read(appUpdateCheckerProvider.notifier).checkForceUpdate(
+          openDialog: () {
+            QuickAlert.show(
+              disableBackBtn: true,
+              context: context,
+              type: QuickAlertType.info,
+              title: l10n.forceUpdateTitle,
+              text: l10n.forceUpdateText,
+              confirmBtnText: l10n.forceUpdateButtonTitle,
+              confirmBtnColor: Colors.black,
+              onConfirmBtnTap: () {
+                if (Platform.isIOS) {
+                  LaunchUrl().openSNSUrl(
+                    'https://apps.apple.com/hu/app/foodgram/id6474065183',
+                  );
+                } else {
+                  LaunchUrl().openSNSUrl(
+                    'https://play.google.com/store/apps/details?id=com.food_gram_app.com.com.com',
+                  );
+                }
+              },
+            );
+          },
+        );
+
         return null;
       },
       [],

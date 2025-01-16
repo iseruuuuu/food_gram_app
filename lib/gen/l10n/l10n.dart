@@ -893,6 +893,24 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'投稿'**
   String get detailMenuPost;
+
+  /// No description provided for @forceUpdateTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'アップデートのお知らせ'**
+  String get forceUpdateTitle;
+
+  /// No description provided for @forceUpdateText.
+  ///
+  /// In ja, this message translates to:
+  /// **'このアプリの新しいバージョンがリリースされました。最新の機能や安全な環境でご利用いただくために、アプリをアップデートしてください。'**
+  String get forceUpdateText;
+
+  /// No description provided for @forceUpdateButtonTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'アップデート'**
+  String get forceUpdateButtonTitle;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
