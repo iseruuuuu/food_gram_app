@@ -49,7 +49,6 @@ class TimeLineScreen extends HookConsumerWidget {
               disableBackBtn: true,
               context: context,
               type: QuickAlertType.info,
-              //TODO 多言語化をする
               title: l10n.forceUpdateTitle,
               text: l10n.forceUpdateText,
               confirmBtnText: l10n.forceUpdateButtonTitle,
