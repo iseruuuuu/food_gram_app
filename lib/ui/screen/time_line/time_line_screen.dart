@@ -10,6 +10,7 @@ import 'package:food_gram_app/core/data/purchase/purchase_provider.dart';
 import 'package:food_gram_app/core/data/supabase/block_list.dart';
 import 'package:food_gram_app/core/data/supabase/post_stream.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/app_floating_button.dart';
@@ -27,6 +28,7 @@ class TimeLineScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final restaurant = ref.watch(postStreamProvider);
     final homeMade = ref.watch(postHomeMadeStreamProvider);
+    final l10n = L10n.of(context);
     useEffect(
       () {
         loadAppTrackingTransparency();
@@ -47,10 +49,10 @@ class TimeLineScreen extends HookConsumerWidget {
               disableBackBtn: true,
               context: context,
               type: QuickAlertType.info,
-              title: 'アップデートのお知らせ',
-              text: 'このアプリの新しいバージョンがリリースされました。'
-                  '最新の機能や安全な環境でご利用いただくために、アプリをアップデートしてください。',
-              confirmBtnText: 'Update',
+              //TODO 多言語化をする
+              title: l10n.forceUpdateTitle,
+              text: l10n.forceUpdateText,
+              confirmBtnText: l10n.forceUpdateButtonTitle,
               confirmBtnColor: Colors.black,
               onConfirmBtnTap: () {
                 if (Platform.isIOS) {

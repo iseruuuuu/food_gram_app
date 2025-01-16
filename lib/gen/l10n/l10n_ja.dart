@@ -406,4 +406,13 @@ class L10nJa extends L10n {
 
   @override
   String get detailMenuPost => '投稿';
+
+  @override
+  String get forceUpdateTitle => 'アップデートのお知らせ';
+
+  @override
+  String get forceUpdateText => 'このアプリの新しいバージョンがリリースされました。最新の機能や安全な環境でご利用いただくために、アプリをアップデートしてください。';
+
+  @override
+  String get forceUpdateButtonTitle => 'アップデート';
 }

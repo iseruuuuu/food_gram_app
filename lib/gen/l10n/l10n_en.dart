@@ -406,4 +406,13 @@ class L10nEn extends L10n {
 
   @override
   String get detailMenuPost => 'Post';
+
+  @override
+  String get forceUpdateTitle => 'Update Notification';
+
+  @override
+  String get forceUpdateText => 'A new version of this app has been released. Please update the app to ensure the latest features and a secure environment.';
+
+  @override
+  String get forceUpdateButtonTitle => 'Update';
 }

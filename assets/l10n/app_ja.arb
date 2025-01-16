@@ -132,5 +132,8 @@
   "authSocketException": "ネットワークに問題があります。接続を確認してください",
   "detailMenuShare":"シェア",
   "detailMenuVisit":"行く",
-  "detailMenuPost":"投稿"
+  "detailMenuPost":"投稿",
+  "forceUpdateTitle": "アップデートのお知らせ",
+  "forceUpdateText": "このアプリの新しいバージョンがリリースされました。最新の機能や安全な環境でご利用いただくために、アプリをアップデートしてください。",
+  "forceUpdateButtonTitle": "アップデート"
 }
