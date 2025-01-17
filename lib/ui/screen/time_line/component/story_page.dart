@@ -16,8 +16,8 @@ class StoryPage extends StatelessWidget {
     super.key,
   });
 
-  final Posts posts;
-  final Users users;
+  final List<Posts> posts;
+  final List<Users> users;
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +43,13 @@ class StoryPage extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 44, left: 8),
                       child: Row(
                         children: [
-                          AppProfileImage(imagePath: users.image, radius: 28),
+                          AppProfileImage(
+                            imagePath: users[storyIndex].image,
+                            radius: 28,
+                          ),
                           const Gap(12),
                           Text(
-                            users.name,
+                            users[storyIndex].name,
                             style: const TextStyle(
                               fontSize: 16,
                               color: Colors.white,
@@ -60,7 +63,7 @@ class StoryPage extends StatelessWidget {
                       child: CachedNetworkImage(
                         imageUrl: supabase.storage
                             .from('food')
-                            .getPublicUrl(posts.foodImage),
+                            .getPublicUrl(posts[storyIndex].foodImage),
                         fit: BoxFit.cover,
                         width: screenWidth,
                         height: screenWidth,
@@ -77,7 +80,7 @@ class StoryPage extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              posts.foodName,
+                              posts[storyIndex].foodName,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -85,7 +88,7 @@ class StoryPage extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              posts.restaurant,
+                              posts[storyIndex].restaurant,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -114,7 +117,7 @@ class StoryPage extends StatelessWidget {
                 );
               },
               pageLength: 1,
-              storyLength: (_) => 1,
+              storyLength: (_) => 4,
               onPageLimitReached: () => context.pop(),
             ),
           ),
