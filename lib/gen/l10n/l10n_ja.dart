@@ -408,6 +408,9 @@ class L10nJa extends L10n {
   String get detailMenuPost => '投稿';
 
   @override
+  String get detailMenuSearch => '調べる';
+
+  @override
   String get forceUpdateTitle => 'アップデートのお知らせ';
 
   @override

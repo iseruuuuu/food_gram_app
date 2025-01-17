@@ -408,6 +408,9 @@ class L10nEn extends L10n {
   String get detailMenuPost => 'Post';
 
   @override
+  String get detailMenuSearch => 'Search';
+
+  @override
   String get forceUpdateTitle => 'Update Notification';
 
   @override
