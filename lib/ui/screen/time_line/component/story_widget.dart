@@ -51,7 +51,7 @@ class StoryWidget extends ConsumerWidget {
                     onTap: () async {
                       final post = await ref
                           .read(postsServiceProvider)
-                          .getPost(data, randomIndex);
+                          .getRandomPosts(data, randomIndex);
                       await context.pushNamed(
                         RouterPath.storyPage,
                         extra: post,
