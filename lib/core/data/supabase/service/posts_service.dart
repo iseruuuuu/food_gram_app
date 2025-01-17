@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/data/supabase/block_list.dart';
 import 'package:food_gram_app/core/model/model.dart';
@@ -59,6 +61,80 @@ class PostsService {
       exchangedPoint: postUserId['exchanged_point'],
     );
     return Model(users, posts);
+  }
+
+  Future<List<Model>> getRandomPosts(
+      List<Map<String, dynamic>> data, int index) async {
+    final models = <Model>[];
+    final posts = Posts(
+      id: int.parse(data[index]['id'].toString()),
+      userId: data[index]['user_id'],
+      foodImage: data[index]['food_image'],
+      foodName: data[index]['food_name'],
+      restaurant: data[index]['restaurant'],
+      comment: data[index]['comment'],
+      createdAt: DateTime.parse(data[index]['created_at']),
+      lat: double.parse(data[index]['lat'].toString()),
+      lng: double.parse(data[index]['lng'].toString()),
+      heart: int.parse(data[index]['heart'].toString()),
+      restaurantTag: data[index]['restaurant_tag'],
+      foodTag: data[index]['food_tag'],
+    );
+    final dynamic postUserId = await supabase
+        .from('users')
+        .select()
+        .eq('user_id', data[index]['user_id'])
+        .single();
+    final users = Users(
+      id: postUserId['id'],
+      userId: postUserId['user_id'],
+      name: postUserId['name'],
+      userName: postUserId['user_name'],
+      selfIntroduce: postUserId['self_introduce'],
+      image: postUserId['image'],
+      createdAt: DateTime.parse(postUserId['created_at']),
+      updatedAt: DateTime.parse(postUserId['updated_at']),
+      exchangedPoint: postUserId['exchanged_point'],
+    );
+    models.add(Model(users, posts));
+    final random = Random();
+    final remainingData = List<Map<String, dynamic>>.from(data)
+      ..removeAt(index);
+    final randomData = (remainingData..shuffle(random)).take(3).toList();
+    for (final item in randomData) {
+      final posts = Posts(
+        id: int.parse(item['id'].toString()),
+        userId: item['user_id'],
+        foodImage: item['food_image'],
+        foodName: item['food_name'],
+        restaurant: item['restaurant'],
+        comment: item['comment'],
+        createdAt: DateTime.parse(item['created_at']),
+        lat: double.parse(item['lat'].toString()),
+        lng: double.parse(item['lng'].toString()),
+        heart: int.parse(item['heart'].toString()),
+        restaurantTag: item['restaurant_tag'],
+        foodTag: item['food_tag'],
+      );
+      final dynamic postUserId = await supabase
+          .from('users')
+          .select()
+          .eq('user_id', item['user_id'])
+          .single();
+      final users = Users(
+        id: postUserId['id'],
+        userId: postUserId['user_id'],
+        name: postUserId['name'],
+        userName: postUserId['user_name'],
+        selfIntroduce: postUserId['self_introduce'],
+        image: postUserId['image'],
+        createdAt: DateTime.parse(postUserId['created_at']),
+        updatedAt: DateTime.parse(postUserId['updated_at']),
+        exchangedPoint: postUserId['exchanged_point'],
+      );
+      models.add(Model(users, posts));
+    }
+    return models;
   }
 }
 
