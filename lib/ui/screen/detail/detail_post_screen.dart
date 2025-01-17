@@ -337,7 +337,6 @@ class DetailPostScreen extends HookConsumerWidget {
                               },
                               title: l10n.detailMenuSearch,
                               icon: Icons.search,
-                              // title: l10n.detailMenuPost,
                             ),
                             AppDetailElevatedButton(
                               onPressed: () async {
