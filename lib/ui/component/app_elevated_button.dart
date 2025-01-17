@@ -53,7 +53,7 @@ class AppDetailElevatedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 2),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           elevation: 0,
@@ -69,7 +69,7 @@ class AppDetailElevatedButton extends StatelessWidget {
             Icon(
               icon,
               color: Colors.black,
-              size: 24,
+              size: 20,
             ),
             Gap(8),
             Text(
