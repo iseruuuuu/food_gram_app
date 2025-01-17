@@ -24,6 +24,7 @@ import 'package:food_gram_app/ui/component/modal_sheet/app_detail_master_modal_s
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_my_info_modal_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_other_info_modal_sheet.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
+import 'package:food_gram_app/utils/url_launch.dart';
 import 'package:gap/gap.dart';
 import 'package:gif/gif.dart';
 import 'package:go_router/go_router.dart';
@@ -307,22 +308,6 @@ class DetailPostScreen extends HookConsumerWidget {
                             ),
                             AppDetailElevatedButton(
                               onPressed: () async {
-                                await adInterstitial.showAd(
-                                  onAdClosed: () async {
-                                    final availableMaps =
-                                        await MapLauncher.installedMaps;
-                                    await availableMaps.first.showMarker(
-                                      coords: Coords(posts.lat, posts.lng),
-                                      title: posts.restaurant,
-                                    );
-                                  },
-                                );
-                              },
-                              title: l10n.detailMenuVisit,
-                              icon: Icons.directions_walk,
-                            ),
-                            AppDetailElevatedButton(
-                              onPressed: () async {
                                 final currentPath =
                                     GoRouter.of(context).isCurrentLocation();
                                 await context
@@ -343,6 +328,32 @@ class DetailPostScreen extends HookConsumerWidget {
                               },
                               title: l10n.detailMenuPost,
                               icon: Icons.restaurant,
+                            ),
+                            AppDetailElevatedButton(
+                              onPressed: () {
+                                LaunchUrl().open(
+                                  'https://www.google.com/search?q=${posts.restaurant}',
+                                );
+                              },
+                              title: l10n.detailMenuSearch,
+                              icon: Icons.search,
+                              // title: l10n.detailMenuPost,
+                            ),
+                            AppDetailElevatedButton(
+                              onPressed: () async {
+                                await adInterstitial.showAd(
+                                  onAdClosed: () async {
+                                    final availableMaps =
+                                        await MapLauncher.installedMaps;
+                                    await availableMaps.first.showMarker(
+                                      coords: Coords(posts.lat, posts.lng),
+                                      title: posts.restaurant,
+                                    );
+                                  },
+                                );
+                              },
+                              title: l10n.detailMenuVisit,
+                              icon: Icons.directions_walk,
                             ),
                           ],
                         ),
