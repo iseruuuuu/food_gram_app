@@ -133,6 +133,7 @@
   "detailMenuShare":"Share",
   "detailMenuVisit":"Visit",
   "detailMenuPost":"Post",
+  "detailMenuSearch": "Search",
   "forceUpdateTitle": "Update Notification",
   "forceUpdateText": "A new version of this app has been released. Please update the app to ensure the latest features and a secure environment.",
   "forceUpdateButtonTitle": "Update"

@@ -894,6 +894,12 @@ abstract class L10n {
   /// **'投稿'**
   String get detailMenuPost;
 
+  /// No description provided for @detailMenuSearch.
+  ///
+  /// In ja, this message translates to:
+  /// **'調べる'**
+  String get detailMenuSearch;
+
   /// No description provided for @forceUpdateTitle.
   ///
   /// In ja, this message translates to:
