@@ -3,6 +3,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/data/admob/admob_banner.dart';
 import 'package:food_gram_app/core/data/admob/admob_interstitial.dart';
 import 'package:food_gram_app/core/data/supabase/post_stream.dart';
@@ -342,9 +343,7 @@ class DetailPostScreen extends HookConsumerWidget {
                             ),
                             AppDetailElevatedButton(
                               onPressed: () {
-                                LaunchUrl().open(
-                                  'https://www.google.com/search?q=${posts.restaurant}',
-                                );
+                                LaunchUrl().open(URL.search(posts.restaurant));
                               },
                               title: l10n.detailMenuSearch,
                               icon: Icons.search,
