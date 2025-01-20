@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/data/admob/admob_banner.dart';
 import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -60,17 +61,14 @@ class SettingScreen extends HookConsumerWidget {
                             color: Colors.blue,
                             title: l10n.settingsDeveloper,
                             onTap: () {
-                              LaunchUrl()
-                                  .openSNSUrl('https://x.com/FoodGram_dev');
+                              LaunchUrl().openSNSUrl(URL.sns);
                             },
                           ),
                           AppSettingTile(
                             icon: FontAwesomeIcons.github,
                             title: l10n.settingsGithub,
                             onTap: () {
-                              LaunchUrl().open(
-                                'https://github.com/iseruuuuu/food_gram_app',
-                              );
+                              LaunchUrl().openSNSUrl(URL.github);
                             },
                           ),
                           AppSettingTile(
@@ -87,13 +85,9 @@ class SettingScreen extends HookConsumerWidget {
                             title: l10n.settingsShareApp,
                             onTap: () {
                               if (Platform.isIOS) {
-                                shareNormal(
-                                  'https://apps.apple.com/hu/app/foodgram/id6474065183',
-                                );
+                                shareNormal(URL.appleStore);
                               } else {
-                                shareNormal(
-                                  'https://play.google.com/store/apps/details?id=com.food_gram_app.com.com.com',
-                                );
+                                shareNormal(URL.googleStore);
                               }
                             },
                           ),
@@ -123,9 +117,7 @@ class SettingScreen extends HookConsumerWidget {
                             size: 32,
                             title: l10n.settingsFaq,
                             onTap: () {
-                              LaunchUrl().open(
-                                'https://succinct-may-e5e.notion.site/FAQ-256ae853b9ec4209a04f561449de8c1d',
-                              );
+                              LaunchUrl().open(URL.faq);
                             },
                           ),
                           AppSettingTile(
@@ -133,9 +125,7 @@ class SettingScreen extends HookConsumerWidget {
                             color: Colors.indigoAccent,
                             title: l10n.settingsPrivacyPolicy,
                             onTap: () {
-                              LaunchUrl().open(
-                                'https://succinct-may-e5e.notion.site/fd5584426bf44c50bdb1eb4b376d165f',
-                              );
+                              LaunchUrl().open(URL.privacyPolicy);
                             },
                           ),
                           AppSettingTile(
@@ -143,9 +133,7 @@ class SettingScreen extends HookConsumerWidget {
                             color: Colors.deepPurpleAccent,
                             title: l10n.settingsTermsOfUse,
                             onTap: () {
-                              LaunchUrl().open(
-                                'https://succinct-may-e5e.notion.site/a0ad75abf8244404b7a19cca0e2304f1',
-                              );
+                              LaunchUrl().open(URL.termsOfUse);
                             },
                           ),
                           AppSettingTile(
@@ -154,9 +142,7 @@ class SettingScreen extends HookConsumerWidget {
                             color: Colors.lightBlue,
                             title: l10n.settingsContact,
                             onTap: () {
-                              LaunchUrl().open(
-                                'https://forms.gle/mjucjntt3c2SZsUc7',
-                              );
+                              LaunchUrl().open(URL.contact);
                             },
                           ),
                           AppSettingTile(
