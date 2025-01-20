@@ -28,13 +28,14 @@ class EditScreen extends HookConsumerWidget {
     final isSubscribed =
         subscriptionState.whenOrNull(data: (isSubscribed) => isSubscribed) ??
             false;
-    final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
+    final adInterstitial =
+        useMemoized(() => ref.read(admobInterstitialNotifierProvider));
     useEffect(
       () {
         adInterstitial.createAd();
-        return null;
+        return;
       },
-      [],
+      [adInterstitial],
     );
     return PopScope(
       canPop: !loading,
