@@ -63,6 +63,7 @@ class AdmobInterstitial {
   Future<void> showAd({VoidCallback? onAdClosed}) async {
     if (!_isAdReady || _interstitialAd == null) {
       logger.e('Attempted to show ad before it was ready');
+      onAdClosed?.call();
       return;
     }
 
@@ -79,14 +80,14 @@ class AdmobInterstitial {
         logger.i('Ad dismissed');
         ad.dispose();
         _isAdReady = false;
-        createAd(); // 再ロード
+        createAd();
         onAdClosed?.call();
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
         logger.e('Failed to show ad: $error');
         ad.dispose();
         _isAdReady = false;
-        createAd(); // 再ロード
+        createAd();
       },
     );
 

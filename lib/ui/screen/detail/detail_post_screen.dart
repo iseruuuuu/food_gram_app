@@ -49,10 +49,19 @@ class DetailPostScreen extends HookConsumerWidget {
     final initialHeart = useState(posts.heart);
     final isSnowing = useState(false);
     final tickerProvider = useSingleTickerProvider();
-    final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
+    final adInterstitial =
+        useMemoized(() => ref.read(admobInterstitialNotifierProvider));
     final gifController = useMemoized(
       () => GifController(vsync: tickerProvider),
       [tickerProvider],
+    );
+
+    useEffect(
+      () {
+        adInterstitial.createAd();
+        return gifController.dispose;
+      },
+      [gifController, adInterstitial],
     );
     useEffect(
       () {
@@ -74,21 +83,23 @@ class DetailPostScreen extends HookConsumerWidget {
           backgroundColor: Colors.white,
           automaticallyImplyLeading: !loading,
           surfaceTintColor: Colors.transparent,
-          leading: !loading
-              ? GestureDetector(
+          leading: loading || menuLoading.value
+              ? SizedBox.shrink()
+              : GestureDetector(
                   onTap: () => context.pop(),
                   child: Icon(
                     Icons.close,
                     size: 30,
                   ),
-                )
-              : SizedBox.shrink(),
+                ),
           title: GestureDetector(
             onTap: () => isSnowing.value = !isSnowing.value,
             child: Text('     '),
           ),
           actions: [
-            if (!loading)
+            if (loading || menuLoading.value)
+              SizedBox.shrink()
+            else
               IconButton(
                 onPressed: () {
                   showModalBottomSheet(
@@ -118,7 +129,7 @@ class DetailPostScreen extends HookConsumerWidget {
                   Icons.menu,
                   color: Colors.black,
                 ),
-              ),
+              )
           ],
         ),
         body: SafeArea(
