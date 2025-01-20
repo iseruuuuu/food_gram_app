@@ -83,21 +83,23 @@ class DetailPostScreen extends HookConsumerWidget {
           backgroundColor: Colors.white,
           automaticallyImplyLeading: !loading,
           surfaceTintColor: Colors.transparent,
-          leading: !loading
-              ? GestureDetector(
+          leading: loading || menuLoading.value
+              ? SizedBox.shrink()
+              : GestureDetector(
                   onTap: () => context.pop(),
                   child: Icon(
                     Icons.close,
                     size: 30,
                   ),
-                )
-              : SizedBox.shrink(),
+                ),
           title: GestureDetector(
             onTap: () => isSnowing.value = !isSnowing.value,
             child: Text('     '),
           ),
           actions: [
-            if (!loading)
+            if (loading || menuLoading.value)
+              SizedBox.shrink()
+            else
               IconButton(
                 onPressed: () {
                   showModalBottomSheet(
@@ -127,7 +129,7 @@ class DetailPostScreen extends HookConsumerWidget {
                   Icons.menu,
                   color: Colors.black,
                 ),
-              ),
+              )
           ],
         ),
         body: SafeArea(
