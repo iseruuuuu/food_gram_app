@@ -49,10 +49,19 @@ class DetailPostScreen extends HookConsumerWidget {
     final initialHeart = useState(posts.heart);
     final isSnowing = useState(false);
     final tickerProvider = useSingleTickerProvider();
-    final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
+    final adInterstitial =
+        useMemoized(() => ref.read(admobInterstitialNotifierProvider));
     final gifController = useMemoized(
       () => GifController(vsync: tickerProvider),
       [tickerProvider],
+    );
+
+    useEffect(
+      () {
+        adInterstitial.createAd();
+        return gifController.dispose;
+      },
+      [gifController, adInterstitial],
     );
     useEffect(
       () {
