@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -131,9 +132,7 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                   onPressed: () async {
                     context.pop();
                     if (posts.restaurant != '不明' && posts.restaurant != '自炊') {
-                      await LaunchUrl().open(
-                        'https://www.google.com/maps/search/?api=1&query=${posts.restaurant}',
-                      );
+                      await LaunchUrl().open(URL.search(posts.restaurant));
                     } else {
                       openErrorSnackBar(context, l10n.postSearchError, '');
                     }
@@ -189,11 +188,7 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                               '\n '
                               '${l10n.dialogReportDescription2}',
                           onTap: () async {
-                            await LaunchUrl()
-                                .open(
-                              'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit',
-                            )
-                                .then((value) {
+                            await LaunchUrl().open(URL.report).then((value) {
                               context.pop();
                             });
                           },

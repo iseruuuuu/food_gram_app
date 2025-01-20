@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/config/app_update_checker.dart';
+import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/data/admob/admob_open.dart';
 import 'package:food_gram_app/core/data/admob/app_tracking_transparency.dart';
 import 'package:food_gram_app/core/data/purchase/purchase_provider.dart';
@@ -55,13 +56,9 @@ class TimeLineScreen extends HookConsumerWidget {
               confirmBtnColor: Colors.black,
               onConfirmBtnTap: () {
                 if (Platform.isIOS) {
-                  LaunchUrl().openSNSUrl(
-                    'https://apps.apple.com/hu/app/foodgram/id6474065183',
-                  );
+                  LaunchUrl().openSNSUrl(URL.appleStore);
                 } else {
-                  LaunchUrl().openSNSUrl(
-                    'https://play.google.com/store/apps/details?id=com.food_gram_app.com.com.com',
-                  );
+                  LaunchUrl().openSNSUrl(URL.googleStore);
                 }
               },
             );
