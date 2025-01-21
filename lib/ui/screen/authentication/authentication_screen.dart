@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:auth_buttons/auth_buttons.dart'
+    show AppleAuthButton, AuthButtonStyle, GoogleAuthButton;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
@@ -122,11 +123,6 @@ class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
                     Gap(12),
                     Divider(),
                     Gap(24),
-                    Text(
-                      L10n.of(context).snsLogin,
-                      style: theme.textTheme.titleLarge!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
                       ),
                     ),
                     Gap(24),
