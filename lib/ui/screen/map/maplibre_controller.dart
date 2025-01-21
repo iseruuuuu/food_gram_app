@@ -49,7 +49,7 @@ class MapLibreController extends _$MapLibreController {
       openDialog(result);
       await controller.animateCamera(
         CameraUpdate.newLatLngZoom(latLng, 16.5),
-        duration: Duration(seconds: 2),
+        duration: Duration(seconds: 1),
       );
     });
   }
