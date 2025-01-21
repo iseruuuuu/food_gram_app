@@ -295,35 +295,34 @@ class SettingScreen extends HookConsumerWidget {
                             color: Colors.red,
                             title: l10n.settingsLogoutButton,
                             onTap: () {
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (context) {
-                                  return AppLogoutDialog(
-                                    logout: () {
-                                      ref
-                                          .read(
-                                            settingViewModelProvider().notifier,
-                                          )
-                                          .signOut()
-                                          .then(
-                                        (value) {
-                                          if (value) {
-                                            context.pushReplacementNamed(
-                                              RouterPath.authentication,
-                                            );
-                                          } else {
-                                            openErrorSnackBar(
-                                              context,
-                                              l10n.logoutFailure,
-                                              '',
-                                            );
-                                          }
-                                        },
-                                      );
+                              openLogoutDialog(
+                                title: l10n.dialogLogoutTitle,
+                                text: '${l10n.dialogLogoutDescription1}\n'
+                                    '${l10n.dialogLogoutDescription2}',
+                                onTap: () {
+                                  context.pop();
+                                  ref
+                                      .read(
+                                        settingViewModelProvider().notifier,
+                                      )
+                                      .signOut()
+                                      .then(
+                                    (value) {
+                                      if (value) {
+                                        context.pushReplacementNamed(
+                                          RouterPath.authentication,
+                                        );
+                                      } else {
+                                        openErrorSnackBar(
+                                          context,
+                                          l10n.logoutFailure,
+                                          '',
+                                        );
+                                      }
                                     },
                                   );
                                 },
+                                context: context,
                               );
                             },
                           ),
