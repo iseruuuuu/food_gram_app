@@ -16,6 +16,8 @@ class MapFloatingActionButton extends StatelessWidget {
       child: Container(
         width: 55,
         height: 55,
+        child: Theme(
+          data: Theme.of(context).copyWith(highlightColor: Colors.white),
           child: FloatingActionButton(
             heroTag: null,
             shape: RoundedRectangleBorder(
@@ -24,6 +26,9 @@ class MapFloatingActionButton extends StatelessWidget {
             ),
             foregroundColor: Colors.white,
             backgroundColor: Colors.white,
+            focusColor: Colors.white,
+            splashColor: Colors.white,
+            hoverColor: Colors.white,
             elevation: 10,
             onPressed: onPressed,
             child: Icon(
