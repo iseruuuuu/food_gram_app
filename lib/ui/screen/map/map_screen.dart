@@ -61,7 +61,7 @@ class MapScreen extends HookConsumerWidget {
                     value.$1.latitude,
                     value.$1.longitude,
                   ),
-                  zoom: 15,
+                  zoom: 14,
                 ),
                 trackCameraPosition: true,
                 tiltGesturesEnabled: false,

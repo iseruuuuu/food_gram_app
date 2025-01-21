@@ -63,7 +63,7 @@ class MapLibreController extends _$MapLibreController {
           location.longitude,
         );
         await controller.animateCamera(
-          CameraUpdate.newLatLngZoom(currentLatLng, 15),
+          CameraUpdate.newLatLngZoom(currentLatLng, 14),
         );
       },
     );
