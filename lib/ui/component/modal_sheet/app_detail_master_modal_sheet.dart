@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/ui/component/dialog/app_dialog.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
+import 'package:food_gram_app/utils/common_dialog.dart';
 import 'package:go_router/go_router.dart';
 
 class AppDetailMasterModalSheet extends ConsumerWidget {
@@ -58,23 +58,18 @@ class AppDetailMasterModalSheet extends ConsumerWidget {
                     ),
                   ),
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        return AppDialog(
-                          title: 'マスター権限の投稿削除',
-                          subTitle: '不正な投稿と自分の投稿を削除するために使用します',
-                          onTap: () async {
-                            context
-                              ..pop()
-                              ..pop(true);
-                            await ref
-                                .read(detailPostViewModelProvider().notifier)
-                                .delete(posts);
-                          },
-                        );
+                    openDialog(
+                      title: 'マスター権限の投稿削除',
+                      text: '不正な投稿と自分の投稿を削除するために使用します',
+                      onTap: () async {
+                        context
+                          ..pop()
+                          ..pop(true);
+                        await ref
+                            .read(detailPostViewModelProvider().notifier)
+                            .delete(posts);
                       },
+                      context: context,
                     );
                   },
                   child: Row(
