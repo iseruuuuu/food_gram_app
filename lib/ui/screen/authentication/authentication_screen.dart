@@ -123,38 +123,34 @@ class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
                     Gap(12),
                     Divider(),
                     Gap(24),
+                    AppleAuthButton(
+                      style: AuthButtonStyle(
+                        splashColor: Colors.white,
+                        height: 50,
+                        elevation: 3,
+                        borderRadius: 20,
+                        width: MediaQuery.of(context).size.width / 1.3,
+                        textStyle: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                      onPressed: () {
+                        if (Platform.isIOS) {
+                          controller.loginApple(context);
+                        } else {
+                          openErrorSnackBar(
+                            context,
+                            L10n.of(context).appleLoginFailure,
+                            '',
+                          );
+                        }
+                      },
                     ),
                     Gap(24),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            if (Platform.isIOS) {
-                              controller.loginApple(context);
-                            } else {
-                              openErrorSnackBar(
-                                context,
-                                L10n.of(context).appleLoginFailure,
-                                '',
-                              );
-                            }
-                          },
-                          child: Container(
-                            width: 64,
-                            height: 64,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black26),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Icon(
-                              FontAwesomeIcons.apple,
-                              size: 35,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
                         Gap(40),
                         GestureDetector(
                           onTap: () => controller.loginGoogle(context),
