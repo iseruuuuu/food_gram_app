@@ -12,8 +12,8 @@ import 'package:food_gram_app/ui/component/app_app_bar.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_setting_tile.dart';
 import 'package:food_gram_app/ui/component/dialog/app_dialog.dart';
-import 'package:food_gram_app/ui/component/dialog/app_logout_dialog.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
+import 'package:food_gram_app/utils/common_dialog.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:food_gram_app/utils/share.dart';
 import 'package:food_gram_app/utils/snack_bar_manager.dart';
@@ -163,7 +163,7 @@ class SettingScreen extends HookConsumerWidget {
                               showDialog(
                                 context: context,
                                 builder: (context) {
-                                  return AppNormalDialog(
+                                  return AppDialog(
                                     title: l10n.settingsCredit,
                                   );
                                 },
