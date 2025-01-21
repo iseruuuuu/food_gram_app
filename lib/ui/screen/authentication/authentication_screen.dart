@@ -148,26 +148,19 @@ class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
                       },
                     ),
                     Gap(24),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Gap(40),
-                        GestureDetector(
-                          onTap: () => controller.loginGoogle(context),
-                          child: Container(
-                            width: 64,
-                            height: 64,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black26),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(15),
-                              child: Assets.image.logoGoogle.image(),
-                            ),
-                          ),
+                    GoogleAuthButton(
+                      onPressed: () => controller.loginGoogle(context),
+                      style: AuthButtonStyle(
+                        splashColor: Colors.white,
+                        height: 50,
+                        elevation: 3,
+                        borderRadius: 20,
+                        width: MediaQuery.of(context).size.width / 1.3,
+                        textStyle: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
