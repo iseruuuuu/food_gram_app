@@ -61,7 +61,7 @@ class MapScreen extends HookConsumerWidget {
                     value.$1.latitude,
                     value.$1.longitude,
                   ),
-                  zoom: 15,
+                  zoom: 14,
                 ),
                 trackCameraPosition: true,
                 tiltGesturesEnabled: false,
@@ -71,13 +71,19 @@ class MapScreen extends HookConsumerWidget {
                 visible: isTapPin.value,
                 child: AppMapRestaurantModalSheet(post: post.value),
               ),
+              Positioned(
+                top: 40,
+                right: 10,
+                child: MapFloatingActionButton(
+                  onPressed: () {
+                    ref
+                        .read(mapLibreControllerProvider.notifier)
+                        .moveToCurrentLocation();
+                  },
+                ),
+              ),
             ],
           );
-        },
-      ),
-      floatingActionButton: MapFloatingActionButton(
-        onPressed: () {
-          ref.read(mapLibreControllerProvider.notifier).moveToCurrentLocation();
         },
       ),
     );

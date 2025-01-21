@@ -14,19 +14,28 @@ class MapFloatingActionButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Container(
-        width: 60,
-        height: 60,
-        child: FloatingActionButton(
-          heroTag: null,
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.white,
-          elevation: 10,
-          shape: CircleBorder(side: BorderSide(color: Colors.white)),
-          onPressed: onPressed,
-          child: Icon(
-            CupertinoIcons.location_fill,
-            color: Color(0xFF1A73E8),
-            size: 25,
+        width: 55,
+        height: 55,
+        child: Theme(
+          data: Theme.of(context).copyWith(highlightColor: Colors.white),
+          child: FloatingActionButton(
+            heroTag: null,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.white),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.white,
+            focusColor: Colors.white,
+            splashColor: Colors.white,
+            hoverColor: Colors.white,
+            elevation: 10,
+            onPressed: onPressed,
+            child: Icon(
+              CupertinoIcons.location_fill,
+              color: Color(0xFF1A73E8),
+              size: 25,
+            ),
           ),
         ),
       ),

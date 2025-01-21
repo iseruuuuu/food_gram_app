@@ -58,11 +58,11 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
                 );
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(24)),
                   child: Container(
-                    width: deviceWidth / 1.4,
+                    width: deviceWidth / 1.2,
                     height: deviceWidth / 1.5,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +75,7 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
                             imageUrl: supabase.storage
                                 .from('food')
                                 .getPublicUrl(post[index]!.foodImage),
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fitWidth,
                           ),
                         ),
                         Container(
