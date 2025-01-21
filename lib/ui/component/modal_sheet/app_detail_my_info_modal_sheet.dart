@@ -7,8 +7,8 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_share_widget.dart';
-import 'package:food_gram_app/ui/component/dialog/app_dialog.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
+import 'package:food_gram_app/utils/common_dialog.dart';
 import 'package:food_gram_app/utils/share.dart';
 import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/utils/url_launch.dart';
@@ -177,25 +177,20 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                     ),
                   ),
                   onPressed: () async {
-                    await showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        return AppDialog(
-                          title: l10n.dialogDeleteTitle,
-                          subTitle: '${l10n.dialogDeleteDescription1}'
-                              '\n '
-                              '${l10n.dialogDeleteDescription2}',
-                          onTap: () async {
-                            context
-                              ..pop()
-                              ..pop(true);
-                            await ref
-                                .read(detailPostViewModelProvider().notifier)
-                                .delete(posts);
-                          },
-                        );
+                    openDialog(
+                      title: l10n.dialogDeleteTitle,
+                      text: '${l10n.dialogDeleteDescription1}'
+                          '\n '
+                          '${l10n.dialogDeleteDescription2}',
+                      onTap: () async {
+                        context
+                          ..pop()
+                          ..pop(true);
+                        await ref
+                            .read(detailPostViewModelProvider().notifier)
+                            .delete(posts);
                       },
+                      context: context,
                     );
                   },
                   child: Row(

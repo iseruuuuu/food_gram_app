@@ -7,8 +7,8 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_share_widget.dart';
-import 'package:food_gram_app/ui/component/dialog/app_dialog.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
+import 'package:food_gram_app/utils/common_dialog.dart';
 import 'package:food_gram_app/utils/share.dart';
 import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/utils/url_launch.dart';
@@ -177,23 +177,18 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                     ),
                   ),
                   onPressed: () {
-                    context.pop();
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        return AppDialog(
-                          title: l10n.dialogReportTitle,
-                          subTitle: '${l10n.dialogReportDescription1}'
-                              '\n '
-                              '${l10n.dialogReportDescription2}',
-                          onTap: () async {
-                            await LaunchUrl().open(URL.report).then((value) {
-                              context.pop();
-                            });
-                          },
-                        );
+                    openDialog(
+                      title: l10n.dialogReportTitle,
+                      text: '${l10n.dialogReportDescription1}'
+                          '\n '
+                          '${l10n.dialogReportDescription2}',
+                      onTap: () async {
+                        context.pop();
+                        await LaunchUrl().open(URL.report).then((value) {
+                          context.pop();
+                        });
                       },
+                      context: context,
                     );
                   },
                   child: Row(
@@ -236,30 +231,27 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                     ),
                   ),
                   onPressed: () {
-                    context.pop();
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        return AppDialog(
-                          title: l10n.dialogBlockTitle,
-                          subTitle: '${l10n.dialogBlockDescription1}'
-                              '\n'
-                              '${l10n.dialogBlockDescription2}'
-                              '\n'
-                              '${l10n.dialogBlockDescription3}',
-                          onTap: () async {
-                            await ref
-                                .read(detailPostViewModelProvider().notifier)
-                                .block(posts.userId)
-                                .then((value) async {
-                              if (value) {
-                                context.pop(true);
-                              }
-                            });
-                          },
-                        );
+                    openDialog(
+                      title: l10n.dialogBlockTitle,
+                      text: '${l10n.dialogBlockDescription1}'
+                          '\n'
+                          '${l10n.dialogBlockDescription2}'
+                          '\n'
+                          '${l10n.dialogBlockDescription3}',
+                      onTap: () async {
+                        context
+                          ..pop()
+                          ..pop();
+                        await ref
+                            .read(detailPostViewModelProvider().notifier)
+                            .block(posts.userId)
+                            .then((value) async {
+                          if (value) {
+                            context.pop(true);
+                          }
+                        });
                       },
+                      context: context,
                     );
                   },
                   child: Row(
