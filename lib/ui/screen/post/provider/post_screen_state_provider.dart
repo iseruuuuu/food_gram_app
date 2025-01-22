@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/data/supabase/post/post_service.dart';
@@ -5,6 +7,7 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/post/post_ui_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -97,10 +100,12 @@ class PostScreenState extends _$PostScreenState {
       if (image == null) {
         return false;
       }
-      imageBytes = await image.readAsBytes();
-      uploadImage = image.name;
+      final cropImage = await _cropImage(image);
+      imageBytes = await cropImage.readAsBytes();
+      uploadImage = cropImage.path;
       state = state.copyWith(
-        foodImage: image.path,
+        foodImage: cropImage.path,
+        status: '写真の添付が成功しました',
       );
       return true;
     } on PlatformException catch (error) {
@@ -121,10 +126,11 @@ class PostScreenState extends _$PostScreenState {
       if (image == null) {
         return false;
       }
-      imageBytes = await image.readAsBytes();
-      uploadImage = image.name;
+      final cropImage = await _cropImage(image);
+      imageBytes = await cropImage.readAsBytes();
+      uploadImage = cropImage.path;
       state = state.copyWith(
-        foodImage: image.path,
+        foodImage: cropImage.path,
         status: '写真の添付が成功しました',
       );
       return true;
@@ -133,6 +139,28 @@ class PostScreenState extends _$PostScreenState {
       state = state.copyWith(status: 'アルバムへのアクセス許可が必要です');
       return false;
     }
+  }
+
+  Future<File> _cropImage(XFile image) async {
+    final croppedFile = await ImageCropper().cropImage(
+      sourcePath: image.path,
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarColor: Colors.blue,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false,
+          hideBottomControls: false,
+        ),
+        IOSUiSettings(
+          cancelButtonTitle: 'Cancel',
+          doneButtonTitle: 'Done',
+          hidesNavigationBar: false,
+          showCancelConfirmationDialog: true,
+        ),
+      ],
+    );
+    return File(croppedFile!.path);
   }
 
   void getPlace(Restaurant restaurant) {
