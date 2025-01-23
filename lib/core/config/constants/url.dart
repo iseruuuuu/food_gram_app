@@ -15,6 +15,6 @@ class URL {
   static const report =
       'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit';
 
-  static String search(String restaurant) =>
+  static String go(String restaurant) =>
       'https://www.google.com/maps/search/?api=1&query=$restaurant';
 }
