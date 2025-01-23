@@ -132,7 +132,7 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                   onPressed: () async {
                     context.pop();
                     if (posts.restaurant != '不明' && posts.restaurant != '自炊') {
-                      await LaunchUrl().open(URL.search(posts.restaurant));
+                      await LaunchUrl().open(URL.go(posts.restaurant));
                     } else {
                       openErrorSnackBar(context, l10n.postSearchError, '');
                     }
