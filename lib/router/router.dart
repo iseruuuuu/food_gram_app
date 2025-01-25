@@ -243,9 +243,14 @@ final mapRouter = GoRoute(
     GoRoute(
       path: '${RouterPath.map}/${RouterPath.mapDetail}',
       name: RouterPath.mapDetail,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final model = state.extra! as Model;
-        return DetailPostScreen(posts: model.posts, users: model.users);
+        return slideUpTransition(
+          DetailPostScreen(
+            posts: model.posts,
+            users: model.users,
+          ),
+        );
       },
     ),
     GoRoute(
