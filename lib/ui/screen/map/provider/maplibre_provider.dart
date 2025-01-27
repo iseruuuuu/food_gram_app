@@ -7,10 +7,10 @@ import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'maplibre_controller.g.dart';
+part 'maplibre_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-class MapLibreController extends _$MapLibreController {
+class MapLibre extends _$MapLibre {
   @override
   void build() {}
 
