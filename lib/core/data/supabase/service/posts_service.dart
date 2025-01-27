@@ -29,6 +29,17 @@ class PostsService {
     return heartAmount;
   }
 
+  Future<int> getOtherHeartAmount(String userId) async {
+    var heartAmount = 0;
+    final list =
+        await supabase.from('posts').select('heart').eq('user_id', userId);
+    for (var i = 0; i < list.length; i++) {
+      final int value = list[i]['heart'];
+      heartAmount += value;
+    }
+    return heartAmount;
+  }
+
   Future<Model> getPost(List<Map<String, dynamic>> data, int index) async {
     final posts = Posts(
       id: int.parse(data[index]['id'].toString()),
@@ -59,6 +70,7 @@ class PostsService {
       createdAt: DateTime.parse(postUserId['created_at']),
       updatedAt: DateTime.parse(postUserId['updated_at']),
       exchangedPoint: postUserId['exchanged_point'],
+      isSubscribe: postUserId['is_subscribe'],
     );
     return Model(users, posts);
   }
@@ -95,6 +107,7 @@ class PostsService {
       createdAt: DateTime.parse(postUserId['created_at']),
       updatedAt: DateTime.parse(postUserId['updated_at']),
       exchangedPoint: postUserId['exchanged_point'],
+      isSubscribe: postUserId['is_subscribe'],
     );
     models.add(Model(users, posts));
     final random = Random();
@@ -131,11 +144,35 @@ class PostsService {
         createdAt: DateTime.parse(postUserId['created_at']),
         updatedAt: DateTime.parse(postUserId['updated_at']),
         exchangedPoint: postUserId['exchanged_point'],
+        isSubscribe: postUserId['is_subscribe'],
       );
       models.add(Model(users, posts));
     }
     return models;
   }
+
+  Future<List<Map<String, dynamic>>> getPostsFromUser(String userId) async {
+    try {
+      final response = await supabase
+          .from('posts')
+          .select()
+          .eq('user_id', userId)
+          .order('created_at', ascending: false);
+      return List<Map<String, dynamic>>.from(response);
+    } catch (e) {
+      print('Error fetching posts from user: $e');
+      return [];
+    }
+  }
+}
+
+@riverpod
+Future<List<Map<String, dynamic>>> postsFromUserProvider(
+  Ref ref, {
+  required String userId,
+}) async {
+  final postsService = ref.read(postsServiceProvider);
+  return postsService.getPostsFromUser(userId);
 }
 
 @riverpod

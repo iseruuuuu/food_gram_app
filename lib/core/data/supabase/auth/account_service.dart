@@ -87,4 +87,18 @@ class AccountService {
         .from('user')
         .uploadBinary('/$user/$uploadImage', imageBytes);
   }
+
+  Future<Object> updateIsSubscribe() async {
+    final user = supabase.auth.currentUser;
+    final updates = {
+      'is_subscribe': true,
+    };
+    try {
+      await supabase.from('users').update(updates).match({'user_id': user!.id});
+      return const Success(null);
+    } on PostgrestException catch (error) {
+      logger.e(error.message);
+      return Failure(error);
+    }
+  }
 }

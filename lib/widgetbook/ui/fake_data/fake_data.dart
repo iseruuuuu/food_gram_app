@@ -11,6 +11,7 @@ final fakeUsers = Users(
   updatedAt: DateTime.now(),
   userId: '1ee46691-2164-4832-86ac-8e5f847d1430',
   exchangedPoint: 0,
+  isSubscribe: true,
 );
 
 final fakePosts = Posts(

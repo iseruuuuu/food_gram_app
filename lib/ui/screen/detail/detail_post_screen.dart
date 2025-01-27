@@ -14,6 +14,7 @@ import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/go_router_extension.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
@@ -76,6 +77,7 @@ class DetailPostScreen extends HookConsumerWidget {
     final loading = ref.watch(loadingProvider);
     final menuLoading = useState(false);
     final l10n = L10n.of(context);
+    final userId = supabase.auth.currentUser!.id;
     return PopScope(
       canPop: !loading,
       child: Scaffold(
@@ -153,33 +155,53 @@ class DetailPostScreen extends HookConsumerWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(10),
-                          child: AppProfileImage(
-                            imagePath: users.image,
-                            radius: 30,
+                          child: GestureDetector(
+                            onTap: () async {
+                              if (users.userId != userId) {
+                                await context.pushNamed(
+                                  RouterPath.mapProfile,
+                                  extra: users,
+                                );
+                              }
+                            },
+                            child: AppProfileImage(
+                              imagePath: users.image,
+                              radius: 30,
+                            ),
                           ),
                         ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width - 150,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                users.name,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                        GestureDetector(
+                          onTap: () async {
+                            if (users.userId != userId) {
+                              await context.pushNamed(
+                                RouterPath.mapProfile,
+                                extra: users,
+                              );
+                            }
+                          },
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 150,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  users.name,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Text(
-                                '@${users.userName}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
+                                Text(
+                                  '@${users.userName}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],

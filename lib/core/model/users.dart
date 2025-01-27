@@ -15,6 +15,7 @@ class Users with _$Users {
     required DateTime updatedAt,
     required String userId,
     required int exchangedPoint,
+    required bool isSubscribe,
   }) = _Users;
 
   const Users._();

@@ -20,7 +20,19 @@ class UsersService {
     return data;
   }
 
+  Future<Map<String, dynamic>> getOtherUsers(String userId) async {
+    final data =
+        await supabase.from('users').select().eq('user_id', userId).single();
+    return data;
+  }
+
   Future<int> getLength() async {
+    final response =
+        await supabase.from('posts').select().eq('user_id', userId);
+    return response.length;
+  }
+
+  Future<int> getOtherLength(String userId) async {
     final response =
         await supabase.from('posts').select().eq('user_id', userId);
     return response.length;
@@ -40,6 +52,7 @@ class UsersService {
       createdAt: DateTime.parse(postUserId['created_at']),
       updatedAt: DateTime.parse(postUserId['updated_at']),
       exchangedPoint: postUserId['exchanged_point'],
+      isSubscribe: postUserId['is_subscribe'],
     );
     return users;
   }
