@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:food_gram_app/core/data/supabase/auth/account_service.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -86,6 +87,7 @@ class Purchase extends _$Purchase {
         await Purchases.logIn(user!);
         final customerInfo = await Purchases.purchasePackage(package);
         await getPurchaserInfo(customerInfo);
+        await ref.read(accountServiceProvider).updateIsSubscribe();
         return true;
       }
       return false;
@@ -108,6 +110,7 @@ class Purchase extends _$Purchase {
         return false;
       } else {
         await getPurchaserInfo(customerInfo);
+        await ref.read(accountServiceProvider).updateIsSubscribe();
         logger.i('$entitlement 購入情報あり　復元可能');
         return true;
       }
