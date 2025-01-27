@@ -29,6 +29,17 @@ class PostsService {
     return heartAmount;
   }
 
+  Future<int> getOtherHeartAmount(String userId) async {
+    var heartAmount = 0;
+    final list =
+        await supabase.from('posts').select('heart').eq('user_id', userId);
+    for (var i = 0; i < list.length; i++) {
+      final int value = list[i]['heart'];
+      heartAmount += value;
+    }
+    return heartAmount;
+  }
+
   Future<Model> getPost(List<Map<String, dynamic>> data, int index) async {
     final posts = Posts(
       id: int.parse(data[index]['id'].toString()),
@@ -139,6 +150,29 @@ class PostsService {
     }
     return models;
   }
+
+  Future<List<Map<String, dynamic>>> getPostsFromUser(String userId) async {
+    try {
+      final response = await supabase
+          .from('posts')
+          .select()
+          .eq('user_id', userId)
+          .order('created_at', ascending: false);
+      return List<Map<String, dynamic>>.from(response);
+    } catch (e) {
+      print('Error fetching posts from user: $e');
+      return [];
+    }
+  }
+}
+
+@riverpod
+Future<List<Map<String, dynamic>>> postsFromUserProvider(
+  Ref ref, {
+  required String userId,
+}) async {
+  final postsService = ref.read(postsServiceProvider);
+  return postsService.getPostsFromUser(userId);
 }
 
 @riverpod

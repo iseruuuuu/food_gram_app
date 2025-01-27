@@ -4,10 +4,12 @@ import 'package:food_gram_app/core/config/shared_preference/shared_preference.da
 import 'package:food_gram_app/core/data/supabase/auth/auth_state.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/router/amination.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_screen.dart';
 import 'package:food_gram_app/ui/screen/map/map_screen.dart';
 import 'package:food_gram_app/ui/screen/post/restaurant_screen.dart';
+import 'package:food_gram_app/ui/screen/profile/profile_screen.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
 import 'package:food_gram_app/ui/screen/setting/component/paywall_screen.dart';
 import 'package:food_gram_app/ui/screen/splash/tutorial_screen.dart';
@@ -117,6 +119,17 @@ final timeLineRouter = GoRoute(
             posts: model.posts,
             users: model.users,
           ),
+        );
+      },
+    ),
+    GoRoute(
+      path:
+          '${RouterPath.timeLine}/${RouterPath.timeLineDetail}/${RouterPath.timeLineProfile}',
+      name: RouterPath.timeLineProfile,
+      pageBuilder: (context, state) {
+        final users = state.extra! as Users;
+        return slideUpTransition(
+          ProfileScreen(users: users),
         );
       },
     ),
@@ -255,6 +268,17 @@ final mapRouter = GoRoute(
     ),
     GoRoute(
       path:
+          '${RouterPath.map}/${RouterPath.mapDetail}/${RouterPath.mapProfile}',
+      name: RouterPath.mapProfile,
+      pageBuilder: (context, state) {
+        final users = state.extra! as Users;
+        return slideUpTransition(
+          ProfileScreen(users: users),
+        );
+      },
+    ),
+    GoRoute(
+      path:
           '${RouterPath.map}/${RouterPath.mapDetail}/${RouterPath.mapDetailPost}',
       name: RouterPath.mapDetailPost,
       pageBuilder: (context, state) {
@@ -295,4 +319,6 @@ final class RouterPath {
   static const String timeLineDetailPost = 'time_line_detail_post';
   static const String myProfileDetailPost = 'my_profile_detail_post';
   static const String mapDetailPost = 'map_detail_post';
+  static const String mapProfile = 'map_profile';
+  static const String timeLineProfile = 'time_line_profile';
 }
