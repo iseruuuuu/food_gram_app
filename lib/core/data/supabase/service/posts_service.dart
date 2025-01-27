@@ -59,6 +59,7 @@ class PostsService {
       createdAt: DateTime.parse(postUserId['created_at']),
       updatedAt: DateTime.parse(postUserId['updated_at']),
       exchangedPoint: postUserId['exchanged_point'],
+      isSubscribe: postUserId['is_subscribe'],
     );
     return Model(users, posts);
   }
@@ -95,6 +96,7 @@ class PostsService {
       createdAt: DateTime.parse(postUserId['created_at']),
       updatedAt: DateTime.parse(postUserId['updated_at']),
       exchangedPoint: postUserId['exchanged_point'],
+      isSubscribe: postUserId['is_subscribe'],
     );
     models.add(Model(users, posts));
     final random = Random();
@@ -131,6 +133,7 @@ class PostsService {
         createdAt: DateTime.parse(postUserId['created_at']),
         updatedAt: DateTime.parse(postUserId['updated_at']),
         exchangedPoint: postUserId['exchanged_point'],
+        isSubscribe: postUserId['is_subscribe'],
       );
       models.add(Model(users, posts));
     }
