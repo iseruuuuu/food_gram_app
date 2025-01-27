@@ -48,7 +48,7 @@ class MapLibreController extends _$MapLibreController {
           await ref.read(getRestaurantProvider(lat: lat, lng: lng).future);
       openDialog(result);
       await controller.animateCamera(
-        CameraUpdate.newLatLngZoom(latLng, 16.5),
+        CameraUpdate.newLatLng(latLng),
         duration: Duration(seconds: 1),
       );
     });
