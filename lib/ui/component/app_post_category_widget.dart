@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_category_modal_sheet.dart';
 
-class PostCategoryWidget extends StatelessWidget {
-  const PostCategoryWidget({
+class AppPostCategoryWidget extends StatelessWidget {
+  const AppPostCategoryWidget({
     required this.tag,
     required this.category,
     required this.title,
