@@ -6,7 +6,7 @@ import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/app_icon.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
-import 'package:food_gram_app/ui/screen/authentication/new_account_view_model.dart';
+import 'package:food_gram_app/ui/screen/new_account/new_account_view_model.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';

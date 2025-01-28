@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/data/supabase/auth/account_service.dart';
-import 'package:food_gram_app/ui/screen/authentication/new_account_state.dart';
+import 'package:food_gram_app/ui/screen/new_account/new_account_state.dart';
 import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
