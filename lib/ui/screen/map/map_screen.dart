@@ -50,9 +50,7 @@ class MapScreen extends HookConsumerWidget {
                       context: context,
                     );
                 },
-                onMapClick: (_, __) {
-                  isTapPin.value = false;
-                },
+                onMapClick: (_, __) => isTapPin.value = false,
                 annotationOrder: const [AnnotationType.symbol],
                 key: ValueKey('mapWidget'),
                 myLocationEnabled: true,
@@ -75,9 +73,9 @@ class MapScreen extends HookConsumerWidget {
                 top: 40,
                 right: 10,
                 child: MapFloatingActionButton(
-                  onPressed: () {
-                    ref.read(mapLibreProvider.notifier).moveToCurrentLocation();
-                  },
+                  onPressed: () => ref
+                      .read(mapLibreProvider.notifier)
+                      .moveToCurrentLocation(),
                 ),
               ),
             ],
