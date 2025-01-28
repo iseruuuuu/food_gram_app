@@ -134,7 +134,7 @@ final timeLineRouter = GoRoute(
         final posts = model.map((m) => m.posts).toList();
         final users = model.map((m) => m.users).toList();
         return zoomTransition(
-          StoryPage(posts: posts, users: users),
+          StoryScreen(posts: posts, users: users),
         );
       },
     ),
