@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:food_gram_app/core/utils/email_validator.dart';
+import 'package:food_gram_app/core/utils/formatter/email_validator.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:gap/gap.dart';
 
