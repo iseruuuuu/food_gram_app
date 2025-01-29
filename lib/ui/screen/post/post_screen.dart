@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
+import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/core/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_post_category_widget.dart';
@@ -87,7 +87,7 @@ class PostScreen extends HookConsumerWidget {
                   if (result) {
                     context.pop(true);
                   } else {
-                    openErrorSnackBar(
+                    SnackBarHelper().openErrorSnackBar(
                       context,
                       state.status,
                       l10n.postError,

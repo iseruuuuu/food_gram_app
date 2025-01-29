@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/data/supabase/auth/auth_service.dart';
 import 'package:food_gram_app/core/utils/auth_manager.dart';
+import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/core/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_state.dart';
@@ -28,14 +28,14 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
 
   Future<void> login(BuildContext context) async {
     loading.state = true;
-    hideSnackBar(context);
+    SnackBarHelper().hideSnackBar(context);
     primaryFocus?.unfocus();
     if (emailTextField.text.isNotEmpty) {
       final result =
           await ref.read(authServiceProvider).login(emailTextField.text.trim());
       await result.when(
         success: (_) async {
-          openSuccessSnackBar(
+          SnackBarHelper().openSuccessSnackBar(
             context,
             L10n.of(context).loginSuccessful,
             L10n.of(context).emailAuthentication,
@@ -43,7 +43,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         },
         failure: (error) {
           logger.e(error);
-          openErrorSnackBar(
+          SnackBarHelper().openErrorSnackBar(
             context,
             L10n.of(context).emailAuthenticationFailure,
             authErrorManager(error, context),
@@ -51,7 +51,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         },
       );
     } else {
-      openErrorSnackBar(
+      SnackBarHelper().openErrorSnackBar(
         context,
         L10n.of(context).loginError,
         L10n.of(context).emailEmpty,
@@ -69,7 +69,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       },
       failure: (error) {
         logger.e(error);
-        openErrorSnackBar(
+        SnackBarHelper().openErrorSnackBar(
           context,
           L10n.of(context).loginError,
           L10n.of(context).error,
@@ -89,7 +89,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       },
       failure: (error) {
         logger.e(error);
-        openErrorSnackBar(
+        SnackBarHelper().openErrorSnackBar(
           context,
           L10n.of(context).loginError,
           L10n.of(context).error,

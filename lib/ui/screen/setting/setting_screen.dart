@@ -8,8 +8,8 @@ import 'package:food_gram_app/core/data/admob/admob_banner.dart';
 import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
+import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/core/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/core/utils/url_launch.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -314,7 +314,7 @@ class SettingScreen extends HookConsumerWidget {
                                           RouterPath.authentication,
                                         );
                                       } else {
-                                        openErrorSnackBar(
+                                        SnackBarHelper().openErrorSnackBar(
                                           context,
                                           l10n.logoutFailure,
                                           '',
@@ -339,7 +339,7 @@ class SettingScreen extends HookConsumerWidget {
                               )
                                   .then((value) {
                                 if (!value) {
-                                  openErrorSnackBar(
+                                  SnackBarHelper().openErrorSnackBar(
                                     context,
                                     l10n.accountDeletionFailure,
                                     '',
@@ -360,13 +360,13 @@ class SettingScreen extends HookConsumerWidget {
                                   .then(
                                 (isRestore) {
                                   if (isRestore) {
-                                    openSuccessSnackBar(
+                                    SnackBarHelper().openSuccessSnackBar(
                                       context,
                                       l10n.settingRestoreSuccessTitle,
                                       l10n.settingRestoreSuccessSubtitle,
                                     );
                                   } else {
-                                    openErrorSnackBar(
+                                    SnackBarHelper().openErrorSnackBar(
                                       context,
                                       l10n.settingRestoreFailureTitle,
                                       l10n.settingRestoreFailureSubtitle,

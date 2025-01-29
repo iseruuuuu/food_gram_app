@@ -5,10 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
-import 'package:food_gram_app/core/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/core/utils/url_launch.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
+import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_share_widget.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
@@ -134,7 +134,8 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                     if (posts.restaurant != '不明' && posts.restaurant != '自炊') {
                       await LaunchUrl().open(URL.go(posts.restaurant));
                     } else {
-                      openErrorSnackBar(context, l10n.postSearchError, '');
+                      SnackBarHelper()
+                          .openErrorSnackBar(context, l10n.postSearchError, '');
                     }
                   },
                   child: Row(
