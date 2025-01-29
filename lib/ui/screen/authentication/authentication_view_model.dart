@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/data/supabase/auth/auth_service.dart';
-import 'package:food_gram_app/core/utils/auth_manager.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -96,5 +95,14 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         );
       },
     );
+  }
+}
+
+String authErrorManager(String error, BuildContext context) {
+  switch (error) {
+    case 'Unable to validate email address: invalid format':
+      return L10n.of(context).authInvalidFormat;
+    default:
+      return L10n.of(context).authSocketException;
   }
 }
