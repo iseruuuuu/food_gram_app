@@ -10,8 +10,8 @@ import 'package:food_gram_app/core/data/supabase/post_stream.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/users.dart';
+import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/core/utils/url_launch.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
@@ -365,7 +365,8 @@ class DetailPostScreen extends HookConsumerWidget {
                             ),
                             AppDetailElevatedButton(
                               onPressed: () {
-                                LaunchUrl().open(URL.search(posts.restaurant));
+                                LaunchUrlHelper()
+                                    .open(URL.search(posts.restaurant));
                               },
                               title: l10n.detailMenuSearch,
                               icon: Icons.search,

@@ -1,6 +1,6 @@
 import 'package:url_launcher/url_launcher.dart';
 
-class LaunchUrl {
+class LaunchUrlHelper {
   Future<bool> open(String uri) async {
     final url = Uri.parse(uri);
     if (await canLaunchUrl(url)) {
