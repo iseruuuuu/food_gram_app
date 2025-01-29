@@ -5,7 +5,7 @@ import 'package:auth_buttons/auth_buttons.dart'
     show AppleAuthButton, AuthButtonStyle, GoogleAuthButton;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/utils/mixin/account_exist_mixin.dart';
+import 'package:food_gram_app/core/data/supabase/auth/account_service.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
@@ -20,7 +20,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:snow_fall_animation/snow_fall_animation.dart';
 
-class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
+class AuthenticationScreen extends HookConsumerWidget {
   const AuthenticationScreen({super.key});
 
   @override
@@ -175,7 +175,7 @@ class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
 
   Future<void> redirect(BuildContext context, WidgetRef ref) async {
     hideSnackBar(context);
-    if (!await doesAccountExist()) {
+    if (!await AccountService.isUserRegistered()) {
       context.pushReplacementNamed(RouterPath.tab);
     } else {
       context.pushReplacementNamed(RouterPath.newAccount);
