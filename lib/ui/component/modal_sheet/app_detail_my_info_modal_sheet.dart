@@ -5,10 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
-import 'package:food_gram_app/core/utils/common_dialog.dart';
 import 'package:food_gram_app/core/utils/share.dart';
 import 'package:food_gram_app/core/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/core/utils/url_launch.dart';
+import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_share_widget.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
@@ -177,7 +177,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                     ),
                   ),
                   onPressed: () async {
-                    openDialog(
+                    DialogHelper().openDialog(
                       title: l10n.dialogDeleteTitle,
                       text: '${l10n.dialogDeleteDescription1}'
                           '\n '

@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/data/admob/admob_banner.dart';
 import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
-import 'package:food_gram_app/core/utils/common_dialog.dart';
+import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/utils/share.dart';
 import 'package:food_gram_app/core/utils/snack_bar_manager.dart';
@@ -296,7 +296,7 @@ class SettingScreen extends HookConsumerWidget {
                             color: Colors.red,
                             title: l10n.settingsLogoutButton,
                             onTap: () {
-                              openLogoutDialog(
+                              DialogHelper().openLogoutDialog(
                                 title: l10n.dialogLogoutTitle,
                                 text: '${l10n.dialogLogoutDescription1}\n'
                                     '${l10n.dialogLogoutDescription2}',

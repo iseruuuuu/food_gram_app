@@ -8,7 +8,7 @@ import 'package:food_gram_app/core/data/admob/app_tracking_transparency.dart';
 import 'package:food_gram_app/core/data/purchase/purchase_provider.dart';
 import 'package:food_gram_app/core/data/supabase/block_list.dart';
 import 'package:food_gram_app/core/data/supabase/post_stream.dart';
-import 'package:food_gram_app/core/utils/common_dialog.dart';
+import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_error_widget.dart';
@@ -40,7 +40,7 @@ class TimeLineScreen extends HookConsumerWidget {
         });
         ref.read(appUpdateCheckerProvider.notifier).checkForceUpdate(
           openDialog: () {
-            forceUpdateDialog(context);
+            DialogHelper().forceUpdateDialog(context);
           },
         );
         return null;
