@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/data/supabase/auth/auth_service.dart';
+import 'package:food_gram_app/core/utils/auth_manager.dart';
+import 'package:food_gram_app/core/utils/provider/loading.dart';
+import 'package:food_gram_app/core/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_state.dart';
-import 'package:food_gram_app/utils/auth_manager.dart';
-import 'package:food_gram_app/utils/provider/loading.dart';
-import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'authentication_view_model.g.dart';

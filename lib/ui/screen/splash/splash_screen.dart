@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/utils/mixin/account_exist_mixin.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/utils/mixin/account_exist_mixin.dart';
 import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatefulWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/data/supabase/auth/account_service.dart';
+import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/edit/edit_state.dart';
-import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

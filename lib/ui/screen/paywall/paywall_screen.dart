@@ -5,13 +5,13 @@ import 'dart:ui';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
-import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
