@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/data/admob/admob_interstitial.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
-import 'package:food_gram_app/core/utils/share.dart';
+import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_share_widget.dart';
@@ -258,7 +258,7 @@ Future<void> captureAndShare({
     final filePath = '${tempDir.path}/shared_image.png';
     final file = File(filePath);
     await file.writeAsBytes(screenshotBytes);
-    await sharePosts([XFile(file.path)], shareText);
+    await ShareHelpers().sharePosts([XFile(file.path)], shareText);
   } finally {
     loading.value = false;
   }

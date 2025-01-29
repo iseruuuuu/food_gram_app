@@ -7,8 +7,8 @@ import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/data/admob/admob_banner.dart';
 import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
+import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/core/utils/share.dart';
 import 'package:food_gram_app/core/utils/snack_bar_manager.dart';
 import 'package:food_gram_app/core/utils/url_launch.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -86,9 +86,9 @@ class SettingScreen extends HookConsumerWidget {
                             title: l10n.settingsShareApp,
                             onTap: () {
                               if (Platform.isIOS) {
-                                shareNormal(URL.appleStore);
+                                ShareHelpers().shareNormal(URL.appleStore);
                               } else {
-                                shareNormal(URL.googleStore);
+                                ShareHelpers().shareNormal(URL.googleStore);
                               }
                             },
                           ),
