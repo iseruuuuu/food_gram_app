@@ -20,9 +20,10 @@ class SplashScreenState extends State<SplashScreen> {
 
   Future<void> redirect(BuildContext context) async {
     await Future.delayed(Duration());
-      context.pushReplacementNamed(RouterPath.newAccount);
     if (await AccountService.isUserRegistered()) {
       context.pushReplacementNamed(RouterPath.tab);
+    } else {
+      context.pushReplacementNamed(RouterPath.newAccount);
     }
   }
 
