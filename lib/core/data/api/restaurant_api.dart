@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/data/api/restaurant_search/google_restaurant_api.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
-import 'package:food_gram_app/core/utils/location.dart';
+import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'restaurant_api.g.dart';
