@@ -9,8 +9,8 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story/story_page_view.dart';
 
-class StoryPage extends StatelessWidget {
-  const StoryPage({
+class StoryScreen extends StatelessWidget {
+  const StoryScreen({
     required this.posts,
     required this.users,
     super.key,

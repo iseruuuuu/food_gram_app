@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/ui/screen/detail/detail_post_screen.dart';
-import 'package:food_gram_app/ui/screen/map/map_screen.dart';
-import 'package:food_gram_app/ui/screen/post/restaurant_screen.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
-import 'package:food_gram_app/ui/screen/splash/tutorial_screen.dart';
 import 'package:food_gram_app/widgetbook/ui/fake_data/fake_data.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 

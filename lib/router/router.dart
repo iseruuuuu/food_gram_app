@@ -6,14 +6,7 @@ import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/router/amination.dart';
-import 'package:food_gram_app/ui/screen/detail/detail_post_screen.dart';
-import 'package:food_gram_app/ui/screen/map/map_screen.dart';
-import 'package:food_gram_app/ui/screen/post/restaurant_screen.dart';
-import 'package:food_gram_app/ui/screen/profile/profile_screen.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
-import 'package:food_gram_app/ui/screen/setting/component/paywall_screen.dart';
-import 'package:food_gram_app/ui/screen/splash/tutorial_screen.dart';
-import 'package:food_gram_app/ui/screen/time_line/component/story_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -141,7 +134,7 @@ final timeLineRouter = GoRoute(
         final posts = model.map((m) => m.posts).toList();
         final users = model.map((m) => m.users).toList();
         return zoomTransition(
-          StoryPage(posts: posts, users: users),
+          StoryScreen(posts: posts, users: users),
         );
       },
     ),

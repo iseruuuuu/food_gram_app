@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/data/supabase/service/posts_service.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
-import 'package:food_gram_app/ui/screen/time_line/component/story_widget.dart';
+import 'package:food_gram_app/ui/component/app_story_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
 
@@ -40,7 +40,7 @@ class AppListView extends ConsumerWidget {
                     child: SizedBox(
                       width: double.infinity,
                       height: 100,
-                      child: StoryWidget(data: data),
+                      child: AppStoryWidget(data: data),
                     ),
                   ),
                 SliverGrid(
