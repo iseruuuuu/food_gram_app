@@ -132,7 +132,7 @@ class DetailPostScreen extends HookConsumerWidget {
                   Icons.menu,
                   color: Colors.black,
                 ),
-              )
+              ),
           ],
         ),
         body: SafeArea(

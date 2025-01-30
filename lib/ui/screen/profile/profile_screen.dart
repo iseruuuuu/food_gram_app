@@ -51,7 +51,8 @@ class ProfileScreen extends ConsumerWidget {
                 asyncValue: posts,
                 onErrorTap: () {
                   ref.invalidate(
-                      postsFromUserProviderProvider(userId: users.userId));
+                    postsFromUserProviderProvider(userId: users.userId),
+                  );
                 },
                 onData: (value) {
                   return AppListView(
