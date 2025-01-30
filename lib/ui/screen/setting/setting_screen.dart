@@ -16,9 +16,7 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_app_bar.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_setting_tile.dart';
-import 'package:food_gram_app/ui/component/dialog/app_dialog.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
-
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -153,22 +151,6 @@ class SettingScreen extends HookConsumerWidget {
                             title: l10n.settingsTutorial,
                             onTap: () {
                               context.pushNamed(RouterPath.settingTutorial);
-                            },
-                          ),
-                          AppSettingTile(
-                            icon: Icons.copyright_rounded,
-                            size: 32,
-                            color: Colors.deepPurpleAccent,
-                            title: l10n.settingsCredit,
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AppDialog(
-                                    title: l10n.settingsCredit,
-                                  );
-                                },
-                              );
                             },
                           ),
                         ],
