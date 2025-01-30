@@ -3,17 +3,17 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/data/api/restaurant_search/google_restaurant_api.dart';
+import 'package:food_gram_app/core/api/restaurant/services/google_restaurant_service.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'restaurant_api.g.dart';
+part 'restaurant_repository.g.dart';
 
 typedef PaginationList<T> = List<T>;
 
 @riverpod
-Future<PaginationList<Restaurant>> restaurantApi(
+Future<PaginationList<Restaurant>> restaurantRepository(
   Ref ref,
   String keyword,
 ) async {
@@ -25,7 +25,8 @@ Future<PaginationList<Restaurant>> restaurantApi(
   try {
     final restaurants = <Restaurant>[];
     final addedLocations = <String>{};
-    final google = await ref.read(googleRestaurantApiProvider(keyword).future);
+    final google =
+        await ref.read(googleRestaurantServicesProvider(keyword).future);
     void addUniqueRestaurants(List<Restaurant> source) {
       for (final restaurant in source) {
         final locationKey = '${restaurant.lat},${restaurant.lng}';
