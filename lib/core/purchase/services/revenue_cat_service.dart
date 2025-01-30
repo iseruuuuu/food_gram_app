@@ -7,10 +7,10 @@ import 'package:food_gram_app/main.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'purchase_provider.g.dart';
+part 'revenue_cat_service.g.dart';
 
 @riverpod
-class Purchase extends _$Purchase {
+class RevenueCatService extends _$RevenueCatService {
   bool isSubscribed = false;
   late Offerings offerings;
   final user = supabase.auth.currentUser?.id;
