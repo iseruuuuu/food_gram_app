@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'dio.g.dart';
+part 'dio_client.g.dart';
 
 @Riverpod(keepAlive: true)
-Dio dio(Ref ref) => Dio();
+Dio dioClient(Ref ref) => Dio();
