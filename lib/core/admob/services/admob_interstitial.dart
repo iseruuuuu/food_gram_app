@@ -1,58 +1,52 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
+import 'package:food_gram_app/core/admob/config/admob_config.dart';
 import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
-import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'admob_interstitial.g.dart';
 
-// プラットフォームに応じたInterstitial IDを取得
-String getAdmobInterstitialId() {
-  if (Platform.isAndroid) {
-    return kDebugMode
-        ? 'ca-app-pub-3940256099942544/1033173712' // Androidデモ用インタースティシャル広告ID
-        : Env.androidInterstitial;
-  } else if (Platform.isIOS) {
-    return kDebugMode
-        ? 'ca-app-pub-3940256099942544/1033173712' // iOSデモ用インタースティシャル広告ID
-        : Env.iOSInterstitial;
-  }
-  throw UnsupportedError('Unsupported platform');
-}
-
-// AdmobInterstitialの管理クラス
 class AdmobInterstitial {
-  AdmobInterstitial({required this.isSubscribed});
+  AdmobInterstitial({
+    required this.isSubscribed,
+    this.onAdStateChanged,
+  });
+
+  static const int maxLoadAttempts = 2;
+
+  final bool isSubscribed;
+
+  final void Function({required bool isReady})? onAdStateChanged;
 
   InterstitialAd? _interstitialAd;
   bool _isAdReady = false;
   int _loadAttempts = 0;
-  final bool isSubscribed;
+  bool _isAdShowing = false;
+  DateTime? _lastAdShowTime;
 
   bool get isAdReady => _isAdReady;
 
   void createAd() {
-    if (_isAdReady || _loadAttempts >= 2) {
+    if (_isAdReady || _loadAttempts >= maxLoadAttempts) {
       return;
     }
 
     InterstitialAd.load(
-      adUnitId: getAdmobInterstitialId(),
+      adUnitId: AdmobConfig.interstitialAdUnitId,
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
-          logger.d('Ad loaded successfully');
+          logger.d('Interstitial ad loaded successfully');
           _interstitialAd = ad;
           _isAdReady = true;
           _loadAttempts = 0;
+          onAdStateChanged?.call(isReady: true);
         },
         onAdFailedToLoad: (error) {
-          logger.e('Failed to load ad: $error');
+          logger.e('Interstitial ad failed to load: ${error.message}');
           _loadAttempts++;
-          if (_loadAttempts <= 2) {
+          if (_loadAttempts < maxLoadAttempts) {
             createAd();
           }
         },
@@ -61,10 +55,20 @@ class AdmobInterstitial {
   }
 
   Future<void> showAd({VoidCallback? onAdClosed}) async {
-    if (!_isAdReady || _interstitialAd == null) {
+    if (_isAdShowing || _interstitialAd == null) {
       logger.e('Attempted to show ad before it was ready');
       onAdClosed?.call();
       return;
+    }
+
+    // 前回の広告表示からの経過時間をチェック
+    if (_lastAdShowTime != null) {
+      final timeSinceLastAd = DateTime.now().difference(_lastAdShowTime!);
+      if (timeSinceLastAd < AdmobConfig.minInterstitialDuration) {
+        logger.i('Skipping ad due to minimum duration not met');
+        onAdClosed?.call();
+        return;
+      }
     }
 
     if (isSubscribed) {
@@ -91,13 +95,22 @@ class AdmobInterstitial {
       },
     );
 
-    await _interstitialAd!.show();
-    _interstitialAd = null;
-    _isAdReady = false;
+    try {
+      _isAdShowing = true;
+      _lastAdShowTime = DateTime.now();
+      await _interstitialAd!.show();
+    } on Exception catch (e) {
+      logger.e('Error showing interstitial ad: $e');
+    } finally {
+      _isAdShowing = false;
+    }
   }
 
   void dispose() {
     _interstitialAd?.dispose();
+    _interstitialAd = null;
+    _isAdReady = false;
+    _isAdShowing = false;
   }
 }
 
