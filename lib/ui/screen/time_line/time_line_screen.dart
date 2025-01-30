@@ -2,8 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/data/admob/app_tracking_transparency.dart';
 import 'package:food_gram_app/core/admob/services/admob_open.dart';
+import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
 import 'package:food_gram_app/core/data/purchase/purchase_provider.dart';
 import 'package:food_gram_app/core/data/supabase/block_list.dart';
 import 'package:food_gram_app/core/data/supabase/post_stream.dart';
@@ -26,7 +26,7 @@ class TimeLineScreen extends HookConsumerWidget {
     final homeMade = ref.watch(postHomeMadeStreamProvider);
     useEffect(
       () {
-        loadAppTrackingTransparency();
+        AdTrackingPermission().requestTracking();
         ref
             .read(purchaseProvider.notifier)
             .initInAppPurchase()
