@@ -1,7 +1,7 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
 import 'package:food_gram_app/core/data/supabase/post_stream.dart';
+import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_app_bar.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/admob/config/admob_config.dart';
-import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
+import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 /// バナー広告の状態を管理するプロバイダー

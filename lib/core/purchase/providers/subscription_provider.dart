@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/data/purchase/purchase_provider.dart';
+import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -12,7 +12,7 @@ Future<bool> subscription(
   Ref ref,
 ) async {
   try {
-    await ref.read(purchaseProvider.notifier).initInAppPurchase();
+    await ref.read(revenueCatServiceProvider.notifier).initInAppPurchase();
     // RevenueCatからCustomerInfoを取得
     final customerInfo = await Purchases.getCustomerInfo();
 
