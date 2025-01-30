@@ -3,8 +3,8 @@ import 'package:food_gram_app/core/data/supabase/block_list.dart';
 import 'package:food_gram_app/core/data/supabase/post/delete_service.dart';
 import 'package:food_gram_app/core/data/supabase/post_stream.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_state.dart';
-import 'package:food_gram_app/utils/provider/loading.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'detail_post_view_model.g.dart';

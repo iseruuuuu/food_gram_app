@@ -2,16 +2,16 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
 import 'package:food_gram_app/core/data/supabase/post_stream.dart';
-import 'package:food_gram_app/core/utils/async_value_group.dart';
+import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_app_bar.dart';
+import 'package:food_gram_app/ui/component/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
 import 'package:food_gram_app/ui/component/app_profile_button.dart';
 import 'package:food_gram_app/ui/component/app_skeleton.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_view_model.dart';
-import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -70,7 +70,7 @@ class MyProfileScreen extends ConsumerWidget {
                       'exchange point',
                       const Duration(seconds: 1),
                       () async {
-                        openComingSoonSnackBar(context);
+                        SnackBarHelper().openComingSoonSnackBar(context);
                       },
                     );
                   },

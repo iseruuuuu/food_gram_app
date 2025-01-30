@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/data/supabase/auth/account_service.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/utils/mixin/account_exist_mixin.dart';
 import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -11,7 +11,7 @@ class SplashScreen extends StatefulWidget {
   SplashScreenState createState() => SplashScreenState();
 }
 
-class SplashScreenState extends State<SplashScreen> with AccountExistMixin {
+class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     redirect(context);
@@ -20,10 +20,10 @@ class SplashScreenState extends State<SplashScreen> with AccountExistMixin {
 
   Future<void> redirect(BuildContext context) async {
     await Future.delayed(Duration());
-    if (!await doesAccountExist()) {
-      context.pushReplacementNamed(RouterPath.newAccount);
-    } else {
+    if (await AccountService.isUserRegistered()) {
       context.pushReplacementNamed(RouterPath.tab);
+    } else {
+      context.pushReplacementNamed(RouterPath.newAccount);
     }
   }
 

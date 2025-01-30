@@ -101,4 +101,14 @@ class AccountService {
       return Failure(error);
     }
   }
+
+  static Future<bool> isUserRegistered() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) {
+      return false;
+    }
+    final response =
+        await supabase.from('users').select().eq('user_id', user.id).count();
+    return response.data.isNotEmpty;
+  }
 }

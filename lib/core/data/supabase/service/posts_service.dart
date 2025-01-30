@@ -7,6 +7,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'posts_service.g.dart';
 
@@ -76,7 +77,9 @@ class PostsService {
   }
 
   Future<List<Model>> getRandomPosts(
-      List<Map<String, dynamic>> data, int index) async {
+    List<Map<String, dynamic>> data,
+    int index,
+  ) async {
     final models = <Model>[];
     final posts = Posts(
       id: int.parse(data[index]['id'].toString()),
@@ -159,7 +162,7 @@ class PostsService {
           .eq('user_id', userId)
           .order('created_at', ascending: false);
       return List<Map<String, dynamic>>.from(response);
-    } catch (e) {
+    } on PostgrestException catch (e) {
       print('Error fetching posts from user: $e');
       return [];
     }

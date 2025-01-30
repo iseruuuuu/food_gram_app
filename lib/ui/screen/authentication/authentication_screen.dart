@@ -5,6 +5,9 @@ import 'package:auth_buttons/auth_buttons.dart'
     show AppleAuthButton, AuthButtonStyle, GoogleAuthButton;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/data/supabase/auth/account_service.dart';
+import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
+import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/main.dart';
@@ -12,15 +15,12 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_view_model.dart';
-import 'package:food_gram_app/utils/mixin/account_exist_mixin.dart';
-import 'package:food_gram_app/utils/provider/loading.dart';
-import 'package:food_gram_app/utils/snack_bar_manager.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:snow_fall_animation/snow_fall_animation.dart';
 
-class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
+class AuthenticationScreen extends HookConsumerWidget {
   const AuthenticationScreen({super.key});
 
   @override
@@ -139,7 +139,7 @@ class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
                         if (Platform.isIOS) {
                           controller.loginApple(context);
                         } else {
-                          openErrorSnackBar(
+                          SnackBarHelper().openErrorSnackBar(
                             context,
                             L10n.of(context).appleLoginFailure,
                             '',
@@ -174,8 +174,8 @@ class AuthenticationScreen extends HookConsumerWidget with AccountExistMixin {
   }
 
   Future<void> redirect(BuildContext context, WidgetRef ref) async {
-    hideSnackBar(context);
-    if (!await doesAccountExist()) {
+    SnackBarHelper().hideSnackBar(context);
+    if (!await AccountService.isUserRegistered()) {
       context.pushReplacementNamed(RouterPath.tab);
     } else {
       context.pushReplacementNamed(RouterPath.newAccount);

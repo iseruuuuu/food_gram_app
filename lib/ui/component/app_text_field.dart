@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/utils/email_validator.dart';
 import 'package:gap/gap.dart';
 
 class AppSearchTextField extends StatelessWidget {
@@ -222,6 +221,14 @@ class AppAuthTextField extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+extension StringEx on String {
+  bool isValidEmail() {
+    return RegExp(
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
+    ).hasMatch(this);
   }
 }
 

@@ -163,7 +163,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
                             ? () async {
                                 if (!isFinishedTutorial) {
                                   await preference.setBool(
-                                      PreferenceKey.isFinishedTutorial);
+                                    PreferenceKey.isFinishedTutorial,
+                                  );
                                   context.go(RouterPath.splash);
                                 } else {
                                   context.pop();

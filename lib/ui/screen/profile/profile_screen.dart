@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/data/supabase/post_stream.dart';
 import 'package:food_gram_app/core/data/supabase/service/posts_service.dart';
 import 'package:food_gram_app/core/model/users.dart';
-import 'package:food_gram_app/core/utils/async_value_group.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
 import 'package:food_gram_app/ui/screen/profile/provider/profile_provider.dart';
@@ -51,7 +51,8 @@ class ProfileScreen extends ConsumerWidget {
                 asyncValue: posts,
                 onErrorTap: () {
                   ref.invalidate(
-                      postsFromUserProviderProvider(userId: users.userId));
+                    postsFromUserProviderProvider(userId: users.userId),
+                  );
                 },
                 onData: (value) {
                   return AppListView(

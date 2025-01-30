@@ -5,13 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
+import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
+import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
+import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
+import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_share_widget.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
-import 'package:food_gram_app/utils/common_dialog.dart';
-import 'package:food_gram_app/utils/share.dart';
-import 'package:food_gram_app/utils/snack_bar_manager.dart';
-import 'package:food_gram_app/utils/url_launch.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
@@ -85,7 +85,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                     final filePath = '${tempDir.path}/shared_image.png';
                     final file = File(filePath);
                     await file.writeAsBytes(screenshotBytes);
-                    await sharePosts(
+                    await ShareHelpers().sharePosts(
                       [XFile(file.path)],
                       '${posts.foodName} in ${posts.restaurant} \n#FoodGram',
                     );
@@ -132,9 +132,10 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                   onPressed: () async {
                     context.pop();
                     if (posts.restaurant != '不明' && posts.restaurant != '自炊') {
-                      await LaunchUrl().open(URL.go(posts.restaurant));
+                      await LaunchUrlHelper().open(URL.go(posts.restaurant));
                     } else {
-                      openErrorSnackBar(context, l10n.postSearchError, '');
+                      SnackBarHelper()
+                          .openErrorSnackBar(context, l10n.postSearchError, '');
                     }
                   },
                   child: Row(
@@ -177,7 +178,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                     ),
                   ),
                   onPressed: () async {
-                    openDialog(
+                    DialogHelper().openDialog(
                       title: l10n.dialogDeleteTitle,
                       text: '${l10n.dialogDeleteDescription1}'
                           '\n '

@@ -6,6 +6,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/data/admob/admob_banner.dart';
 import 'package:food_gram_app/core/data/purchase/subscription_provider.dart';
+import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
+import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
+import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
+import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
+import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_app_bar.dart';
@@ -13,11 +18,7 @@ import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_setting_tile.dart';
 import 'package:food_gram_app/ui/component/dialog/app_dialog.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
-import 'package:food_gram_app/utils/common_dialog.dart';
-import 'package:food_gram_app/utils/provider/loading.dart';
-import 'package:food_gram_app/utils/share.dart';
-import 'package:food_gram_app/utils/snack_bar_manager.dart';
-import 'package:food_gram_app/utils/url_launch.dart';
+
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -61,14 +62,14 @@ class SettingScreen extends HookConsumerWidget {
                             color: Colors.blue,
                             title: l10n.settingsDeveloper,
                             onTap: () {
-                              LaunchUrl().openSNSUrl(URL.sns);
+                              LaunchUrlHelper().openSNSUrl(URL.sns);
                             },
                           ),
                           AppSettingTile(
                             icon: FontAwesomeIcons.github,
                             title: l10n.settingsGithub,
                             onTap: () {
-                              LaunchUrl().openSNSUrl(URL.github);
+                              LaunchUrlHelper().openSNSUrl(URL.github);
                             },
                           ),
                           AppSettingTile(
@@ -85,9 +86,9 @@ class SettingScreen extends HookConsumerWidget {
                             title: l10n.settingsShareApp,
                             onTap: () {
                               if (Platform.isIOS) {
-                                shareNormal(URL.appleStore);
+                                ShareHelpers().shareNormal(URL.appleStore);
                               } else {
-                                shareNormal(URL.googleStore);
+                                ShareHelpers().shareNormal(URL.googleStore);
                               }
                             },
                           ),
@@ -117,7 +118,7 @@ class SettingScreen extends HookConsumerWidget {
                             size: 32,
                             title: l10n.settingsFaq,
                             onTap: () {
-                              LaunchUrl().open(URL.faq);
+                              LaunchUrlHelper().open(URL.faq);
                             },
                           ),
                           AppSettingTile(
@@ -125,7 +126,7 @@ class SettingScreen extends HookConsumerWidget {
                             color: Colors.indigoAccent,
                             title: l10n.settingsPrivacyPolicy,
                             onTap: () {
-                              LaunchUrl().open(URL.privacyPolicy);
+                              LaunchUrlHelper().open(URL.privacyPolicy);
                             },
                           ),
                           AppSettingTile(
@@ -133,7 +134,7 @@ class SettingScreen extends HookConsumerWidget {
                             color: Colors.deepPurpleAccent,
                             title: l10n.settingsTermsOfUse,
                             onTap: () {
-                              LaunchUrl().open(URL.termsOfUse);
+                              LaunchUrlHelper().open(URL.termsOfUse);
                             },
                           ),
                           AppSettingTile(
@@ -142,7 +143,7 @@ class SettingScreen extends HookConsumerWidget {
                             color: Colors.lightBlue,
                             title: l10n.settingsContact,
                             onTap: () {
-                              LaunchUrl().open(URL.contact);
+                              LaunchUrlHelper().open(URL.contact);
                             },
                           ),
                           AppSettingTile(
@@ -295,7 +296,7 @@ class SettingScreen extends HookConsumerWidget {
                             color: Colors.red,
                             title: l10n.settingsLogoutButton,
                             onTap: () {
-                              openLogoutDialog(
+                              DialogHelper().openLogoutDialog(
                                 title: l10n.dialogLogoutTitle,
                                 text: '${l10n.dialogLogoutDescription1}\n'
                                     '${l10n.dialogLogoutDescription2}',
@@ -313,7 +314,7 @@ class SettingScreen extends HookConsumerWidget {
                                           RouterPath.authentication,
                                         );
                                       } else {
-                                        openErrorSnackBar(
+                                        SnackBarHelper().openErrorSnackBar(
                                           context,
                                           l10n.logoutFailure,
                                           '',
@@ -332,13 +333,13 @@ class SettingScreen extends HookConsumerWidget {
                             color: Colors.red,
                             title: l10n.settingsDeleteAccountButton,
                             onTap: () {
-                              LaunchUrl()
+                              LaunchUrlHelper()
                                   .open(
                                 'https://forms.gle/B2cG3FEynh1tbfUdA',
                               )
                                   .then((value) {
                                 if (!value) {
-                                  openErrorSnackBar(
+                                  SnackBarHelper().openErrorSnackBar(
                                     context,
                                     l10n.accountDeletionFailure,
                                     '',
@@ -359,13 +360,13 @@ class SettingScreen extends HookConsumerWidget {
                                   .then(
                                 (isRestore) {
                                   if (isRestore) {
-                                    openSuccessSnackBar(
+                                    SnackBarHelper().openSuccessSnackBar(
                                       context,
                                       l10n.settingRestoreSuccessTitle,
                                       l10n.settingRestoreSuccessSubtitle,
                                     );
                                   } else {
-                                    openErrorSnackBar(
+                                    SnackBarHelper().openErrorSnackBar(
                                       context,
                                       l10n.settingRestoreFailureTitle,
                                       l10n.settingRestoreFailureSubtitle,
