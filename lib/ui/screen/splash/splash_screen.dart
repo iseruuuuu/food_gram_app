@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/core/data/supabase/auth/account_service.dart';
+import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:go_router/go_router.dart';
