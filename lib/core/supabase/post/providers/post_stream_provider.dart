@@ -3,22 +3,23 @@ import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.d
 import 'package:food_gram_app/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'post_stream.g.dart';
+part 'post_stream_provider.g.dart';
 
+/// フード全体の投稿のストリームを提供
 @riverpod
 Stream<List<Map<String, dynamic>>> postStream(Ref ref) {
   final blockList = ref.watch(blockListProvider).asData?.value ?? [];
   return _filteredPostStream(null, blockList);
 }
 
+/// 自炊投稿のストリームを提供
 @riverpod
-Stream<List<Map<String, dynamic>>> postHomeMadeStream(
-  Ref ref,
-) {
+Stream<List<Map<String, dynamic>>> postHomeMadeStream(Ref ref) {
   final blockList = ref.watch(blockListProvider).asData?.value ?? [];
   return _filteredPostStream('自炊', blockList);
 }
 
+/// 自分の投稿のストリームを提供
 @riverpod
 Stream<List<Map<String, dynamic>>> myPostStream(Ref ref) {
   final user = supabase.auth.currentUser?.id;
@@ -32,6 +33,7 @@ Stream<List<Map<String, dynamic>>> myPostStream(Ref ref) {
       .order('created_at');
 }
 
+/// 投稿のストリームをフィルタリングするヘルパー関数
 Stream<List<Map<String, dynamic>>> _filteredPostStream(
   String? restaurantFilter,
   List<String> blockList,
