@@ -1,6 +1,7 @@
 import 'package:food_gram_app/core/data/supabase/service/posts_service.dart';
-import 'package:food_gram_app/core/data/supabase/service/users_service.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
+import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -20,13 +21,23 @@ class MyProfileViewModel extends _$MyProfileViewModel {
   Future<void> getData() async {
     state = const MyProfileStateLoading();
     try {
-      final users = await ref.read(usersServiceProvider).getUsers();
-      final length = await ref.read(usersServiceProvider).getLength();
+      final results = await Future.wait([
+        ref.read(userRepositoryProvider.notifier).getCurrentUser(),
+        ref.read(userRepositoryProvider.notifier).getCurrentUserPostCount(),
+      ]);
       final heartAmount = await ref.read(postsServiceProvider).getHeartAmount();
-      state = MyProfileState.data(
-        users: Users.fromJson(users),
-        length: length,
-        heartAmount: heartAmount,
+      final userResult = results[0] as Result<Users, Exception>;
+      final postCountResult = results[1] as Result<int, Exception>;
+      userResult.when(
+        success: (users) => postCountResult.when(
+          success: (length) => state = MyProfileState.data(
+            users: users,
+            length: length,
+            heartAmount: heartAmount,
+          ),
+          failure: (_) => state = MyProfileStateError(),
+        ),
+        failure: (_) => state = MyProfileStateError(),
       );
     } on Exception catch (error) {
       logger.e(error);
