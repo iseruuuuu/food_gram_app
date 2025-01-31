@@ -1,4 +1,4 @@
-import 'package:food_gram_app/core/data/supabase/service/posts_service.dart';
+import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/ui/screen/profile/profile_ui_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -22,9 +22,17 @@ class ProfileProvider extends _$ProfileProvider {
         .getOtherUserPostCount(userId);
     await length.whenOrNull(
       success: (length) async {
-        final heartAmount =
-            await ref.read(postsServiceProvider).getOtherHeartAmount(userId);
-        state = state.copyWith(length: length, heartAmount: heartAmount);
+        final heartAmountResult = await ref
+            .read(postRepositoryProvider.notifier)
+            .getOtherHeartAmount(userId);
+        heartAmountResult.whenOrNull(
+          success: (heartAmount) {
+            state = state.copyWith(
+              length: length,
+              heartAmount: heartAmount,
+            );
+          },
+        );
       },
     );
   }

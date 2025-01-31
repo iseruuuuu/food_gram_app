@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/data/supabase/post_stream.dart';
-import 'package:food_gram_app/core/data/supabase/service/posts_service.dart';
 import 'package:food_gram_app/core/model/users.dart';
+import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/app_header.dart';
@@ -22,8 +22,7 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(profileProviderProvider(users.userId));
-    final posts =
-        ref.watch(postsFromUserProviderProvider(userId: users.userId));
+    final posts = ref.watch(profileRepositoryProvider(userId: users.userId));
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -51,7 +50,7 @@ class ProfileScreen extends ConsumerWidget {
                 asyncValue: posts,
                 onErrorTap: () {
                   ref.invalidate(
-                    postsFromUserProviderProvider(userId: users.userId),
+                    profileRepositoryProvider(userId: users.userId),
                   );
                 },
                 onData: (value) {
