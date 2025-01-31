@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/data/supabase/service/posts_service.dart';
+import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:go_router/go_router.dart';
@@ -49,13 +49,17 @@ class AppStoryWidget extends ConsumerWidget {
                   padding: EdgeInsets.all(3),
                   child: GestureDetector(
                     onTap: () async {
-                      final post = await ref
-                          .read(postsServiceProvider)
+                      //TODO 少し遷移が遅いかもしれない
+                      final modelListResult = await ref
+                          .read(postRepositoryProvider.notifier)
                           .getRandomPosts(data, randomIndex);
-                      await context.pushNamed(
-                        RouterPath.storyPage,
-                        extra: post,
-                      );
+                      await modelListResult.whenOrNull(
+                          success: (modelList) async {
+                        await context.pushNamed(
+                          RouterPath.storyPage,
+                          extra: modelList,
+                        );
+                      });
                     },
                     child: CircleAvatar(
                       radius: 36,

@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:food_gram_app/core/model/result.dart';
@@ -153,15 +152,30 @@ class PostService extends _$PostService {
         .order('created_at');
   }
 
-  /// ランダムな投稿を取得（指定した投稿以外から3件）
-  Future<List<Map<String, dynamic>>> getRandomPostsData(
+  /// ランダムな投稿を取得（指定した投稿）
+  Future<Map<String, dynamic>> getRandomPost(
     List<Map<String, dynamic>> data,
     int index,
   ) async {
-    final random = Random();
-    final remainingData = List<Map<String, dynamic>>.from(data)
-      ..removeAt(index);
-    return (remainingData..shuffle(random)).take(3).toList();
+    final dynamic postUserId = await supabase
+        .from('users')
+        .select()
+        .eq('user_id', data[index]['user_id'])
+        .single();
+    return postUserId;
+  }
+
+  /// ランダムな投稿を取得（指定した投稿以外から3件)
+  Future<dynamic> getRandomPosts(
+    List<Map<String, dynamic>> data,
+    int index,
+  ) async {
+    final dynamic postUserId = await supabase
+        .from('users')
+        .select()
+        .eq('user_id', data[index]['user_id'])
+        .single();
+    return postUserId;
   }
 
   /// マップ表示用の全投稿を取得
@@ -169,7 +183,7 @@ class PostService extends _$PostService {
     return supabase.from('posts').select().order('created_at');
   }
 
-    /// 特定ユーザーの投稿を取得
+  /// 特定ユーザーの投稿を取得
   Future<List<Map<String, dynamic>>> getPostsFromUser(String userId) async {
     return supabase
         .from('posts')

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/data/supabase/block_list.dart';
 import 'package:food_gram_app/core/model/model.dart';
@@ -88,20 +90,23 @@ class PostRepository extends _$PostRepository {
   ) async {
     try {
       final models = <Model>[];
-      final selectedPost = await getPost(data, index);
-      selectedPost.when(
-        success: models.add,
-        failure: (e) => throw e,
-      );
-      final randomData = await ref
+      final randomResult = await ref
           .read(postServiceProvider.notifier)
-          .getRandomPostsData(data, index);
+          .getRandomPost(data, index);
+      final post = Posts.fromJson(data[index]);
+      final user = Users.fromJson(randomResult);
+      models.add(Model(user, post));
+      final random = Random();
+      final remainingData = List<Map<String, dynamic>>.from(data)
+        ..removeAt(index);
+      final randomData = (remainingData..shuffle(random)).take(3).toList();
       for (final item in randomData) {
-        final post = Posts.fromJson(item);
-        final userData =
-            await ref.read(postServiceProvider.notifier).getPostData([item], 0);
-        final user = Users.fromJson(userData);
-        models.add(Model(user, post));
+        final posts = Posts.fromJson(item);
+        final result = await ref
+            .read(postServiceProvider.notifier)
+            .getRandomPosts(data, index);
+        final users = Users.fromJson(result);
+        models.add(Model(users, posts));
       }
       return Success(models);
     } on PostgrestException catch (e) {
