@@ -424,4 +424,19 @@ class L10nJa extends L10n {
 
   @override
   String get mapLoadingRestaurant => '店舗情報を取得中...';
+
+  @override
+  String get postMissingInfo => '必須項目を入力してください';
+
+  @override
+  String get postPhotoSuccess => '写真を追加しました';
+
+  @override
+  String get postCameraPermission => 'カメラの許可が必要です';
+
+  @override
+  String get postAlbumPermission => 'フォトライブラリの許可が必要です';
+
+  @override
+  String get postSuccess => '投稿が完了しました';
 }

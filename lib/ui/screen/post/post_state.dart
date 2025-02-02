@@ -8,8 +8,8 @@ class PostState with _$PostState {
     @Default('') String foodImage,
     @Default('場所を追加') String restaurant,
     @Default('') String status,
-    @Default(false) isSuccess,
-    @Default(0.0) lat,
-    @Default(0.0) lng,
+    @Default(false) bool isSuccess,
+    @Default(0.0) double lat,
+    @Default(0.0) double lng,
   }) = _PostState;
 }

@@ -929,6 +929,36 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'店舗情報を取得中...'**
   String get mapLoadingRestaurant;
+
+  /// No description provided for @postMissingInfo.
+  ///
+  /// In ja, this message translates to:
+  /// **'必須項目を入力してください'**
+  String get postMissingInfo;
+
+  /// No description provided for @postPhotoSuccess.
+  ///
+  /// In ja, this message translates to:
+  /// **'写真を追加しました'**
+  String get postPhotoSuccess;
+
+  /// No description provided for @postCameraPermission.
+  ///
+  /// In ja, this message translates to:
+  /// **'カメラの許可が必要です'**
+  String get postCameraPermission;
+
+  /// No description provided for @postAlbumPermission.
+  ///
+  /// In ja, this message translates to:
+  /// **'フォトライブラリの許可が必要です'**
+  String get postAlbumPermission;
+
+  /// No description provided for @postSuccess.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿が完了しました'**
+  String get postSuccess;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

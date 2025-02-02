@@ -138,5 +138,10 @@
   "forceUpdateText": "このアプリの新しいバージョンがリリースされました。最新の機能や安全な環境でご利用いただくために、アプリをアップデートしてください。",
   "forceUpdateButtonTitle": "アップデート",
   "mapLoadingError": "エラーが発生しました",
-  "mapLoadingRestaurant": "店舗情報を取得中..."
+  "mapLoadingRestaurant": "店舗情報を取得中...",
+  "postMissingInfo": "必須項目を入力してください",
+  "postPhotoSuccess": "写真を追加しました",
+  "postCameraPermission": "カメラの許可が必要です",
+  "postAlbumPermission": "フォトライブラリの許可が必要です",
+  "postSuccess": "投稿が完了しました"
 }

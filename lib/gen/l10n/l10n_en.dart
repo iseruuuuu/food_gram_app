@@ -424,4 +424,19 @@ class L10nEn extends L10n {
 
   @override
   String get mapLoadingRestaurant => 'Getting restaurant information...';
+
+  @override
+  String get postMissingInfo => 'Please fill in all required fields';
+
+  @override
+  String get postPhotoSuccess => 'Photo added successfully';
+
+  @override
+  String get postCameraPermission => 'Camera permission is required';
+
+  @override
+  String get postAlbumPermission => 'Photo library permission is required';
+
+  @override
+  String get postSuccess => 'Post successful';
 }

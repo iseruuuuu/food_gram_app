@@ -47,7 +47,6 @@ class PostScreen extends HookConsumerWidget {
       },
       [restaurant],
     );
-
     return GestureDetector(
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
@@ -91,8 +90,8 @@ class PostScreen extends HookConsumerWidget {
                   } else {
                     SnackBarHelper().openErrorSnackBar(
                       context,
-                      state.status,
                       l10n.postError,
+                      _getLocalizedStatus(context, state.status),
                     );
                   }
                 },
@@ -159,8 +158,9 @@ class PostScreen extends HookConsumerWidget {
                     ),
                     const Gap(28),
                     AppFoodTextField(
-                      controller:
-                          ref.read(postViewModelProvider().notifier).food,
+                      controller: ref
+                          .read(postViewModelProvider().notifier)
+                          .foodController,
                     ),
                     const Gap(28),
                     GestureDetector(
@@ -214,8 +214,9 @@ class PostScreen extends HookConsumerWidget {
                     ),
                     const Gap(28),
                     AppCommentTextField(
-                      controller:
-                          ref.read(postViewModelProvider().notifier).comment,
+                      controller: ref
+                          .read(postViewModelProvider().notifier)
+                          .commentController,
                     ),
                     const Gap(20),
                     Text(
@@ -251,5 +252,30 @@ class PostScreen extends HookConsumerWidget {
         ),
       ),
     );
+  }
+
+  String _getLocalizedStatus(BuildContext context, String status) {
+    final postStatus = PostStatus.values.firstWhere(
+      (e) => e.name == status,
+      orElse: () => PostStatus.initial,
+    );
+    switch (postStatus) {
+      case PostStatus.missingInfo:
+        return L10n.of(context).postMissingInfo;
+      case PostStatus.error:
+        return L10n.of(context).postError;
+      case PostStatus.photoSuccess:
+        return L10n.of(context).postPhotoSuccess;
+      case PostStatus.cameraPermission:
+        return L10n.of(context).postCameraPermission;
+      case PostStatus.albumPermission:
+        return L10n.of(context).postAlbumPermission;
+      case PostStatus.success:
+        return L10n.of(context).postSuccess;
+      case PostStatus.loading:
+        return 'Loading...';
+      case PostStatus.initial:
+        return '';
+    }
   }
 }

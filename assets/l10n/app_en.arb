@@ -138,5 +138,10 @@
   "forceUpdateText": "A new version of this app has been released. Please update the app to ensure the latest features and a secure environment.",
   "forceUpdateButtonTitle": "Update",
   "mapLoadingError": "An error occurred",
-  "mapLoadingRestaurant": "Getting restaurant information..."
+  "mapLoadingRestaurant": "Getting restaurant information...",
+  "postMissingInfo": "Please fill in all required fields",
+  "postPhotoSuccess": "Photo added successfully",
+  "postCameraPermission": "Camera permission is required",
+  "postAlbumPermission": "Photo library permission is required",
+  "postSuccess": "Post successful"
 }

@@ -15,34 +15,39 @@ part 'post_view_model.g.dart';
 
 @riverpod
 class PostViewModel extends _$PostViewModel {
+  static const defaultRestaurantText = '場所を追加';
+  static const _imageConfig = (maxSize: 960.0, quality: 100);
+
+  late final TextEditingController _foodController;
+  late final TextEditingController _commentController;
+  final _picker = ImagePicker();
+  String _uploadImage = '';
+  late Uint8List _imageBytes;
+
+  TextEditingController get foodController => _foodController;
+
+  TextEditingController get commentController => _commentController;
+
+  Loading get loading => ref.read(loadingProvider.notifier);
+
+  String get uploadImage => _uploadImage;
+
+  Uint8List get imageBytes => _imageBytes;
+
   @override
-  PostState build({
-    PostState initState = const PostState(),
-  }) {
-    ref.onDispose(() {
-      food.dispose();
-      comment.dispose();
-    });
+  PostState build({PostState initState = const PostState()}) {
+    _initializeControllers();
     return initState;
   }
 
-  final food = TextEditingController();
-  final comment = TextEditingController();
+  void _initializeControllers() {
+    _foodController = TextEditingController();
+    _commentController = TextEditingController();
 
-  Loading get loading => ref.read(loadingProvider.notifier);
-  final picker = ImagePicker();
-  String uploadImage = '';
-  late Uint8List imageBytes;
-
-  void loadRestaurant(Restaurant? restaurant) {
-    if (restaurant == null) {
-      return;
-    }
-    state = state.copyWith(
-      restaurant: restaurant.name,
-      lat: restaurant.lat,
-      lng: restaurant.lng,
-    );
+    ref.onDispose(() {
+      _foodController.dispose();
+      _commentController.dispose();
+    });
   }
 
   Future<bool> post({
@@ -51,123 +56,148 @@ class PostViewModel extends _$PostViewModel {
   }) async {
     primaryFocus?.unfocus();
     loading.state = true;
-    state = state.copyWith(status: 'Loading...');
-    if (food.text.isNotEmpty &&
-        state.restaurant != '場所を追加' &&
-        uploadImage != '') {
-      final result = await ref.read(postServiceProvider.notifier).post(
-            foodName: food.text,
-            comment: comment.text,
-            uploadImage: uploadImage,
-            imageBytes: imageBytes,
-            restaurant: state.restaurant,
-            lng: state.lng,
-            lat: state.lat,
-            restaurantTag: restaurantTag,
-            foodTag: foodTag,
-          );
-      await result.when(
-        success: (_) async {
-          state = state.copyWith(
-            status: 'Success 🎉',
-            isSuccess: true,
-          );
-        },
-        failure: (error) {
-          state = state.copyWith(
-            status: 'エラーが発生しました',
-            isSuccess: false,
-          );
-        },
-      );
+    state = state.copyWith(status: PostStatus.loading.name);
+    if (_isPostDataMissing()) {
       loading.state = false;
-      return state.isSuccess;
-    } else {
-      loading.state = false;
-      state = state.copyWith(status: '必要な情報が入力されていません');
+      state = state.copyWith(status: PostStatus.missingInfo.name);
       return false;
     }
+    await _submitPost(restaurantTag, foodTag);
+    loading.state = false;
+    return state.isSuccess;
   }
 
   Future<bool> camera() async {
+    return _pickImage(
+      ImageSource.camera,
+      PostStatus.cameraPermission.name,
+    );
+  }
+
+  Future<bool> album() async {
+    return _pickImage(
+      ImageSource.gallery,
+      PostStatus.albumPermission.name,
+    );
+  }
+
+  void loadRestaurant(Restaurant? restaurant) {
+    if (restaurant == null) {
+      return;
+    }
+    _updateRestaurantState(restaurant);
+  }
+
+  void getPlace(Restaurant restaurant) {
+    _updateRestaurantState(restaurant);
+  }
+
+  Future<void> _submitPost(String restaurantTag, String foodTag) async {
+    final result = await ref.read(postServiceProvider.notifier).post(
+          foodName: foodController.text,
+          comment: commentController.text,
+          uploadImage: _uploadImage,
+          imageBytes: _imageBytes,
+          restaurant: state.restaurant,
+          lng: state.lng,
+          lat: state.lat,
+          restaurantTag: restaurantTag,
+          foodTag: foodTag,
+        );
+    await result.when(
+      success: (_) async {
+        state = state.copyWith(
+          status: PostStatus.success.name,
+          isSuccess: true,
+        );
+      },
+      failure: (error) {
+        state = state.copyWith(
+          status: PostStatus.error.name,
+          isSuccess: false,
+        );
+      },
+    );
+  }
+
+  bool _isPostDataMissing() {
+    return foodController.text.isEmpty ||
+        state.restaurant == defaultRestaurantText ||
+        _uploadImage.isEmpty;
+  }
+
+  Future<bool> _pickImage(ImageSource source, String errorMessage) async {
     try {
-      final image = await ImagePicker().pickImage(
-        source: ImageSource.camera,
-        maxHeight: 960,
-        maxWidth: 960,
-        imageQuality: 100,
+      final image = await _picker.pickImage(
+        source: source,
+        maxHeight: _imageConfig.maxSize,
+        maxWidth: _imageConfig.maxSize,
+        imageQuality: _imageConfig.quality,
       );
       if (image == null) {
         return false;
       }
       final cropImage = await _cropImage(image);
-      imageBytes = await cropImage.readAsBytes();
-      uploadImage = cropImage.path;
-      state = state.copyWith(
-        foodImage: cropImage.path,
-        status: '写真の添付が成功しました',
-      );
+      await _processImage(cropImage);
       return true;
     } on PlatformException catch (error) {
       logger.e(error.message);
-      state = state.copyWith(status: 'カメラへのアクセス許可が必要です');
+      state = state.copyWith(status: errorMessage);
       return false;
     }
   }
 
-  Future<bool> album() async {
-    try {
-      final image = await ImagePicker().pickImage(
-        source: ImageSource.gallery,
-        maxHeight: 960,
-        maxWidth: 960,
-        imageQuality: 100,
-      );
-      if (image == null) {
-        return false;
-      }
-      final cropImage = await _cropImage(image);
-      imageBytes = await cropImage.readAsBytes();
-      uploadImage = cropImage.path;
-      state = state.copyWith(
-        foodImage: cropImage.path,
-        status: '写真の添付が成功しました',
-      );
-      return true;
-    } on PlatformException catch (error) {
-      logger.e(error.message);
-      state = state.copyWith(status: 'アルバムへのアクセス許可が必要です');
-      return false;
-    }
+  Future<void> _processImage(File cropImage) async {
+    _imageBytes = await cropImage.readAsBytes();
+    _uploadImage = cropImage.path;
+    state = state.copyWith(
+      foodImage: cropImage.path,
+      status: PostStatus.photoSuccess.name,
+    );
   }
 
   Future<File> _cropImage(XFile image) async {
     final croppedFile = await ImageCropper().cropImage(
       sourcePath: image.path,
-      uiSettings: [
-        AndroidUiSettings(
-          toolbarColor: Colors.blue,
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: false,
-          hideBottomControls: false,
-        ),
-        IOSUiSettings(
-          cancelButtonTitle: 'Cancel',
-          doneButtonTitle: 'Done',
-          hidesNavigationBar: false,
-          showCancelConfirmationDialog: true,
-        ),
-      ],
+      uiSettings: _getCropperSettings(),
     );
     return File(croppedFile!.path);
   }
 
-  void getPlace(Restaurant restaurant) {
+  void _updateRestaurantState(Restaurant restaurant) {
     state = state.copyWith(
       restaurant: restaurant.name,
       lat: restaurant.lat,
       lng: restaurant.lng,
     );
   }
+
+  List<PlatformUiSettings> _getCropperSettings() {
+    return [
+      AndroidUiSettings(
+        toolbarColor: Colors.blue,
+        toolbarWidgetColor: Colors.white,
+        initAspectRatio: CropAspectRatioPreset.original,
+        lockAspectRatio: false,
+        hideBottomControls: false,
+      ),
+      IOSUiSettings(
+        cancelButtonTitle: 'Cancel',
+        doneButtonTitle: 'Done',
+        hidesNavigationBar: false,
+        showCancelConfirmationDialog: true,
+      ),
+    ];
+  }
+}
+
+enum PostStatus {
+  missingInfo,
+  error,
+  photoSuccess,
+  cameraPermission,
+  albumPermission,
+  success,
+  loading,
+  initial,
 }
