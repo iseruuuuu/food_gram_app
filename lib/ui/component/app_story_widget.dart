@@ -49,7 +49,6 @@ class AppStoryWidget extends ConsumerWidget {
                   padding: EdgeInsets.all(3),
                   child: GestureDetector(
                     onTap: () async {
-                      //TODO 少し遷移が遅いかもしれない
                       final modelListResult = await ref
                           .read(postRepositoryProvider.notifier)
                           .getRandomPosts(data, randomIndex);
