@@ -1,8 +1,8 @@
-import 'package:food_gram_app/core/config/shared_preference/shared_preference.dart';
-import 'package:food_gram_app/core/data/supabase/block_list.dart';
-import 'package:food_gram_app/core/data/supabase/post/delete_service.dart';
-import 'package:food_gram_app/core/data/supabase/post_stream.dart';
+import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
+import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/supabase/post/services/delete_service.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -23,7 +23,7 @@ class DetailPostViewModel extends _$DetailPostViewModel {
 
   Future<bool> delete(Posts posts) async {
     loading.state = true;
-    final result = await ref.read(deleteServiceProvider).delete(posts);
+    final result = await ref.read(deleteServiceProvider.notifier).delete(posts);
     await result.when(
       success: (_) async {
         state = state.copyWith(isSuccess: true);

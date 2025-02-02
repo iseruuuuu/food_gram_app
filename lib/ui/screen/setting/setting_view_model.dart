@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:battery_info/battery_info_plugin.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/core/data/purchase/purchase_provider.dart';
-import 'package:food_gram_app/core/data/supabase/auth/auth_service.dart';
+import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
+import 'package:food_gram_app/core/supabase/auth/services/auth_service.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_state.dart';
@@ -92,20 +92,24 @@ class SettingViewModel extends _$SettingViewModel {
 
   Future<bool> purchase() async {
     loading.state = true;
-    final result = await ref
-        .read(purchaseProvider.notifier)
-        .makePurchase('FoodGramのメンバーシップ');
-    loading.state = false;
-    return result;
+    try {
+      return await ref
+          .read(revenueCatServiceProvider.notifier)
+          .makePurchase('FoodGramのメンバーシップ');
+    } finally {
+      loading.state = false;
+    }
   }
 
   Future<bool> restore() async {
     loading.state = true;
-    final result = await ref
-        .read(purchaseProvider.notifier)
-        .restorePurchase('foodgram_premium_membership');
-    loading.state = false;
-    return result;
+    try {
+      return await ref
+          .read(revenueCatServiceProvider.notifier)
+          .restorePurchase('foodgram_premium_membership');
+    } finally {
+      loading.state = false;
+    }
   }
 
   Future<bool> signOut() async {

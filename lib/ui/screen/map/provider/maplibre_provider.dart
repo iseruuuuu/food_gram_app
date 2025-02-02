@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:food_gram_app/core/data/supabase/service/posts_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -25,7 +25,7 @@ class MapLibre extends _$MapLibre {
     await controller.addImage('pin', list);
     final symbols = <SymbolOptions>[];
     final iconSize = _calculateIconSize(context);
-    ref.read(mapServiceProvider).whenOrNull(
+    ref.read(mapRepositoryProvider).whenOrNull(
       data: (value) {
         for (var i = 0; i < value.length; i++) {
           symbols.add(
@@ -44,9 +44,10 @@ class MapLibre extends _$MapLibre {
       final latLng = symbol.options.geometry;
       final lat = latLng!.latitude;
       final lng = latLng.longitude;
-      final result =
-          await ref.read(getRestaurantProvider(lat: lat, lng: lng).future);
-      openDialog(result);
+      final restaurant = await ref
+          .read(postRepositoryProvider.notifier)
+          .getRestaurantPosts(lat: lat, lng: lng);
+      openDialog(restaurant);
       await controller.animateCamera(
         CameraUpdate.newLatLng(latLng),
         duration: Duration(seconds: 1),

@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/data/supabase/block_list.dart';
-import 'package:food_gram_app/core/data/supabase/post_stream.dart';
-import 'package:food_gram_app/core/data/supabase/service/users_service.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
+import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:gap/gap.dart';
@@ -38,22 +38,26 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
                   'click detail',
                   Duration.zero,
                   () async {
-                    final postUsers = await ref
-                        .read(usersServiceProvider)
-                        .getUsersFromPost(post[index]!);
-                    final model = Model(postUsers, post[index]!);
-                    await context
-                        .pushNamed(
-                      RouterPath.mapDetail,
-                      extra: model,
-                    )
-                        .then((value) {
-                      if (value != null) {
-                        ref
-                          ..invalidate(postStreamProvider)
-                          ..invalidate(blockListProvider);
-                      }
-                    });
+                    final userResult = await ref
+                        .read(userRepositoryProvider.notifier)
+                        .getUserFromPost(post[index]!);
+                    await userResult.whenOrNull(
+                      success: (postUsers) async {
+                        final model = Model(postUsers, post[index]!);
+                        await context
+                            .pushNamed(
+                          RouterPath.mapDetail,
+                          extra: model,
+                        )
+                            .then((value) {
+                          if (value != null) {
+                            ref
+                              ..invalidate(postStreamProvider)
+                              ..invalidate(blockListProvider);
+                          }
+                        });
+                      },
+                    );
                   },
                 );
               },

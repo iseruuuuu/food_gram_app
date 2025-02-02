@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/data/api/restaurant_api.dart';
+import 'package:food_gram_app/core/api/restaurant/repository/restaurant_repository.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_async_value_group.dart';
@@ -16,7 +16,7 @@ class RestaurantScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final keyword = useState('');
-    final restaurant = ref.watch(restaurantApiProvider(keyword.value));
+    final restaurant = ref.watch(restaurantRepositoryProvider(keyword.value));
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
@@ -93,7 +93,7 @@ class RestaurantScreen extends HookConsumerWidget {
               child: AsyncValueSwitcher(
                 asyncValue: restaurant,
                 onErrorTap: () {
-                  ref.invalidate(restaurantApiProvider(keyword.value));
+                  ref.invalidate(restaurantRepositoryProvider(keyword.value));
                 },
                 onData: (value) {
                   return value.isNotEmpty

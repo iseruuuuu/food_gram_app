@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/data/supabase/service/posts_service.dart';
+import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
 import 'package:food_gram_app/ui/component/app_story_widget.dart';
@@ -56,16 +56,20 @@ class AppListView extends ConsumerWidget {
                             'click_detail',
                             const Duration(milliseconds: 200),
                             () async {
-                              final post = await ref
-                                  .read(postsServiceProvider)
+                              final postResult = await ref
+                                  .read(postRepositoryProvider.notifier)
                                   .getPost(data, index);
-                              final result = await context.pushNamed(
-                                routerPath,
-                                extra: post,
+                              await postResult.whenOrNull(
+                                success: (model) async {
+                                  final result = await context.pushNamed(
+                                    routerPath,
+                                    extra: model,
+                                  );
+                                  if (result != null) {
+                                    refresh();
+                                  }
+                                },
                               );
-                              if (result != null) {
-                                refresh();
-                              }
                             },
                           );
                         },

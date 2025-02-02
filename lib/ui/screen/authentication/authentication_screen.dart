@@ -5,7 +5,7 @@ import 'package:auth_buttons/auth_buttons.dart'
     show AppleAuthButton, AuthButtonStyle, GoogleAuthButton;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/data/supabase/auth/account_service.dart';
+import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
