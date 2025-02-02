@@ -6,7 +6,7 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
-import 'package:food_gram_app/ui/screen/profile/provider/profile_provider.dart';
+import 'package:food_gram_app/ui/screen/profile/profile_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -21,7 +21,7 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(profileProviderProvider(users.userId));
+    final state = ref.watch(profileViewModelProvider(users.userId));
     final posts = ref.watch(profileRepositoryProvider(userId: users.userId));
     return DefaultTabController(
       length: 2,
@@ -33,7 +33,7 @@ class ProfileScreen extends ConsumerWidget {
           elevation: 0,
           leading: GestureDetector(
             onTap: context.pop,
-            child: Icon(Icons.close, size: 30),
+            child: const Icon(Icons.close, size: 30),
           ),
         ),
         body: Column(

@@ -11,7 +11,7 @@ import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_post_category_widget.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
-import 'package:food_gram_app/ui/screen/post/provider/post_screen_state_provider.dart';
+import 'package:food_gram_app/ui/screen/post/post_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -30,8 +30,7 @@ class PostScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
     final deviceWidth = MediaQuery.of(context).size.width;
-    final state = ref.watch(postScreenStateProvider());
-    final notifier = ref.read(postScreenStateProvider().notifier);
+    final state = ref.watch(postViewModelProvider());
     final loading = ref.watch(loadingProvider);
     final countryTag = useState('');
     final foodTag = useState('');
@@ -39,14 +38,15 @@ class PostScreen extends HookConsumerWidget {
       () {
         if (restaurant != null) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            notifier.loadRestaurant(restaurant);
+            ref
+                .read(postViewModelProvider().notifier)
+                .loadRestaurant(restaurant);
           });
         }
         return null;
       },
       [restaurant],
     );
-
     return GestureDetector(
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
@@ -80,17 +80,18 @@ class PostScreen extends HookConsumerWidget {
             if (!loading)
               TextButton(
                 onPressed: () async {
-                  final result = await notifier.post(
-                    restaurantTag: countryTag.value,
-                    foodTag: foodTag.value,
-                  );
+                  final result =
+                      await ref.read(postViewModelProvider().notifier).post(
+                            restaurantTag: countryTag.value,
+                            foodTag: foodTag.value,
+                          );
                   if (result) {
                     context.pop(true);
                   } else {
                     SnackBarHelper().openErrorSnackBar(
                       context,
-                      state.status,
                       l10n.postError,
+                      _getLocalizedStatus(context, state.status),
                     );
                   }
                 },
@@ -121,10 +122,14 @@ class PostScreen extends HookConsumerWidget {
                             builder: (context) {
                               return AppPostImageModalSheet(
                                 camera: () async {
-                                  await notifier.camera();
+                                  await ref
+                                      .read(postViewModelProvider().notifier)
+                                      .camera();
                                 },
                                 album: () async {
-                                  await notifier.album();
+                                  await ref
+                                      .read(postViewModelProvider().notifier)
+                                      .album();
                                 },
                               );
                             },
@@ -152,14 +157,20 @@ class PostScreen extends HookConsumerWidget {
                       ),
                     ),
                     const Gap(28),
-                    AppFoodTextField(controller: notifier.food),
+                    AppFoodTextField(
+                      controller: ref
+                          .read(postViewModelProvider().notifier)
+                          .foodController,
+                    ),
                     const Gap(28),
                     GestureDetector(
                       onTap: () async {
                         primaryFocus?.unfocus();
                         final result = await context.pushNamed(routerPath);
                         if (result != null) {
-                          notifier.getPlace(result as Restaurant);
+                          ref
+                              .read(postViewModelProvider().notifier)
+                              .getPlace(result as Restaurant);
                         }
                       },
                       child: ListTile(
@@ -202,7 +213,11 @@ class PostScreen extends HookConsumerWidget {
                       ),
                     ),
                     const Gap(28),
-                    AppCommentTextField(controller: notifier.comment),
+                    AppCommentTextField(
+                      controller: ref
+                          .read(postViewModelProvider().notifier)
+                          .commentController,
+                    ),
                     const Gap(20),
                     Text(
                       l10n.postCategoryTitle,
@@ -237,5 +252,30 @@ class PostScreen extends HookConsumerWidget {
         ),
       ),
     );
+  }
+
+  String _getLocalizedStatus(BuildContext context, String status) {
+    final postStatus = PostStatus.values.firstWhere(
+      (e) => e.name == status,
+      orElse: () => PostStatus.initial,
+    );
+    switch (postStatus) {
+      case PostStatus.missingInfo:
+        return L10n.of(context).postMissingInfo;
+      case PostStatus.error:
+        return L10n.of(context).postError;
+      case PostStatus.photoSuccess:
+        return L10n.of(context).postPhotoSuccess;
+      case PostStatus.cameraPermission:
+        return L10n.of(context).postCameraPermission;
+      case PostStatus.albumPermission:
+        return L10n.of(context).postAlbumPermission;
+      case PostStatus.success:
+        return L10n.of(context).postSuccess;
+      case PostStatus.loading:
+        return 'Loading...';
+      case PostStatus.initial:
+        return '';
+    }
   }
 }

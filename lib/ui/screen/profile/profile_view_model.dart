@@ -1,16 +1,16 @@
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
-import 'package:food_gram_app/ui/screen/profile/profile_ui_state.dart';
+import 'package:food_gram_app/ui/screen/profile/profile_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'profile_provider.g.dart';
+part 'profile_view_model.g.dart';
 
 @riverpod
-class ProfileProvider extends _$ProfileProvider {
+class ProfileViewModel extends _$ProfileViewModel {
   @override
-  ProfileUiState build(
+  ProfileState build(
     String userId, {
-    ProfileUiState initState = const ProfileUiState(),
+    ProfileState initState = const ProfileState(),
   }) {
     getData(userId);
     return initState;
