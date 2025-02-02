@@ -917,6 +917,18 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'アップデート'**
   String get forceUpdateButtonTitle;
+
+  /// No description provided for @mapLoadingError.
+  ///
+  /// In ja, this message translates to:
+  /// **'エラーが発生しました'**
+  String get mapLoadingError;
+
+  /// No description provided for @mapLoadingRestaurant.
+  ///
+  /// In ja, this message translates to:
+  /// **'店舗情報を取得中...'**
+  String get mapLoadingRestaurant;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

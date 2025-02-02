@@ -418,4 +418,10 @@ class L10nEn extends L10n {
 
   @override
   String get forceUpdateButtonTitle => 'Update';
+
+  @override
+  String get mapLoadingError => 'An error occurred';
+
+  @override
+  String get mapLoadingRestaurant => 'Getting restaurant information...';
 }

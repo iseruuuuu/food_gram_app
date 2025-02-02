@@ -418,4 +418,10 @@ class L10nJa extends L10n {
 
   @override
   String get forceUpdateButtonTitle => 'アップデート';
+
+  @override
+  String get mapLoadingError => 'エラーが発生しました';
+
+  @override
+  String get mapLoadingRestaurant => '店舗情報を取得中...';
 }

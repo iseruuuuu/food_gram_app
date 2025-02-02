@@ -6,8 +6,9 @@ import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/ui/component/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/app_floating_button.dart';
+import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
-import 'package:food_gram_app/ui/screen/map/provider/maplibre_provider.dart';
+import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -20,68 +21,85 @@ class MapScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mapLibreController = ref.watch(mapLibreProvider.notifier);
+    final state = ref.watch(mapViewModelProvider);
+    final controller = ref.watch(mapViewModelProvider.notifier);
     final location = ref.watch(locationProvider);
     final mapService = ref.watch(mapRepositoryProvider);
     final isTapPin = useState(false);
     final post = useState<List<Posts?>>([]);
     return Scaffold(
       backgroundColor: Colors.white,
-      body: AsyncValueSwitcher(
-        asyncValue: AsyncValueGroup.group2(location, mapService),
-        onErrorTap: () {
-          ref
-            ..invalidate(locationProvider)
-            ..invalidate(postRepositoryProvider);
-        },
-        onData: (value) {
-          return Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              MapLibreMap(
-                onMapCreated: (mapLibre) {
-                  mapLibreController
-                    ..controller = mapLibre
-                    ..setPin(
-                      openDialog: (posts) {
-                        isTapPin.value = true;
-                        post.value = posts;
-                      },
-                      context: context,
-                    );
-                },
-                onMapClick: (_, __) => isTapPin.value = false,
-                annotationOrder: const [AnnotationType.symbol],
-                key: ValueKey('mapWidget'),
-                myLocationEnabled: true,
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(
-                    value.$1.latitude,
-                    value.$1.longitude,
+      body: Stack(
+        children: [
+          AsyncValueSwitcher(
+            asyncValue: AsyncValueGroup.group2(location, mapService),
+            onErrorTap: () {
+              ref
+                ..invalidate(locationProvider)
+                ..invalidate(postRepositoryProvider);
+            },
+            onData: (value) {
+              return Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  MapLibreMap(
+                    onMapCreated: (mapLibre) {
+                      controller.setMapController(
+                        mapLibre,
+                        onPinTap: (posts) {
+                          isTapPin.value = true;
+                          post.value = posts;
+                        },
+                        iconSize: _calculateIconSize(context),
+                      );
+                    },
+                    onMapClick: (_, __) => isTapPin.value = false,
+                    annotationOrder: const [AnnotationType.symbol],
+                    key: ValueKey('mapWidget'),
+                    myLocationEnabled: true,
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(
+                        value.$1.latitude,
+                        value.$1.longitude,
+                      ),
+                      zoom: 14,
+                    ),
+                    trackCameraPosition: true,
+                    tiltGesturesEnabled: false,
+                    styleString: '$styleUrl?key=$apiKey',
                   ),
-                  zoom: 14,
-                ),
-                trackCameraPosition: true,
-                tiltGesturesEnabled: false,
-                styleString: '$styleUrl?key=$apiKey',
-              ),
-              Visibility(
-                visible: isTapPin.value,
-                child: AppMapRestaurantModalSheet(post: post.value),
-              ),
-              Positioned(
-                top: 40,
-                right: 10,
-                child: MapFloatingActionButton(
-                  onPressed: () => ref
-                      .read(mapLibreProvider.notifier)
-                      .moveToCurrentLocation(),
-                ),
-              ),
-            ],
-          );
-        },
+                  Visibility(
+                    visible: isTapPin.value,
+                    child: AppMapRestaurantModalSheet(post: post.value),
+                  ),
+                  Positioned(
+                    top: 40,
+                    right: 10,
+                    child: MapFloatingActionButton(
+                      onPressed: controller.moveToCurrentLocation,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          AppMapLoading(
+            loading: state.isLoading,
+            hasError: state.hasError,
+          ),
+        ],
       ),
     );
+  }
+}
+
+double _calculateIconSize(BuildContext context) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  if (screenWidth <= 375) {
+    return 0.4;
+  } else if (screenWidth < 720) {
+    return 0.6;
+  } else {
+    return 0.8;
   }
 }
