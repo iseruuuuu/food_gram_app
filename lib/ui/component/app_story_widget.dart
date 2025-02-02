@@ -53,12 +53,13 @@ class AppStoryWidget extends ConsumerWidget {
                           .read(postRepositoryProvider.notifier)
                           .getRandomPosts(data, randomIndex);
                       await modelListResult.whenOrNull(
-                          success: (modelList) async {
-                        await context.pushNamed(
-                          RouterPath.storyPage,
-                          extra: modelList,
-                        );
-                      });
+                        success: (modelList) async {
+                          await context.pushNamed(
+                            RouterPath.storyPage,
+                            extra: modelList,
+                          );
+                        },
+                      );
                     },
                     child: CircleAvatar(
                       radius: 36,
