@@ -155,32 +155,6 @@ class PostService extends _$PostService {
         .order('created_at');
   }
 
-  /// ランダムな投稿を取得（指定した投稿）
-  Future<Map<String, dynamic>> getRandomPost(
-    List<Map<String, dynamic>> data,
-    int index,
-  ) async {
-    final dynamic postUserId = await supabase
-        .from('users')
-        .select()
-        .eq('user_id', data[index]['user_id'])
-        .single();
-    return postUserId;
-  }
-
-  /// ランダムな投稿を取得（指定した投稿以外から3件)
-  Future<dynamic> getRandomPosts(
-    List<Map<String, dynamic>> data,
-    int index,
-  ) async {
-    final dynamic postUserId = await supabase
-        .from('users')
-        .select()
-        .eq('user_id', data[index]['user_id'])
-        .single();
-    return postUserId;
-  }
-
   /// マップ表示用の全投稿を取得
   Future<List<Map<String, dynamic>>> getMapPosts() async {
     return supabase.from('posts').select().order('created_at');

@@ -86,38 +86,6 @@ class PostRepository extends _$PostRepository {
     }
   }
 
-  /// ランダムな投稿を取得（指定した投稿以外から3件）
-  Future<Result<List<Model>, Exception>> getRandomPosts(
-    List<Map<String, dynamic>> data,
-    int index,
-  ) async {
-    try {
-      final models = <Model>[];
-      final randomResult = await ref
-          .read(postServiceProvider.notifier)
-          .getRandomPost(data, index);
-      final post = Posts.fromJson(data[index]);
-      final user = Users.fromJson(randomResult);
-      models.add(Model(user, post));
-      final random = Random();
-      final remainingData = List<Map<String, dynamic>>.from(data)
-        ..removeAt(index);
-      final randomData = (remainingData..shuffle(random)).take(3).toList();
-      for (final item in randomData) {
-        final posts = Posts.fromJson(item);
-        final result = await ref
-            .read(postServiceProvider.notifier)
-            .getRandomPosts(data, index);
-        final users = Users.fromJson(result);
-        models.add(Model(users, posts));
-      }
-      return Success(models);
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
-  }
-
   /// マップ表示用の全投稿を取得
   Future<List<Posts>> getRestaurantPosts({
     required double lat,
