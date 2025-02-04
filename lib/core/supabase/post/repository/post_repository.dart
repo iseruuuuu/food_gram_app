@@ -189,7 +189,19 @@ Future<List<Map<String, dynamic>>> profileRepository(
 
 /// 現在地から近い投稿を10件取得
 @riverpod
-Future<List<Posts>> getNearByPosts(Ref ref) async {
-  final data = await ref.read(postServiceProvider.notifier).getNearbyPosts();
-  return data.map(Posts.fromJson).toList();
+class GetNearByPosts extends _$GetNearByPosts {
+  @override
+  Future<List<Posts>> build() async {
+    ///  5分間キャッシュを保持
+    ref.keepAlive();
+    state = const AsyncValue.loading();
+    final data = await ref.read(postServiceProvider.notifier).getNearbyPosts();
+    return data.map(Posts.fromJson).toList();
+  }
+
+  Future<void> refresh() async {
+    state = const AsyncValue.loading();
+    final data = await ref.read(postServiceProvider.notifier).getNearbyPosts();
+    state = AsyncValue.data(data.map(Posts.fromJson).toList());
+  }
 }

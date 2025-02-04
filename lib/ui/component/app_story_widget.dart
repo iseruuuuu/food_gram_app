@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -23,68 +24,109 @@ class AppStoryWidget extends ConsumerWidget {
           itemCount: posts.length,
           itemBuilder: (context, index) {
             final post = posts[index];
+            final imageUrl =
+                supabase.storage.from('food').getPublicUrl(post.foodImage);
             return Padding(
               padding: const EdgeInsets.all(8),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFFFF00A5),
-                      Color(0xFFFE0141),
-                      Color(0xFFFF9F00),
-                      Color(0xFFFFC900),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(3),
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(3),
-                      child: GestureDetector(
-                        onTap: () async {
-                          final modelListResult = await ref
-                              .read(postRepositoryProvider.notifier)
-                              .getStoryPosts(
-                                lat: post.lat,
-                                lng: post.lng,
-                              );
-                          await modelListResult.whenOrNull(
-                            success: (modelList) async {
-                              await context.pushNamed(
-                                RouterPath.storyPage,
-                                extra: modelList,
-                              );
-                            },
-                          );
-                        },
-                        child: CircleAvatar(
-                          radius: 36,
-                          backgroundColor: Colors.white,
-                          foregroundImage: NetworkImage(
-                            supabase.storage
-                                .from('food')
-                                .getPublicUrl(post.foodImage),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+              child: StoryCircle(
+                imageUrl: imageUrl,
+                onTap: () => _handleStoryTap(context, ref, post),
               ),
             );
           },
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const _LoadingStories(),
       error: (error, stack) => Center(child: Text('Error: $error')),
+    );
+  }
+
+  Future<void> _handleStoryTap(
+    BuildContext context,
+    WidgetRef ref,
+    Posts post,
+  ) async {
+    // タップ処理を別メソッドに分離
+    final modelListResult =
+        await ref.read(postRepositoryProvider.notifier).getStoryPosts(
+              lat: post.lat,
+              lng: post.lng,
+            );
+
+    if (context.mounted) {
+      await modelListResult.whenOrNull(
+        success: (modelList) async {
+          await context.pushNamed(
+            RouterPath.storyPage,
+            extra: modelList,
+          );
+        },
+      );
+    }
+  }
+}
+
+class _LoadingStories extends StatelessWidget {
+  const _LoadingStories();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: SizedBox(
+        width: 24,
+        height: 24,
+        child: CircularProgressIndicator(strokeWidth: 2),
+      ),
+    );
+  }
+}
+
+class StoryCircle extends StatelessWidget {
+  const StoryCircle({
+    required this.imageUrl,
+    required this.onTap,
+    super.key,
+  });
+
+  final String imageUrl;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: LinearGradient(
+          colors: const [
+            Color(0xFFFF00A5),
+            Color(0xFFFE0141),
+            Color(0xFFFF9F00),
+            Color(0xFFFFC900),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(3),
+        child: DecoratedBox(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(3),
+            child: GestureDetector(
+              onTap: onTap,
+              child: CircleAvatar(
+                radius: 36,
+                backgroundColor: Colors.white,
+                foregroundImage: NetworkImage(imageUrl),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
