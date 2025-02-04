@@ -196,7 +196,8 @@ class PostService extends _$PostService {
         uniqueLocationPosts[locationKey] = post;
       }
     }
-    // 各投稿に現在地からの距離を計算して追加
+
+    /// 各投稿に現在地からの距離を計算して追加
     final postsWithDistance = uniqueLocationPosts.values.map((post) {
       final distance = _calculateDistance(
         currentLocation.latitude,

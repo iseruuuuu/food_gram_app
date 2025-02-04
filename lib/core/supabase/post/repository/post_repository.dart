@@ -161,7 +161,7 @@ Future<List<Map<String, dynamic>>> profileRepository(
 /// 現在地から近い投稿を10件取得
 @riverpod
 Future<List<Posts>> getNearByPosts(Ref ref) async {
-  // 投稿データの取得
+  /// 投稿データの取得
   final posts = await ref.watch(postStreamProvider.future);
   final currentLocation = await ref.read(locationProvider.future);
 
@@ -169,7 +169,7 @@ Future<List<Posts>> getNearByPosts(Ref ref) async {
     return [];
   }
 
-  // 同じ位置の投稿をフィルタリング（最新のもののみ残す）
+  /// 同じ位置の投稿をフィルタリング（最新のもののみ残す）
   final uniqueLocationPosts = <String, Posts>{};
   for (final post in posts.map(Posts.fromJson)) {
     final locationKey = '${post.lat}_${post.lng}';
@@ -178,7 +178,7 @@ Future<List<Posts>> getNearByPosts(Ref ref) async {
     }
   }
 
-  // 距離計算と並び替え
+  /// 距離計算と並び替え
   final postsWithDistance = uniqueLocationPosts.values.map((post) {
     final distance = _calculateDistance(
       currentLocation.latitude,
