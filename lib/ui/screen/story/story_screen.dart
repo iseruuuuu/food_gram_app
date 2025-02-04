@@ -117,7 +117,7 @@ class StoryScreen extends StatelessWidget {
                 );
               },
               pageLength: 1,
-              storyLength: (_) => 4,
+              storyLength: (_) => posts.length,
               onPageLimitReached: () => context.pop(),
             ),
           ),
