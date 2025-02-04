@@ -204,7 +204,6 @@ class PostService extends _$PostService {
 
   /// 現在地から近い投稿を10件取得（同じ位置の投稿は最新のもののみ）
   Future<List<Map<String, dynamic>>> getNearbyPosts() async {
-    // すべての投稿を取得
     final posts = await supabase
         .from('posts')
         .select()

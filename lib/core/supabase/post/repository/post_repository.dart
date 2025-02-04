@@ -123,7 +123,6 @@ class PostRepository extends _$PostRepository {
     required double lat,
     required double lng,
   }) async {
-    //TODO ブロックの処理はServices層に記載したい
     final blockList = ref.watch(blockListProvider).asData?.value ?? [];
     final data =
         await ref.read(postServiceProvider.notifier).getRestaurantPosts(
@@ -172,7 +171,6 @@ class PostRepository extends _$PostRepository {
 /// マップ表示用の全投稿を取得
 @riverpod
 Future<List<Posts>> mapRepository(Ref ref) async {
-  //TODO ブロックの処理はServices層に記載したい
   final blockList = ref.watch(blockListProvider).asData?.value ?? [];
   final response = await ref.read(postServiceProvider.notifier).getMapPosts();
   final data = response;
