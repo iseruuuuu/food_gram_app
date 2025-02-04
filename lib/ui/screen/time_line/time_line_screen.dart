@@ -83,8 +83,14 @@ class TimeLineScreen extends HookConsumerWidget {
         ),
         body: TabBarView(
           children: [
-            FoodListView(state: restaurant),
-            FoodListView(state: homeMade),
+            FoodListView(
+              state: restaurant,
+              isRestaurant: true,
+            ),
+            FoodListView(
+              state: homeMade,
+              isRestaurant: false,
+            ),
           ],
         ),
         floatingActionButton: AppFloatingButton(
@@ -106,10 +112,12 @@ class TimeLineScreen extends HookConsumerWidget {
 class FoodListView extends ConsumerWidget {
   const FoodListView({
     required this.state,
+    required this.isRestaurant,
     super.key,
   });
 
   final AsyncValue<List<Map<String, dynamic>>> state;
+  final bool isRestaurant;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -126,7 +134,7 @@ class FoodListView extends ConsumerWidget {
                   ..invalidate(postHomeMadeStreamProvider)
                   ..invalidate(blockListProvider);
               },
-              isTimeLine: true,
+              isTimeLine: isRestaurant,
             ),
           ),
         ],
