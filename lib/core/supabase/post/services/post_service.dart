@@ -195,6 +195,13 @@ class PostService extends _$PostService {
         .order('created_at', ascending: false);
   }
 
+  /// ユーザーIDからユーザーデータを取得
+  Future<Map<String, dynamic>> getUserData(String userId) async {
+    final response =
+        await supabase.from('users').select().eq('user_id', userId).single();
+    return response;
+  }
+
   /// 現在地から近い投稿を10件取得（同じ位置の投稿は最新のもののみ）
   Future<List<Map<String, dynamic>>> getNearbyPosts() async {
     // すべての投稿を取得

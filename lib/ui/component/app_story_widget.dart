@@ -50,10 +50,12 @@ class AppStoryWidget extends ConsumerWidget {
                       padding: EdgeInsets.all(3),
                       child: GestureDetector(
                         onTap: () async {
-                          //TODO 同じレストランの場合に複数見れるようにする
                           final modelListResult = await ref
                               .read(postRepositoryProvider.notifier)
-                              .getRandomPosts(data, index);
+                              .getStoryPosts(
+                                lat: post.lat,
+                                lng: post.lng,
+                              );
                           await modelListResult.whenOrNull(
                             success: (modelList) async {
                               await context.pushNamed(

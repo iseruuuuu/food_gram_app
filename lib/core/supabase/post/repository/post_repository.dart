@@ -132,6 +132,37 @@ class PostRepository extends _$PostRepository {
         .toList();
     return posts;
   }
+
+  /// 同じレストランの投稿を取得する
+  Future<Result<List<Model>, Exception>> getStoryPosts({
+    required double lat,
+    required double lng,
+  }) async {
+    try {
+      final blockList = ref.watch(blockListProvider).asData?.value ?? [];
+      final data =
+          await ref.read(postServiceProvider.notifier).getRestaurantPosts(
+                lat: lat,
+                lng: lng,
+              );
+      final posts = data
+          .map(Posts.fromJson)
+          .where((post) => !blockList.contains(post.userId))
+          .toList();
+      final models = <Model>[];
+      for (var index = 0; index < posts.length; index++) {
+        final userData = await ref
+            .read(postServiceProvider.notifier)
+            .getUserData(posts[index].userId);
+        final user = Users.fromJson(userData);
+        models.add(Model(user, posts[index]));
+      }
+      return Success(models);
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
+  }
 }
 
 /// マップ表示用の全投稿を取得
