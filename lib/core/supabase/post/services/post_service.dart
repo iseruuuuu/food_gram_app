@@ -1,7 +1,10 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:food_gram_app/core/model/result.dart';
+import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/main.dart';
+import 'package:maplibre_gl/maplibre_gl.dart' as maplibre;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -190,5 +193,70 @@ class PostService extends _$PostService {
         .select()
         .eq('user_id', userId)
         .order('created_at', ascending: false);
+  }
+
+  /// 現在地から近い投稿を10件取得（同じ位置の投稿は最新のもののみ）
+  Future<List<Map<String, dynamic>>> getNearbyPosts() async {
+    // すべての投稿を取得
+    final posts = await supabase
+        .from('posts')
+        .select()
+        .order('created_at', ascending: false);
+    final currentLocationFuture = ref.read(locationProvider.future);
+    final currentLocation = await currentLocationFuture;
+    if (currentLocation == maplibre.LatLng(0, 0)) {
+      return [];
+    }
+
+    // 同じ位置の投稿をフィルタリング（最新のもののみ残す）
+    final uniqueLocationPosts = <String, Map<String, dynamic>>{};
+    for (final post in posts) {
+      final locationKey = '${post['lat']}_${post['lng']}';
+      if (!uniqueLocationPosts.containsKey(locationKey)) {
+        uniqueLocationPosts[locationKey] = post;
+      }
+    }
+    // 各投稿に現在地からの距離を計算して追加
+    final postsWithDistance = uniqueLocationPosts.values.map((post) {
+      final distance = _calculateDistance(
+        currentLocation.latitude,
+        currentLocation.longitude,
+        double.parse(post['lat'].toString()),
+        double.parse(post['lng'].toString()),
+      );
+      return {...post, 'distance': distance};
+    }).toList()
+      ..sort(
+        (a, b) => (a['distance'] as double).compareTo(b['distance'] as double),
+      );
+    return postsWithDistance.take(10).map((post) {
+      final result = Map<String, dynamic>.from(post)..remove('distance');
+      return result;
+    }).toList();
+  }
+
+  /// 2点間の距離を計算（Haversine公式）
+  double _calculateDistance(
+    double lat1,
+    double lon1,
+    double lat2,
+    double lon2,
+  ) {
+    const double earthRadius = 6371;
+    final dLat = _toRadians(lat2 - lat1);
+    final dLon = _toRadians(lon2 - lon1);
+
+    final a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(_toRadians(lat1)) *
+            cos(_toRadians(lat2)) *
+            sin(dLon / 2) *
+            sin(dLon / 2);
+    final c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    return earthRadius * c;
+  }
+
+  /// 度からラジアンに変換
+  double _toRadians(double degree) {
+    return degree * pi / 180;
   }
 }

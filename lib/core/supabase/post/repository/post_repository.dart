@@ -155,3 +155,10 @@ Future<List<Map<String, dynamic>>> profileRepository(
 }) async {
   return ref.read(postServiceProvider.notifier).getPostsFromUser(userId);
 }
+
+/// 現在地から近い投稿を10件取得
+@riverpod
+Future<List<Posts>> getNearByPosts(Ref ref) async {
+  final data = await ref.read(postServiceProvider.notifier).getNearbyPosts();
+  return data.map(Posts.fromJson).toList();
+}
