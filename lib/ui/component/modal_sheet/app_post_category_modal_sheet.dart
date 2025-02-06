@@ -4,58 +4,65 @@ import 'package:food_gram_app/core/model/tag.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class AppPostCategoryModalSheet extends ConsumerWidget {
-  const AppPostCategoryModalSheet({
-    required this.category,
+class AppPostCountryCategoryModalSheet extends ConsumerWidget {
+  const AppPostCountryCategoryModalSheet({
     required this.onChanged,
     required this.tagValue,
     super.key,
   });
 
-  final List<String> category;
   final Function(String) onChanged;
   final String tagValue;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      height: MediaQuery.sizeOf(context).height,
-      decoration: BoxDecoration(
+      height: MediaQuery.of(context).size.height * 0.7,
+      width: double.infinity,
+      padding: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(30),
           topLeft: Radius.circular(30),
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Gap(10),
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: category.map<Widget>((data) {
-                  return FilterChip(
-                    showCheckmark: false,
-                    backgroundColor: Colors.white,
-                    label: Text(
-                      data,
-                      style: TextStyle(fontSize: 30),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Gap(4),
+            Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              children: countryCategory.map<Widget>((data) {
+                return GestureDetector(
+                  onTap: () {
+                    onChanged(data);
+                    context.pop();
+                  },
+                  child: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: tagValue == data ? Colors.blue : Colors.grey,
+                        width: tagValue == data ? 2 : 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    selected: tagValue == data,
-                    selectedColor: Colors.greenAccent,
-                    onSelected: (value) {
-                      onChanged(data);
-                      context.pop();
-                    },
-                  );
-                }).toList(),
-              ),
-              Gap(20),
-            ],
-          ),
+                    child: Center(
+                      child: Text(
+                        data,
+                        style: const TextStyle(fontSize: 36),
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+            const Gap(16),
+          ],
         ),
       ),
     );

@@ -3,14 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
-import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_post_category_widget.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
-import 'package:food_gram_app/ui/component/modal_sheet/app_post_category_modal_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/post/post_view_model.dart';
 import 'package:gap/gap.dart';
@@ -227,9 +225,8 @@ class PostScreen extends HookConsumerWidget {
                     const Gap(20),
                     Row(
                       children: [
-                        AppPostCategoryWidget(
+                        AppPostCountryCategoryWidget(
                           tag: countryTag,
-                          category: countryCategory,
                           title: l10n.postCountryCategory,
                         ),
                         const Gap(30),

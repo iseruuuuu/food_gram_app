@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_category_modal_sheet.dart';
 
-class AppPostCategoryWidget extends StatelessWidget {
-  const AppPostCategoryWidget({
+class AppPostCountryCategoryWidget extends StatelessWidget {
+  const AppPostCountryCategoryWidget({
     required this.tag,
-    required this.category,
     required this.title,
     super.key,
   });
 
   final ValueNotifier<String> tag;
-  final List<String> category;
   final String title;
 
   @override
@@ -20,8 +18,7 @@ class AppPostCategoryWidget extends StatelessWidget {
         showModalBottomSheet(
           context: context,
           builder: (context) {
-            return AppPostCategoryModalSheet(
-              category: category,
+            return AppPostCountryCategoryModalSheet(
               onChanged: (value) {
                 tag.value = value;
               },
