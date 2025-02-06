@@ -99,7 +99,7 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
                     child: Text(
                       entry.key,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -114,8 +114,8 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         child: Container(
-                          width: 50,
-                          height: 50,
+                          width: 60,
+                          height: 60,
                           decoration: BoxDecoration(
                             border: Border.all(
                               color:
@@ -127,7 +127,7 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
                           child: Center(
                             child: Text(
                               emoji,
-                              style: const TextStyle(fontSize: 30),
+                              style: const TextStyle(fontSize: 36),
                             ),
                           ),
                         ),
