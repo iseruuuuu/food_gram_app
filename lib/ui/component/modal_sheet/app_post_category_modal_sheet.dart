@@ -85,6 +85,13 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.7,
       width: double.infinity,
       padding: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30),
+          topLeft: Radius.circular(30),
+        ),
+      ),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
