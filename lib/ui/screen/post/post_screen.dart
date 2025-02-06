@@ -10,6 +10,7 @@ import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_post_category_widget.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/app_post_category_modal_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/post/post_view_model.dart';
 import 'package:gap/gap.dart';
@@ -232,9 +233,8 @@ class PostScreen extends HookConsumerWidget {
                           title: l10n.postCountryCategory,
                         ),
                         const Gap(30),
-                        AppPostCategoryWidget(
+                        AppPostFoodCategoryWidget(
                           tag: foodTag,
-                          category: foodCategory,
                           title: l10n.postCuisineCategory,
                         ),
                       ],
