@@ -138,10 +138,10 @@ class PostScreen extends HookConsumerWidget {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5),
-                            border: Border.all(width: 2),
+                            border: Border.all(),
                           ),
-                          width: deviceWidth / 1.8,
-                          height: deviceWidth / 1.8,
+                          width: deviceWidth,
+                          height: deviceWidth / 1.7,
                           child: state.foodImage.isNotEmpty
                               ? Image.file(
                                   File(state.foodImage),
@@ -149,7 +149,7 @@ class PostScreen extends HookConsumerWidget {
                                 )
                               : const Icon(
                                   Icons.add,
-                                  size: 45,
+                                  size: 40,
                                   color: Colors.black,
                                 ),
                         ),
@@ -161,7 +161,7 @@ class PostScreen extends HookConsumerWidget {
                           .read(postViewModelProvider().notifier)
                           .foodController,
                     ),
-                    const Gap(28),
+                    const Gap(18),
                     GestureDetector(
                       onTap: () async {
                         primaryFocus?.unfocus();
@@ -172,57 +172,66 @@ class PostScreen extends HookConsumerWidget {
                               .getPlace(result as Restaurant);
                         }
                       },
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(5),
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(color: Colors.black26),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        leading: const Padding(
-                          padding: EdgeInsets.only(left: 5),
-                          child: Icon(
-                            Icons.place,
-                            size: 30,
-                            color: Colors.black,
-                          ),
-                        ),
-                        trailing: state.restaurant == '場所を追加'
-                            ? const Padding(
-                                padding: EdgeInsets.only(right: 10),
-                                child: Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Colors.black,
-                                  size: 20,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Row(
+                          children: [
+                            Gap(5),
+                            Icon(
+                              Icons.place,
+                              size: 30,
+                              color: Colors.black,
+                            ),
+                            Gap(10),
+                            Expanded(
+                              child: ListTile(
+                                contentPadding: EdgeInsets.all(0),
+                                shape: RoundedRectangleBorder(
+                                  side: const BorderSide(),
+                                  borderRadius: BorderRadius.circular(6),
                                 ),
-                              )
-                            : null,
-                        title: Text(
-                          state.restaurant == '場所を追加'
-                              ? l10n.postRestaurantNameInputField
-                              : state.restaurant,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: state.restaurant == '場所を追加'
-                                ? Colors.grey
-                                : Colors.black,
-                          ),
+                                title: Row(
+                                  children: [
+                                    Gap(16),
+                                    Text(
+                                      state.restaurant == '場所を追加'
+                                          ? l10n.postRestaurantNameInputField
+                                          : state.restaurant,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: state.restaurant == '場所を追加'
+                                            ? Colors.grey
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    if (state.restaurant == '場所を追加')
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: Colors.black,
+                                            size: 24,
+                                          ),
+                                          Gap(10),
+                                        ],
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    const Gap(28),
-                    AppCommentTextField(
-                      controller: ref
-                          .read(postViewModelProvider().notifier)
-                          .commentController,
-                    ),
-                    const Gap(20),
+                    const Gap(18),
                     Text(
                       l10n.postCategoryTitle,
                       style: const TextStyle(fontSize: 16),
                     ),
-                    const Gap(20),
+                    const Gap(12),
                     Row(
                       children: [
                         AppPostCountryCategoryWidget(
@@ -237,6 +246,12 @@ class PostScreen extends HookConsumerWidget {
                       ],
                     ),
                     const Gap(30),
+                    AppCommentTextField(
+                      controller: ref
+                          .read(postViewModelProvider().notifier)
+                          .commentController,
+                    ),
+                    const Gap(20),
                   ],
                 ),
               ),
