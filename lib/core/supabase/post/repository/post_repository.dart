@@ -192,13 +192,43 @@ Future<List<Posts>> getNearByPosts(Ref ref) async {
   return postsWithDistance.take(10).map((item) => item.post).toList();
 }
 
+/// 特定のレストランの投稿一覧を取得するプロバイダー
+@riverpod
+Future<List<Model>> restaurantReviews(Ref ref, {
+  required double lat,
+  required double lng,
+}) async {
+  final blockList = ref
+      .watch(blockListProvider)
+      .asData
+      ?.value ?? [];
+  final data =
+  await ref.read(postServiceProvider.notifier).getRestaurantPosts(
+    lat: lat,
+    lng: lng,
+  );
+  final posts = data
+      .map(Posts.fromJson)
+      .where((post) => !blockList.contains(post.userId))
+      .toList();
+
+  final models = <Model>[];
+  for (var index = 0; index < posts.length; index++) {
+    final userData = await ref
+        .read(postServiceProvider.notifier)
+        .getUserData(posts[index].userId);
+    final user = Users.fromJson(userData);
+    models.add(Model(user, posts[index]));
+  }
+  return models;
+}
+
+
 /// 2点間の距離を計算（Haversine公式）
-double _calculateDistance(
-  double lat1,
-  double lon1,
-  double lat2,
-  double lon2,
-) {
+double _calculateDistance(double lat1,
+    double lon1,
+    double lat2,
+    double lon2,) {
   const double earthRadius = 6371;
   final dLat = _toRadians(lat2 - lat1);
   final dLon = _toRadians(lon2 - lon1);

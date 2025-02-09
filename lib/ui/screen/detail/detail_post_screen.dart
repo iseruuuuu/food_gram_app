@@ -404,12 +404,21 @@ class DetailPostScreen extends HookConsumerWidget {
                               color: Colors.black,
                             ),
                           ),
-                          Text(
-                            'In ${posts.restaurant}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                          GestureDetector(
+                            onTap: () {
+                              //TODO うまくいくか確かめる
+                              context.pushNamed(
+                                RouterPath.myProfileRestaurantReview,
+                                extra: posts,
+                              );
+                            },
+                            child: Text(
+                              'In ${posts.restaurant}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                           const Gap(10),
