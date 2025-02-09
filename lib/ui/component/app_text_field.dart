@@ -67,11 +67,15 @@ class AppFoodTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width,
+      width: double.infinity,
       child: Row(
         children: [
           Gap(5),
-          Icon(Icons.fastfood, color: Colors.black),
+          Icon(
+            Icons.fastfood,
+            color: Colors.black,
+            size: 30,
+          ),
           Gap(10),
           Expanded(
             child: Semantics(
