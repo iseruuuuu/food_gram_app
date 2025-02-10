@@ -160,7 +160,7 @@ final timeLineRouter = GoRoute(
       name: RouterPath.timeLineRestaurantReview,
       pageBuilder: (context, state) {
         final posts = state.extra! as Posts;
-        return whiteOut(
+        return slideUpTransition(
           RestaurantReviewScreen(
             posts: posts,
           ),
@@ -226,7 +226,7 @@ final myProfileRouter = GoRoute(
       name: RouterPath.myProfileRestaurantReview,
       pageBuilder: (context, state) {
         final posts = state.extra! as Posts;
-        return whiteOut(
+        return slideUpTransition(
           RestaurantReviewScreen(
             posts: posts,
           ),
@@ -318,7 +318,7 @@ final mapRouter = GoRoute(
       name: RouterPath.mapRestaurantReview,
       pageBuilder: (context, state) {
         final posts = state.extra! as Posts;
-        return whiteOut(
+        return slideUpTransition(
           RestaurantReviewScreen(
             posts: posts,
           ),
