@@ -439,4 +439,7 @@ class L10nEn extends L10n {
 
   @override
   String get postSuccess => 'Post successful';
+
+  @override
+  String get searchButton => 'Search';
 }

@@ -959,6 +959,12 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'投稿が完了しました'**
   String get postSuccess;
+
+  /// No description provided for @searchButton.
+  ///
+  /// In ja, this message translates to:
+  /// **'検索'**
+  String get searchButton;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
