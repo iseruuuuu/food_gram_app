@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/model.dart';
+import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/auth/providers/auth_state_provider.dart';
 import 'package:food_gram_app/router/amination.dart';
+import 'package:food_gram_app/ui/screen/restaurant_review/restaurant_review_screen.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
@@ -152,6 +154,19 @@ final timeLineRouter = GoRoute(
         );
       },
     ),
+    GoRoute(
+      path:
+          '${RouterPath.timeLine}/${RouterPath.timeLineDetail}/${RouterPath.timeLineRestaurantReview}',
+      name: RouterPath.timeLineRestaurantReview,
+      pageBuilder: (context, state) {
+        final posts = state.extra! as Posts;
+        return slideUpTransition(
+          RestaurantReviewScreen(
+            posts: posts,
+          ),
+        );
+      },
+    ),
   ],
 );
 
@@ -201,6 +216,19 @@ final myProfileRouter = GoRoute(
           PostScreen(
             routerPath: RouterPath.myProfileRestaurant,
             restaurant: model,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path:
+          '${RouterPath.myProfile}/${RouterPath.myProfileDetail}/${RouterPath.myProfileRestaurantReview}',
+      name: RouterPath.myProfileRestaurantReview,
+      pageBuilder: (context, state) {
+        final posts = state.extra! as Posts;
+        return slideUpTransition(
+          RestaurantReviewScreen(
+            posts: posts,
           ),
         );
       },
@@ -284,6 +312,19 @@ final mapRouter = GoRoute(
         );
       },
     ),
+    GoRoute(
+      path:
+          '${RouterPath.map}/${RouterPath.mapDetail}/${RouterPath.mapDetailPost}/${RouterPath.mapRestaurantReview}',
+      name: RouterPath.mapRestaurantReview,
+      pageBuilder: (context, state) {
+        final posts = state.extra! as Posts;
+        return slideUpTransition(
+          RestaurantReviewScreen(
+            posts: posts,
+          ),
+        );
+      },
+    ),
   ],
 );
 
@@ -314,4 +355,8 @@ final class RouterPath {
   static const String mapDetailPost = 'map_detail_post';
   static const String mapProfile = 'map_profile';
   static const String timeLineProfile = 'time_line_profile';
+  static const String timeLineRestaurantReview = 'time_line_restaurant_review';
+  static const String mapRestaurantReview = 'map_restaurant_review';
+  static const String myProfileRestaurantReview =
+      'my_profile_restaurant_review';
 }
