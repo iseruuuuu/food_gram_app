@@ -143,5 +143,6 @@
   "postPhotoSuccess": "写真を追加しました",
   "postCameraPermission": "カメラの許可が必要です",
   "postAlbumPermission": "フォトライブラリの許可が必要です",
-  "postSuccess": "投稿が完了しました"
+  "postSuccess": "投稿が完了しました",
+  "searchButton":"検索"
 }

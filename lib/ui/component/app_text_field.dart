@@ -2,10 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:gap/gap.dart';
 
-class AppSearchTextField extends StatelessWidget {
+class AppSearchTextField extends HookWidget {
   const AppSearchTextField({
     required this.onSubmitted,
     super.key,
@@ -15,43 +16,104 @@ class AppSearchTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      contextMenuBuilder: (context, state) {
-        if (SystemContextMenu.isSupported(context)) {
-          return SystemContextMenu.editableText(editableTextState: state);
-        }
-        return AdaptiveTextSelectionToolbar.editableText(
-          editableTextState: state,
-        );
-      },
-      selectionHeightStyle: BoxHeightStyle.strut,
-      decoration: InputDecoration(
-        prefixIcon: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: const Icon(
-            Icons.search,
-            color: Colors.black,
+    final searchText = useState('');
+    return SizedBox(
+      height: 50,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              contextMenuBuilder: (context, state) {
+                if (SystemContextMenu.isSupported(context)) {
+                  return SystemContextMenu.editableText(
+                    editableTextState: state,
+                  );
+                }
+                return AdaptiveTextSelectionToolbar.editableText(
+                  editableTextState: state,
+                );
+              },
+              selectionHeightStyle: BoxHeightStyle.strut,
+              decoration: InputDecoration(
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: const Icon(
+                    Icons.search,
+                    color: Colors.black,
+                  ),
+                ),
+                hintStyle: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(color: Colors.grey),
+                label: Text(L10n.of(context).appRestaurantLabel),
+                labelStyle: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(color: Colors.black),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    bottomLeft: Radius.circular(8),
+                  ),
+                  borderSide: BorderSide(
+                    color: Colors.blueAccent,
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    bottomLeft: Radius.circular(8),
+                  ),
+                  borderSide: BorderSide(
+                    color: Colors.blueAccent,
+                    width: 2,
+                  ),
+                ),
+              ),
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.search,
+              autocorrect: false,
+              onSubmitted: (_) {
+                onSubmitted!(searchText.value);
+              },
+              onChanged: (text) {
+                searchText.value = text;
+              },
+            ),
           ),
-        ),
-        hintStyle: Theme.of(context)
-            .textTheme
-            .bodyMedium!
-            .copyWith(color: Colors.grey),
-        label: Text(L10n.of(context).appRestaurantLabel),
-        labelStyle: Theme.of(context)
-            .textTheme
-            .bodyMedium!
-            .copyWith(color: Colors.black),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black87),
-        ),
-        focusedBorder:
-            OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+          SizedBox(
+            height: 50,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                padding: EdgeInsets.zero,
+                foregroundColor: Colors.blueAccent,
+                backgroundColor: Colors.blueAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(8),
+                    bottomRight: Radius.circular(8),
+                  ),
+                ),
+              ),
+              onPressed: () {
+                primaryFocus?.unfocus();
+                onSubmitted!(searchText.value);
+              },
+              child: Text(
+                L10n.of(context).searchButton,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
-      keyboardType: TextInputType.text,
-      textInputAction: TextInputAction.search,
-      autocorrect: false,
-      onSubmitted: onSubmitted,
     );
   }
 }

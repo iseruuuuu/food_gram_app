@@ -439,4 +439,7 @@ class L10nJa extends L10n {
 
   @override
   String get postSuccess => '投稿が完了しました';
+
+  @override
+  String get searchButton => '検索';
 }

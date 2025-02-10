@@ -143,5 +143,6 @@
   "postPhotoSuccess": "Photo added successfully",
   "postCameraPermission": "Camera permission is required",
   "postAlbumPermission": "Photo library permission is required",
-  "postSuccess": "Post successful"
+  "postSuccess": "Post successful",
+  "searchButton":"Search"
 }
