@@ -404,9 +404,9 @@ class DetailPostScreen extends HookConsumerWidget {
                               color: Colors.black,
                             ),
                           ),
+                          Gap(4),
                           GestureDetector(
                             onTap: () {
-                              //TODO うまくいくか確かめる
                               context.pushNamed(
                                 RouterPath.myProfileRestaurantReview,
                                 extra: posts,
@@ -418,10 +418,13 @@ class DetailPostScreen extends HookConsumerWidget {
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
+                                fontFamily: 'Hiragino Kaku Gothic ProN',
+                                decoration: TextDecoration.underline,
+                                decorationThickness: 2,
                               ),
                             ),
                           ),
-                          const Gap(10),
+                          const Gap(12),
                           Text(
                             posts.comment,
                             style: const TextStyle(
@@ -430,6 +433,7 @@ class DetailPostScreen extends HookConsumerWidget {
                               color: Colors.black,
                             ),
                           ),
+                          Gap(12),
                           Wrap(
                             spacing: 10,
                             children: [
