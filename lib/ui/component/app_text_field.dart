@@ -56,7 +56,6 @@ class AppSearchTextField extends HookWidget {
                     topLeft: Radius.circular(8),
                     bottomLeft: Radius.circular(8),
                   ),
-                  // borderSide: BorderSide(color: Colors.black87),
                   borderSide: BorderSide(
                     color: Colors.blueAccent,
                     width: 2,
@@ -76,7 +75,6 @@ class AppSearchTextField extends HookWidget {
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.search,
               autocorrect: false,
-              // onSubmitted: onSubmitted,
               onSubmitted: (_) {
                 onSubmitted!(searchText.value);
               },
