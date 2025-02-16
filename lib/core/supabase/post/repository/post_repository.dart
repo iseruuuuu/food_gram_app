@@ -149,6 +149,21 @@ Future<List<Posts>> mapRepository(Ref ref) async {
       .toList();
 }
 
+/// カテゴリーが🍜の投稿を取得
+@riverpod
+Future<List<Posts>> mapRamenRepository(Ref ref) async {
+  final blockList = ref.watch(blockListProvider).asData?.value ?? [];
+  final response =
+      await ref.read(postServiceProvider.notifier).getRamenMapPosts();
+  final data = response;
+  final result = data
+      .map(Posts.fromJson)
+      .where((post) => !blockList.contains(post.userId))
+      .where((post) => post.lat != 0.0 && post.lng != 0)
+      .toList();
+  return result;
+}
+
 /// 特定ユーザーの投稿を取得
 @riverpod
 Future<List<Map<String, dynamic>>> profileRepository(

@@ -160,6 +160,15 @@ class PostService extends _$PostService {
     return supabase.from('posts').select().order('created_at');
   }
 
+  /// カテゴリーが🍜の投稿を取得
+  Future<List<Map<String, dynamic>>> getRamenMapPosts() async {
+    return supabase
+        .from('posts')
+        .select()
+        .eq('food_tag', '🍜')
+        .order('created_at', ascending: false);
+  }
+
   /// 特定ユーザーの投稿を取得
   Future<List<Map<String, dynamic>>> getPostsFromUser(String userId) async {
     return supabase
