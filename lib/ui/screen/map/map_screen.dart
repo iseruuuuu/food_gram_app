@@ -27,6 +27,7 @@ class MapScreen extends HookConsumerWidget {
     final mapService = ref.watch(mapRepositoryProvider);
     final isTapPin = useState(false);
     final post = useState<List<Posts?>>([]);
+    final isTapped = useState(false);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -75,8 +76,40 @@ class MapScreen extends HookConsumerWidget {
                   Positioned(
                     top: 40,
                     right: 10,
-                    child: MapFloatingActionButton(
-                      onPressed: controller.moveToCurrentLocation,
+                    child: Column(
+                      children: [
+                        MapFloatingActionButton(
+                          onPressed: controller.moveToCurrentLocation,
+                        ),
+                        Divider(height: 1),
+                        MapRamenFloatingActionButton(
+                          onPressed: () {
+                            if (isTapped.value) {
+                              ref.read(mapViewModelProvider.notifier).setPin(
+                                    onPinTap: (posts) {
+                                      isTapPin.value = true;
+                                      post.value = posts;
+                                    },
+                                    iconSize: _calculateIconSize(context),
+                                  );
+                            } else {
+                              ref
+                                  .read(mapViewModelProvider.notifier)
+                                  .setRamenPin(
+                                    onPinTap: (posts) {
+                                      isTapPin.value = true;
+                                      post.value = posts;
+                                    },
+                                    iconSize: _calculateIconSize(context),
+                                  );
+                            }
+                            isTapped.value = !isTapped.value;
+
+                            print(isTapped.value);
+                          },
+                          isTapped: isTapped.value,
+                        ),
+                      ],
                     ),
                   ),
                 ],
