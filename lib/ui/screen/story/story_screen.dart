@@ -95,7 +95,7 @@ class StoryScreen extends StatelessWidget {
                                 fontSize: 16,
                               ),
                             ),
-                            const AdmobBanner(),
+                            const AdmobBanner(id: 'story'),
                           ],
                         ),
                       ),
