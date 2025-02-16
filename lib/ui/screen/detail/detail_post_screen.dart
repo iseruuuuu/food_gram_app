@@ -454,7 +454,7 @@ class DetailPostScreen extends HookConsumerWidget {
                         ],
                       ),
                     ),
-                    const AdmobBanner(),
+                    const AdmobBanner(id: 'detail'),
                   ],
                 ),
               ),
