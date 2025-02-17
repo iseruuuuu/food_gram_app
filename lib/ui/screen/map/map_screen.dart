@@ -104,8 +104,6 @@ class MapScreen extends HookConsumerWidget {
                                   );
                             }
                             isTapped.value = !isTapped.value;
-
-                            print(isTapped.value);
                           },
                           isTapped: isTapped.value,
                         ),
