@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
+import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/users.dart';
@@ -57,7 +58,19 @@ class DetailPostScreen extends HookConsumerWidget {
       () => GifController(vsync: tickerProvider),
       [tickerProvider],
     );
-
+    final preference = Preference();
+    // 既にいいねをしているかどうかuseEffect
+    useEffect(
+      () {
+        preference.getStringList(PreferenceKey.heartList).then((value) {
+          heartList.value = value;
+          isHeart.value = value.contains(posts.id.toString());
+        });
+        return;
+      },
+      [],
+    );
+    // 広告とGifControllerのためのuseEffect
     useEffect(
       () {
         adInterstitial.createAd();
@@ -78,6 +91,35 @@ class DetailPostScreen extends HookConsumerWidget {
     final menuLoading = useState(false);
     final l10n = L10n.of(context);
     final userId = supabase.auth.currentUser!.id;
+    Future<void> handleHeart() async {
+      if (users.userId == user) {
+        return;
+      }
+      final postId = posts.id.toString();
+      final currentHeart = initialHeart.value;
+      if (isHeart.value) {
+        await supabase.from('posts').update({
+          'heart': currentHeart - 1,
+        }).match({'id': posts.id});
+        initialHeart.value--;
+        isHeart.value = false;
+        isAppearHeart.value = false;
+        heartList.value = List.from(heartList.value)..remove(postId);
+      } else {
+        await supabase.from('posts').update({
+          'heart': currentHeart + 1,
+        }).match({'id': posts.id});
+        initialHeart.value++;
+        isHeart.value = true;
+        isAppearHeart.value = true;
+        heartList.value = List.from(heartList.value)..add(postId);
+      }
+      await preference.setStringList(
+        PreferenceKey.heartList,
+        heartList.value,
+      );
+    }
+
     return PopScope(
       canPop: !loading,
       child: Scaffold(
@@ -207,24 +249,7 @@ class DetailPostScreen extends HookConsumerWidget {
                       ],
                     ),
                     GestureDetector(
-                      onDoubleTap: users.userId != user
-                          ? () async {
-                              final currentHeart = initialHeart.value;
-                              if (isHeart.value) {
-                                await supabase.from('posts').update({
-                                  'heart': currentHeart - 1,
-                                }).match({'id': posts.id});
-                                initialHeart.value--;
-                                isHeart.value = false;
-                              } else {
-                                await supabase.from('posts').update({
-                                  'heart': currentHeart + 1,
-                                }).match({'id': posts.id});
-                                initialHeart.value++;
-                                isHeart.value = true;
-                              }
-                            }
-                          : null,
+                      onDoubleTap: handleHeart,
                       child: DragDismissable(
                         onDismiss: () => context.pop(),
                         child: Heroine(
@@ -247,24 +272,7 @@ class DetailPostScreen extends HookConsumerWidget {
                       children: [
                         Gap(5),
                         IconButton(
-                          onPressed: users.userId != user
-                              ? () async {
-                                  final currentHeart = initialHeart.value;
-                                  if (isHeart.value) {
-                                    await supabase.from('posts').update({
-                                      'heart': currentHeart - 1,
-                                    }).match({'id': posts.id});
-                                    initialHeart.value--;
-                                    isHeart.value = false;
-                                  } else {
-                                    await supabase.from('posts').update({
-                                      'heart': currentHeart + 1,
-                                    }).match({'id': posts.id});
-                                    initialHeart.value++;
-                                    isHeart.value = true;
-                                  }
-                                }
-                              : null,
+                          onPressed: handleHeart,
                           icon: Icon(
                             isHeart.value
                                 ? CupertinoIcons.heart_fill
