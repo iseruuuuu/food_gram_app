@@ -104,14 +104,14 @@ class AppHeader extends ConsumerWidget {
                               Text(
                                 '$length',
                                 style: TextStyle(
-                                  fontSize: 24,
+                                  fontSize: 25,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Text(
                                 l10n.profilePostCount,
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -122,16 +122,16 @@ class AppHeader extends ConsumerWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '${heartAmount - users.exchangedPoint}',
+                                '$heartAmount',
                                 style: TextStyle(
-                                  fontSize: 24,
+                                  fontSize: 25,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Text(
-                                l10n.profilePointCount,
+                                l10n.postDetailLikeButton,
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -192,10 +192,6 @@ class AppHeader extends ConsumerWidget {
                               ),
                             ),
                           ),
-                        )
-                      else
-                        SizedBox(
-                          height: 0,
                         ),
                     ],
                   ),
