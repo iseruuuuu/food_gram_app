@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/dialog/app_profile_dialog.dart';
 import 'package:gap/gap.dart';
@@ -23,6 +24,8 @@ class AppHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
+    final currentUser = supabase.auth.currentUser?.id;
+    final point = (heartAmount - users.exchangedPoint) / 10;
     return Padding(
       padding: const EdgeInsets.all(12),
       child: LayoutBuilder(
@@ -134,6 +137,32 @@ class AppHeader extends ConsumerWidget {
                               ),
                             ],
                           ),
+                          if (currentUser == users.userId)
+                            Row(
+                              children: [
+                                Gap(30),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '$point',
+                                      style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      l10n.profilePointCount,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          if (currentUser != users.userId) Gap(10),
                         ],
                       ),
                       Gap(8),
