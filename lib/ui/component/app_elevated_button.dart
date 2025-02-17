@@ -56,7 +56,7 @@ class AppDetailElevatedButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 2),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(horizontal: 12),
+          padding: EdgeInsets.symmetric(horizontal: 14),
           elevation: 0,
           backgroundColor: Color(0xFFEFEFEF),
           foregroundColor: Colors.black,
