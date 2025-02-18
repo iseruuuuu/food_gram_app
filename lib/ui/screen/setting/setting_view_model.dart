@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/auth/services/auth_service.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_state.dart';
@@ -118,6 +119,7 @@ class SettingViewModel extends _$SettingViewModel {
     final result = await ref.read(authServiceProvider).signOut();
     result.whenOrNull(
       success: (_) {
+        ref.read(currentUserProvider.notifier).clear();
         return true;
       },
     );

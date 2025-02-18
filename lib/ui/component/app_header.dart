@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/users.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/dialog/app_profile_dialog.dart';
 import 'package:gap/gap.dart';
@@ -24,7 +24,7 @@ class AppHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
-    final currentUser = supabase.auth.currentUser?.id;
+    final currentUser = ref.watch(currentUserProvider);
     final point = (heartAmount - users.exchangedPoint) / 10;
     return Padding(
       padding: const EdgeInsets.all(12),

@@ -15,60 +15,54 @@ class UserRepository extends _$UserRepository {
 
   /// 自分のユーザー情報を取得
   Future<Result<Users, Exception>> getCurrentUser() async {
-    try {
+    return _handleDatabaseOperation(() async {
       final data =
           await ref.read(userServiceProvider.notifier).getCurrentUser();
-      return Success(Users.fromJson(data));
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
+      return Users.fromJson(data);
+    });
   }
 
   /// 他のユーザー情報を取得
   Future<Result<Users, Exception>> getOtherUser(String userId) async {
-    try {
+    return _handleDatabaseOperation(() async {
       final data =
           await ref.read(userServiceProvider.notifier).getOtherUser(userId);
-      return Success(Users.fromJson(data));
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
+      return Users.fromJson(data);
+    });
   }
 
   /// 現在のユーザーの投稿数を取得
   Future<Result<int, Exception>> getCurrentUserPostCount() async {
-    try {
-      final count = await ref
-          .read(userServiceProvider.notifier)
-          .getCurrentUserPostCount();
-      return Success(count);
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
+    return _handleDatabaseOperation(() async {
+      return ref.read(userServiceProvider.notifier).getCurrentUserPostCount();
+    });
   }
 
   /// 指定したユーザーの投稿数を取得
   Future<Result<int, Exception>> getOtherUserPostCount(String userId) async {
-    try {
-      final count = await ref
+    return _handleDatabaseOperation(() async {
+      return ref
           .read(userServiceProvider.notifier)
           .getOtherUserPostCount(userId);
-      return Success(count);
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
+    });
   }
 
   /// 投稿からユーザー情報を取得
   Future<Result<Users, Exception>> getUserFromPost(Posts post) async {
-    try {
+    return _handleDatabaseOperation(() async {
       final data =
           await ref.read(userServiceProvider.notifier).getUserFromPost(post);
-      return Success(Users.fromJson(data));
+      return Users.fromJson(data);
+    });
+  }
+
+  /// 共通のエラーハンドリングラッパー
+  Future<Result<T, Exception>> _handleDatabaseOperation<T>(
+    Future<T> Function() operation,
+  ) async {
+    try {
+      final result = await operation();
+      return Success(result);
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
       return Failure(e);

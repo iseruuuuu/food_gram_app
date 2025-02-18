@@ -65,7 +65,11 @@ class MapViewModel extends _$MapViewModel {
         final restaurant = await ref
             .read(postRepositoryProvider.notifier)
             .getRestaurantPosts(lat: lat, lng: lng);
-        onPinTap(restaurant);
+        restaurant.whenOrNull(
+          success: (posts) {
+            onPinTap(posts);
+          },
+        );
         await state.mapController?.animateCamera(
           CameraUpdate.newLatLng(latLng),
           duration: Duration(seconds: 1),
@@ -114,7 +118,11 @@ class MapViewModel extends _$MapViewModel {
         final restaurant = await ref
             .read(postRepositoryProvider.notifier)
             .getRestaurantPosts(lat: lat, lng: lng);
-        onPinTap(restaurant);
+        restaurant.whenOrNull(
+          success: (posts) {
+            onPinTap(posts);
+          },
+        );
         await state.mapController?.animateCamera(
           CameraUpdate.newLatLng(latLng),
           duration: Duration(seconds: 1),

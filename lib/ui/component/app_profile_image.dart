@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/main.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 
-class AppProfileImage extends StatelessWidget {
+class AppProfileImage extends ConsumerWidget {
   const AppProfileImage({
     required this.imagePath,
     required this.radius,
@@ -13,7 +14,8 @@ class AppProfileImage extends StatelessWidget {
   final double radius;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final supabase = ref.watch(supabaseProvider);
     const assetImages = <String>[
       'assets/icon/icon1.png',
       'assets/icon/icon2.png',

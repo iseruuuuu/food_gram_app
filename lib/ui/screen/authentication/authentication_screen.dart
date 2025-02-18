@@ -6,11 +6,11 @@ import 'package:auth_buttons/auth_buttons.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
@@ -28,6 +28,7 @@ class AuthenticationScreen extends HookConsumerWidget {
     final loading = ref.watch(loadingProvider);
     final theme = Theme.of(context);
     final controller = ref.watch(authenticationViewModelProvider().notifier);
+    final supabase = ref.read(supabaseProvider);
     final authStateSubscription = useMemoized(
       () => supabase.auth.onAuthStateChange.listen((data) {
         final session = data.session;
@@ -175,7 +176,8 @@ class AuthenticationScreen extends HookConsumerWidget {
 
   Future<void> redirect(BuildContext context, WidgetRef ref) async {
     SnackBarHelper().hideSnackBar(context);
-    if (!await AccountService.isUserRegistered()) {
+    ref.read(currentUserProvider.notifier).update();
+    if (await ref.read(accountServiceProvider).isUserRegistered()) {
       context.pushReplacementNamed(RouterPath.tab);
     } else {
       context.pushReplacementNamed(RouterPath.newAccount);
