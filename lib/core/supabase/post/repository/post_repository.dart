@@ -5,7 +5,6 @@ import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
-import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
@@ -87,21 +86,20 @@ class PostRepository extends _$PostRepository {
   }
 
   /// マップ表示用の全投稿を取得
-  Future<List<Posts>> getRestaurantPosts({
+  Future<Result<List<Posts>, Exception>> getRestaurantPosts({
     required double lat,
     required double lng,
   }) async {
-    final blockList = ref.watch(blockListProvider).asData?.value ?? [];
-    final data =
+    final result =
         await ref.read(postServiceProvider.notifier).getRestaurantPosts(
               lat: lat,
               lng: lng,
             );
-    final posts = data
-        .map(Posts.fromJson)
-        .where((post) => !blockList.contains(post.userId))
-        .toList();
-    return posts;
+
+    return result.when(
+      success: (data) => Success(data.map(Posts.fromJson).toList()),
+      failure: Failure.new,
+    );
   }
 
   /// 同じレストランの投稿を取得する
@@ -109,59 +107,39 @@ class PostRepository extends _$PostRepository {
     required double lat,
     required double lng,
   }) async {
-    try {
-      final blockList = ref.watch(blockListProvider).asData?.value ?? [];
-      final data =
-          await ref.read(postServiceProvider.notifier).getRestaurantPosts(
-                lat: lat,
-                lng: lng,
-              );
-      final posts = data
-          .map(Posts.fromJson)
-          .where((post) => !blockList.contains(post.userId))
-          .toList();
-      final models = <Model>[];
-      for (var index = 0; index < posts.length; index++) {
-        final userData = await ref
-            .read(postServiceProvider.notifier)
-            .getUserData(posts[index].userId);
-        final user = Users.fromJson(userData);
-        models.add(Model(user, posts[index]));
-      }
-      return Success(models);
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
+    final result = await ref.read(postServiceProvider.notifier).getStoryPosts(
+          lat: lat,
+          lng: lng,
+        );
+    return result.when(
+      success: (data) => Success(
+        data
+            .map(
+              (item) => Model(
+                Users.fromJson(item['user']),
+                Posts.fromJson(item['post']),
+              ),
+            )
+            .toList(),
+      ),
+      failure: Failure.new,
+    );
   }
 }
 
 /// マップ表示用の全投稿を取得
 @riverpod
 Future<List<Posts>> mapRepository(Ref ref) async {
-  final blockList = ref.watch(blockListProvider).asData?.value ?? [];
   final response = await ref.read(postServiceProvider.notifier).getMapPosts();
-  final data = response;
-  return data
-      .map(Posts.fromJson)
-      .where((post) => !blockList.contains(post.userId))
-      .where((post) => post.lat != 0.0 && post.lng != 0)
-      .toList();
+  return response.map(Posts.fromJson).toList();
 }
 
 /// カテゴリーが🍜の投稿を取得
 @riverpod
 Future<List<Posts>> mapRamenRepository(Ref ref) async {
-  final blockList = ref.watch(blockListProvider).asData?.value ?? [];
   final response =
       await ref.read(postServiceProvider.notifier).getRamenMapPosts();
-  final data = response;
-  final result = data
-      .map(Posts.fromJson)
-      .where((post) => !blockList.contains(post.userId))
-      .where((post) => post.lat != 0.0 && post.lng != 0)
-      .toList();
-  return result;
+  return response.map(Posts.fromJson).toList();
 }
 
 /// 特定ユーザーの投稿を取得

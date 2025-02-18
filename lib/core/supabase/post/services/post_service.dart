@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:maplibre_gl/maplibre_gl.dart' as maplibre;
@@ -19,6 +20,9 @@ class PostService extends _$PostService {
   String? get _currentUserId => ref.read(currentUserProvider);
 
   SupabaseClient get supabase => ref.read(supabaseProvider);
+
+  List<String> get blockList =>
+      ref.watch(blockListProvider).asData?.value ?? [];
 
   @override
   Future<void> build() async {}
@@ -179,29 +183,54 @@ class PostService extends _$PostService {
   }
 
   /// 特定の位置の投稿を取得
-  Future<List<Map<String, dynamic>>> getRestaurantPosts({
+  Future<Result<List<Map<String, dynamic>>, Exception>> getRestaurantPosts({
     required double lat,
     required double lng,
   }) async {
-    return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'restaurant_posts_${lat}_${lng}',
-      fetcher: () => supabase
-          .from('posts')
-          .select()
-          .gte('lat', lat - 0.00001)
-          .lte('lat', lat + 0.00001)
-          .gte('lng', lng - 0.00001)
-          .lte('lng', lng + 0.00001)
-          .order('created_at'),
-      duration: const Duration(minutes: 5),
-    );
+    try {
+      return Success(
+        await _cacheManager.get<List<Map<String, dynamic>>>(
+          key: 'restaurant_posts_${lat}_$lng',
+          fetcher: () async {
+            final posts = await supabase
+                .from('posts')
+                .select()
+                .gte('lat', lat - 0.00001)
+                .lte('lat', lat + 0.00001)
+                .gte('lng', lng - 0.00001)
+                .lte('lng', lng + 0.00001)
+                .order('created_at');
+            final filteredPosts = posts
+                .where(
+                  (post) => !blockList.contains(post['user_id']),
+                )
+                .toList();
+            return filteredPosts;
+          },
+          duration: const Duration(minutes: 5),
+        ),
+      );
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
   }
 
   /// マップ表示用の全投稿を取得
   Future<List<Map<String, dynamic>>> getMapPosts() async {
     return _cacheManager.get<List<Map<String, dynamic>>>(
       key: 'map_posts',
-      fetcher: () => supabase.from('posts').select().order('created_at'),
+      fetcher: () async {
+        final blockListState = ref.watch(blockListProvider);
+        final currentBlockList = switch (blockListState) {
+          AsyncData(:final value) => value,
+          _ => <String>[],
+        };
+        final posts = await supabase.from('posts').select().order('created_at');
+        return posts
+            .where((post) => !currentBlockList.contains(post['user_id']))
+            .toList();
+      },
       duration: const Duration(minutes: 5),
     );
   }
@@ -210,11 +239,22 @@ class PostService extends _$PostService {
   Future<List<Map<String, dynamic>>> getRamenMapPosts() async {
     return _cacheManager.get<List<Map<String, dynamic>>>(
       key: 'ramen_posts',
-      fetcher: () => supabase
-          .from('posts')
-          .select()
-          .eq('food_tag', '🍜')
-          .order('created_at', ascending: false),
+      fetcher: () async {
+        // blockListProviderから最新の値を取得
+        final blockListState = ref.watch(blockListProvider);
+        final currentBlockList = switch (blockListState) {
+          AsyncData(:final value) => value,
+          _ => <String>[],
+        };
+        final posts = await supabase
+            .from('posts')
+            .select()
+            .eq('food_tag', '🍜')
+            .order('created_at', ascending: false);
+        return posts
+            .where((post) => !currentBlockList.contains(post['user_id']))
+            .toList();
+      },
       duration: const Duration(minutes: 5),
     );
   }
@@ -258,10 +298,11 @@ class PostService extends _$PostService {
             .from('posts')
             .select()
             .order('created_at', ascending: false);
-
-        // 同じ位置の投稿をフィルタリング（最新のもののみ残す）
+        final filteredPosts = posts
+            .where((post) => !blockList.contains(post['user_id']))
+            .toList();
         final uniqueLocationPosts = <String, Map<String, dynamic>>{};
-        for (final post in posts) {
+        for (final post in filteredPosts) {
           final locationKey = '${post['lat']}_${post['lng']}';
           if (!uniqueLocationPosts.containsKey(locationKey)) {
             uniqueLocationPosts[locationKey] = post;
@@ -335,7 +376,10 @@ class PostService extends _$PostService {
   }
 
   void invalidateRestaurantCache(double lat, double lng) {
-    _cacheManager.invalidate('restaurant_posts_${lat}_$lng');
+    _cacheManager
+      ..invalidate('restaurant_posts_${lat}_$lng')
+      ..invalidate('restaurant_reviews_${lat}_$lng')
+      ..invalidate('story_posts_${lat}_$lng');
   }
 
   void invalidateNearbyCache(double lat, double lng) {
