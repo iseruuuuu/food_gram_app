@@ -148,7 +148,7 @@ class PostService extends _$PostService {
     );
   }
 
-  /// 自分の投稿のいいね数を取得
+  /// 自分の全投稿に対するいいね数の合計を取得
   Future<int> getHeartAmount() async {
     return _cacheManager.get<int>(
       key: 'heart_amount_${_currentUserId!}',
@@ -182,7 +182,20 @@ class PostService extends _$PostService {
     );
   }
 
-  /// 特定の位置の投稿を取得
+  /// 特定ユーザーの投稿を取得
+  Future<List<Map<String, dynamic>>> getPostsFromUser(String userId) async {
+    return _cacheManager.get<List<Map<String, dynamic>>>(
+      key: 'user_posts_$userId',
+      fetcher: () => supabase
+          .from('posts')
+          .select()
+          .eq('user_id', userId)
+          .order('created_at', ascending: false),
+      duration: const Duration(minutes: 5),
+    );
+  }
+
+  /// マップ表示用の全投稿を取得
   Future<Result<List<Map<String, dynamic>>, Exception>> getRestaurantPosts({
     required double lat,
     required double lng,
@@ -216,7 +229,51 @@ class PostService extends _$PostService {
     }
   }
 
-  /// マップ表示用の全投稿を取得
+  /// 同じレストランの投稿とユーザー情報を取得
+  Future<Result<List<Map<String, dynamic>>, Exception>> getStoryPosts({
+    required double lat,
+    required double lng,
+  }) async {
+    try {
+      return Success(
+        await _cacheManager.get<List<Map<String, dynamic>>>(
+          key: 'story_posts_${lat}_$lng',
+          fetcher: () async {
+            final blockList = ref.watch(blockListProvider).asData?.value ?? [];
+            final posts = await supabase
+                .from('posts')
+                .select()
+                .gte('lat', lat - 0.00001)
+                .lte('lat', lat + 0.00001)
+                .gte('lng', lng - 0.00001)
+                .lte('lng', lng + 0.00001)
+                .order('created_at');
+
+            final filteredPosts = posts
+                .where((post) => !blockList.contains(post['user_id']))
+                .toList();
+
+            // ユーザー情報を取得して結合
+            final results = <Map<String, dynamic>>[];
+            for (final post in filteredPosts) {
+              final userData = await getUserData(post['user_id']);
+              results.add({
+                'post': post,
+                'user': userData,
+              });
+            }
+            return results;
+          },
+          duration: const Duration(minutes: 5),
+        ),
+      );
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
+  }
+
+/// マップ表示用の全投稿を取得🗾
   Future<List<Map<String, dynamic>>> getMapPosts() async {
     return _cacheManager.get<List<Map<String, dynamic>>>(
       key: 'map_posts',
@@ -240,34 +297,37 @@ class PostService extends _$PostService {
     return _cacheManager.get<List<Map<String, dynamic>>>(
       key: 'ramen_posts',
       fetcher: () async {
-        // blockListProviderから最新の値を取得
-        final blockListState = ref.watch(blockListProvider);
-        final currentBlockList = switch (blockListState) {
-          AsyncData(:final value) => value,
-          _ => <String>[],
-        };
-        final posts = await supabase
-            .from('posts')
-            .select()
-            .eq('food_tag', '🍜')
-            .order('created_at', ascending: false);
-        return posts
-            .where((post) => !currentBlockList.contains(post['user_id']))
-            .toList();
-      },
-      duration: const Duration(minutes: 5),
-    );
-  }
+        final posts = blockList.isEmpty
+            ? await supabase
+                .from('posts')
+                .select()
+                .eq('food_tag', '🍜')
+                .order('created_at', ascending: false)
+            : await supabase
+                .from('posts')
+                .select()
+                .not('user_id', 'in', blockList)
+                .eq('food_tag', '🍜')
+                .order('created_at', ascending: false);
 
-  /// 特定ユーザーの投稿を取得
-  Future<List<Map<String, dynamic>>> getPostsFromUser(String userId) async {
-    return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'user_posts_$userId',
-      fetcher: () => supabase
-          .from('posts')
-          .select()
-          .eq('user_id', userId)
-          .order('created_at', ascending: false),
+        final filteredPosts = posts.where((post) {
+          final lat = double.parse(post['lat'].toString());
+          final lng = double.parse(post['lng'].toString());
+          return lat != 0.0 && lng != 0;
+        }).toList();
+
+        final userPosts = <String, Map<String, dynamic>>{};
+        for (final post in filteredPosts) {
+          final userId = post['user_id'] as String;
+          if (!userPosts.containsKey(userId) ||
+              DateTime.parse(post['created_at'])
+                  .isAfter(DateTime.parse(userPosts[userId]!['created_at']))) {
+            userPosts[userId] = post;
+          }
+        }
+
+        return userPosts.values.toList();
+      },
       duration: const Duration(minutes: 5),
     );
   }
@@ -384,49 +444,5 @@ class PostService extends _$PostService {
 
   void invalidateNearbyCache(double lat, double lng) {
     _cacheManager.invalidate('nearby_posts_${lat}_$lng');
-  }
-
-  /// 同じレストランの投稿とユーザー情報を取得
-  Future<Result<List<Map<String, dynamic>>, Exception>> getStoryPosts({
-    required double lat,
-    required double lng,
-  }) async {
-    try {
-      return Success(
-        await _cacheManager.get<List<Map<String, dynamic>>>(
-          key: 'story_posts_${lat}_$lng',
-          fetcher: () async {
-            final blockList = ref.watch(blockListProvider).asData?.value ?? [];
-            final posts = await supabase
-                .from('posts')
-                .select()
-                .gte('lat', lat - 0.00001)
-                .lte('lat', lat + 0.00001)
-                .gte('lng', lng - 0.00001)
-                .lte('lng', lng + 0.00001)
-                .order('created_at');
-
-            final filteredPosts = posts
-                .where((post) => !blockList.contains(post['user_id']))
-                .toList();
-
-            // ユーザー情報を取得して結合
-            final results = <Map<String, dynamic>>[];
-            for (final post in filteredPosts) {
-              final userData = await getUserData(post['user_id']);
-              results.add({
-                'post': post,
-                'user': userData,
-              });
-            }
-            return results;
-          },
-          duration: const Duration(minutes: 5),
-        ),
-      );
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
   }
 }

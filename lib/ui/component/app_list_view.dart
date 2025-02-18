@@ -59,7 +59,7 @@ class AppListView extends ConsumerWidget {
                             () async {
                               final postResult = await ref
                                   .read(postRepositoryProvider.notifier)
-                                  .getPost(data, index);
+                                  .getPostData(data, index);
                               await postResult.whenOrNull(
                                 success: (model) async {
                                   final result = await context.pushNamed(

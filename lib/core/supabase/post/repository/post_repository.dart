@@ -32,7 +32,7 @@ class PostRepository extends _$PostRepository {
   }
 
   /// 特定の投稿とそのユーザー情報を取得
-  Future<Result<Model, Exception>> getPost(
+  Future<Result<Model, Exception>> getPostData(
     List<Map<String, dynamic>> data,
     int index,
   ) async {
@@ -102,7 +102,7 @@ class PostRepository extends _$PostRepository {
     );
   }
 
-  /// 同じレストランの投稿を取得する
+  /// 同じレストランの投稿とユーザー情報を取得
   Future<Result<List<Model>, Exception>> getStoryPosts({
     required double lat,
     required double lng,
@@ -127,7 +127,7 @@ class PostRepository extends _$PostRepository {
   }
 }
 
-/// マップ表示用の全投稿を取得
+/// マップ表示用の全投稿を取得🗾
 @riverpod
 Future<List<Posts>> mapRepository(Ref ref) async {
   final response = await ref.read(postServiceProvider.notifier).getMapPosts();
