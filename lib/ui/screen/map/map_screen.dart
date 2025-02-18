@@ -14,7 +14,7 @@ import 'package:maplibre_gl/maplibre_gl.dart';
 
 final String apiKey = Env.mapLibre;
 const styleUrl =
-    'https://tile.openstreetmap.jp/styles/maptiler-basic-ja/style.json';
+    'https://api.maptiler.com/maps/a38db0e5-171e-4317-9a13-6b406c609e21/style.json';
 
 class MapScreen extends HookConsumerWidget {
   const MapScreen({super.key});

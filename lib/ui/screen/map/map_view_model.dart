@@ -28,15 +28,19 @@ class MapViewModel extends _$MapViewModel {
     );
   }
 
+  bool isInitialLoading = true;
+
   Future<void> setPin({
     required void Function(List<Posts> posts) onPinTap,
     required double iconSize,
   }) async {
-    await state.mapController!.clearSymbols();
+    if (!isInitialLoading) {
+      await state.mapController!.clearSymbols();
+    }
     try {
       final bytes = await rootBundle.load(Assets.image.pin.path);
       final list = bytes.buffer.asUint8List();
-      await state.mapController?.addImage('pin', list);
+      await state.mapController!.addImage('pins', list);
       final symbols = <SymbolOptions>[];
       ref.read(mapRepositoryProvider).whenOrNull(
         data: (value) {
@@ -44,7 +48,7 @@ class MapViewModel extends _$MapViewModel {
             symbols.add(
               SymbolOptions(
                 geometry: LatLng(value[i].lat, value[i].lng),
-                iconImage: 'pin',
+                iconImage: 'pins',
                 iconSize: iconSize,
               ),
             );
@@ -66,6 +70,7 @@ class MapViewModel extends _$MapViewModel {
           CameraUpdate.newLatLng(latLng),
           duration: Duration(seconds: 1),
         );
+        isInitialLoading = false;
         state = state.copyWith(
           isLoading: false,
           hasError: false,
@@ -99,7 +104,6 @@ class MapViewModel extends _$MapViewModel {
           ),
         );
       }
-      print(posts.length);
       await state.mapController?.addSymbols(symbols);
       await state.mapController?.setSymbolIconAllowOverlap(true);
       state.mapController?.onSymbolTapped.add((symbol) async {
