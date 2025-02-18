@@ -186,30 +186,32 @@ Future<List<Posts>> getNearByPosts(Ref ref) async {
 
 /// 特定のレストランの投稿一覧を取得するプロバイダー
 @riverpod
-Future<List<Model>> restaurantReviews(
+Future<Result<List<Model>, Exception>> restaurantReviews(
   Ref ref, {
   required double lat,
   required double lng,
 }) async {
-  final blockList = ref.watch(blockListProvider).asData?.value ?? [];
-  final data = await ref.read(postServiceProvider.notifier).getRestaurantPosts(
-        lat: lat,
-        lng: lng,
-      );
-  final posts = data
-      .map(Posts.fromJson)
-      .where((post) => !blockList.contains(post.userId))
-      .toList();
+  final result =
+      await ref.read(postServiceProvider.notifier).getRestaurantPosts(
+            lat: lat,
+            lng: lng,
+          );
 
-  final models = <Model>[];
-  for (var index = 0; index < posts.length; index++) {
-    final userData = await ref
-        .read(postServiceProvider.notifier)
-        .getUserData(posts[index].userId);
-    final user = Users.fromJson(userData);
-    models.add(Model(user, posts[index]));
-  }
-  return models;
+  return result.when(
+    success: (data) async {
+      final models = <Model>[];
+      for (var index = 0; index < data.length; index++) {
+        final userData = await ref
+            .read(postServiceProvider.notifier)
+            .getUserData(data[index]['user_id']);
+        final user = Users.fromJson(userData);
+        final posts = Posts.fromJson(data[index]);
+        models.add(Model(user, posts));
+      }
+      return Success(models);
+    },
+    failure: Failure.new,
+  );
 }
 
 /// 2点間の距離を計算（Haversine公式）
