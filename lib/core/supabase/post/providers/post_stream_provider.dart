@@ -23,7 +23,7 @@ Stream<List<Map<String, dynamic>>> postHomeMadeStream(Ref ref) {
 @riverpod
 Stream<List<Map<String, dynamic>>> myPostStream(Ref ref) {
   final supabase = ref.read(supabaseProvider);
-  final user = supabase.auth.currentUser?.id;
+  final user = ref.watch(currentUserProvider);
   if (user == null) {
     return const Stream.empty();
   }

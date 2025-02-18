@@ -9,12 +9,12 @@ import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/users.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/go_router_extension.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
@@ -85,13 +85,13 @@ class DetailPostScreen extends HookConsumerWidget {
       [gifController],
     );
     final deviceWidth = MediaQuery.of(context).size.width;
-    final user = supabase.auth.currentUser?.id;
     final loading = ref.watch(loadingProvider);
     final menuLoading = useState(false);
     final l10n = L10n.of(context);
-    final userId = supabase.auth.currentUser!.id;
+    final currentUser = ref.watch(currentUserProvider);
+    final supabase = ref.watch(supabaseProvider);
     Future<void> handleHeart() async {
-      if (users.userId == user) {
+      if (users.userId == currentUser) {
         return;
       }
       final postId = posts.id.toString();
@@ -143,13 +143,13 @@ class DetailPostScreen extends HookConsumerWidget {
                   showModalBottomSheet(
                     context: context,
                     builder: (context) {
-                      if (user == Env.masterAccount) {
+                      if (currentUser == Env.masterAccount) {
                         return AppDetailMasterModalSheet(
                           posts: posts,
                           users: users,
                         );
                       }
-                      if (users.userId != user) {
+                      if (users.userId != currentUser) {
                         return AppDetailOtherInfoModalSheet(
                           users: users,
                           posts: posts,
@@ -178,7 +178,7 @@ class DetailPostScreen extends HookConsumerWidget {
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        if (users.userId != userId) {
+                        if (users.userId != currentUser) {
                           await context.pushNamed(
                             RouterPath.mapProfile,
                             extra: users,
