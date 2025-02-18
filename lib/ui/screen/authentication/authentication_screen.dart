@@ -175,7 +175,8 @@ class AuthenticationScreen extends HookConsumerWidget {
 
   Future<void> redirect(BuildContext context, WidgetRef ref) async {
     SnackBarHelper().hideSnackBar(context);
-    if (!await AccountService.isUserRegistered()) {
+    ref.read(currentUserProvider.notifier).update();
+    if (await ref.read(accountServiceProvider).isUserRegistered()) {
       context.pushReplacementNamed(RouterPath.tab);
     } else {
       context.pushReplacementNamed(RouterPath.newAccount);

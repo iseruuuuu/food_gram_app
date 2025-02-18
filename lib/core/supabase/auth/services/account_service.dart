@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/result.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -9,12 +10,16 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 part 'account_service.g.dart';
 
 @riverpod
-AccountService accountService(Ref ref) => AccountService();
+AccountService accountService(Ref ref) => AccountService(ref);
 
 class AccountService {
-  AccountService();
+  AccountService(this.ref);
 
-  String? get _currentUserId => supabase.auth.currentUser?.id;
+  final Ref ref;
+
+  String? get _currentUserId => ref.read(currentUserProvider);
+
+  SupabaseClient get supabase => ref.read(supabaseProvider);
 
   Future<Result<void, Exception>> createUsers({
     required String name,
@@ -127,15 +132,15 @@ class AccountService {
     }
   }
 
-  static Future<bool> isUserRegistered() async {
-    final user = supabase.auth.currentUser;
-    if (user == null) {
+  Future<bool> isUserRegistered() async {
+    if (_currentUserId == null) {
       return false;
     }
-
-    final response =
-        await supabase.from('users').select().eq('user_id', user.id).count();
-
+    final response = await supabase
+        .from('users')
+        .select()
+        .eq('user_id', _currentUserId!)
+        .count();
     return response.data.isNotEmpty;
   }
 }
