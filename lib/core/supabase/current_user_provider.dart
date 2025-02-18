@@ -11,20 +11,30 @@ SupabaseClient supabase(Ref ref) {
 
 @Riverpod(keepAlive: true)
 class CurrentUser extends _$CurrentUser {
+  String? _cachedUserId;
+
   @override
   String? build() {
-    return ref.read(supabaseProvider).auth.currentUser?.id;
+    // キャッシュがある場合はそれを返す
+    if (_cachedUserId != null) {
+      return _cachedUserId;
+    }
+
+    // キャッシュがない場合はSupabaseから取得して返す
+    return _cachedUserId = ref.read(supabaseProvider).auth.currentUser?.id;
   }
 
   String? get value => state;
 
   // ログイン時に更新
   void update() {
-    state = ref.read(supabaseProvider).auth.currentUser?.id;
+    _cachedUserId = ref.read(supabaseProvider).auth.currentUser?.id;
+    state = _cachedUserId;
   }
 
   // ログアウト時にクリア
   void clear() {
+    _cachedUserId = null;
     state = null;
   }
 }
