@@ -9,7 +9,7 @@ SupabaseClient supabase(Ref ref) {
   return Supabase.instance.client;
 }
 
-@Riverpod(keepAlive: true) // keepAlive: true でプロバイダーを永続化
+@Riverpod(keepAlive: true)
 class CurrentUser extends _$CurrentUser {
   @override
   String? build() {
