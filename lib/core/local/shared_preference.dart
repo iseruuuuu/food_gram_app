@@ -5,6 +5,7 @@ enum PreferenceKey {
   blockList,
   isFinishedTutorial,
   isAccept,
+  heartList,
 }
 
 class Preference {

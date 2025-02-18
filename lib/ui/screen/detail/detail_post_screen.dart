@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
+import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/users.dart';
@@ -33,7 +33,6 @@ import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:map_launcher/map_launcher.dart';
-import 'package:snow_fall_animation/snow_fall_animation.dart';
 
 class DetailPostScreen extends HookConsumerWidget {
   const DetailPostScreen({
@@ -47,9 +46,10 @@ class DetailPostScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isHeart = useState(false);
     final initialHeart = useState(posts.heart);
-    final isSnowing = useState(false);
+    final heartList = useState<List<String>>([]);
+    final isHeart = useState(false);
+    final isAppearHeart = useState(false);
     final tickerProvider = useSingleTickerProvider();
     final adInterstitial =
         useMemoized(() => ref.read(admobInterstitialNotifierProvider));
@@ -57,7 +57,19 @@ class DetailPostScreen extends HookConsumerWidget {
       () => GifController(vsync: tickerProvider),
       [tickerProvider],
     );
-
+    final preference = Preference();
+    // 既にいいねをしているかどうかuseEffect
+    useEffect(
+      () {
+        preference.getStringList(PreferenceKey.heartList).then((value) {
+          heartList.value = value;
+          isHeart.value = value.contains(posts.id.toString());
+        });
+        return;
+      },
+      [],
+    );
+    // 広告とGifControllerのためのuseEffect
     useEffect(
       () {
         adInterstitial.createAd();
@@ -78,6 +90,35 @@ class DetailPostScreen extends HookConsumerWidget {
     final menuLoading = useState(false);
     final l10n = L10n.of(context);
     final userId = supabase.auth.currentUser!.id;
+    Future<void> handleHeart() async {
+      if (users.userId == user) {
+        return;
+      }
+      final postId = posts.id.toString();
+      final currentHeart = initialHeart.value;
+      if (isHeart.value) {
+        await supabase.from('posts').update({
+          'heart': currentHeart - 1,
+        }).match({'id': posts.id});
+        initialHeart.value--;
+        isHeart.value = false;
+        isAppearHeart.value = false;
+        heartList.value = List.from(heartList.value)..remove(postId);
+      } else {
+        await supabase.from('posts').update({
+          'heart': currentHeart + 1,
+        }).match({'id': posts.id});
+        initialHeart.value++;
+        isHeart.value = true;
+        isAppearHeart.value = true;
+        heartList.value = List.from(heartList.value)..add(postId);
+      }
+      await preference.setStringList(
+        PreferenceKey.heartList,
+        heartList.value,
+      );
+    }
+
     return PopScope(
       canPop: !loading,
       child: Scaffold(
@@ -95,14 +136,8 @@ class DetailPostScreen extends HookConsumerWidget {
                     size: 30,
                   ),
                 ),
-          title: GestureDetector(
-            onTap: () => isSnowing.value = !isSnowing.value,
-            child: Text('     '),
-          ),
           actions: [
-            if (loading || menuLoading.value)
-              SizedBox.shrink()
-            else
+            if (!loading && !menuLoading.value)
               IconButton(
                 onPressed: () {
                   showModalBottomSheet(
@@ -138,49 +173,29 @@ class DetailPostScreen extends HookConsumerWidget {
         body: SafeArea(
           child: Stack(
             children: [
-              if (isSnowing.value)
-                const SnowFallAnimation(
-                  config: SnowfallConfig(
-                    numberOfSnowflakes: 300,
-                    enableRandomOpacity: false,
-                    enableSnowDrift: false,
-                    holdSnowAtBottom: false,
-                  ),
-                ),
               SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: GestureDetector(
-                            onTap: () async {
-                              if (users.userId != userId) {
-                                await context.pushNamed(
-                                  RouterPath.mapProfile,
-                                  extra: users,
-                                );
-                              }
-                            },
+                    GestureDetector(
+                      onTap: () async {
+                        if (users.userId != userId) {
+                          await context.pushNamed(
+                            RouterPath.mapProfile,
+                            extra: users,
+                          );
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10),
                             child: AppProfileImage(
                               imagePath: users.image,
                               radius: 30,
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            if (users.userId != userId) {
-                              await context.pushNamed(
-                                RouterPath.mapProfile,
-                                extra: users,
-                              );
-                            }
-                          },
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width - 150,
+                          SizedBox(
+                            width: deviceWidth - 150,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -195,36 +210,16 @@ class DetailPostScreen extends HookConsumerWidget {
                                 ),
                                 Text(
                                   '@${users.userName}',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                  ),
+                                  style: const TextStyle(fontSize: 16),
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     GestureDetector(
-                      onDoubleTap: users.userId != user
-                          ? () async {
-                              final currentHeart = initialHeart.value;
-                              if (isHeart.value) {
-                                await supabase.from('posts').update({
-                                  'heart': currentHeart - 1,
-                                }).match({'id': posts.id});
-                                initialHeart.value--;
-                                isHeart.value = false;
-                              } else {
-                                await supabase.from('posts').update({
-                                  'heart': currentHeart + 1,
-                                }).match({'id': posts.id});
-                                initialHeart.value++;
-                                isHeart.value = true;
-                              }
-                            }
-                          : null,
+                      onDoubleTap: handleHeart,
                       child: DragDismissable(
                         onDismiss: () => context.pop(),
                         child: Heroine(
@@ -243,28 +238,12 @@ class DetailPostScreen extends HookConsumerWidget {
                         ),
                       ),
                     ),
+                    Gap(8),
                     Row(
                       children: [
                         Gap(5),
                         IconButton(
-                          onPressed: users.userId != user
-                              ? () async {
-                                  final currentHeart = initialHeart.value;
-                                  if (isHeart.value) {
-                                    await supabase.from('posts').update({
-                                      'heart': currentHeart - 1,
-                                    }).match({'id': posts.id});
-                                    initialHeart.value--;
-                                    isHeart.value = false;
-                                  } else {
-                                    await supabase.from('posts').update({
-                                      'heart': currentHeart + 1,
-                                    }).match({'id': posts.id});
-                                    initialHeart.value++;
-                                    isHeart.value = true;
-                                  }
-                                }
-                              : null,
+                          onPressed: handleHeart,
                           icon: Icon(
                             isHeart.value
                                 ? CupertinoIcons.heart_fill
@@ -276,38 +255,27 @@ class DetailPostScreen extends HookConsumerWidget {
                         Gap(10),
                         GestureDetector(
                           onTap: () {
-                            EasyDebounce.debounce(
-                              'post',
-                              Duration.zero,
-                              () async {
-                                await showGeneralDialog(
-                                  context: context,
-                                  pageBuilder: (context, anim1, anim2) {
-                                    return AppShareDialog(
-                                      posts: posts,
-                                      users: users,
-                                    );
-                                  },
+                            showGeneralDialog(
+                              context: context,
+                              pageBuilder: (_, __, ___) {
+                                return AppShareDialog(
+                                  posts: posts,
+                                  users: users,
                                 );
                               },
                             );
                           },
-                          child: const Icon(
-                            Icons.send,
-                            size: 30,
-                            color: Colors.black,
-                          ),
+                          child: const Icon(Icons.send, size: 30),
                         ),
                         const Spacer(),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          padding: const EdgeInsets.only(right: 12),
                           child: Text(
                             '${initialHeart.value} '
-                            '${L10n.of(context).postDetailLikeButton}',
+                            '${l10n.postDetailLikeButton}',
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
                             ),
                           ),
                         ),
@@ -459,7 +427,7 @@ class DetailPostScreen extends HookConsumerWidget {
                 ),
               ),
               AppHeart(
-                isHeart: isHeart.value,
+                isHeart: isAppearHeart.value,
                 controller: gifController,
               ),
               AppLoading(
