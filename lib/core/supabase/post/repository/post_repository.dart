@@ -179,7 +179,6 @@ Future<List<Posts>> getNearByPosts(Ref ref) async {
   /// 投稿データの取得
   final posts = await ref.watch(postStreamProvider.future);
   final currentLocation = await ref.read(locationProvider.future);
-
   if (currentLocation == maplibre.LatLng(0, 0)) {
     return [];
   }

@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:food_gram_app/core/model/result.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:maplibre_gl/maplibre_gl.dart' as maplibre;
@@ -12,7 +13,9 @@ part 'post_service.g.dart';
 
 @riverpod
 class PostService extends _$PostService {
-  String get _currentUserId => supabase.auth.currentUser!.id;
+  String? get _currentUserId => ref.read(currentUserProvider);
+
+  SupabaseClient get supabase => ref.read(supabaseProvider);
 
   @override
   Future<void> build() async {}
@@ -129,7 +132,7 @@ class PostService extends _$PostService {
     final response = await supabase
         .from('posts')
         .select('heart')
-        .eq('user_id', _currentUserId);
+        .eq('user_id', _currentUserId!);
     return response.fold<int>(0, (sum, post) => sum + (post['heart'] as int));
   }
 

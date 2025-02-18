@@ -1,5 +1,6 @@
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -9,7 +10,9 @@ part 'delete_service.g.dart';
 
 @riverpod
 class DeleteService extends _$DeleteService {
-  String? get _currentUserId => supabase.auth.currentUser?.id;
+  String? get _currentUserId => ref.read(currentUserProvider);
+
+  SupabaseClient get supabase => ref.read(supabaseProvider);
 
   @override
   Future<void> build() async {}
