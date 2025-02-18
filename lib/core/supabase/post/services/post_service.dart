@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
@@ -13,6 +14,8 @@ part 'post_service.g.dart';
 
 @riverpod
 class PostService extends _$PostService {
+  final _cacheManager = CacheManager();
+
   String? get _currentUserId => ref.read(currentUserProvider);
 
   SupabaseClient get supabase => ref.read(supabaseProvider);
