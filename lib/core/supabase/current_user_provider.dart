@@ -18,8 +18,9 @@ class CurrentUser extends _$CurrentUser {
 
   String? get value => state;
 
-  set value(String? userId) {
-    state = userId;
+  // ログイン時に更新
+  void update() {
+    state = ref.read(supabaseProvider).auth.currentUser?.id;
   }
 
   // ログアウト時にクリア
