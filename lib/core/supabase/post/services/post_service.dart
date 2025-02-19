@@ -132,13 +132,11 @@ class PostService extends _$PostService {
           'restaurant_tag': data[index]['restaurant_tag'],
           'food_tag': data[index]['food_tag'],
         };
-
         final userData = await supabase
             .from('users')
             .select()
             .eq('user_id', data[index]['user_id'])
             .single();
-
         return {
           'post': postData,
           'user': userData,
@@ -273,7 +271,7 @@ class PostService extends _$PostService {
     }
   }
 
-/// マップ表示用の全投稿を取得🗾
+  /// マップ表示用の全投稿を取得🗾
   Future<List<Map<String, dynamic>>> getMapPosts() async {
     return _cacheManager.get<List<Map<String, dynamic>>>(
       key: 'map_posts',
