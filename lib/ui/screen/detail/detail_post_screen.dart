@@ -238,189 +238,200 @@ class DetailPostScreen extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    Gap(8),
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Gap(5),
-                        IconButton(
-                          onPressed: handleHeart,
-                          icon: Icon(
-                            isHeart.value
-                                ? CupertinoIcons.heart_fill
-                                : CupertinoIcons.heart,
-                            color: isHeart.value ? Colors.red : Colors.black,
-                            size: 30,
-                          ),
-                        ),
-                        Gap(10),
-                        GestureDetector(
-                          onTap: () {
-                            showGeneralDialog(
-                              context: context,
-                              pageBuilder: (_, __, ___) {
-                                return AppShareDialog(
-                                  posts: posts,
-                                  users: users,
-                                );
-                              },
-                            );
-                          },
-                          child: const Icon(Icons.send, size: 30),
-                        ),
-                        const Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: Text(
-                            '${initialHeart.value} '
-                            '${l10n.postDetailLikeButton}',
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Gap(6),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: SizedBox(
-                        height: 38,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
+                        Gap(8),
+                        Row(
                           children: [
-                            AppDetailElevatedButton(
-                              onPressed: () async {
-                                await adInterstitial.showAd(
-                                  onAdClosed: () async {
-                                    await captureAndShare(
-                                      widget: AppShareWidget(
-                                        posts: posts,
-                                        users: users,
-                                      ),
-                                      shareText: '${posts.foodName} '
-                                          'in ${posts.restaurant}',
-                                      loading: menuLoading,
+                            Gap(5),
+                            IconButton(
+                              onPressed: handleHeart,
+                              icon: Icon(
+                                isHeart.value
+                                    ? CupertinoIcons.heart_fill
+                                    : CupertinoIcons.heart,
+                                color:
+                                    isHeart.value ? Colors.red : Colors.black,
+                                size: 30,
+                              ),
+                            ),
+                            Gap(10),
+                            GestureDetector(
+                              onTap: () {
+                                showGeneralDialog(
+                                  context: context,
+                                  pageBuilder: (_, __, ___) {
+                                    return AppShareDialog(
+                                      posts: posts,
+                                      users: users,
                                     );
                                   },
                                 );
                               },
-                              title: l10n.detailMenuShare,
-                              icon: Icons.share,
+                              child: const Icon(Icons.send, size: 30),
                             ),
-                            AppDetailElevatedButton(
-                              onPressed: () async {
-                                final currentPath =
-                                    GoRouter.of(context).isCurrentLocation();
-                                await context
-                                    .pushNamed(
-                                  currentPath,
-                                  extra: Restaurant(
-                                    name: posts.restaurant,
-                                    lat: posts.lat,
-                                    lng: posts.lng,
-                                    address: '',
-                                  ),
-                                )
-                                    .then((value) async {
-                                  if (value != null) {
-                                    ref.invalidate(postStreamProvider);
-                                  }
-                                });
-                              },
-                              title: l10n.detailMenuPost,
-                              icon: Icons.restaurant,
-                            ),
-                            AppDetailElevatedButton(
-                              onPressed: () {
-                                LaunchUrlHelper()
-                                    .open(URL.search(posts.restaurant));
-                              },
-                              title: l10n.detailMenuSearch,
-                              icon: Icons.search,
-                            ),
-                            AppDetailElevatedButton(
-                              onPressed: () async {
-                                await adInterstitial.showAd(
-                                  onAdClosed: () async {
-                                    final availableMaps =
-                                        await MapLauncher.installedMaps;
-                                    await availableMaps.first.showMarker(
-                                      coords: Coords(posts.lat, posts.lng),
-                                      title: posts.restaurant,
-                                    );
-                                  },
-                                );
-                              },
-                              title: l10n.detailMenuVisit,
-                              icon: Icons.directions_walk,
+                            const Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 12),
+                              child: Text(
+                                '${initialHeart.value} '
+                                '${l10n.postDetailLikeButton}',
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            posts.foodName,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                        Gap(6),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: SizedBox(
+                            height: 38,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                AppDetailElevatedButton(
+                                  onPressed: () async {
+                                    await adInterstitial.showAd(
+                                      onAdClosed: () async {
+                                        await captureAndShare(
+                                          widget: AppShareWidget(
+                                            posts: posts,
+                                            users: users,
+                                          ),
+                                          shareText: '${posts.foodName} '
+                                              'in ${posts.restaurant}',
+                                          loading: menuLoading,
+                                        );
+                                      },
+                                    );
+                                  },
+                                  title: l10n.detailMenuShare,
+                                  icon: Icons.share,
+                                ),
+                                AppDetailElevatedButton(
+                                  onPressed: () async {
+                                    final currentPath = GoRouter.of(context)
+                                        .isCurrentLocation();
+                                    await context
+                                        .pushNamed(
+                                      currentPath,
+                                      extra: Restaurant(
+                                        name: posts.restaurant,
+                                        lat: posts.lat,
+                                        lng: posts.lng,
+                                        address: '',
+                                      ),
+                                    )
+                                        .then((value) async {
+                                      if (value != null) {
+                                        ref.invalidate(postStreamProvider);
+                                      }
+                                    });
+                                  },
+                                  title: l10n.detailMenuPost,
+                                  icon: Icons.restaurant,
+                                ),
+                                AppDetailElevatedButton(
+                                  onPressed: () {
+                                    LaunchUrlHelper()
+                                        .open(URL.search(posts.restaurant));
+                                  },
+                                  title: l10n.detailMenuSearch,
+                                  icon: Icons.search,
+                                ),
+                                AppDetailElevatedButton(
+                                  onPressed: () async {
+                                    await adInterstitial.showAd(
+                                      onAdClosed: () async {
+                                        final availableMaps =
+                                            await MapLauncher.installedMaps;
+                                        await availableMaps.first.showMarker(
+                                          coords: Coords(posts.lat, posts.lng),
+                                          title: posts.restaurant,
+                                        );
+                                      },
+                                    );
+                                  },
+                                  title: l10n.detailMenuVisit,
+                                  icon: Icons.directions_walk,
+                                ),
+                              ],
                             ),
                           ),
-                          Gap(4),
-                          GestureDetector(
-                            onTap: () {
-                              context.pushNamed(
-                                RouterPath.myProfileRestaurantReview,
-                                extra: posts,
-                              );
-                            },
-                            child: Text(
-                              'In ${posts.restaurant}',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontFamily: 'Hiragino Kaku Gothic ProN',
-                                decoration: TextDecoration.underline,
-                                decorationThickness: 2,
-                              ),
-                            ),
-                          ),
-                          const Gap(12),
-                          Text(
-                            posts.comment,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Gap(12),
-                          Wrap(
-                            spacing: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              if (posts.foodTag.isNotEmpty)
-                                Chip(
-                                  backgroundColor: Colors.white,
-                                  label: Text(posts.foodTag),
-                                  labelStyle: const TextStyle(fontSize: 20),
+                              Text(
+                                posts.foodName,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
                                 ),
-                              if (posts.restaurantTag.isNotEmpty)
-                                Chip(
-                                  backgroundColor: Colors.white,
-                                  label: Text(posts.restaurantTag),
-                                  labelStyle: const TextStyle(fontSize: 20),
+                              ),
+                              Gap(4),
+                              GestureDetector(
+                                onTap: () {
+                                  context.pushNamed(
+                                    RouterPath.myProfileRestaurantReview,
+                                    extra: posts,
+                                  );
+                                },
+                                child: Text(
+                                  'In ${posts.restaurant}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                    fontFamily: 'Hiragino Kaku Gothic ProN',
+                                    decoration: TextDecoration.underline,
+                                    decorationThickness: 2,
+                                  ),
                                 ),
+                              ),
+                              const Gap(12),
+                              if (posts.comment.isNotEmpty)
+                                Column(
+                                  children: [
+                                    Text(
+                                      posts.comment,
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Gap(12),
+                                  ],
+                                ),
+                              Wrap(
+                                spacing: 10,
+                                children: [
+                                  if (posts.foodTag.isNotEmpty)
+                                    Chip(
+                                      backgroundColor: Colors.white,
+                                      label: Text(posts.foodTag),
+                                      labelStyle: const TextStyle(fontSize: 20),
+                                    ),
+                                  if (posts.restaurantTag.isNotEmpty)
+                                    Chip(
+                                      backgroundColor: Colors.white,
+                                      label: Text(posts.restaurantTag),
+                                      labelStyle: const TextStyle(fontSize: 20),
+                                    ),
+                                ],
+                              ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     const AdmobBanner(),
                   ],
