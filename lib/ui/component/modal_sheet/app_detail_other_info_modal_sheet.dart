@@ -242,7 +242,8 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                       onTap: () async {
                         context
                           ..pop()
-                          ..pop();
+                          ..pop()
+                          ..pop(true);
                         await ref
                             .read(detailPostViewModelProvider().notifier)
                             .block(posts.userId)

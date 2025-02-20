@@ -22,20 +22,25 @@ class MapViewModel extends _$MapViewModel {
     required double iconSize,
   }) async {
     state = state.copyWith(mapController: controller);
-    await _setPin(
+    await setPin(
       onPinTap: onPinTap,
       iconSize: iconSize,
     );
   }
 
-  Future<void> _setPin({
+  bool isInitialLoading = true;
+
+  Future<void> setPin({
     required void Function(List<Posts> posts) onPinTap,
     required double iconSize,
   }) async {
+    if (!isInitialLoading) {
+      await state.mapController!.clearSymbols();
+    }
     try {
       final bytes = await rootBundle.load(Assets.image.pin.path);
       final list = bytes.buffer.asUint8List();
-      await state.mapController?.addImage('pin', list);
+      await state.mapController!.addImage('pins', list);
       final symbols = <SymbolOptions>[];
       ref.read(mapRepositoryProvider).whenOrNull(
         data: (value) {
@@ -43,7 +48,7 @@ class MapViewModel extends _$MapViewModel {
             symbols.add(
               SymbolOptions(
                 geometry: LatLng(value[i].lat, value[i].lng),
-                iconImage: 'pin',
+                iconImage: 'pins',
                 iconSize: iconSize,
               ),
             );
@@ -60,7 +65,64 @@ class MapViewModel extends _$MapViewModel {
         final restaurant = await ref
             .read(postRepositoryProvider.notifier)
             .getRestaurantPosts(lat: lat, lng: lng);
-        onPinTap(restaurant);
+        restaurant.whenOrNull(
+          success: (posts) {
+            onPinTap(posts);
+          },
+        );
+        await state.mapController?.animateCamera(
+          CameraUpdate.newLatLng(latLng),
+          duration: Duration(seconds: 1),
+        );
+        isInitialLoading = false;
+        state = state.copyWith(
+          isLoading: false,
+          hasError: false,
+        );
+      });
+    } on PlatformException catch (_) {
+      state = state.copyWith(
+        isLoading: false,
+        hasError: true,
+      );
+    }
+  }
+
+  Future<void> setRamenPin({
+    required void Function(List<Posts> posts) onPinTap,
+    required double iconSize,
+  }) async {
+    await state.mapController!.clearSymbols();
+    try {
+      final bytes = await rootBundle.load(Assets.image.pinRamen.path);
+      final list = bytes.buffer.asUint8List();
+      await state.mapController?.addImage('pin_ramen', list);
+      final symbols = <SymbolOptions>[];
+      final posts = await ref.watch(mapRamenRepositoryProvider.future);
+      for (var i = 0; i < posts.length; i++) {
+        symbols.add(
+          SymbolOptions(
+            geometry: LatLng(posts[i].lat, posts[i].lng),
+            iconImage: 'pin_ramen',
+            iconSize: iconSize,
+          ),
+        );
+      }
+      await state.mapController?.addSymbols(symbols);
+      await state.mapController?.setSymbolIconAllowOverlap(true);
+      state.mapController?.onSymbolTapped.add((symbol) async {
+        state = state.copyWith(isLoading: true);
+        final latLng = symbol.options.geometry;
+        final lat = latLng!.latitude;
+        final lng = latLng.longitude;
+        final restaurant = await ref
+            .read(postRepositoryProvider.notifier)
+            .getRestaurantPosts(lat: lat, lng: lng);
+        restaurant.whenOrNull(
+          success: (posts) {
+            onPinTap(posts);
+          },
+        );
         await state.mapController?.animateCamera(
           CameraUpdate.newLatLng(latLng),
           duration: Duration(seconds: 1),

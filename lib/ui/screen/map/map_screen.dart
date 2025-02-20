@@ -14,7 +14,7 @@ import 'package:maplibre_gl/maplibre_gl.dart';
 
 final String apiKey = Env.mapLibre;
 const styleUrl =
-    'https://tile.openstreetmap.jp/styles/maptiler-basic-ja/style.json';
+    'https://api.maptiler.com/maps/a38db0e5-171e-4317-9a13-6b406c609e21/style.json';
 
 class MapScreen extends HookConsumerWidget {
   const MapScreen({super.key});
@@ -27,6 +27,7 @@ class MapScreen extends HookConsumerWidget {
     final mapService = ref.watch(mapRepositoryProvider);
     final isTapPin = useState(false);
     final post = useState<List<Posts?>>([]);
+    final isTapped = useState(false);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -75,8 +76,38 @@ class MapScreen extends HookConsumerWidget {
                   Positioned(
                     top: 40,
                     right: 10,
-                    child: MapFloatingActionButton(
-                      onPressed: controller.moveToCurrentLocation,
+                    child: Column(
+                      children: [
+                        MapFloatingActionButton(
+                          onPressed: controller.moveToCurrentLocation,
+                        ),
+                        Divider(height: 1),
+                        MapRamenFloatingActionButton(
+                          onPressed: () {
+                            if (isTapped.value) {
+                              ref.read(mapViewModelProvider.notifier).setPin(
+                                    onPinTap: (posts) {
+                                      isTapPin.value = true;
+                                      post.value = posts;
+                                    },
+                                    iconSize: _calculateIconSize(context),
+                                  );
+                            } else {
+                              ref
+                                  .read(mapViewModelProvider.notifier)
+                                  .setRamenPin(
+                                    onPinTap: (posts) {
+                                      isTapPin.value = true;
+                                      post.value = posts;
+                                    },
+                                    iconSize: _calculateIconSize(context),
+                                  );
+                            }
+                            isTapped.value = !isTapped.value;
+                          },
+                          isTapped: isTapped.value,
+                        ),
+                      ],
                     ),
                   ),
                 ],

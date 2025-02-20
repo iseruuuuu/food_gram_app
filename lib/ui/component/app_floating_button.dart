@@ -42,17 +42,20 @@ class MapFloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.only(top: 8, left: 8),
       child: Container(
-        width: 55,
-        height: 55,
+        width: 60,
+        height: 60,
         child: Theme(
           data: Theme.of(context).copyWith(highlightColor: Colors.white),
           child: FloatingActionButton(
             heroTag: null,
             shape: RoundedRectangleBorder(
               side: BorderSide(color: Colors.white),
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(14),
+                topLeft: Radius.circular(14),
+              ),
             ),
             foregroundColor: Colors.white,
             backgroundColor: Colors.white,
@@ -63,6 +66,53 @@ class MapFloatingActionButton extends StatelessWidget {
             onPressed: onPressed,
             child: Icon(
               CupertinoIcons.location_fill,
+              color: Color(0xFF1A73E8),
+              size: 25,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MapRamenFloatingActionButton extends StatelessWidget {
+  const MapRamenFloatingActionButton({
+    required this.onPressed,
+    required this.isTapped,
+    super.key,
+  });
+
+  final Function() onPressed;
+  final bool isTapped;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: Container(
+        width: 60,
+        height: 60,
+        child: Theme(
+          data: Theme.of(context).copyWith(highlightColor: Colors.white),
+          child: FloatingActionButton(
+            heroTag: null,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.white),
+              borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(14),
+                bottomLeft: Radius.circular(14),
+              ),
+            ),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.white,
+            focusColor: Colors.white,
+            splashColor: Colors.white,
+            hoverColor: Colors.white,
+            elevation: 10,
+            onPressed: onPressed,
+            child: Icon(
+              isTapped ? Icons.ramen_dining : Icons.ramen_dining_outlined,
               color: Color(0xFF1A73E8),
               size: 25,
             ),

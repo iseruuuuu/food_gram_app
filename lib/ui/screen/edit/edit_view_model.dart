@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/edit/edit_state.dart';
@@ -31,9 +32,10 @@ class EditViewModel extends _$EditViewModel {
   Future<void> getProfile() async {
     await Future.delayed(Duration.zero);
     loading.state = true;
-    final userId = supabase.auth.currentUser!.id;
+    final userId = ref.watch(currentUserProvider);
+    final supabase = ref.watch(supabaseProvider);
     final data =
-        await supabase.from('users').select().eq('user_id', userId).single();
+        await supabase.from('users').select().eq('user_id', userId!).single();
     nameTextController.text = data['name'];
     useNameTextController.text = data['user_name'];
     selfIntroduceTextController.text = data['self_introduce'];

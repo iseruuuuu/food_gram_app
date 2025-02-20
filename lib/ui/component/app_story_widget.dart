@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,6 +17,7 @@ class AppStoryWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final nearbyPosts = ref.watch(getNearByPostsProvider);
+    final supabase = ref.watch(supabaseProvider);
     return nearbyPosts.when(
       data: (posts) {
         return ListView.builder(

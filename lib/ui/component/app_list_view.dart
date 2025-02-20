@@ -5,8 +5,8 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
 import 'package:food_gram_app/ui/component/app_story_widget.dart';
 import 'package:go_router/go_router.dart';
@@ -29,6 +29,8 @@ class AppListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final screenWidth = MediaQuery.of(context).size.width / 3;
+    final supabase = ref.watch(supabaseProvider);
     final scrollController = useScrollController();
     useEffect(
       () {
@@ -98,7 +100,7 @@ class AppListView extends HookConsumerWidget {
                               () async {
                                 final postResult = await ref
                                     .read(postRepositoryProvider.notifier)
-                                    .getPost(data, index);
+                                    .getPostData(data, index);
                                 await postResult.whenOrNull(
                                   success: (model) async {
                                     final result = await context.pushNamed(
@@ -124,8 +126,8 @@ class AppListView extends HookConsumerWidget {
                                 child: CachedNetworkImage(
                                   imageUrl: foodImageUrl,
                                   fit: BoxFit.cover,
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  height: MediaQuery.of(context).size.width / 3,
+                                  width: screenWidth,
+                                  height: screenWidth,
                                   placeholder: (context, url) => Container(
                                     color: Colors.white,
                                   ),
