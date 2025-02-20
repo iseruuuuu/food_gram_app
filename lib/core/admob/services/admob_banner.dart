@@ -130,48 +130,6 @@ class AdmobBanner extends ConsumerWidget {
   }
 }
 
-/// バナー広告を表示するウィジェット
-class AdmobMovieBanner extends ConsumerWidget {
-  const AdmobMovieBanner({
-    required this.id,
-    super.key,
-  });
-
-  final String id;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final bannerAd = ref.watch(bannerAdProvider(id));
-    final subscriptionState = ref.watch(subscriptionProvider);
-
-    return subscriptionState.when(
-      data: (isSubscribed) => _buildBannerContainer(bannerAd, isSubscribed),
-      error: (_, __) => const SizedBox.shrink(),
-      loading: () => _buildLoadingContainer(bannerAd),
-    );
-  }
-
-  Widget _buildBannerContainer(BannerAd? bannerAd, bool isSubscribed) {
-    if (isSubscribed || bannerAd == null) {
-      return const SizedBox.shrink();
-    }
-
-    return Container(
-      alignment: Alignment.center,
-      width: 300,
-      height: 250,
-      child: AdWidget(ad: bannerAd),
-    );
-  }
-
-  Widget _buildLoadingContainer(BannerAd? bannerAd) {
-    return SizedBox(
-      width: double.infinity,
-      height: bannerAd?.size.height.toDouble() ?? 50.0,
-    );
-  }
-}
-
 /// 現在表示中の広告位置を管理するプロバイダー
 final currentAdPositionProvider = StateProvider<int>((ref) => 0);
 
