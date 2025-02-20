@@ -97,7 +97,7 @@ class StoryScreen extends ConsumerWidget {
                                 fontSize: 16,
                               ),
                             ),
-                            const AdmobBanner(),
+                            const AdmobBanner(id: 'story'),
                           ],
                         ),
                       ),

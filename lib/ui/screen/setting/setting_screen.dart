@@ -364,7 +364,7 @@ class SettingScreen extends HookConsumerWidget {
                   ),
                 ),
               ),
-              AdmobBanner(),
+              AdmobBanner(id: 'setting'),
             ],
           ),
           AppLoading(
