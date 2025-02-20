@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -13,7 +14,7 @@ part 'revenue_cat_service.g.dart';
 class RevenueCatService extends _$RevenueCatService {
   bool isSubscribed = false;
   late Offerings offerings;
-  final user = supabase.auth.currentUser?.id;
+  String? get user => ref.read(currentUserProvider);
 
   @override
   Future<bool> build() {

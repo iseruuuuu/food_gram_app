@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/result.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -13,12 +14,16 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 part 'auth_service.g.dart';
 
 @riverpod
-AuthService authService(Ref ref) => AuthService();
+AuthService authService(Ref ref) => AuthService(ref);
 
 class AuthService {
-  AuthService();
+  AuthService(this.ref);
 
   static const _redirectUrl = 'io.supabase.flutterquickstart://login-callback/';
+
+  final Ref ref;
+
+  SupabaseClient get supabase => ref.read(supabaseProvider);
 
   Future<Result<void, String>> login(String email) async {
     try {
