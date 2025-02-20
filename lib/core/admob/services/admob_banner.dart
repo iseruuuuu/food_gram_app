@@ -204,18 +204,23 @@ class ReusableRectangleBanner extends ConsumerWidget {
     bool isSubscribed,
     bool isVisible,
   ) {
-    if (isSubscribed || bannerAd == null || !isVisible) {
-      return const SizedBox(
+    if (isSubscribed) {
+      return const SizedBox.shrink();
+    } else if (bannerAd == null || !isVisible) {
+      return SizedBox(
         width: 300,
         height: 250,
       );
     }
 
-    return Container(
-      alignment: Alignment.center,
-      width: 300,
-      height: 250,
-      child: AdWidget(ad: bannerAd),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Container(
+        alignment: Alignment.center,
+        width: 300,
+        height: 250,
+        child: AdWidget(ad: bannerAd),
+      ),
     );
   }
 

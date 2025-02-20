@@ -148,11 +148,8 @@ class AppListView extends HookConsumerWidget {
                   ),
                   if (chunk < (data.length / 30).ceil() - 1)
                     SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: ReusableRectangleBanner(
-                          position: chunk,
-                        ),
+                      child: ReusableRectangleBanner(
+                        position: chunk,
                       ),
                     ),
                 ],
