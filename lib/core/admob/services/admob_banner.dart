@@ -173,6 +173,51 @@ class SingleRectangleBannerNotifier extends StateNotifier<BannerAd?> {
   }
 }
 
+/// 複数のレクタングル広告を管理するプロバイダー
+final multipleRectangleBannerProvider =
+    StateNotifierProvider<MultipleRectangleBannerNotifier, List<BannerAd?>>(
+        (ref) {
+  return MultipleRectangleBannerNotifier();
+});
+
+/// 複数のレクタングル広告を管理するNotifier
+class MultipleRectangleBannerNotifier extends StateNotifier<List<BannerAd?>> {
+  MultipleRectangleBannerNotifier() : super(List.filled(3, null)) {
+    _loadAds();
+  }
+
+  void _loadAds() {
+    for (int i = 0; i < 3; i++) {
+      if (state[i] != null) {
+        continue;
+      }
+
+      BannerAd(
+        adUnitId: AdmobConfig.bannerAdUnitId,
+        size: AdSize.mediumRectangle,
+        request: const AdRequest(),
+        listener: BannerAdListener(
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+            state = [...state]..[i] = null;
+          },
+          onAdLoaded: (ad) {
+            state = [...state]..[i] = ad as BannerAd;
+          },
+        ),
+      ).load();
+    }
+  }
+
+  @override
+  void dispose() {
+    for (final ad in state) {
+      ad?.dispose();
+    }
+    super.dispose();
+  }
+}
+
 /// 再利用可能なレクタングル広告ウィジェット
 class ReusableRectangleBanner extends ConsumerWidget {
   const ReusableRectangleBanner({
@@ -184,16 +229,19 @@ class ReusableRectangleBanner extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bannerAd = ref.watch(singleRectangleBannerProvider);
+    final bannerAds = ref.watch(multipleRectangleBannerProvider);
     final subscriptionState = ref.watch(subscriptionProvider);
     final currentPosition = ref.watch(currentAdPositionProvider);
 
     // 現在の表示位置と一致する場合のみ広告を表示
     final isVisible = position == currentPosition;
+    // 3つの広告を順番に表示するために位置を3で割った余りを使用
+    final adIndex = position % 3;
+    final currentAd = bannerAds[adIndex];
 
     return subscriptionState.when(
       data: (isSubscribed) =>
-          _buildBannerContainer(bannerAd, isSubscribed, isVisible),
+          _buildBannerContainer(currentAd, isSubscribed, isVisible),
       error: (_, __) => const SizedBox.shrink(),
       loading: _buildLoadingContainer,
     );
