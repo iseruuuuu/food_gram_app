@@ -104,7 +104,7 @@ class AppListView extends HookConsumerWidget {
                               () async {
                                 final postResult = await ref
                                     .read(postRepositoryProvider.notifier)
-                                    .getPostData(data, index);
+                                    .getPostData(data, actualIndex);
                                 await postResult.whenOrNull(
                                   success: (model) async {
                                     final result = await context.pushNamed(
@@ -120,7 +120,7 @@ class AppListView extends HookConsumerWidget {
                             );
                           },
                           child: Heroine(
-                            tag: 'image-${data[index]['id']}',
+                            tag: 'image-${data[actualIndex]['id']}',
                             flightShuttleBuilder: FlipShuttleBuilder(),
                             spring: SimpleSpring.bouncy,
                             child: Card(
