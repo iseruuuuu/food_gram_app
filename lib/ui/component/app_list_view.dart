@@ -40,8 +40,12 @@ class AppListView extends HookConsumerWidget {
           }
           final scrollPosition = scrollController.position.pixels;
           final viewportHeight = scrollController.position.viewportDimension;
-          final adPosition = (scrollPosition / (viewportHeight * 2.4)).floor();
-          ref.read(currentAdPositionProvider.notifier).state = adPosition;
+          ref.read(currentAdPositionProvider.notifier).state =
+              _calculateScrollSize(
+            context,
+            scrollPosition,
+            viewportHeight,
+          );
         }
 
         scrollController.addListener(onScroll);
@@ -157,5 +161,20 @@ class AppListView extends HookConsumerWidget {
             ),
           )
         : const AppEmpty();
+  }
+}
+
+int _calculateScrollSize(
+  BuildContext context,
+  double scrollPosition,
+  double viewportHeight,
+) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  if (screenWidth <= 375) {
+    return (scrollPosition / (viewportHeight * 3)).floor();
+  } else if (screenWidth < 720) {
+    return (scrollPosition / (viewportHeight * 2.4)).floor();
+  } else {
+    return (scrollPosition / (viewportHeight * 3)).floor();
   }
 }
