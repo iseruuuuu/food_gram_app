@@ -29,13 +29,15 @@ Future<void> initializeSystemSettings() async {
 }
 
 Future<void> initializeThirdPartyServices() async {
+  // Firebaseが既に初期化されているかチェック
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp();
+  }
+
   /// Supabaseの初期化
   await Supabase.initialize(
     anonKey: kReleaseMode ? Prod.supabaseAnonKey : Dev.supabaseAnonKey,
     url: kReleaseMode ? Prod.supabaseUrl : Dev.supabaseUrl,
     debug: kDebugMode,
   );
-
-  /// Firebaseの初期化
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
