@@ -8,7 +8,6 @@ abstract class SettingState with _$SettingState {
   const factory SettingState({
     @Default('') String status,
     @Default('') String version,
-    @Default('') String battery,
     @Default('') String sdk,
     @Default('') String model,
   }) = _SettingState;

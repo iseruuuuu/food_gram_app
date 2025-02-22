@@ -37,9 +37,6 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCmy8Qu1OUTmFzghPc5MK5kBFZKkQEmoyY"
-        },
-        {
           "current_key": "AIzaSyBY15iC73bmVvdFChxkMi5cGif_fbaQOJM"
         }
       ],
@@ -83,9 +80,6 @@
         }
       ],
       "api_key": [
-        {
-          "current_key": "AIzaSyCmy8Qu1OUTmFzghPc5MK5kBFZKkQEmoyY"
-        },
         {
           "current_key": "AIzaSyBY15iC73bmVvdFChxkMi5cGif_fbaQOJM"
         }
@@ -131,9 +125,6 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCmy8Qu1OUTmFzghPc5MK5kBFZKkQEmoyY"
-        },
-        {
           "current_key": "AIzaSyBY15iC73bmVvdFChxkMi5cGif_fbaQOJM"
         }
       ],
@@ -164,14 +155,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "505064710022-ec5dqcu5cdjrpphjt63qqq538jjcjpsm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.food_gram_app.com.com.com",
+            "certificate_hash": "dd50c3484ea53bb8181f2637bf040620e3e516a8"
+          }
+        },
+        {
           "client_id": "505064710022-rqt7k1vm2o9htklicvn9e68pm0rl8m0d.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
-        {
-          "current_key": "AIzaSyCmy8Qu1OUTmFzghPc5MK5kBFZKkQEmoyY"
-        },
         {
           "current_key": "AIzaSyBY15iC73bmVvdFChxkMi5cGif_fbaQOJM"
         }

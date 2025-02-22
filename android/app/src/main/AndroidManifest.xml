@@ -36,6 +36,8 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-9259628471292536~5720970271" />
 
+        
+
         <!--ホームWidget(小・Share)-->
         <service
             android:name="es.antonborri.home_widget.HomeWidgetBackgroundService"
@@ -110,7 +112,8 @@
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:windowSoftInputMode="adjustResize"
-            tools:targetApi="honeycomb">
+            tools:targetApi="honeycomb"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
@@ -133,5 +136,11 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!-- Add UCropActivity for image_cropper -->
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Ucrop.CropTheme"/>  <!-- Updated theme -->
     </application>
 </manifest>

@@ -11,8 +11,6 @@ PODS:
   - AppAuth/Core (1.7.6)
   - AppAuth/ExternalUserAgent (1.7.6):
     - AppAuth/Core
-  - battery_info (0.0.1):
-    - Flutter
   - device_info_plus (0.0.1):
     - Flutter
   - Firebase/CoreOnly (10.25.0):
@@ -115,7 +113,6 @@ DEPENDENCIES:
   - app_links (from `.symlinks/plugins/app_links/ios`)
   - app_settings (from `.symlinks/plugins/app_settings/ios`)
   - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
-  - battery_info (from `.symlinks/plugins/battery_info/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
@@ -165,8 +162,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/app_settings/ios"
   app_tracking_transparency:
     :path: ".symlinks/plugins/app_tracking_transparency/ios"
-  battery_info:
-    :path: ".symlinks/plugins/battery_info/ios"
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
   firebase_core:
@@ -219,7 +214,6 @@ SPEC CHECKSUMS:
   app_settings: 3507c575c2b18a462c99948f61d5de21d4420999
   app_tracking_transparency: 3d84f147f67ca82d3c15355c36b1fa6b66ca7c92
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
-  battery_info: a06b00c06a39bc94c92beebf600f1810cb6c8c87
   device_info_plus: 335f3ce08d2e174b9fdc3db3db0f4e3b1f66bd89
   Firebase: 0312a2352584f782ea56f66d91606891d4607f06
   firebase_core: 3b49a055ff54114cae400581c13671fe53936c36
