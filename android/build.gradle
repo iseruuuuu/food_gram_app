@@ -22,13 +22,6 @@ allprojects {
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-    
-    if (project.name.contains('battery_info')) {
-        project.plugins.apply('com.android.library')
-        project.android {
-            namespace "com.example.battery_info"
-        }
-    }
     project.evaluationDependsOn(':app')
 }
 
