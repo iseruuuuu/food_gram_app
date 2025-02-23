@@ -129,7 +129,7 @@ abstract class L10n {
   /// No description provided for @userNameInputField.
   ///
   /// In ja, this message translates to:
-  /// **'ユーザー名を入力してください'**
+  /// **'ユーザー名（例：いせりゅー）'**
   String get userNameInputField;
 
   /// No description provided for @userId.
@@ -141,7 +141,7 @@ abstract class L10n {
   /// No description provided for @userIdInputField.
   ///
   /// In ja, this message translates to:
-  /// **'ユーザーIDを入力してください'**
+  /// **'ユーザーID （例：iseryuuu）'**
   String get userIdInputField;
 
   /// No description provided for @registerButton.
