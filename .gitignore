@@ -69,3 +69,6 @@ lib/constants/api_key.dart
 
 # FVM Version Cache
 .fvm/
+
+# Firebase configuration file
+android/app/google-services.json
