@@ -32,11 +32,22 @@ class AppListView extends HookConsumerWidget {
     final screenWidth = MediaQuery.of(context).size.width / 3;
     final supabase = ref.watch(supabaseProvider);
     final scrollController = useScrollController();
+    final displayedData = useState(data.take(30).toList());
+
     useEffect(
       () {
         void onScroll() {
-          if (!scrollController.hasClients) {
-            return;
+          if (!scrollController.hasClients) return;
+
+          if (scrollController.position.pixels >=
+              scrollController.position.maxScrollExtent - 500) {
+            final currentLength = displayedData.value.length;
+            if (currentLength < data.length) {
+              displayedData.value = [
+                ...displayedData.value,
+                ...data.skip(currentLength).take(30),
+              ];
+            }
           }
           final scrollPosition = scrollController.position.pixels;
           final viewportHeight = scrollController.position.viewportDimension;
@@ -54,15 +65,6 @@ class AppListView extends HookConsumerWidget {
       [scrollController],
     );
 
-    // 画像URLのメモ化
-    final getImageUrl = useCallback(
-      (index) {
-        return supabase.storage
-            .from('food')
-            .getPublicUrl(data[index]['food_image']);
-      },
-      [data],
-    );
     return data.isNotEmpty
         ? RefreshIndicator(
             color: Colors.black,
@@ -86,16 +88,19 @@ class AppListView extends HookConsumerWidget {
                     ),
                   ),
                 for (int chunk = 0;
-                    chunk < (data.length / 30).ceil();
+                    chunk < (displayedData.value.length / 30).ceil();
                     chunk++) ...[
                   SliverGrid(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
                         final actualIndex = (chunk * 30) + index;
-                        if (actualIndex >= data.length) {
+                        if (actualIndex >= displayedData.value.length) {
                           return null;
                         }
-                        final foodImageUrl = getImageUrl(actualIndex);
+                        final foodImageUrl = supabase.storage
+                            .from('food')
+                            .getPublicUrl(
+                                displayedData.value[actualIndex]['food_image']);
                         return GestureDetector(
                           onTap: () {
                             EasyDebounce.debounce(
@@ -120,7 +125,8 @@ class AppListView extends HookConsumerWidget {
                             );
                           },
                           child: Heroine(
-                            tag: 'image-${data[actualIndex]['id']}',
+                            tag:
+                                'image-${displayedData.value[actualIndex]['id']}',
                             flightShuttleBuilder: FlipShuttleBuilder(),
                             spring: SimpleSpring.bouncy,
                             child: Card(
@@ -141,7 +147,8 @@ class AppListView extends HookConsumerWidget {
                           ),
                         );
                       },
-                      childCount: min(30, data.length - (chunk * 30)),
+                      childCount:
+                          min(30, displayedData.value.length - (chunk * 30)),
                     ),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -150,7 +157,7 @@ class AppListView extends HookConsumerWidget {
                       mainAxisSpacing: 1,
                     ),
                   ),
-                  if (chunk < (data.length / 30).ceil() - 1)
+                  if (chunk < (displayedData.value.length / 30).ceil() - 1)
                     SliverToBoxAdapter(
                       child: ReusableRectangleBanner(
                         position: chunk,
