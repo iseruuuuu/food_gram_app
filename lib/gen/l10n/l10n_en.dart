@@ -108,7 +108,7 @@ class L10nEn extends L10n {
   String get settingsDeleteAccountButton => 'Request Account Deletion';
 
   @override
-  String get settingWatch => 'Watch Ad';
+  String get settingQuestion => 'Question Box';
 
   @override
   String get postShareButton => 'Share';

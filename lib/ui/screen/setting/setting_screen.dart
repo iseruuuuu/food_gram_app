@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -127,18 +128,13 @@ class SettingScreen extends HookConsumerWidget {
                             onTap: () =>
                                 context.pushNamed(RouterPath.settingTutorial),
                           ),
-                          //TODO なにか追加する
                           AppSettingTile(
-                            icon: Icons.tv,
+                            icon: CupertinoIcons.cube_box_fill,
                             size: 32,
                             color: Colors.purple,
-                            title: l10n.settingWatch,
-                            onTap: () async {
-                              await adInterstitial.showAd(
-                                onAdClosed: () async {
-                                  SnackBarHelper().openThanksSnackBar(context);
-                                },
-                              );
+                            title: l10n.settingQuestion,
+                            onTap: () {
+                              LaunchUrlHelper().open(URL.question);
                             },
                           ),
                         ],

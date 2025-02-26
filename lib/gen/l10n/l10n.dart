@@ -294,11 +294,11 @@ abstract class L10n {
   /// **'アカウント削除申請'**
   String get settingsDeleteAccountButton;
 
-  /// No description provided for @settingWatch.
+  /// No description provided for @settingQuestion.
   ///
   /// In ja, this message translates to:
-  /// **'広告を見る'**
-  String get settingWatch;
+  /// **'質問箱'**
+  String get settingQuestion;
 
   /// No description provided for @postShareButton.
   ///
