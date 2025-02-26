@@ -159,47 +159,6 @@ class SettingScreen extends HookConsumerWidget {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12),
                         child: ListTile(
-                          leading: Icon(
-                            Icons.phone_android,
-                            color: Colors.black,
-                          ),
-                          title: Text(
-                            l10n.settingsDeviceInfo,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          trailing: Text(
-                            state.model,
-                            style: TextStyle(fontSize: 18, color: Colors.black),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
-                        child: ListTile(
-                          leading: Icon(
-                            Platform.isAndroid ? Icons.android : Icons.apple,
-                            color:
-                                Platform.isAndroid ? Colors.green : Colors.red,
-                          ),
-                          title: Text(
-                            Platform.isAndroid
-                                ? l10n.settingsAndroidSdk
-                                : l10n.settingsIosVersion,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          trailing: GestureDetector(
-                            onTap: () => isSnowing.value = !isSnowing.value,
-                            child: Text(
-                              state.sdk,
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
-                        child: ListTile(
                           leading: Icon(Icons.settings, color: Colors.grey),
                           title: Text(
                             l10n.settingsAppVersion,
