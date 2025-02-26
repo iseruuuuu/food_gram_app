@@ -24,13 +24,13 @@ class L10nEn extends L10n {
   String get userName => 'Username';
 
   @override
-  String get userNameInputField => 'Enter your username';
+  String get userNameInputField => 'Username (e.g., iseryu)';
 
   @override
   String get userId => 'User ID';
 
   @override
-  String get userIdInputField => 'Enter your user ID';
+  String get userIdInputField => 'User ID (e.g., iseryuuu)';
 
   @override
   String get registerButton => 'Register';

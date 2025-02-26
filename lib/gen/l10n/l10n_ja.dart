@@ -24,13 +24,13 @@ class L10nJa extends L10n {
   String get userName => 'ユーザー名';
 
   @override
-  String get userNameInputField => 'ユーザー名を入力してください';
+  String get userNameInputField => 'ユーザー名（例：いせりゅー）';
 
   @override
   String get userId => 'ユーザーID';
 
   @override
-  String get userIdInputField => 'ユーザーIDを入力してください';
+  String get userIdInputField => 'ユーザーID （例：iseryuuu）';
 
   @override
   String get registerButton => '登録';
