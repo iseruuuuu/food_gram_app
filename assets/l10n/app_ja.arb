@@ -145,5 +145,10 @@
   "postCameraPermission": "カメラの許可が必要です",
   "postAlbumPermission": "フォトライブラリの許可が必要です",
   "postSuccess": "投稿が完了しました",
-  "searchButton":"検索"
+  "searchButton":"検索",
+  "newAccountImportantTitle": "重要な注意事項",
+  "newAccountImportant": "アカウントを作成する際、ユーザー名やユーザーIDには、メールアドレスや電話番号などの個人情報を含めないようにしてください。安全なオンライン体験のため、個人情報が特定されない名前を設定してください。",
+  "accountRegistrationSuccess": "アカウントの登録が完了しました",
+  "accountRegistrationError": "エラーが発生しました",
+  "requiredInfoMissing": "必要な情報が入力されていません"
 }

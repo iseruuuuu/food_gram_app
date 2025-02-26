@@ -17,7 +17,7 @@ class SnackBarHelper {
         message: message,
         contentType: ContentType.failure,
         titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        messageTextStyle: TextStyle(fontSize: 12),
+        messageTextStyle: TextStyle(fontSize: 14),
       ),
     );
     ScaffoldMessenger.of(context)

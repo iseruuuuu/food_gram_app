@@ -445,4 +445,19 @@ class L10nJa extends L10n {
 
   @override
   String get searchButton => '検索';
+
+  @override
+  String get newAccountImportantTitle => '重要な注意事項';
+
+  @override
+  String get newAccountImportant => 'アカウントを作成する際、ユーザー名やユーザーIDには、メールアドレスや電話番号などの個人情報を含めないようにしてください。安全なオンライン体験のため、個人情報が特定されない名前を設定してください。';
+
+  @override
+  String get accountRegistrationSuccess => 'アカウントの登録が完了しました';
+
+  @override
+  String get accountRegistrationError => 'エラーが発生しました';
+
+  @override
+  String get requiredInfoMissing => '必要な情報が入力されていません';
 }

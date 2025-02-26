@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -19,11 +20,29 @@ class NewAccountScreen extends ConsumerWidget {
     final loading = ref.watch(loadingProvider);
     final controller = ref.watch(newAccountViewModelProvider().notifier);
     final state = ref.watch(newAccountViewModelProvider());
+    ref.listen(newAccountViewModelProvider(), (previous, current) {
+      if (current.loginStatus.isNotEmpty &&
+          previous?.loginStatus != current.loginStatus) {
+        var message = '';
+        switch (current.loginStatus) {
+          case 'account_registration_error':
+            message = L10n.of(context).accountRegistrationError;
+            SnackBarHelper().openErrorSnackBar(context, '', message);
+            break;
+          case 'required_info_missing':
+            message = L10n.of(context).requiredInfoMissing;
+            SnackBarHelper().openErrorSnackBar(context, '', message);
+            break;
+          default:
+            message = current.loginStatus;
+        }
+      }
+    });
+
     return GestureDetector(
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(backgroundColor: Colors.white),
         body: Stack(
           children: [
             SingleChildScrollView(
@@ -31,22 +50,23 @@ class NewAccountScreen extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
                   children: [
+                    Gap(20),
                     CircleAvatar(
                       backgroundColor: Colors.white,
                       backgroundImage:
                           AssetImage('assets/icon/icon${state.number}.png'),
                       radius: 60,
                     ),
-                    Gap(10),
+                    const Gap(10),
                     Text(
                       L10n.of(context).settingsIcon,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                         color: Colors.black,
                       ),
                     ),
-                    Gap(10),
+                    const Gap(10),
                     Wrap(
                       children: List.generate(
                         6,
@@ -60,15 +80,15 @@ class NewAccountScreen extends ConsumerWidget {
                         },
                       ),
                     ),
-                    Gap(30),
+                    const Gap(30),
                     AppNameTextField(
                       controller: controller.nameTextController,
                     ),
-                    Gap(30),
+                    const Gap(20),
                     AppUserNameTextField(
                       controller: controller.userNameTextController,
                     ),
-                    Gap(30),
+                    const Gap(20),
                     AppElevatedButton(
                       onPressed: () {
                         ref
@@ -82,14 +102,20 @@ class NewAccountScreen extends ConsumerWidget {
                       },
                       title: L10n.of(context).registerButton,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Text(
-                        state.loginStatus,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    const Gap(20),
+                    Text(
+                      L10n.of(context).newAccountImportantTitle,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const Gap(10),
+                    Text(
+                      L10n.of(context).newAccountImportant,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 16,
                       ),
                     ),
                   ],
