@@ -32,6 +32,7 @@
   "settingsAccount": "Account",
   "settingsLogoutButton": "Logout",
   "settingsDeleteAccountButton": "Request Account Deletion",
+  "settingWatch": "Watch Ad",
   "postShareButton": "Share",
   "postFoodName": "Food Name",
   "postFoodNameInputField": "Enter food name",
