@@ -90,6 +90,20 @@ class NewAccountScreen extends ConsumerWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
+                    const Gap(30),
+                    Text(
+                      L10n.of(context).newAccountImportantTitle,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const Gap(10),
+                    Text(
+                      L10n.of(context).newAccountImportant,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 16,
                       ),
                     ),
                   ],
