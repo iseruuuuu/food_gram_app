@@ -14,6 +14,8 @@ class URL {
   static const contact = 'https://forms.gle/mjucjntt3c2SZsUc7';
   static const report =
       'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit';
+  static const question =
+      'https://marshmallow-qa.com/z74iurv681w1qeh?t=CpDR1z&utm_medium=url_text&utm_source=promotion';
 
   static String go(String restaurant) =>
       'https://www.google.com/maps/search/?api=1&query=$restaurant';

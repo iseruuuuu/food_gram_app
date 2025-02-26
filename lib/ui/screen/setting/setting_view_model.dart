@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
@@ -30,19 +28,6 @@ class SettingViewModel extends _$SettingViewModel {
 
   Future<void> getData() async {
     final packageInfo = await PackageInfo.fromPlatform();
-    if (Platform.isAndroid) {
-      final info = await deviceInfo.androidInfo;
-      state = state.copyWith(
-        sdk: info.version.sdkInt.toString(),
-        model: info.model,
-      );
-    } else if (Platform.isIOS) {
-      final info = await deviceInfo.iosInfo;
-      state = state.copyWith(
-        sdk: info.systemVersion,
-        model: info.model,
-      );
-    }
     state = state.copyWith(
       version: packageInfo.version,
     );

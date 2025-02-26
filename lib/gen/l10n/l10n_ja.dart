@@ -108,6 +108,9 @@ class L10nJa extends L10n {
   String get settingsDeleteAccountButton => 'アカウント削除申請';
 
   @override
+  String get settingQuestion => '質問箱';
+
+  @override
   String get postShareButton => 'シェア';
 
   @override
