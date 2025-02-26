@@ -41,14 +41,11 @@ class NewAccountViewModel extends _$NewAccountViewModel {
           );
       result.when(
         success: (_) {
-          state = state.copyWith(
-            loginStatus: 'アカウントの登録が完了しました',
-            isSuccess: true,
-          );
+          state = state.copyWith(isSuccess: true);
         },
         failure: (_) {
           state = state.copyWith(
-            loginStatus: 'エラーが発生しました',
+            loginStatus: 'account_registration_error',
             isSuccess: false,
           );
         },
@@ -56,7 +53,8 @@ class NewAccountViewModel extends _$NewAccountViewModel {
       loading.state = false;
       return state.isSuccess;
     } else {
-      state = state.copyWith(loginStatus: '必要な情報が入力されていません');
+      state = state.copyWith(loginStatus: 'required_info_missing');
+      loading.state = false;
       return false;
     }
   }
