@@ -971,6 +971,36 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'検索'**
   String get searchButton;
+
+  /// No description provided for @newAccountImportantTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'重要な注意事項'**
+  String get newAccountImportantTitle;
+
+  /// No description provided for @newAccountImportant.
+  ///
+  /// In ja, this message translates to:
+  /// **'アカウントを作成する際、ユーザー名やユーザーIDには、メールアドレスや電話番号などの個人情報を含めないようにしてください。安全なオンライン体験のため、個人情報が特定されない名前を設定してください。'**
+  String get newAccountImportant;
+
+  /// No description provided for @accountRegistrationSuccess.
+  ///
+  /// In ja, this message translates to:
+  /// **'アカウントの登録が完了しました'**
+  String get accountRegistrationSuccess;
+
+  /// No description provided for @accountRegistrationError.
+  ///
+  /// In ja, this message translates to:
+  /// **'エラーが発生しました'**
+  String get accountRegistrationError;
+
+  /// No description provided for @requiredInfoMissing.
+  ///
+  /// In ja, this message translates to:
+  /// **'必要な情報が入力されていません'**
+  String get requiredInfoMissing;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

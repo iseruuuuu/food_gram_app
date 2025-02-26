@@ -445,4 +445,19 @@ class L10nEn extends L10n {
 
   @override
   String get searchButton => 'Search';
+
+  @override
+  String get newAccountImportantTitle => 'Important Note';
+
+  @override
+  String get newAccountImportant => 'When creating an account, please do not include personal information such as your email address or phone number in your username or user ID. To ensure a safe online experience, choose a name that does not reveal your personal details.';
+
+  @override
+  String get accountRegistrationSuccess => 'Account registration completed';
+
+  @override
+  String get accountRegistrationError => 'An error occurred';
+
+  @override
+  String get requiredInfoMissing => 'Required information is missing';
 }
