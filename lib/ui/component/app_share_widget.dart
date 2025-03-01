@@ -2,19 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:gap/gap.dart';
 
 class AppShareWidget extends ConsumerWidget {
   const AppShareWidget({
     required this.posts,
-    required this.users,
     super.key,
   });
 
   final Posts posts;
-  final Users users;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

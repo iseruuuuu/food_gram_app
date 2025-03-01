@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class AppDetailMasterModalSheet extends ConsumerWidget {
@@ -80,7 +81,7 @@ class AppDetailMasterModalSheet extends ConsumerWidget {
                         color: Colors.red,
                         size: 25,
                       ),
-                      SizedBox(width: 20),
+                      Gap(20),
                       Text(
                         l10n.dialogDeleteTitle,
                         style: TextStyle(
@@ -125,7 +126,7 @@ class AppDetailMasterModalSheet extends ConsumerWidget {
                         color: Colors.black,
                         size: 25,
                       ),
-                      SizedBox(width: 20),
+                      Gap(20),
                       Text(
                         l10n.close,
                         style: TextStyle(

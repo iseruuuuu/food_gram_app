@@ -27,11 +27,11 @@ class NewAccountScreen extends ConsumerWidget {
         switch (current.loginStatus) {
           case 'account_registration_error':
             message = L10n.of(context).accountRegistrationError;
-            SnackBarHelper().openErrorSnackBar(context, '', message);
+            SnackBarHelper().openError(context, '', message);
             break;
           case 'required_info_missing':
             message = L10n.of(context).requiredInfoMissing;
-            SnackBarHelper().openErrorSnackBar(context, '', message);
+            SnackBarHelper().openError(context, '', message);
             break;
           default:
             message = current.loginStatus;

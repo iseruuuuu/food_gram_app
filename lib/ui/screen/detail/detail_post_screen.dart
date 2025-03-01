@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/utils/helpers/heart_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/env.dart';
@@ -77,48 +78,12 @@ class DetailPostScreen extends HookConsumerWidget {
       },
       [gifController, adInterstitial],
     );
-    useEffect(
-      () {
-        adInterstitial.createAd();
-        return gifController.dispose;
-      },
-      [gifController],
-    );
     final deviceWidth = MediaQuery.of(context).size.width;
     final loading = ref.watch(loadingProvider);
     final menuLoading = useState(false);
     final l10n = L10n.of(context);
     final currentUser = ref.watch(currentUserProvider);
     final supabase = ref.watch(supabaseProvider);
-    Future<void> handleHeart() async {
-      if (users.userId == currentUser) {
-        return;
-      }
-      final postId = posts.id.toString();
-      final currentHeart = initialHeart.value;
-      if (isHeart.value) {
-        await supabase.from('posts').update({
-          'heart': currentHeart - 1,
-        }).match({'id': posts.id});
-        initialHeart.value--;
-        isHeart.value = false;
-        isAppearHeart.value = false;
-        heartList.value = List.from(heartList.value)..remove(postId);
-      } else {
-        await supabase.from('posts').update({
-          'heart': currentHeart + 1,
-        }).match({'id': posts.id});
-        initialHeart.value++;
-        isHeart.value = true;
-        isAppearHeart.value = true;
-        heartList.value = List.from(heartList.value)..add(postId);
-      }
-      await preference.setStringList(
-        PreferenceKey.heartList,
-        heartList.value,
-      );
-    }
-
     return PopScope(
       canPop: !loading,
       child: Scaffold(
@@ -219,7 +184,17 @@ class DetailPostScreen extends HookConsumerWidget {
                       ),
                     ),
                     GestureDetector(
-                      onDoubleTap: handleHeart,
+                      onDoubleTap: () {
+                        HeartHelper().handleHeart(
+                          ref,
+                          users,
+                          posts,
+                          initialHeart,
+                          isHeart,
+                          isAppearHeart,
+                          heartList,
+                        );
+                      },
                       child: DragDismissable(
                         onDismiss: () => context.pop(),
                         child: Heroine(
@@ -246,7 +221,17 @@ class DetailPostScreen extends HookConsumerWidget {
                           children: [
                             Gap(5),
                             IconButton(
-                              onPressed: handleHeart,
+                              onPressed: () {
+                                HeartHelper().handleHeart(
+                                  ref,
+                                  users,
+                                  posts,
+                                  initialHeart,
+                                  isHeart,
+                                  isAppearHeart,
+                                  heartList,
+                                );
+                              },
                               icon: Icon(
                                 isHeart.value
                                     ? CupertinoIcons.heart_fill
@@ -298,10 +283,7 @@ class DetailPostScreen extends HookConsumerWidget {
                                     await adInterstitial.showAd(
                                       onAdClosed: () async {
                                         await captureAndShare(
-                                          widget: AppShareWidget(
-                                            posts: posts,
-                                            users: users,
-                                          ),
+                                          widget: AppShareWidget(posts: posts),
                                           shareText: '${posts.foodName} '
                                               'in ${posts.restaurant}',
                                           loading: menuLoading,

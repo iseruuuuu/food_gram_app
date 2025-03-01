@@ -70,7 +70,7 @@ class MyProfileScreen extends ConsumerWidget {
                       'exchange point',
                       const Duration(seconds: 1),
                       () async {
-                        SnackBarHelper().openComingSoonSnackBar(context);
+                        SnackBarHelper().openComingSoon(context);
                       },
                     );
                   },

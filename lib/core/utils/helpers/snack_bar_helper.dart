@@ -2,7 +2,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 
 class SnackBarHelper {
-  void openErrorSnackBar(
+  void openError(
     BuildContext context,
     String title,
     String message,
@@ -25,7 +25,7 @@ class SnackBarHelper {
       ..showSnackBar(snackBar);
   }
 
-  void openSuccessSnackBar(
+  void openSuccess(
     BuildContext context,
     String title,
     String message,
@@ -45,7 +45,7 @@ class SnackBarHelper {
       ..showSnackBar(snackBar);
   }
 
-  void openComingSoonSnackBar(BuildContext context) {
+  void openComingSoon(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Center(
@@ -62,7 +62,7 @@ class SnackBarHelper {
     );
   }
 
-  void openThanksSnackBar(BuildContext context) {
+  void openThanks(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Center(
@@ -79,7 +79,7 @@ class SnackBarHelper {
     );
   }
 
-  void hideSnackBar(BuildContext context) {
+  void hide(BuildContext context) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 }

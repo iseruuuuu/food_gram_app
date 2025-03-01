@@ -140,7 +140,7 @@ class AuthenticationScreen extends HookConsumerWidget {
                         if (Platform.isIOS) {
                           controller.loginApple(context);
                         } else {
-                          SnackBarHelper().openErrorSnackBar(
+                          SnackBarHelper().openError(
                             context,
                             L10n.of(context).appleLoginFailure,
                             '',
@@ -175,7 +175,7 @@ class AuthenticationScreen extends HookConsumerWidget {
   }
 
   Future<void> redirect(BuildContext context, WidgetRef ref) async {
-    SnackBarHelper().hideSnackBar(context);
+    SnackBarHelper().hide(context);
     ref.read(currentUserProvider.notifier).update();
     if (await ref.read(accountServiceProvider).isUserRegistered()) {
       context.pushReplacementNamed(RouterPath.tab);

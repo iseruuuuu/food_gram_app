@@ -224,7 +224,7 @@ class SettingScreen extends HookConsumerWidget {
                                         context.pushReplacementNamed(
                                             RouterPath.authentication);
                                       } else {
-                                        SnackBarHelper().openErrorSnackBar(
+                                        SnackBarHelper().openError(
                                           context,
                                           l10n.logoutFailure,
                                           '',
@@ -247,7 +247,7 @@ class SettingScreen extends HookConsumerWidget {
                                   .open('https://forms.gle/B2cG3FEynh1tbfUdA')
                                   .then((value) {
                                 if (!value) {
-                                  SnackBarHelper().openErrorSnackBar(
+                                  SnackBarHelper().openError(
                                     context,
                                     l10n.accountDeletionFailure,
                                     '',
@@ -268,13 +268,13 @@ class SettingScreen extends HookConsumerWidget {
                                   .then(
                                 (isRestore) {
                                   if (isRestore) {
-                                    SnackBarHelper().openSuccessSnackBar(
+                                    SnackBarHelper().openSuccess(
                                       context,
                                       l10n.settingRestoreSuccessTitle,
                                       l10n.settingRestoreSuccessSubtitle,
                                     );
                                   } else {
-                                    SnackBarHelper().openErrorSnackBar(
+                                    SnackBarHelper().openError(
                                       context,
                                       l10n.settingRestoreFailureTitle,
                                       l10n.settingRestoreFailureSubtitle,

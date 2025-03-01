@@ -27,14 +27,14 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
 
   Future<void> login(BuildContext context) async {
     loading.state = true;
-    SnackBarHelper().hideSnackBar(context);
+    SnackBarHelper().hide(context);
     primaryFocus?.unfocus();
     if (emailTextField.text.isNotEmpty) {
       final result =
           await ref.read(authServiceProvider).login(emailTextField.text.trim());
       await result.when(
         success: (_) async {
-          SnackBarHelper().openSuccessSnackBar(
+          SnackBarHelper().openSuccess(
             context,
             L10n.of(context).loginSuccessful,
             L10n.of(context).emailAuthentication,
@@ -42,7 +42,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         },
         failure: (error) {
           logger.e(error);
-          SnackBarHelper().openErrorSnackBar(
+          SnackBarHelper().openError(
             context,
             L10n.of(context).emailAuthenticationFailure,
             authErrorManager(error, context),
@@ -50,7 +50,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         },
       );
     } else {
-      SnackBarHelper().openErrorSnackBar(
+      SnackBarHelper().openError(
         context,
         L10n.of(context).loginError,
         L10n.of(context).emailEmpty,
@@ -68,7 +68,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       },
       failure: (error) {
         logger.e(error);
-        SnackBarHelper().openErrorSnackBar(
+        SnackBarHelper().openError(
           context,
           L10n.of(context).loginError,
           L10n.of(context).error,
@@ -88,7 +88,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       },
       failure: (error) {
         logger.e(error);
-        SnackBarHelper().openErrorSnackBar(
+        SnackBarHelper().openError(
           context,
           L10n.of(context).loginError,
           L10n.of(context).error,

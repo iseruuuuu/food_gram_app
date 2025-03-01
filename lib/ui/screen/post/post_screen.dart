@@ -87,7 +87,7 @@ class PostScreen extends HookConsumerWidget {
                   if (result) {
                     context.pop(true);
                   } else {
-                    SnackBarHelper().openErrorSnackBar(
+                    SnackBarHelper().openError(
                       context,
                       l10n.postError,
                       _getLocalizedStatus(context, state.status),
