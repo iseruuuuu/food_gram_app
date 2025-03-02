@@ -1418,6 +1418,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
+  photo_viewer:
+    dependency: "direct main"
+    description:
+      name: photo_viewer
+      sha256: "81826810e17d02a5c1912349bbc5270fe1725008b9129b7fc888422ea4333c3b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   platform:
     dependency: transitive
     description:
