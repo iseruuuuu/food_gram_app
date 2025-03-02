@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -33,6 +32,7 @@ import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:map_launcher/map_launcher.dart';
+import 'package:photo_viewer/photo_viewer.dart';
 
 class DetailPostScreen extends HookConsumerWidget {
   const DetailPostScreen({
@@ -228,11 +228,10 @@ class DetailPostScreen extends HookConsumerWidget {
                             width: deviceWidth,
                             height: deviceWidth,
                             color: Colors.white,
-                            child: CachedNetworkImage(
+                            child: PhotoViewerImage(
                               imageUrl: supabase.storage
                                   .from('food')
                                   .getPublicUrl(posts.foodImage),
-                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
