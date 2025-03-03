@@ -108,6 +108,18 @@ abstract class L10n {
   /// **'キャンセル'**
   String get cancel;
 
+  /// No description provided for @editTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'編集'**
+  String get editTitle;
+
+  /// No description provided for @editPostButton.
+  ///
+  /// In ja, this message translates to:
+  /// **'編集する'**
+  String get editPostButton;
+
   /// No description provided for @emailInputField.
   ///
   /// In ja, this message translates to:

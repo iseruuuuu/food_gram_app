@@ -1,5 +1,7 @@
 // ignore_for_file
 
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'l10n.dart';
 
 // ignore_for_file: type=lint
@@ -13,6 +15,12 @@ class L10nEn extends L10n {
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get editTitle => 'Edit';
+
+  @override
+  String get editPostButton => 'Edit Post';
 
   @override
   String get emailInputField => 'Enter your email address';

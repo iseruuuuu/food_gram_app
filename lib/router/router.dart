@@ -7,6 +7,7 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/auth/providers/auth_state_provider.dart';
 import 'package:food_gram_app/router/amination.dart';
+import 'package:food_gram_app/ui/screen/edit_post/edit_post_screen.dart';
 import 'package:food_gram_app/ui/screen/restaurant_review/restaurant_review_screen.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
 import 'package:go_router/go_router.dart';
@@ -119,6 +120,19 @@ final timeLineRouter = GoRoute(
     ),
     GoRoute(
       path:
+          '${RouterPath.timeLine}/${RouterPath.timeLineDetail}/${RouterPath.timeLineEditPost}',
+      name: RouterPath.timeLineEditPost,
+      pageBuilder: (context, state) {
+        final posts = state.extra! as Posts;
+        return slideUpTransition(
+          EditPostScreen(
+            posts: posts,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path:
           '${RouterPath.timeLine}/${RouterPath.timeLineDetail}/${RouterPath.timeLineProfile}',
       name: RouterPath.timeLineProfile,
       pageBuilder: (context, state) {
@@ -208,6 +222,19 @@ final myProfileRouter = GoRoute(
     ),
     GoRoute(
       path:
+          '${RouterPath.myProfile}/${RouterPath.myProfileDetail}/${RouterPath.myProfileEditPost}',
+      name: RouterPath.myProfileEditPost,
+      pageBuilder: (context, state) {
+        final posts = state.extra! as Posts;
+        return slideUpTransition(
+          EditPostScreen(
+            posts: posts,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path:
           '${RouterPath.myProfile}/${RouterPath.myProfileDetail}/${RouterPath.myProfileDetailPost}',
       name: RouterPath.myProfileDetailPost,
       pageBuilder: (context, state) {
@@ -289,6 +316,19 @@ final mapRouter = GoRoute(
     ),
     GoRoute(
       path:
+          '${RouterPath.map}/${RouterPath.mapDetail}/${RouterPath.mapEditPost}',
+      name: RouterPath.mapEditPost,
+      pageBuilder: (context, state) {
+        final posts = state.extra! as Posts;
+        return slideUpTransition(
+          EditPostScreen(
+            posts: posts,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path:
           '${RouterPath.map}/${RouterPath.mapDetail}/${RouterPath.mapProfile}',
       name: RouterPath.mapProfile,
       pageBuilder: (context, state) {
@@ -359,4 +399,7 @@ final class RouterPath {
   static const String mapRestaurantReview = 'map_restaurant_review';
   static const String myProfileRestaurantReview =
       'my_profile_restaurant_review';
+  static const String timeLineEditPost = 'time_line_edit_post';
+  static const String mapEditPost = 'map_edit_post';
+  static const String myProfileEditPost = 'my_profile_edit_post';
 }
