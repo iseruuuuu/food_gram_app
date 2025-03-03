@@ -56,6 +56,7 @@ dependencies:
   new_version_plus: ^0.0.11
   package_info_plus: ^4.0.1
   path_provider: ^2.1.5
+  photo_viewer: ^0.0.3
   purchases_flutter: ^8.4.0
   quickalert: ^1.1.0
   riverpod_annotation: ^2.0.0
