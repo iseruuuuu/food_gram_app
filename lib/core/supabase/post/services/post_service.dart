@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:food_gram_app/core/cache/cache_manager.dart';
+import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
@@ -60,6 +61,78 @@ class PostService extends _$PostService {
     } on PostgrestException catch (e) {
       logger.e('Failed to create post: ${e.message}');
       return Failure(e);
+    }
+  }
+
+  /// 投稿を編集
+  Future<Result<void, Exception>> updatePost({
+    required Posts posts,
+    required String foodName,
+    required String comment,
+    required String restaurant,
+    required String restaurantTag,
+    required String foodTag,
+    required double lat,
+    required double lng,
+    String? newImagePath,
+    Uint8List? imageBytes,
+  }) async {
+    try {
+      // 全てのフィールドが同じかチェック
+      final isUnchanged = foodName == posts.foodName &&
+          comment == posts.comment &&
+          restaurant == posts.restaurant &&
+          restaurantTag == posts.restaurantTag &&
+          foodTag == posts.foodTag &&
+          lat == posts.lat &&
+          lng == posts.lng &&
+          (newImagePath == null ||
+              '/$_currentUserId/$newImagePath' == posts.foodImage);
+
+      if (isUnchanged) {
+        return const Success(null);
+      }
+
+      // 変更がある場合は更新用のマップを作成
+      final updates = {
+        'food_name': foodName,
+        'comment': comment,
+        'restaurant': restaurant,
+        'restaurant_tag': restaurantTag,
+        'food_tag': foodTag,
+        'lat': lat,
+        'lng': lng,
+      };
+
+      // 新しい画像がある場合、古い画像を削除してから新しい画像をアップロード
+      if (newImagePath != null && imageBytes != null) {
+        final oldImagePath = posts.foodImage.substring(1).replaceAll('//', '/');
+        // 古い画像を削除
+        await supabase.storage.from('food').remove([oldImagePath]);
+        // 新しい画像をアップロード
+        await _uploadImage(newImagePath, imageBytes);
+        updates['food_image'] = '/$_currentUserId/$newImagePath';
+      } else {
+        updates['food_image'] = posts.foodImage;
+      }
+
+      await supabase.from('posts').update(updates).eq('id', posts.id);
+
+      // キャッシュの無効化
+      invalidatePostsCache();
+      if (_currentUserId != null) {
+        invalidateUserCache(_currentUserId!);
+      }
+      invalidateRestaurantCache(posts.lat, posts.lng);
+      invalidateNearbyCache(posts.lat, posts.lng);
+
+      return const Success(null);
+    } on PostgrestException catch (e) {
+      logger.e('Failed to update post: ${e.message}');
+      return Failure(e);
+    } catch (e) {
+      logger.e('Unexpected error while updating post: $e');
+      return Failure(Exception('投稿の更新中に予期せぬエラーが発生しました'));
     }
   }
 
