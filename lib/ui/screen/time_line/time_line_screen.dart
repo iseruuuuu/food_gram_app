@@ -99,7 +99,10 @@ class TimeLineScreen extends HookConsumerWidget {
                 .pushNamed(RouterPath.timeLinePost)
                 .then((value) async {
               if (value != null) {
-                ref.invalidate(postStreamProvider);
+                ref
+                  ..invalidate(postStreamProvider)
+                  ..invalidate(postHomeMadeStreamProvider)
+                  ..invalidate(blockListProvider);
               }
             });
           },
