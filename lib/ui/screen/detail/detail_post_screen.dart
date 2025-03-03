@@ -33,6 +33,7 @@ import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:map_launcher/map_launcher.dart';
+import 'package:photo_viewer/photo_viewer.dart';
 
 class DetailPostScreen extends HookConsumerWidget {
   const DetailPostScreen({
@@ -218,10 +219,27 @@ class DetailPostScreen extends HookConsumerWidget {
                         ],
                       ),
                     ),
-                    GestureDetector(
-                      onDoubleTap: handleHeart,
-                      child: DragDismissable(
-                        onDismiss: () => context.pop(),
+                    DragDismissable(
+                      onDismiss: () => context.pop(),
+                      child: GestureDetector(
+                        onTap: () {
+                          showPhotoViewer(
+                            context: context,
+                            heroTagBuilder: (context) => 'image-${posts.id}',
+                            builder: (context) => Container(
+                              width: deviceWidth,
+                              height: deviceWidth,
+                              color: Colors.white,
+                              child: CachedNetworkImage(
+                                imageUrl: supabase.storage
+                                    .from('food')
+                                    .getPublicUrl(posts.foodImage),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        },
+                        onDoubleTap: handleHeart,
                         child: Heroine(
                           tag: 'image-${posts.id}',
                           child: Container(
