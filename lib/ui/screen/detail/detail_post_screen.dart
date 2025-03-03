@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -76,13 +77,6 @@ class DetailPostScreen extends HookConsumerWidget {
         return gifController.dispose;
       },
       [gifController, adInterstitial],
-    );
-    useEffect(
-      () {
-        adInterstitial.createAd();
-        return gifController.dispose;
-      },
-      [gifController],
     );
     final deviceWidth = MediaQuery.of(context).size.width;
     final loading = ref.watch(loadingProvider);
@@ -218,20 +212,38 @@ class DetailPostScreen extends HookConsumerWidget {
                         ],
                       ),
                     ),
-                    GestureDetector(
-                      onDoubleTap: handleHeart,
-                      child: DragDismissable(
-                        onDismiss: () => context.pop(),
+                    DragDismissable(
+                      onDismiss: () => context.pop(),
+                      child: GestureDetector(
+                        onTap: () {
+                          showPhotoViewer(
+                            context: context,
+                            heroTagBuilder: (context) => 'image-${posts.id}',
+                            builder: (context) => Container(
+                              width: deviceWidth,
+                              height: deviceWidth,
+                              color: Colors.white,
+                              child: CachedNetworkImage(
+                                imageUrl: supabase.storage
+                                    .from('food')
+                                    .getPublicUrl(posts.foodImage),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        },
+                        onDoubleTap: handleHeart,
                         child: Heroine(
                           tag: 'image-${posts.id}',
                           child: Container(
                             width: deviceWidth,
                             height: deviceWidth,
                             color: Colors.white,
-                            child: PhotoViewerImage(
+                            child: CachedNetworkImage(
                               imageUrl: supabase.storage
                                   .from('food')
                                   .getPublicUrl(posts.foodImage),
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
