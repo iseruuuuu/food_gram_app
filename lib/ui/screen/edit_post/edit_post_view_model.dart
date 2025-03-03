@@ -16,8 +16,29 @@ part 'edit_post_view_model.g.dart';
 
 @riverpod
 class EditPostViewModel extends _$EditPostViewModel {
-  static const _imageConfig = (maxSize: 960.0, quality: 100);
+  // 画像設定の定数
+  static const _imageConfig = (
+    maxSize: 960.0,
+    quality: 100,
+  );
 
+  // UI設定
+  final _androidSettings = AndroidUiSettings(
+    toolbarColor: Colors.blue,
+    toolbarWidgetColor: Colors.white,
+    initAspectRatio: CropAspectRatioPreset.original,
+    lockAspectRatio: false,
+    hideBottomControls: false,
+  );
+
+  final _iosSettings = IOSUiSettings(
+    cancelButtonTitle: 'Cancel',
+    doneButtonTitle: 'Done',
+    hidesNavigationBar: false,
+    showCancelConfirmationDialog: true,
+  );
+
+  // コントローラーとプロパティ
   final _foodController = TextEditingController();
   final _commentController = TextEditingController();
   final _picker = ImagePicker();
@@ -62,14 +83,17 @@ class EditPostViewModel extends _$EditPostViewModel {
     primaryFocus?.unfocus();
     loading.state = true;
     state = state.copyWith(status: EditStatus.loading.name);
-    if (foodController.text.isEmpty) {
+    if (_foodController.text.isEmpty) {
       loading.state = false;
       state = state.copyWith(status: EditStatus.missingInfo.name);
       return false;
     }
-    await _updatePost(restaurantTag, foodTag);
-    loading.state = false;
-    return state.isSuccess;
+    try {
+      await _updatePost(restaurantTag, foodTag);
+      return state.isSuccess;
+    } finally {
+      loading.state = false;
+    }
   }
 
   Future<bool> camera() async {
@@ -99,6 +123,7 @@ class EditPostViewModel extends _$EditPostViewModel {
           newImagePath: state.foodImage.isNotEmpty ? _uploadImage : null,
           imageBytes: state.foodImage.isNotEmpty ? _imageBytes : null,
         );
+
     await result.when(
       success: (_) async {
         state = state.copyWith(
@@ -130,7 +155,7 @@ class EditPostViewModel extends _$EditPostViewModel {
       await _processImage(cropImage);
       return true;
     } on PlatformException catch (error) {
-      logger.e(error.message);
+      logger.e('Failed to pick image: ${error.message}');
       state = state.copyWith(status: errorMessage);
       return false;
     }
@@ -148,27 +173,9 @@ class EditPostViewModel extends _$EditPostViewModel {
   Future<File> _cropImage(XFile image) async {
     final croppedFile = await ImageCropper().cropImage(
       sourcePath: image.path,
-      uiSettings: _getCropperSettings(),
+      uiSettings: [_androidSettings, _iosSettings],
     );
     return File(croppedFile!.path);
-  }
-
-  List<PlatformUiSettings> _getCropperSettings() {
-    return [
-      AndroidUiSettings(
-        toolbarColor: Colors.blue,
-        toolbarWidgetColor: Colors.white,
-        initAspectRatio: CropAspectRatioPreset.original,
-        lockAspectRatio: false,
-        hideBottomControls: false,
-      ),
-      IOSUiSettings(
-        cancelButtonTitle: 'Cancel',
-        doneButtonTitle: 'Done',
-        hidesNavigationBar: false,
-        showCancelConfirmationDialog: true,
-      ),
-    ];
   }
 
   void getPlace(Restaurant restaurant) {
