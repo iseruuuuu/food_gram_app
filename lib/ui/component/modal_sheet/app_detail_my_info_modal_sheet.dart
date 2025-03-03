@@ -10,6 +10,7 @@ import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_share_widget.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
 import 'package:go_router/go_router.dart';
@@ -31,7 +32,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
     return Container(
-      height: MediaQuery.sizeOf(context).width - 50,
+      height: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -54,20 +55,67 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                 ),
               ),
             ),
+            Container(
+              width: MediaQuery.sizeOf(context).width,
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor: Color(0xFFEFEFEF),
+                  foregroundColor: Color(0xFFEFEFEF),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
+                  ),
+                ),
+                onPressed: () async {
+                  context.pop();
+                  //TODO 編集
+                  await context.pushNamed(
+                    RouterPath.myProfileEditPost,
+                    extra: posts,
+                  );
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.edit,
+                      color: Colors.black,
+                      size: 25,
+                    ),
+                    SizedBox(width: 20),
+                    Text(
+                      //TODO 多言語化する
+                      '編集する',
+                      // l10n.appShareGoButton,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Center(
-              child: SizedBox(
+              child: Container(
                 width: MediaQuery.sizeOf(context).width,
                 height: 50,
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(color: Colors.grey),
+                  ),
+                ),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
                     backgroundColor: Color(0xFFEFEFEF),
                     foregroundColor: Color(0xFFEFEFEF),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      ),
+                      borderRadius: BorderRadius.circular(0),
                     ),
                   ),
                   onPressed: () async {
