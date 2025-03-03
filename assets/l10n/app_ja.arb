@@ -1,6 +1,7 @@
 {
   "close": "閉じる",
   "cancel": "キャンセル",
+  "editTitle": "編集",
   "emailInputField": "メールアドレスを入力してください",
   "settingsIcon": "アイコンの設定",
   "userName": "ユーザー名",
