@@ -72,7 +72,6 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                 ),
                 onPressed: () async {
                   context.pop();
-                  //TODO 編集
                   await context.pushNamed(
                     RouterPath.myProfileEditPost,
                     extra: posts,
@@ -87,9 +86,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                     ),
                     SizedBox(width: 20),
                     Text(
-                      //TODO 多言語化する
-                      '編集する',
-                      // l10n.appShareGoButton,
+                      l10n.editPostButton,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,

@@ -2,6 +2,7 @@
   "close": "Close",
   "cancel": "Cancel",
   "editTitle": "Edit",
+  "editPostButton": "Edit Post",
   "emailInputField": "Enter your email address",
   "settingsIcon": "Select Icon",
   "userName": "Username",

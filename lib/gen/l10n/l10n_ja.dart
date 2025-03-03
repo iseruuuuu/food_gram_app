@@ -20,6 +20,9 @@ class L10nJa extends L10n {
   String get editTitle => '編集';
 
   @override
+  String get editPostButton => '編集する';
+
+  @override
   String get emailInputField => 'メールアドレスを入力してください';
 
   @override

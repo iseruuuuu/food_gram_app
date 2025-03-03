@@ -20,6 +20,9 @@ class L10nEn extends L10n {
   String get editTitle => 'Edit';
 
   @override
+  String get editPostButton => 'Edit Post';
+
+  @override
   String get emailInputField => 'Enter your email address';
 
   @override
