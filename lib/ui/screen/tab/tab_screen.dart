@@ -34,13 +34,13 @@ class TabScreen extends ConsumerWidget {
                     Gap(12),
                     Icon(
                       (state.selectedIndex == 0)
-                          ? Icons.fastfood
-                          : Icons.fastfood_outlined,
-                      semanticLabel: 'timelineIcon',
+                          ? CupertinoIcons.map_fill
+                          : CupertinoIcons.map,
+                      semanticLabel: 'mapIcon',
                     ),
                     Gap(6),
                     Text(
-                      l10n.tabHome,
+                      l10n.tabMap,
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
@@ -60,13 +60,13 @@ class TabScreen extends ConsumerWidget {
                     Gap(12),
                     Icon(
                       (state.selectedIndex == 1)
-                          ? CupertinoIcons.map_fill
-                          : CupertinoIcons.map,
-                      semanticLabel: 'mapIcon',
+                          ? Icons.fastfood
+                          : Icons.fastfood_outlined,
+                      semanticLabel: 'timelineIcon',
                     ),
                     Gap(6),
                     Text(
-                      l10n.tabMap,
+                      l10n.tabHome,
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,

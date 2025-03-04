@@ -18,8 +18,8 @@ class TabViewModel extends _$TabViewModel {
   }
 
   List<Widget> pageList = [
-    const TimeLineScreen(),
     const MapScreen(),
+    const TimeLineScreen(),
     const MyProfileScreen(),
     const SettingScreen(),
   ];
