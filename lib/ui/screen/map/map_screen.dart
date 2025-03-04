@@ -13,8 +13,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
 final String apiKey = Env.mapLibre;
-const styleUrl =
-    'https://api.maptiler.com/maps/a38db0e5-171e-4317-9a13-6b406c609e21/style.json';
 
 class MapScreen extends HookConsumerWidget {
   const MapScreen({super.key});
@@ -67,7 +65,8 @@ class MapScreen extends HookConsumerWidget {
                     ),
                     trackCameraPosition: true,
                     tiltGesturesEnabled: false,
-                    styleString: '$styleUrl?key=$apiKey',
+                    styleString:
+                        'https://tile.openstreetmap.jp/styles/maptiler-basic-ja/style.json',
                   ),
                   Visibility(
                     visible: isTapPin.value,
