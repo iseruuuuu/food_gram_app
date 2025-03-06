@@ -121,7 +121,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                         await screenshotController.captureFromWidget(
                       AppShareWidget(
                         posts: posts,
-                        users: users,
+                        ref: ref,
                       ),
                     );
 
