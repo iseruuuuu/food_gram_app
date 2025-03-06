@@ -74,10 +74,7 @@ class AppDetailOtherInfoModalSheet extends ConsumerWidget {
                     final screenshotController = ScreenshotController();
                     final screenshotBytes =
                         await screenshotController.captureFromWidget(
-                      AppShareWidget(
-                        posts: posts,
-                        users: users,
-                      ),
+                      AppShareWidget(posts: posts, ref: ref),
                     );
 
                     /// 一時ディレクトリに保存

@@ -316,9 +316,10 @@ class DetailPostScreen extends HookConsumerWidget {
                                     await adInterstitial.showAd(
                                       onAdClosed: () async {
                                         await captureAndShare(
+                                          //TODO 修正する
                                           widget: AppShareWidget(
                                             posts: posts,
-                                            users: users,
+                                            ref: ref,
                                           ),
                                           shareText: '${posts.foodName} '
                                               'in ${posts.restaurant}',
