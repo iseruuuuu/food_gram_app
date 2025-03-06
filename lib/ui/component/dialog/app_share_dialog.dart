@@ -68,7 +68,7 @@ class AppShareDialog extends HookConsumerWidget {
                     ),
                   ),
                 ),
-                AppShareWidget(posts: posts, users: users),
+                AppShareWidget(posts: posts, ref: ref),
                 Gap(20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -85,10 +85,8 @@ class AppShareDialog extends HookConsumerWidget {
                             await adInterstitial.showAd(
                               onAdClosed: () async {
                                 await captureAndShare(
-                                  widget: AppShareWidget(
-                                    posts: posts,
-                                    users: users,
-                                  ),
+                                  widget:
+                                      AppShareWidget(posts: posts, ref: ref),
                                   shareText: '${posts.foodName} '
                                       'in ${posts.restaurant}',
                                   loading: loading,
@@ -128,10 +126,8 @@ class AppShareDialog extends HookConsumerWidget {
                             await adInterstitial.showAd(
                               onAdClosed: () async {
                                 await captureAndShare(
-                                  widget: AppShareWidget(
-                                    posts: posts,
-                                    users: users,
-                                  ),
+                                  widget:
+                                      AppShareWidget(posts: posts, ref: ref),
                                   shareText: '${posts.foodName} '
                                       'in ${posts.restaurant}',
                                   loading: loading,
