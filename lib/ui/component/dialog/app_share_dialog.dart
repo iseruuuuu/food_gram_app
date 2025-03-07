@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,9 +12,6 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:map_launcher/map_launcher.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:screenshot/screenshot.dart';
-import 'package:share_plus/share_plus.dart';
 
 class AppShareDialog extends HookConsumerWidget {
   const AppShareDialog({
@@ -84,12 +79,15 @@ class AppShareDialog extends HookConsumerWidget {
                           onPressed: () async {
                             await adInterstitial.showAd(
                               onAdClosed: () async {
-                                await captureAndShare(
-                                  widget:
-                                      AppShareWidget(posts: posts, ref: ref),
+                                await ShareHelpers().captureAndShare(
+                                  widget: AppShareWidget(
+                                    posts: posts,
+                                    ref: ref,
+                                  ),
                                   shareText: '${posts.foodName} '
                                       'in ${posts.restaurant}',
                                   loading: loading,
+                                  hasText: true,
                                 );
                               },
                             );
@@ -125,12 +123,13 @@ class AppShareDialog extends HookConsumerWidget {
                           onPressed: () async {
                             await adInterstitial.showAd(
                               onAdClosed: () async {
-                                await captureAndShare(
-                                  widget:
-                                      AppShareWidget(posts: posts, ref: ref),
-                                  shareText: '${posts.foodName} '
-                                      'in ${posts.restaurant}',
+                                await ShareHelpers().captureAndShare(
+                                  widget: AppShareWidget(
+                                    posts: posts,
+                                    ref: ref,
+                                  ),
                                   loading: loading,
+                                  hasText: false,
                                 );
                               },
                             );
@@ -235,27 +234,5 @@ class AppShareDialog extends HookConsumerWidget {
         ],
       ),
     );
-  }
-}
-
-Future<void> captureAndShare({
-  required Widget widget,
-  required String shareText,
-  required ValueNotifier<bool> loading,
-}) async {
-  try {
-    loading.value = true;
-    final screenshotController = ScreenshotController();
-    final screenshotBytes =
-        await screenshotController.captureFromWidget(widget);
-
-    // 一時ディレクトリに保存
-    final tempDir = await getTemporaryDirectory();
-    final filePath = '${tempDir.path}/shared_image.png';
-    final file = File(filePath);
-    await file.writeAsBytes(screenshotBytes);
-    await ShareHelpers().sharePosts([XFile(file.path)], shareText);
-  } finally {
-    loading.value = false;
   }
 }
