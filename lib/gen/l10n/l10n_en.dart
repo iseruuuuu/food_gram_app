@@ -466,4 +466,10 @@ class L10nEn extends L10n {
 
   @override
   String get requiredInfoMissing => 'Required information is missing';
+
+  @override
+  String get shareTextAndImage => 'Share with text and image';
+
+  @override
+  String get shareImageOnly => 'Share image only';
 }

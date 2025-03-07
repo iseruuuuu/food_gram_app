@@ -1013,6 +1013,18 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'必要な情報が入力されていません'**
   String get requiredInfoMissing;
+
+  /// No description provided for @shareTextAndImage.
+  ///
+  /// In ja, this message translates to:
+  /// **'テキスト＋画像でシェア'**
+  String get shareTextAndImage;
+
+  /// No description provided for @shareImageOnly.
+  ///
+  /// In ja, this message translates to:
+  /// **'画像のみシェア'**
+  String get shareImageOnly;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
