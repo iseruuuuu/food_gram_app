@@ -75,6 +75,7 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
                       shareText: '${posts.foodName} '
                           'in ${posts.restaurant}',
                     );
+                    context.pop();
                   },
                   child: Row(
                     children: [
