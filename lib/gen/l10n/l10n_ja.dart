@@ -466,4 +466,10 @@ class L10nJa extends L10n {
 
   @override
   String get requiredInfoMissing => '必要な情報が入力されていません';
+
+  @override
+  String get shareTextAndImage => 'テキスト＋画像でシェア';
+
+  @override
+  String get shareImageOnly => '画像のみシェア';
 }

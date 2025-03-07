@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/env.dart';
@@ -22,7 +23,6 @@ import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
-import 'package:food_gram_app/ui/component/app_share_widget.dart';
 import 'package:food_gram_app/ui/component/dialog/app_share_dialog.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_master_modal_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_my_info_modal_sheet.dart';
@@ -154,11 +154,13 @@ class DetailPostScreen extends HookConsumerWidget {
                         return AppDetailOtherInfoModalSheet(
                           users: users,
                           posts: posts,
+                          loading: menuLoading,
                         );
                       } else {
                         return AppDetailMyInfoModalSheet(
                           users: users,
                           posts: posts,
+                          loading: menuLoading,
                         );
                       }
                     },
@@ -315,15 +317,13 @@ class DetailPostScreen extends HookConsumerWidget {
                                   onPressed: () async {
                                     await adInterstitial.showAd(
                                       onAdClosed: () async {
-                                        await captureAndShare(
-                                          //TODO 修正する
-                                          widget: AppShareWidget(
-                                            posts: posts,
-                                            ref: ref,
-                                          ),
+                                        await ShareHelpers().openShareModal(
+                                          posts: posts,
+                                          ref: ref,
+                                          loading: menuLoading,
+                                          context: context,
                                           shareText: '${posts.foodName} '
                                               'in ${posts.restaurant}',
-                                          loading: menuLoading,
                                         );
                                       },
                                     );

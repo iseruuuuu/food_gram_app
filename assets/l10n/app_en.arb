@@ -152,5 +152,7 @@
   "newAccountImportant": "When creating an account, please do not include personal information such as your email address or phone number in your username or user ID. To ensure a safe online experience, choose a name that does not reveal your personal details.",
   "accountRegistrationSuccess": "Account registration completed",
   "accountRegistrationError": "An error occurred",
-  "requiredInfoMissing": "Required information is missing"
+  "requiredInfoMissing": "Required information is missing",
+  "shareTextAndImage": "Share with text and image",
+  "shareImageOnly": "Share image only"
 }

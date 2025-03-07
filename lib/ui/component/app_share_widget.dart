@@ -21,7 +21,7 @@ class AppShareWidget extends StatelessWidget {
     return ProviderScope(
       child: Container(
         width: 350,
-        height: 470,
+        height: 420,
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
