@@ -55,39 +55,6 @@ Stream<List<Map<String, dynamic>>> _filteredPostStream(
       );
 }
 
-/// 特定のフードタグを持つレストラン投稿のストリームを提供
-@riverpod
-Stream<List<Map<String, dynamic>>> postStreamByFoodTag(
-  Ref ref,
-  String foodTag,
-) {
-  final blockList = ref.watch(blockListProvider).asData?.value ?? [];
-  final supabase = ref.read(supabaseProvider);
-
-  // レストランが'自炊'でなく、全ての投稿を取得
-  final query = supabase
-      .from('posts')
-      .stream(primaryKey: ['id'])
-      .neq('restaurant', '自炊')
-      .order('created_at');
-
-  return query.asyncMap(
-    (events) {
-      // ブロックリストでフィルタリング
-      final filtered = events.where((post) {
-        return !blockList.contains(post['user_id']);
-      }).toList();
-
-      // foodTagが指定されている場合は、そのタグでさらにフィルタリング
-      if (foodTag.isNotEmpty) {
-        return filtered.where((post) => post['food_tag'] == foodTag).toList();
-      }
-
-      return filtered;
-    },
-  );
-}
-
 /// カテゴリー内の全ての絵文字を対象にフィルタリングするプロバイダー
 @riverpod
 Stream<List<Map<String, dynamic>>> postStreamByCategory(
