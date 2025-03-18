@@ -472,4 +472,40 @@ class L10nJa extends L10n {
 
   @override
   String get shareImageOnly => '画像のみシェア';
+
+  @override
+  String get foodCategoryNoodles => '麺類';
+
+  @override
+  String get foodCategoryMeat => '肉料理';
+
+  @override
+  String get foodCategoryFastFood => 'ファストフード';
+
+  @override
+  String get foodCategoryRiceDishes => 'ごはん';
+
+  @override
+  String get foodCategorySeafood => '魚介';
+
+  @override
+  String get foodCategoryBread => 'パン';
+
+  @override
+  String get foodCategorySweetsAndSnacks => 'スイーツ';
+
+  @override
+  String get foodCategoryFruits => 'フルーツ';
+
+  @override
+  String get foodCategoryVegetables => '野菜';
+
+  @override
+  String get foodCategoryBeverages => '飲み物';
+
+  @override
+  String get foodCategoryOthers => 'その他';
+
+  @override
+  String get foodCategoryAll => '全て';
 }

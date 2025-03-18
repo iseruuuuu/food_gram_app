@@ -154,5 +154,17 @@
   "accountRegistrationError": "エラーが発生しました",
   "requiredInfoMissing": "必要な情報が入力されていません",
   "shareTextAndImage": "テキスト＋画像でシェア",
-  "shareImageOnly": "画像のみシェア"
+  "shareImageOnly": "画像のみシェア",
+  "foodCategoryNoodles": "麺類",
+  "foodCategoryMeat": "肉料理",
+  "foodCategoryFastFood": "ファストフード",
+  "foodCategoryRiceDishes": "ごはん",
+  "foodCategorySeafood": "魚介",
+  "foodCategoryBread": "パン",
+  "foodCategorySweetsAndSnacks": "スイーツ",
+  "foodCategoryFruits": "フルーツ",
+  "foodCategoryVegetables": "野菜",
+  "foodCategoryBeverages": "飲み物",
+  "foodCategoryOthers": "その他",
+  "foodCategoryAll": "全て"
 }
