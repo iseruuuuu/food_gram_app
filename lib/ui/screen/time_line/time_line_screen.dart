@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.d
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/app_floating_button.dart';
@@ -118,6 +119,7 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
     final selectedCategoryName = useState('');
     final postState =
         ref.watch(postStreamByCategoryProvider(selectedCategoryName.value));
+    final l10n = L10n.of(context);
     return Column(
       children: [
         SizedBox(
@@ -146,7 +148,7 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
                         Text('🍽️', style: TextStyle(fontSize: 18)),
                         SizedBox(width: 4),
                         Text(
-                          'ALL',
+                          l10n.foodCategoryAll,
                           style: TextStyle(
                             color: selectedCategoryName.value.isEmpty
                                 ? Colors.white
@@ -163,7 +165,6 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
               final categoryName = entry.key;
               final foodEmojis = entry.value;
               final displayIcon = foodEmojis.isNotEmpty ? foodEmojis[0] : '🍽️';
-              final displayName = categoryName;
               final isSelected = selectedCategoryName.value == categoryName;
               return GestureDetector(
                 onTap: () {
@@ -171,7 +172,7 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: isSelected ? Colors.black : Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -182,7 +183,7 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
                       Text(displayIcon, style: TextStyle(fontSize: 24)),
                       Gap(4),
                       Text(
-                        displayName,
+                        l10nCategory(categoryName, l10n),
                         style: TextStyle(
                           color: isSelected ? Colors.white : Colors.black,
                           fontWeight: FontWeight.bold,
@@ -248,4 +249,47 @@ class FoodListView extends ConsumerWidget {
       ),
     );
   }
+}
+
+String l10nCategory(String categoryName, L10n l10n) {
+  String displayName;
+  switch (categoryName) {
+    case 'Noodles':
+      displayName = l10n.foodCategoryNoodles;
+      break;
+    case 'Meat':
+      displayName = l10n.foodCategoryMeat;
+      break;
+    case 'Fast Food':
+      displayName = l10n.foodCategoryFastFood;
+      break;
+    case 'Rice Dishes':
+      displayName = l10n.foodCategoryRiceDishes;
+      break;
+    case 'Seafood':
+      displayName = l10n.foodCategorySeafood;
+      break;
+    case 'Bread':
+      displayName = l10n.foodCategoryBread;
+      break;
+    case 'Sweets & Snacks':
+      displayName = l10n.foodCategorySweetsAndSnacks;
+      break;
+    case 'Fruits':
+      displayName = l10n.foodCategoryFruits;
+      break;
+    case 'Vegetables':
+      displayName = l10n.foodCategoryVegetables;
+      break;
+    case 'Beverages':
+      displayName = l10n.foodCategoryBeverages;
+      break;
+    case 'Others':
+      displayName = l10n.foodCategoryOthers;
+      break;
+    default:
+      displayName = categoryName;
+  }
+
+  return displayName;
 }
