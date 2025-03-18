@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
 import 'package:food_gram_app/core/local/force_update_checker.dart';
+import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
@@ -14,6 +15,7 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -22,7 +24,6 @@ class TimeLineScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final restaurant = ref.watch(postStreamProvider);
     final homeMade = ref.watch(postHomeMadeStreamProvider);
     useEffect(
       () {
@@ -83,10 +84,7 @@ class TimeLineScreen extends HookConsumerWidget {
         ),
         body: TabBarView(
           children: [
-            FoodListView(
-              state: restaurant,
-              isRestaurant: true,
-            ),
+            RestaurantCategoryScreen(),
             FoodListView(
               state: homeMade,
               isRestaurant: false,
@@ -108,6 +106,102 @@ class TimeLineScreen extends HookConsumerWidget {
           },
         ),
       ),
+    );
+  }
+}
+
+class RestaurantCategoryScreen extends HookConsumerWidget {
+  const RestaurantCategoryScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedCategoryName = useState('');
+    final postState =
+        ref.watch(postStreamByCategoryProvider(selectedCategoryName.value));
+    return Column(
+      children: [
+        SizedBox(
+          height: 60,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: foodCategory.length + 1,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return GestureDetector(
+                  onTap: () {
+                    selectedCategoryName.value = '';
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: selectedCategoryName.value.isEmpty
+                          ? Colors.black
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(),
+                    ),
+                    child: Row(
+                      children: [
+                        Text('🍽️', style: TextStyle(fontSize: 18)),
+                        SizedBox(width: 4),
+                        Text(
+                          'ALL',
+                          style: TextStyle(
+                            color: selectedCategoryName.value.isEmpty
+                                ? Colors.white
+                                : Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              final entry = foodCategory.entries.elementAt(index - 1);
+              final categoryName = entry.key;
+              final foodEmojis = entry.value;
+              final displayIcon = foodEmojis.isNotEmpty ? foodEmojis[0] : '🍽️';
+              final displayName = categoryName;
+              final isSelected = selectedCategoryName.value == categoryName;
+              return GestureDetector(
+                onTap: () {
+                  selectedCategoryName.value = categoryName;
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: isSelected ? Colors.black : Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(displayIcon, style: TextStyle(fontSize: 24)),
+                      Gap(4),
+                      Text(
+                        displayName,
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        Expanded(
+          child: FoodListView(
+            state: postState,
+            isRestaurant: true,
+          ),
+        ),
+      ],
     );
   }
 }
