@@ -472,4 +472,40 @@ class L10nEn extends L10n {
 
   @override
   String get shareImageOnly => 'Share image only';
+
+  @override
+  String get foodCategoryNoodles => 'Noodles';
+
+  @override
+  String get foodCategoryMeat => 'Meat';
+
+  @override
+  String get foodCategoryFastFood => 'Fast Food';
+
+  @override
+  String get foodCategoryRiceDishes => 'Rice Dishes';
+
+  @override
+  String get foodCategorySeafood => 'Seafood';
+
+  @override
+  String get foodCategoryBread => 'Bread';
+
+  @override
+  String get foodCategorySweetsAndSnacks => 'Sweets & Snacks';
+
+  @override
+  String get foodCategoryFruits => 'Fruits';
+
+  @override
+  String get foodCategoryVegetables => 'Vegetables';
+
+  @override
+  String get foodCategoryBeverages => 'Beverages';
+
+  @override
+  String get foodCategoryOthers => 'Others';
+
+  @override
+  String get foodCategoryAll => 'ALL';
 }

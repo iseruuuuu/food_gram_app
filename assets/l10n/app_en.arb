@@ -154,5 +154,17 @@
   "accountRegistrationError": "An error occurred",
   "requiredInfoMissing": "Required information is missing",
   "shareTextAndImage": "Share with text and image",
-  "shareImageOnly": "Share image only"
+  "shareImageOnly": "Share image only",
+  "foodCategoryNoodles": "Noodles",
+  "foodCategoryMeat": "Meat",
+  "foodCategoryFastFood": "Fast Food",
+  "foodCategoryRiceDishes": "Rice Dishes",
+  "foodCategorySeafood": "Seafood",
+  "foodCategoryBread": "Bread",
+  "foodCategorySweetsAndSnacks": "Sweets & Snacks",
+  "foodCategoryFruits": "Fruits",
+  "foodCategoryVegetables": "Vegetables",
+  "foodCategoryBeverages": "Beverages",
+  "foodCategoryOthers": "Others",
+  "foodCategoryAll": "ALL"
 }

@@ -1025,6 +1025,78 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'画像のみシェア'**
   String get shareImageOnly;
+
+  /// No description provided for @foodCategoryNoodles.
+  ///
+  /// In ja, this message translates to:
+  /// **'麺類'**
+  String get foodCategoryNoodles;
+
+  /// No description provided for @foodCategoryMeat.
+  ///
+  /// In ja, this message translates to:
+  /// **'肉料理'**
+  String get foodCategoryMeat;
+
+  /// No description provided for @foodCategoryFastFood.
+  ///
+  /// In ja, this message translates to:
+  /// **'ファストフード'**
+  String get foodCategoryFastFood;
+
+  /// No description provided for @foodCategoryRiceDishes.
+  ///
+  /// In ja, this message translates to:
+  /// **'ごはん'**
+  String get foodCategoryRiceDishes;
+
+  /// No description provided for @foodCategorySeafood.
+  ///
+  /// In ja, this message translates to:
+  /// **'魚介'**
+  String get foodCategorySeafood;
+
+  /// No description provided for @foodCategoryBread.
+  ///
+  /// In ja, this message translates to:
+  /// **'パン'**
+  String get foodCategoryBread;
+
+  /// No description provided for @foodCategorySweetsAndSnacks.
+  ///
+  /// In ja, this message translates to:
+  /// **'スイーツ'**
+  String get foodCategorySweetsAndSnacks;
+
+  /// No description provided for @foodCategoryFruits.
+  ///
+  /// In ja, this message translates to:
+  /// **'フルーツ'**
+  String get foodCategoryFruits;
+
+  /// No description provided for @foodCategoryVegetables.
+  ///
+  /// In ja, this message translates to:
+  /// **'野菜'**
+  String get foodCategoryVegetables;
+
+  /// No description provided for @foodCategoryBeverages.
+  ///
+  /// In ja, this message translates to:
+  /// **'飲み物'**
+  String get foodCategoryBeverages;
+
+  /// No description provided for @foodCategoryOthers.
+  ///
+  /// In ja, this message translates to:
+  /// **'その他'**
+  String get foodCategoryOthers;
+
+  /// No description provided for @foodCategoryAll.
+  ///
+  /// In ja, this message translates to:
+  /// **'全て'**
+  String get foodCategoryAll;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
