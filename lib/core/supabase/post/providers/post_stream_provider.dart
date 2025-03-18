@@ -88,34 +88,6 @@ Stream<List<Map<String, dynamic>>> postStreamByFoodTag(
   );
 }
 
-/// 選択されたフードカテゴリーを管理するプロバイダー
-/// カテゴリーによるフィルタリングされた投稿のプロバイダー
-/// コードジェネレーターを使用
-@riverpod
-AsyncValue<List<Map<String, dynamic>>> filteredPosts(
-  Ref ref,
-  String categoryKey,
-) {
-  if (categoryKey.isEmpty) {
-    return ref.watch(postStreamProvider);
-  }
-
-  final foodEmojis = foodCategory[categoryKey] ?? [];
-  final allPosts = ref.watch(postStreamProvider);
-
-  return allPosts.when(
-    data: (posts) {
-      final filtered = posts.where((post) {
-        final foodTag = post['food_tag'] as String;
-        return foodEmojis.contains(foodTag);
-      }).toList();
-      return AsyncData(filtered);
-    },
-    loading: () => const AsyncLoading(),
-    error: AsyncError.new,
-  );
-}
-
 /// カテゴリー内の全ての絵文字を対象にフィルタリングするプロバイダー
 @riverpod
 Stream<List<Map<String, dynamic>>> postStreamByCategory(
