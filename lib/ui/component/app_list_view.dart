@@ -17,14 +17,12 @@ class AppListView extends HookConsumerWidget {
     required this.data,
     required this.routerPath,
     required this.refresh,
-    required this.isTimeLine,
     super.key,
   });
 
   final List<Map<String, dynamic>> data;
   final String routerPath;
   final VoidCallback refresh;
-  final bool isTimeLine;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

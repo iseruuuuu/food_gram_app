@@ -87,7 +87,6 @@ class TimeLineScreen extends HookConsumerWidget {
             RestaurantCategoryScreen(),
             FoodListView(
               state: homeMade,
-              isRestaurant: false,
             ),
           ],
         ),
@@ -140,7 +139,7 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
           // スクロール通知を処理
           return false;
         },
-        child: FoodListView(state: postState, isRestaurant: true),
+        child: FoodListView(state: postState),
       ),
     );
   }
@@ -149,12 +148,10 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
 class FoodListView extends ConsumerWidget {
   const FoodListView({
     required this.state,
-    required this.isRestaurant,
     super.key,
   });
 
   final AsyncValue<List<Map<String, dynamic>>> state;
-  final bool isRestaurant;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -171,7 +168,6 @@ class FoodListView extends ConsumerWidget {
                   ..invalidate(postHomeMadeStreamProvider)
                   ..invalidate(blockListProvider);
               },
-              isTimeLine: isRestaurant,
             ),
           ),
         ],
