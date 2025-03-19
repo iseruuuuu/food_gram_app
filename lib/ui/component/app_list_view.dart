@@ -8,7 +8,6 @@ import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
-import 'package:food_gram_app/ui/component/app_story_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -79,14 +78,6 @@ class AppListView extends HookConsumerWidget {
                 parent: BouncingScrollPhysics(),
               ),
               slivers: [
-                if (isTimeLine)
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 100,
-                      child: AppStoryWidget(data: data),
-                    ),
-                  ),
                 for (int chunk = 0;
                     chunk < (displayedData.value.length / 30).ceil();
                     chunk++) ...[
