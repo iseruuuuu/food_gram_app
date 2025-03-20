@@ -8,8 +8,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 /// カテゴリーを表すレコード型
 typedef CategoryData = ({String name, String displayIcon, bool isAllCategory});
 
-/// カテゴリーデータのプロバイダー
-/// 初期化時に一度だけ生成され、アプリ全体で再利用できる
 final categoriesProvider = Provider<List<CategoryData>>((ref) {
   final result = <CategoryData>[
     (name: '', displayIcon: '🍽️', isAllCategory: true),
@@ -54,6 +52,7 @@ class AppCategoryItem extends HookConsumerWidget {
             tabController.animateTo(index);
           }
         }
+
         selectedCategoryName.addListener(updateTabFromCategory);
         return () {
           selectedCategoryName.removeListener(updateTabFromCategory);
