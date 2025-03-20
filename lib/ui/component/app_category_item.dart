@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AppCategoryItem extends StatefulWidget {
+/// カテゴリーを表すレコード型
+typedef CategoryData = ({String name, String displayIcon, bool isAllCategory});
+
+/// カテゴリーデータのプロバイダー
+/// 初期化時に一度だけ生成され、アプリ全体で再利用できる
+final categoriesProvider = Provider<List<CategoryData>>((ref) {
+  final result = <CategoryData>[
+    (name: '', displayIcon: '🍽️', isAllCategory: true),
+  ];
+  foodCategory.forEach((key, value) {
+    result.add(
+      (
+        name: key,
+        displayIcon: value.isNotEmpty ? value[0] : '🍽️',
+        isAllCategory: false
+      ),
+    );
+  });
+  return result;
+});
+
+class AppCategoryItem extends HookConsumerWidget {
   const AppCategoryItem({
     required this.selectedCategoryName,
     super.key,
@@ -12,78 +35,38 @@ class AppCategoryItem extends StatefulWidget {
   final ValueNotifier<String> selectedCategoryName;
 
   @override
-  State<AppCategoryItem> createState() => _AppCategoryItemState();
-}
-
-class _AppCategoryItemState extends State<AppCategoryItem>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  late List<Map<String, dynamic>> _categoriesData;
-
-  @override
-  void initState() {
-    super.initState();
-    _initCategories();
-    // +1 は「すべて」カテゴリー用
-    _tabController = TabController(length: _categoriesData.length, vsync: this);
-
-    // 選択カテゴリが変更されたらタブコントローラーも更新
-    widget.selectedCategoryName.addListener(_updateTabFromCategory);
-  }
-
-  void _initCategories() {
-    final allCategories = <Map<String, dynamic>>[
-      {
-        'name': '',
-        'displayIcon': '🍽️',
-        'isAllCategory': true,
-      }
-    ];
-
-    // 他のカテゴリーを追加
-    foodCategory.forEach((key, value) {
-      allCategories.add({
-        'name': key,
-        'displayIcon': value.isNotEmpty ? value[0] : '🍽️',
-        'isAllCategory': false,
-      });
-    });
-
-    _categoriesData = allCategories;
-  }
-
-  void _updateTabFromCategory() {
-    if (!mounted) {
-      return;
-    }
-
-    final categoryName = widget.selectedCategoryName.value;
-    final index = _categoriesData.indexWhere(
-      (cat) => cat['isAllCategory']
-          ? categoryName.isEmpty
-          : cat['name'] == categoryName,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = L10n.of(context);
+    final categoriesData = ref.watch(categoriesProvider);
+    final tabController = useTabController(
+      initialLength: categoriesData.length,
+    );
+    useEffect(
+      () {
+        void updateTabFromCategory() {
+          final categoryName = selectedCategoryName.value;
+          final index = categoriesData.indexWhere(
+            (cat) => cat.isAllCategory
+                ? categoryName.isEmpty
+                : cat.name == categoryName,
+          );
+          if (index != -1 && index != tabController.index) {
+            tabController.animateTo(index);
+          }
+        }
+        selectedCategoryName.addListener(updateTabFromCategory);
+        return () {
+          selectedCategoryName.removeListener(updateTabFromCategory);
+        };
+      },
+      [tabController, selectedCategoryName],
     );
 
-    if (index != -1 && index != _tabController.index) {
-      _tabController.animateTo(index);
-    }
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    widget.selectedCategoryName.removeListener(_updateTabFromCategory);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = L10n.of(context);
     return Column(
       children: [
         TabBar(
           indicatorWeight: 1,
-          controller: _tabController,
+          controller: tabController,
           isScrollable: true,
           padding: EdgeInsets.zero,
           tabAlignment: TabAlignment.start,
@@ -103,86 +86,68 @@ class _AppCategoryItemState extends State<AppCategoryItem>
           unselectedLabelColor: Colors.grey,
           dividerColor: Colors.black,
           onTap: (index) {
-            final category = _categoriesData[index];
-            widget.selectedCategoryName.value =
-                category['isAllCategory'] ? '' : category['name'];
+            final category = categoriesData[index];
+            selectedCategoryName.value =
+                category.isAllCategory ? '' : category.name;
           },
-          tabs: _buildTabs(l10n),
+          tabs: categoriesData
+              .map(
+                (category) => Tab(
+                  height: 40,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          category.displayIcon,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        Gap(8),
+                        Text(
+                          category.isAllCategory
+                              ? l10n.foodCategoryAll
+                              : _l10nCategory(category.name, l10n),
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+              .toList(),
         ),
       ],
     );
   }
 
-  List<Widget> _buildTabs(L10n l10n) {
-    return _categoriesData.map((category) {
-      final isAllCategory = category['isAllCategory'] as bool;
-      final categoryName = category['name'] as String;
-      final displayIcon = category['displayIcon'] as String;
-      return Tab(
-        height: 40,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                displayIcon,
-                style: const TextStyle(fontSize: 20),
-              ),
-              Gap(8),
-              Text(
-                isAllCategory
-                    ? l10n.foodCategoryAll
-                    : l10nCategory(categoryName, l10n),
-                style: const TextStyle(fontSize: 14),
-              ),
-            ],
-          ),
-        ),
-      );
-    }).toList();
-  }
-
-  String l10nCategory(String categoryName, L10n l10n) {
-    String displayName;
+  // プライベートヘルパーメソッド
+  String _l10nCategory(String categoryName, L10n l10n) {
     switch (categoryName) {
       case 'Noodles':
-        displayName = l10n.foodCategoryNoodles;
-        break;
+        return l10n.foodCategoryNoodles;
       case 'Meat':
-        displayName = l10n.foodCategoryMeat;
-        break;
+        return l10n.foodCategoryMeat;
       case 'Fast Food':
-        displayName = l10n.foodCategoryFastFood;
-        break;
+        return l10n.foodCategoryFastFood;
       case 'Rice Dishes':
-        displayName = l10n.foodCategoryRiceDishes;
-        break;
+        return l10n.foodCategoryRiceDishes;
       case 'Seafood':
-        displayName = l10n.foodCategorySeafood;
-        break;
+        return l10n.foodCategorySeafood;
       case 'Bread':
-        displayName = l10n.foodCategoryBread;
-        break;
+        return l10n.foodCategoryBread;
       case 'Sweets & Snacks':
-        displayName = l10n.foodCategorySweetsAndSnacks;
-        break;
+        return l10n.foodCategorySweetsAndSnacks;
       case 'Fruits':
-        displayName = l10n.foodCategoryFruits;
-        break;
+        return l10n.foodCategoryFruits;
       case 'Vegetables':
-        displayName = l10n.foodCategoryVegetables;
-        break;
+        return l10n.foodCategoryVegetables;
       case 'Beverages':
-        displayName = l10n.foodCategoryBeverages;
-        break;
+        return l10n.foodCategoryBeverages;
       case 'Others':
-        displayName = l10n.foodCategoryOthers;
-        break;
+        return l10n.foodCategoryOthers;
       default:
-        displayName = categoryName;
+        return categoryName;
     }
-
-    return displayName;
   }
 }
