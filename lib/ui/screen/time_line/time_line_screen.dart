@@ -135,8 +135,7 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
         ];
       },
       body: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification notification) {
-          // スクロール通知を処理
+        onNotification: (notification) {
           return false;
         },
         child: FoodListView(state: postState),
