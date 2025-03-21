@@ -1,18 +1,14 @@
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
-import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_app_bar.dart';
 import 'package:food_gram_app/ui/component/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
-import 'package:food_gram_app/ui/component/app_profile_button.dart';
 import 'package:food_gram_app/ui/component/app_skeleton.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_view_model.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -54,28 +50,6 @@ class MyProfileScreen extends ConsumerWidget {
                   },
                   error: SizedBox.shrink,
                 ),
-                const Gap(4),
-                AppMyProfileButton(
-                  onTapEdit: () {
-                    context.pushNamed(RouterPath.edit).then((value) {
-                      if (value != null) {
-                        ref
-                            .read(myProfileViewModelProvider().notifier)
-                            .getData();
-                      }
-                    });
-                  },
-                  onTapExchange: () {
-                    EasyDebounce.debounce(
-                      'exchange point',
-                      const Duration(seconds: 1),
-                      () async {
-                        SnackBarHelper().openComingSoonSnackBar(context);
-                      },
-                    );
-                  },
-                ),
-                const Gap(8),
                 Expanded(
                   child: AppListView(
                     data: value.$1,
