@@ -4,6 +4,7 @@ import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_app_bar.dart';
 import 'package:food_gram_app/ui/component/app_async_value_group.dart';
+import 'package:food_gram_app/ui/component/app_empty.dart';
 import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
@@ -34,30 +35,48 @@ class MyProfileScreen extends ConsumerWidget {
             ref.read(myProfileViewModelProvider().notifier).getData();
           },
           onData: (value) {
-            return Column(
-              children: [
-                users.when(
-                  data: (users, length, heartAmount) {
-                    return AppHeader(
-                      users: users,
-                      length: length,
-                      heartAmount: heartAmount,
-                      isSubscription: value.$2,
-                    );
-                  },
-                  loading: () {
-                    return AppHeaderSkeleton();
-                  },
-                  error: SizedBox.shrink,
+            return RefreshIndicator(
+              color: Colors.black,
+              onRefresh: () async {
+                await Future.delayed(const Duration(seconds: 1));
+                ref.invalidate(myPostStreamProvider);
+              },
+              child: CustomScrollView(
+                physics: const AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics(),
                 ),
-                Expanded(
-                  child: AppListView(
-                    data: value.$1,
-                    routerPath: RouterPath.myProfileDetail,
-                    refresh: () => ref.refresh(myPostStreamProvider),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: users.when(
+                      data: (users, length, heartAmount) {
+                        return AppHeader(
+                          users: users,
+                          length: length,
+                          heartAmount: heartAmount,
+                          isSubscription: value.$2,
+                        );
+                      },
+                      loading: () {
+                        return AppHeaderSkeleton();
+                      },
+                      error: SizedBox.shrink,
+                    ),
                   ),
-                ),
-              ],
+                  if (value.$1.isNotEmpty)
+                    SliverPadding(
+                      padding: const EdgeInsets.only(top: 8),
+                      sliver: AppListViewSliver(
+                        data: value.$1,
+                        routerPath: RouterPath.myProfileDetail,
+                        refresh: () => ref.refresh(myPostStreamProvider),
+                      ),
+                    )
+                  else
+                    const SliverToBoxAdapter(
+                      child: AppEmpty(),
+                    ),
+                ],
+              ),
             );
           },
         ),

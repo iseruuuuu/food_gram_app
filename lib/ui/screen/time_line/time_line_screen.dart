@@ -12,6 +12,7 @@ import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_category_item.dart';
+import 'package:food_gram_app/ui/component/app_empty.dart';
 import 'package:food_gram_app/ui/component/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
@@ -117,9 +118,18 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
     final selectedCategoryName = useState('');
     final postState =
         ref.watch(postStreamByCategoryProvider(selectedCategoryName.value));
-    return NestedScrollView(
-      headerSliverBuilder: (context, innerBoxIsScrolled) {
-        return [
+    return RefreshIndicator(
+      color: Colors.black,
+      onRefresh: () async {
+        await Future.delayed(const Duration(seconds: 1));
+        ref.invalidate(
+            postStreamByCategoryProvider(selectedCategoryName.value));
+      },
+      child: CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(
+          parent: BouncingScrollPhysics(),
+        ),
+        slivers: [
           SliverToBoxAdapter(
             child: Column(
               children: [
@@ -132,13 +142,38 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
               ],
             ),
           ),
-        ];
-      },
-      body: NotificationListener<ScrollNotification>(
-        onNotification: (notification) {
-          return false;
-        },
-        child: FoodListView(state: postState),
+          if (postState.hasValue)
+            postState.value!.isNotEmpty
+                ? AppListViewSliver(
+                    data: postState.value!,
+                    routerPath: RouterPath.timeLineDetail,
+                    refresh: () {
+                      ref
+                        ..invalidate(postStreamProvider)
+                        ..invalidate(postHomeMadeStreamProvider)
+                        ..invalidate(blockListProvider);
+                    },
+                  )
+                : const SliverToBoxAdapter(
+                    child: AppEmpty(),
+                  ),
+          if (postState.isLoading)
+            SliverToBoxAdapter(
+              child: Center(
+                child: Assets.image.loading.image(
+                  fit: BoxFit.cover,
+                  width: 100,
+                  height: 100,
+                ),
+              ),
+            ),
+          if (postState.hasError)
+            SliverToBoxAdapter(
+              child: AppErrorWidget(
+                onTap: () => ref.refresh(postStreamProvider),
+              ),
+            ),
+        ],
       ),
     );
   }
@@ -155,30 +190,39 @@ class FoodListView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return state.when(
-      data: (data) => Column(
-        children: [
-          Expanded(
-            child: AppListView(
-              data: data,
-              routerPath: RouterPath.timeLineDetail,
-              refresh: () {
-                ref
-                  ..invalidate(postStreamProvider)
-                  ..invalidate(postHomeMadeStreamProvider)
-                  ..invalidate(blockListProvider);
-              },
-            ),
-          ),
+      data: (data) => CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(
+          parent: BouncingScrollPhysics(),
+        ),
+        slivers: [
+          data.isNotEmpty
+              ? AppListViewSliver(
+                  data: data,
+                  routerPath: RouterPath.timeLineDetail,
+                  refresh: () {
+                    ref
+                      ..invalidate(postStreamProvider)
+                      ..invalidate(postHomeMadeStreamProvider)
+                      ..invalidate(blockListProvider);
+                  },
+                )
+              : const SliverToBoxAdapter(
+                  child: AppEmpty(),
+                ),
         ],
       ),
-      error: (_, __) => AppErrorWidget(
-        onTap: () => ref.refresh(postStreamProvider),
+      error: (_, __) => SliverToBoxAdapter(
+        child: AppErrorWidget(
+          onTap: () => ref.refresh(postStreamProvider),
+        ),
       ),
-      loading: () => Center(
-        child: Assets.image.loading.image(
-          fit: BoxFit.cover,
-          width: 100,
-          height: 100,
+      loading: () => SliverToBoxAdapter(
+        child: Center(
+          child: Assets.image.loading.image(
+            fit: BoxFit.cover,
+            width: 100,
+            height: 100,
+          ),
         ),
       ),
     );
