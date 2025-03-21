@@ -158,7 +158,8 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
                     child: AppEmpty(),
                   ),
           if (postState.isLoading)
-            SliverToBoxAdapter(
+            SliverFillRemaining(
+              hasScrollBody: false,
               child: Center(
                 child: Assets.image.loading.image(
                   fit: BoxFit.cover,
@@ -216,7 +217,8 @@ class FoodListView extends ConsumerWidget {
           onTap: () => ref.refresh(postStreamProvider),
         ),
       ),
-      loading: () => SliverToBoxAdapter(
+      loading: () => SliverFillRemaining(
+        hasScrollBody: false,
         child: Center(
           child: Assets.image.loading.image(
             fit: BoxFit.cover,
