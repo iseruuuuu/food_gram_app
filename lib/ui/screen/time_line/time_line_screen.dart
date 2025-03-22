@@ -144,7 +144,7 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
           ),
           if (postState.hasValue)
             postState.value!.isNotEmpty
-                ? AppListViewSliver(
+                ? AppListView(
                     data: postState.value!,
                     routerPath: RouterPath.timeLineDetail,
                     refresh: () {
@@ -197,7 +197,7 @@ class FoodListView extends ConsumerWidget {
         ),
         slivers: [
           data.isNotEmpty
-              ? AppListViewSliver(
+              ? AppListView(
                   data: data,
                   routerPath: RouterPath.timeLineDetail,
                   refresh: () {

@@ -65,7 +65,7 @@ class MyProfileScreen extends ConsumerWidget {
                   if (value.$1.isNotEmpty)
                     SliverPadding(
                       padding: const EdgeInsets.only(top: 8),
-                      sliver: AppListViewSliver(
+                      sliver: AppListView(
                         data: value.$1,
                         routerPath: RouterPath.myProfileDetail,
                         refresh: () => ref.refresh(myPostStreamProvider),

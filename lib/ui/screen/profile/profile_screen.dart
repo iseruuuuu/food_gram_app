@@ -82,7 +82,7 @@ class ProfileScreen extends ConsumerWidget {
                 sliver: posts.when(
                   data: (value) {
                     return value.isNotEmpty
-                        ? AppListViewSliver(
+                        ? AppListView(
                             data: value,
                             routerPath: RouterPath.myProfileDetail,
                             refresh: () => ref.refresh(myPostStreamProvider),
