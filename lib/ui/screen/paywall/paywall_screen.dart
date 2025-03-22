@@ -8,7 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
@@ -428,4 +427,63 @@ Path drawStar(Size size) {
   }
   path.close();
   return path;
+}
+
+class AnimatedGradientBackground extends StatefulWidget {
+  @override
+  AnimatedGradientBackgroundState createState() =>
+      AnimatedGradientBackgroundState();
+}
+
+class AnimatedGradientBackgroundState extends State<AnimatedGradientBackground>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 20),
+      vsync: this,
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return ShaderMask(
+          shaderCallback: (rect) {
+            return LinearGradient(
+              colors: [
+                Colors.white.withValues(alpha: 0.6),
+                Colors.grey.withValues(alpha: 0.4),
+                Colors.blueGrey.withValues(alpha: 0.4),
+              ],
+              stops: [
+                0.3,
+                0.6,
+                1.0,
+              ],
+              transform:
+                  GradientRotation(_controller.value * 2.0 * 3.14159265359),
+            ).createShader(rect);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        );
+      },
+    );
+  }
 }

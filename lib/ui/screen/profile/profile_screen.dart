@@ -4,10 +4,11 @@ import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_async_value_group.dart';
+import 'package:food_gram_app/ui/component/app_empty.dart';
+import 'package:food_gram_app/ui/component/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
 import 'package:food_gram_app/ui/screen/profile/profile_view_model.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -37,14 +38,14 @@ class ProfileScreen extends ConsumerWidget {
             children: [
               Text(
                 users.name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
               ),
               Text(
                 '@${users.userName}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.normal,
                   fontSize: 14,
                   color: Colors.grey,
@@ -57,33 +58,59 @@ class ProfileScreen extends ConsumerWidget {
             child: const Icon(Icons.close, size: 30),
           ),
         ),
-        body: Column(
-          children: [
-            AppHeader(
-              users: users,
-              length: state.length,
-              heartAmount: state.heartAmount,
-              isSubscription: users.isSubscribe,
+        body: RefreshIndicator(
+          color: Colors.black,
+          onRefresh: () async {
+            await Future.delayed(const Duration(seconds: 1));
+            ref.invalidate(profileRepositoryProvider(userId: users.userId));
+          },
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(
+              parent: BouncingScrollPhysics(),
             ),
-            const Gap(4),
-            Expanded(
-              child: AsyncValueSwitcher(
-                asyncValue: posts,
-                onErrorTap: () {
-                  ref.invalidate(
-                    profileRepositoryProvider(userId: users.userId),
-                  );
-                },
-                onData: (value) {
-                  return AppListView(
-                    data: value,
-                    routerPath: RouterPath.myProfileDetail,
-                    refresh: () => ref.refresh(myPostStreamProvider),
-                  );
-                },
+            slivers: [
+              SliverToBoxAdapter(
+                child: AppHeader(
+                  users: users,
+                  length: state.length,
+                  heartAmount: state.heartAmount,
+                  isSubscription: users.isSubscribe,
+                ),
               ),
-            ),
-          ],
+              SliverPadding(
+                padding: const EdgeInsets.only(top: 8),
+                sliver: posts.when(
+                  data: (value) {
+                    return value.isNotEmpty
+                        ? AppListView(
+                            data: value,
+                            routerPath: RouterPath.myProfileDetail,
+                            refresh: () => ref.refresh(myPostStreamProvider),
+                          )
+                        : const SliverToBoxAdapter(
+                            child: AppEmpty(),
+                          );
+                  },
+                  error: (_, __) => SliverToBoxAdapter(
+                    child: AppErrorWidget(
+                      onTap: () {
+                        ref.invalidate(
+                          profileRepositoryProvider(userId: users.userId),
+                        );
+                      },
+                    ),
+                  ),
+                  loading: () => const SliverToBoxAdapter(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

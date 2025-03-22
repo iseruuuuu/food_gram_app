@@ -7,11 +7,15 @@ class AppProfileImage extends ConsumerWidget {
   const AppProfileImage({
     required this.imagePath,
     required this.radius,
+    this.borderWidth = 0.0,
+    this.borderColor = Colors.white,
     super.key,
   });
 
   final String imagePath;
   final double radius;
+  final double borderWidth;
+  final Color borderColor;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,20 +29,35 @@ class AppProfileImage extends ConsumerWidget {
       'assets/icon/icon6.png',
     ];
 
-    if (assetImages.contains(imagePath)) {
-      return CircleAvatar(
-        radius: radius,
-        backgroundColor: Colors.transparent,
-        backgroundImage: AssetImage(imagePath),
-      );
-    } else {
-      final foodImageUrl =
-          supabase.storage.from('user').getPublicUrl(imagePath);
-      return CircleAvatar(
-        radius: radius,
-        backgroundColor: Colors.transparent,
-        backgroundImage: CachedNetworkImageProvider(foodImageUrl),
+    Widget buildCircleAvatar() {
+      return Container(
+        width: radius * 2,
+        height: radius * 2,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.grey[300],
+          border: Border.all(
+            color: borderColor,
+            width: borderWidth,
+          ),
+        ),
+        child: ClipOval(
+          child: assetImages.contains(imagePath)
+              ? Image.asset(
+                  imagePath,
+                  fit: BoxFit.cover,
+                )
+              : CachedNetworkImage(
+                  imageUrl:
+                      supabase.storage.from('user').getPublicUrl(imagePath),
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => const SizedBox(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
+        ),
       );
     }
+
+    return buildCircleAvatar();
   }
 }
