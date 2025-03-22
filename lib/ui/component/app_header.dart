@@ -51,12 +51,29 @@ class AppHeader extends ConsumerWidget {
               child: Column(
                 children: [
                   Center(
-                    child: Text(
-                      users.name,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Gap(8),
+                        Text(
+                          users.name,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        if (users.isSubscribe)
+                          Row(
+                            children: [
+                              Gap(8),
+                              Assets.image.profileIcon.image(
+                                width: 30,
+                                height: 30,
+                              ),
+                            ],
+                          ),
+                        Gap(4),
+                      ],
                     ),
                   ),
                   if (users.selfIntroduce.isNotEmpty) ...[
