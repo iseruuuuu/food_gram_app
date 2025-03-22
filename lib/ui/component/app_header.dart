@@ -27,9 +27,9 @@ class AppHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final point = (heartAmount - users.exchangedPoint) / 10;
     final l10n = L10n.of(context);
     final currentUser = ref.watch(currentUserProvider);
+    final point = (heartAmount - users.exchangedPoint) / 10;
     return Stack(
       clipBehavior: Clip.none,
       children: [
