@@ -30,8 +30,8 @@ class AppHeader extends ConsumerWidget {
     final l10n = L10n.of(context);
     final currentUser = ref.watch(currentUserProvider);
     final point = (heartAmount - users.exchangedPoint) / 10;
-    final rank = _getRank(length);
     final trophyAsset = _getTrophyAsset(length);
+
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -119,7 +119,7 @@ class AppHeader extends ConsumerWidget {
                               ),
                               const Gap(8),
                               Text(
-                                '$rankランク',
+                                '${_getRank(context, length)}${l10n.rank}',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -232,20 +232,21 @@ class AppHeader extends ConsumerWidget {
     );
   }
 
-  String _getRank(int postCount) {
+  String _getRank(BuildContext context, int postCount) {
+    final l10n = L10n.of(context);
     if (postCount >= 10000) {
-      return 'エメラルド';
+      return l10n.rankEmerald;
     }
     if (postCount >= 5000) {
-      return 'ダイヤモンド';
+      return l10n.rankDiamond;
     }
     if (postCount >= 1000) {
-      return 'ゴールド';
+      return l10n.rankGold;
     }
     if (postCount >= 500) {
-      return 'シルバー';
+      return l10n.rankSilver;
     }
-    return 'ブロンズ';
+    return l10n.rankBronze;
   }
 
   String _getTrophyAsset(int postCount) {

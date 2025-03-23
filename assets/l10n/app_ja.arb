@@ -166,5 +166,11 @@
   "foodCategoryVegetables": "野菜",
   "foodCategoryBeverages": "飲み物",
   "foodCategoryOthers": "その他",
-  "foodCategoryAll": "全て"
+  "foodCategoryAll": "全て",
+  "rankEmerald": "エメラルド",
+  "rankDiamond": "ダイヤモンド",
+  "rankGold": "ゴールド",
+  "rankSilver": "シルバー",
+  "rankBronze": "ブロンズ",
+  "rank": "ランク"
 }

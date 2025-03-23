@@ -166,5 +166,11 @@
   "foodCategoryVegetables": "Vegetables",
   "foodCategoryBeverages": "Beverages",
   "foodCategoryOthers": "Others",
-  "foodCategoryAll": "ALL"
+  "foodCategoryAll": "ALL",
+  "rankEmerald": "Emerald",
+  "rankDiamond": "Diamond",
+  "rankGold": "Gold",
+  "rankSilver": "Silver",
+  "rankBronze": "Bronze",
+  "rank": "Rank"
 }
