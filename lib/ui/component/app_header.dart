@@ -30,6 +30,8 @@ class AppHeader extends ConsumerWidget {
     final l10n = L10n.of(context);
     final currentUser = ref.watch(currentUserProvider);
     final point = (heartAmount - users.exchangedPoint) / 10;
+    final rank = _getRank(length);
+    final trophyAsset = _getTrophyAsset(length);
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -76,6 +78,59 @@ class AppHeader extends ConsumerWidget {
                       ],
                     ),
                   ),
+                  if (users.isSubscribe)
+                    Column(
+                      children: [
+                        const Gap(8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.amber.shade100,
+                                Colors.amber.shade50,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: Colors.amber.shade300,
+                              width: 2,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.amber.withValues(alpha: 0.2),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                trophyAsset,
+                                width: 25,
+                                height: 25,
+                              ),
+                              const Gap(8),
+                              Text(
+                                '$rankランク',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   if (users.selfIntroduce.isNotEmpty) ...[
                     const Gap(8),
                     Padding(
@@ -175,6 +230,38 @@ class AppHeader extends ConsumerWidget {
         ),
       ],
     );
+  }
+
+  String _getRank(int postCount) {
+    if (postCount >= 10000) {
+      return 'エメラルド';
+    }
+    if (postCount >= 5000) {
+      return 'ダイヤモンド';
+    }
+    if (postCount >= 1000) {
+      return 'ゴールド';
+    }
+    if (postCount >= 500) {
+      return 'シルバー';
+    }
+    return 'ブロンズ';
+  }
+
+  String _getTrophyAsset(int postCount) {
+    if (postCount >= 10000) {
+      return Assets.trophy.trophyEmerald.path;
+    }
+    if (postCount >= 5000) {
+      return Assets.trophy.trophyDiamond.path;
+    }
+    if (postCount >= 1000) {
+      return Assets.trophy.trophyGold.path;
+    }
+    if (postCount >= 500) {
+      return Assets.trophy.trophySilver.path;
+    }
+    return Assets.trophy.trophyBronze.path;
   }
 }
 
