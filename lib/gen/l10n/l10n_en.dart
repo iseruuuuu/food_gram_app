@@ -508,4 +508,22 @@ class L10nEn extends L10n {
 
   @override
   String get foodCategoryAll => 'ALL';
+
+  @override
+  String get rankEmerald => 'Emerald';
+
+  @override
+  String get rankDiamond => 'Diamond';
+
+  @override
+  String get rankGold => 'Gold';
+
+  @override
+  String get rankSilver => 'Silver';
+
+  @override
+  String get rankBronze => 'Bronze';
+
+  @override
+  String get rank => 'Rank';
 }

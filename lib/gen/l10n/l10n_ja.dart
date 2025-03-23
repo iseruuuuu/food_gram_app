@@ -508,4 +508,22 @@ class L10nJa extends L10n {
 
   @override
   String get foodCategoryAll => '全て';
+
+  @override
+  String get rankEmerald => 'エメラルド';
+
+  @override
+  String get rankDiamond => 'ダイヤモンド';
+
+  @override
+  String get rankGold => 'ゴールド';
+
+  @override
+  String get rankSilver => 'シルバー';
+
+  @override
+  String get rankBronze => 'ブロンズ';
+
+  @override
+  String get rank => 'ランク';
 }

@@ -172,6 +172,34 @@ class $AssetsSplashGen {
   List<AssetGenImage> get values => [splashGif, splashPng];
 }
 
+class $AssetsTrophyGen {
+  const $AssetsTrophyGen();
+
+  /// File path: assets/trophy/trophy_bronze.png
+  AssetGenImage get trophyBronze =>
+      const AssetGenImage('assets/trophy/trophy_bronze.png');
+
+  /// File path: assets/trophy/trophy_diamond.png
+  AssetGenImage get trophyDiamond =>
+      const AssetGenImage('assets/trophy/trophy_diamond.png');
+
+  /// File path: assets/trophy/trophy_emerald.png
+  AssetGenImage get trophyEmerald =>
+      const AssetGenImage('assets/trophy/trophy_emerald.png');
+
+  /// File path: assets/trophy/trophy_gold.png
+  AssetGenImage get trophyGold =>
+      const AssetGenImage('assets/trophy/trophy_gold.png');
+
+  /// File path: assets/trophy/trophy_silver.png
+  AssetGenImage get trophySilver =>
+      const AssetGenImage('assets/trophy/trophy_silver.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values =>
+      [trophyBronze, trophyDiamond, trophyEmerald, trophyGold, trophySilver];
+}
+
 class Assets {
   Assets._();
 
@@ -179,6 +207,7 @@ class Assets {
   static const $AssetsIconGen icon = $AssetsIconGen();
   static const $AssetsImageGen image = $AssetsImageGen();
   static const $AssetsSplashGen splash = $AssetsSplashGen();
+  static const $AssetsTrophyGen trophy = $AssetsTrophyGen();
 }
 
 class AssetGenImage {

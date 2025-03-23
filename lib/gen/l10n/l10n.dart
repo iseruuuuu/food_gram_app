@@ -1097,6 +1097,42 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'全て'**
   String get foodCategoryAll;
+
+  /// No description provided for @rankEmerald.
+  ///
+  /// In ja, this message translates to:
+  /// **'エメラルド'**
+  String get rankEmerald;
+
+  /// No description provided for @rankDiamond.
+  ///
+  /// In ja, this message translates to:
+  /// **'ダイヤモンド'**
+  String get rankDiamond;
+
+  /// No description provided for @rankGold.
+  ///
+  /// In ja, this message translates to:
+  /// **'ゴールド'**
+  String get rankGold;
+
+  /// No description provided for @rankSilver.
+  ///
+  /// In ja, this message translates to:
+  /// **'シルバー'**
+  String get rankSilver;
+
+  /// No description provided for @rankBronze.
+  ///
+  /// In ja, this message translates to:
+  /// **'ブロンズ'**
+  String get rankBronze;
+
+  /// No description provided for @rank.
+  ///
+  /// In ja, this message translates to:
+  /// **'ランク'**
+  String get rank;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
