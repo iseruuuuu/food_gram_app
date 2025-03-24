@@ -86,7 +86,10 @@ Stream<List<Map<String, dynamic>>> postStreamByCategory(
         // カテゴリー内のいずれかの絵文字を含む投稿をフィルタリング
         return filtered.where((post) {
           final foodTag = post['food_tag'] as String;
-          return foodEmojis.contains(foodTag);
+          // 各サブリストの最初の要素（絵文字）と比較
+          return foodEmojis.any(
+            (emojiList) => emojiList.isNotEmpty && emojiList[0] == foodTag,
+          );
         }).toList();
       }
 

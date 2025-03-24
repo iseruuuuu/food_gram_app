@@ -13,10 +13,13 @@ final categoriesProvider = Provider<List<CategoryData>>((ref) {
     (name: '', displayIcon: '🍽️', isAllCategory: true),
   ];
   foodCategory.forEach((key, value) {
+    final foodEmojis = value;
     result.add(
       (
         name: key,
-        displayIcon: value.isNotEmpty ? value[0][0] : '🍽️',
+        displayIcon: foodEmojis.isNotEmpty && foodEmojis[0].isNotEmpty
+            ? foodEmojis[0][0]
+            : '🍽️',
         isAllCategory: false
       ),
     );
