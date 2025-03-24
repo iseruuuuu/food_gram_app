@@ -190,10 +190,9 @@ class AppHeader extends ConsumerWidget {
                             ),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
-                          child: const Text(
-                            //TODO 多言語かする
-                            'プロフィールを編集',
-                            style: TextStyle(
+                          child: Text(
+                            l10n.profileEditButton,
+                            style: const TextStyle(
                               color: Colors.black87,
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
@@ -224,7 +223,7 @@ class AppHeader extends ConsumerWidget {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.amber.withOpacity(0.2),
+                              color: Colors.amber.withValues(alpha: 0.2),
                               blurRadius: 4,
                               offset: const Offset(0, 2),
                             ),
@@ -239,7 +238,8 @@ class AppHeader extends ConsumerWidget {
                                 width: 48,
                                 height: 48,
                                 decoration: BoxDecoration(
-                                  color: Colors.amber.shade200.withOpacity(0.3),
+                                  color: Colors.amber.shade200
+                                      .withValues(alpha: 0.3),
                                   shape: BoxShape.circle,
                                 ),
                               ),
@@ -256,8 +256,8 @@ class AppHeader extends ConsumerWidget {
                                         borderRadius: BorderRadius.circular(10),
                                         boxShadow: [
                                           BoxShadow(
-                                            color:
-                                                Colors.amber.withOpacity(0.1),
+                                            color: Colors.amber
+                                                .withValues(alpha: 0.1),
                                             blurRadius: 4,
                                             offset: const Offset(0, 2),
                                           ),
@@ -271,9 +271,9 @@ class AppHeader extends ConsumerWidget {
                                     ),
                                     const Gap(8),
                                     Text(
-                                      '好きなジャンル',
+                                      l10n.profileFavoriteGenre,
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.amber.shade900,
                                       ),
@@ -292,7 +292,8 @@ class AppHeader extends ConsumerWidget {
                                     borderRadius: BorderRadius.circular(12),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.amber.withOpacity(0.1),
+                                        color:
+                                            Colors.amber.withValues(alpha: 0.1),
                                         blurRadius: 4,
                                         offset: const Offset(0, 2),
                                       ),
@@ -302,7 +303,9 @@ class AppHeader extends ConsumerWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        users.tag ?? '',
+                                        users.tag.isNotEmpty
+                                            ? users.tag
+                                            : '未登録',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,

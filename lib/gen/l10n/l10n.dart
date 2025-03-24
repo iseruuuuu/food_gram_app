@@ -1133,6 +1133,24 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'ランク'**
   String get rank;
+
+  /// No description provided for @profileFavoriteGenre.
+  ///
+  /// In ja, this message translates to:
+  /// **'好きなジャンル'**
+  String get profileFavoriteGenre;
+
+  /// No description provided for @editFavoriteTagTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'お気に入りタグの選択'**
+  String get editFavoriteTagTitle;
+
+  /// No description provided for @selectFavoriteTag.
+  ///
+  /// In ja, this message translates to:
+  /// **'お気に入りタグを選択'**
+  String get selectFavoriteTag;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

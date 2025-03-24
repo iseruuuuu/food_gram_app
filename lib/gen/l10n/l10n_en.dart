@@ -526,4 +526,13 @@ class L10nEn extends L10n {
 
   @override
   String get rank => 'Rank';
+
+  @override
+  String get profileFavoriteGenre => 'Favorite Genre';
+
+  @override
+  String get editFavoriteTagTitle => 'Select Favorite Tag';
+
+  @override
+  String get selectFavoriteTag => 'Select Favorite Tag';
 }

@@ -526,4 +526,13 @@ class L10nJa extends L10n {
 
   @override
   String get rank => 'ランク';
+
+  @override
+  String get profileFavoriteGenre => '好きなジャンル';
+
+  @override
+  String get editFavoriteTagTitle => 'お気に入りタグの選択';
+
+  @override
+  String get selectFavoriteTag => 'お気に入りタグを選択';
 }

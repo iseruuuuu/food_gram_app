@@ -172,5 +172,8 @@
   "rankGold": "Gold",
   "rankSilver": "Silver",
   "rankBronze": "Bronze",
-  "rank": "Rank"
+  "rank": "Rank",
+  "profileFavoriteGenre": "Favorite Genre",
+  "editFavoriteTagTitle": "Select Favorite Tag",
+  "selectFavoriteTag": "Select Favorite Tag"
 }
