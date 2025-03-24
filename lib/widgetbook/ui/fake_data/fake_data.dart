@@ -12,6 +12,7 @@ final fakeUsers = Users(
   userId: '1ee46691-2164-4832-86ac-8e5f847d1430',
   exchangedPoint: 0,
   isSubscribe: true,
+  tag: '',
 );
 
 final fakePosts = Posts(

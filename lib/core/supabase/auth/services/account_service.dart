@@ -36,6 +36,7 @@ class AccountService {
       'updated_at': DateTime.now().toIso8601String(),
       'exchanged_point': 0,
       'is_subscribe': false,
+      'tag': '',
     };
 
     try {
@@ -52,6 +53,7 @@ class AccountService {
     required String userName,
     required String selfIntroduce,
     required String image,
+    required String favoriteTags,
     Uint8List? imageBytes,
     String? uploadImage,
   }) async {
@@ -65,6 +67,7 @@ class AccountService {
         'self_introduce': selfIntroduce,
         'image': _getImagePath(image, uploadImage),
         'updated_at': DateTime.now().toIso8601String(),
+        'tag': favoriteTags,
       };
 
       if (uploadImage != null && uploadImage.isNotEmpty && imageBytes != null) {

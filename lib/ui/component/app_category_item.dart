@@ -16,7 +16,7 @@ final categoriesProvider = Provider<List<CategoryData>>((ref) {
     result.add(
       (
         name: key,
-        displayIcon: value.isNotEmpty ? value[0] : '🍽️',
+        displayIcon: value.isNotEmpty ? value[0][0] : '🍽️',
         isAllCategory: false
       ),
     );

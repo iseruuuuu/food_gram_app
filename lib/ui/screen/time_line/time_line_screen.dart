@@ -123,7 +123,8 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
       onRefresh: () async {
         await Future.delayed(const Duration(seconds: 1));
         ref.invalidate(
-            postStreamByCategoryProvider(selectedCategoryName.value));
+          postStreamByCategoryProvider(selectedCategoryName.value),
+        );
       },
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(

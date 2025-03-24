@@ -16,6 +16,7 @@ class Users with _$Users {
     required String userId,
     required int exchangedPoint,
     required bool isSubscribe,
+    required String tag,
   }) = _Users;
 
   const Users._();

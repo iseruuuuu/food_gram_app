@@ -6,6 +6,7 @@ import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/ui/component/app_favorite_tags_selector.dart';
 import 'package:food_gram_app/ui/component/app_icon.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
@@ -190,6 +191,43 @@ class EditScreen extends HookConsumerWidget {
                       AppSelfIntroductionTextField(
                         controller: controller.selfIntroduceTextController,
                       ),
+                      Gap(20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.tag, size: 20),
+                                Text(
+                                  'お気に入りタグの選択',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            if (state.isSubscribe)
+                              Column(
+                                children: [
+                                  Gap(10),
+                                  AppFavoriteTagsSelector(
+                                    selectedTags: state.favoriteTags,
+                                    onTagSelected: (tag) {
+                                      ref
+                                          .read(
+                                              editViewModelProvider().notifier)
+                                          .updateFavoriteTags(tag);
+                                    },
+                                  ),
+                                ],
+                              ),
+                          ],
+                        ),
+                      ),
+                      Gap(20),
                     ],
                   ),
                 ),
