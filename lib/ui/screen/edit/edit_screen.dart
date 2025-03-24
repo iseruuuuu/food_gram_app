@@ -201,7 +201,7 @@ class EditScreen extends HookConsumerWidget {
                               children: [
                                 Icon(Icons.tag, size: 20),
                                 Text(
-                                  'お気に入りタグの選択',
+                                  L10n.of(context).editFavoriteTagTitle,
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -218,7 +218,8 @@ class EditScreen extends HookConsumerWidget {
                                     onTagSelected: (tag) {
                                       ref
                                           .read(
-                                              editViewModelProvider().notifier)
+                                            editViewModelProvider().notifier,
+                                          )
                                           .updateFavoriteTags(tag);
                                     },
                                   ),

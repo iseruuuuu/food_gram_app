@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/tag.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -41,10 +42,9 @@ class AppFavoriteTagsSelector extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    //TODO 多言語かする
-                    'お気に入りタグを選択',
-                    style: TextStyle(
+                  Text(
+                    L10n.of(context).selectFavoriteTag,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),

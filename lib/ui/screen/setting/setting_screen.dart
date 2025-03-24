@@ -2,10 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
-import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
@@ -32,8 +30,6 @@ class SettingScreen extends HookConsumerWidget {
     final state = ref.watch(settingViewModelProvider());
     final l10n = L10n.of(context);
     final subscriptionState = ref.watch(subscriptionProvider);
-    final adInterstitial =
-        useMemoized(() => ref.read(admobInterstitialNotifierProvider));
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppAppBar(),
@@ -222,7 +218,8 @@ class SettingScreen extends HookConsumerWidget {
                                     (value) {
                                       if (value) {
                                         context.pushReplacementNamed(
-                                            RouterPath.authentication);
+                                          RouterPath.authentication,
+                                        );
                                       } else {
                                         SnackBarHelper().openErrorSnackBar(
                                           context,

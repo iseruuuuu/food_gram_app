@@ -198,20 +198,21 @@ class FoodListView extends ConsumerWidget {
           parent: BouncingScrollPhysics(),
         ),
         slivers: [
-          data.isNotEmpty
-              ? AppListView(
-                  data: data,
-                  routerPath: RouterPath.timeLineDetail,
-                  refresh: () {
-                    ref
-                      ..invalidate(postStreamProvider)
-                      ..invalidate(postHomeMadeStreamProvider)
-                      ..invalidate(blockListProvider);
-                  },
-                )
-              : const SliverToBoxAdapter(
-                  child: AppEmpty(),
-                ),
+          if (data.isNotEmpty)
+            AppListView(
+              data: data,
+              routerPath: RouterPath.timeLineDetail,
+              refresh: () {
+                ref
+                  ..invalidate(postStreamProvider)
+                  ..invalidate(postHomeMadeStreamProvider)
+                  ..invalidate(blockListProvider);
+              },
+            )
+          else
+            const SliverToBoxAdapter(
+              child: AppEmpty(),
+            ),
         ],
       ),
       error: (_, __) => SliverToBoxAdapter(
