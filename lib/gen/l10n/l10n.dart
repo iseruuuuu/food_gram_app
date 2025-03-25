@@ -1157,6 +1157,168 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'お気に入りのタグ'**
   String get favoriteTagPlaceholder;
+
+  /// No description provided for @promoteDialogTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'✨プレミアム会員になろう✨'**
+  String get promoteDialogTitle;
+
+  /// No description provided for @promoteDialogTrophyTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'トロフィー機能'**
+  String get promoteDialogTrophyTitle;
+
+  /// No description provided for @promoteDialogTrophyDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'特定の活動に応じてトロフィーを表示できるようになります。'**
+  String get promoteDialogTrophyDesc;
+
+  /// No description provided for @promoteDialogTagTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'カスタムタグ'**
+  String get promoteDialogTagTitle;
+
+  /// No description provided for @promoteDialogTagDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'お気に入りのフードに独自のタグを設定できます。'**
+  String get promoteDialogTagDesc;
+
+  /// No description provided for @promoteDialogIconTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'カスタムアイコン'**
+  String get promoteDialogIconTitle;
+
+  /// No description provided for @promoteDialogIconDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'プロフィールアイコンを自由な画像に設定できます!!'**
+  String get promoteDialogIconDesc;
+
+  /// No description provided for @promoteDialogAdTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'広告フリー'**
+  String get promoteDialogAdTitle;
+
+  /// No description provided for @promoteDialogAdDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'すべての広告が表示されなくなります!!'**
+  String get promoteDialogAdDesc;
+
+  /// No description provided for @promoteDialogButton.
+  ///
+  /// In ja, this message translates to:
+  /// **'プレミアム会員になる'**
+  String get promoteDialogButton;
+
+  /// No description provided for @promoteDialogLater.
+  ///
+  /// In ja, this message translates to:
+  /// **'後で考える'**
+  String get promoteDialogLater;
+
+  /// No description provided for @paywallTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'FoodGram プレミアム'**
+  String get paywallTitle;
+
+  /// No description provided for @paywallPremiumTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'✨ プレミアム特典 ✨'**
+  String get paywallPremiumTitle;
+
+  /// No description provided for @paywallTrophyTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'トロフィー機能'**
+  String get paywallTrophyTitle;
+
+  /// No description provided for @paywallTrophyDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'活動に応じてトロフィーを表示'**
+  String get paywallTrophyDesc;
+
+  /// No description provided for @paywallTagTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'カスタムタグ'**
+  String get paywallTagTitle;
+
+  /// No description provided for @paywallTagDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'お気に入りフードに独自タグ'**
+  String get paywallTagDesc;
+
+  /// No description provided for @paywallIconTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'カスタムアイコン'**
+  String get paywallIconTitle;
+
+  /// No description provided for @paywallIconDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'プロフィールアイコンを自由に'**
+  String get paywallIconDesc;
+
+  /// No description provided for @paywallAdTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'広告フリー'**
+  String get paywallAdTitle;
+
+  /// No description provided for @paywallAdDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'すべての広告を非表示'**
+  String get paywallAdDesc;
+
+  /// No description provided for @paywallComingSoon.
+  ///
+  /// In ja, this message translates to:
+  /// **'Coming Soon...'**
+  String get paywallComingSoon;
+
+  /// No description provided for @paywallNewFeatures.
+  ///
+  /// In ja, this message translates to:
+  /// **'プレミアム会員限定の新機能を\n随時リリース予定！'**
+  String get paywallNewFeatures;
+
+  /// No description provided for @paywallSubscribeButton.
+  ///
+  /// In ja, this message translates to:
+  /// **'プレミアム会員になる'**
+  String get paywallSubscribeButton;
+
+  /// No description provided for @paywallPrice.
+  ///
+  /// In ja, this message translates to:
+  /// **'￥ 300/月'**
+  String get paywallPrice;
+
+  /// No description provided for @paywallCancelNote.
+  ///
+  /// In ja, this message translates to:
+  /// **'いつでも解約可能'**
+  String get paywallCancelNote;
+
+  /// No description provided for @paywallWelcomeTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'Welcome to\nFoodGram Members!'**
+  String get paywallWelcomeTitle;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

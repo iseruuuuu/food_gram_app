@@ -538,4 +538,85 @@ class L10nJa extends L10n {
 
   @override
   String get favoriteTagPlaceholder => 'お気に入りのタグ';
+
+  @override
+  String get promoteDialogTitle => '✨プレミアム会員になろう✨';
+
+  @override
+  String get promoteDialogTrophyTitle => 'トロフィー機能';
+
+  @override
+  String get promoteDialogTrophyDesc => '特定の活動に応じてトロフィーを表示できるようになります。';
+
+  @override
+  String get promoteDialogTagTitle => 'カスタムタグ';
+
+  @override
+  String get promoteDialogTagDesc => 'お気に入りのフードに独自のタグを設定できます。';
+
+  @override
+  String get promoteDialogIconTitle => 'カスタムアイコン';
+
+  @override
+  String get promoteDialogIconDesc => 'プロフィールアイコンを自由な画像に設定できます!!';
+
+  @override
+  String get promoteDialogAdTitle => '広告フリー';
+
+  @override
+  String get promoteDialogAdDesc => 'すべての広告が表示されなくなります!!';
+
+  @override
+  String get promoteDialogButton => 'プレミアム会員になる';
+
+  @override
+  String get promoteDialogLater => '後で考える';
+
+  @override
+  String get paywallTitle => 'FoodGram プレミアム';
+
+  @override
+  String get paywallPremiumTitle => '✨ プレミアム特典 ✨';
+
+  @override
+  String get paywallTrophyTitle => 'トロフィー機能';
+
+  @override
+  String get paywallTrophyDesc => '活動に応じてトロフィーを表示';
+
+  @override
+  String get paywallTagTitle => 'カスタムタグ';
+
+  @override
+  String get paywallTagDesc => 'お気に入りフードに独自タグ';
+
+  @override
+  String get paywallIconTitle => 'カスタムアイコン';
+
+  @override
+  String get paywallIconDesc => 'プロフィールアイコンを自由に';
+
+  @override
+  String get paywallAdTitle => '広告フリー';
+
+  @override
+  String get paywallAdDesc => 'すべての広告を非表示';
+
+  @override
+  String get paywallComingSoon => 'Coming Soon...';
+
+  @override
+  String get paywallNewFeatures => 'プレミアム会員限定の新機能を\n随時リリース予定！';
+
+  @override
+  String get paywallSubscribeButton => 'プレミアム会員になる';
+
+  @override
+  String get paywallPrice => '￥ 300/月';
+
+  @override
+  String get paywallCancelNote => 'いつでも解約可能';
+
+  @override
+  String get paywallWelcomeTitle => 'Welcome to\nFoodGram Members!';
 }
