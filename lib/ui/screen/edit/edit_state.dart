@@ -10,5 +10,7 @@ class EditState with _$EditState {
     @Default('') uploadImage,
     @Default('') initialImage,
     @Default(false) isSelectedIcon,
+    @Default('') favoriteTags,
+    @Default(false) isSubscribe,
   }) = _EditState;
 }

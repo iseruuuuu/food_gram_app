@@ -187,7 +187,7 @@ class MultipleRectangleBannerNotifier extends StateNotifier<List<BannerAd?>> {
   }
 
   void _loadAds() {
-    for (int i = 0; i < 3; i++) {
+    for (var i = 0; i < 3; i++) {
       if (state[i] != null) {
         continue;
       }

@@ -35,10 +35,10 @@ class AppPostCountryCategoryModalSheet extends ConsumerWidget {
             Wrap(
               spacing: 12,
               runSpacing: 12,
-              children: countryCategory.map<Widget>((data) {
+              children: countryCategory.keys.map<Widget>((emoji) {
                 return GestureDetector(
                   onTap: () {
-                    onChanged(data);
+                    onChanged(emoji);
                     context.pop();
                   },
                   child: Container(
@@ -46,14 +46,14 @@ class AppPostCountryCategoryModalSheet extends ConsumerWidget {
                     height: 60,
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: tagValue == data ? Colors.blue : Colors.grey,
-                        width: tagValue == data ? 2 : 1,
+                        color: tagValue == emoji ? Colors.blue : Colors.grey,
+                        width: tagValue == emoji ? 2 : 1,
                       ),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(
                       child: Text(
-                        data,
+                        emoji,
                         style: const TextStyle(fontSize: 36),
                       ),
                     ),
@@ -114,10 +114,10 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
                   Wrap(
                     spacing: 12,
                     runSpacing: 12,
-                    children: entry.value.map((emoji) {
+                    children: entry.value.map((food) {
                       return GestureDetector(
                         onTap: () {
-                          onChanged(emoji);
+                          onChanged(food[0]);
                           Navigator.pop(context);
                         },
                         child: Container(
@@ -125,15 +125,16 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
                           height: 60,
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color:
-                                  tagValue == emoji ? Colors.blue : Colors.grey,
-                              width: tagValue == emoji ? 2 : 1,
+                              color: tagValue == food[0]
+                                  ? Colors.blue
+                                  : Colors.grey,
+                              width: tagValue == food[0] ? 2 : 1,
                             ),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Center(
                             child: Text(
-                              emoji,
+                              food[0],
                               style: const TextStyle(fontSize: 36),
                             ),
                           ),

@@ -130,9 +130,6 @@ class PostService extends _$PostService {
     } on PostgrestException catch (e) {
       logger.e('Failed to update post: ${e.message}');
       return Failure(e);
-    } catch (e) {
-      logger.e('Unexpected error while updating post: $e');
-      return Failure(Exception('投稿の更新中に予期せぬエラーが発生しました'));
     }
   }
 

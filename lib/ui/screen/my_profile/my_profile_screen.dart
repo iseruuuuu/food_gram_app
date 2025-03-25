@@ -20,14 +20,13 @@ class MyProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(myPostStreamProvider);
     final users = ref.watch(myProfileViewModelProvider());
-    final isSubscription = ref.watch(subscriptionProvider);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppAppBar(),
         body: AsyncValueSwitcher(
-          asyncValue: AsyncValueGroup.group2(state, isSubscription),
+          asyncValue: state,
           onErrorTap: () {
             ref
               ..invalidate(myPostStreamProvider)
@@ -53,7 +52,6 @@ class MyProfileScreen extends ConsumerWidget {
                           users: users,
                           length: length,
                           heartAmount: heartAmount,
-                          isSubscription: value.$2,
                         );
                       },
                       loading: () {
@@ -62,11 +60,11 @@ class MyProfileScreen extends ConsumerWidget {
                       error: SizedBox.shrink,
                     ),
                   ),
-                  if (value.$1.isNotEmpty)
+                  if (value.isNotEmpty)
                     SliverPadding(
                       padding: const EdgeInsets.only(top: 8),
                       sliver: AppListView(
-                        data: value.$1,
+                        data: value,
                         routerPath: RouterPath.myProfileDetail,
                         refresh: () => ref.refresh(myPostStreamProvider),
                       ),

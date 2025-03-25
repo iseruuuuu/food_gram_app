@@ -42,6 +42,8 @@ class EditViewModel extends _$EditViewModel {
     state = state.copyWith(
       number: extractNumber(data['image']),
       initialImage: data['image'],
+      favoriteTags: data['tag'] ?? '',
+      isSubscribe: data['is_subscribe'],
     );
     loading.state = false;
   }
@@ -62,6 +64,7 @@ class EditViewModel extends _$EditViewModel {
           image: state.number.toString(),
           uploadImage: uploadImage,
           imageBytes: imageBytes,
+          favoriteTags: state.favoriteTags,
         );
     result.when(
       success: (_) {
@@ -82,6 +85,10 @@ class EditViewModel extends _$EditViewModel {
       uploadImage: '',
       isSelectedIcon: true,
     );
+  }
+
+  void updateFavoriteTags(String favoriteTags) {
+    state = state.copyWith(favoriteTags: favoriteTags);
   }
 
   Future<bool> camera() async {

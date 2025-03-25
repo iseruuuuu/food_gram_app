@@ -118,12 +118,14 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
     final selectedCategoryName = useState('');
     final postState =
         ref.watch(postStreamByCategoryProvider(selectedCategoryName.value));
+    print(selectedCategoryName);
     return RefreshIndicator(
       color: Colors.black,
       onRefresh: () async {
         await Future.delayed(const Duration(seconds: 1));
         ref.invalidate(
-            postStreamByCategoryProvider(selectedCategoryName.value));
+          postStreamByCategoryProvider(selectedCategoryName.value),
+        );
       },
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(
@@ -196,20 +198,21 @@ class FoodListView extends ConsumerWidget {
           parent: BouncingScrollPhysics(),
         ),
         slivers: [
-          data.isNotEmpty
-              ? AppListView(
-                  data: data,
-                  routerPath: RouterPath.timeLineDetail,
-                  refresh: () {
-                    ref
-                      ..invalidate(postStreamProvider)
-                      ..invalidate(postHomeMadeStreamProvider)
-                      ..invalidate(blockListProvider);
-                  },
-                )
-              : const SliverToBoxAdapter(
-                  child: AppEmpty(),
-                ),
+          if (data.isNotEmpty)
+            AppListView(
+              data: data,
+              routerPath: RouterPath.timeLineDetail,
+              refresh: () {
+                ref
+                  ..invalidate(postStreamProvider)
+                  ..invalidate(postHomeMadeStreamProvider)
+                  ..invalidate(blockListProvider);
+              },
+            )
+          else
+            const SliverToBoxAdapter(
+              child: AppEmpty(),
+            ),
         ],
       ),
       error: (_, __) => SliverToBoxAdapter(
