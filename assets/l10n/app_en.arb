@@ -175,5 +175,6 @@
   "rank": "Rank",
   "profileFavoriteGenre": "Favorite Genre",
   "editFavoriteTagTitle": "Select Favorite Tag",
-  "selectFavoriteTag": "Select Favorite Tag"
+  "selectFavoriteTag": "Select Favorite Tag",
+  "favoriteTagPlaceholder": "Select your favorite tag"
 }

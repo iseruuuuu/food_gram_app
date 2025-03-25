@@ -175,5 +175,6 @@
   "rank": "ランク",
   "profileFavoriteGenre": "好きなジャンル",
   "editFavoriteTagTitle": "お気に入りタグの選択",
-  "selectFavoriteTag": "お気に入りタグを選択"
+  "selectFavoriteTag": "お気に入りタグを選択",
+  "favoriteTagPlaceholder": "お気に入りのタグ"
 }

@@ -535,4 +535,7 @@ class L10nEn extends L10n {
 
   @override
   String get selectFavoriteTag => 'Select Favorite Tag';
+
+  @override
+  String get favoriteTagPlaceholder => 'Select your favorite tag';
 }

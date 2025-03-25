@@ -535,4 +535,7 @@ class L10nJa extends L10n {
 
   @override
   String get selectFavoriteTag => 'お気に入りタグを選択';
+
+  @override
+  String get favoriteTagPlaceholder => 'お気に入りのタグ';
 }

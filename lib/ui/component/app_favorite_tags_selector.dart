@@ -157,7 +157,9 @@ class AppFavoriteTagsSelector extends StatelessWidget {
           children: [
             const Gap(16),
             Text(
-              (selectedTags != '') ? selectedTags : 'お気に入りのタグ',
+              (selectedTags != '')
+                  ? selectedTags
+                  : L10n.of(context).favoriteTagPlaceholder,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

@@ -1151,6 +1151,12 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'お気に入りタグを選択'**
   String get selectFavoriteTag;
+
+  /// No description provided for @favoriteTagPlaceholder.
+  ///
+  /// In ja, this message translates to:
+  /// **'お気に入りのタグ'**
+  String get favoriteTagPlaceholder;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
