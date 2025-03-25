@@ -16,14 +16,12 @@ class AppHeader extends ConsumerWidget {
     required this.users,
     required this.length,
     required this.heartAmount,
-    required this.isSubscription,
     super.key,
   });
 
   final Users users;
   final int length;
   final int heartAmount;
-  final bool isSubscription;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

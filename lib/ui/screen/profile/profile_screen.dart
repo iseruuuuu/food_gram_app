@@ -73,7 +73,6 @@ class ProfileScreen extends ConsumerWidget {
                   users: users,
                   length: state.length,
                   heartAmount: state.heartAmount,
-                  isSubscription: users.isSubscribe,
                 ),
               ),
               SliverPadding(
