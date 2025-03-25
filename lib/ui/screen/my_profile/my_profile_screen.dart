@@ -1,4 +1,7 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -9,17 +12,37 @@ import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
 import 'package:food_gram_app/ui/component/app_skeleton.dart';
+import 'package:food_gram_app/ui/component/dialog/app_promote_dialog.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class MyProfileScreen extends ConsumerWidget {
+class MyProfileScreen extends HookConsumerWidget {
   const MyProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(myPostStreamProvider);
     final users = ref.watch(myProfileViewModelProvider());
+    useEffect(() {
+      users.whenOrNull(
+        data: (users, __, ___) {
+          if (users.isSubscribe) {
+            return;
+          }
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            final value = math.Random().nextInt(10);
+            if (value == 0) {
+              showDialog(
+                context: context,
+                builder: (context) => const AppPromoteDialog(),
+              );
+            }
+          });
+        },
+      );
+      return null;
+    });
     return DefaultTabController(
       length: 2,
       child: Scaffold(
