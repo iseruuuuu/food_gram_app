@@ -538,4 +538,85 @@ class L10nEn extends L10n {
 
   @override
   String get favoriteTagPlaceholder => 'Select your favorite tag';
+
+  @override
+  String get promoteDialogTitle => '✨Become a Premium Member✨';
+
+  @override
+  String get promoteDialogTrophyTitle => 'Trophy Feature';
+
+  @override
+  String get promoteDialogTrophyDesc => 'Display trophies based on your activities.';
+
+  @override
+  String get promoteDialogTagTitle => 'Custom Tags';
+
+  @override
+  String get promoteDialogTagDesc => 'Set custom tags for your favorite foods.';
+
+  @override
+  String get promoteDialogIconTitle => 'Custom Icon';
+
+  @override
+  String get promoteDialogIconDesc => 'Set your profile icon to any image you like!!';
+
+  @override
+  String get promoteDialogAdTitle => 'Ad-Free';
+
+  @override
+  String get promoteDialogAdDesc => 'Remove all advertisements!!';
+
+  @override
+  String get promoteDialogButton => 'Become Premium';
+
+  @override
+  String get promoteDialogLater => 'Maybe Later';
+
+  @override
+  String get paywallTitle => 'FoodGram Premium';
+
+  @override
+  String get paywallPremiumTitle => '✨ Premium Benefits ✨';
+
+  @override
+  String get paywallTrophyTitle => 'Trophy Feature';
+
+  @override
+  String get paywallTrophyDesc => 'Display trophies based on activities';
+
+  @override
+  String get paywallTagTitle => 'Custom Tags';
+
+  @override
+  String get paywallTagDesc => 'Create unique tags for favorite foods';
+
+  @override
+  String get paywallIconTitle => 'Custom Icon';
+
+  @override
+  String get paywallIconDesc => 'Set your own profile icon';
+
+  @override
+  String get paywallAdTitle => 'Ad-Free';
+
+  @override
+  String get paywallAdDesc => 'Remove all advertisements';
+
+  @override
+  String get paywallComingSoon => 'Coming Soon...';
+
+  @override
+  String get paywallNewFeatures => 'New premium-exclusive features\ncoming soon!';
+
+  @override
+  String get paywallSubscribeButton => 'Become a Premium Member';
+
+  @override
+  String get paywallPrice => '\$3/month';
+
+  @override
+  String get paywallCancelNote => 'Cancel anytime';
+
+  @override
+  String get paywallWelcomeTitle => 'Welcome to\nFoodGram Members!';
 }
