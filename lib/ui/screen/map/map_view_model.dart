@@ -3,9 +3,11 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/ui/component/app_pin_widget.dart';
 import 'package:food_gram_app/ui/screen/map/map_state.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:screenshot/screenshot.dart';
 
 part 'map_view_model.g.dart';
 
@@ -29,6 +31,7 @@ class MapViewModel extends _$MapViewModel {
   }
 
   bool isInitialLoading = true;
+  final screenshotController = ScreenshotController();
 
   Future<void> setPin({
     required void Function(List<Posts> posts) onPinTap,
@@ -38,8 +41,10 @@ class MapViewModel extends _$MapViewModel {
       await state.mapController!.clearSymbols();
     }
     try {
-      final bytes = await rootBundle.load(Assets.image.pin.path);
-      final list = bytes.buffer.asUint8List();
+      final screenshotBytes = await screenshotController.captureFromWidget(
+        AppPinWidget(image: Assets.image.pinIcon.path),
+      );
+      final list = screenshotBytes.buffer.asUint8List();
       await state.mapController!.addImage('pins', list);
       final symbols = <SymbolOptions>[];
       ref.read(mapRepositoryProvider).whenOrNull(
@@ -56,7 +61,12 @@ class MapViewModel extends _$MapViewModel {
         },
       );
       await state.mapController?.addSymbols(symbols);
-      await state.mapController?.setSymbolIconAllowOverlap(true);
+
+      /// 他のシンボルがアイコンに衝突した場合、表示されないようにする
+      await state.mapController?.setSymbolIconIgnorePlacement(false);
+
+      /// アイコンは以前に描画された他のシンボルと衝突しても表示される。
+      await state.mapController?.setSymbolIconAllowOverlap(false);
       state.mapController?.onSymbolTapped.add((symbol) async {
         state = state.copyWith(isLoading: true);
         final latLng = symbol.options.geometry;
@@ -94,8 +104,10 @@ class MapViewModel extends _$MapViewModel {
   }) async {
     await state.mapController!.clearSymbols();
     try {
-      final bytes = await rootBundle.load(Assets.image.pinRamen.path);
-      final list = bytes.buffer.asUint8List();
+      final screenshotBytes = await screenshotController.captureFromWidget(
+        AppPinWidget(image: Assets.image.pinRamen.path),
+      );
+      final list = screenshotBytes.buffer.asUint8List();
       await state.mapController?.addImage('pin_ramen', list);
       final symbols = <SymbolOptions>[];
       final posts = await ref.watch(mapRamenRepositoryProvider.future);
