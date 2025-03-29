@@ -126,10 +126,10 @@ class MapScreen extends HookConsumerWidget {
 double _calculateIconSize(BuildContext context) {
   final screenWidth = MediaQuery.of(context).size.width;
   if (screenWidth <= 375) {
-    return 0.4;
+    return 0.7;
   } else if (screenWidth < 720) {
-    return 0.6;
+    return 0.7;
   } else {
-    return 0.8;
+    return 1.1;
   }
 }
