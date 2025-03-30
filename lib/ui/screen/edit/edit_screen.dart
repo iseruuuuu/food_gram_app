@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
-import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
+import 'package:food_gram_app/core/theme/style/edit_style.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_favorite_tags_selector.dart';
@@ -25,10 +25,6 @@ class EditScreen extends HookConsumerWidget {
     final controller = ref.watch(editViewModelProvider().notifier);
     final state = ref.watch(editViewModelProvider());
     final loading = ref.watch(loadingProvider);
-    final subscriptionState = ref.watch(subscriptionProvider);
-    final isSubscribed =
-        subscriptionState.whenOrNull(data: (isSubscribed) => isSubscribed) ??
-            false;
     final adInterstitial =
         useMemoized(() => ref.read(admobInterstitialNotifierProvider));
     useEffect(
@@ -76,11 +72,7 @@ class EditScreen extends HookConsumerWidget {
                   },
                   child: Text(
                     L10n.of(context).editUpdateButton,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: loading ? Colors.grey : Colors.blueAccent,
-                    ),
+                    style: EditStyle.editButton(loading: loading),
                   ),
                 )
               else
@@ -100,28 +92,25 @@ class EditScreen extends HookConsumerWidget {
                           backgroundImage: FileImage(
                             File(state.uploadImage),
                           ),
-                          radius: 80,
+                          radius: 70,
                         )
                       else if (!state.isSelectedIcon)
                         AppProfileImage(
                           imagePath: state.initialImage,
-                          radius: 80,
+                          radius: 70,
                         )
                       else
                         CircleAvatar(
                           backgroundColor: Colors.white,
                           backgroundImage:
                               AssetImage('assets/icon/icon${state.number}.png'),
-                          radius: 80,
+                          radius: 70,
                         ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
                           L10n.of(context).settingsIcon,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
+                          style: EditStyle.settingsIcon(),
                         ),
                       ),
                       Wrap(
@@ -139,7 +128,7 @@ class EditScreen extends HookConsumerWidget {
                               );
                             },
                           ),
-                          if (isSubscribed == true)
+                          if (state.isSubscribe == true)
                             GestureDetector(
                               onTap: () {
                                 primaryFocus?.unfocus();
@@ -191,43 +180,36 @@ class EditScreen extends HookConsumerWidget {
                       AppSelfIntroductionTextField(
                         controller: controller.selfIntroduceTextController,
                       ),
-                      Gap(20),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      if (state.isSubscribe)
+                        Column(
                           children: [
-                            Row(
-                              children: [
-                                Icon(Icons.tag, size: 20),
-                                Text(
-                                  L10n.of(context).editFavoriteTagTitle,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            if (state.isSubscribe)
-                              Column(
+                            Gap(16),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Row(
                                 children: [
-                                  Gap(10),
-                                  AppFavoriteTagsSelector(
-                                    selectedTags: state.favoriteTags,
-                                    onTagSelected: (tag) {
-                                      ref
-                                          .read(
-                                            editViewModelProvider().notifier,
-                                          )
-                                          .updateFavoriteTags(tag);
-                                    },
+                                  Icon(Icons.tag, size: 20),
+                                  Text(
+                                    L10n.of(context).editFavoriteTagTitle,
+                                    style: EditStyle.tag(),
                                   ),
                                 ],
                               ),
+                            ),
+                            Gap(10),
+                            AppFavoriteTagsSelector(
+                              selectedTags: state.favoriteTags,
+                              onTagSelected: (tag) {
+                                ref
+                                    .read(
+                                      editViewModelProvider().notifier,
+                                    )
+                                    .updateFavoriteTags(tag);
+                              },
+                            ),
                           ],
                         ),
-                      ),
                       Gap(20),
                     ],
                   ),
