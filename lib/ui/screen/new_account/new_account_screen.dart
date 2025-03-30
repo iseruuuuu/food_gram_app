@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/theme/style/new_account_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -50,6 +51,10 @@ class NewAccountScreen extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
                   children: [
+                    AppBar(
+                      backgroundColor: Colors.white,
+                      surfaceTintColor: Colors.white,
+                    ),
                     Gap(20),
                     CircleAvatar(
                       backgroundColor: Colors.white,
@@ -60,11 +65,7 @@ class NewAccountScreen extends ConsumerWidget {
                     const Gap(10),
                     Text(
                       L10n.of(context).settingsIcon,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
+                      style: NewAccountStyle.icon(),
                     ),
                     const Gap(10),
                     Wrap(
@@ -88,7 +89,7 @@ class NewAccountScreen extends ConsumerWidget {
                     AppUserNameTextField(
                       controller: controller.userNameTextController,
                     ),
-                    const Gap(20),
+                    const Gap(24),
                     AppElevatedButton(
                       onPressed: () {
                         ref
@@ -102,21 +103,16 @@ class NewAccountScreen extends ConsumerWidget {
                       },
                       title: L10n.of(context).registerButton,
                     ),
-                    const Gap(20),
+                    const Gap(24),
                     Text(
                       L10n.of(context).newAccountImportantTitle,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                      style: NewAccountStyle.title(),
                     ),
-                    const Gap(10),
+                    const Gap(18),
                     Text(
                       L10n.of(context).newAccountImportant,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
+                      style: NewAccountStyle.contents(),
                     ),
                   ],
                 ),
