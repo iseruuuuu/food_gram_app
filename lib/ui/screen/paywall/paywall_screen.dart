@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/theme/style/paywall_style.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -54,11 +55,7 @@ class PaywallScreen extends ConsumerWidget {
                   ),
                   title: Text(
                     l10n.paywallTitle,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                    style: PaywallStyle.title(),
                   ),
                 ),
                 Expanded(
@@ -84,11 +81,7 @@ class PaywallScreen extends ConsumerWidget {
                             children: [
                               Text(
                                 l10n.paywallPremiumTitle,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.amber[700],
-                                ),
+                                style: PaywallStyle.premiumTitle(),
                               ),
                               Gap(16),
                               _buildFeatureItem(
@@ -147,19 +140,11 @@ class PaywallScreen extends ConsumerWidget {
                                         children: [
                                           Text(
                                             l10n.paywallComingSoon,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
+                                            style: PaywallStyle.comingSoon(),
                                           ),
                                           Text(
                                             l10n.paywallNewFeatures,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.white
-                                                  .withValues(alpha: 0.8),
-                                            ),
+                                            style: PaywallStyle.newFeatures(),
                                           ),
                                         ],
                                       ),
@@ -197,14 +182,7 @@ class PaywallScreen extends ConsumerWidget {
           ],
         ),
         child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.amber[700],
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
+          style: PaywallStyle.button(),
           onPressed: () async {
             await ref
                 .read(settingViewModelProvider().notifier)
@@ -253,11 +231,7 @@ class PaywallScreen extends ConsumerWidget {
                                   children: [
                                     Text(
                                       l10n.paywallWelcomeTitle,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24,
-                                        color: Colors.white,
-                                      ),
+                                      style: PaywallStyle.wellComeTitle(),
                                       textAlign: TextAlign.center,
                                     ),
                                     Gap(30),
@@ -287,18 +261,12 @@ class PaywallScreen extends ConsumerWidget {
               children: [
                 Text(
                   l10n.paywallSubscribeButton,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: PaywallStyle.subscribeButton(),
                 ),
                 Gap(2),
                 Text(
                   '${l10n.paywallPrice} (${l10n.paywallCancelNote})',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white.withValues(alpha: 0.8),
-                  ),
+                  style: PaywallStyle.price(),
                 ),
               ],
             ),
@@ -330,21 +298,8 @@ class PaywallScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.amber[700],
-                  ),
-                ),
-                Text(
-                  description,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.black,
-                  ),
-                ),
+                Text(title, style: PaywallStyle.contentsTitle()),
+                Text(description, style: PaywallStyle.contentsDescription()),
               ],
             ),
           ),
