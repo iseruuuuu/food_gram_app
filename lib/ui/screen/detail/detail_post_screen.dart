@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/theme/style/detail_post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
@@ -204,16 +205,12 @@ class DetailPostScreen extends HookConsumerWidget {
                               children: [
                                 Text(
                                   users.name,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
+                                  style: DetailPostStyle.name(),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
                                   '@${users.userName}',
-                                  style: const TextStyle(fontSize: 16),
+                                  style: DetailPostStyle.userName(),
                                 ),
                               ],
                             ),
@@ -297,10 +294,7 @@ class DetailPostScreen extends HookConsumerWidget {
                               child: Text(
                                 '${initialHeart.value} '
                                 '${l10n.postDetailLikeButton}',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: DetailPostStyle.like(),
                               ),
                             ),
                           ],
@@ -355,10 +349,8 @@ class DetailPostScreen extends HookConsumerWidget {
                                   icon: Icons.restaurant,
                                 ),
                                 AppDetailElevatedButton(
-                                  onPressed: () {
-                                    LaunchUrlHelper()
-                                        .open(URL.search(posts.restaurant));
-                                  },
+                                  onPressed: () => LaunchUrlHelper()
+                                      .open(URL.search(posts.restaurant)),
                                   title: l10n.detailMenuSearch,
                                   icon: Icons.search,
                                 ),
@@ -389,11 +381,7 @@ class DetailPostScreen extends HookConsumerWidget {
                             children: [
                               Text(
                                 posts.foodName,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
+                                style: DetailPostStyle.foodName(),
                               ),
                               Gap(4),
                               GestureDetector(
@@ -405,14 +393,7 @@ class DetailPostScreen extends HookConsumerWidget {
                                 },
                                 child: Text(
                                   'In ${posts.restaurant}',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                    fontFamily: 'Hiragino Kaku Gothic ProN',
-                                    decoration: TextDecoration.underline,
-                                    decorationThickness: 2,
-                                  ),
+                                  style: DetailPostStyle.restaurant(),
                                 ),
                               ),
                               const Gap(12),
@@ -421,11 +402,7 @@ class DetailPostScreen extends HookConsumerWidget {
                                   children: [
                                     Text(
                                       posts.comment,
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black,
-                                      ),
+                                      style: DetailPostStyle.comment(),
                                     ),
                                     Gap(12),
                                   ],
@@ -437,13 +414,13 @@ class DetailPostScreen extends HookConsumerWidget {
                                     Chip(
                                       backgroundColor: Colors.white,
                                       label: Text(posts.foodTag),
-                                      labelStyle: const TextStyle(fontSize: 20),
+                                      labelStyle: const TextStyle(fontSize: 28),
                                     ),
                                   if (posts.restaurantTag.isNotEmpty)
                                     Chip(
                                       backgroundColor: Colors.white,
                                       label: Text(posts.restaurantTag),
-                                      labelStyle: const TextStyle(fontSize: 20),
+                                      labelStyle: const TextStyle(fontSize: 28),
                                     ),
                                 ],
                               ),
