@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/core/theme/style/post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -53,13 +54,7 @@ class PostScreen extends HookConsumerWidget {
         appBar: AppBar(
           surfaceTintColor: Colors.transparent,
           backgroundColor: !loading ? Colors.white : Colors.transparent,
-          title: Text(
-            l10n.postTitle,
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-          ),
+          title: Text(l10n.postTitle, style: PostStyle.title()),
           centerTitle: true,
           leading: !loading
               ? IconButton(
@@ -94,13 +89,7 @@ class PostScreen extends HookConsumerWidget {
                     );
                   }
                 },
-                child: Text(
-                  l10n.postShareButton,
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
+                child: Text(l10n.postShareButton, style: PostStyle.share()),
               ),
           ],
         ),
@@ -198,12 +187,8 @@ class PostScreen extends HookConsumerWidget {
                                           ? l10n.postRestaurantNameInputField
                                           : state.restaurant,
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: state.restaurant == '場所を追加'
-                                            ? Colors.grey
-                                            : Colors.black,
+                                      style: PostStyle.restaurant(
+                                        value: state.restaurant == '場所を追加',
                                       ),
                                     ),
                                     Spacer(),
@@ -229,7 +214,7 @@ class PostScreen extends HookConsumerWidget {
                     const Gap(18),
                     Text(
                       l10n.postCategoryTitle,
-                      style: const TextStyle(fontSize: 16),
+                      style: PostStyle.categoryTitle(),
                     ),
                     const Gap(12),
                     Row(
