@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
+import 'package:food_gram_app/core/theme/style/restaurant_review_style.dart';
 import 'package:food_gram_app/ui/component/app_review_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -34,10 +35,7 @@ class RestaurantReviewScreen extends ConsumerWidget {
           ),
           title: Text(
             posts.restaurant,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+            style: RestaurantReviewStyle.restaurant(),
           ),
           bottom: TabBar(
             indicatorWeight: 1,
