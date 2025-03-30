@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sliding_tutorial/flutter_sliding_tutorial.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
+import 'package:food_gram_app/core/theme/style/tutorial_style.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -52,21 +53,14 @@ class _TutorialScreenState extends State<TutorialScreen> {
                   Spacer(),
                   Text(
                     l10n.tutorialFirstPageTitle,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TutorialStyle.title(),
                   ),
                   Gap(52),
                   Assets.image.tutorial1.image(height: imageHeight),
                   Gap(52),
                   Text(
                     l10n.tutorialFirstPageSubTitle,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
+                    style: TutorialStyle.subTitle(),
                     textAlign: TextAlign.center,
                   ),
                   Spacer(),
@@ -78,10 +72,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                   Spacer(),
                   Text(
                     l10n.tutorialSecondPageTitle,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TutorialStyle.title(),
                   ),
                   Gap(52),
                   Assets.image.tutorial2.image(height: imageHeight),
@@ -89,11 +80,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                   Text(
                     l10n.tutorialSecondPageSubTitle,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
+                    style: TutorialStyle.subTitle(),
                   ),
                   Spacer(),
                 ],
@@ -110,10 +97,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                         Assets.gif.tutorial1.image(width: 60),
                         Text(
                           l10n.tutorialThirdPageTitle,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TutorialStyle.thirdTitle(),
                         ),
                         Assets.gif.tutorial1.image(width: 60),
                         Gap(10),
@@ -124,7 +108,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: Text(
                         l10n.tutorialThirdPageSubTitle,
-                        style: TextStyle(fontSize: 14),
+                        style: TutorialStyle.thirdSubTitle(),
                       ),
                     ),
                     Row(
@@ -132,9 +116,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                       children: [
                         Text(
                           l10n.tutorialThirdPageButton,
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
+                          style: TutorialStyle.accept(),
                         ),
                         Gap(10),
                         Checkbox(
@@ -153,12 +135,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                     SizedBox(
                       width: 200,
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
+                        style: TutorialStyle.button(),
                         onPressed: isAccept
                             ? () async {
                                 if (!isFinishedTutorial) {
@@ -173,9 +150,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                             : null,
                         child: Text(
                           l10n.tutorialThirdPageClose,
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                          style: TutorialStyle.close(),
                         ),
                       ),
                     ),
@@ -195,7 +170,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
                     if (pageController.page?.toInt() == 2 && !isAccept) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(L10n.of(context).agreeToTheTermsOfUse),
+                          content: Text(
+                            L10n.of(context).agreeToTheTermsOfUse,
+                          ),
                         ),
                       );
                     } else {
