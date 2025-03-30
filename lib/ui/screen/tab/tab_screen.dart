@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/theme/style/tab_style.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
 import 'package:gap/gap.dart';
@@ -41,13 +42,7 @@ class TabScreen extends ConsumerWidget {
                     Gap(6),
                     Text(
                       l10n.tabMap,
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: (state.selectedIndex == 0)
-                            ? Colors.black
-                            : Colors.grey,
-                      ),
+                      style: TabStyle.tab(value: state.selectedIndex == 0),
                     ),
                     Gap(10),
                   ],
@@ -67,13 +62,7 @@ class TabScreen extends ConsumerWidget {
                     Gap(6),
                     Text(
                       l10n.tabHome,
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: (state.selectedIndex == 1)
-                            ? Colors.black
-                            : Colors.grey,
-                      ),
+                      style: TabStyle.tab(value: state.selectedIndex == 1),
                     ),
                     Gap(10),
                   ],
@@ -94,13 +83,7 @@ class TabScreen extends ConsumerWidget {
                     Gap(6),
                     Text(
                       l10n.tabMyPage,
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: (state.selectedIndex == 2)
-                            ? Colors.black
-                            : Colors.grey,
-                      ),
+                      style: TabStyle.tab(value: state.selectedIndex == 2),
                     ),
                     Gap(10),
                   ],
@@ -120,13 +103,7 @@ class TabScreen extends ConsumerWidget {
                     Gap(6),
                     Text(
                       l10n.tabSetting,
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: (state.selectedIndex == 2)
-                            ? Colors.black
-                            : Colors.grey,
-                      ),
+                      style: TabStyle.tab(value: state.selectedIndex == 3),
                     ),
                     Gap(10),
                   ],
