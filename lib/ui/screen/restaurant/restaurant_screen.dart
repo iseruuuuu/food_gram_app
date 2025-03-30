@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/api/restaurant/repository/restaurant_repository.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/core/theme/style/restaurant_style.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
@@ -111,22 +112,17 @@ class RestaurantScreen extends HookConsumerWidget {
                                 primaryFocus?.unfocus();
                                 context.pop(restaurant);
                               },
-                              trailing:
-                                  const Icon(Icons.arrow_forward_ios, size: 20),
+                              trailing: const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 20,
+                              ),
                               title: Text(
                                 value[index].name,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: RestaurantStyle.name(),
                               ),
                               subtitle: Text(
                                 value[index].address,
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 11,
-                                ),
+                                style: RestaurantStyle.address(),
                               ),
                             );
                           },
