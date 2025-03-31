@@ -36,11 +36,30 @@ jobs:
         run: flutter pub get
 
       - name: Check formatting
-        run: flutter format --set-exit-if-changed .
+        run: |
+          # 生成ファイルを除外してフォーマットチェック
+          flutter format --set-exit-if-changed \
+            --exclude-dir=lib/gen \
+            --exclude-dir=lib/generated \
+            --exclude=lib/firebase_options.dart \
+            .
 
       - name: Analyze project source
-        run: flutter analyze
+        run: |
+          # 生成ファイルを除外して静的解析
+          flutter analyze \
+            --exclude-dir=lib/gen \
+            --exclude-dir=lib/generated \
+            --exclude=lib/firebase_options.dart
 
       - name: Check for outdated dependencies
         run: flutter pub outdated
+
+      - name: Check generated files
+        run: |
+          # 生成ファイルが直接編集されていないかチェック
+          if git diff --name-only | grep -E "lib/gen/|lib/firebase_options.dart"; then
+            echo "Error: Generated files have been modified directly. Please use the appropriate CLI commands to regenerate them."
+            exit 1
+          fi
 
