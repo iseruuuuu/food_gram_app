@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup FVM
-        uses: leoafarias/fvm@v2
+        uses: leoafarias/fvm@v2.2.3
         with:
           flutter-version: '3.27.1'
 
@@ -38,19 +38,20 @@ jobs:
       - name: Check formatting
         run: |
           # 生成ファイルを除外してフォーマットチェック
-          fvm flutter format --set-exit-if-changed \
-            --exclude-dir=lib/gen \
-            --exclude-dir=lib/generated \
-            --exclude=lib/firebase_options.dart \
-            .
+          find . -type f -name "*.dart" \
+            ! -path "*/lib/gen/*" \
+            ! -path "*/lib/generated/*" \
+            ! -path "*/lib/firebase_options.dart" \
+            -exec fvm dart format --set-exit-if-changed {} +
 
       - name: Analyze project source
         run: |
           # 生成ファイルを除外して静的解析
-          fvm flutter analyze \
-            --exclude-dir=lib/gen \
-            --exclude-dir=lib/generated \
-            --exclude=lib/firebase_options.dart
+          find . -type f -name "*.dart" \
+            ! -path "*/lib/gen/*" \
+            ! -path "*/lib/generated/*" \
+            ! -path "*/lib/firebase_options.dart" \
+            -exec fvm dart analyze {} +
 
       - name: Check for outdated dependencies
         run: fvm flutter pub outdated
