@@ -15,11 +15,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - name: Setup FVM
+        uses: leoafarias/fvm@v2
         with:
           flutter-version: '3.27.1'
-          channel: 'stable'
 
       - name: Cache Flutter dependencies
         uses: actions/cache@v4
@@ -28,17 +27,18 @@ jobs:
             ~/.pub-cache
             ~/.pub
             build/
+            ~/.fvm
           key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
           restore-keys: |
             ${{ runner.os }}-flutter-
 
       - name: Install dependencies
-        run: flutter pub get
+        run: fvm flutter pub get
 
       - name: Check formatting
         run: |
           # 生成ファイルを除外してフォーマットチェック
-          flutter format --set-exit-if-changed \
+          fvm flutter format --set-exit-if-changed \
             --exclude-dir=lib/gen \
             --exclude-dir=lib/generated \
             --exclude=lib/firebase_options.dart \
@@ -47,13 +47,13 @@ jobs:
       - name: Analyze project source
         run: |
           # 生成ファイルを除外して静的解析
-          flutter analyze \
+          fvm flutter analyze \
             --exclude-dir=lib/gen \
             --exclude-dir=lib/generated \
             --exclude=lib/firebase_options.dart
 
       - name: Check for outdated dependencies
-        run: flutter pub outdated
+        run: fvm flutter pub outdated
 
       - name: Check generated files
         run: |
