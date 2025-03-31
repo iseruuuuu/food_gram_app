@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
+import 'package:food_gram_app/core/theme/style/profile_style.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
 import 'package:food_gram_app/ui/component/app_error_widget.dart';
@@ -35,21 +36,8 @@ class ProfileScreen extends ConsumerWidget {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                users.name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-              Text(
-                '@${users.userName}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
-              ),
+              Text(users.name, style: ProfileStyle.name()),
+              Text('@${users.userName}', style: ProfileStyle.userName()),
             ],
           ),
           leading: GestureDetector(

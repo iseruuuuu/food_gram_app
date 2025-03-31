@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/theme/style/story_style.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -52,11 +53,7 @@ class StoryScreen extends ConsumerWidget {
                           const Gap(12),
                           Text(
                             users[storyIndex].name,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: StoryStyle.name(),
                           ),
                         ],
                       ),
@@ -83,19 +80,11 @@ class StoryScreen extends ConsumerWidget {
                           children: [
                             Text(
                               posts[storyIndex].foodName,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
+                              style: StoryStyle.foodName(),
                             ),
                             Text(
                               posts[storyIndex].restaurant,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
+                              style: StoryStyle.restaurant(),
                             ),
                             const AdmobBanner(id: 'story'),
                           ],

@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
+import 'package:food_gram_app/core/theme/style/setting_style.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
@@ -170,14 +171,10 @@ class SettingScreen extends HookConsumerWidget {
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                    title: const Center(
+                                    title: Center(
                                       child: Text(
                                         'Get a Premium MemberShip',
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        style: SettingStyle.premium(),
                                       ),
                                     ),
                                     onTap: () {
@@ -294,14 +291,11 @@ class SettingScreen extends HookConsumerWidget {
                               ),
                               title: Text(
                                 l10n.settingsAppVersion,
-                                style: const TextStyle(color: Colors.black),
+                                style: SettingStyle.appVersion(),
                               ),
                               trailing: Text(
                                 state.version,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                ),
+                                style: SettingStyle.version(),
                               ),
                             ),
                           ],

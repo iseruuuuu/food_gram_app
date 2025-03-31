@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/theme/style/edit_post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -58,10 +59,7 @@ class EditPostScreen extends HookConsumerWidget {
           backgroundColor: !loading ? Colors.white : Colors.transparent,
           title: Text(
             l10n.editTitle,
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
+            style: EditPostStyle.editTitle(),
           ),
           centerTitle: true,
           leading: !loading
@@ -100,10 +98,7 @@ class EditPostScreen extends HookConsumerWidget {
                 },
                 child: Text(
                   l10n.editUpdateButton,
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: EditPostStyle.editButton(),
                 ),
               ),
           ],
@@ -196,19 +191,20 @@ class EditPostScreen extends HookConsumerWidget {
                                   side: const BorderSide(),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
-                                title: Row(
-                                  children: [
-                                    Gap(16),
-                                    Text(
-                                      state.restaurant,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
+                                title: FittedBox(
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                        ),
+                                        child: Text(
+                                          state.restaurant,
+                                          style: EditPostStyle.restaurant(),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -219,7 +215,7 @@ class EditPostScreen extends HookConsumerWidget {
                     const Gap(18),
                     Text(
                       l10n.postCategoryTitle,
-                      style: const TextStyle(fontSize: 16),
+                      style: EditPostStyle.category(),
                     ),
                     const Gap(12),
                     Row(

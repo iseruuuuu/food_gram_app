@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:auth_buttons/auth_buttons.dart'
-    show AppleAuthButton, AuthButtonStyle, GoogleAuthButton;
+import 'package:auth_buttons/auth_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/theme/style/authentication_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
@@ -26,7 +26,7 @@ class AuthenticationScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final loading = ref.watch(loadingProvider);
-    final theme = Theme.of(context);
+    final buttonWidth = MediaQuery.of(context).size.width / 1.3;
     final controller = ref.watch(authenticationViewModelProvider().notifier);
     final supabase = ref.read(supabaseProvider);
     final authStateSubscription = useMemoized(
@@ -37,7 +37,6 @@ class AuthenticationScreen extends HookConsumerWidget {
         }
       }),
     );
-
     useEffect(
       () {
         return authStateSubscription.cancel;
@@ -73,10 +72,7 @@ class AuthenticationScreen extends HookConsumerWidget {
                         Gap(12),
                         Text(
                           'FoodGram',
-                          style: theme.textTheme.headlineLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+                          style: AuthenticationStyle.foodGram(),
                         ),
                       ],
                     ),
@@ -87,15 +83,7 @@ class AuthenticationScreen extends HookConsumerWidget {
                       width: MediaQuery.sizeOf(context).width - 80,
                       height: 48,
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(12),
-                            ),
-                          ),
-                        ),
+                        style: AuthenticationStyle.signMail(),
                         onPressed: () => controller.login(context),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -104,8 +92,7 @@ class AuthenticationScreen extends HookConsumerWidget {
                             Gap(12),
                             Text(
                               'Sign in with Mail',
-                              style: theme.textTheme.titleMedium!
-                                  .copyWith(color: Colors.white),
+                              style: AuthenticationStyle.signMailText(),
                             ),
                           ],
                         ),
@@ -125,17 +112,7 @@ class AuthenticationScreen extends HookConsumerWidget {
                     Divider(),
                     Gap(24),
                     AppleAuthButton(
-                      style: AuthButtonStyle(
-                        splashColor: Colors.white,
-                        height: 50,
-                        elevation: 3,
-                        borderRadius: 20,
-                        width: MediaQuery.of(context).size.width / 1.3,
-                        textStyle: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      style: AuthenticationStyle.authButtonStyle(buttonWidth),
                       onPressed: () {
                         if (Platform.isIOS) {
                           controller.loginApple(context);
@@ -150,18 +127,8 @@ class AuthenticationScreen extends HookConsumerWidget {
                     ),
                     Gap(24),
                     GoogleAuthButton(
+                      style: AuthenticationStyle.authButtonStyle(buttonWidth),
                       onPressed: () => controller.loginGoogle(context),
-                      style: AuthButtonStyle(
-                        splashColor: Colors.white,
-                        height: 50,
-                        elevation: 3,
-                        borderRadius: 20,
-                        width: MediaQuery.of(context).size.width / 1.3,
-                        textStyle: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                     ),
                   ],
                 ),

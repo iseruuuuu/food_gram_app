@@ -145,37 +145,39 @@ class AppFavoriteTagsSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => _showTagSelector(context),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          children: [
-            const Gap(16),
-            Text(
-              (selectedTags != '')
-                  ? selectedTags
-                  : L10n.of(context).favoriteTagPlaceholder,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: (selectedTags != '') ? Colors.black : Colors.grey,
-              ),
-            ),
-            const Spacer(),
-            if (selectedTags == '')
-              const Padding(
-                padding: EdgeInsets.only(right: 8),
-                child: Icon(
-                  Icons.chevron_right,
-                  size: 30,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: Container(
+          height: 50,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            children: [
+              const Gap(16),
+              Text(
+                (selectedTags != '')
+                    ? selectedTags
+                    : L10n.of(context).favoriteTagPlaceholder,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: (selectedTags != '') ? Colors.black : Colors.grey,
                 ),
               ),
-          ],
+              const Spacer(),
+              if (selectedTags == '')
+                const Padding(
+                  padding: EdgeInsets.only(right: 8),
+                  child: Icon(
+                    Icons.chevron_right,
+                    size: 30,
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
