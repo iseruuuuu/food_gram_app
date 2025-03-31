@@ -9,7 +9,7 @@ on:
 jobs:
   format:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
 
     steps:
       - name: Checkout
@@ -20,47 +20,17 @@ jobs:
         with:
           flutter-version: '3.27.1'
 
-      - name: Cache Flutter dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.pub-cache
-            ~/.pub
-            build/
-            ~/.fvm
-          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-flutter-
-
       - name: Install dependencies
         run: fvm flutter pub get
 
-      - name: Check formatting
+      - name: Format and Analyze
         run: |
-          # 生成ファイルを除外してフォーマットチェック
-          find . -type f -name "*.dart" \
-            ! -path "*/lib/gen/*" \
-            ! -path "*/lib/generated/*" \
-            ! -path "*/lib/firebase_options.dart" \
-            -exec fvm dart format --set-exit-if-changed {} +
-
-      - name: Analyze project source
-        run: |
-          # 生成ファイルを除外して静的解析
-          find . -type f -name "*.dart" \
-            ! -path "*/lib/gen/*" \
-            ! -path "*/lib/generated/*" \
-            ! -path "*/lib/firebase_options.dart" \
-            -exec fvm dart analyze {} +
-
-      - name: Check for outdated dependencies
-        run: fvm flutter pub outdated
-
-      - name: Check generated files
-        run: |
-          # 生成ファイルが直接編集されていないかチェック
-          if git diff --name-only | grep -E "lib/gen/|lib/firebase_options.dart"; then
-            echo "Error: Generated files have been modified directly. Please use the appropriate CLI commands to regenerate them."
-            exit 1
-          fi
+          # フォーマットチェック
+          fvm dart format --set-exit-if-changed .
+          
+          # 静的解析
+          fvm flutter analyze
+          
+          # 依存関係のチェック
+          fvm flutter pub outdated
 
