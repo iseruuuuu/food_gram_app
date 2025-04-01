@@ -162,7 +162,7 @@ class MapViewModel extends _$MapViewModel {
           location.longitude,
         );
         await state.mapController?.animateCamera(
-          CameraUpdate.newLatLngZoom(currentLatLng, 14),
+          CameraUpdate.newLatLngZoom(currentLatLng, 16),
         );
       },
     );

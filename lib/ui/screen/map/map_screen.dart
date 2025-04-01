@@ -61,7 +61,7 @@ class MapScreen extends HookConsumerWidget {
                         value.$1.latitude,
                         value.$1.longitude,
                       ),
-                      zoom: 14,
+                      zoom: 16,
                     ),
                     trackCameraPosition: true,
                     tiltGesturesEnabled: false,
@@ -126,10 +126,10 @@ class MapScreen extends HookConsumerWidget {
 double _calculateIconSize(BuildContext context) {
   final screenWidth = MediaQuery.of(context).size.width;
   if (screenWidth <= 375) {
-    return 0.7;
+    return 0.6;
   } else if (screenWidth < 720) {
-    return 0.7;
+    return 0.6;
   } else {
-    return 1.1;
+    return 0.8;
   }
 }
