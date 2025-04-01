@@ -61,12 +61,10 @@ class MapViewModel extends _$MapViewModel {
         },
       );
       await state.mapController?.addSymbols(symbols);
-
-      /// 他のシンボルがアイコンに衝突した場合、表示されないようにする
-      await state.mapController?.setSymbolIconIgnorePlacement(false);
-
-      /// アイコンは以前に描画された他のシンボルと衝突しても表示される。
-      await state.mapController?.setSymbolIconAllowOverlap(false);
+      // 他のシンボルがアイコンに衝突した場合、表示されないようにする
+      await state.mapController?.setSymbolIconIgnorePlacement(true);
+      // アイコンは以前に描画された他のシンボルと衝突しても表示される。
+      await state.mapController?.setSymbolIconAllowOverlap(true);
       state.mapController?.onSymbolTapped.add((symbol) async {
         state = state.copyWith(isLoading: true);
         final latLng = symbol.options.geometry;
@@ -121,6 +119,9 @@ class MapViewModel extends _$MapViewModel {
         );
       }
       await state.mapController?.addSymbols(symbols);
+      // 他のシンボルがアイコンに衝突した場合、表示されないようにする
+      await state.mapController?.setSymbolIconIgnorePlacement(true);
+      // アイコンは以前に描画された他のシンボルと衝突しても表示される。
       await state.mapController?.setSymbolIconAllowOverlap(true);
       state.mapController?.onSymbolTapped.add((symbol) async {
         state = state.copyWith(isLoading: true);
@@ -161,7 +162,7 @@ class MapViewModel extends _$MapViewModel {
           location.longitude,
         );
         await state.mapController?.animateCamera(
-          CameraUpdate.newLatLngZoom(currentLatLng, 14),
+          CameraUpdate.newLatLngZoom(currentLatLng, 16),
         );
       },
     );

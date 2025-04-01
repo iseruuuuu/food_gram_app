@@ -29,7 +29,7 @@ class AppPinWidget extends StatelessWidget {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(3),
+                padding: const EdgeInsets.all(2),
                 child: Image.asset(image),
               ),
             ),
