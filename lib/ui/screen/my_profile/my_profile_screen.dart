@@ -60,7 +60,7 @@ class MyProfileScreen extends HookConsumerWidget {
             return RefreshIndicator(
               color: Colors.black,
               onRefresh: () async {
-                await Future.delayed(const Duration(seconds: 1));
+                await Future<void>.delayed(const Duration(seconds: 1));
                 ref.invalidate(myPostStreamProvider);
               },
               child: CustomScrollView(

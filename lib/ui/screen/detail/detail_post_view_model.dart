@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
@@ -47,7 +45,7 @@ class DetailPostViewModel extends _$DetailPostViewModel {
     final blockList = await preference.getStringList(PreferenceKey.blockList);
     blockList.add(userId);
     await Preference().setStringList(PreferenceKey.blockList, blockList);
-    sleep(const Duration(seconds: 2));
+    await Future<void>.delayed(const Duration(seconds: 2));
     _loading.state = false;
     return true;
   }

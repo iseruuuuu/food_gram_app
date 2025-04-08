@@ -6,7 +6,7 @@ class AdTrackingPermission {
 
     if (status == TrackingStatus.notDetermined) {
       // iOSの仕様に基づき、少し遅延を入れる
-      await Future.delayed(const Duration(milliseconds: 200));
+      await Future<void>.delayed(const Duration(milliseconds: 200));
       await AppTrackingTransparency.requestTrackingAuthorization();
     }
   }
