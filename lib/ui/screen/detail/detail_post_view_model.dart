@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
@@ -18,11 +20,10 @@ class DetailPostViewModel extends _$DetailPostViewModel {
     return initState;
   }
 
-  Loading get loading => ref.read(loadingProvider.notifier);
-  final preference = Preference();
+  Loading get _loading => ref.read(loadingProvider.notifier);
 
   Future<bool> delete(Posts posts) async {
-    loading.state = true;
+    _loading.state = true;
     final result = await ref.read(deleteServiceProvider.notifier).delete(posts);
     await result.when(
       success: (_) async {
@@ -36,17 +37,18 @@ class DetailPostViewModel extends _$DetailPostViewModel {
         state = state.copyWith(isSuccess: false);
       },
     );
-    loading.state = false;
+    ref.read(loadingProvider.notifier).state = false;
     return state.isSuccess;
   }
 
   Future<bool> block(String userId) async {
-    loading.state = true;
+    final preference = Preference();
+    _loading.state = true;
     final blockList = await preference.getStringList(PreferenceKey.blockList);
     blockList.add(userId);
     await Preference().setStringList(PreferenceKey.blockList, blockList);
-    await Future.delayed(Duration(seconds: 2));
-    loading.state = false;
+    sleep(const Duration(seconds: 2));
+    _loading.state = false;
     return true;
   }
 }
