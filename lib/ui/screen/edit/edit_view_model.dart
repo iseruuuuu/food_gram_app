@@ -30,15 +30,14 @@ class EditViewModel extends _$EditViewModel {
   Uint8List? imageBytes;
 
   Future<void> getProfile() async {
-    await Future.delayed(Duration.zero);
     loading.state = true;
     final userId = ref.watch(currentUserProvider);
     final supabase = ref.watch(supabaseProvider);
     final data =
         await supabase.from('users').select().eq('user_id', userId!).single();
-    nameTextController.text = data['name'];
-    useNameTextController.text = data['user_name'];
-    selfIntroduceTextController.text = data['self_introduce'];
+    nameTextController.text = data['name'] as String;
+    useNameTextController.text = data['user_name'] as String;
+    selfIntroduceTextController.text = data['self_introduce'] as String;
     state = state.copyWith(
       number: extractNumber(data['image']),
       initialImage: data['image'],
