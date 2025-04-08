@@ -7,7 +7,7 @@ class AppFloatingButton extends StatelessWidget {
     super.key,
   });
 
-  final Function() onTap;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class MapFloatingActionButton extends StatelessWidget {
     super.key,
   });
 
-  final Function() onPressed;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,7 @@ class MapRamenFloatingActionButton extends StatelessWidget {
     super.key,
   });
 
-  final Function() onPressed;
+  final VoidCallback onPressed;
   final bool isTapped;
 
   @override

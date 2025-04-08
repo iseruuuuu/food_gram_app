@@ -12,7 +12,7 @@ class AppSearchTextField extends HookWidget {
     super.key,
   });
 
-  final Function(String)? onSubmitted;
+  final ValueChanged<String>? onSubmitted;
 
   @override
   Widget build(BuildContext context) {

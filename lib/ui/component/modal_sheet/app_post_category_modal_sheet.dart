@@ -11,7 +11,7 @@ class AppPostCountryCategoryModalSheet extends ConsumerWidget {
     super.key,
   });
 
-  final Function(String) onChanged;
+  final ValueChanged<String> onChanged;
   final String tagValue;
 
   @override
@@ -76,7 +76,7 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
     super.key,
   });
 
-  final Function(String) onChanged;
+  final ValueChanged<String> onChanged;
   final String tagValue;
 
   @override

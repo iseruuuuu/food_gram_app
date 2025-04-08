@@ -7,7 +7,7 @@ class AppIcon extends StatelessWidget {
     super.key,
   });
 
-  final Function() onTap;
+  final VoidCallback onTap;
   final int number;
 
   @override

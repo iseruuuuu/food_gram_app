@@ -32,7 +32,7 @@ class DialogHelper {
   void openDialog({
     required String title,
     required String text,
-    required Function() onTap,
+    required VoidCallback onTap,
     required BuildContext context,
   }) {
     final l10n = L10n.of(context);
@@ -61,7 +61,7 @@ class DialogHelper {
   void openLogoutDialog({
     required String title,
     required String text,
-    required Function() onTap,
+    required VoidCallback onTap,
     required BuildContext context,
   }) {
     final l10n = L10n.of(context);
