@@ -96,7 +96,7 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Gap(4),
+            const Gap(4),
             ...foodCategory.entries.map((entry) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,8 +144,8 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
                   ),
                 ],
               );
-            }).toList(),
-            Gap(16),
+            }),
+            const Gap(16),
           ],
         ),
       ),

@@ -19,13 +19,15 @@ class AppShareWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final supabase = ref.watch(supabaseProvider);
     return ProviderScope(
-      child: Container(
+      child: SizedBox(
         width: 350,
         height: 420,
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
+          color: Colors.white,
+          elevation: 0,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -33,7 +35,7 @@ class AppShareWidget extends StatelessWidget {
                 width: 350,
                 height: 300,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
@@ -50,21 +52,21 @@ class AppShareWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Gap(10),
+                    const Gap(10),
                     Text(
                       posts.foodName,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
                       // overflow: TextOverflow.ellipsis,
                     ),
-                    Gap(4),
+                    const Gap(4),
                     FittedBox(
                       child: Text(
                         'IN ${posts.restaurant}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
@@ -72,7 +74,7 @@ class AppShareWidget extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    Row(
+                    const Row(
                       children: [
                         Spacer(),
                         Text(
@@ -89,8 +91,6 @@ class AppShareWidget extends StatelessWidget {
               ),
             ],
           ),
-          color: Colors.white,
-          elevation: 0,
         ),
       ),
     );

@@ -42,7 +42,7 @@ class AppPinWidget extends StatelessWidget {
               child: Container(
                 width: 24,
                 height: 20,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                 ),
               ),

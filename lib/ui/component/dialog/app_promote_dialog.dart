@@ -29,7 +29,7 @@ class AppPromoteDialog extends ConsumerWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Gap(20),
+            const Gap(20),
             _buildFeatureItem(
               icon: Icons.emoji_events,
               title: l10n.promoteDialogTrophyTitle,
@@ -50,7 +50,7 @@ class AppPromoteDialog extends ConsumerWidget {
               title: l10n.promoteDialogAdTitle,
               description: l10n.promoteDialogAdDesc,
             ),
-            Gap(20),
+            const Gap(20),
             ElevatedButton(
               onPressed: () {
                 /// ダイアログを閉じ、PayWall画面に遷移する
@@ -107,7 +107,7 @@ class AppPromoteDialog extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icon, color: Colors.amber, size: 40),
-          Gap(12),
+          const Gap(12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

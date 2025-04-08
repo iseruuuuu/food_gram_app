@@ -13,9 +13,9 @@ class AppEmpty extends StatelessWidget {
         children: [
           Text(
             L10n.of(context).emptyPosts,
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Assets.image.empty.image(width: 110, height: 110),
         ],
       ),
@@ -33,7 +33,7 @@ class AppSearchEmpty extends StatelessWidget {
       children: [
         Text(
           L10n.of(context).searchEmptyResult,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
             color: Colors.black,

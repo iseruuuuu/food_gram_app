@@ -255,7 +255,7 @@ class ReusableRectangleBanner extends ConsumerWidget {
     if (isSubscribed) {
       return const SizedBox.shrink();
     } else if (bannerAd == null || !isVisible) {
-      return SizedBox(
+      return const SizedBox(
         width: 300,
         height: 250,
       );

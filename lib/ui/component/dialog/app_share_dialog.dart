@@ -49,7 +49,7 @@ class AppShareDialog extends HookConsumerWidget {
                   centerTitle: true,
                   leading: IconButton(
                     onPressed: context.pop,
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.close,
                       color: Colors.white,
                       size: 30,
@@ -57,14 +57,14 @@ class AppShareDialog extends HookConsumerWidget {
                   ),
                   title: Text(
                     l10n.appShareTitle,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                     ),
                   ),
                 ),
                 AppShareWidget(posts: posts, ref: ref),
-                Gap(20),
+                const Gap(20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Column(
@@ -94,15 +94,15 @@ class AppShareDialog extends HookConsumerWidget {
                           },
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.ios_share,
                                 size: 25,
                                 color: Colors.black,
                               ),
-                              Gap(15),
+                              const Gap(15),
                               Text(
                                 l10n.appShareStoreButton,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w300,
@@ -112,7 +112,7 @@ class AppShareDialog extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                      Gap(20),
+                      const Gap(20),
                       SizedBox(
                         height: 48,
                         child: ElevatedButton(
@@ -136,15 +136,15 @@ class AppShareDialog extends HookConsumerWidget {
                           },
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 FontAwesomeIcons.instagram,
                                 size: 25,
                                 color: Colors.black,
                               ),
-                              Gap(15),
+                              const Gap(15),
                               Text(
                                 l10n.appShareInstagramButton,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w300,
@@ -154,7 +154,7 @@ class AppShareDialog extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                      Gap(20),
+                      const Gap(20),
                       SizedBox(
                         height: 48,
                         child: ElevatedButton(
@@ -176,15 +176,15 @@ class AppShareDialog extends HookConsumerWidget {
                           },
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.directions_walk,
                                 size: 25,
                                 color: Colors.black,
                               ),
-                              Gap(15),
+                              const Gap(15),
                               Text(
                                 l10n.appShareGoButton,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w300,
@@ -194,7 +194,7 @@ class AppShareDialog extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                      Gap(20),
+                      const Gap(20),
                       SizedBox(
                         height: 48,
                         child: ElevatedButton(
@@ -205,15 +205,15 @@ class AppShareDialog extends HookConsumerWidget {
                           onPressed: context.pop,
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.close,
                                 size: 25,
                                 color: Colors.black,
                               ),
-                              Gap(15),
+                              const Gap(15),
                               Text(
                                 l10n.appShareCloseButton,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w300,
@@ -223,7 +223,7 @@ class AppShareDialog extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                      Gap(30),
+                      const Gap(30),
                     ],
                   ),
                 ),

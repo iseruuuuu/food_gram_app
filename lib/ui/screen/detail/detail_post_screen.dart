@@ -130,10 +130,10 @@ class DetailPostScreen extends HookConsumerWidget {
           automaticallyImplyLeading: !loading,
           surfaceTintColor: Colors.transparent,
           leading: loading || menuLoading.value
-              ? SizedBox.shrink()
+              ? const SizedBox.shrink()
               : GestureDetector(
                   onTap: () => context.pop(),
-                  child: Icon(
+                  child: const Icon(
                     Icons.close,
                     size: 30,
                   ),
@@ -258,10 +258,10 @@ class DetailPostScreen extends HookConsumerWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Gap(8),
+                        const Gap(8),
                         Row(
                           children: [
-                            Gap(5),
+                            const Gap(5),
                             IconButton(
                               onPressed: handleHeart,
                               icon: Icon(
@@ -273,7 +273,7 @@ class DetailPostScreen extends HookConsumerWidget {
                                 size: 30,
                               ),
                             ),
-                            Gap(10),
+                            const Gap(10),
                             GestureDetector(
                               onTap: () {
                                 showGeneralDialog(
@@ -299,7 +299,7 @@ class DetailPostScreen extends HookConsumerWidget {
                             ),
                           ],
                         ),
-                        Gap(6),
+                        const Gap(6),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: SizedBox(
@@ -383,7 +383,7 @@ class DetailPostScreen extends HookConsumerWidget {
                                 posts.foodName,
                                 style: DetailPostStyle.foodName(),
                               ),
-                              Gap(4),
+                              const Gap(4),
                               GestureDetector(
                                 onTap: () {
                                   context.pushNamed(
@@ -404,7 +404,7 @@ class DetailPostScreen extends HookConsumerWidget {
                                       posts.comment,
                                       style: DetailPostStyle.comment(),
                                     ),
-                                    Gap(12),
+                                    const Gap(12),
                                   ],
                                 ),
                               Wrap(

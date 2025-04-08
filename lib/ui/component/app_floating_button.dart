@@ -19,7 +19,7 @@ class AppFloatingButton extends StatelessWidget {
         foregroundColor: Colors.black,
         backgroundColor: Colors.black,
         elevation: 10,
-        shape: CircleBorder(side: BorderSide()),
+        shape: const CircleBorder(side: BorderSide()),
         onPressed: onTap,
         child: const Icon(
           Icons.add,
@@ -43,14 +43,14 @@ class MapFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, left: 8),
-      child: Container(
+      child: SizedBox(
         width: 60,
         height: 60,
         child: Theme(
           data: Theme.of(context).copyWith(highlightColor: Colors.white),
           child: FloatingActionButton(
             heroTag: null,
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               side: BorderSide(color: Colors.white),
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(14),
@@ -64,7 +64,7 @@ class MapFloatingActionButton extends StatelessWidget {
             hoverColor: Colors.white,
             elevation: 10,
             onPressed: onPressed,
-            child: Icon(
+            child: const Icon(
               CupertinoIcons.location_fill,
               color: Color(0xFF1A73E8),
               size: 25,
@@ -90,14 +90,14 @@ class MapRamenFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 8),
-      child: Container(
+      child: SizedBox(
         width: 60,
         height: 60,
         child: Theme(
           data: Theme.of(context).copyWith(highlightColor: Colors.white),
           child: FloatingActionButton(
             heroTag: null,
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               side: BorderSide(color: Colors.white),
               borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(14),
@@ -113,7 +113,7 @@ class MapRamenFloatingActionButton extends StatelessWidget {
             onPressed: onPressed,
             child: Icon(
               isTapped ? Icons.ramen_dining : Icons.ramen_dining_outlined,
-              color: Color(0xFF1A73E8),
+              color: const Color(0xFF1A73E8),
               size: 25,
             ),
           ),

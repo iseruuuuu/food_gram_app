@@ -43,7 +43,7 @@ class DialogHelper {
       text: text,
       confirmBtnText: l10n.dialogYesButton,
       onConfirmBtnTap: onTap,
-      confirmBtnTextStyle: TextStyle(
+      confirmBtnTextStyle: const TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
         color: Colors.white,
@@ -51,7 +51,7 @@ class DialogHelper {
       showCancelBtn: true,
       cancelBtnText: l10n.dialogNoButton,
       onCancelBtnTap: () => context.pop(),
-      cancelBtnTextStyle: TextStyle(
+      cancelBtnTextStyle: const TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
       ),
@@ -73,7 +73,7 @@ class DialogHelper {
       confirmBtnText: l10n.dialogLogoutButton,
       onConfirmBtnTap: onTap,
       confirmBtnColor: Colors.red,
-      confirmBtnTextStyle: TextStyle(
+      confirmBtnTextStyle: const TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
         color: Colors.white,
@@ -81,7 +81,7 @@ class DialogHelper {
       showCancelBtn: true,
       cancelBtnText: l10n.cancel,
       onCancelBtnTap: () => context.pop(),
-      cancelBtnTextStyle: TextStyle(
+      cancelBtnTextStyle: const TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
       ),

@@ -35,9 +35,9 @@ class AppSearchTextField extends HookWidget {
               },
               selectionHeightStyle: BoxHeightStyle.strut,
               decoration: InputDecoration(
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: const Icon(
+                prefixIcon: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: Icon(
                     Icons.search,
                     color: Colors.black,
                   ),
@@ -51,7 +51,7 @@ class AppSearchTextField extends HookWidget {
                     .textTheme
                     .bodyMedium!
                     .copyWith(color: Colors.black),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8),
                     bottomLeft: Radius.circular(8),
@@ -61,7 +61,7 @@ class AppSearchTextField extends HookWidget {
                     width: 2,
                   ),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8),
                     bottomLeft: Radius.circular(8),
@@ -91,7 +91,7 @@ class AppSearchTextField extends HookWidget {
                 padding: EdgeInsets.zero,
                 foregroundColor: Colors.blueAccent,
                 backgroundColor: Colors.blueAccent,
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(8),
                     bottomRight: Radius.circular(8),
@@ -104,7 +104,7 @@ class AppSearchTextField extends HookWidget {
               },
               child: Text(
                 L10n.of(context).searchButton,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                   color: Colors.white,
@@ -132,13 +132,13 @@ class AppFoodTextField extends StatelessWidget {
       width: double.infinity,
       child: Row(
         children: [
-          Gap(5),
-          Icon(
+          const Gap(5),
+          const Icon(
             Icons.fastfood,
             color: Colors.black,
             size: 30,
           ),
-          Gap(10),
+          const Gap(10),
           Expanded(
             child: Semantics(
               label: 'postFoodField',
@@ -155,16 +155,16 @@ class AppFoodTextField extends StatelessWidget {
                 },
                 selectionHeightStyle: BoxHeightStyle.strut,
                 decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black87),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.blue),
                   ),
                   hintText: L10n.of(context).postFoodName,
                   label: Text(
                     L10n.of(context).postFoodNameInputField,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.grey,
                       fontWeight: FontWeight.bold,
                     ),
@@ -212,16 +212,16 @@ class AppCommentTextField extends StatelessWidget {
           selectionHeightStyle: BoxHeightStyle.strut,
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.always,
-            enabledBorder: OutlineInputBorder(
+            enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.black87),
             ),
             focusedBorder:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                const OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
             hintText: L10n.of(context).postCommentInputField,
             label: Text(
               L10n.of(context).postComment,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.grey,
               ),
             ),
@@ -281,9 +281,9 @@ class AppAuthTextField extends StatelessWidget {
           filled: true,
           fillColor: Colors.white,
           enabledBorder:
-              OutlineInputBorder(borderSide: BorderSide(color: Colors.black87)),
+              const OutlineInputBorder(borderSide: BorderSide(color: Colors.black87)),
           focusedBorder:
-              OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+              const OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
         ),
       ),
     );
@@ -312,7 +312,7 @@ class AppNameTextField extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: Row(
         children: [
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Expanded(
             child: Semantics(
               label: 'nameField',
@@ -333,7 +333,7 @@ class AppNameTextField extends StatelessWidget {
                   hintText: L10n.of(context).userName,
                   label: Text(
                     L10n.of(context).userNameInputField,
-                    style: TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ),
                 controller: controller,
@@ -389,7 +389,7 @@ class AppSelfIntroductionTextField extends StatelessWidget {
                   hintText: L10n.of(context).editBioInputField,
                   label: Text(
                     L10n.of(context).editBio,
-                    style: TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ),
                 controller: controller,
@@ -423,7 +423,7 @@ class AppUserNameTextField extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: Row(
         children: [
-          Gap(10),
+          const Gap(10),
           Expanded(
             child: Semantics(
               label: 'userNameField',
@@ -444,7 +444,7 @@ class AppUserNameTextField extends StatelessWidget {
                   hintText: L10n.of(context).userId,
                   label: Text(
                     L10n.of(context).userIdInputField,
-                    style: TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ),
                 controller: controller,

@@ -4,7 +4,7 @@ class RestaurantReviewStyle {
   RestaurantReviewStyle._();
 
   static TextStyle restaurant() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
     );

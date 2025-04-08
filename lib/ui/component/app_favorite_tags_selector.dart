@@ -12,10 +12,10 @@ class AppFavoriteTagsSelector extends StatelessWidget {
   });
 
   final String selectedTags;
-  final Function(String) onTagSelected;
+  final void Function(String) onTagSelected;
 
-  void _showTagSelector(BuildContext context) {
-    showModalBottomSheet(
+  Future<void> _showTagSelector(BuildContext context) async {
+    await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -130,7 +130,7 @@ class AppFavoriteTagsSelector extends StatelessWidget {
                           ),
                         ],
                       );
-                    }).toList(),
+                    }),
                   ],
                 ),
               ),
@@ -144,7 +144,7 @@ class AppFavoriteTagsSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _showTagSelector(context),
+      onTap: () async => _showTagSelector(context),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4),
         child: Container(

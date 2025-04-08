@@ -9,7 +9,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
   type: AuthenticationScreen,
 )
 AuthenticationScreen authenticationScreen(BuildContext context) {
-  return AuthenticationScreen();
+  return const AuthenticationScreen();
 }
 
 /// NewAccountScreen
@@ -18,7 +18,7 @@ AuthenticationScreen authenticationScreen(BuildContext context) {
   type: NewAccountScreen,
 )
 NewAccountScreen newAccountScreen(BuildContext context) {
-  return NewAccountScreen();
+  return const NewAccountScreen();
 }
 
 /// DetailPostScreen
@@ -36,7 +36,7 @@ DetailPostScreen detailPostScreen(BuildContext context) {
   type: EditScreen,
 )
 EditScreen editScreen(BuildContext context) {
-  return EditScreen();
+  return const EditScreen();
 }
 
 /// MapScreen
@@ -45,7 +45,7 @@ EditScreen editScreen(BuildContext context) {
   type: MapScreen,
 )
 MapScreen mapScreen(BuildContext context) {
-  return MapScreen();
+  return const MapScreen();
 }
 
 /// MyProfileScreen
@@ -54,7 +54,7 @@ MapScreen mapScreen(BuildContext context) {
   type: MyProfileScreen,
 )
 MyProfileScreen myProfileScreen(BuildContext context) {
-  return MyProfileScreen();
+  return const MyProfileScreen();
 }
 
 /// PostScreen
@@ -63,7 +63,7 @@ MyProfileScreen myProfileScreen(BuildContext context) {
   type: PostScreen,
 )
 PostScreen postScreen(BuildContext context) {
-  return PostScreen(routerPath: '');
+  return const PostScreen(routerPath: '');
 }
 
 /// RestaurantScreen
@@ -72,7 +72,7 @@ PostScreen postScreen(BuildContext context) {
   type: RestaurantScreen,
 )
 RestaurantScreen restaurantScreen(BuildContext context) {
-  return RestaurantScreen();
+  return const RestaurantScreen();
 }
 
 /// SettingScreen
@@ -81,7 +81,7 @@ RestaurantScreen restaurantScreen(BuildContext context) {
   type: SettingScreen,
 )
 SettingScreen settingScreen(BuildContext context) {
-  return SettingScreen();
+  return const SettingScreen();
 }
 
 /// SplashScreen
@@ -90,7 +90,7 @@ SettingScreen settingScreen(BuildContext context) {
   type: SplashScreen,
 )
 SplashScreen splashScreen(BuildContext context) {
-  return SplashScreen();
+  return const SplashScreen();
 }
 
 /// TutorialScreen
@@ -99,7 +99,7 @@ SplashScreen splashScreen(BuildContext context) {
   type: TutorialScreen,
 )
 TutorialScreen tutorialScreen(BuildContext context) {
-  return TutorialScreen();
+  return const TutorialScreen();
 }
 
 /// TabScreen
@@ -108,7 +108,7 @@ TutorialScreen tutorialScreen(BuildContext context) {
   type: TabScreen,
 )
 TabScreen tabScreen(BuildContext context) {
-  return TabScreen();
+  return const TabScreen();
 }
 
 /// TimeLineScreen
@@ -117,5 +117,5 @@ TabScreen tabScreen(BuildContext context) {
   type: TimeLineScreen,
 )
 TimeLineScreen timeLineScreen(BuildContext context) {
-  return TimeLineScreen();
+  return const TimeLineScreen();
 }

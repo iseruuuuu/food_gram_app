@@ -22,28 +22,28 @@ class AppErrorWidget extends StatelessWidget {
           children: [
             Text(
               l10n.errorTitle,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               '${l10n.errorDescription1}'
               '\n'
               '${l10n.errorDescription2}',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             Assets.image.error.image(
               width: 150,
               height: 150,
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             AppElevatedButton(
               onPressed: onTap,
               title: l10n.errorRefreshButton,

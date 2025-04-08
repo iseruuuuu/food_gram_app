@@ -59,7 +59,7 @@ class AppListView extends HookConsumerWidget {
                   },
                   child: Heroine(
                     tag: 'image-${data[index]['id']}',
-                    flightShuttleBuilder: FlipShuttleBuilder(),
+                    flightShuttleBuilder: const FlipShuttleBuilder().call,
                     spring: SimpleSpring.bouncy,
                     child: Card(
                       elevation: 10,
@@ -87,6 +87,6 @@ class AppListView extends HookConsumerWidget {
               mainAxisSpacing: 1,
             ),
           )
-        : AppEmpty();
+        : const AppEmpty();
   }
 }

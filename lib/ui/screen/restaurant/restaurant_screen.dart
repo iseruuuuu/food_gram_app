@@ -24,7 +24,7 @@ class RestaurantScreen extends HookConsumerWidget {
         backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: context.pop,
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios,
             color: Colors.black,
           ),
@@ -44,7 +44,7 @@ class RestaurantScreen extends HookConsumerWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    final restaurant =
+                    const restaurant =
                         Restaurant(name: '自炊', address: '', lat: 0, lng: 0);
                     primaryFocus?.unfocus();
                     context.pop(restaurant);
@@ -66,7 +66,7 @@ class RestaurantScreen extends HookConsumerWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    final restaurant =
+                    const restaurant =
                         Restaurant(name: '不明', address: '', lat: 0, lng: 0);
                     primaryFocus?.unfocus();
                     context.pop(restaurant);

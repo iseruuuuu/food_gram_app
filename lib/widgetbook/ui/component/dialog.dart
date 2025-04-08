@@ -9,7 +9,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
   type: AppProfileDialog,
 )
 AppProfileDialog appProfileDialog(BuildContext context) {
-  return AppProfileDialog(image: 'assets/icon/icon3.png');
+  return const AppProfileDialog(image: 'assets/icon/icon3.png');
 }
 
 @widgetbook.UseCase(

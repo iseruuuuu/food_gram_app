@@ -62,7 +62,7 @@ class ReviewWidget extends ConsumerWidget {
                               imagePath: model.users.image,
                               radius: 28,
                             ),
-                            Gap(8),
+                            const Gap(8),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -77,7 +77,7 @@ class ReviewWidget extends ConsumerWidget {
                             ),
                           ],
                         ),
-                        Gap(8),
+                        const Gap(8),
                         Text(
                           model.posts.foodName,
                           style: const TextStyle(
@@ -85,12 +85,12 @@ class ReviewWidget extends ConsumerWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Gap(4),
+                        const Gap(4),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 4),
                           child: Text(
                             model.posts.comment,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.normal,
                             ),
@@ -104,7 +104,7 @@ class ReviewWidget extends ConsumerWidget {
             );
           },
           failure: (_) {
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           },
         ),
       ),
@@ -188,7 +188,7 @@ class ReviewImageWidget extends ConsumerWidget {
             );
           },
           failure: (_) {
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           },
         ),
       ),

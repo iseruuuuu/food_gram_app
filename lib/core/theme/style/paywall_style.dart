@@ -4,7 +4,7 @@ class PaywallStyle {
   PaywallStyle._();
 
   static TextStyle title() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
       color: Colors.white,
@@ -20,7 +20,7 @@ class PaywallStyle {
   }
 
   static TextStyle comingSoon() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.bold,
       color: Colors.white,
@@ -46,7 +46,7 @@ class PaywallStyle {
   }
 
   static TextStyle wellComeTitle() {
-    return TextStyle(
+    return const TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 24,
       color: Colors.white,
@@ -54,7 +54,7 @@ class PaywallStyle {
   }
 
   static TextStyle subscribeButton() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.bold,
     );
@@ -76,7 +76,7 @@ class PaywallStyle {
   }
 
   static TextStyle contentsDescription() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 13,
       color: Colors.black,
     );
