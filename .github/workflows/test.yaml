@@ -26,9 +26,16 @@ jobs:
           ACCONT_BASE64: ${{ secrets.DEV_ENV }}
           ATTRACTION_BASE64: ${{ secrets.PROD_ENV }}
         run: |
-          echo $APP_ENV | base64 --decode > .env
-          echo $ACCONT_BASE64 | base64 --decode > .env.dev
-          echo $ATTRACTION_BASE64 | base64 --decode > .env.prod
+          if [ -n "$APP_ENV" ]; then
+            echo $APP_ENV | base64 --decode > .env || echo "Invalid APP_ENV base64 string"
+          fi
+          if [ -n "$ACCONT_BASE64" ]; then
+            echo $ACCONT_BASE64 | base64 --decode > .env.dev || echo "Invalid ACCONT_BASE64 string"
+          fi
+          if [ -n "$ATTRACTION_BASE64" ]; then
+            echo $ATTRACTION_BASE64 | base64 --decode > .env.prod || echo "Invalid ATTRACTION_BASE64 string"
+          fi
+
       # - name: Retrieve the secret and decode it to a file
       #   env:
       #     APP_ENV: ${{ secrets.APP_ENV }}
