@@ -20,6 +20,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
+      - name: Setup Flutter cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ steps.fvm-config-action.outputs.FVM_HOME }}
+            .dart_tool
+            .pub-cache
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
+
       - name: Retrieve the secret and decode it to a file
         env:
           APP_ENV: ${{ secrets.APP_ENV }}
