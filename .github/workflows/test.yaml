@@ -43,6 +43,9 @@ jobs:
           echo $APP_ENV | base64 --decode > .env || { echo "Error decoding APP_ENV"; exit 1; }
           echo $DEV_ENV | base64 --decode > .env.dev || { echo "Error decoding DEV_ENV"; exit 1; }
           echo $PROD_ENV | base64 --decode > .env.prod || { echo "Error decoding PROD_ENV"; exit 1; }
+          
+          # ファイルの権限を設定
+          chmod 600 .env .env.dev .env.prod
 
       - name: fvm
         uses: kuhnroyal/flutter-fvm-config-action@0b792d004e2dfeda282a7af5c0609703658a9f8b # v3.1
