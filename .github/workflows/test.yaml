@@ -20,39 +20,39 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
         
+      # - name: Retrieve the secret and decode it to a file
+      #   env:
+      #     APP_ENV: ${{ secrets.APP_ENV }}
+      #     DEV_ENV: ${{ secrets.DEV_ENV }}
+      #     PROD_ENV: ${{ secrets.PROD_ENV }}
+      #   run: |
+      #     if [ -z "$APP_ENV" ]; then
+      #       echo "Error: APP_ENV is empty"
+      #       exit 1
+      #     fi
+      #     if [ -z "$DEV_ENV" ]; then
+      #       echo "Error: DEV_ENV is empty"
+      #       exit 1
+      #     fi
+      #     if [ -z "$PROD_ENV" ]; then
+      #       echo "Error: PROD_ENV is empty"
+      #       exit 1
+      #     fi
+
+      #     echo $APP_ENV | base64 --decode > .env || { echo "Error decoding APP_ENV"; exit 1; }
+      #     echo $DEV_ENV | base64 --decode > .env.dev || { echo "Error decoding DEV_ENV"; exit 1; }
+      #     echo $PROD_ENV | base64 --decode > .env.prod || { echo "Error decoding PROD_ENV"; exit 1; }
+
       - name: Retrieve the secret and decode it to a file
         env:
           APP_ENV: ${{ secrets.APP_ENV }}
           ACCONT_BASE64: ${{ secrets.DEV_ENV }}
           ATTRACTION_BASE64: ${{ secrets.PROD_ENV }}
+
         run: |
-          if [ -z "$APP_ENV" ]; then
-            echo "Error: APP_ENV is empty"
-            exit 1
-          fi
-          if [ -z "$ACCONT_BASE64" ]; then
-            echo "Error: ACCONT_BASE64 is empty"
-            exit 1
-          fi
-          if [ -z "$ATTRACTION_BASE64" ]; then
-            echo "Error: ATTRACTION_BASE64 is empty"
-            exit 1
-          fi
-
-          echo $APP_ENV | base64 --decode > .env || { echo "Error decoding APP_ENV"; exit 1; }
-          echo $ACCONT_BASE64 | base64 --decode > .env.dev || { echo "Error decoding ACCONT_BASE64"; exit 1; }
-          echo $ATTRACTION_BASE64 | base64 --decode > .env.prod || { echo "Error decoding ATTRACTION_BASE64"; exit 1; }
-
-      # - name: Retrieve the secret and decode it to a file
-      #   env:
-      #     APP_ENV: ${{ secrets.APP_ENV }}
-      #     ACCONT_BASE64: ${{ secrets.DEV_ENV }}
-      #     ATTRACTION_BASE64: ${{ secrets.PROD_ENV }}
-
-      #   run: |
-      #     echo $APP_ENV | base64 --decode > .env
-      #     echo $DEV_ENV_BASE64 | base64 --decode > .env.dev
-      #     echo $PROD_ENV_BASE64 | base64 --decode > .env.prod
+          echo $APP_ENV | base64 --decode > .env
+          echo $DEV_ENV_BASE64 | base64 --decode > .env.dev
+          echo $PROD_ENV_BASE64 | base64 --decode > .env.prod
 
 
       - name: fvm
