@@ -87,4 +87,6 @@ jobs:
 
       - name: Test
         run: |
-          flutter test
+          flutter test --coverage || { echo "Test failed"; exit 1; }
+        env:
+          FLUTTER_TEST_REPORTER: json
