@@ -26,6 +26,7 @@ jobs:
           DEV_ENV: ${{ secrets.DEV_ENV }}
           PROD_ENV: ${{ secrets.PROD_ENV }}
         run: |
+          set +x
           if [ -z "$APP_ENV" ]; then
             echo "Error: APP_ENV is empty"
             exit 1
