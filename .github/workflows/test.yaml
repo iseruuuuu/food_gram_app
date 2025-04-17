@@ -19,17 +19,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-
+        
       - name: Retrieve the secret and decode it to a file
         env:
           APP_ENV: ${{ secrets.APP_ENV }}
           ACCONT_BASE64: ${{ secrets.DEV_ENV }}
           ATTRACTION_BASE64: ${{ secrets.PROD_ENV }}
-
         run: |
           echo $APP_ENV | base64 --decode > .env
-          echo $DEV_ENV_BASE64 | base64 --decode > .env.dev
-          echo $PROD_ENV_BASE64 | base64 --decode > .env.prod
+          echo $ACCONT_BASE64 | base64 --decode > .env.dev
+          echo $ATTRACTION_BASE64 | base64 --decode > .env.prod
+      # - name: Retrieve the secret and decode it to a file
+      #   env:
+      #     APP_ENV: ${{ secrets.APP_ENV }}
+      #     ACCONT_BASE64: ${{ secrets.DEV_ENV }}
+      #     ATTRACTION_BASE64: ${{ secrets.PROD_ENV }}
+
+      #   run: |
+      #     echo $APP_ENV | base64 --decode > .env
+      #     echo $DEV_ENV_BASE64 | base64 --decode > .env.dev
+      #     echo $PROD_ENV_BASE64 | base64 --decode > .env.prod
 
 
       - name: fvm
