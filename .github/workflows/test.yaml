@@ -8,17 +8,42 @@ on:
     branches:
       - main
 
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   FLUTTER_VERSION: '3.10.2'
 
 jobs:
-  test:
+  changes:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+      dependencies: ${{ steps.filter.outputs.dependencies }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'lib/**'
+              - 'test/**'
+              - 'pubspec.yaml'
+            dependencies:
+              - 'pubspec.yaml'
+              - 'pubspec.lock'
+
+  test:
+    needs: changes
+    if: ${{ needs.changes.outputs.src == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Retrieve the secret and decode it to a file
         env:
@@ -53,6 +78,16 @@ jobs:
           flutter-version: ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
           channel: ${{ steps.fvm-config-action.outputs.FLUTTER_CHANNEL }}
 
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ env.FLUTTER_HOME }}/.pub-cache
+            ${{ env.FLUTTER_HOME }}/bin/cache
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
+
       - name: Debug dependencies
         run: |
           flutter pub deps
@@ -66,10 +101,34 @@ jobs:
           flutter pub get
           flutter pub upgrade
 
+      - name: Analyze
+        run: |
+          flutter analyze
+
+      - name: Format
+        run: |
+          flutter format --set-exit-if-changed .
+
       - name: build runner
         run: |
           flutter pub run build_runner build --delete-conflicting-outputs
 
       - name: Test
         run: |
-          flutter test
+          flutter test --machine > test_report.log
+
+      - name: Report test
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: "flutter test"
+          path: "test_report.log"
+          reporter: "flutter-json"
+          fail-on-error: "true"
+
+  status-check:
+    runs-on: ubuntu-latest
+    needs: test
+    if: failure()
+    steps:
+      - run: exit 1
