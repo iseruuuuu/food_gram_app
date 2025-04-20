@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Auto Assign PR
-        uses: kentaro-m/auto-assign-action@5bee595fdb9765d4a0bd35724b6302fa15569158 # v1.4.0
+        uses: hkusu/review-assign-action@5bee595fdb9765d4a0bd35724b6302fa15569158 # v1.4.0
         with:
           assignees: iseruuuuu
           reviewers: ""
