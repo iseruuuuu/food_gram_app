@@ -1,0 +1,15 @@
+name: Auto Assign PR
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  auto-assign:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Auto Assign PR
+        uses: hkusu/review-assign-action@5bee595fdb9765d4a0bd35724b6302fa15569158 # v1.4.0
+        with:
+          assignees: iseruuuuu
+          reviewers: ""
