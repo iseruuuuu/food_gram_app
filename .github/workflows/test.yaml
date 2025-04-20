@@ -13,34 +13,73 @@ env:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 10
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+
+      - name: Setup Flutter cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ steps.fvm-config-action.outputs.FVM_HOME }}
+            .dart_tool
+            .pub-cache
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
 
       - name: Retrieve the secret and decode it to a file
         env:
-          ACCONT_BASE64: ${{ secrets.DEV_ENV }}
-          ATTRACTION_BASE64: ${{ secrets.PROD_ENV }}
+          APP_ENV: ${{ secrets.APP_ENV }}
+          DEV_ENV: ${{ secrets.DEV_ENV }}
+          PROD_ENV: ${{ secrets.PROD_ENV }}
         run: |
-          echo $DEV_ENV_BASE64 | base64 --decode > .env.dev
-          echo $PROD_ENV_BASE64 | base64 --decode > .env.prod
+          set +x
+          if [ -z "$APP_ENV" ]; then
+            echo "Error: APP_ENV is empty"
+            exit 1
+          fi
+          if [ -z "$DEV_ENV" ]; then
+            echo "Error: DEV_ENV is empty"
+            exit 1
+          fi
+          if [ -z "$PROD_ENV" ]; then
+            echo "Error: PROD_ENV is empty"
+            exit 1
+          fi
+
+          echo $APP_ENV | base64 --decode > .env || { echo "Error decoding APP_ENV"; exit 1; }
+          echo $DEV_ENV | base64 --decode > .env.dev || { echo "Error decoding DEV_ENV"; exit 1; }
+          echo $PROD_ENV | base64 --decode > .env.prod || { echo "Error decoding PROD_ENV"; exit 1; }
+          
+          # ファイルの権限を設定
+          chmod 600 .env .env.dev .env.prod
 
       - name: fvm
-        uses: kuhnroyal/flutter-fvm-config-action@v1
+        uses: kuhnroyal/flutter-fvm-config-action@0b792d004e2dfeda282a7af5c0609703658a9f8b # v3.1
         id: fvm-config-action
 
       - name: install flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@e938fdf56512cc96ef2f93601a5a40bde3801046 # v2.19.0
         with:
           flutter-version: ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
           channel: ${{ steps.fvm-config-action.outputs.FLUTTER_CHANNEL }}
 
+      - name: Debug dependencies
+        run: |
+          flutter pub deps
+
+      - name: Clear Flutter cache
+        run: |
+          flutter pub cache repair
+
       - name: Install dependencies
         run: |
           flutter pub get
+          flutter pub upgrade
 
       - name: build runner
         run: |
@@ -48,4 +87,6 @@ jobs:
 
       - name: Test
         run: |
-          flutter test
+          flutter test --coverage || { echo "Test failed"; exit 1; }
+        env:
+          FLUTTER_TEST_REPORTER: json
