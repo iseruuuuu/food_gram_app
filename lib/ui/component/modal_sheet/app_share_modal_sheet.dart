@@ -14,7 +14,7 @@ class AppShareModalSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height / 3.5,
       child: DecoratedBox(
         decoration: BoxDecoration(

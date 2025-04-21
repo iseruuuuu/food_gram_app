@@ -45,7 +45,7 @@ class AppDetailMasterModalSheet extends ConsumerWidget {
               ),
             ),
             Center(
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.sizeOf(context).width,
                 height: 50,
                 child: ElevatedButton(

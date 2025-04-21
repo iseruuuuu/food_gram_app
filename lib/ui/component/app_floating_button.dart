@@ -43,7 +43,7 @@ class MapFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, left: 8),
-      child: Container(
+      child: SizedBox(
         width: 60,
         height: 60,
         child: Theme(
@@ -90,7 +90,7 @@ class MapRamenFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 8),
-      child: Container(
+      child: SizedBox(
         width: 60,
         height: 60,
         child: Theme(

@@ -19,7 +19,7 @@ class AppShareWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final supabase = ref.watch(supabaseProvider);
     return ProviderScope(
-      child: Container(
+      child: SizedBox(
         width: 350,
         height: 420,
         child: Card(

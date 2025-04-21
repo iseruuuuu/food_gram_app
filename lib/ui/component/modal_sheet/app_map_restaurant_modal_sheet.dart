@@ -66,14 +66,14 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(24)),
-                  child: Container(
+                  child: SizedBox(
                     width: deviceWidth / 1.2,
                     height: deviceWidth / 1.5,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Spacer(),
-                        Container(
+                        SizedBox(
                           width: deviceWidth,
                           height: deviceWidth / 2.7,
                           child: CachedNetworkImage(
