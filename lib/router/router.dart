@@ -95,7 +95,9 @@ final timeLineRouter = GoRoute(
       path: '${RouterPath.timeLine}/${RouterPath.timeLinePost}',
       name: RouterPath.timeLinePost,
       pageBuilder: (context, state) {
-        return whiteOut(const PostScreen(routerPath: RouterPath.timeLineRestaurant));
+        return whiteOut(
+          const PostScreen(routerPath: RouterPath.timeLineRestaurant),
+        );
       },
     ),
     GoRoute(
@@ -202,7 +204,8 @@ final myProfileRouter = GoRoute(
       path: '${RouterPath.myProfile}/${RouterPath.myProfilePost}',
       name: RouterPath.myProfilePost,
       pageBuilder: (context, state) {
-        return whiteOut(const PostScreen(routerPath: RouterPath.myProfileRestaurant));
+        return whiteOut(
+            const PostScreen(routerPath: RouterPath.myProfileRestaurant));
       },
     ),
     GoRoute(

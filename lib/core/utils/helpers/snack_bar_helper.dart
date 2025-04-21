@@ -16,7 +16,10 @@ class SnackBarHelper {
         title: title,
         message: message,
         contentType: ContentType.failure,
-        titleTextStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        titleTextStyle: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
         messageTextStyle: const TextStyle(fontSize: 14),
       ),
     );

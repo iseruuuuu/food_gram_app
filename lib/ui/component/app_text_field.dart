@@ -215,8 +215,9 @@ class AppCommentTextField extends StatelessWidget {
             enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.black87),
             ),
-            focusedBorder:
-                const OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+            focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue),
+            ),
             hintText: L10n.of(context).postCommentInputField,
             label: Text(
               L10n.of(context).postComment,
@@ -280,10 +281,10 @@ class AppAuthTextField extends StatelessWidget {
               .copyWith(fontWeight: FontWeight.bold, color: Colors.black54),
           filled: true,
           fillColor: Colors.white,
-          enabledBorder:
-              const OutlineInputBorder(borderSide: BorderSide(color: Colors.black87)),
-          focusedBorder:
-              const OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+          enabledBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black87)),
+          focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue)),
         ),
       ),
     );
