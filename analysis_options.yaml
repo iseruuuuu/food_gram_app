@@ -6,3 +6,6 @@ analyzer:
   errors: # https://pub.dev/packages/freezed#install
     invalid_annotation_target: ignore
 
+linter:
+  rules:
+    diagnostic_describe_all_properties: false
