@@ -128,7 +128,7 @@ class EditScreen extends HookConsumerWidget {
                               );
                             },
                           ),
-                          if (state.isSubscribe == true)
+                          if (state.isSubscribe)
                             GestureDetector(
                               onTap: () {
                                 primaryFocus?.unfocus();
