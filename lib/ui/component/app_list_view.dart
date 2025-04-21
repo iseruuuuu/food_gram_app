@@ -33,7 +33,7 @@ class AppListView extends HookConsumerWidget {
                 }
                 final foodImageUrl = supabase.storage
                     .from('food')
-                    .getPublicUrl(data[index]['food_image']);
+                    .getPublicUrl(data[index]['food_image'] as String);
                 return GestureDetector(
                   onTap: () {
                     EasyDebounce.debounce(

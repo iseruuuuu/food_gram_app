@@ -205,7 +205,7 @@ class PostService extends _$PostService {
         final userData = await supabase
             .from('users')
             .select()
-            .eq('user_id', data[index]['user_id'])
+            .eq('user_id', data[index]['user_id'] as String)
             .single();
         return {
           'post': postData,
@@ -324,7 +324,7 @@ class PostService extends _$PostService {
             // ユーザー情報を取得して結合
             final results = <Map<String, dynamic>>[];
             for (final post in filteredPosts) {
-              final userData = await getUserData(post['user_id']);
+              final userData = await getUserData(post['user_id'] as String);
               results.add({
                 'post': post,
                 'user': userData,
@@ -388,8 +388,9 @@ class PostService extends _$PostService {
         for (final post in filteredPosts) {
           final userId = post['user_id'] as String;
           if (!userPosts.containsKey(userId) ||
-              DateTime.parse(post['created_at'])
-                  .isAfter(DateTime.parse(userPosts[userId]!['created_at']))) {
+              DateTime.parse(post['created_at'] as String).isAfter(
+                DateTime.parse(userPosts[userId]!['created_at'] as String),
+              )) {
             userPosts[userId] = post;
           }
         }

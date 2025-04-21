@@ -39,8 +39,8 @@ class PostRepository extends _$PostRepository {
     try {
       final result =
           await ref.read(postServiceProvider.notifier).getPostData(data, index);
-      final posts = Posts.fromJson(result['post']);
-      final users = Users.fromJson(result['user']);
+      final posts = Posts.fromJson(result['post'] as Map<String, dynamic>);
+      final users = Users.fromJson(result['user'] as Map<String, dynamic>);
       return Success(Model(users, posts));
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
@@ -116,8 +116,8 @@ class PostRepository extends _$PostRepository {
         data
             .map(
               (item) => Model(
-                Users.fromJson(item['user']),
-                Posts.fromJson(item['post']),
+                Users.fromJson(item['user'] as Map<String, dynamic>),
+                Posts.fromJson(item['post'] as Map<String, dynamic>),
               ),
             )
             .toList(),
@@ -203,7 +203,7 @@ Future<Result<List<Model>, Exception>> restaurantReviews(
       for (var index = 0; index < data.length; index++) {
         final userData = await ref
             .read(postServiceProvider.notifier)
-            .getUserData(data[index]['user_id']);
+            .getUserData(data[index]['user_id'] as String);
         final user = Users.fromJson(userData);
         final posts = Posts.fromJson(data[index]);
         models.add(Model(user, posts));
