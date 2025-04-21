@@ -9,8 +9,8 @@ class AppPostImageModalSheet extends StatelessWidget {
     super.key,
   });
 
-  final Function() camera;
-  final Function() album;
+  final VoidCallback camera;
+  final VoidCallback album;
 
   @override
   Widget build(BuildContext context) {

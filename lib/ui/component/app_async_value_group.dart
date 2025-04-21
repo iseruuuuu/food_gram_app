@@ -29,7 +29,7 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
   final bool skipLoadingOnRefresh;
   final bool skipError;
   final Duration duration;
-  final Function() onErrorTap;
+  final VoidCallback onErrorTap;
 
   @override
   Widget build(BuildContext context) {

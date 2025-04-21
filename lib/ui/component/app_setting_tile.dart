@@ -15,7 +15,7 @@ class AppSettingTile extends StatelessWidget {
   final double? size;
   final Color? color;
   final String title;
-  final Function() onTap;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {

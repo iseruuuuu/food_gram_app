@@ -9,8 +9,8 @@ class AppMyProfileButton extends StatelessWidget {
     super.key,
   });
 
-  final Function() onTapEdit;
-  final Function() onTapExchange;
+  final VoidCallback onTapEdit;
+  final VoidCallback onTapExchange;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class ProfileButton extends StatelessWidget {
   });
 
   final String title;
-  final Function() onTap;
+  final VoidCallback onTap;
   final IconData icon;
 
   @override
