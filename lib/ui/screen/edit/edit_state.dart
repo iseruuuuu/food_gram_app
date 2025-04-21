@@ -11,6 +11,6 @@ class EditState with _$EditState {
     @Default('') String initialImage,
     @Default(false) bool isSelectedIcon,
     @Default('') String favoriteTags,
-    @Default(false) isSubscribe,
+    @Default(false) bool isSubscribe,
   }) = _EditState;
 }
