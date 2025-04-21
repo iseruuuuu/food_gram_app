@@ -130,7 +130,7 @@ class AppFavoriteTagsSelector extends StatelessWidget {
                           ),
                         ],
                       );
-                    }).toList(),
+                    }),
                   ],
                 ),
               ),

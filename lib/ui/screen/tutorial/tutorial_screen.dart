@@ -50,57 +50,57 @@ class _TutorialScreenState extends State<TutorialScreen> {
             pages: [
               Column(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   Text(
                     l10n.tutorialFirstPageTitle,
                     style: TutorialStyle.title(),
                   ),
-                  Gap(52),
+                  const Gap(52),
                   Assets.image.tutorial1.image(height: imageHeight),
-                  Gap(52),
+                  const Gap(52),
                   Text(
                     l10n.tutorialFirstPageSubTitle,
                     style: TutorialStyle.subTitle(),
                     textAlign: TextAlign.center,
                   ),
-                  Spacer(),
+                  const Spacer(),
                 ],
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   Text(
                     l10n.tutorialSecondPageTitle,
                     style: TutorialStyle.title(),
                   ),
-                  Gap(52),
+                  const Gap(52),
                   Assets.image.tutorial2.image(height: imageHeight),
-                  Gap(52),
+                  const Gap(52),
                   Text(
                     l10n.tutorialSecondPageSubTitle,
                     textAlign: TextAlign.center,
                     style: TutorialStyle.subTitle(),
                   ),
-                  Spacer(),
+                  const Spacer(),
                 ],
               ),
               SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Gap(30),
+                    const Gap(30),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Gap(10),
+                        const Gap(10),
                         Assets.gif.tutorial1.image(width: 60),
                         Text(
                           l10n.tutorialThirdPageTitle,
                           style: TutorialStyle.thirdTitle(),
                         ),
                         Assets.gif.tutorial1.image(width: 60),
-                        Gap(10),
+                        const Gap(10),
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -118,7 +118,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                           l10n.tutorialThirdPageButton,
                           style: TutorialStyle.accept(),
                         ),
-                        Gap(10),
+                        const Gap(10),
                         Checkbox(
                           checkColor: Colors.white,
                           activeColor: Colors.black,
@@ -165,7 +165,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
               Align(
                 alignment: Alignment.centerRight,
                 child: IconButton(
-                  icon: Icon(Icons.arrow_forward_ios),
+                  icon: const Icon(Icons.arrow_forward_ios),
                   onPressed: () {
                     if (pageController.page?.toInt() == 2 && !isAccept) {
                       ScaffoldMessenger.of(context).showSnackBar(

@@ -4,14 +4,14 @@ class TutorialStyle {
   TutorialStyle._();
 
   static TextStyle title() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 24,
       fontWeight: FontWeight.bold,
     );
   }
 
   static TextStyle subTitle() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.w600,
       color: Colors.black,
@@ -19,22 +19,22 @@ class TutorialStyle {
   }
 
   static TextStyle thirdTitle() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
     );
   }
 
   static TextStyle thirdSubTitle() {
-    return TextStyle(fontSize: 14);
+    return const TextStyle(fontSize: 14);
   }
 
   static TextStyle accept() {
-    return TextStyle(fontSize: 18);
+    return const TextStyle(fontSize: 18);
   }
 
   static TextStyle close() {
-    return TextStyle(
+    return const TextStyle(
       color: Colors.white,
     );
   }

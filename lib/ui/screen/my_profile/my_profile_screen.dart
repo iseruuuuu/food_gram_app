@@ -47,7 +47,7 @@ class MyProfileScreen extends HookConsumerWidget {
       length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppAppBar(),
+        appBar: const AppAppBar(),
         body: AsyncValueSwitcher(
           asyncValue: state,
           onErrorTap: () {
@@ -78,7 +78,7 @@ class MyProfileScreen extends HookConsumerWidget {
                         );
                       },
                       loading: () {
-                        return AppHeaderSkeleton();
+                        return const AppHeaderSkeleton();
                       },
                       error: SizedBox.shrink,
                     ),

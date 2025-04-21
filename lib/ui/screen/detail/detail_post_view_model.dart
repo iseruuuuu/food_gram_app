@@ -45,7 +45,7 @@ class DetailPostViewModel extends _$DetailPostViewModel {
     final blockList = await preference.getStringList(PreferenceKey.blockList);
     blockList.add(userId);
     await Preference().setStringList(PreferenceKey.blockList, blockList);
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     loading.state = false;
     return true;
   }

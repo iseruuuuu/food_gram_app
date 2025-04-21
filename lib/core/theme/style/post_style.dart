@@ -4,7 +4,7 @@ class PostStyle {
   PostStyle._();
 
   static TextStyle title() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
       color: Colors.black,
@@ -12,7 +12,7 @@ class PostStyle {
   }
 
   static TextStyle share() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 16,
       color: Colors.blue,
       fontWeight: FontWeight.bold,
@@ -28,6 +28,6 @@ class PostStyle {
   }
 
   static TextStyle categoryTitle() {
-    return TextStyle(fontSize: 16);
+    return const TextStyle(fontSize: 16);
   }
 }

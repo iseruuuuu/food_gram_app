@@ -54,7 +54,7 @@ class MapScreen extends HookConsumerWidget {
                     },
                     onMapClick: (_, __) => isTapPin.value = false,
                     annotationOrder: const [AnnotationType.symbol],
-                    key: ValueKey('mapWidget'),
+                    key: const ValueKey('mapWidget'),
                     myLocationEnabled: true,
                     initialCameraPosition: CameraPosition(
                       target: LatLng(
@@ -80,7 +80,7 @@ class MapScreen extends HookConsumerWidget {
                         MapFloatingActionButton(
                           onPressed: controller.moveToCurrentLocation,
                         ),
-                        Divider(height: 1),
+                        const Divider(height: 1),
                         MapRamenFloatingActionButton(
                           onPressed: () {
                             if (isTapped.value) {

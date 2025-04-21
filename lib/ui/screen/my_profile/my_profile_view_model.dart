@@ -39,15 +39,15 @@ class MyProfileViewModel extends _$MyProfileViewModel {
               length: length,
               heartAmount: heartAmount,
             ),
-            failure: (_) => state = MyProfileStateError(),
+            failure: (_) => state = const MyProfileStateError(),
           ),
-          failure: (_) => state = MyProfileStateError(),
+          failure: (_) => state = const MyProfileStateError(),
         ),
-        failure: (_) => state = MyProfileStateError(),
+        failure: (_) => state = const MyProfileStateError(),
       );
     } on Exception catch (error) {
       logger.e(error);
-      state = MyProfileStateError();
+      state = const MyProfileStateError();
     }
   }
 }

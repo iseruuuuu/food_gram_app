@@ -65,14 +65,14 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(24)),
+                  borderRadius: const BorderRadius.all(Radius.circular(24)),
                   child: SizedBox(
                     width: deviceWidth / 1.2,
                     height: deviceWidth / 1.5,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Spacer(),
+                        const Spacer(),
                         SizedBox(
                           width: deviceWidth,
                           height: deviceWidth / 2.7,
@@ -96,14 +96,14 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
                                 FittedBox(
                                   child: Text(
                                     post[index]!.restaurant,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
-                                Gap(5),
+                                const Gap(5),
                                 FittedBox(
                                   child: Text(
                                     post[index]!.foodName,

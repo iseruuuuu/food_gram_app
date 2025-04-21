@@ -48,7 +48,7 @@ class PaywallScreen extends ConsumerWidget {
                   leading: IconButton(
                     onPressed: context.pop,
                     iconSize: 28,
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.close,
                       color: Colors.white,
                     ),
@@ -83,7 +83,7 @@ class PaywallScreen extends ConsumerWidget {
                                 l10n.paywallPremiumTitle,
                                 style: PaywallStyle.premiumTitle(),
                               ),
-                              Gap(16),
+                              const Gap(16),
                               _buildFeatureItem(
                                 icon: Icons.emoji_events,
                                 title: l10n.paywallTrophyTitle,
@@ -126,13 +126,13 @@ class PaywallScreen extends ConsumerWidget {
                                             Colors.white.withValues(alpha: 0.2),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.rocket_launch,
                                         color: Colors.white,
                                         size: 20,
                                       ),
                                     ),
-                                    Gap(12),
+                                    const Gap(12),
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
@@ -152,7 +152,7 @@ class PaywallScreen extends ConsumerWidget {
                                   ],
                                 ),
                               ),
-                              Gap(12),
+                              const Gap(12),
                             ],
                           ),
                         ),
@@ -220,10 +220,10 @@ class PaywallScreen extends ConsumerWidget {
                                   ),
                                 ),
                               ),
-                              Spacer(),
+                              const Spacer(),
                               Container(
                                 color: Colors.transparent,
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 4,
                                   vertical: 10,
                                 ),
@@ -234,7 +234,7 @@ class PaywallScreen extends ConsumerWidget {
                                       style: PaywallStyle.wellComeTitle(),
                                       textAlign: TextAlign.center,
                                     ),
-                                    Gap(30),
+                                    const Gap(30),
                                     Assets.image.present.image(
                                       width: 200,
                                       height: 200,
@@ -242,13 +242,13 @@ class PaywallScreen extends ConsumerWidget {
                                   ],
                                 ),
                               ),
-                              Spacer(),
+                              const Spacer(),
                             ],
                           ),
                         ),
                       );
                     },
-                  ).timeout(Duration(seconds: 5));
+                  ).timeout(const Duration(seconds: 5));
                 } on TimeoutException {
                   context.pop();
                 }
@@ -263,7 +263,7 @@ class PaywallScreen extends ConsumerWidget {
                   l10n.paywallSubscribeButton,
                   style: PaywallStyle.subscribeButton(),
                 ),
-                Gap(2),
+                const Gap(2),
                 Text(
                   '${l10n.paywallPrice} (${l10n.paywallCancelNote})',
                   style: PaywallStyle.price(),
@@ -293,7 +293,7 @@ class PaywallScreen extends ConsumerWidget {
             ),
             child: Icon(icon, color: Colors.amber[700], size: 24),
           ),
-          Gap(12),
+          const Gap(12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

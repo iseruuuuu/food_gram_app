@@ -4,7 +4,7 @@ class EditPostStyle {
   EditPostStyle._();
 
   static TextStyle editTitle() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
       color: Colors.black,
@@ -12,7 +12,7 @@ class EditPostStyle {
   }
 
   static TextStyle editButton() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
       color: Colors.blue,
@@ -20,7 +20,7 @@ class EditPostStyle {
   }
 
   static TextStyle restaurant() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
       color: Colors.black,
@@ -28,7 +28,7 @@ class EditPostStyle {
   }
 
   static TextStyle category() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.normal,
       color: Colors.black,

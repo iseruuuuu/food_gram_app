@@ -47,10 +47,10 @@ class EditScreen extends HookConsumerWidget {
                 ? IconButton(
                     onPressed: () async {
                       primaryFocus?.unfocus();
-                      await Future.delayed(Duration(milliseconds: 100));
+                      await Future.delayed(const Duration(milliseconds: 100));
                       context.pop();
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.close,
                       size: 30,
                     ),
@@ -76,7 +76,7 @@ class EditScreen extends HookConsumerWidget {
                   ),
                 )
               else
-                SizedBox(),
+                const SizedBox(),
             ],
           ),
           body: Stack(
@@ -157,7 +157,7 @@ class EditScreen extends HookConsumerWidget {
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width / 8,
                                 height: MediaQuery.of(context).size.width / 8,
-                                child: CircleAvatar(
+                                child: const CircleAvatar(
                                   backgroundColor: Colors.black,
                                   child: Icon(
                                     Icons.linked_camera,
@@ -168,28 +168,28 @@ class EditScreen extends HookConsumerWidget {
                             ),
                         ],
                       ),
-                      Gap(30),
+                      const Gap(30),
                       AppNameTextField(
                         controller: controller.nameTextController,
                       ),
-                      Gap(30),
+                      const Gap(30),
                       AppUserNameTextField(
                         controller: controller.useNameTextController,
                       ),
-                      Gap(30),
+                      const Gap(30),
                       AppSelfIntroductionTextField(
                         controller: controller.selfIntroduceTextController,
                       ),
                       if (state.isSubscribe)
                         Column(
                           children: [
-                            Gap(16),
+                            const Gap(16),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
                               child: Row(
                                 children: [
-                                  Icon(Icons.tag, size: 20),
+                                  const Icon(Icons.tag, size: 20),
                                   Text(
                                     L10n.of(context).editFavoriteTagTitle,
                                     style: EditStyle.tag(),
@@ -197,7 +197,7 @@ class EditScreen extends HookConsumerWidget {
                                 ],
                               ),
                             ),
-                            Gap(10),
+                            const Gap(10),
                             AppFavoriteTagsSelector(
                               selectedTags: state.favoriteTags,
                               onTagSelected: (tag) {
@@ -210,7 +210,7 @@ class EditScreen extends HookConsumerWidget {
                             ),
                           ],
                         ),
-                      Gap(20),
+                      const Gap(20),
                     ],
                   ),
                 ),

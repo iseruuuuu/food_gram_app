@@ -413,7 +413,7 @@ class PostService extends _$PostService {
   /// 現在地から近い投稿を10件取得
   Future<List<Map<String, dynamic>>> getNearbyPosts() async {
     final currentLocation = await ref.read(locationProvider.future);
-    if (currentLocation == maplibre.LatLng(0, 0)) {
+    if (currentLocation == const maplibre.LatLng(0, 0)) {
       return [];
     }
     final lat = currentLocation.latitude;

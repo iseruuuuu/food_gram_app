@@ -177,16 +177,16 @@ class EditPostScreen extends HookConsumerWidget {
                         width: double.infinity,
                         child: Row(
                           children: [
-                            Gap(5),
-                            Icon(
+                            const Gap(5),
+                            const Icon(
                               Icons.place,
                               size: 30,
                               color: Colors.black,
                             ),
-                            Gap(10),
+                            const Gap(10),
                             Expanded(
                               child: ListTile(
-                                contentPadding: EdgeInsets.all(0),
+                                contentPadding: const EdgeInsets.all(0),
                                 shape: RoundedRectangleBorder(
                                   side: const BorderSide(),
                                   borderRadius: BorderRadius.circular(6),

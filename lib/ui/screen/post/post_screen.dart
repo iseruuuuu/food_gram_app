@@ -17,7 +17,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PostScreen extends HookConsumerWidget {
-  PostScreen({
+  const PostScreen({
     required this.routerPath,
     this.restaurant,
     super.key,
@@ -165,23 +165,23 @@ class PostScreen extends HookConsumerWidget {
                         width: double.infinity,
                         child: Row(
                           children: [
-                            Gap(5),
-                            Icon(
+                            const Gap(5),
+                            const Icon(
                               Icons.place,
                               size: 30,
                               color: Colors.black,
                             ),
-                            Gap(10),
+                            const Gap(10),
                             Expanded(
                               child: ListTile(
-                                contentPadding: EdgeInsets.all(0),
+                                contentPadding: const EdgeInsets.all(0),
                                 shape: RoundedRectangleBorder(
                                   side: const BorderSide(),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 title: Row(
                                   children: [
-                                    Gap(16),
+                                    const Gap(16),
                                     Text(
                                       state.restaurant == '場所を追加'
                                           ? l10n.postRestaurantNameInputField
@@ -191,9 +191,9 @@ class PostScreen extends HookConsumerWidget {
                                         value: state.restaurant == '場所を追加',
                                       ),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     if (state.restaurant == '場所を追加')
-                                      Row(
+                                      const Row(
                                         children: [
                                           Icon(
                                             Icons.arrow_forward_ios,

@@ -76,7 +76,7 @@ class AppCategoryItem extends HookConsumerWidget {
           overlayColor: WidgetStateProperty.all(Colors.transparent),
           labelPadding: const EdgeInsets.symmetric(horizontal: 16),
           indicatorSize: TabBarIndicatorSize.tab,
-          indicator: UnderlineTabIndicator(
+          indicator: const UnderlineTabIndicator(
             borderSide: BorderSide(width: 4),
           ),
           enableFeedback: true,
@@ -105,7 +105,7 @@ class AppCategoryItem extends HookConsumerWidget {
                           category.displayIcon,
                           style: const TextStyle(fontSize: 20),
                         ),
-                        Gap(8),
+                        const Gap(8),
                         Text(
                           category.isAllCategory
                               ? l10n.foodCategoryAll

@@ -50,35 +50,34 @@ class AuthenticationScreen extends HookConsumerWidget {
         backgroundColor: Colors.white,
         body: Stack(
           children: [
-            SnowFallAnimation(
+            const SnowFallAnimation(
               config: SnowfallConfig(
                 numberOfSnowflakes: 300,
                 enableRandomOpacity: false,
                 enableSnowDrift: false,
-                customEmojis: ['❄️', '❅', '❆'],
                 holdSnowAtBottom: false,
               ),
             ),
             SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 28),
+                padding: const EdgeInsets.symmetric(horizontal: 28),
                 child: Column(
                   children: [
-                    Gap(80),
+                    const Gap(80),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Assets.image.food.image(width: 72, height: 72),
-                        Gap(12),
+                        const Gap(12),
                         Text(
                           'FoodGram',
                           style: AuthenticationStyle.foodGram(),
                         ),
                       ],
                     ),
-                    Gap(12),
+                    const Gap(12),
                     AppAuthTextField(controller: controller.emailTextField),
-                    Gap(8),
+                    const Gap(8),
                     SizedBox(
                       width: MediaQuery.sizeOf(context).width - 80,
                       height: 48,
@@ -88,8 +87,8 @@ class AuthenticationScreen extends HookConsumerWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.mail, color: Colors.white),
-                            Gap(12),
+                            const Icon(Icons.mail, color: Colors.white),
+                            const Gap(12),
                             Text(
                               'Sign in with Mail',
                               style: AuthenticationStyle.signMailText(),
@@ -98,7 +97,7 @@ class AuthenticationScreen extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    Gap(24),
+                    const Gap(24),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -108,9 +107,9 @@ class AuthenticationScreen extends HookConsumerWidget {
                         Assets.gif.login4.image(width: 70, height: 70),
                       ],
                     ),
-                    Gap(12),
-                    Divider(),
-                    Gap(24),
+                    const Gap(12),
+                    const Divider(),
+                    const Gap(24),
                     AppleAuthButton(
                       style: AuthenticationStyle.authButtonStyle(buttonWidth),
                       onPressed: () {
@@ -125,7 +124,7 @@ class AuthenticationScreen extends HookConsumerWidget {
                         }
                       },
                     ),
-                    Gap(24),
+                    const Gap(24),
                     GoogleAuthButton(
                       style: AuthenticationStyle.authButtonStyle(buttonWidth),
                       onPressed: () => controller.loginGoogle(context),

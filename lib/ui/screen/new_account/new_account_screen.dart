@@ -29,11 +29,9 @@ class NewAccountScreen extends ConsumerWidget {
           case 'account_registration_error':
             message = L10n.of(context).accountRegistrationError;
             SnackBarHelper().openErrorSnackBar(context, '', message);
-            break;
           case 'required_info_missing':
             message = L10n.of(context).requiredInfoMissing;
             SnackBarHelper().openErrorSnackBar(context, '', message);
-            break;
           default:
             message = current.loginStatus;
         }
@@ -55,7 +53,7 @@ class NewAccountScreen extends ConsumerWidget {
                       backgroundColor: Colors.white,
                       surfaceTintColor: Colors.white,
                     ),
-                    Gap(20),
+                    const Gap(20),
                     CircleAvatar(
                       backgroundColor: Colors.white,
                       backgroundImage:

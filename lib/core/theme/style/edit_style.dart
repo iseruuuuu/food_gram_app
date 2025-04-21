@@ -12,14 +12,14 @@ class EditStyle {
   }
 
   static TextStyle settingsIcon() {
-    return TextStyle(
+    return const TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 16,
     );
   }
 
   static TextStyle tag() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
     );

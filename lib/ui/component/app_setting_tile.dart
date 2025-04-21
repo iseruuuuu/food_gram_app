@@ -36,15 +36,15 @@ class AppSettingTile extends StatelessWidget {
                 color: color ?? Colors.black,
               ),
             ),
-            Gap(5),
+            const Gap(5),
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 13.5,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Gap(10),
+            const Gap(10),
           ],
         ),
       ),

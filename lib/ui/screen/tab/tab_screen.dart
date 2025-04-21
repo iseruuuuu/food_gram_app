@@ -32,19 +32,19 @@ class TabScreen extends ConsumerWidget {
               BottomNavigationBarItem(
                 icon: Column(
                   children: [
-                    Gap(12),
+                    const Gap(12),
                     Icon(
                       (state.selectedIndex == 0)
                           ? CupertinoIcons.map_fill
                           : CupertinoIcons.map,
                       semanticLabel: 'mapIcon',
                     ),
-                    Gap(6),
+                    const Gap(6),
                     Text(
                       l10n.tabMap,
                       style: TabStyle.tab(value: state.selectedIndex == 0),
                     ),
-                    Gap(10),
+                    const Gap(10),
                   ],
                 ),
                 label: '',
@@ -52,19 +52,19 @@ class TabScreen extends ConsumerWidget {
               BottomNavigationBarItem(
                 icon: Column(
                   children: [
-                    Gap(12),
+                    const Gap(12),
                     Icon(
                       (state.selectedIndex == 1)
                           ? Icons.fastfood
                           : Icons.fastfood_outlined,
                       semanticLabel: 'timelineIcon',
                     ),
-                    Gap(6),
+                    const Gap(6),
                     Text(
                       l10n.tabHome,
                       style: TabStyle.tab(value: state.selectedIndex == 1),
                     ),
-                    Gap(10),
+                    const Gap(10),
                   ],
                 ),
                 label: '',
@@ -72,7 +72,7 @@ class TabScreen extends ConsumerWidget {
               BottomNavigationBarItem(
                 icon: Column(
                   children: [
-                    Gap(12),
+                    const Gap(12),
                     Icon(
                       (state.selectedIndex == 2)
                           ? CupertinoIcons.person_circle_fill
@@ -80,12 +80,12 @@ class TabScreen extends ConsumerWidget {
                       size: 30,
                       semanticLabel: 'profileIcon',
                     ),
-                    Gap(6),
+                    const Gap(6),
                     Text(
                       l10n.tabMyPage,
                       style: TabStyle.tab(value: state.selectedIndex == 2),
                     ),
-                    Gap(10),
+                    const Gap(10),
                   ],
                 ),
                 label: '',
@@ -93,26 +93,26 @@ class TabScreen extends ConsumerWidget {
               BottomNavigationBarItem(
                 icon: Column(
                   children: [
-                    Gap(12),
+                    const Gap(12),
                     Icon(
                       (state.selectedIndex == 3)
                           ? Icons.settings
                           : Icons.settings_outlined,
                       semanticLabel: 'settingIcon',
                     ),
-                    Gap(6),
+                    const Gap(6),
                     Text(
                       l10n.tabSetting,
                       style: TabStyle.tab(value: state.selectedIndex == 3),
                     ),
-                    Gap(10),
+                    const Gap(10),
                   ],
                 ),
                 label: '',
               ),
             ],
             type: BottomNavigationBarType.fixed,
-            selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+            selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
             elevation: 0,
             backgroundColor: Colors.white,
             selectedItemColor: Colors.black,

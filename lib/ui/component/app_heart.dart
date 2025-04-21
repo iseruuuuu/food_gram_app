@@ -27,10 +27,10 @@ class AppHeart extends StatelessWidget {
                     onFetchCompleted: controller.stop,
                   ),
                 ),
-                SizedBox(height: 100),
+                const SizedBox(height: 100),
               ],
             ),
           )
-        : SizedBox();
+        : const SizedBox();
   }
 }

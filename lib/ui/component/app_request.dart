@@ -16,29 +16,29 @@ class AppRequest extends StatelessWidget {
           children: [
             Text(
               l10n.appRequestTitle,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               l10n.appRequestReason,
-              style: TextStyle(fontSize: 15),
+              style: const TextStyle(fontSize: 15),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               l10n.appRequestInduction,
-              style: TextStyle(fontSize: 15),
+              style: const TextStyle(fontSize: 15),
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             TextButton(
               onPressed: () {
                 AppSettings.openAppSettings(type: AppSettingsType.location);
               },
               child: Text(
                 l10n.appRequestOpenSetting,
-                style: TextStyle(color: Colors.blue, fontSize: 15),
+                style: const TextStyle(color: Colors.blue, fontSize: 15),
               ),
             ),
           ],

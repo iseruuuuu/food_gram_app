@@ -21,7 +21,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   Future<void> redirect(BuildContext context, WidgetRef ref) async {
-    await Future.delayed(Duration());
+    await Future.delayed(const Duration());
     ref.read(currentUserProvider.notifier).update();
     if (await ref.read(accountServiceProvider).isUserRegistered()) {
       context.pushReplacementNamed(RouterPath.tab);

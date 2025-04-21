@@ -95,10 +95,10 @@ class StoryCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(
-          colors: const [
+          colors: [
             Color(0xFFFF00A5),
             Color(0xFFFE0141),
             Color(0xFFFF9F00),

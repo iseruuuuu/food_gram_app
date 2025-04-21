@@ -47,7 +47,7 @@ class RestaurantReviewScreen extends ConsumerWidget {
             splashFactory: NoSplash.splashFactory,
             overlayColor: WidgetStateProperty.all(Colors.transparent),
             enableFeedback: true,
-            tabs: <Widget>[
+            tabs: const <Widget>[
               Tab(
                 icon: Icon(Icons.chat_bubble_outline, size: 30),
                 height: 38,
