@@ -4,6 +4,8 @@ import 'package:food_gram_app/core/model/tag.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
+typedef OnChanged = void Function(String tag);
+
 class AppPostCountryCategoryModalSheet extends ConsumerWidget {
   const AppPostCountryCategoryModalSheet({
     required this.onChanged,
@@ -11,7 +13,7 @@ class AppPostCountryCategoryModalSheet extends ConsumerWidget {
     super.key,
   });
 
-  final Function(String) onChanged;
+  final OnChanged onChanged;
   final String tagValue;
 
   @override
@@ -76,7 +78,7 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
     super.key,
   });
 
-  final Function(String) onChanged;
+  final OnChanged onChanged;
   final String tagValue;
 
   @override

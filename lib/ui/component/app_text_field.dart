@@ -6,13 +6,15 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:gap/gap.dart';
 
+typedef OnSubmitted = void Function(String value);
+
 class AppSearchTextField extends HookWidget {
   const AppSearchTextField({
     required this.onSubmitted,
     super.key,
   });
 
-  final Function(String)? onSubmitted;
+  final OnSubmitted? onSubmitted;
 
   @override
   Widget build(BuildContext context) {

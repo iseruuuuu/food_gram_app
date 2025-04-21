@@ -4,6 +4,8 @@ import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
+typedef OnTagSelected = void Function(String tag);
+
 class AppFavoriteTagsSelector extends StatelessWidget {
   const AppFavoriteTagsSelector({
     required this.selectedTags,
@@ -12,7 +14,7 @@ class AppFavoriteTagsSelector extends StatelessWidget {
   });
 
   final String selectedTags;
-  final Function(String) onTagSelected;
+  final OnTagSelected onTagSelected;
 
   void _showTagSelector(BuildContext context) {
     showModalBottomSheet(
