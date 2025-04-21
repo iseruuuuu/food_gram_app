@@ -282,9 +282,11 @@ class AppAuthTextField extends StatelessWidget {
           filled: true,
           fillColor: Colors.white,
           enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black87)),
+            borderSide: BorderSide(color: Colors.black87),
+          ),
           focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blue)),
+            borderSide: BorderSide(color: Colors.blue),
+          ),
         ),
       ),
     );

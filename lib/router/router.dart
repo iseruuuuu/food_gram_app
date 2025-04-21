@@ -205,7 +205,8 @@ final myProfileRouter = GoRoute(
       name: RouterPath.myProfilePost,
       pageBuilder: (context, state) {
         return whiteOut(
-            const PostScreen(routerPath: RouterPath.myProfileRestaurant));
+          const PostScreen(routerPath: RouterPath.myProfileRestaurant),
+        );
       },
     ),
     GoRoute(
