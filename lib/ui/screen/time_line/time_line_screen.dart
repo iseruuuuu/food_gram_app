@@ -118,7 +118,6 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
     final selectedCategoryName = useState('');
     final postState =
         ref.watch(postStreamByCategoryProvider(selectedCategoryName.value));
-    print(selectedCategoryName);
     return RefreshIndicator(
       color: Colors.black,
       onRefresh: () async {
