@@ -186,7 +186,7 @@ class EditPostScreen extends HookConsumerWidget {
                             const Gap(10),
                             Expanded(
                               child: ListTile(
-                                contentPadding: const EdgeInsets.all(0),
+                                contentPadding: EdgeInsets.zero,
                                 shape: RoundedRectangleBorder(
                                   side: const BorderSide(),
                                   borderRadius: BorderRadius.circular(6),
