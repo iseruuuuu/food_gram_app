@@ -30,10 +30,10 @@ class MyProfileScreen extends HookConsumerWidget {
           if (users.isSubscribe) {
             return;
           }
-          WidgetsBinding.instance.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
             final value = math.Random().nextInt(10);
             if (value == 0) {
-              showDialog(
+              await showDialog<void>(
                 context: context,
                 builder: (context) => const AppPromoteDialog(),
               );

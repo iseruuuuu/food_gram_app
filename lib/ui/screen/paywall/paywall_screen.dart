@@ -191,7 +191,7 @@ class PaywallScreen extends ConsumerWidget {
               if (result) {
                 controller.play();
                 try {
-                  await showDialog(
+                  await showDialog<void>(
                     context: context,
                     barrierColor: Colors.black87,
                     barrierDismissible: false,
