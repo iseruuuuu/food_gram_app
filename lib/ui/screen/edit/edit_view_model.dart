@@ -31,7 +31,7 @@ class EditViewModel extends _$EditViewModel {
   Uint8List? imageBytes;
 
   Future<void> getProfile() async {
-    await Future.delayed(Duration.zero);
+    await Future<void>.delayed(Duration.zero);
     loading.state = true;
     final userId = ref.watch(currentUserProvider);
     final supabase = ref.watch(supabaseProvider);

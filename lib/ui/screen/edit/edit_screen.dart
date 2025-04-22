@@ -47,7 +47,9 @@ class EditScreen extends HookConsumerWidget {
                 ? IconButton(
                     onPressed: () async {
                       primaryFocus?.unfocus();
-                      await Future.delayed(const Duration(milliseconds: 100));
+                      await Future<void>.delayed(
+                        const Duration(milliseconds: 100),
+                      );
                       context.pop();
                     },
                     icon: const Icon(
