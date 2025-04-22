@@ -35,7 +35,7 @@ class ShareHelpers {
     required BuildContext context,
     String? shareText,
   }) async {
-    await showModalBottomSheet(
+    await showModalBottomSheet<void>(
       context: context,
       builder: (context) {
         return AppShareModalSheet(

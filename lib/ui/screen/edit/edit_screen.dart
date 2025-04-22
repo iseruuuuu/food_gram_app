@@ -130,9 +130,9 @@ class EditScreen extends HookConsumerWidget {
                           ),
                           if (state.isSubscribe)
                             GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 primaryFocus?.unfocus();
-                                showModalBottomSheet(
+                                await showModalBottomSheet<void>(
                                   context: context,
                                   builder: (context) {
                                     return AppPostImageModalSheet(

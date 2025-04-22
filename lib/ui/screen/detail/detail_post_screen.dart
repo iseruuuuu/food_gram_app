@@ -141,8 +141,8 @@ class DetailPostScreen extends HookConsumerWidget {
           actions: [
             if (!loading && !menuLoading.value)
               IconButton(
-                onPressed: () {
-                  showModalBottomSheet(
+                onPressed: () async {
+                  await showModalBottomSheet<void>(
                     context: context,
                     builder: (context) {
                       if (currentUser == Env.masterAccount) {

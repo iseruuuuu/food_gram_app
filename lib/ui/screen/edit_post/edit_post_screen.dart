@@ -113,9 +113,9 @@ class EditPostScreen extends HookConsumerWidget {
                   children: [
                     Center(
                       child: GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           primaryFocus?.unfocus();
-                          showModalBottomSheet(
+                          await showModalBottomSheet<void>(
                             context: context,
                             builder: (context) {
                               return AppPostImageModalSheet(

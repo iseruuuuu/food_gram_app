@@ -16,8 +16,8 @@ class AppFavoriteTagsSelector extends StatelessWidget {
   final String selectedTags;
   final OnTagSelected onTagSelected;
 
-  void _showTagSelector(BuildContext context) {
-    showModalBottomSheet(
+  Future<void> _showTagSelector(BuildContext context) async {
+    await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
