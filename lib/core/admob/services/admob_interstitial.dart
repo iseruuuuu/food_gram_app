@@ -33,7 +33,7 @@ class AdmobInterstitial {
     }
 
     InterstitialAd.load(
-      adUnitId: AdmobConfig.interstitialAdUnitId,
+      adUnitId: interstitialAdUnitId,
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
@@ -64,7 +64,7 @@ class AdmobInterstitial {
     // 前回の広告表示からの経過時間をチェック
     if (_lastAdShowTime != null) {
       final timeSinceLastAd = DateTime.now().difference(_lastAdShowTime!);
-      if (timeSinceLastAd < AdmobConfig.minInterstitialDuration) {
+      if (timeSinceLastAd < minInterstitialDuration) {
         logger.i('Skipping ad due to minimum duration not met');
         onAdClosed?.call();
         return;

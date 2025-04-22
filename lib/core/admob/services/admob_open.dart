@@ -12,7 +12,7 @@ class AdmobOpen {
 
   void loadAd() {
     AppOpenAd.load(
-      adUnitId: AdmobConfig.appOpenAdUnitId,
+      adUnitId: appOpenAdUnitId,
       request: const AdRequest(),
       adLoadCallback: AppOpenAdLoadCallback(
         onAdLoaded: onAppOpenAdLoaded,

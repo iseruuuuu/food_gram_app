@@ -15,7 +15,7 @@ class PreloadBannerAds {
     for (final id in adIds) {
       if (!_preloadedAds.containsKey(id)) {
         final ad = BannerAd(
-          adUnitId: AdmobConfig.bannerAdUnitId,
+          adUnitId: bannerAdUnitId,
           size: AdSize.banner,
           request: const AdRequest(),
           listener: BannerAdListener(
@@ -66,7 +66,7 @@ class BannerAdNotifier extends StateNotifier<BannerAd?> {
 
   void _loadAd() {
     BannerAd(
-      adUnitId: AdmobConfig.bannerAdUnitId,
+      adUnitId: bannerAdUnitId,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
@@ -151,7 +151,7 @@ class SingleRectangleBannerNotifier extends StateNotifier<BannerAd?> {
     }
 
     BannerAd(
-      adUnitId: AdmobConfig.bannerAdUnitId,
+      adUnitId: bannerAdUnitId,
       size: AdSize.mediumRectangle, // レクタングル広告サイズ
       request: const AdRequest(),
       listener: BannerAdListener(
@@ -193,7 +193,7 @@ class MultipleRectangleBannerNotifier extends StateNotifier<List<BannerAd?>> {
       }
 
       BannerAd(
-        adUnitId: AdmobConfig.bannerAdUnitId,
+        adUnitId: bannerAdUnitId,
         size: AdSize.mediumRectangle,
         request: const AdRequest(),
         listener: BannerAdListener(
