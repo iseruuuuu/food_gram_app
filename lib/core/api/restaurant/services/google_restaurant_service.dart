@@ -31,7 +31,7 @@ Future<List<Restaurant>> _search(
 ) async {
   final currentLocationFuture = ref.read(locationProvider.future);
   final currentLocation = await currentLocationFuture;
-  final response = await dio.get(
+  final response = await dio.get<Map<String, dynamic>>(
     'https://maps.googleapis.com/maps/api/place/textsearch/json',
     queryParameters: {
       'query': keyword,
@@ -41,7 +41,7 @@ Future<List<Restaurant>> _search(
     },
   );
   if (response.statusCode == 200) {
-    final data = response.data as Map<String, dynamic>;
+    final data = response.data!;
     final results = data['results'] as List<dynamic>;
     return results.map(
       (value) {
