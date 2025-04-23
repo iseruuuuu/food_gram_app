@@ -66,6 +66,8 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
 }
 
 class AsyncValueGroup {
+  const AsyncValueGroup._();
+
   static AsyncValue<(T1, T2)> group2<T1, T2>(
     AsyncValue<T1> t1,
     AsyncValue<T2> t2,
