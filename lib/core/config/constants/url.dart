@@ -1,4 +1,6 @@
 class URL {
+  const URL._();
+
   static const sns = 'https://x.com/FoodGram_dev';
   static const github = 'https://github.com/iseruuuuu/food_gram_app';
   static const appleStore =
