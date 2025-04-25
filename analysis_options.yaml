@@ -8,4 +8,12 @@ analyzer:
 
 linter:
   rules:
+
+    # ウィジェットのデバッグ情報が不足している場合の警告
     diagnostic_describe_all_properties: false
+
+    # asyncに関する警告
+    discarded_futures: false
+
+    # BuildContextに関する警告
+    use_build_context_synchronously: false
