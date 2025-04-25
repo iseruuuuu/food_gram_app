@@ -5,6 +5,8 @@ targets:
         options:
           ignore_for_file:
             - duplicate_ignore
+            - missing_documentation
+            - type=lint
       json_serializable:
         options:
           field_rename: snake

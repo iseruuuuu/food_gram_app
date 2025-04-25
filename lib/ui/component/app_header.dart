@@ -54,7 +54,7 @@ class AppHeader extends ConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Gap(8),
+                        const Gap(8),
                         Text(
                           users.name,
                           style: const TextStyle(
@@ -65,14 +65,14 @@ class AppHeader extends ConsumerWidget {
                         if (users.isSubscribe)
                           Row(
                             children: [
-                              Gap(8),
+                              const Gap(8),
                               Assets.image.profileIcon.image(
                                 width: 30,
                                 height: 30,
                               ),
                             ],
                           ),
-                        Gap(4),
+                        const Gap(4),
                       ],
                     ),
                   ),
@@ -118,7 +118,7 @@ class AppHeader extends ConsumerWidget {
                               const Gap(8),
                               Text(
                                 '${_getRank(context, length)}${l10n.rank}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,

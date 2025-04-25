@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/edit/edit_state.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'edit_view_model.g.dart';
@@ -20,6 +21,8 @@ class EditViewModel extends _$EditViewModel {
     return initState;
   }
 
+  final logger = Logger();
+
   final nameTextController = TextEditingController();
   final useNameTextController = TextEditingController();
   final selfIntroduceTextController = TextEditingController();
@@ -30,20 +33,21 @@ class EditViewModel extends _$EditViewModel {
   Uint8List? imageBytes;
 
   Future<void> getProfile() async {
-    await Future.delayed(Duration.zero);
+    await Future<void>.delayed(Duration.zero);
     loading.state = true;
     final userId = ref.watch(currentUserProvider);
     final supabase = ref.watch(supabaseProvider);
     final data =
         await supabase.from('users').select().eq('user_id', userId!).single();
-    nameTextController.text = data['name'];
-    useNameTextController.text = data['user_name'];
-    selfIntroduceTextController.text = data['self_introduce'];
+    final user = Users.fromJson(data);
+    nameTextController.text = user.name;
+    useNameTextController.text = user.userName;
+    selfIntroduceTextController.text = user.selfIntroduce;
     state = state.copyWith(
-      number: extractNumber(data['image']),
-      initialImage: data['image'],
-      favoriteTags: data['tag'] ?? '',
-      isSubscribe: data['is_subscribe'],
+      number: int.parse(extractNumber(user.image)),
+      initialImage: user.image,
+      favoriteTags: user.tag,
+      isSubscribe: user.isSubscribe,
     );
     loading.state = false;
   }

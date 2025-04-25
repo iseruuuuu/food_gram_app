@@ -4,7 +4,7 @@ class DetailPostStyle {
   DetailPostStyle._();
 
   static TextStyle name() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
       color: Colors.black,
@@ -12,7 +12,7 @@ class DetailPostStyle {
   }
 
   static TextStyle userName() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.normal,
       color: Colors.black,
@@ -20,14 +20,14 @@ class DetailPostStyle {
   }
 
   static TextStyle like() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
     );
   }
 
   static TextStyle foodName() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
       color: Colors.black,
@@ -35,7 +35,7 @@ class DetailPostStyle {
   }
 
   static TextStyle restaurant() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
       color: Colors.black,
@@ -46,7 +46,7 @@ class DetailPostStyle {
   }
 
   static TextStyle comment() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 15,
       fontWeight: FontWeight.w500,
       color: Colors.black,

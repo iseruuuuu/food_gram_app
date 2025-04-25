@@ -6,10 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/app.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-final logger = Logger();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

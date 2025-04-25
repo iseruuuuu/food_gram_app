@@ -16,8 +16,11 @@ class SnackBarHelper {
         title: title,
         message: message,
         contentType: ContentType.failure,
-        titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        messageTextStyle: TextStyle(fontSize: 14),
+        titleTextStyle: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+        messageTextStyle: const TextStyle(fontSize: 14),
       ),
     );
     ScaffoldMessenger.of(context)
@@ -47,7 +50,7 @@ class SnackBarHelper {
 
   void openComingSoonSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Center(
           child: Text(
             '🙇　Coming Soon　🙇',
@@ -64,7 +67,7 @@ class SnackBarHelper {
 
   void openThanksSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Center(
           child: Text(
             'Thanks＼(^o^)／',

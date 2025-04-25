@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/env.dart';
-import 'package:food_gram_app/main.dart';
+import 'package:logger/logger.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,8 +12,10 @@ part 'revenue_cat_service.g.dart';
 
 @riverpod
 class RevenueCatService extends _$RevenueCatService {
+  final logger = Logger();
   bool isSubscribed = false;
   late Offerings offerings;
+
   String? get user => ref.read(currentUserProvider);
 
   @override

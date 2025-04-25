@@ -5,7 +5,7 @@ class AuthenticationStyle {
   AuthenticationStyle._();
 
   static TextStyle foodGram() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 28,
       fontWeight: FontWeight.bold,
       color: Colors.black,
@@ -16,7 +16,7 @@ class AuthenticationStyle {
     return ElevatedButton.styleFrom(
       elevation: 0,
       backgroundColor: Colors.black,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(12),
         ),
@@ -25,7 +25,7 @@ class AuthenticationStyle {
   }
 
   static TextStyle signMailText() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 16,
       color: Colors.white,
     );
@@ -38,7 +38,7 @@ class AuthenticationStyle {
       elevation: 3,
       borderRadius: 20,
       width: width,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
       ),

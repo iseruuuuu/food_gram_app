@@ -64,14 +64,14 @@ GoRouter router(Ref ref) {
         path: '/${RouterPath.newAccount}',
         name: RouterPath.newAccount,
         pageBuilder: (context, state) {
-          return blackOut(NewAccountScreen());
+          return blackOut(const NewAccountScreen());
         },
       ),
       GoRoute(
         path: '/${RouterPath.tab}',
         name: RouterPath.tab,
         pageBuilder: (context, state) {
-          return blackOut(TabScreen());
+          return blackOut(const TabScreen());
         },
         routes: <RouteBase>[
           timeLineRouter,
@@ -95,14 +95,16 @@ final timeLineRouter = GoRoute(
       path: '${RouterPath.timeLine}/${RouterPath.timeLinePost}',
       name: RouterPath.timeLinePost,
       pageBuilder: (context, state) {
-        return whiteOut(PostScreen(routerPath: RouterPath.timeLineRestaurant));
+        return whiteOut(
+          const PostScreen(routerPath: RouterPath.timeLineRestaurant),
+        );
       },
     ),
     GoRoute(
       path: '${RouterPath.timeLine}/${RouterPath.timeLineRestaurant}',
       name: RouterPath.timeLineRestaurant,
       pageBuilder: (context, state) {
-        return slideIn(RestaurantScreen());
+        return slideIn(const RestaurantScreen());
       },
     ),
     GoRoute(
@@ -195,14 +197,16 @@ final myProfileRouter = GoRoute(
       path: RouterPath.edit,
       name: RouterPath.edit,
       pageBuilder: (context, state) {
-        return slideIn(EditScreen());
+        return slideIn(const EditScreen());
       },
     ),
     GoRoute(
       path: '${RouterPath.myProfile}/${RouterPath.myProfilePost}',
       name: RouterPath.myProfilePost,
       pageBuilder: (context, state) {
-        return whiteOut(PostScreen(routerPath: RouterPath.myProfileRestaurant));
+        return whiteOut(
+          const PostScreen(routerPath: RouterPath.myProfileRestaurant),
+        );
       },
     ),
     GoRoute(
@@ -274,7 +278,7 @@ final settingRouter = GoRoute(
       path: RouterPath.license,
       name: RouterPath.license,
       pageBuilder: (context, state) {
-        return scaleUpTransition(LicensePage());
+        return scaleUpTransition(const LicensePage());
       },
     ),
     GoRoute(
@@ -288,7 +292,7 @@ final settingRouter = GoRoute(
       path: '${RouterPath.setting}/${RouterPath.paywallPage}',
       name: RouterPath.paywallPage,
       pageBuilder: (context, state) {
-        return slideIn(PaywallScreen());
+        return slideIn(const PaywallScreen());
       },
     ),
   ],

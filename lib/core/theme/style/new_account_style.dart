@@ -4,7 +4,7 @@ class NewAccountStyle {
   NewAccountStyle._();
 
   static TextStyle icon() {
-    return TextStyle(
+    return const TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 18,
       color: Colors.black,
@@ -12,7 +12,7 @@ class NewAccountStyle {
   }
 
   static TextStyle title() {
-    return TextStyle(
+    return const TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 18,
       color: Colors.black,
@@ -20,7 +20,7 @@ class NewAccountStyle {
   }
 
   static TextStyle contents() {
-    return TextStyle(
+    return const TextStyle(
       fontWeight: FontWeight.normal,
       fontSize: 16,
       color: Colors.black,

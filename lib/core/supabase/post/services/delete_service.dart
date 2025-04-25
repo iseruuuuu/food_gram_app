@@ -3,7 +3,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/env.dart';
-import 'package:food_gram_app/main.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -11,6 +11,7 @@ part 'delete_service.g.dart';
 
 @riverpod
 class DeleteService extends _$DeleteService {
+  final logger = Logger();
   final _cacheManager = CacheManager();
 
   String? get _currentUserId => ref.read(currentUserProvider);

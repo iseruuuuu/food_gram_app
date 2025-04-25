@@ -5,10 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/post/post_state.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'post_view_model.g.dart';
@@ -23,6 +23,7 @@ class PostViewModel extends _$PostViewModel {
   final _picker = ImagePicker();
   String _uploadImage = '';
   late Uint8List _imageBytes;
+  final logger = Logger();
 
   TextEditingController get foodController => _foodController;
 

@@ -64,7 +64,7 @@ class SettingViewModel extends _$SettingViewModel {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('This App is new version👍'),
         ),
       );
@@ -95,7 +95,7 @@ class SettingViewModel extends _$SettingViewModel {
 
   Future<bool> signOut() async {
     loading.state = true;
-    await Future.delayed(Duration(seconds: 2));
+    await Future<void>.delayed(const Duration(seconds: 2));
     final result = await ref.read(authServiceProvider).signOut();
     result.whenOrNull(
       success: (_) {

@@ -7,7 +7,7 @@ import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
-import 'package:food_gram_app/main.dart';
+import 'package:logger/logger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart' as maplibre;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -16,6 +16,7 @@ part 'post_service.g.dart';
 
 @riverpod
 class PostService extends _$PostService {
+  final logger = Logger();
   final _cacheManager = CacheManager();
 
   String? get _currentUserId => ref.read(currentUserProvider);
@@ -205,7 +206,7 @@ class PostService extends _$PostService {
         final userData = await supabase
             .from('users')
             .select()
-            .eq('user_id', data[index]['user_id'])
+            .eq('user_id', data[index]['user_id'] as String)
             .single();
         return {
           'post': postData,
@@ -324,7 +325,7 @@ class PostService extends _$PostService {
             // ユーザー情報を取得して結合
             final results = <Map<String, dynamic>>[];
             for (final post in filteredPosts) {
-              final userData = await getUserData(post['user_id']);
+              final userData = await getUserData(post['user_id'] as String);
               results.add({
                 'post': post,
                 'user': userData,
@@ -388,8 +389,9 @@ class PostService extends _$PostService {
         for (final post in filteredPosts) {
           final userId = post['user_id'] as String;
           if (!userPosts.containsKey(userId) ||
-              DateTime.parse(post['created_at'])
-                  .isAfter(DateTime.parse(userPosts[userId]!['created_at']))) {
+              DateTime.parse(post['created_at'] as String).isAfter(
+                DateTime.parse(userPosts[userId]!['created_at'] as String),
+              )) {
             userPosts[userId] = post;
           }
         }
@@ -413,7 +415,7 @@ class PostService extends _$PostService {
   /// 現在地から近い投稿を10件取得
   Future<List<Map<String, dynamic>>> getNearbyPosts() async {
     final currentLocation = await ref.read(locationProvider.future);
-    if (currentLocation == maplibre.LatLng(0, 0)) {
+    if (currentLocation == const maplibre.LatLng(0, 0)) {
       return [];
     }
     final lat = currentLocation.latitude;

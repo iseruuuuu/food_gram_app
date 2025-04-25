@@ -15,13 +15,13 @@ Future<LatLng> getLocation() async {
   LocationPermission permission;
   serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
-    return LatLng(0, 0);
+    return const LatLng(0, 0);
   }
   permission = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
-      return LatLng(0, 0);
+      return const LatLng(0, 0);
     }
   }
   if (permission == LocationPermission.whileInUse ||
@@ -31,5 +31,5 @@ Future<LatLng> getLocation() async {
     final longitude = position.longitude;
     return LatLng(latitude, longitude);
   }
-  return LatLng(0, 0);
+  return const LatLng(0, 0);
 }

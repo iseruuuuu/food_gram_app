@@ -4,7 +4,7 @@ class SettingStyle {
   SettingStyle._();
 
   static TextStyle premium() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 13,
       color: Colors.black,
       fontWeight: FontWeight.bold,
@@ -12,11 +12,11 @@ class SettingStyle {
   }
 
   static TextStyle appVersion() {
-    return TextStyle(color: Colors.black);
+    return const TextStyle(color: Colors.black);
   }
 
   static TextStyle version() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 18,
       color: Colors.black,
     );

@@ -29,7 +29,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
     final l10n = L10n.of(context);
     return Container(
       height: MediaQuery.sizeOf(context).width,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(30),
@@ -44,22 +44,22 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
               padding: const EdgeInsets.only(top: 30, bottom: 20),
               child: Text(
                 l10n.postDetailSheetTitle,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: MediaQuery.sizeOf(context).width,
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  backgroundColor: Color(0xFFEFEFEF),
-                  foregroundColor: Color(0xFFEFEFEF),
-                  shape: RoundedRectangleBorder(
+                  backgroundColor: const Color(0xFFEFEFEF),
+                  foregroundColor: const Color(0xFFEFEFEF),
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),
@@ -75,15 +75,15 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                 },
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.edit,
                       color: Colors.black,
                       size: 25,
                     ),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     Text(
                       l10n.editPostButton,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                         color: Colors.black,
@@ -97,7 +97,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
               child: Container(
                 width: MediaQuery.sizeOf(context).width,
                 height: 50,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   border: Border(
                     top: BorderSide(color: Colors.grey),
                   ),
@@ -105,8 +105,8 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    backgroundColor: Color(0xFFEFEFEF),
-                    foregroundColor: Color(0xFFEFEFEF),
+                    backgroundColor: const Color(0xFFEFEFEF),
+                    foregroundColor: const Color(0xFFEFEFEF),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(0),
                     ),
@@ -124,15 +124,15 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                   },
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.share,
                         color: Colors.black,
                         size: 25,
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       Text(
                         l10n.postDetailSheetShareButton,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                           color: Colors.black,
@@ -147,7 +147,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
               child: Container(
                 width: MediaQuery.sizeOf(context).width,
                 height: 50,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   border: Border(
                     top: BorderSide(color: Colors.grey),
                   ),
@@ -155,8 +155,8 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    backgroundColor: Color(0xFFEFEFEF),
-                    foregroundColor: Color(0xFFEFEFEF),
+                    backgroundColor: const Color(0xFFEFEFEF),
+                    foregroundColor: const Color(0xFFEFEFEF),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(0),
                     ),
@@ -172,15 +172,15 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                   },
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.place,
                         color: Colors.black,
                         size: 25,
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       Text(
                         l10n.appShareGoButton,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                           color: Colors.black,
@@ -195,7 +195,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
               child: Container(
                 width: MediaQuery.sizeOf(context).width,
                 height: 50,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   border: Border(
                     top: BorderSide(color: Colors.grey),
                   ),
@@ -203,8 +203,8 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    backgroundColor: Color(0xFFEFEFEF),
-                    foregroundColor: Color(0xFFEFEFEF),
+                    backgroundColor: const Color(0xFFEFEFEF),
+                    foregroundColor: const Color(0xFFEFEFEF),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(0),
                     ),
@@ -229,15 +229,15 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                   },
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.delete,
                         color: Colors.red,
                         size: 25,
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       Text(
                         l10n.dialogDeleteTitle,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                           color: Colors.red,
@@ -252,7 +252,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
               child: Container(
                 width: MediaQuery.sizeOf(context).width,
                 height: 50,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   border: Border(
                     top: BorderSide(color: Colors.grey),
                   ),
@@ -260,9 +260,9 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    backgroundColor: Color(0xFFEFEFEF),
-                    foregroundColor: Color(0xFFEFEFEF),
-                    shape: RoundedRectangleBorder(
+                    backgroundColor: const Color(0xFFEFEFEF),
+                    foregroundColor: const Color(0xFFEFEFEF),
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(10),
                         bottomRight: Radius.circular(10),
@@ -274,15 +274,15 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                   },
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.close,
                         color: Colors.black,
                         size: 25,
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       Text(
                         l10n.close,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                           color: Colors.black,

@@ -37,10 +37,10 @@ class AppLoading extends StatelessWidget {
                           size: 50,
                         ),
                       ),
-                      SizedBox(height: 30),
+                      const SizedBox(height: 30),
                       Text(
                         status,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
@@ -52,7 +52,7 @@ class AppLoading extends StatelessWidget {
               ),
             ),
           )
-        : SizedBox();
+        : const SizedBox();
   }
 }
 

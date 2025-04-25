@@ -20,7 +20,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
   type: AppAppBar,
 )
 AppAppBar appAppBar(BuildContext context) {
-  return AppAppBar();
+  return const AppAppBar();
 }
 
 /// ElevatedButton
@@ -38,7 +38,7 @@ AppElevatedButton appElevatedButton(BuildContext context) {
   type: AppEmpty,
 )
 AppEmpty appEmpty(BuildContext context) {
-  return AppEmpty();
+  return const AppEmpty();
 }
 
 /// ErrorWidget
@@ -87,7 +87,7 @@ AppIcon appIcon(BuildContext context) {
   type: AppLoading,
 )
 AppLoading appLoading(BuildContext context) {
-  return AppLoading(loading: true, status: 'test');
+  return const AppLoading(loading: true, status: 'test');
 }
 
 /// MyProfileButton
@@ -108,7 +108,7 @@ AppMyProfileButton appMyProfileButton(BuildContext context) {
   type: AppRequest,
 )
 AppRequest appRequest(BuildContext context) {
-  return AppRequest();
+  return const AppRequest();
 }
 
 /// TextButton

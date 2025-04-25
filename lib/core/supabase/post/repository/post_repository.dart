@@ -8,7 +8,7 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
-import 'package:food_gram_app/main.dart';
+import 'package:logger/logger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart' as maplibre;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -19,6 +19,7 @@ part 'post_repository.g.dart';
 class PostRepository extends _$PostRepository {
   @override
   Future<void> build() async {}
+  final logger = Logger();
 
   /// 全ての投稿を取得
   Future<Result<List<Posts>, Exception>> getPosts() async {
@@ -39,8 +40,8 @@ class PostRepository extends _$PostRepository {
     try {
       final result =
           await ref.read(postServiceProvider.notifier).getPostData(data, index);
-      final posts = Posts.fromJson(result['post']);
-      final users = Users.fromJson(result['user']);
+      final posts = Posts.fromJson(result['post'] as Map<String, dynamic>);
+      final users = Users.fromJson(result['user'] as Map<String, dynamic>);
       return Success(Model(users, posts));
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
@@ -116,8 +117,8 @@ class PostRepository extends _$PostRepository {
         data
             .map(
               (item) => Model(
-                Users.fromJson(item['user']),
-                Posts.fromJson(item['post']),
+                Users.fromJson(item['user'] as Map<String, dynamic>),
+                Posts.fromJson(item['post'] as Map<String, dynamic>),
               ),
             )
             .toList(),
@@ -157,7 +158,7 @@ Future<List<Posts>> getNearByPosts(Ref ref) async {
   /// 投稿データの取得
   final posts = await ref.watch(postStreamProvider.future);
   final currentLocation = await ref.read(locationProvider.future);
-  if (currentLocation == maplibre.LatLng(0, 0)) {
+  if (currentLocation == const maplibre.LatLng(0, 0)) {
     return [];
   }
 
@@ -203,7 +204,7 @@ Future<Result<List<Model>, Exception>> restaurantReviews(
       for (var index = 0; index < data.length; index++) {
         final userData = await ref
             .read(postServiceProvider.notifier)
-            .getUserData(data[index]['user_id']);
+            .getUserData(data[index]['user_id'] as String);
         final user = Users.fromJson(userData);
         final posts = Posts.fromJson(data[index]);
         models.add(Model(user, posts));

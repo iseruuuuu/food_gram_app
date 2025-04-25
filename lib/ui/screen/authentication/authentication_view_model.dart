@@ -5,8 +5,8 @@ import 'package:food_gram_app/core/supabase/auth/services/auth_service.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_state.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'authentication_view_model.g.dart';
@@ -20,6 +20,8 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     ref.onDispose(emailTextField.dispose);
     return initState;
   }
+
+  final logger = Logger();
 
   final emailTextField = TextEditingController();
 

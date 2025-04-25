@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:food_gram_app/core/admob/config/admob_config.dart';
 import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'admob_interstitial.g.dart';
@@ -13,6 +13,7 @@ class AdmobInterstitial {
     this.onAdStateChanged,
   });
 
+  final logger = Logger();
   static const int maxLoadAttempts = 2;
 
   final bool isSubscribed;
@@ -33,7 +34,7 @@ class AdmobInterstitial {
     }
 
     InterstitialAd.load(
-      adUnitId: AdmobConfig.interstitialAdUnitId,
+      adUnitId: interstitialAdUnitId,
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
@@ -64,7 +65,7 @@ class AdmobInterstitial {
     // 前回の広告表示からの経過時間をチェック
     if (_lastAdShowTime != null) {
       final timeSinceLastAd = DateTime.now().difference(_lastAdShowTime!);
-      if (timeSinceLastAd < AdmobConfig.minInterstitialDuration) {
+      if (timeSinceLastAd < minInterstitialDuration) {
         logger.i('Skipping ad due to minimum duration not met');
         onAdClosed?.call();
         return;

@@ -14,8 +14,8 @@ class AppPostCountryCategoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        showModalBottomSheet(
+      onTap: () async {
+        await showModalBottomSheet<void>(
           context: context,
           builder: (context) {
             return AppPostCountryCategoryModalSheet(
@@ -60,8 +60,8 @@ class AppPostFoodCategoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        showModalBottomSheet(
+      onTap: () async {
+        await showModalBottomSheet<void>(
           context: context,
           builder: (context) {
             return AppPostFoodCategoryModalSheet(

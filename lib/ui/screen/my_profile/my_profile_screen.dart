@@ -30,10 +30,10 @@ class MyProfileScreen extends HookConsumerWidget {
           if (users.isSubscribe) {
             return;
           }
-          WidgetsBinding.instance.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
             final value = math.Random().nextInt(10);
             if (value == 0) {
-              showDialog(
+              await showDialog<void>(
                 context: context,
                 builder: (context) => const AppPromoteDialog(),
               );
@@ -47,7 +47,7 @@ class MyProfileScreen extends HookConsumerWidget {
       length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppAppBar(),
+        appBar: const AppAppBar(),
         body: AsyncValueSwitcher(
           asyncValue: state,
           onErrorTap: () {
@@ -60,7 +60,7 @@ class MyProfileScreen extends HookConsumerWidget {
             return RefreshIndicator(
               color: Colors.black,
               onRefresh: () async {
-                await Future.delayed(const Duration(seconds: 1));
+                await Future<void>.delayed(const Duration(seconds: 1));
                 ref.invalidate(myPostStreamProvider);
               },
               child: CustomScrollView(
@@ -78,7 +78,7 @@ class MyProfileScreen extends HookConsumerWidget {
                         );
                       },
                       loading: () {
-                        return AppHeaderSkeleton();
+                        return const AppHeaderSkeleton();
                       },
                       error: SizedBox.shrink,
                     ),

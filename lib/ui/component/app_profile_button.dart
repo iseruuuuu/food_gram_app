@@ -9,8 +9,8 @@ class AppMyProfileButton extends StatelessWidget {
     super.key,
   });
 
-  final Function() onTapEdit;
-  final Function() onTapExchange;
+  final VoidCallback onTapEdit;
+  final VoidCallback onTapExchange;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class ProfileButton extends StatelessWidget {
   });
 
   final String title;
-  final Function() onTap;
+  final VoidCallback onTap;
   final IconData icon;
 
   @override
@@ -55,10 +55,10 @@ class ProfileButton extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: Colors.white, size: 18),
-          SizedBox(width: 5),
+          const SizedBox(width: 5),
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 12,
               color: Colors.white,

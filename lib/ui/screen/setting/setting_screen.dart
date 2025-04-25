@@ -33,7 +33,7 @@ class SettingScreen extends HookConsumerWidget {
     final subscriptionState = ref.watch(subscriptionProvider);
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppAppBar(),
+      appBar: const AppAppBar(),
       body: Stack(
         children: [
           Column(
@@ -305,7 +305,7 @@ class SettingScreen extends HookConsumerWidget {
                   ),
                 ),
               ),
-              AdmobBanner(id: 'setting'),
+              const AdmobBanner(id: 'setting'),
             ],
           ),
           AppLoading(

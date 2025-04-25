@@ -6,16 +6,18 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_state.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'edit_post_view_model.g.dart';
 
 @riverpod
 class EditPostViewModel extends _$EditPostViewModel {
+  final logger = Logger();
+
   // 画像設定の定数
   static const _imageConfig = (
     maxSize: 960.0,

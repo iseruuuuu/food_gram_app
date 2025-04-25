@@ -29,7 +29,7 @@ class AppListView extends HookConsumerWidget {
       return const AppEmpty();
     }
     final rowCount = (data.length / 3).ceil();
-    final adEvery = 30;
+    const adEvery = 30;
     final adRowInterval = (adEvery / 3).floor();
     return SliverList(
       delegate: SliverChildBuilderDelegate(
@@ -54,7 +54,7 @@ class AppListView extends HookConsumerWidget {
               }
               final itemImageUrl = supabase.storage
                   .from('food')
-                  .getPublicUrl(data[itemIndex]['food_image']);
+                  .getPublicUrl(data[itemIndex]['food_image'] as String);
               return Expanded(
                 child: GestureDetector(
                   onTap: () {
@@ -81,7 +81,7 @@ class AppListView extends HookConsumerWidget {
                   },
                   child: Heroine(
                     tag: 'image-${data[itemIndex]['id']}',
-                    flightShuttleBuilder: FlipShuttleBuilder(),
+                    flightShuttleBuilder: const FlipShuttleBuilder().call,
                     spring: SimpleSpring.bouncy,
                     child: Card(
                       elevation: 10,

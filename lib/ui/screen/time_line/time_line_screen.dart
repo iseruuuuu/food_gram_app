@@ -55,7 +55,7 @@ class TimeLineScreen extends HookConsumerWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(40),
+          preferredSize: const Size.fromHeight(40),
           child: AppBar(
             surfaceTintColor: Colors.transparent,
             forceMaterialTransparency: true,
@@ -70,7 +70,7 @@ class TimeLineScreen extends HookConsumerWidget {
               splashFactory: NoSplash.splashFactory,
               overlayColor: WidgetStateProperty.all(Colors.transparent),
               enableFeedback: true,
-              tabs: <Widget>[
+              tabs: const <Widget>[
                 Tab(
                   icon: Icon(Icons.dinner_dining, size: 30),
                   height: 38,
@@ -85,7 +85,7 @@ class TimeLineScreen extends HookConsumerWidget {
         ),
         body: TabBarView(
           children: [
-            RestaurantCategoryScreen(),
+            const RestaurantCategoryScreen(),
             FoodListView(
               state: homeMade,
             ),
@@ -118,11 +118,10 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
     final selectedCategoryName = useState('');
     final postState =
         ref.watch(postStreamByCategoryProvider(selectedCategoryName.value));
-    print(selectedCategoryName);
     return RefreshIndicator(
       color: Colors.black,
       onRefresh: () async {
-        await Future.delayed(const Duration(seconds: 1));
+        await Future<void>.delayed(const Duration(seconds: 1));
         ref.invalidate(
           postStreamByCategoryProvider(selectedCategoryName.value),
         );

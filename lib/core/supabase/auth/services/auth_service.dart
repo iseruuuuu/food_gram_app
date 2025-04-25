@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/env.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -18,6 +18,8 @@ AuthService authService(Ref ref) => AuthService(ref);
 
 class AuthService {
   AuthService(this.ref);
+
+  final logger = Logger();
 
   static const _redirectUrl = 'io.supabase.flutterquickstart://login-callback/';
 

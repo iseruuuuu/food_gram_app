@@ -15,7 +15,7 @@ class AppSettingTile extends StatelessWidget {
   final double? size;
   final Color? color;
   final String title;
-  final Function() onTap;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +36,15 @@ class AppSettingTile extends StatelessWidget {
                 color: color ?? Colors.black,
               ),
             ),
-            Gap(5),
+            const Gap(5),
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 13.5,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Gap(10),
+            const Gap(10),
           ],
         ),
       ),

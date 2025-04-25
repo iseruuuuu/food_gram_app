@@ -48,7 +48,7 @@ class ProfileScreen extends ConsumerWidget {
         body: RefreshIndicator(
           color: Colors.black,
           onRefresh: () async {
-            await Future.delayed(const Duration(seconds: 1));
+            await Future<void>.delayed(const Duration(seconds: 1));
             ref.invalidate(profileRepositoryProvider(userId: users.userId));
           },
           child: CustomScrollView(

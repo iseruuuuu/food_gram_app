@@ -1,6 +1,6 @@
 import 'package:food_gram_app/core/admob/config/admob_config.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'admob_open.g.dart';
@@ -9,10 +9,11 @@ part 'admob_open.g.dart';
 class AdmobOpen {
   AppOpenAd? _appOpenAd;
   bool _isAdShowing = false;
+  final logger = Logger();
 
   void loadAd() {
     AppOpenAd.load(
-      adUnitId: AdmobConfig.appOpenAdUnitId,
+      adUnitId: appOpenAdUnitId,
       request: const AdRequest(),
       adLoadCallback: AppOpenAdLoadCallback(
         onAdLoaded: onAppOpenAdLoaded,

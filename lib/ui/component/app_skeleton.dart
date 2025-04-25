@@ -18,13 +18,13 @@ class AppHeaderSkeleton extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.2),
-                offset: Offset(0, -4),
+                offset: const Offset(0, -4),
                 blurRadius: 6,
                 spreadRadius: 1,
               ),
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.2),
-                offset: Offset(0, 4),
+                offset: const Offset(0, 4),
                 blurRadius: 6,
                 spreadRadius: 1,
               ),
@@ -41,8 +41,8 @@ class AppHeaderSkeleton extends StatelessWidget {
                       radius: 42,
                       backgroundColor: Colors.grey.shade300,
                     ),
-                    Spacer(),
-                    Column(
+                    const Spacer(),
+                    const Column(
                       children: [
                         Text(
                           '100',
@@ -54,8 +54,8 @@ class AppHeaderSkeleton extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Gap(30),
-                    Column(
+                    const Gap(30),
+                    const Column(
                       children: [
                         Text(
                           '100',
@@ -69,13 +69,13 @@ class AppHeaderSkeleton extends StatelessWidget {
                     ),
                   ],
                 ),
-                Spacer(),
-                Text(
+                const Spacer(),
+                const Text(
                   'Name',
                   style: TextStyle(fontSize: 24),
                 ),
-                Gap(4),
-                Text(
+                const Gap(4),
+                const Text(
                   'Introduction',
                   style: TextStyle(fontSize: 24),
                 ),

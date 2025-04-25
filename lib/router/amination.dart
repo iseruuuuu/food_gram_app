@@ -120,7 +120,7 @@ CustomTransitionPage<Object?> scaleUpTransition(Widget screen) {
 CustomTransitionPage<Object?> elasticTransition(Widget screen) {
   return CustomTransitionPage<Object?>(
     child: screen,
-    transitionDuration: Duration(seconds: 1),
+    transitionDuration: const Duration(seconds: 1),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       final elasticAnimation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(parent: animation, curve: Curves.easeOutExpo),

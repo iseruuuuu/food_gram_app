@@ -2,7 +2,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/user/services/user_service.dart';
-import 'package:food_gram_app/main.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -12,6 +12,8 @@ part 'user_repository.g.dart';
 class UserRepository extends _$UserRepository {
   @override
   Future<void> build() async {}
+
+  final logger = Logger();
 
   /// 自分のユーザー情報を取得
   Future<Result<Users, Exception>> getCurrentUser() async {

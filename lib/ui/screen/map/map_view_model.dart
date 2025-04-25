@@ -80,7 +80,7 @@ class MapViewModel extends _$MapViewModel {
         );
         await state.mapController?.animateCamera(
           CameraUpdate.newLatLng(latLng),
-          duration: Duration(seconds: 1),
+          duration: const Duration(seconds: 1),
         );
         isInitialLoading = false;
         state = state.copyWith(
@@ -138,7 +138,7 @@ class MapViewModel extends _$MapViewModel {
         );
         await state.mapController?.animateCamera(
           CameraUpdate.newLatLng(latLng),
-          duration: Duration(seconds: 1),
+          duration: const Duration(seconds: 1),
         );
         state = state.copyWith(
           isLoading: false,

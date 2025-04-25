@@ -14,10 +14,10 @@ class AppShareModalSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height / 3.5,
       child: DecoratedBox(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(30),
@@ -37,7 +37,7 @@ class AppShareModalSheet extends StatelessWidget {
                   },
                   child: Text(
                     L10n.of(context).shareTextAndImage,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                       color: Colors.blue,
@@ -46,7 +46,7 @@ class AppShareModalSheet extends StatelessWidget {
                 ),
               ),
             ),
-            Divider(),
+            const Divider(),
             SizedBox(
               width: MediaQuery.sizeOf(context).width,
               child: TextButton(
@@ -56,7 +56,7 @@ class AppShareModalSheet extends StatelessWidget {
                 },
                 child: Text(
                   L10n.of(context).shareImageOnly,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                     color: Colors.blue,
@@ -64,14 +64,14 @@ class AppShareModalSheet extends StatelessWidget {
                 ),
               ),
             ),
-            Divider(),
+            const Divider(),
             SizedBox(
               width: MediaQuery.sizeOf(context).width,
               child: TextButton(
                 onPressed: () => context.pop(),
                 child: Text(
                   L10n.of(context).close,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                     color: Colors.red,

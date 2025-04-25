@@ -66,7 +66,9 @@ class EditPostScreen extends HookConsumerWidget {
               ? IconButton(
                   onPressed: () async {
                     primaryFocus?.unfocus();
-                    await Future.delayed(const Duration(milliseconds: 100));
+                    await Future<void>.delayed(
+                      const Duration(milliseconds: 100),
+                    );
                     context.pop();
                   },
                   icon: const Icon(
@@ -113,9 +115,9 @@ class EditPostScreen extends HookConsumerWidget {
                   children: [
                     Center(
                       child: GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           primaryFocus?.unfocus();
-                          showModalBottomSheet(
+                          await showModalBottomSheet<void>(
                             context: context,
                             builder: (context) {
                               return AppPostImageModalSheet(
@@ -177,16 +179,16 @@ class EditPostScreen extends HookConsumerWidget {
                         width: double.infinity,
                         child: Row(
                           children: [
-                            Gap(5),
-                            Icon(
+                            const Gap(5),
+                            const Icon(
                               Icons.place,
                               size: 30,
                               color: Colors.black,
                             ),
-                            Gap(10),
+                            const Gap(10),
                             Expanded(
                               child: ListTile(
-                                contentPadding: EdgeInsets.all(0),
+                                contentPadding: EdgeInsets.zero,
                                 shape: RoundedRectangleBorder(
                                   side: const BorderSide(),
                                   borderRadius: BorderRadius.circular(6),

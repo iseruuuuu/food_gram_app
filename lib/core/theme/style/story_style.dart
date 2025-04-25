@@ -4,7 +4,7 @@ class StoryStyle {
   StoryStyle._();
 
   static TextStyle foodName() {
-    return TextStyle(
+    return const TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.bold,
       fontSize: 20,
@@ -12,7 +12,7 @@ class StoryStyle {
   }
 
   static TextStyle restaurant() {
-    return TextStyle(
+    return const TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.bold,
       fontSize: 16,
@@ -20,7 +20,7 @@ class StoryStyle {
   }
 
   static TextStyle name() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 16,
       color: Colors.white,
       fontWeight: FontWeight.bold,

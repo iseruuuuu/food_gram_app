@@ -4,6 +4,8 @@ part 'env.g.dart';
 
 @Envied(path: '.env')
 abstract class Env {
+  const Env._();
+
   @EnviedField(varName: 'MAP_LIBRE', obfuscate: true)
   static final String mapLibre = _Env.mapLibre;
   @EnviedField(varName: 'HOT_PEPPER', obfuscate: true)
@@ -40,6 +42,8 @@ abstract class Env {
 
 @Envied(path: '.env.dev')
 abstract class Dev {
+  const Dev._();
+
   @EnviedField(varName: 'SUPABASE_URL', obfuscate: true)
   static final String supabaseUrl = _Dev.supabaseUrl;
 
@@ -49,6 +53,8 @@ abstract class Dev {
 
 @Envied(path: '.env.prod')
 abstract class Prod {
+  const Prod._();
+
   @EnviedField(varName: 'SUPABASE_URL', obfuscate: true)
   static final String supabaseUrl = _Prod.supabaseUrl;
 
