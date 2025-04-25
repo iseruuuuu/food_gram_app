@@ -7,7 +7,7 @@ import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
-import 'package:food_gram_app/main.dart';
+import 'package:logger/logger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart' as maplibre;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -16,6 +16,7 @@ part 'post_service.g.dart';
 
 @riverpod
 class PostService extends _$PostService {
+  final logger = Logger();
   final _cacheManager = CacheManager();
 
   String? get _currentUserId => ref.read(currentUserProvider);

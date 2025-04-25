@@ -2,8 +2,8 @@ import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_state.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'my_profile_view_model.g.dart';
@@ -17,6 +17,8 @@ class MyProfileViewModel extends _$MyProfileViewModel {
     getData();
     return initState;
   }
+
+  final logger = Logger();
 
   Future<void> getData() async {
     state = const MyProfileStateLoading();

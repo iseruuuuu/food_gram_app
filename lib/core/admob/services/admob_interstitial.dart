@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:food_gram_app/core/admob/config/admob_config.dart';
 import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'admob_interstitial.g.dart';
@@ -13,6 +13,7 @@ class AdmobInterstitial {
     this.onAdStateChanged,
   });
 
+  final logger = Logger();
   static const int maxLoadAttempts = 2;
 
   final bool isSubscribed;

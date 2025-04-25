@@ -4,9 +4,9 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/main.dart';
 import 'package:food_gram_app/ui/screen/edit/edit_state.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'edit_view_model.g.dart';
@@ -20,6 +20,8 @@ class EditViewModel extends _$EditViewModel {
     getProfile();
     return initState;
   }
+
+  final logger = Logger();
 
   final nameTextController = TextEditingController();
   final useNameTextController = TextEditingController();

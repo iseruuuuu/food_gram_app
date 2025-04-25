@@ -8,7 +8,7 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
-import 'package:food_gram_app/main.dart';
+import 'package:logger/logger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart' as maplibre;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -19,6 +19,7 @@ part 'post_repository.g.dart';
 class PostRepository extends _$PostRepository {
   @override
   Future<void> build() async {}
+  final logger = Logger();
 
   /// 全ての投稿を取得
   Future<Result<List<Posts>, Exception>> getPosts() async {
