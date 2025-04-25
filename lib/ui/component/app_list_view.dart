@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
@@ -24,17 +25,38 @@ class AppListView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final screenWidth = MediaQuery.of(context).size.width / 3;
     final supabase = ref.watch(supabaseProvider);
-    return data.isNotEmpty
-        ? SliverGrid(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                if (index >= data.length) {
-                  return null;
-                }
-                final foodImageUrl = supabase.storage
-                    .from('food')
-                    .getPublicUrl(data[index]['food_image']);
-                return GestureDetector(
+    if (data.isEmpty) {
+      return const AppEmpty();
+    }
+    final rowCount = (data.length / 3).ceil();
+    final adEvery = 30;
+    final adRowInterval = (adEvery / 3).floor();
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          final isAdRow = (index + 1) % (adRowInterval + 1) == 0;
+          if (isAdRow) {
+            return Container(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              width: double.infinity,
+              child: const Center(
+                child: ReusableRectangleBanner(position: 0),
+              ),
+            );
+          }
+          final actualRowIndex = index - (index ~/ (adRowInterval + 1));
+          final startIndex = actualRowIndex * 3;
+          return Row(
+            children: List.generate(3, (gridIndex) {
+              final itemIndex = startIndex + gridIndex;
+              if (itemIndex >= data.length) {
+                return const Expanded(child: SizedBox());
+              }
+              final itemImageUrl = supabase.storage
+                  .from('food')
+                  .getPublicUrl(data[itemIndex]['food_image']);
+              return Expanded(
+                child: GestureDetector(
                   onTap: () {
                     EasyDebounce.debounce(
                       'click_detail',
@@ -42,7 +64,7 @@ class AppListView extends HookConsumerWidget {
                       () async {
                         final postResult = await ref
                             .read(postRepositoryProvider.notifier)
-                            .getPostData(data, index);
+                            .getPostData(data, itemIndex);
                         await postResult.whenOrNull(
                           success: (model) async {
                             final result = await context.pushNamed(
@@ -58,7 +80,7 @@ class AppListView extends HookConsumerWidget {
                     );
                   },
                   child: Heroine(
-                    tag: 'image-${data[index]['id']}',
+                    tag: 'image-${data[itemIndex]['id']}',
                     flightShuttleBuilder: FlipShuttleBuilder(),
                     spring: SimpleSpring.bouncy,
                     child: Card(
@@ -66,7 +88,7 @@ class AppListView extends HookConsumerWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: CachedNetworkImage(
-                          imageUrl: foodImageUrl,
+                          imageUrl: itemImageUrl,
                           fit: BoxFit.cover,
                           width: screenWidth,
                           height: screenWidth,
@@ -77,16 +99,13 @@ class AppListView extends HookConsumerWidget {
                       ),
                     ),
                   ),
-                );
-              },
-              childCount: data.length,
-            ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
-            ),
-          )
-        : AppEmpty();
+                ),
+              );
+            }),
+          );
+        },
+        childCount: rowCount + (rowCount ~/ adRowInterval),
+      ),
+    );
   }
 }
