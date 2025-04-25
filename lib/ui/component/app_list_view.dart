@@ -33,7 +33,7 @@ class AppListView extends HookConsumerWidget {
     final adRowInterval = (adEvery / 3).floor();
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-            (context, index) {
+        (context, index) {
           final isAdRow = (index + 1) % (adRowInterval + 1) == 0;
           if (isAdRow) {
             return Container(
@@ -61,7 +61,7 @@ class AppListView extends HookConsumerWidget {
                     EasyDebounce.debounce(
                       'click_detail',
                       const Duration(milliseconds: 200),
-                          () async {
+                      () async {
                         final postResult = await ref
                             .read(postRepositoryProvider.notifier)
                             .getPostData(data, itemIndex);
