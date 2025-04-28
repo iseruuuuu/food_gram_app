@@ -1,15 +1,12 @@
-name: Auto Assign PR
+name: Auto Author Assign
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, reopened]
 
 jobs:
-  auto-assign:
+  assign-author:
+    name: Auto Author Assign
     runs-on: ubuntu-22.04
     steps:
-      - name: Auto Assign PR
-        uses: hkusu/review-assign-action@5bee595fdb9765d4a0bd35724b6302fa15569158 # v1.4.0
-        with:
-          assignees: iseruuuuu
-          reviewers: ""
+      - uses: toshimaru/auto-author-assign@16f0022cf3d7970c106d8d1105f75a1165edb516 #2.1.1s
