@@ -1,15 +1,15 @@
-name: Auto Assign PR
+# .github/workflows/auto-author-assign.yml
+name: Auto Author Assign
 
 on:
-  pull_request:
-    types: [opened]
+  pull_request_target:
+    types: [ opened, reopened ]
+
+permissions:
+  pull-requests: write
 
 jobs:
-  auto-assign:
-    runs-on: ubuntu-22.04
+  assign-author:
+    runs-on: ubuntu-latest
     steps:
-      - name: Auto Assign PR
-        uses: hkusu/review-assign-action@5bee595fdb9765d4a0bd35724b6302fa15569158 # v1.4.0
-        with:
-          assignees: iseruuuuu
-          reviewers: ""
+      - uses: toshimaru/auto-author-assign@v2.1.1
