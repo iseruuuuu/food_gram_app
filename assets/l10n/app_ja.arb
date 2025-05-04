@@ -203,5 +203,7 @@
   "paywallSubscribeButton": "プレミアム会員になる",
   "paywallPrice": "￥ 300/月",
   "paywallCancelNote": "いつでも解約可能",
-  "paywallWelcomeTitle": "Welcome to\nFoodGram Members!"
+  "paywallWelcomeTitle": "Welcome to\nFoodGram Members!",
+  "appTitle": "FoodGram",
+  "appSubtitle": "美味しい瞬間、シェアしよう"
 }

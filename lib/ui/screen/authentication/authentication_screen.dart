@@ -93,13 +93,11 @@ class AuthenticationScreen extends HookConsumerWidget {
                       Column(
                         children: [
                           Text(
-                            //TODO 多言語化する
-                            'FoodGram',
+                            L10n.of(context).appTitle,
                             style: AuthenticationStyle.authTitleStyle(),
                           ),
                           Text(
-                            //TODO 多言語化する
-                            '美味しい瞬間、シェアしよう',
+                            L10n.of(context).appSubtitle,
                             style: AuthenticationStyle.authSubTitleStyle(),
                           ),
                         ],

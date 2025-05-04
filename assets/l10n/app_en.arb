@@ -203,5 +203,7 @@
   "paywallSubscribeButton": "Become a Premium Member",
   "paywallPrice": "$3/month",
   "paywallCancelNote": "Cancel anytime",
-  "paywallWelcomeTitle": "Welcome to\nFoodGram Members!"
+  "paywallWelcomeTitle": "Welcome to\nFoodGram Members!",
+  "appTitle": "FoodGram",
+  "appSubtitle": "Share your delicious moments"
 }

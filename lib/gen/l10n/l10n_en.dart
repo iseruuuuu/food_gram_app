@@ -619,4 +619,10 @@ class L10nEn extends L10n {
 
   @override
   String get paywallWelcomeTitle => 'Welcome to\nFoodGram Members!';
+
+  @override
+  String get appTitle => 'FoodGram';
+
+  @override
+  String get appSubtitle => 'Share your delicious moments';
 }
