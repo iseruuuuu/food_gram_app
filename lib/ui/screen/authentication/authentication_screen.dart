@@ -79,7 +79,6 @@ class AuthenticationScreen extends HookConsumerWidget {
               ],
             ),
           ),
-          // 中央以降の内容
           Align(
             child: Padding(
               padding: const EdgeInsets.only(left: 24, right: 24, top: 200),
