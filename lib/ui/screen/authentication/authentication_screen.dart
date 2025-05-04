@@ -13,12 +13,10 @@ import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
-import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:snow_fall_animation/snow_fall_animation.dart';
 
 class AuthenticationScreen extends HookConsumerWidget {
   const AuthenticationScreen({super.key});
@@ -26,7 +24,7 @@ class AuthenticationScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final loading = ref.watch(loadingProvider);
-    final buttonWidth = MediaQuery.of(context).size.width / 1.3;
+    final buttonWidth = MediaQuery.of(context).size.width;
     final controller = ref.watch(authenticationViewModelProvider().notifier);
     final supabase = ref.read(supabaseProvider);
     final authStateSubscription = useMemoized(
@@ -44,78 +42,111 @@ class AuthenticationScreen extends HookConsumerWidget {
       [authStateSubscription],
     );
 
-    return GestureDetector(
-      onTap: () => primaryFocus?.unfocus(),
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Stack(
-          children: [
-            const SnowFallAnimation(
-              config: SnowfallConfig(
-                numberOfSnowflakes: 300,
-                enableRandomOpacity: false,
-                enableSnowDrift: false,
-                holdSnowAtBottom: false,
-              ),
-            ),
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 28),
-                child: Column(
-                  children: [
-                    const Gap(80),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Assets.image.food.image(width: 72, height: 72),
-                        const Gap(12),
-                        Text(
-                          'FoodGram',
-                          style: AuthenticationStyle.foodGram(),
-                        ),
-                      ],
-                    ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Stack(
+        children: [
+          SizedBox.expand(
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Image.asset(
+                    Assets.image.authImage.path,
+                    height: MediaQuery.of(context).size.height * 0.45,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: MediaQuery.of(context).size.height * 0.45,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.transparent, Colors.white],
+                        stops: [0.6, 1.0],
                       ),
                     ),
-                    const Gap(24),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Assets.gif.login1.image(width: 70, height: 70),
-                        Assets.gif.login2.image(width: 70, height: 70),
-                        Assets.gif.login3.image(width: 70, height: 70),
-                        Assets.gif.login4.image(width: 70, height: 70),
-                      ],
-                    ),
-                    const Gap(12),
-                    const Divider(),
-                    const Gap(24),
-                    AppleAuthButton(
-                      style: AuthenticationStyle.authButtonStyle(buttonWidth),
-                      onPressed: () {
-                        if (Platform.isIOS) {
-                          controller.loginApple(context);
-                        } else {
-                          SnackBarHelper().openErrorSnackBar(
-                            context,
-                            L10n.of(context).appleLoginFailure,
-                            '',
-                          );
-                        }
-                      },
-                    ),
-                    const Gap(24),
-                    GoogleAuthButton(
-                      style: AuthenticationStyle.authButtonStyle(buttonWidth),
-                      onPressed: () => controller.loginGoogle(context),
-                    ),
-                  ],
+                  ),
                 ),
+              ],
+            ),
+          ),
+          // 中央以降の内容
+          Align(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 24, right: 24, top: 200),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Assets.image.food.image(width: 60, height: 60),
+                      Column(
+                        children: [
+                          Text(
+                            //TODO 多言語化する
+                            'FoodGram',
+                            style: AuthenticationStyle.authTitleStyle(),
+                          ),
+                          Text(
+                            //TODO 多言語化する
+                            '美味しい瞬間、シェアしよう',
+                            style: AuthenticationStyle.authSubTitleStyle(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const Gap(28),
+                  const Divider(),
+                  const Gap(28),
+                  AppleAuthButton(
+                    style: AuthenticationStyle.authButtonStyle(buttonWidth),
+                    onPressed: () {
+                      if (Platform.isIOS) {
+                        controller.loginApple(context);
+                      } else {
+                        SnackBarHelper().openErrorSnackBar(
+                          context,
+                          L10n.of(context).appleLoginFailure,
+                          '',
+                        );
+                      }
+                    },
+                  ),
+                  const Gap(24),
+                  GoogleAuthButton(
+                    onPressed: () => controller.loginGoogle(context),
+                    style: AuthenticationStyle.authButtonStyle(buttonWidth),
+                  ),
+                ],
               ),
             ),
-            AppLoading(loading: loading, status: 'Loading...'),
-          ],
-        ),
+          ),
+
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Assets.gif.login1.image(width: 70, height: 70),
+                Assets.gif.login2.image(width: 70, height: 70),
+                Assets.gif.login3.image(width: 70, height: 70),
+                Assets.gif.login4.image(width: 70, height: 70),
+              ],
+            ),
+          ),
+          AppLoading(loading: loading, status: 'Loading...'),
+        ],
       ),
     );
   }
