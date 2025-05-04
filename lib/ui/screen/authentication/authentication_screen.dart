@@ -75,26 +75,6 @@ class AuthenticationScreen extends HookConsumerWidget {
                         ),
                       ],
                     ),
-                    const Gap(12),
-                    AppAuthTextField(controller: controller.emailTextField),
-                    const Gap(8),
-                    SizedBox(
-                      width: MediaQuery.sizeOf(context).width - 80,
-                      height: 48,
-                      child: ElevatedButton(
-                        style: AuthenticationStyle.signMail(),
-                        onPressed: () => controller.login(context),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.mail, color: Colors.white),
-                            const Gap(12),
-                            Text(
-                              'Sign in with Mail',
-                              style: AuthenticationStyle.signMailText(),
-                            ),
-                          ],
-                        ),
                       ),
                     ),
                     const Gap(24),

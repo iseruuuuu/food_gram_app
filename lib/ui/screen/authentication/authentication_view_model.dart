@@ -27,40 +27,6 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
 
   Loading get loading => ref.read(loadingProvider.notifier);
 
-  Future<void> login(BuildContext context) async {
-    loading.state = true;
-    SnackBarHelper().hideSnackBar(context);
-    primaryFocus?.unfocus();
-    if (emailTextField.text.isNotEmpty) {
-      final result =
-          await ref.read(authServiceProvider).login(emailTextField.text.trim());
-      await result.when(
-        success: (_) async {
-          SnackBarHelper().openSuccessSnackBar(
-            context,
-            L10n.of(context).loginSuccessful,
-            L10n.of(context).emailAuthentication,
-          );
-        },
-        failure: (error) {
-          logger.e(error);
-          SnackBarHelper().openErrorSnackBar(
-            context,
-            L10n.of(context).emailAuthenticationFailure,
-            authErrorManager(error, context),
-          );
-        },
-      );
-    } else {
-      SnackBarHelper().openErrorSnackBar(
-        context,
-        L10n.of(context).loginError,
-        L10n.of(context).emailEmpty,
-      );
-    }
-    loading.state = false;
-  }
-
   Future<void> loginApple(BuildContext context) async {
     primaryFocus?.unfocus();
     final result = await ref.read(authServiceProvider).loginApple();

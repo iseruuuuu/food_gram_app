@@ -27,23 +27,6 @@ class AuthService {
 
   SupabaseClient get supabase => ref.read(supabaseProvider);
 
-  Future<Result<void, String>> login(String email) async {
-    try {
-      await supabase.auth.signInWithOtp(
-        email: email.trim(),
-        shouldCreateUser: true,
-        emailRedirectTo: _redirectUrl,
-      );
-      return const Success(null);
-    } on AuthException catch (authError) {
-      logger.e('Login failed: ${authError.message}');
-      return Failure(authError.message);
-    } on Exception catch (error) {
-      logger.e('Unexpected error during login: $error');
-      return Failure(error.toString());
-    }
-  }
-
   Future<Result<AuthResponse, String>> loginApple() async {
     try {
       final rawNonce = supabase.auth.generateRawNonce();
