@@ -1319,6 +1319,18 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'Welcome to\nFoodGram Members!'**
   String get paywallWelcomeTitle;
+
+  /// No description provided for @appTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'FoodGram'**
+  String get appTitle;
+
+  /// No description provided for @appSubtitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'美味しい瞬間、シェアしよう'**
+  String get appSubtitle;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

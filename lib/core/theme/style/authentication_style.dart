@@ -33,15 +33,33 @@ class AuthenticationStyle {
 
   static AuthButtonStyle authButtonStyle(double width) {
     return AuthButtonStyle(
-      splashColor: Colors.white,
+      shadowColor: Colors.grey,
       height: 50,
       elevation: 3,
-      borderRadius: 20,
+      borderRadius: 10,
       width: width,
       textStyle: const TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
       ),
+    );
+  }
+
+  static TextStyle authTitleStyle() {
+    return const TextStyle(
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      letterSpacing: 2,
+    );
+  }
+
+  static TextStyle authSubTitleStyle() {
+    return const TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      letterSpacing: 2,
     );
   }
 }
