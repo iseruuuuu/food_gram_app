@@ -84,6 +84,10 @@ class $AssetsIconGen {
 class $AssetsImageGen {
   const $AssetsImageGen();
 
+  /// File path: assets/image/auth_image.png
+  AssetGenImage get authImage =>
+      const AssetGenImage('assets/image/auth_image.png');
+
   /// File path: assets/image/empty.png
   AssetGenImage get empty => const AssetGenImage('assets/image/empty.png');
 
@@ -142,6 +146,7 @@ class $AssetsImageGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+        authImage,
         empty,
         error,
         food,
