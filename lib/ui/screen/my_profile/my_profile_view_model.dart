@@ -52,4 +52,16 @@ class MyProfileViewModel extends _$MyProfileViewModel {
       state = const MyProfileStateError();
     }
   }
+
+  void setUser(Users user) {
+    state.whenOrNull(
+      data: (_, length, heartAmount) {
+        state = MyProfileState.data(
+          users: user,
+          length: length,
+          heartAmount: heartAmount,
+        );
+      },
+    );
+  }
 }

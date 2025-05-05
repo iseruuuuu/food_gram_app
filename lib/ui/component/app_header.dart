@@ -177,7 +177,7 @@ class AppHeader extends ConsumerWidget {
                               if (value != null) {
                                 ref
                                     .read(myProfileViewModelProvider().notifier)
-                                    .getData();
+                                    .setUser(value as Users);
                               }
                             });
                           },

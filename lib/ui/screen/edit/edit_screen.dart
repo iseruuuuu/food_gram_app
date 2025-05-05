@@ -61,16 +61,22 @@ class EditScreen extends HookConsumerWidget {
             actions: [
               if (!loading)
                 TextButton(
-                  onPressed: () {
-                    ref
+                  onPressed: () async {
+                    final success = await ref
                         .read(editViewModelProvider().notifier)
-                        .update()
-                        .then((value) async {
-                      if (value) {
-                        await adInterstitial.showAd();
-                        context.pop(true);
+                        .update();
+                    if (success) {
+                      while (loading) {
+                        await Future<void>.delayed(
+                            const Duration(milliseconds: 100));
                       }
-                    });
+                      final updatedUser =
+                          ref.read(editViewModelProvider()).user;
+                      if (updatedUser != null) {
+                        await adInterstitial.showAd();
+                        context.pop(updatedUser);
+                      }
+                    }
                   },
                   child: Text(
                     L10n.of(context).editUpdateButton,
