@@ -48,6 +48,7 @@ class EditViewModel extends _$EditViewModel {
       initialImage: user.image,
       favoriteTags: user.tag,
       isSubscribe: user.isSubscribe,
+      user: user,
     );
     loading.state = false;
   }
@@ -70,17 +71,19 @@ class EditViewModel extends _$EditViewModel {
           imageBytes: imageBytes,
           favoriteTags: state.favoriteTags,
         );
-    result.when(
-      success: (_) {
-        return true;
+    var success = false;
+    await result.when(
+      success: (_) async {
+        await getProfile();
+        success = true;
       },
       failure: (error) {
         state = state.copyWith(status: error.toString());
-        return false;
+        success = false;
       },
     );
     loading.state = false;
-    return true;
+    return success;
   }
 
   void selectIcon(int number) {

@@ -1,3 +1,4 @@
+import 'package:food_gram_app/core/model/users.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'edit_state.freezed.dart';
@@ -12,5 +13,6 @@ class EditState with _$EditState {
     @Default(false) bool isSelectedIcon,
     @Default('') String favoriteTags,
     @Default(false) bool isSubscribe,
+    Users? user,
   }) = _EditState;
 }
