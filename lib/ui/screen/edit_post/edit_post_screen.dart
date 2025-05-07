@@ -82,22 +82,22 @@ class EditPostScreen extends HookConsumerWidget {
             if (!loading)
               TextButton(
                 onPressed: () async {
-                  final success = await ref
+                  final isSuccess = await ref
                       .read(editPostViewModelProvider().notifier)
                       .update(
                         restaurantTag: countryTag.value,
                         foodTag: foodTag.value,
                       );
-                  if (success) {
+                  if (isSuccess) {
                     while (loading) {
                       await Future<void>.delayed(
                         const Duration(milliseconds: 100),
                       );
                     }
-                    final updatedUser =
+                    final updatePosts =
                         ref.read(editPostViewModelProvider()).posts;
-                    if (updatedUser != null) {
-                      context.pop(updatedUser);
+                    if (updatePosts != null) {
+                      context.pop(updatePosts);
                     }
                   } else {
                     SnackBarHelper().openErrorSnackBar(
