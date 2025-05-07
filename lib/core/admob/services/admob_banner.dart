@@ -132,7 +132,7 @@ class AdmobBanner extends ConsumerWidget {
 
 /// 現在表示中の広告位置を管理するプロバイダー
 final currentAdPositionProvider =
-    StateNotifierProvider<CurrentAdPositionNotifier, int>((ref) {
+    StateNotifierProvider.autoDispose<CurrentAdPositionNotifier, int>((ref) {
   return CurrentAdPositionNotifier();
 });
 
