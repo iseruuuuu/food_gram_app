@@ -131,7 +131,23 @@ class AdmobBanner extends ConsumerWidget {
 }
 
 /// 現在表示中の広告位置を管理するプロバイダー
-final currentAdPositionProvider = StateProvider<int>((ref) => 0);
+final currentAdPositionProvider =
+    StateNotifierProvider.autoDispose<CurrentAdPositionNotifier, int>((ref) {
+  return CurrentAdPositionNotifier();
+});
+
+/// 広告位置を管理するNotifier
+class CurrentAdPositionNotifier extends StateNotifier<int> {
+  CurrentAdPositionNotifier() : super(0);
+
+  void updatePosition(int newPosition) {
+    state = newPosition;
+  }
+
+  void incrementPosition() {
+    state = (state + 1) % 3; // 3つの広告を循環
+  }
+}
 
 /// 単一のレクタングル広告を管理するプロバイダー
 final singleRectangleBannerProvider =
@@ -219,7 +235,7 @@ class MultipleRectangleBannerNotifier extends StateNotifier<List<BannerAd?>> {
 }
 
 /// 再利用可能なレクタングル広告ウィジェット
-class ReusableRectangleBanner extends ConsumerWidget {
+class ReusableRectangleBanner extends ConsumerStatefulWidget {
   const ReusableRectangleBanner({
     required this.position,
     super.key,
@@ -228,20 +244,48 @@ class ReusableRectangleBanner extends ConsumerWidget {
   final int position;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ReusableRectangleBanner> createState() =>
+      _ReusableRectangleBannerState();
+}
+
+class _ReusableRectangleBannerState
+    extends ConsumerState<ReusableRectangleBanner> {
+  @override
+  void initState() {
+    super.initState();
+    // 初期化時に一度だけチェックして更新
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updatePositionIfNeeded();
+    });
+  }
+
+  @override
+  void didUpdateWidget(ReusableRectangleBanner oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // widget更新時に位置が変わった場合だけチェック
+    if (widget.position != oldWidget.position) {
+      _updatePositionIfNeeded();
+    }
+  }
+
+  void _updatePositionIfNeeded() {
+    final currentPosition = ref.read(currentAdPositionProvider);
+    if (widget.position > currentPosition) {
+      ref.read(currentAdPositionProvider.notifier).incrementPosition();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final bannerAds = ref.watch(multipleRectangleBannerProvider);
     final subscriptionState = ref.watch(subscriptionProvider);
-    final currentPosition = ref.watch(currentAdPositionProvider);
 
-    // 現在の表示位置と一致する場合のみ広告を表示
-    final isVisible = position == currentPosition;
     // 3つの広告を順番に表示するために位置を3で割った余りを使用
-    final adIndex = position % 3;
+    final adIndex = widget.position % 3;
     final currentAd = bannerAds[adIndex];
 
     return subscriptionState.when(
-      data: (isSubscribed) =>
-          _buildBannerContainer(currentAd, isSubscribed, isVisible),
+      data: (isSubscribed) => _buildBannerContainer(currentAd, isSubscribed),
       error: (_, __) => const SizedBox.shrink(),
       loading: _buildLoadingContainer,
     );
@@ -250,11 +294,8 @@ class ReusableRectangleBanner extends ConsumerWidget {
   Widget _buildBannerContainer(
     BannerAd? bannerAd,
     bool isSubscribed,
-    bool isVisible,
   ) {
-    if (isSubscribed) {
-      return const SizedBox.shrink();
-    } else if (bannerAd == null || !isVisible) {
+    if (isSubscribed || bannerAd == null) {
       return const SizedBox(
         width: 300,
         height: 250,
@@ -279,3 +320,6 @@ class ReusableRectangleBanner extends ConsumerWidget {
     );
   }
 }
+
+const adEvery = 30;
+final adRowInterval = (adEvery / 3).floor();
