@@ -96,7 +96,6 @@ class EditPostScreen extends HookConsumerWidget {
                     }
                     final updatedUser =
                         ref.read(editPostViewModelProvider()).posts;
-                    print(updatedUser); //null
                     if (updatedUser != null) {
                       context.pop(updatedUser);
                     }
@@ -115,7 +114,6 @@ class EditPostScreen extends HookConsumerWidget {
               ),
           ],
         ),
-        //TODO 更新した状態が更新（TextFieldとか）
         body: Stack(
           children: [
             SingleChildScrollView(
