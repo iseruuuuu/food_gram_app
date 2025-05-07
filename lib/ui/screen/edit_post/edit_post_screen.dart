@@ -82,14 +82,24 @@ class EditPostScreen extends HookConsumerWidget {
             if (!loading)
               TextButton(
                 onPressed: () async {
-                  final result = await ref
+                  final success = await ref
                       .read(editPostViewModelProvider().notifier)
                       .update(
                         restaurantTag: countryTag.value,
                         foodTag: foodTag.value,
                       );
-                  if (result) {
-                    context.pop(true);
+                  if (success) {
+                    while (loading) {
+                      await Future<void>.delayed(
+                        const Duration(milliseconds: 100),
+                      );
+                    }
+                    final updatedUser =
+                        ref.read(editPostViewModelProvider()).posts;
+                    print(updatedUser); //null
+                    if (updatedUser != null) {
+                      context.pop(updatedUser);
+                    }
                   } else {
                     SnackBarHelper().openErrorSnackBar(
                       context,
@@ -105,6 +115,7 @@ class EditPostScreen extends HookConsumerWidget {
               ),
           ],
         ),
+        //TODO 更新した状態が更新（TextFieldとか）
         body: Stack(
           children: [
             SingleChildScrollView(

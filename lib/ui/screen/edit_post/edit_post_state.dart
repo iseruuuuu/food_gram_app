@@ -1,3 +1,4 @@
+import 'package:food_gram_app/core/model/posts.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'edit_post_state.freezed.dart';
@@ -11,5 +12,6 @@ class EditPostState with _$EditPostState {
     @Default('') String restaurant,
     @Default(0.0) double lat,
     @Default(0.0) double lng,
+    Posts? posts,
   }) = _EditPostState;
 }

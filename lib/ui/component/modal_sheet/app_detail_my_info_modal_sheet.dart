@@ -68,10 +68,18 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                 ),
                 onPressed: () async {
                   context.pop();
-                  await context.pushNamed(
+                  await context
+                      .pushNamed(
                     RouterPath.myProfileEditPost,
                     extra: posts,
-                  );
+                  )
+                      .then((value) {
+                    if (value != null) {
+                      ref
+                          .read(postsViewModelProvider(posts.id).notifier)
+                          .setUser(value as Posts);
+                    }
+                  });
                 },
                 child: Row(
                   children: [
