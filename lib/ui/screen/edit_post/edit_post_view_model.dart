@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
+import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_state.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -128,9 +130,31 @@ class EditPostViewModel extends _$EditPostViewModel {
 
     await result.when(
       success: (_) async {
-        state = state.copyWith(
-          status: EditStatus.success.name,
-          isSuccess: true,
+        // キャッシュを無効化
+        ref.read(postServiceProvider.notifier).invalidatePostCache(_posts.id);
+
+        // 更新した投稿を取得
+        final updatedPostResult =
+            await ref.read(postServiceProvider.notifier).getPost(_posts.id);
+        updatedPostResult.when(
+          success: (data) {
+            final updatedPost =
+                Posts.fromJson(data['post'] as Map<String, dynamic>);
+            state = state.copyWith(
+              posts: updatedPost,
+              status: EditStatus.success.name,
+              isSuccess: true,
+            );
+            ref.invalidate(postStreamProvider);
+            ref.invalidate(postsViewModelProvider(_posts.id));
+          },
+          failure: (error) {
+            logger.e('Failed to get updated post: $error');
+            state = state.copyWith(
+              status: EditStatus.error.name,
+              isSuccess: false,
+            );
+          },
         );
       },
       failure: (error) {

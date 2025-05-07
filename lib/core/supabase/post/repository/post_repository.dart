@@ -49,6 +49,22 @@ class PostRepository extends _$PostRepository {
     }
   }
 
+  /// 特定の投稿を取得
+  Future<Result<Posts, Exception>> getPost(int postId) async {
+    try {
+      final result =
+          await ref.read(postServiceProvider.notifier).getPost(postId);
+      return result.when(
+        success: (data) =>
+            Success(Posts.fromJson(data['post'] as Map<String, dynamic>)),
+        failure: Failure.new,
+      );
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
+  }
+
   /// 自分の全投稿に対するいいね数の合計を取得
   Future<Result<int, Exception>> getHeartAmount() async {
     try {
