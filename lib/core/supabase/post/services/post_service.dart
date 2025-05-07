@@ -29,6 +29,11 @@ class PostService extends _$PostService {
   @override
   Future<void> build() async {}
 
+  /// 特定の投稿のキャッシュを無効化
+  void invalidatePostCache(int postId) {
+    _cacheManager.invalidate('post_data_$postId');
+  }
+
   /// 新規投稿を作成
   Future<Result<void, Exception>> post({
     required String foodName,
@@ -215,6 +220,47 @@ class PostService extends _$PostService {
       },
       duration: const Duration(minutes: 5),
     );
+  }
+
+  /// 特定の投稿を取得
+  Future<Result<Map<String, dynamic>, Exception>> getPost(int postId) async {
+    try {
+      return Success(
+        await _cacheManager.get<Map<String, dynamic>>(
+          key: 'post_data_$postId',
+          fetcher: () async {
+            final postData =
+                await supabase.from('posts').select().eq('id', postId).single();
+            final userData = await supabase
+                .from('users')
+                .select()
+                .eq('user_id', postData['user_id'] as String)
+                .single();
+            return {
+              'post': {
+                'id': postId,
+                'user_id': postData['user_id'],
+                'food_image': postData['food_image'],
+                'food_name': postData['food_name'],
+                'restaurant': postData['restaurant'],
+                'comment': postData['comment'],
+                'created_at': postData['created_at'],
+                'lat': double.parse(postData['lat'].toString()),
+                'lng': double.parse(postData['lng'].toString()),
+                'heart': int.parse(postData['heart'].toString()),
+                'restaurant_tag': postData['restaurant_tag'],
+                'food_tag': postData['food_tag'],
+              },
+              'user': userData,
+            };
+          },
+          duration: const Duration(minutes: 5),
+        ),
+      );
+    } on PostgrestException catch (e) {
+      logger.e('Failed to get post: ${e.message}');
+      return Failure(e);
+    }
   }
 
   /// 自分の全投稿に対するいいね数の合計を取得
