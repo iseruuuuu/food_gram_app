@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
+import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_state.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
-import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
 
 part 'edit_post_view_model.g.dart';
 
