@@ -235,7 +235,7 @@ class MultipleRectangleBannerNotifier extends StateNotifier<List<BannerAd?>> {
 }
 
 /// 再利用可能なレクタングル広告ウィジェット
-class ReusableRectangleBanner extends ConsumerWidget {
+class ReusableRectangleBanner extends ConsumerStatefulWidget {
   const ReusableRectangleBanner({
     required this.position,
     super.key,
@@ -244,20 +244,44 @@ class ReusableRectangleBanner extends ConsumerWidget {
   final int position;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ReusableRectangleBanner> createState() =>
+      _ReusableRectangleBannerState();
+}
+
+class _ReusableRectangleBannerState
+    extends ConsumerState<ReusableRectangleBanner> {
+  @override
+  void initState() {
+    super.initState();
+    // 初期化時に一度だけチェックして更新
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updatePositionIfNeeded();
+    });
+  }
+
+  @override
+  void didUpdateWidget(ReusableRectangleBanner oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // widget更新時に位置が変わった場合だけチェック
+    if (widget.position != oldWidget.position) {
+      _updatePositionIfNeeded();
+    }
+  }
+
+  void _updatePositionIfNeeded() {
+    final currentPosition = ref.read(currentAdPositionProvider);
+    if (widget.position > currentPosition) {
+      ref.read(currentAdPositionProvider.notifier).incrementPosition();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final bannerAds = ref.watch(multipleRectangleBannerProvider);
     final subscriptionState = ref.watch(subscriptionProvider);
-    final currentPosition = ref.watch(currentAdPositionProvider);
-
-    // スクロール位置に基づいて広告位置を更新
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (position > currentPosition) {
-        ref.read(currentAdPositionProvider.notifier).incrementPosition();
-      }
-    });
 
     // 3つの広告を順番に表示するために位置を3で割った余りを使用
-    final adIndex = position % 3;
+    final adIndex = widget.position % 3;
     final currentAd = bannerAds[adIndex];
 
     return subscriptionState.when(
