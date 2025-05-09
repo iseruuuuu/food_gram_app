@@ -12,6 +12,14 @@ class Restaurant with _$Restaurant {
     required double lng,
   }) = _Restaurant;
 
-  factory Restaurant.fromJson(Map<String, dynamic> json) =>
-      _$RestaurantFromJson(json);
+  factory Restaurant.fromJson(Map<String, dynamic> json) {
+    final geometry = json['geometry'] as Map<String, dynamic>;
+    final location = geometry['location'] as Map<String, dynamic>;
+    return Restaurant(
+      name: json['name'] as String,
+      address: json['formatted_address'] as String,
+      lat: location['lat'] as double,
+      lng: location['lng'] as double,
+    );
+  }
 }
