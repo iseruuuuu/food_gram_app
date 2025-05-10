@@ -71,8 +71,6 @@ dependencies:
   story: ^1.1.0
   supabase_flutter: ^2.3.3
   url_launcher: ^6.2.1
-  widgetbook: ^3.8.1
-  widgetbook_annotation: ^3.1.0
   xml: ^6.5.0
 
 dev_dependencies:
@@ -89,7 +87,6 @@ dev_dependencies:
   json_serializable: ^6.7.1
   riverpod_generator: ^2.6.0
   riverpod_lint: ^2.0.0
-  widgetbook_generator: ^3.8.0
   yumemi_lints: ^3.1.0
 
 flutter_icons:
