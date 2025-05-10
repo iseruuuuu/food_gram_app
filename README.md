@@ -1,8 +1,6 @@
 # FoodGram 🍽️
 
-<div align="center">
-  <img src="https://github.com/iseruuuuu/food_gram_app/assets/67954894/4e5198cf-be5c-46e2-8490-fc32f689121e" alt="FoodGram App" width="300"/>
-</div>
+![app](https://github.com/iseruuuuu/food_gram_app/assets/67954894/4e5198cf-be5c-46e2-8490-fc32f689121e)
 
 ## 📱 About the App
 
