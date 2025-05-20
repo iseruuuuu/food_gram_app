@@ -52,6 +52,7 @@ dependencies:
   json_annotation: ^4.9.0
   loading_animation_widget: ^1.2.0+4
   logger: ^2.0.2+1
+  lottie: ^3.3.1
   map_launcher: ^3.0.0
   maplibre_gl: ^0.20.0
   new_version_plus: ^0.0.11
@@ -107,3 +108,4 @@ flutter:
     - assets/splash/
     - assets/gif/
     - assets/trophy/
+    - assets/lottie/
