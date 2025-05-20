@@ -67,7 +67,7 @@ class DetailPostScreen extends HookConsumerWidget {
       },
       [],
     );
-    // 広告とGifControllerのためのuseEffect
+    // 広告のためのuseEffect
     useEffect(
       () {
         adInterstitial.createAd();
