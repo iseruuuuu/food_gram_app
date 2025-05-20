@@ -12,6 +12,7 @@ import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_category_item.dart';
+import 'package:food_gram_app/ui/component/app_data_loading.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
 import 'package:food_gram_app/ui/component/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/app_floating_button.dart';
@@ -159,15 +160,9 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
                     child: AppEmpty(),
                   ),
           if (postState.isLoading)
-            SliverFillRemaining(
+            const SliverFillRemaining(
               hasScrollBody: false,
-              child: Center(
-                child: Assets.image.loading.image(
-                  fit: BoxFit.cover,
-                  width: 100,
-                  height: 100,
-                ),
-              ),
+              child: AppDataLoading(),
             ),
           if (postState.hasError)
             SliverToBoxAdapter(

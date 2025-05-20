@@ -166,6 +166,16 @@ class $AssetsImageGen {
       ];
 }
 
+class $AssetsLottieGen {
+  const $AssetsLottieGen();
+
+  /// File path: assets/lottie/loading.json
+  String get loading => 'assets/lottie/loading.json';
+
+  /// List of all assets
+  List<String> get values => [loading];
+}
+
 class $AssetsSplashGen {
   const $AssetsSplashGen();
 
@@ -215,6 +225,7 @@ class Assets {
   static const $AssetsGifGen gif = $AssetsGifGen();
   static const $AssetsIconGen icon = $AssetsIconGen();
   static const $AssetsImageGen image = $AssetsImageGen();
+  static const $AssetsLottieGen lottie = $AssetsLottieGen();
   static const $AssetsSplashGen splash = $AssetsSplashGen();
   static const $AssetsTrophyGen trophy = $AssetsTrophyGen();
 }
