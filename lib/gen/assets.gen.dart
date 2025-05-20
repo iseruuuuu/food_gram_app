@@ -97,9 +97,6 @@ class $AssetsImageGen {
   /// File path: assets/image/food.png
   AssetGenImage get food => const AssetGenImage('assets/image/food.png');
 
-  /// File path: assets/image/heart.gif
-  AssetGenImage get heart => const AssetGenImage('assets/image/heart.gif');
-
   /// File path: assets/image/loading.gif
   AssetGenImage get loading => const AssetGenImage('assets/image/loading.gif');
 
@@ -150,7 +147,6 @@ class $AssetsImageGen {
         empty,
         error,
         food,
-        heart,
         loading,
         logoGoogle,
         paywall2,
