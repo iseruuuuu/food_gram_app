@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/ui/component/app_data_loading.dart';
 import 'package:food_gram_app/ui/component/app_error_widget.dart';
 
 /// 共通Widgetの一例
@@ -51,14 +51,7 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
         ),
         loading: () => KeyedSubtree(
           key: const ValueKey('onLoading'),
-          child: onLoading ??
-              Center(
-                child: Assets.image.loading.image(
-                  fit: BoxFit.cover,
-                  width: 100,
-                  height: 100,
-                ),
-              ),
+          child: onLoading ?? const Center(child: AppDataLoading()),
         ),
       ),
     );
