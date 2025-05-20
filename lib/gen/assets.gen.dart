@@ -169,11 +169,14 @@ class $AssetsImageGen {
 class $AssetsLottieGen {
   const $AssetsLottieGen();
 
+  /// File path: assets/lottie/heart.json
+  String get heart => 'assets/lottie/heart.json';
+
   /// File path: assets/lottie/loading.json
   String get loading => 'assets/lottie/loading.json';
 
   /// List of all assets
-  List<String> get values => [loading];
+  List<String> get values => [heart, loading];
 }
 
 class $AssetsSplashGen {
