@@ -97,9 +97,6 @@ class $AssetsImageGen {
   /// File path: assets/image/food.png
   AssetGenImage get food => const AssetGenImage('assets/image/food.png');
 
-  /// File path: assets/image/heart.gif
-  AssetGenImage get heart => const AssetGenImage('assets/image/heart.gif');
-
   /// File path: assets/image/loading.gif
   AssetGenImage get loading => const AssetGenImage('assets/image/loading.gif');
 
@@ -150,7 +147,6 @@ class $AssetsImageGen {
         empty,
         error,
         food,
-        heart,
         loading,
         logoGoogle,
         paywall2,
@@ -169,11 +165,14 @@ class $AssetsImageGen {
 class $AssetsLottieGen {
   const $AssetsLottieGen();
 
+  /// File path: assets/lottie/heart.json
+  String get heart => 'assets/lottie/heart.json';
+
   /// File path: assets/lottie/loading.json
   String get loading => 'assets/lottie/loading.json';
 
   /// List of all assets
-  List<String> get values => [loading];
+  List<String> get values => [heart, loading];
 }
 
 class $AssetsSplashGen {

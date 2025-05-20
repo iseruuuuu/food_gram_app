@@ -30,7 +30,6 @@ import 'package:food_gram_app/ui/component/modal_sheet/app_detail_my_info_modal_
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_other_info_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
 import 'package:gap/gap.dart';
-import 'package:gif/gif.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -56,10 +55,6 @@ class DetailPostScreen extends HookConsumerWidget {
     final tickerProvider = useSingleTickerProvider();
     final adInterstitial =
         useMemoized(() => ref.read(admobInterstitialNotifierProvider));
-    final gifController = useMemoized(
-      () => GifController(vsync: tickerProvider),
-      [tickerProvider],
-    );
     final preference = Preference();
     // 既にいいねをしているかどうかuseEffect
     useEffect(
@@ -72,20 +67,13 @@ class DetailPostScreen extends HookConsumerWidget {
       },
       [],
     );
-    // 広告とGifControllerのためのuseEffect
+    // 広告のためのuseEffect
     useEffect(
       () {
         adInterstitial.createAd();
-        return gifController.dispose;
+        return;
       },
-      [gifController, adInterstitial],
-    );
-    useEffect(
-      () {
-        adInterstitial.createAd();
-        return gifController.dispose;
-      },
-      [gifController],
+      [adInterstitial],
     );
     final deviceWidth = MediaQuery.of(context).size.width;
     final loading = ref.watch(loadingProvider);
@@ -466,10 +454,7 @@ class DetailPostScreen extends HookConsumerWidget {
                     ],
                   ),
                 ),
-                AppHeart(
-                  isHeart: isAppearHeart.value,
-                  controller: gifController,
-                ),
+                AppHeart(isHeart: isAppearHeart.value),
                 AppLoading(
                   loading: menuLoading.value || loading,
                   status: 'Loading...',
