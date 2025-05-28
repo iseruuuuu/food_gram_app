@@ -64,6 +64,24 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       },
     );
   }
+
+  Future<void> loginTwitter(BuildContext context) async {
+    primaryFocus?.unfocus();
+    final result = await ref.read(authServiceProvider).loginTwitter();
+    await result.when(
+      success: (_) async {
+        state = state.copyWith(loginStatus: L10n.of(context).loginSuccessful);
+      },
+      failure: (error) {
+        logger.e(error);
+        SnackBarHelper().openErrorSnackBar(
+          context,
+          L10n.of(context).loginError,
+          L10n.of(context).error,
+        );
+      },
+    );
+  }
 }
 
 String authErrorManager(String error, BuildContext context) {
