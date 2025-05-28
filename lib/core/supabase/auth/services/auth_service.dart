@@ -21,8 +21,6 @@ class AuthService {
 
   final logger = Logger();
 
-  static const _redirectUrl = 'io.supabase.flutterquickstart://login-callback/';
-
   final Ref ref;
 
   SupabaseClient get supabase => ref.read(supabaseProvider);
@@ -102,6 +100,20 @@ class AuthService {
     }
 
     return (accessToken: accessToken, idToken: idToken);
+  }
+
+  Future<Result<bool, String>> loginTwitter() async {
+    try {
+      final authResponse = await supabase.auth.signInWithOAuth(
+        OAuthProvider.twitter,
+        redirectTo: 'com.foodgram.scheme://auth/callback',
+        authScreenLaunchMode: LaunchMode.externalApplication,
+      );
+      return Success(authResponse);
+    } on AuthException catch (authError) {
+      logger.e('Twitter login failed: ${authError.message}');
+      return Failure(authError.message);
+    }
   }
 
   Future<Result<void, Exception>> signOut() async {
