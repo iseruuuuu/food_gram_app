@@ -125,11 +125,15 @@ class AuthenticationScreen extends HookConsumerWidget {
                     onPressed: () => controller.loginGoogle(context),
                     style: AuthenticationStyle.authButtonStyle(buttonWidth),
                   ),
+                  const Gap(24),
+                  TwitterAuthButton(
+                    onPressed: () => controller.loginTwitter(context),
+                    style: AuthenticationStyle.authButtonStyle(buttonWidth),
+                  ),
                 ],
               ),
             ),
           ),
-
           Align(
             alignment: Alignment.bottomCenter,
             child: Row(
