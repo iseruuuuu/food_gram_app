@@ -131,6 +131,11 @@
                 <data
                     android:host="login-callback"
                     android:scheme="io.supabase.flutterquickstart" />
+
+                <data
+                    android:scheme="com.foodgram.scheme"
+                    android:host="auth"
+                    android:path="/callback" />
             </intent-filter>
         </activity>
         <meta-data
@@ -141,6 +146,6 @@
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Ucrop.CropTheme"/>  <!-- Updated theme -->
+            android:theme="@style/Ucrop.CropTheme" />  <!-- Updated theme -->
     </application>
 </manifest>

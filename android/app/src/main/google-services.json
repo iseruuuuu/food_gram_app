@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "505064710022",
+    "firebase_url": "https://food-gram-407205-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "food-gram-407205",
+    "storage_bucket": "food-gram-407205.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505064710022:android:3f2c0089d4690c78145607",
+        "android_client_info": {
+          "package_name": "com.food_gram_app.com.com.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505064710022-ec5dqcu5cdjrpphjt63qqq538jjcjpsm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.food_gram_app.com.com.com",
+            "certificate_hash": "dd50c3484ea53bb8181f2637bf040620e3e516a8"
+          }
+        },
+        {
+          "client_id": "505064710022-rqt7k1vm2o9htklicvn9e68pm0rl8m0d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY15iC73bmVvdFChxkMi5cGif_fbaQOJM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505064710022-044o916n89eu4jmng6q53hb7qjb6qg4n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "505064710022-6bs17mpbknphc8sgu43nhhimi21h29e7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.foodGramApp.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
