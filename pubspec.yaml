@@ -89,7 +89,7 @@ dev_dependencies:
   riverpod_lint: ^2.0.0
   yumemi_lints: ^3.1.0
 
-flutter_icons:
+flutter_launcher_icons:
   android: true
   ios: true
 
