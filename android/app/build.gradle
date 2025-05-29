@@ -111,6 +111,6 @@ flutter {
 
 dependencies {
     implementation 'com.android.support:multidex:1.0.3'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'io.flutter:flutter_embedding_release:1.0.0-3316dd8728419ad3534e3f6112aa6291f587078a'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    // Flutterの依存関係は自動的に追加されるため、手動で追加する必要はありません
 }
