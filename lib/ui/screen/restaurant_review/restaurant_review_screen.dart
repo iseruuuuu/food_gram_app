@@ -49,11 +49,11 @@ class RestaurantReviewScreen extends ConsumerWidget {
             enableFeedback: true,
             tabs: const <Widget>[
               Tab(
-                icon: Icon(Icons.chat_bubble_outline, size: 30),
+                icon: Icon(Icons.photo_camera_back, size: 30),
                 height: 38,
               ),
               Tab(
-                icon: Icon(Icons.photo_camera_back, size: 30),
+                icon: Icon(Icons.chat_bubble_outline, size: 30),
                 height: 38,
               ),
             ],
@@ -61,11 +61,11 @@ class RestaurantReviewScreen extends ConsumerWidget {
         ),
         body: TabBarView(
           children: [
-            ReviewWidget(
+            ReviewImageWidget(
               reviewsAsync: reviewsAsync,
               posts: posts,
             ),
-            ReviewImageWidget(
+            ReviewWidget(
               reviewsAsync: reviewsAsync,
               posts: posts,
             ),
