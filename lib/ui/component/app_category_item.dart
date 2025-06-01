@@ -92,7 +92,7 @@ class AppCategoryItem extends HookConsumerWidget {
           tabs: categoriesData
               .map(
                 (category) => Tab(
-                  height: 70,
+                  height: 65,
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
@@ -105,7 +105,7 @@ class AppCategoryItem extends HookConsumerWidget {
                       ),
                       width: MediaQuery.sizeOf(context).width / 6,
                       height:
-                          selectedCategoryName.value == category.name ? 70 : 65,
+                          selectedCategoryName.value == category.name ? 65 : 55,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
