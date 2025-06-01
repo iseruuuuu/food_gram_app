@@ -104,8 +104,11 @@ class AppCategoryItem extends HookConsumerWidget {
                         color: Colors.orange,
                       ),
                       width: MediaQuery.sizeOf(context).width / 6,
-                      height:
-                          selectedCategoryName.value == category.name ? 65 : 55,
+                      height: (category.isAllCategory &&
+                                  selectedCategoryName.value == '') ||
+                              selectedCategoryName.value == category.name
+                          ? 65
+                          : 55,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
