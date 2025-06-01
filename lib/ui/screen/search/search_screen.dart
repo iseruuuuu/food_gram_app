@@ -47,6 +47,105 @@ class SearchScreen extends ConsumerWidget {
                   ),
                 ],
               ),
+              SizedBox(
+                width: MediaQuery.sizeOf(context).width,
+                height: 100,
+                child: nearbyPosts.when(
+                  data: (posts) {
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: posts.length,
+                      itemBuilder: (context, index) {
+                        final post = posts[index];
+                        final imageUrl = supabase.storage
+                            .from('food')
+                            .getPublicUrl(post.foodImage);
+                        return GestureDetector(
+                          onTap: () {
+                            context.pushNamed(
+                              RouterPath.searchRestaurantReview,
+                              extra: post,
+                            );
+                          },
+                          child: Image.network(
+                            imageUrl,
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  error: (error, stack) => Center(child: Text('Error: $error')),
+                ),
+              ),
+              ...categoriesData
+                  .where((category) => !category.isAllCategory)
+                  .map(
+                (category) {
+                  final selectedCategoryName = useState(category.name);
+                  final postState = ref.watch(
+                      postStreamByCategoryProvider(selectedCategoryName.value));
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${category.displayIcon} ${_l10nCategory(category.name, l10n)}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            child: const Text(
+                              'もっとみる',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      postState.when(
+                        data: (posts) {
+                          return SizedBox(
+                            width: MediaQuery.sizeOf(context).width,
+                            height: 100,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: posts.length >= 10 ? 10 : posts.length,
+                              itemBuilder: (context, index) {
+                                final post = posts[index];
+                                final imageUrl = supabase.storage
+                                    .from('food')
+                                    .getPublicUrl(post['food_image'] as String);
+                                return GestureDetector(
+                                  onTap: () {
+                                  },
+                                  child: Image.network(
+                                    imageUrl,
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        loading: () => Container(height: 100),
+                        error: (error, stack) =>
+                            Center(child: Text('Error: $error')),
+                      ),
+                    ],
+                  );
+                },
+              ),
             ],
           ),
         ),
