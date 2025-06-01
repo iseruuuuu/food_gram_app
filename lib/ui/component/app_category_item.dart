@@ -93,39 +93,42 @@ class AppCategoryItem extends HookConsumerWidget {
               .map(
                 (category) => Tab(
                   height: 70,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                        color: Colors.orange,
                       ),
-                      color: Colors.orange,
-                    ),
-                    width: MediaQuery.sizeOf(context).width / 6,
-                    height:
-                        selectedCategoryName.value == category.name ? 70 : 60,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          category.displayIcon,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            height: 1.5,
+                      width: MediaQuery.sizeOf(context).width / 6,
+                      height:
+                          selectedCategoryName.value == category.name ? 70 : 65,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            category.displayIcon,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              height: 1.5,
+                            ),
                           ),
-                        ),
-                        Text(
-                          category.isAllCategory
-                              ? l10n.foodCategoryAll
-                              : _l10nCategory(category.name, l10n),
-                          style: const TextStyle(
-                            fontSize: 13,
-                            height: 1,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
+                          Text(
+                            category.isAllCategory
+                                ? l10n.foodCategoryAll
+                                : _l10nCategory(category.name, l10n),
+                            style: const TextStyle(
+                              fontSize: 13,
+                              height: 1,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
