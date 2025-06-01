@@ -380,6 +380,20 @@ final searchRouter = GoRoute(
   builder: (context, state) {
     return const SearchScreen();
   },
+  routes: <RouteBase>[
+    GoRoute(
+      path: '${RouterPath.search}/${RouterPath.searchRestaurantReview}',
+      name: RouterPath.searchRestaurantReview,
+      pageBuilder: (context, state) {
+        final posts = state.extra! as Posts;
+        return slideUpTransition(
+          RestaurantReviewScreen(
+            posts: posts,
+          ),
+        );
+      },
+    ),
+  ],
 );
 
 final class RouterPath {
@@ -417,4 +431,5 @@ final class RouterPath {
   static const String mapEditPost = 'map_edit_post';
   static const String myProfileEditPost = 'my_profile_edit_post';
   static const String search = 'search';
+  static const String searchRestaurantReview = 'search_restaurant_review';
 }
