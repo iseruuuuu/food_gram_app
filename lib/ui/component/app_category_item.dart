@@ -73,7 +73,7 @@ class AppCategoryItem extends HookConsumerWidget {
           tabAlignment: TabAlignment.start,
           automaticIndicatorColorAdjustment: false,
           overlayColor: WidgetStateProperty.all(Colors.transparent),
-          labelPadding: const EdgeInsets.symmetric(horizontal: 16),
+          labelPadding: const EdgeInsets.symmetric(horizontal: 2),
           indicatorSize: TabBarIndicatorSize.tab,
           enableFeedback: true,
           indicator: const UnderlineTabIndicator(
