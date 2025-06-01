@@ -82,7 +82,7 @@ class TabScreen extends ConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      '検索',
+                      '探す',
                       style: TabStyle.tab(value: state.selectedIndex == 2),
                     ),
                     const Gap(10),
