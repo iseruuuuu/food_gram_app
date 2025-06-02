@@ -36,6 +36,13 @@ class SearchScreen extends ConsumerWidget {
                     ),
                   ),
                   TextButton(
+                    onPressed: () {
+                      final posts = nearbyPosts.value!;
+                      context.pushNamed(
+                        RouterPath.searchDetail,
+                        extra: posts,
+                      );
+                    },
                     child: const Text(
                       'もっとみる',
                       style: TextStyle(
