@@ -303,6 +303,9 @@ class L10nEn extends L10n {
   String get tabMap => 'Map';
 
   @override
+  String get tabSearch => 'Search';
+
+  @override
   String get tabMyPage => 'My Page';
 
   @override
@@ -625,4 +628,13 @@ class L10nEn extends L10n {
 
   @override
   String get appSubtitle => 'Share your delicious moments';
+
+  @override
+  String get searchRestaurantTitle => 'Search Restaurants';
+
+  @override
+  String get nearbyRestaurants => '📍Nearby Restaurants';
+
+  @override
+  String get seeMore => 'See More';
 }

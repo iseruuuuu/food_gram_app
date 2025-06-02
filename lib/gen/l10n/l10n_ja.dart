@@ -303,6 +303,9 @@ class L10nJa extends L10n {
   String get tabMap => 'マップ';
 
   @override
+  String get tabSearch => '探す';
+
+  @override
   String get tabMyPage => 'マイページ';
 
   @override
@@ -625,4 +628,13 @@ class L10nJa extends L10n {
 
   @override
   String get appSubtitle => '美味しい瞬間、シェアしよう';
+
+  @override
+  String get searchRestaurantTitle => 'レストランを探す';
+
+  @override
+  String get nearbyRestaurants => '📍近いレストラン';
+
+  @override
+  String get seeMore => 'もっとみる';
 }

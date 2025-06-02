@@ -25,14 +25,14 @@ class SearchScreen extends HookConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
-        title: const Row(
+        title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.search, size: 20),
-            Gap(4),
+            const Icon(Icons.search, size: 20),
+            const Gap(4),
             Text(
-              'レストランを探す',
-              style: TextStyle(
+              l10n.searchRestaurantTitle,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -48,9 +48,9 @@ class SearchScreen extends HookConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    '📍近いレストラン',
-                    style: TextStyle(
+                  Text(
+                    l10n.nearbyRestaurants,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -63,9 +63,9 @@ class SearchScreen extends HookConsumerWidget {
                         extra: posts,
                       );
                     },
-                    child: const Text(
-                      'もっとみる',
-                      style: TextStyle(
+                    child: Text(
+                      l10n.seeMore,
+                      style: const TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -136,9 +136,9 @@ class SearchScreen extends HookConsumerWidget {
                                 extra: posts,
                               );
                             },
-                            child: const Text(
-                              'もっとみる',
-                              style: TextStyle(
+                            child: Text(
+                              l10n.seeMore,
+                              style: const TextStyle(
                                 color: Colors.blue,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,

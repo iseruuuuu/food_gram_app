@@ -684,6 +684,12 @@ abstract class L10n {
   /// **'マップ'**
   String get tabMap;
 
+  /// No description provided for @tabSearch.
+  ///
+  /// In ja, this message translates to:
+  /// **'探す'**
+  String get tabSearch;
+
   /// No description provided for @tabMyPage.
   ///
   /// In ja, this message translates to:
@@ -1331,6 +1337,24 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'美味しい瞬間、シェアしよう'**
   String get appSubtitle;
+
+  /// No description provided for @searchRestaurantTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'レストランを探す'**
+  String get searchRestaurantTitle;
+
+  /// No description provided for @nearbyRestaurants.
+  ///
+  /// In ja, this message translates to:
+  /// **'📍近いレストラン'**
+  String get nearbyRestaurants;
+
+  /// No description provided for @seeMore.
+  ///
+  /// In ja, this message translates to:
+  /// **'もっとみる'**
+  String get seeMore;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
