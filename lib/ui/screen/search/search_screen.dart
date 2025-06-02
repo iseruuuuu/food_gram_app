@@ -121,6 +121,7 @@ class SearchScreen extends ConsumerWidget {
                               style: TextStyle(
                                 color: Colors.blue,
                                 fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
                             ),
                           ),
@@ -141,6 +142,11 @@ class SearchScreen extends ConsumerWidget {
                                     .getPublicUrl(post['food_image'] as String);
                                 return GestureDetector(
                                   onTap: () {
+                                    final posts = Posts.fromJson(post);
+                                    context.pushNamed(
+                                      RouterPath.searchRestaurantReview,
+                                      extra: posts,
+                                    );
                                   },
                                   child: Image.network(
                                     imageUrl,
@@ -154,8 +160,9 @@ class SearchScreen extends ConsumerWidget {
                           );
                         },
                         loading: () => Container(height: 100),
-                        error: (error, stack) =>
-                            Center(child: Text('Error: $error')),
+                        error: (error, stack) => Center(
+                          child: Text('Error: $error'),
+                        ),
                       ),
                     ],
                   );
