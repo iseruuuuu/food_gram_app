@@ -10,6 +10,7 @@ import 'package:food_gram_app/router/amination.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_screen.dart';
 import 'package:food_gram_app/ui/screen/restaurant_review/restaurant_review_screen.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
+import 'package:food_gram_app/ui/screen/search/search_detail_screen.dart';
 import 'package:food_gram_app/ui/screen/search/search_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
@@ -393,6 +394,16 @@ final searchRouter = GoRoute(
         );
       },
     ),
+    GoRoute(
+      path: '${RouterPath.search}/${RouterPath.searchDetail}',
+      name: RouterPath.searchDetail,
+      pageBuilder: (context, state) {
+        final posts = state.extra! as List<Posts>;
+        return slideUpTransition(
+          SearchDetailScreen(posts: posts),
+        );
+      },
+    ),
   ],
 );
 
@@ -432,4 +443,5 @@ final class RouterPath {
   static const String myProfileEditPost = 'my_profile_edit_post';
   static const String search = 'search';
   static const String searchRestaurantReview = 'search_restaurant_review';
+  static const String searchDetail = 'search_detail';
 }
