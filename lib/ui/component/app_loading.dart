@@ -118,3 +118,21 @@ class AppMapLoading extends StatelessWidget {
         : const SizedBox.shrink();
   }
 }
+
+class AppListItemLoading extends StatelessWidget {
+  const AppListItemLoading({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 100,
+      height: 100,
+      child: Center(
+        child: LoadingAnimationWidget.discreteCircle(
+          color: Theme.of(context).primaryColor,
+          size: 30,
+        ),
+      ),
+    );
+  }
+}
