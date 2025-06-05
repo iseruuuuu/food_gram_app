@@ -54,7 +54,7 @@ class SearchScreen extends HookConsumerWidget {
                     l10n.nearbyRestaurants,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 15,
                     ),
                   ),
                   TextButton(
@@ -70,7 +70,7 @@ class SearchScreen extends HookConsumerWidget {
                       style: const TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 15,
                       ),
                     ),
                   ),
@@ -96,11 +96,19 @@ class SearchScreen extends HookConsumerWidget {
                               extra: post,
                             );
                           },
-                          child: Image.network(
-                            imageUrl,
-                            width: 100,
-                            height: 100,
-                            fit: BoxFit.cover,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 4,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                imageUrl: imageUrl,
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         );
                       },
@@ -126,7 +134,7 @@ class SearchScreen extends HookConsumerWidget {
                             '${category.displayIcon} ${_l10nCategory(category.name, l10n)}',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                              fontSize: 15,
                             ),
                           ),
                           TextButton(
@@ -144,7 +152,7 @@ class SearchScreen extends HookConsumerWidget {
                               style: const TextStyle(
                                 color: Colors.blue,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                                fontSize: 15,
                               ),
                             ),
                           ),
@@ -171,11 +179,19 @@ class SearchScreen extends HookConsumerWidget {
                                       extra: posts,
                                     );
                                   },
-                                  child: CachedNetworkImage(
-                                    imageUrl: imageUrl,
-                                    width: 100,
-                                    height: 100,
-                                    fit: BoxFit.cover,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        imageUrl: imageUrl,
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
                                 );
                               },

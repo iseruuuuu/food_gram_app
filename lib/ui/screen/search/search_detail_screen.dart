@@ -20,7 +20,10 @@ class SearchDetailScreen extends ConsumerWidget {
     final supabase = ref.watch(supabaseProvider);
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(backgroundColor: Colors.white),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: MasonryGridView.count(
