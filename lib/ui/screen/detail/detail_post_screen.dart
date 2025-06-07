@@ -234,9 +234,6 @@ class DetailPostScreen extends HookConsumerWidget {
                                 height: deviceWidth,
                                 color: Colors.white,
                                 child: CachedNetworkImage(
-                                  // imageUrl: supabase.storage
-                                  //     .from('food')
-                                  //     .getPublicUrl(posts.foodImage),
                                   imageUrl: supabase.storage
                                       .from('food')
                                       .getPublicUrl(state.foodImage),
@@ -253,9 +250,6 @@ class DetailPostScreen extends HookConsumerWidget {
                               height: deviceWidth,
                               color: Colors.white,
                               child: CachedNetworkImage(
-                                // imageUrl: supabase.storage
-                                //     .from('food')
-                                //     .getPublicUrl(posts.foodImage),
                                 imageUrl: supabase.storage
                                     .from('food')
                                     .getPublicUrl(state.foodImage),
@@ -391,7 +385,6 @@ class DetailPostScreen extends HookConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  // posts.foodName,
                                   state.foodName,
                                   style: DetailPostStyle.foodName(),
                                 ),
@@ -404,18 +397,15 @@ class DetailPostScreen extends HookConsumerWidget {
                                     );
                                   },
                                   child: Text(
-                                    // 'In ${posts.restaurant}',
                                     'In ${state.restaurant}',
                                     style: DetailPostStyle.restaurant(),
                                   ),
                                 ),
                                 const Gap(12),
-                                // if (posts.comment.isNotEmpty)
                                 if (state.comment.isNotEmpty)
                                   Column(
                                     children: [
                                       Text(
-                                        // posts.comment,
                                         state.comment,
                                         style: DetailPostStyle.comment(),
                                       ),
@@ -425,20 +415,16 @@ class DetailPostScreen extends HookConsumerWidget {
                                 Wrap(
                                   spacing: 10,
                                   children: [
-                                    // if (posts.foodTag.isNotEmpty)
                                     if (state.foodTag.isNotEmpty)
                                       Chip(
                                         backgroundColor: Colors.white,
-                                        // label: Text(posts.foodTag),
                                         label: Text(state.foodTag),
                                         labelStyle:
                                             const TextStyle(fontSize: 28),
                                       ),
-                                    // if (posts.restaurantTag.isNotEmpty)
                                     if (state.restaurantTag.isNotEmpty)
                                       Chip(
                                         backgroundColor: Colors.white,
-                                        // label: Text(posts.restaurantTag),
                                         label: Text(state.restaurantTag),
                                         labelStyle:
                                             const TextStyle(fontSize: 28),
