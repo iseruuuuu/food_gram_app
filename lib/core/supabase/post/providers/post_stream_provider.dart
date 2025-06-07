@@ -6,11 +6,24 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'post_stream_provider.g.dart';
 
+/// 投稿のキャッシュを保持するプロバイダー
+final postCacheProvider =
+    StateProvider<List<Map<String, dynamic>>>((ref) => []);
+
 /// フード全体の投稿のストリームを提供
 @riverpod
 Stream<List<Map<String, dynamic>>> postStream(Ref ref) {
   final blockList = ref.watch(blockListProvider).asData?.value ?? [];
-  return _filteredPostStream(null, blockList, ref);
+  final cachedPosts = ref.watch(postCacheProvider);
+
+  if (cachedPosts.isNotEmpty) {
+    return Stream.value(cachedPosts);
+  }
+
+  return _filteredPostStream(null, blockList, ref).map((posts) {
+    ref.read(postCacheProvider.notifier).state = posts;
+    return posts;
+  });
 }
 
 /// 自炊投稿のストリームを提供
@@ -63,6 +76,23 @@ Stream<List<Map<String, dynamic>>> postStreamByCategory(
 ) {
   final blockList = ref.watch(blockListProvider).asData?.value ?? [];
   final supabase = ref.read(supabaseProvider);
+  final cachedPosts = ref.watch(postCacheProvider);
+
+  // キャッシュされた投稿がある場合は、それを使用
+  if (cachedPosts.isNotEmpty) {
+    return Stream.value(
+      cachedPosts.where((post) {
+        if (categoryName.isEmpty) {
+          return true;
+        }
+        final foodEmojis = foodCategory[categoryName] ?? [];
+        final foodTag = post['food_tag'] as String;
+        return foodEmojis.any(
+          (emojiList) => emojiList.isNotEmpty && emojiList[0] == foodTag,
+        );
+      }).toList(),
+    );
+  }
 
   // レストランが'自炊'でなく、全ての投稿を取得
   final query = supabase
@@ -93,6 +123,8 @@ Stream<List<Map<String, dynamic>>> postStreamByCategory(
         }).toList();
       }
 
+      // キャッシュを更新
+      ref.read(postCacheProvider.notifier).state = filtered;
       return filtered;
     },
   );

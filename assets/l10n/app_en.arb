@@ -97,6 +97,7 @@
   "cookingCategoryList": "Select a food category",
   "tabHome": "Food",
   "tabMap": "Map",
+   "tabSearch": "Search",
   "tabMyPage": "My Page",
   "tabSetting": "Setting",
   "logoutFailure":"Logout failure",
@@ -205,5 +206,8 @@
   "paywallCancelNote": "Cancel anytime",
   "paywallWelcomeTitle": "Welcome to\nFoodGram Members!",
   "appTitle": "FoodGram",
-  "appSubtitle": "Share your delicious moments"
+  "appSubtitle": "Share your delicious moments",
+  "searchRestaurantTitle": "Search Restaurants",
+  "nearbyRestaurants": "📍Nearby Restaurants",
+  "seeMore": "See More"
 }

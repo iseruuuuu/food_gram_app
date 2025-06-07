@@ -10,6 +10,8 @@ import 'package:food_gram_app/router/amination.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_screen.dart';
 import 'package:food_gram_app/ui/screen/restaurant_review/restaurant_review_screen.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
+import 'package:food_gram_app/ui/screen/search/search_detail_screen.dart';
+import 'package:food_gram_app/ui/screen/search/search_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -78,6 +80,7 @@ GoRouter router(Ref ref) {
           mapRouter,
           myProfileRouter,
           settingRouter,
+          searchRouter,
         ],
       ),
     ],
@@ -372,6 +375,38 @@ final mapRouter = GoRoute(
   ],
 );
 
+final searchRouter = GoRoute(
+  path: RouterPath.search,
+  name: RouterPath.search,
+  builder: (context, state) {
+    return const SearchScreen();
+  },
+  routes: <RouteBase>[
+    GoRoute(
+      path: '${RouterPath.search}/${RouterPath.searchRestaurantReview}',
+      name: RouterPath.searchRestaurantReview,
+      pageBuilder: (context, state) {
+        final posts = state.extra! as Posts;
+        return slideUpTransition(
+          RestaurantReviewScreen(
+            posts: posts,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '${RouterPath.search}/${RouterPath.searchDetail}',
+      name: RouterPath.searchDetail,
+      pageBuilder: (context, state) {
+        final posts = state.extra! as List<Posts>;
+        return slideUpTransition(
+          SearchDetailScreen(posts: posts),
+        );
+      },
+    ),
+  ],
+);
+
 final class RouterPath {
   static const String tab = 'tab';
   static const String authentication = 'authentication';
@@ -406,4 +441,7 @@ final class RouterPath {
   static const String timeLineEditPost = 'time_line_edit_post';
   static const String mapEditPost = 'map_edit_post';
   static const String myProfileEditPost = 'my_profile_edit_post';
+  static const String search = 'search';
+  static const String searchRestaurantReview = 'search_restaurant_review';
+  static const String searchDetail = 'search_detail';
 }

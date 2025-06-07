@@ -97,6 +97,7 @@
   "cookingCategoryList": "料理カテゴリーを選ぶ",
   "tabHome": "フード",
   "tabMap": "マップ",
+  "tabSearch": "探す",
   "tabMyPage": "マイページ",
   "tabSetting": "設定",
   "logoutFailure":"ログアウト失敗",
@@ -205,5 +206,8 @@
   "paywallCancelNote": "いつでも解約可能",
   "paywallWelcomeTitle": "Welcome to\nFoodGram Members!",
   "appTitle": "FoodGram",
-  "appSubtitle": "美味しい瞬間、シェアしよう"
+  "appSubtitle": "美味しい瞬間、シェアしよう",
+  "searchRestaurantTitle": "レストランを探す",
+  "nearbyRestaurants": "📍近いレストラン",
+  "seeMore": "もっとみる"
 }

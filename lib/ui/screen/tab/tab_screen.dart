@@ -75,14 +75,14 @@ class TabScreen extends ConsumerWidget {
                     const Gap(12),
                     Icon(
                       (state.selectedIndex == 2)
-                          ? CupertinoIcons.person_circle_fill
-                          : CupertinoIcons.person_circle,
+                          ? CupertinoIcons.search_circle_fill
+                          : CupertinoIcons.search_circle,
                       size: 30,
                       semanticLabel: 'profileIcon',
                     ),
                     const Gap(6),
                     Text(
-                      l10n.tabMyPage,
+                      l10n.tabSearch,
                       style: TabStyle.tab(value: state.selectedIndex == 2),
                     ),
                     const Gap(10),
@@ -96,6 +96,27 @@ class TabScreen extends ConsumerWidget {
                     const Gap(12),
                     Icon(
                       (state.selectedIndex == 3)
+                          ? CupertinoIcons.person_circle_fill
+                          : CupertinoIcons.person_circle,
+                      size: 30,
+                      semanticLabel: 'profileIcon',
+                    ),
+                    const Gap(6),
+                    Text(
+                      l10n.tabMyPage,
+                      style: TabStyle.tab(value: state.selectedIndex == 3),
+                    ),
+                    const Gap(10),
+                  ],
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Column(
+                  children: [
+                    const Gap(12),
+                    Icon(
+                      (state.selectedIndex == 4)
                           ? Icons.settings
                           : Icons.settings_outlined,
                       semanticLabel: 'settingIcon',
@@ -103,7 +124,7 @@ class TabScreen extends ConsumerWidget {
                     const Gap(6),
                     Text(
                       l10n.tabSetting,
-                      style: TabStyle.tab(value: state.selectedIndex == 3),
+                      style: TabStyle.tab(value: state.selectedIndex == 4),
                     ),
                     const Gap(10),
                   ],
