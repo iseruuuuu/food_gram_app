@@ -141,15 +141,15 @@ class SearchScreen extends HookConsumerWidget {
                             ),
                           ),
                           TextButton(
-                            onPressed: () {
-                              final mapList = postState.value!;
-                              final posts =
-                                  mapList.map(Posts.fromJson).toList();
-                              context.pushNamed(
-                                RouterPath.searchDetail,
-                                extra: posts,
-                              );
-                            },
+                            onPressed: nearbyPosts.hasValue
+                                ? () {
+                                    final posts = nearbyPosts.value!;
+                                    context.pushNamed(
+                                      RouterPath.searchDetail,
+                                      extra: posts,
+                                    );
+                                  }
+                                : null,
                             child: Text(
                               l10n.seeMore,
                               style: const TextStyle(
