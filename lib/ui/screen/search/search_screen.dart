@@ -115,7 +115,10 @@ class SearchScreen extends HookConsumerWidget {
                     );
                   },
                   loading: AppListItemLoading.new,
-                  error: (error, stack) => Center(child: Text('Error: $error')),
+                  error: (error, stack) => Container(
+                    color: Colors.grey[300],
+                    child: const Icon(Icons.error, color: Colors.grey),
+                  ),
                 ),
               ),
               ...categoriesData
@@ -199,8 +202,9 @@ class SearchScreen extends HookConsumerWidget {
                           );
                         },
                         loading: AppListItemLoading.new,
-                        error: (error, stack) => Center(
-                          child: Text('Error: $error'),
+                        error: (error, stack) => Container(
+                          color: Colors.grey[300],
+                          child: const Icon(Icons.error, color: Colors.grey),
                         ),
                       ),
                     ],
