@@ -129,7 +129,7 @@ class PostScreen extends HookConsumerWidget {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5),
-                            border: Border.all(),
+                            border: Border.all(color: Colors.black87),
                           ),
                           width: deviceWidth,
                           height: deviceWidth / 1.7,
@@ -140,7 +140,7 @@ class PostScreen extends HookConsumerWidget {
                                 )
                               : const Icon(
                                   Icons.add,
-                                  size: 40,
+                                  size: 36,
                                   color: Colors.black,
                                 ),
                         ),
@@ -178,7 +178,9 @@ class PostScreen extends HookConsumerWidget {
                               child: ListTile(
                                 contentPadding: EdgeInsets.zero,
                                 shape: RoundedRectangleBorder(
-                                  side: const BorderSide(),
+                                  side: const BorderSide(
+                                    color: Colors.black87,
+                                  ),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 title: Row(
@@ -200,7 +202,7 @@ class PostScreen extends HookConsumerWidget {
                                           Icon(
                                             Icons.arrow_forward_ios,
                                             color: Colors.black,
-                                            size: 24,
+                                            size: 20,
                                           ),
                                           Gap(10),
                                         ],
