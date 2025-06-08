@@ -142,43 +142,40 @@ class AppFoodTextField extends StatelessWidget {
           ),
           const Gap(10),
           Expanded(
-            child: Semantics(
-              label: 'postFoodField',
-              child: TextField(
-                contextMenuBuilder: (context, state) {
-                  if (SystemContextMenu.isSupported(context)) {
-                    return SystemContextMenu.editableText(
-                      editableTextState: state,
-                    );
-                  }
-                  return AdaptiveTextSelectionToolbar.editableText(
+            child: TextField(
+              contextMenuBuilder: (context, state) {
+                if (SystemContextMenu.isSupported(context)) {
+                  return SystemContextMenu.editableText(
                     editableTextState: state,
                   );
-                },
-                selectionHeightStyle: BoxHeightStyle.strut,
-                decoration: InputDecoration(
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black87),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue),
-                  ),
-                  hintText: L10n.of(context).postFoodName,
-                  label: Text(
-                    L10n.of(context).postFoodNameInputField,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                }
+                return AdaptiveTextSelectionToolbar.editableText(
+                  editableTextState: state,
+                );
+              },
+              selectionHeightStyle: BoxHeightStyle.strut,
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black87),
+                  borderRadius: BorderRadius.circular(6),
                 ),
-                controller: controller,
-                autocorrect: false,
-                style: const TextStyle(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.blueAccent),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                label: Text(L10n.of(context).postFoodNameInputField),
+                labelStyle: const TextStyle(
+                  color: Colors.grey,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 15,
                 ),
+              ),
+              controller: controller,
+              keyboardType: TextInputType.text,
+              autocorrect: false,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontSize: 15,
               ),
             ),
           ),
@@ -200,43 +197,41 @@ class AppCommentTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      child: Semantics(
-        label: 'postCommentField',
-        child: TextField(
-          contextMenuBuilder: (context, state) {
-            if (SystemContextMenu.isSupported(context)) {
-              return SystemContextMenu.editableText(editableTextState: state);
-            }
-            return AdaptiveTextSelectionToolbar.editableText(
-              editableTextState: state,
-            );
-          },
-          selectionHeightStyle: BoxHeightStyle.strut,
-          decoration: InputDecoration(
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black87),
-            ),
-            focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blue),
-            ),
-            hintText: L10n.of(context).postCommentInputField,
-            label: Text(
-              L10n.of(context).postComment,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.grey,
-              ),
+      child: TextField(
+        contextMenuBuilder: (context, state) {
+          if (SystemContextMenu.isSupported(context)) {
+            return SystemContextMenu.editableText(editableTextState: state);
+          }
+          return AdaptiveTextSelectionToolbar.editableText(
+            editableTextState: state,
+          );
+        },
+        selectionHeightStyle: BoxHeightStyle.strut,
+        decoration: InputDecoration(
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black87),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.blueAccent),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          label: Text(
+            L10n.of(context).postComment,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.grey,
             ),
           ),
-          controller: controller,
-          maxLines: 6,
-          autocorrect: false,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            fontSize: 15,
-          ),
+        ),
+        controller: controller,
+        maxLines: 6,
+        autocorrect: false,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+          fontSize: 15,
         ),
       ),
     );
