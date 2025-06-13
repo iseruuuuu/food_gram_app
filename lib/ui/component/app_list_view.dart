@@ -36,10 +36,9 @@ class AppListView extends HookConsumerWidget {
         (context, index) {
           final isAdRow = (index + 1) % (adRowInterval + 1) == 0;
           if (isAdRow) {
-            return Container(
-              // padding: const EdgeInsets.symmetric(vertical: 16),
+            return const SizedBox(
               width: double.infinity,
-              child: const Center(
+              child: Center(
                 child: RectangleBanner(id: '0'),
               ),
             );
