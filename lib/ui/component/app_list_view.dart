@@ -40,7 +40,7 @@ class AppListView extends HookConsumerWidget {
               padding: const EdgeInsets.symmetric(vertical: 16),
               width: double.infinity,
               child: const Center(
-                child: ReusableRectangleBanner(position: 0),
+                child: RectangleBanner(),
               ),
             );
           }
