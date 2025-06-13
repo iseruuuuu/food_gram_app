@@ -4,26 +4,28 @@ import 'package:food_gram_app/core/admob/config/admob_config.dart';
 import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-/// バナー広告の状態を管理するプロバイダー
-final bannerAdProvider =
-    StateNotifierProvider.family<BannerAdNotifier, BannerAd?, String>(
-        (ref, id) {
-  return BannerAdNotifier(ref, id);
-});
-
-/// バナー広告の状態を管理するNotifier
-class BannerAdNotifier extends StateNotifier<BannerAd?> {
-  BannerAdNotifier(this.ref, this.id) : super(null) {
+/// 広告の状態を管理するNotifier
+class AdNotifier extends StateNotifier<BannerAd?> {
+  AdNotifier({
+    required this.ref,
+    required this.adUnitId,
+    required this.adSize,
+  }) : super(null) {
     _loadAd();
   }
 
   final Ref ref;
-  final String id;
+  final String adUnitId;
+  final AdSize adSize;
 
   void _loadAd() {
+    if (state != null) {
+      return;
+    }
+
     BannerAd(
-      adUnitId: bannerAdUnitId,
-      size: AdSize.banner,
+      adUnitId: adUnitId,
+      size: adSize,
       request: const AdRequest(),
       listener: BannerAdListener(
         onAdFailedToLoad: (ad, error) {
@@ -44,18 +46,42 @@ class BannerAdNotifier extends StateNotifier<BannerAd?> {
   }
 }
 
-/// バナー広告を表示するウィジェット
+/// バナー広告の状態を管理するプロバイダー
+final bannerAdProvider =
+    StateNotifierProvider.family<AdNotifier, BannerAd?, String>((ref, id) {
+  return AdNotifier(
+    ref: ref,
+    adUnitId: bannerAdUnitId,
+    adSize: AdSize.banner,
+  );
+});
+
+/// レクタングル広告の状態を管理するプロバイダー
+final rectangleBannerProvider =
+    StateNotifierProvider<AdNotifier, BannerAd?>((ref) {
+  return AdNotifier(
+    ref: ref,
+    adUnitId: bannerAdUnitId,
+    adSize: AdSize.mediumRectangle,
+  );
+});
+
+/// 広告を表示するウィジェット
 class AdmobBanner extends ConsumerWidget {
   const AdmobBanner({
     required this.id,
+    this.isRectangle = false,
     super.key,
   });
 
   final String id;
+  final bool isRectangle;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bannerAd = ref.watch(bannerAdProvider(id));
+    final bannerAd = ref.watch(
+      isRectangle ? rectangleBannerProvider : bannerAdProvider(id),
+    );
     final subscriptionState = ref.watch(subscriptionProvider);
 
     return subscriptionState.when(
@@ -67,104 +93,40 @@ class AdmobBanner extends ConsumerWidget {
 
   Widget _buildBannerContainer(BannerAd? bannerAd, bool isSubscribed) {
     if (isSubscribed || bannerAd == null) {
-      return const SizedBox.shrink();
-    }
-
-    return Container(
-      width: double.infinity,
-      alignment: Alignment.center,
-      height: bannerAd.size.height.toDouble(),
-      child: AdWidget(ad: bannerAd),
-    );
-  }
-
-  Widget _buildLoadingContainer(BannerAd? bannerAd) {
-    return SizedBox(
-      width: double.infinity,
-      height: bannerAd?.size.height.toDouble() ?? 50.0,
-    );
-  }
-}
-
-/// レクタングル広告の状態を管理するプロバイダー
-final rectangleBannerProvider =
-    StateNotifierProvider<RectangleBannerNotifier, BannerAd?>((ref) {
-  return RectangleBannerNotifier();
-});
-
-/// レクタングル広告の状態を管理するNotifier
-class RectangleBannerNotifier extends StateNotifier<BannerAd?> {
-  RectangleBannerNotifier() : super(null) {
-    _loadAd();
-  }
-
-  void _loadAd() {
-    if (state != null) {
-      return;
-    }
-
-    BannerAd(
-      adUnitId: bannerAdUnitId,
-      size: AdSize.mediumRectangle,
-      request: const AdRequest(),
-      listener: BannerAdListener(
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-          state = null;
-        },
-        onAdLoaded: (ad) {
-          state = ad as BannerAd;
-        },
-      ),
-    ).load();
-  }
-
-  @override
-  void dispose() {
-    state?.dispose();
-    super.dispose();
-  }
-}
-
-/// レクタングル広告を表示するウィジェット
-class RectangleBanner extends ConsumerWidget {
-  const RectangleBanner({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final bannerAd = ref.watch(rectangleBannerProvider);
-    final subscriptionState = ref.watch(subscriptionProvider);
-
-    return subscriptionState.when(
-      data: (isSubscribed) => _buildBannerContainer(bannerAd, isSubscribed),
-      error: (_, __) => const SizedBox.shrink(),
-      loading: _buildLoadingContainer,
-    );
-  }
-
-  Widget _buildBannerContainer(BannerAd? bannerAd, bool isSubscribed) {
-    if (isSubscribed || bannerAd == null) {
-      return const SizedBox(
-        width: 300,
-        height: 250,
+      return SizedBox(
+        width: isRectangle ? 300 : double.infinity,
+        height: isRectangle ? 250 : 0,
       );
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.symmetric(vertical: isRectangle ? 8 : 0),
       child: Container(
+        width: isRectangle ? 300 : double.infinity,
+        height: isRectangle ? 250 : bannerAd.size.height.toDouble(),
         alignment: Alignment.center,
-        width: 300,
-        height: 250,
         child: AdWidget(ad: bannerAd),
       ),
     );
   }
 
-  Widget _buildLoadingContainer() {
-    return const SizedBox(
-      width: 300,
-      height: 250,
+  Widget _buildLoadingContainer(BannerAd? bannerAd) {
+    return SizedBox(
+      width: isRectangle ? 300 : double.infinity,
+      height: isRectangle ? 250 : bannerAd?.size.height.toDouble() ?? 50.0,
+    );
+  }
+}
+
+/// レクタングル広告を表示するウィジェット（互換性のために残す）
+class RectangleBanner extends ConsumerWidget {
+  const RectangleBanner({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return const AdmobBanner(
+      id: 'rectangle',
+      isRectangle: true,
     );
   }
 }
