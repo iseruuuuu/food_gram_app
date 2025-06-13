@@ -1,14 +1,7 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/admob/services/admob_open.dart';
-import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
-import 'package:food_gram_app/core/local/force_update_checker.dart';
-import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
-import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_category_item.dart';
@@ -27,30 +20,6 @@ class TimeLineScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeMade = ref.watch(postHomeMadeStreamProvider);
-    useEffect(
-      () {
-        AdTrackingPermission().requestTracking();
-        ref
-            .read(revenueCatServiceProvider.notifier)
-            .initInAppPurchase()
-            .then((isSubscribed) {
-          final value = math.Random().nextInt(10);
-          if (value == 0) {
-            if (!isSubscribed) {
-              AdmobOpen().loadAd();
-            }
-          }
-        });
-        ref.read(forceUpdateCheckerProvider.notifier).checkForceUpdate(
-          openDialog: () {
-            DialogHelper().forceUpdateDialog(context);
-          },
-        );
-        return null;
-      },
-      [],
-    );
-
     return DefaultTabController(
       length: 2,
       child: Scaffold(
