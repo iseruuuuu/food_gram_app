@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/core/admob/services/admob_banner.dart';
+import 'package:food_gram_app/core/admob/services/admob_rectangle_banner.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
@@ -37,10 +37,10 @@ class AppListView extends HookConsumerWidget {
           final isAdRow = (index + 1) % (adRowInterval + 1) == 0;
           if (isAdRow) {
             return Container(
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              // padding: const EdgeInsets.symmetric(vertical: 16),
               width: double.infinity,
               child: const Center(
-                child: RectangleBanner(),
+                child: RectangleBanner(id: '0'),
               ),
             );
           }
