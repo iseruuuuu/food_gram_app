@@ -51,7 +51,6 @@ class PostDetailScreen extends HookConsumerWidget {
     final heartList = useState<List<String>>([]);
     final isHeart = useState(false);
     final isAppearHeart = useState(false);
-    final tickerProvider = useSingleTickerProvider();
     final adInterstitial =
         useMemoized(() => ref.read(admobInterstitialNotifierProvider));
     final preference = Preference();
