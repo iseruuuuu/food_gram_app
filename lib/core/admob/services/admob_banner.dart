@@ -70,10 +70,7 @@ class AdmobBanner extends ConsumerWidget {
 
   Widget _buildBannerContainer(BannerAd? bannerAd, bool isSubscribed) {
     if (isSubscribed || bannerAd == null) {
-      return const SizedBox(
-        width: double.infinity,
-        height: 0,
-      );
+      return const SizedBox.shrink();
     }
 
     return Container(
