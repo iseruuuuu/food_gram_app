@@ -14,7 +14,6 @@ import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/component/app_app_bar.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_setting_tile.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
@@ -33,7 +32,14 @@ class SettingScreen extends HookConsumerWidget {
     final subscriptionState = ref.watch(subscriptionProvider);
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const AppAppBar(),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(0),
+        child: AppBar(
+          surfaceTintColor: Colors.transparent,
+          forceMaterialTransparency: true,
+          elevation: 0,
+        ),
+      ),
       body: Stack(
         children: [
           Column(
