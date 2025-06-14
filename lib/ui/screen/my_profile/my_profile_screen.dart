@@ -9,7 +9,7 @@ import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
-import 'package:food_gram_app/ui/component/app_skeleton.dart';
+import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/dialog/app_promote_dialog.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_view_model.dart';
 import 'package:go_router/go_router.dart';
