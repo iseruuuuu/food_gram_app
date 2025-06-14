@@ -1,7 +1,14 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/admob/services/admob_open.dart';
+import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
+import 'package:food_gram_app/core/local/force_update_checker.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
+import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/ui/component/app_async_value_group.dart';
@@ -26,6 +33,28 @@ class MapScreen extends HookConsumerWidget {
     final isTapPin = useState(false);
     final post = useState<List<Posts?>>([]);
     final isTapped = useState(false);
+    final appOpenAd = ref.watch(admobOpenNotifierProvider);
+    useEffect(
+      () {
+        AdTrackingPermission().requestTracking();
+        ref
+            .read(revenueCatServiceProvider.notifier)
+            .initInAppPurchase()
+            .then((isSubscribed) {
+          final value = math.Random().nextInt(10);
+          if (value == 0) {
+            appOpenAd.loadAd();
+          }
+        });
+        ref.read(forceUpdateCheckerProvider.notifier).checkForceUpdate(
+          openDialog: () {
+            DialogHelper().forceUpdateDialog(context);
+          },
+        );
+        return null;
+      },
+      [],
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
