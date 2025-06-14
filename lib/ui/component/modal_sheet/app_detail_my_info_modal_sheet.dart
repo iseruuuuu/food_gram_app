@@ -9,7 +9,6 @@ import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
 import 'package:go_router/go_router.dart';
 
 class AppDetailMyInfoModalSheet extends ConsumerWidget {
@@ -17,12 +16,16 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
     required this.posts,
     required this.users,
     required this.loading,
+    required this.delete,
+    required this.setUser,
     super.key,
   });
 
   final Posts posts;
   final Users users;
   final ValueNotifier<bool> loading;
+  final Future<void> Function(Posts posts) delete;
+  final void Function(Posts posts) setUser;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -75,9 +78,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                   )
                       .then((value) {
                     if (value != null) {
-                      ref
-                          .read(postsViewModelProvider(posts.id).notifier)
-                          .setUser(value as Posts);
+                      setUser(value as Posts);
                     }
                   });
                 },
@@ -228,9 +229,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                           ..pop()
                           ..pop()
                           ..pop(true);
-                        await ref
-                            .read(detailPostViewModelProvider().notifier)
-                            .delete(posts);
+                        await delete(posts);
                       },
                       context: context,
                     );

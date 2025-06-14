@@ -8,6 +8,7 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/auth/providers/auth_state_provider.dart';
 import 'package:food_gram_app/router/amination.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_screen.dart';
+import 'package:food_gram_app/ui/screen/post_detail/post_detail_screen.dart';
 import 'package:food_gram_app/ui/screen/restaurant_review/restaurant_review_screen.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
 import 'package:food_gram_app/ui/screen/search/search_detail_screen.dart';
@@ -116,7 +117,7 @@ final timeLineRouter = GoRoute(
       pageBuilder: (context, state) {
         final model = state.extra! as Model;
         return slideUpTransition(
-          DetailPostScreen(
+          PostDetailScreen(
             posts: model.posts,
             users: model.users,
           ),
@@ -224,7 +225,7 @@ final myProfileRouter = GoRoute(
       name: RouterPath.myProfileDetail,
       builder: (context, state) {
         final model = state.extra! as Model;
-        return DetailPostScreen(posts: model.posts, users: model.users);
+        return PostDetailScreen(posts: model.posts, users: model.users);
       },
     ),
     GoRoute(
@@ -314,7 +315,7 @@ final mapRouter = GoRoute(
       pageBuilder: (context, state) {
         final model = state.extra! as Model;
         return slideUpTransition(
-          DetailPostScreen(
+          PostDetailScreen(
             posts: model.posts,
             users: model.users,
           ),
