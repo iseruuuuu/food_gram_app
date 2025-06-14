@@ -88,13 +88,35 @@ class AdmobOpen {
 /// アプリ起動時の広告の状態を管理するプロバイダー
 @riverpod
 class AdmobOpenNotifier extends _$AdmobOpenNotifier {
+  AdmobOpen? _admobOpen;
+
   @override
   AdmobOpen build() {
-    final isSubscribed =
-        ref.watch(subscriptionProvider).whenOrNull(data: (value) => value) ??
-            false;
-    final admobOpen = AdmobOpen(isSubscribed: isSubscribed);
-    ref.onDispose(admobOpen.dispose);
-    return admobOpen;
+    final subscriptionState = ref.watch(subscriptionProvider);
+
+    ref.onDispose(() => _admobOpen?.dispose());
+
+    return subscriptionState.when(
+      data: (isSubscribed) {
+        if (_admobOpen == null) {
+          _admobOpen = AdmobOpen(isSubscribed: isSubscribed);
+        } else {
+          // サブスクリプション状態が変更された場合、新しいインスタンスを作成
+          _admobOpen?.dispose();
+          _admobOpen = AdmobOpen(isSubscribed: isSubscribed);
+        }
+        return _admobOpen!;
+      },
+      loading: () {
+        // ローディング中は広告を表示しない
+        _admobOpen ??= AdmobOpen(isSubscribed: true);
+        return _admobOpen!;
+      },
+      error: (_, __) {
+        // エラー時は広告を表示しない
+        _admobOpen ??= AdmobOpen(isSubscribed: true);
+        return _admobOpen!;
+      },
+    );
   }
 }
