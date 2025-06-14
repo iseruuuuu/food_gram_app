@@ -14,7 +14,7 @@ import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/component/app_loading.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_setting_tile.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
 import 'package:gap/gap.dart';
@@ -314,7 +314,7 @@ class SettingScreen extends HookConsumerWidget {
               const AdmobBanner(id: 'setting'),
             ],
           ),
-          AppLoading(
+          AppProcessLoading(
             loading: loading,
             status: 'Loading...',
           ),

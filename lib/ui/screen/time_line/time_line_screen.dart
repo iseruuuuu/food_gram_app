@@ -5,11 +5,11 @@ import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_category_item.dart';
-import 'package:food_gram_app/ui/component/app_data_loading.dart';
-import 'package:food_gram_app/ui/component/app_empty.dart';
-import 'package:food_gram_app/ui/component/app_error_widget.dart';
-import 'package:food_gram_app/ui/component/app_list_view.dart';
 import 'package:food_gram_app/ui/component/app_story_widget.dart';
+import 'package:food_gram_app/ui/component/common/app_empty.dart';
+import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
+import 'package:food_gram_app/ui/component/common/app_list_view.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -144,7 +144,7 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
           if (postState.isLoading)
             const SliverFillRemaining(
               hasScrollBody: false,
-              child: AppDataLoading(),
+              child: AppContentLoading(),
             ),
           if (postState.hasError)
             SliverToBoxAdapter(

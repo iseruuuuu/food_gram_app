@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/ui/component/app_data_loading.dart';
-import 'package:food_gram_app/ui/component/app_error_widget.dart';
+import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
 
-/// 共通Widgetの一例
-/// これはあくまでサンプルで、実際の共通クラスの具体的な内容は
-/// 各プロジェクトに沿ったものを各自で実装することを推奨します
-/// この場合エラー時もローディング時もデフォルトではSizedBox.shrink()
 class AsyncValueSwitcher<T> extends StatelessWidget {
   const AsyncValueSwitcher({
     required this.asyncValue,
@@ -51,7 +47,7 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
         ),
         loading: () => KeyedSubtree(
           key: const ValueKey('onLoading'),
-          child: onLoading ?? const Center(child: AppDataLoading()),
+          child: onLoading ?? const Center(child: AppContentLoading()),
         ),
       ),
     );
