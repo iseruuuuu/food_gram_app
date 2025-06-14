@@ -151,14 +151,6 @@ Future<List<Posts>> mapRepository(Ref ref) async {
   return response.map(Posts.fromJson).toList();
 }
 
-/// カテゴリーが🍜の投稿を取得
-@riverpod
-Future<List<Posts>> mapRamenRepository(Ref ref) async {
-  final response =
-      await ref.read(postServiceProvider.notifier).getRamenMapPosts();
-  return response.map(Posts.fromJson).toList();
-}
-
 /// 特定ユーザーの投稿を取得
 @riverpod
 Future<List<Map<String, dynamic>>> profileRepository(
