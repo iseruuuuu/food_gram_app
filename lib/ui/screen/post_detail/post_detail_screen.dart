@@ -21,13 +21,13 @@ import 'package:food_gram_app/router/go_router_extension.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
-import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/dialog/app_share_dialog.dart';
+import 'package:food_gram_app/ui/component/loading/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_master_modal_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_my_info_modal_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_other_info_modal_sheet.dart';
-import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
+import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
@@ -35,8 +35,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:photo_viewer/photo_viewer.dart';
 
-class DetailPostScreen extends HookConsumerWidget {
-  const DetailPostScreen({
+class PostDetailScreen extends HookConsumerWidget {
+  const PostDetailScreen({
     required this.posts,
     required this.users,
     super.key,

@@ -4,7 +4,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
+import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
 import 'package:go_router/go_router.dart';
 
 class AppDetailMasterModalSheet extends ConsumerWidget {
@@ -67,7 +67,7 @@ class AppDetailMasterModalSheet extends ConsumerWidget {
                           ..pop()
                           ..pop(true);
                         await ref
-                            .read(detailPostViewModelProvider().notifier)
+                            .read(postDetailViewModelProvider().notifier)
                             .delete(posts);
                       },
                       context: context,
