@@ -101,7 +101,7 @@ class MapScreen extends HookConsumerWidget {
                     child: AppMapRestaurantModalSheet(post: post.value),
                   ),
                   Positioned(
-                    bottom: 40,
+                    top: 40,
                     right: 10,
                     child: Column(
                       children: [
@@ -118,7 +118,7 @@ class MapScreen extends HookConsumerWidget {
                                 shape: const RoundedRectangleBorder(
                                   side: BorderSide(color: Colors.white),
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(30)),
+                                      BorderRadius.all(Radius.circular(20)),
                                 ),
                                 foregroundColor: Colors.white,
                                 backgroundColor: Colors.white,
