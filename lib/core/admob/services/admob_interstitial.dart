@@ -30,6 +30,10 @@ class AdmobInterstitial {
 
   /// 広告を作成して読み込む
   void createAd() {
+    print('isSubscribed: $isSubscribed');
+    if (isSubscribed) {
+      return;
+    }
     if (_isAdReady || _loadAttempts >= maxLoadAttempts) {
       return;
     }
@@ -138,19 +142,33 @@ class AdmobInterstitialNotifier extends _$AdmobInterstitialNotifier {
 
   @override
   AdmobInterstitial build() {
-    final isSubscribed =
-        ref.watch(subscriptionProvider).whenOrNull(data: (value) => value) ??
-            false;
+    final subscriptionState = ref.watch(subscriptionProvider);
 
-    if (_admobInterstitial == null) {
-      _admobInterstitial = AdmobInterstitial(isSubscribed: isSubscribed);
-      _admobInterstitial!.createAd();
-    }
+    ref.onDispose(() => _admobInterstitial?.dispose());
 
-    return _admobInterstitial!;
-  }
-
-  void dispose() {
-    _admobInterstitial?.dispose();
+    return subscriptionState.when(
+      data: (isSubscribed) {
+        if (_admobInterstitial == null) {
+          _admobInterstitial = AdmobInterstitial(isSubscribed: isSubscribed);
+          _admobInterstitial!.createAd();
+        } else {
+          // サブスクリプション状態が変更された場合、新しいインスタンスを作成
+          _admobInterstitial?.dispose();
+          _admobInterstitial = AdmobInterstitial(isSubscribed: isSubscribed);
+          _admobInterstitial!.createAd();
+        }
+        return _admobInterstitial!;
+      },
+      loading: () {
+        // ローディング中は広告を表示しない
+        _admobInterstitial ??= AdmobInterstitial(isSubscribed: true);
+        return _admobInterstitial!;
+      },
+      error: (_, __) {
+        // エラー時は広告を表示しない
+        _admobInterstitial ??= AdmobInterstitial(isSubscribed: true);
+        return _admobInterstitial!;
+      },
+    );
   }
 }
