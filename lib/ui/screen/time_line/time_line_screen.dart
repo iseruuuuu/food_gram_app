@@ -8,7 +8,6 @@ import 'package:food_gram_app/ui/component/app_category_item.dart';
 import 'package:food_gram_app/ui/component/app_data_loading.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
 import 'package:food_gram_app/ui/component/app_error_widget.dart';
-import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
 import 'package:food_gram_app/ui/component/app_story_widget.dart';
 import 'package:go_router/go_router.dart';
@@ -61,19 +60,33 @@ class TimeLineScreen extends HookConsumerWidget {
             ),
           ],
         ),
-        floatingActionButton: AppFloatingButton(
-          onTap: () async {
-            await context
-                .pushNamed(RouterPath.timeLinePost)
-                .then((value) async {
-              if (value != null) {
-                ref
-                  ..invalidate(postStreamProvider)
-                  ..invalidate(postHomeMadeStreamProvider)
-                  ..invalidate(blockListProvider);
-              }
-            });
-          },
+        floatingActionButton: SizedBox(
+          width: 70,
+          height: 70,
+          child: FloatingActionButton(
+            heroTag: null,
+            foregroundColor: Colors.black,
+            backgroundColor: Colors.black,
+            elevation: 10,
+            shape: const CircleBorder(side: BorderSide()),
+            onPressed: () async {
+              await context
+                  .pushNamed(RouterPath.timeLinePost)
+                  .then((value) async {
+                if (value != null) {
+                  ref
+                    ..invalidate(postStreamProvider)
+                    ..invalidate(postHomeMadeStreamProvider)
+                    ..invalidate(blockListProvider);
+                }
+              });
+            },
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 35,
+            ),
+          ),
         ),
       ),
     );

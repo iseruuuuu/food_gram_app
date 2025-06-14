@@ -20,7 +20,6 @@ import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/go_router_extension.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
-import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
@@ -448,25 +447,39 @@ class DetailPostScreen extends HookConsumerWidget {
               ],
             ),
           ),
-          floatingActionButton: AppFloatingButton(
-            onTap: () async {
-              final currentPath = GoRouter.of(context).isCurrentLocation();
-              await context
-                  .pushNamed(
-                currentPath,
-                extra: Restaurant(
-                  name: posts.restaurant,
-                  lat: posts.lat,
-                  lng: posts.lng,
-                  address: '',
-                ),
-              )
-                  .then((value) async {
-                if (value != null) {
-                  ref.invalidate(postStreamProvider);
-                }
-              });
-            },
+          floatingActionButton: SizedBox(
+            width: 70,
+            height: 70,
+            child: FloatingActionButton(
+              heroTag: null,
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.black,
+              elevation: 10,
+              shape: const CircleBorder(side: BorderSide()),
+              onPressed: () async {
+                final currentPath = GoRouter.of(context).isCurrentLocation();
+                await context
+                    .pushNamed(
+                  currentPath,
+                  extra: Restaurant(
+                    name: posts.restaurant,
+                    lat: posts.lat,
+                    lng: posts.lng,
+                    address: '',
+                  ),
+                )
+                    .then((value) async {
+                  if (value != null) {
+                    ref.invalidate(postStreamProvider);
+                  }
+                });
+              },
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 35,
+              ),
+            ),
           ),
         ),
         error: () => Scaffold(

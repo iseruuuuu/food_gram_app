@@ -8,7 +8,6 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_app_bar.dart';
 import 'package:food_gram_app/ui/component/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/app_empty.dart';
-import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/app_list_view.dart';
 import 'package:food_gram_app/ui/component/app_skeleton.dart';
@@ -101,16 +100,30 @@ class MyProfileScreen extends HookConsumerWidget {
             );
           },
         ),
-        floatingActionButton: AppFloatingButton(
-          onTap: () async {
-            await context
-                .pushNamed(RouterPath.myProfilePost)
-                .then((value) async {
-              if (value != null) {
-                ref.invalidate(myPostStreamProvider);
-              }
-            });
-          },
+        floatingActionButton: SizedBox(
+          width: 70,
+          height: 70,
+          child: FloatingActionButton(
+            heroTag: null,
+            foregroundColor: Colors.black,
+            backgroundColor: Colors.black,
+            elevation: 10,
+            shape: const CircleBorder(side: BorderSide()),
+            onPressed: () async {
+              await context
+                  .pushNamed(RouterPath.myProfilePost)
+                  .then((value) async {
+                if (value != null) {
+                  ref.invalidate(myPostStreamProvider);
+                }
+              });
+            },
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 35,
+            ),
+          ),
         ),
       ),
     );
