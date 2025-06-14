@@ -179,6 +179,13 @@ class PostDetailScreen extends HookConsumerWidget {
                                   .read(postDetailViewModelProvider().notifier)
                                   .delete(posts);
                             },
+                            setUser: (posts) {
+                              ref
+                                  .read(
+                                    postsViewModelProvider(posts.id).notifier,
+                                  )
+                                  .setUser(posts);
+                            },
                           );
                         }
                       },
