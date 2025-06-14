@@ -21,7 +21,7 @@ import 'package:food_gram_app/router/go_router_extension.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
-import 'package:food_gram_app/ui/component/app_loading.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/dialog/app_share_dialog.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_master_modal_sheet.dart';
@@ -120,7 +120,7 @@ class PostDetailScreen extends HookConsumerWidget {
             automaticallyImplyLeading: false,
             surfaceTintColor: Colors.transparent,
           ),
-          body: const AppLoading(
+          body: const AppProcessLoading(
             loading: true,
             status: '',
           ),
@@ -461,7 +461,7 @@ class PostDetailScreen extends HookConsumerWidget {
                   ),
                 ),
                 AppHeart(isHeart: isAppearHeart.value),
-                AppLoading(
+                AppProcessLoading(
                   loading: menuLoading.value || loading,
                   status: 'Loading...',
                 ),

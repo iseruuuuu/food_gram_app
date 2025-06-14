@@ -8,7 +8,7 @@ import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_favorite_tags_selector.dart';
 import 'package:food_gram_app/ui/component/app_icon.dart';
-import 'package:food_gram_app/ui/component/app_loading.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
@@ -223,7 +223,7 @@ class EditScreen extends HookConsumerWidget {
                   ),
                 ),
               ),
-              AppLoading(
+              AppProcessLoading(
                 loading: loading,
                 status: 'Loading...',
               ),

@@ -12,8 +12,8 @@ import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/env.dart';
-import 'package:food_gram_app/ui/component/app_async_value_group.dart';
-import 'package:food_gram_app/ui/component/app_loading.dart';
+import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

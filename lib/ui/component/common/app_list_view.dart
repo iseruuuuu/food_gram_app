@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/admob/services/admob_rectangle_banner.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
-import 'package:food_gram_app/ui/component/app_empty.dart';
+import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
