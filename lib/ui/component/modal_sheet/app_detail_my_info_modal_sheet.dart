@@ -17,12 +17,14 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
     required this.posts,
     required this.users,
     required this.loading,
+    required this.delete,
     super.key,
   });
 
   final Posts posts;
   final Users users;
   final ValueNotifier<bool> loading;
+  final Future<void> Function(Posts posts) delete;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -228,9 +230,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                           ..pop()
                           ..pop()
                           ..pop(true);
-                        await ref
-                            .read(postDetailViewModelProvider().notifier)
-                            .delete(posts);
+                        await delete(posts);
                       },
                       context: context,
                     );

@@ -7,7 +7,6 @@ import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -16,12 +15,14 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
     required this.posts,
     required this.users,
     required this.loading,
+    required this.block,
     super.key,
   });
 
   final Posts posts;
   final Users users;
   final ValueNotifier<bool> loading;
+  final Future<bool> Function(String userId) block;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -231,10 +232,7 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
                           ..pop()
                           ..pop()
                           ..pop(true);
-                        await ref
-                            .read(postDetailViewModelProvider().notifier)
-                            .block(posts.userId)
-                            .then((value) async {
+                        await block(posts.userId).then((value) {
                           if (value) {
                             context.pop(true);
                           }

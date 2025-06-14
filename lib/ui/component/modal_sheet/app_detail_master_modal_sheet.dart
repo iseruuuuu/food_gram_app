@@ -4,18 +4,19 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
 import 'package:go_router/go_router.dart';
 
 class AppDetailMasterModalSheet extends ConsumerWidget {
   const AppDetailMasterModalSheet({
     required this.posts,
     required this.users,
+    required this.delete,
     super.key,
   });
 
   final Posts posts;
   final Users users;
+  final Future<void> Function(Posts posts) delete;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -66,9 +67,7 @@ class AppDetailMasterModalSheet extends ConsumerWidget {
                           ..pop()
                           ..pop()
                           ..pop(true);
-                        await ref
-                            .read(postDetailViewModelProvider().notifier)
-                            .delete(posts);
+                        await delete(posts);
                       },
                       context: context,
                     );

@@ -151,6 +151,11 @@ class PostDetailScreen extends HookConsumerWidget {
                           return AppDetailMasterModalSheet(
                             posts: posts,
                             users: users,
+                            delete: (posts) async {
+                              await ref
+                                  .read(postDetailViewModelProvider().notifier)
+                                  .delete(posts);
+                            },
                           );
                         }
                         if (users.userId != currentUser) {
@@ -158,12 +163,22 @@ class PostDetailScreen extends HookConsumerWidget {
                             users: users,
                             posts: posts,
                             loading: menuLoading,
+                            block: (userId) async {
+                              return ref
+                                  .read(postDetailViewModelProvider().notifier)
+                                  .block(userId);
+                            },
                           );
                         } else {
                           return AppDetailMyInfoModalSheet(
                             users: users,
                             posts: state,
                             loading: menuLoading,
+                            delete: (posts) async {
+                              await ref
+                                  .read(postDetailViewModelProvider().notifier)
+                                  .delete(posts);
+                            },
                           );
                         }
                       },
