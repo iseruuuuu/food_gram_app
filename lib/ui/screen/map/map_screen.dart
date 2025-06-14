@@ -108,8 +108,8 @@ class MapScreen extends HookConsumerWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 8, left: 8),
                           child: SizedBox(
-                            width: 63,
-                            height: 63,
+                            width: 62,
+                            height: 62,
                             child: Theme(
                               data: Theme.of(context)
                                   .copyWith(highlightColor: Colors.white),
