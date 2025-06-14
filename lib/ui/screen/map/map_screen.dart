@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_open.dart';
@@ -12,7 +13,6 @@ import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/ui/component/app_async_value_group.dart';
-import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
@@ -32,7 +32,6 @@ class MapScreen extends HookConsumerWidget {
     final mapService = ref.watch(mapRepositoryProvider);
     final isTapPin = useState(false);
     final post = useState<List<Posts?>>([]);
-    final isTapped = useState(false);
     final appOpenAd = ref.watch(admobOpenNotifierProvider);
     useEffect(
       () {
@@ -102,38 +101,40 @@ class MapScreen extends HookConsumerWidget {
                     child: AppMapRestaurantModalSheet(post: post.value),
                   ),
                   Positioned(
-                    top: 40,
+                    bottom: 40,
                     right: 10,
                     child: Column(
                       children: [
-                        MapFloatingActionButton(
-                          onPressed: controller.moveToCurrentLocation,
-                        ),
-                        const Divider(height: 1),
-                        MapRamenFloatingActionButton(
-                          onPressed: () {
-                            if (isTapped.value) {
-                              ref.read(mapViewModelProvider.notifier).setPin(
-                                    onPinTap: (posts) {
-                                      isTapPin.value = true;
-                                      post.value = posts;
-                                    },
-                                    iconSize: _calculateIconSize(context),
-                                  );
-                            } else {
-                              ref
-                                  .read(mapViewModelProvider.notifier)
-                                  .setRamenPin(
-                                    onPinTap: (posts) {
-                                      isTapPin.value = true;
-                                      post.value = posts;
-                                    },
-                                    iconSize: _calculateIconSize(context),
-                                  );
-                            }
-                            isTapped.value = !isTapped.value;
-                          },
-                          isTapped: isTapped.value,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, left: 8),
+                          child: SizedBox(
+                            width: 63,
+                            height: 63,
+                            child: Theme(
+                              data: Theme.of(context)
+                                  .copyWith(highlightColor: Colors.white),
+                              child: FloatingActionButton(
+                                heroTag: null,
+                                shape: const RoundedRectangleBorder(
+                                  side: BorderSide(color: Colors.white),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                ),
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.white,
+                                focusColor: Colors.white,
+                                splashColor: Colors.white,
+                                hoverColor: Colors.white,
+                                elevation: 10,
+                                onPressed: controller.moveToCurrentLocation,
+                                child: const Icon(
+                                  CupertinoIcons.location_fill,
+                                  color: Color(0xFF1A73E8),
+                                  size: 26,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
