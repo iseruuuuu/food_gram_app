@@ -19,6 +19,10 @@ class AdmobOpen {
 
   /// 広告を読み込む
   void loadAd() {
+    if (isSubscribed) {
+      return;
+    }
+
     if (_appOpenAd != null) {
       return;
     }
