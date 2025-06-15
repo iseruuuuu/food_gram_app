@@ -2,87 +2,129 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class AppHeaderSkeleton extends StatelessWidget {
-  const AppHeaderSkeleton({super.key});
+
+class AppProfileHeaderSkeleton extends StatelessWidget {
+  const AppProfileHeaderSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Container(
-          height: 200,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.2),
-                offset: const Offset(0, -4),
-                blurRadius: 6,
-                spreadRadius: 1,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Column(
+            children: [
+              Container(
+                height: 150,
+                width: double.infinity,
+                color: Colors.grey.shade300,
               ),
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.2),
-                offset: const Offset(0, 4),
-                blurRadius: 6,
-                spreadRadius: 1,
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+              Container(
+                color: Colors.white,
+                padding: const EdgeInsets.only(top: 50, bottom: 10),
+                child: Column(
                   children: [
-                    CircleAvatar(
-                      radius: 42,
-                      backgroundColor: Colors.grey.shade300,
+                    const Gap(8),
+                    Container(
+                      width: 120,
+                      height: 20,
+                      color: Colors.grey.shade300,
                     ),
-                    const Spacer(),
-                    const Column(
+                    const Gap(8),
+                    Container(
+                      width: 80,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    const Gap(8),
+                    Container(
+                      width: 200,
+                      height: 16,
+                      color: Colors.grey.shade200,
+                    ),
+                    const Gap(8),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(
-                          '100',
-                          style: TextStyle(fontSize: 24),
-                        ),
-                        Text(
-                          '投稿数',
-                          style: TextStyle(fontSize: 24),
-                        ),
+                        _ColumnSkeleton(),
+                        _ColumnSkeleton(),
+                        _ColumnSkeleton(),
                       ],
                     ),
-                    const Gap(30),
-                    const Column(
-                      children: [
-                        Text(
-                          '100',
-                          style: TextStyle(fontSize: 24),
-                        ),
-                        Text(
-                          'ポイント',
-                          style: TextStyle(fontSize: 24),
-                        ),
-                      ],
+                    const Gap(16),
+                    Container(
+                      width: double.infinity,
+                      height: 40,
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                    const Gap(16),
+                    Container(
+                      width: double.infinity,
+                      height: 40,
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                     ),
                   ],
                 ),
-                const Spacer(),
-                const Text(
-                  'Name',
-                  style: TextStyle(fontSize: 24),
+              ),
+            ],
+          ),
+          Positioned(
+            top: 105,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Container(
+                width: 96,
+                height: 96,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 4,
+                  ),
                 ),
-                const Gap(4),
-                const Text(
-                  'Introduction',
-                  style: TextStyle(fontSize: 24),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ColumnSkeleton extends StatelessWidget {
+  const _ColumnSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width / 3.5,
+      child: Column(
+        children: [
+          Container(
+            width: 32,
+            height: 18,
+            color: Colors.grey.shade300,
+          ),
+          const Gap(4),
+          Container(
+            width: 40,
+            height: 12,
+            color: Colors.grey.shade200,
+          ),
+        ],
       ),
     );
   }

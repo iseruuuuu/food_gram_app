@@ -83,7 +83,7 @@ class MyProfileScreen extends HookConsumerWidget {
                         );
                       },
                       loading: () {
-                        return const AppHeaderSkeleton();
+                        return const AppProfileHeaderSkeleton();
                       },
                       error: SizedBox.shrink,
                     ),
