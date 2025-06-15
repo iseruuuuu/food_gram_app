@@ -129,3 +129,34 @@ class _ColumnSkeleton extends StatelessWidget {
     );
   }
 }
+
+class AppListViewSkeleton extends StatelessWidget {
+  const AppListViewSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width,
+      height: 100,
+      child: Skeletonizer(
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 5,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  color: Colors.grey.shade300,
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
