@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/ui/component/app_profile_image.dart';
+import 'package:food_gram_app/ui/component/profile/app_profile_image.dart';
 
 class AppProfileDialog extends StatelessWidget {
   const AppProfileDialog({

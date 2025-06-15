@@ -5,14 +5,14 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/dialog/app_profile_dialog.dart';
+import 'package:food_gram_app/ui/component/profile/app_profile_image.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class AppHeader extends ConsumerWidget {
-  const AppHeader({
+class AppProfileHeader extends ConsumerWidget {
+  const AppProfileHeader({
     required this.users,
     required this.length,
     required this.heartAmount,

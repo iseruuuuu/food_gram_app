@@ -6,7 +6,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/theme/style/story_style.dart';
-import 'package:food_gram_app/ui/component/app_profile_image.dart';
+import 'package:food_gram_app/ui/component/profile/app_profile_image.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story/story_page_view.dart';

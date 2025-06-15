@@ -114,7 +114,7 @@ class SearchScreen extends HookConsumerWidget {
                       },
                     );
                   },
-                  loading: AppListItemLoading.new,
+                  loading: AppListViewSkeleton.new,
                   error: (error, stack) => Container(
                     color: Colors.grey[300],
                     child: const Icon(Icons.error, color: Colors.grey),
@@ -201,7 +201,7 @@ class SearchScreen extends HookConsumerWidget {
                             ),
                           );
                         },
-                        loading: AppListItemLoading.new,
+                        loading: AppListViewSkeleton.new,
                         error: (error, stack) => Container(
                           color: Colors.grey[300],
                           child: const Icon(Icons.error, color: Colors.grey),

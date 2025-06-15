@@ -147,20 +147,32 @@ class AppContentLoading extends StatelessWidget {
   }
 }
 
-
-class AppListItemLoading extends StatelessWidget {
-  const AppListItemLoading({super.key});
+class AppStoryLoading extends StatelessWidget {
+  const AppStoryLoading({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 100,
+      width: MediaQuery.sizeOf(context).width,
       height: 100,
-      child: Center(
-        child: LoadingAnimationWidget.discreteCircle(
-          color: Theme.of(context).primaryColor,
-          size: 30,
-        ),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(8),
+            child: SizedBox(
+              width: 100,
+              height: 100,
+              child: Center(
+                child: LoadingAnimationWidget.discreteCircle(
+                  color: Theme.of(context).primaryColor,
+                  size: 30,
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
