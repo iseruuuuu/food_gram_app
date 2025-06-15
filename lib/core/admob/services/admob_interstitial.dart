@@ -30,7 +30,6 @@ class AdmobInterstitial {
 
   /// 広告を作成して読み込む
   void createAd() {
-    print('isSubscribed: $isSubscribed');
     if (isSubscribed) {
       return;
     }
