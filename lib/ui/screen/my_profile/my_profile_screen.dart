@@ -7,10 +7,10 @@ import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
-import 'package:food_gram_app/ui/component/app_header.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/dialog/app_promote_dialog.dart';
+import 'package:food_gram_app/ui/component/profile/app_profile_header.dart';
 import 'package:food_gram_app/ui/screen/my_profile/my_profile_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -76,7 +76,7 @@ class MyProfileScreen extends HookConsumerWidget {
                   SliverToBoxAdapter(
                     child: users.when(
                       data: (users, length, heartAmount) {
-                        return AppHeader(
+                        return AppProfileHeader(
                           users: users,
                           length: length,
                           heartAmount: heartAmount,
