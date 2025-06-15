@@ -68,7 +68,8 @@ class EditScreen extends HookConsumerWidget {
                     if (success) {
                       while (loading) {
                         await Future<void>.delayed(
-                            const Duration(milliseconds: 100));
+                          const Duration(milliseconds: 100),
+                        );
                       }
                       final updatedUser =
                           ref.read(editViewModelProvider()).user;

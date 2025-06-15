@@ -127,14 +127,16 @@ class SearchScreen extends HookConsumerWidget {
                 (category) {
                   final selectedCategoryName = useState(category.name);
                   final postState = ref.watch(
-                      postStreamByCategoryProvider(selectedCategoryName.value));
+                    postStreamByCategoryProvider(selectedCategoryName.value),
+                  );
                   return Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${category.displayIcon} ${_l10nCategory(category.name, l10n)}',
+                            '${category.displayIcon}'
+                            '${_l10nCategory(category.name, l10n)}',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
