@@ -132,13 +132,14 @@ class AppFoodTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
+      height: 50,
       child: Row(
         children: [
           const Gap(5),
           const Icon(
             Icons.fastfood,
             color: Colors.black,
-            size: 30,
+            size: 28,
           ),
           const Gap(10),
           Expanded(

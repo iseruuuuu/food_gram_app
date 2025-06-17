@@ -1355,6 +1355,18 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'もっとみる'**
   String get seeMore;
+
+  /// No description provided for @selectCountryTag.
+  ///
+  /// In ja, this message translates to:
+  /// **'国カテゴリーの選択'**
+  String get selectCountryTag;
+
+  /// No description provided for @selectFoodTag.
+  ///
+  /// In ja, this message translates to:
+  /// **'料理カテゴリーの選択'**
+  String get selectFoodTag;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

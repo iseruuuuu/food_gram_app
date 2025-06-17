@@ -4,30 +4,8 @@ import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-/// カテゴリーを表すレコード型
-typedef CategoryData = ({String name, String displayIcon, bool isAllCategory});
-
-final categoriesProvider = Provider<List<CategoryData>>((ref) {
-  final result = <CategoryData>[
-    (name: '', displayIcon: '🍽️', isAllCategory: true),
-  ];
-  foodCategory.forEach((key, value) {
-    final foodEmojis = value;
-    result.add(
-      (
-        name: key,
-        displayIcon: foodEmojis.isNotEmpty && foodEmojis[0].isNotEmpty
-            ? foodEmojis[0][0]
-            : '🍽️',
-        isAllCategory: false
-      ),
-    );
-  });
-  return result;
-});
-
-class AppCategoryItem extends HookConsumerWidget {
-  const AppCategoryItem({
+class AppCategoryTab extends HookConsumerWidget {
+  const AppCategoryTab({
     required this.selectedCategoryName,
     super.key,
   });

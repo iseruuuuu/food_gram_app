@@ -117,7 +117,6 @@
   "enterTheCorrectFormat": "正しい形式で入力してください",
   "camera": "カメラ",
   "album": "アルバム",
-  "close": "閉じる",
   "snsLogin": "SNSログイン",
   "tutorialFirstPageTitle": "美味しい瞬間、シェアしよう",
   "tutorialFirstPageSubTitle": "FoodGramで、毎日の食事がもっと特別に\n新しい味との出会いを楽しもう",
@@ -209,5 +208,7 @@
   "appSubtitle": "美味しい瞬間、シェアしよう",
   "searchRestaurantTitle": "レストランを探す",
   "nearbyRestaurants": "📍近いレストラン",
-  "seeMore": "もっとみる"
+  "seeMore": "もっとみる",
+  "selectCountryTag": "国カテゴリーの選択",
+  "selectFoodTag": "料理カテゴリーの選択"
 }

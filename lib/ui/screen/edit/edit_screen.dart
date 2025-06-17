@@ -6,8 +6,8 @@ import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/theme/style/edit_style.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/ui/component/app_favorite_tags_selector.dart';
 import 'package:food_gram_app/ui/component/app_icon.dart';
+import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
@@ -207,7 +207,7 @@ class EditScreen extends HookConsumerWidget {
                               ),
                             ),
                             const Gap(10),
-                            AppFavoriteTagsSelector(
+                            AppFoodTag(
                               selectedTags: state.favoriteTags,
                               onTagSelected: (tag) {
                                 ref
@@ -216,6 +216,7 @@ class EditScreen extends HookConsumerWidget {
                                     )
                                     .updateFavoriteTags(tag);
                               },
+                              favoriteTagText: L10n.of(context).selectFoodTag,
                             ),
                           ],
                         ),
