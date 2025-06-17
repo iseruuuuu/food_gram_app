@@ -274,7 +274,6 @@ String getFoodName(String emoji) {
 /// カテゴリーを表すレコード型
 typedef CategoryData = ({String name, String displayIcon, bool isAllCategory});
 
-//TODO ここを別で実装し直したい
 final categoriesProvider = Provider<List<CategoryData>>((ref) {
   final result = <CategoryData>[
     (name: '', displayIcon: '🍽️', isAllCategory: true),
