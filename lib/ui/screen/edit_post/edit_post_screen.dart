@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
@@ -228,6 +229,18 @@ class EditPostScreen extends HookConsumerWidget {
                       style: EditPostStyle.category(),
                     ),
                     const Gap(12),
+                    AppCountryTag(
+                      selectedTags: countryTag.value,
+                      onTagSelected: (tag) {
+                        countryTag.value = tag;
+                      },
+                    ),
+                    AppFoodTag(
+                      selectedTags: foodTag.value,
+                      onTagSelected: (tag) {
+                        foodTag.value = tag;
+                      },
+                      favoriteTagText: '料理タグの選択',
                     ),
                     const Gap(30),
                     AppCommentTextField(

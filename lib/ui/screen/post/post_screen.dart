@@ -222,6 +222,7 @@ class PostScreen extends HookConsumerWidget {
                     const Gap(12),
                     ),
                     const Gap(30),
+                      favoriteTagText: '料理タグの選択',
                     AppCommentTextField(
                       controller: ref
                           .read(postViewModelProvider().notifier)
