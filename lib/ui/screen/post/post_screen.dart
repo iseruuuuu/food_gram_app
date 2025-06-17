@@ -7,7 +7,6 @@ import 'package:food_gram_app/core/theme/style/post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/ui/component/app_post_category_widget.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
@@ -221,18 +220,6 @@ class PostScreen extends HookConsumerWidget {
                       style: PostStyle.categoryTitle(),
                     ),
                     const Gap(12),
-                    Row(
-                      children: [
-                        AppPostCountryCategoryWidget(
-                          tag: countryTag,
-                          title: l10n.postCountryCategory,
-                        ),
-                        const Gap(30),
-                        AppPostFoodCategoryWidget(
-                          tag: foodTag,
-                          title: l10n.postCuisineCategory,
-                        ),
-                      ],
                     ),
                     const Gap(30),
                     AppCommentTextField(
