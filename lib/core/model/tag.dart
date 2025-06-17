@@ -1,4 +1,6 @@
 // 国の絵文字と料理名を紐付けるマップ
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 final Map<String, String> countryCategory = {
   '🇯🇵': '日本料理',
   '🇮🇹': 'イタリアン料理',
@@ -268,3 +270,26 @@ String getFoodName(String emoji) {
   }
   return 'その他の食べ物';
 }
+
+/// カテゴリーを表すレコード型
+typedef CategoryData = ({String name, String displayIcon, bool isAllCategory});
+
+//TODO ここを別で実装し直したい
+final categoriesProvider = Provider<List<CategoryData>>((ref) {
+  final result = <CategoryData>[
+    (name: '', displayIcon: '🍽️', isAllCategory: true),
+  ];
+  foodCategory.forEach((key, value) {
+    final foodEmojis = value;
+    result.add(
+      (
+        name: key,
+        displayIcon: foodEmojis.isNotEmpty && foodEmojis[0].isNotEmpty
+            ? foodEmojis[0][0]
+            : '🍽️',
+        isAllCategory: false
+      ),
+    );
+  });
+  return result;
+});
