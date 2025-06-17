@@ -209,5 +209,6 @@
   "appSubtitle": "美味しい瞬間、シェアしよう",
   "searchRestaurantTitle": "レストランを探す",
   "nearbyRestaurants": "📍近いレストラン",
-  "seeMore": "もっとみる"
+  "seeMore": "もっとみる",
+  "selectCountryTag": "国カテゴリーの選択"
 }

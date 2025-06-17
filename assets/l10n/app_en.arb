@@ -209,5 +209,6 @@
   "appSubtitle": "Share your delicious moments",
   "searchRestaurantTitle": "Search Restaurants",
   "nearbyRestaurants": "📍Nearby Restaurants",
-  "seeMore": "See More"
+  "seeMore": "See More",
+  "selectCountryTag": "Select a Country Category"
 }
