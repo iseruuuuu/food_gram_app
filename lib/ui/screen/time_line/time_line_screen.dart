@@ -4,7 +4,7 @@ import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.d
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/component/app_category_item.dart';
+import 'package:food_gram_app/ui/component/app_category_tab.dart';
 import 'package:food_gram_app/ui/component/app_story_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
@@ -122,7 +122,7 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
                   height: 100,
                   child: AppStoryWidget(data: postState.value ?? []),
                 ),
-                AppCategoryItem(selectedCategoryName: selectedCategoryName),
+                AppCategoryTab(selectedCategoryName: selectedCategoryName),
               ],
             ),
           ),
