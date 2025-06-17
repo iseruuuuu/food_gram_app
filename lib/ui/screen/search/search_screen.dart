@@ -7,7 +7,7 @@ import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/component/app_category_item.dart';
+import 'package:food_gram_app/ui/component/app_category_tab.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
