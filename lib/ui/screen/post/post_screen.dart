@@ -7,6 +7,7 @@ import 'package:food_gram_app/core/theme/style/post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
@@ -145,7 +146,7 @@ class PostScreen extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    const Gap(28),
+                    const Gap(18),
                     AppFoodTextField(
                       controller: ref
                           .read(postViewModelProvider().notifier)
@@ -169,44 +170,48 @@ class PostScreen extends HookConsumerWidget {
                             const Gap(5),
                             const Icon(
                               Icons.place,
-                              size: 30,
+                              size: 28,
                               color: Colors.black,
                             ),
                             const Gap(10),
                             Expanded(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                shape: RoundedRectangleBorder(
-                                  side: const BorderSide(
-                                    color: Colors.black87,
-                                  ),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                title: Row(
-                                  children: [
-                                    const Gap(16),
-                                    Text(
-                                      state.restaurant == '場所を追加'
-                                          ? l10n.postRestaurantNameInputField
-                                          : state.restaurant,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: PostStyle.restaurant(
-                                        value: state.restaurant == '場所を追加',
-                                      ),
+                              child: SizedBox(
+                                height: 50,
+                                child: ListTile(
+                                  dense: true,
+                                  contentPadding: EdgeInsets.zero,
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(
+                                      color: Colors.black87,
                                     ),
-                                    const Spacer(),
-                                    if (state.restaurant == '場所を追加')
-                                      const Row(
-                                        children: [
-                                          Icon(
-                                            Icons.arrow_forward_ios,
-                                            color: Colors.black,
-                                            size: 20,
-                                          ),
-                                          Gap(10),
-                                        ],
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  title: Row(
+                                    children: [
+                                      const Gap(16),
+                                      Text(
+                                        state.restaurant == '場所を追加'
+                                            ? l10n.postRestaurantNameInputField
+                                            : state.restaurant,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: PostStyle.restaurant(
+                                          value: state.restaurant == '場所を追加',
+                                        ),
                                       ),
-                                  ],
+                                      const Spacer(),
+                                      if (state.restaurant == '場所を追加')
+                                        const Row(
+                                          children: [
+                                            Icon(
+                                              Icons.arrow_forward_ios,
+                                              color: Colors.black,
+                                              size: 20,
+                                            ),
+                                            Gap(10),
+                                          ],
+                                        ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -214,15 +219,26 @@ class PostScreen extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    const Gap(18),
+                    const Gap(16),
                     Text(
                       l10n.postCategoryTitle,
                       style: PostStyle.categoryTitle(),
                     ),
-                    const Gap(12),
+                    const Gap(9),
+                    AppCountryTag(
+                      selectedTags: countryTag.value,
+                      onTagSelected: (tag) {
+                        countryTag.value = tag;
+                      },
                     ),
-                    const Gap(30),
-                      favoriteTagText: '料理タグの選択',
+                    AppFoodTag(
+                      selectedTags: foodTag.value,
+                      onTagSelected: (tag) {
+                        foodTag.value = tag;
+                      },
+                      favoriteTagText: L10n.of(context).selectFoodTag,
+                    ),
+                    const Gap(18),
                     AppCommentTextField(
                       controller: ref
                           .read(postViewModelProvider().notifier)
