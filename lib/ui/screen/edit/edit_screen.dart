@@ -216,8 +216,7 @@ class EditScreen extends HookConsumerWidget {
                                     )
                                     .updateFavoriteTags(tag);
                               },
-                              favoriteTagText:
-                                  L10n.of(context).selectFavoriteTag,
+                              favoriteTagText: L10n.of(context).selectFoodTag,
                             ),
                           ],
                         ),

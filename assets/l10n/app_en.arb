@@ -210,5 +210,6 @@
   "searchRestaurantTitle": "Search Restaurants",
   "nearbyRestaurants": "📍Nearby Restaurants",
   "seeMore": "See More",
-  "selectCountryTag": "Select a Country Category"
+  "selectCountryTag": "Select a Country Category",
+  "selectFoodTag": "Select Food Tag"
 }

@@ -210,5 +210,6 @@
   "searchRestaurantTitle": "レストランを探す",
   "nearbyRestaurants": "📍近いレストラン",
   "seeMore": "もっとみる",
-  "selectCountryTag": "国カテゴリーの選択"
+  "selectCountryTag": "国カテゴリーの選択",
+  "selectFoodTag": "料理カテゴリーの選択"
 }

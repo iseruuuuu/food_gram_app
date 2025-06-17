@@ -240,7 +240,7 @@ class EditPostScreen extends HookConsumerWidget {
                       onTagSelected: (tag) {
                         foodTag.value = tag;
                       },
-                      favoriteTagText: '料理タグの選択',
+                      favoriteTagText: L10n.of(context).selectFavoriteTag,
                     ),
                     const Gap(30),
                     AppCommentTextField(
