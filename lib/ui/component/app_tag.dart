@@ -58,7 +58,7 @@ class AppFoodTag extends HookWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () => context.pop,
+                    onPressed: context.pop,
                     icon: const Icon(Icons.close),
                   ),
                 ],
