@@ -262,6 +262,7 @@ class AppCountryTag extends HookWidget {
                   spacing: 8,
                   runSpacing: 8,
                   children: countryCategory.entries.map((entry) {
+                    final isSelected = selectedTags.contains(entry.key);
                     return GestureDetector(
                       onTap: () {
                         onTagSelected(entry.key);
@@ -274,14 +275,10 @@ class AppCountryTag extends HookWidget {
                           vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: selectedTags.contains(entry.value)
-                              ? Colors.blue
-                              : Colors.white,
+                          color: isSelected ? Colors.blue : Colors.white,
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: selectedTags.contains(entry.value)
-                                ? Colors.blue
-                                : Colors.grey[300]!,
+                            color: isSelected ? Colors.blue : Colors.grey[300]!,
                           ),
                         ),
                         child: FittedBox(
@@ -291,7 +288,7 @@ class AppCountryTag extends HookWidget {
                                 entry.key,
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: selectedTags.contains(entry.value)
+                                  color: isSelected
                                       ? Colors.white
                                       : Colors.black87,
                                   fontWeight: FontWeight.bold,
@@ -302,7 +299,7 @@ class AppCountryTag extends HookWidget {
                                 entry.value,
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: selectedTags.contains(entry.value)
+                                  color: isSelected
                                       ? Colors.white
                                       : Colors.black87,
                                   fontWeight: FontWeight.bold,
