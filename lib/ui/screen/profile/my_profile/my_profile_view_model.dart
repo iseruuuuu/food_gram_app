@@ -2,7 +2,7 @@ import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
-import 'package:food_gram_app/ui/screen/my_profile/my_profile_state.dart';
+import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_state.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

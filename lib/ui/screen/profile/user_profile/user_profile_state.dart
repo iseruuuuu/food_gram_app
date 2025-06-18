@@ -1,10 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'profile_state.freezed.dart';
+part 'user_profile_state.freezed.dart';
 
 @freezed
-class ProfileState with _$ProfileState {
-  const factory ProfileState({
+class UserProfileState with _$UserProfileState {
+  const factory UserProfileState({
     @Default(0) int length,
     @Default(0) int heartAmount,
   }) = _ProfileState;
