@@ -10,6 +10,13 @@ Future<LatLng> location(Ref ref) async {
   return getLocation();
 }
 
+@Riverpod(keepAlive: true)
+Future<bool> isLocationEnabled(Ref ref) async {
+  final permission = await Geolocator.checkPermission();
+  return permission == LocationPermission.whileInUse ||
+      permission == LocationPermission.always;
+}
+
 Future<LatLng> getLocation() async {
   bool serviceEnabled;
   LocationPermission permission;
