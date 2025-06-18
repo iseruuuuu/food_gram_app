@@ -21,6 +21,9 @@ import 'package:maplibre_gl/maplibre_gl.dart';
 
 final String apiKey = Env.mapLibre;
 
+// 日本の中心付近の座標
+const defaultLocation = LatLng(36.2048, 137.9777);
+
 class MapScreen extends HookConsumerWidget {
   const MapScreen({super.key});
 
@@ -66,6 +69,8 @@ class MapScreen extends HookConsumerWidget {
                 ..invalidate(postRepositoryProvider);
             },
             onData: (value) {
+              final isLocationEnabled =
+                  value.$1.latitude != 0 && value.$1.longitude != 0;
               return Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
@@ -83,13 +88,10 @@ class MapScreen extends HookConsumerWidget {
                     onMapClick: (_, __) => isTapPin.value = false,
                     annotationOrder: const [AnnotationType.symbol],
                     key: const ValueKey('mapWidget'),
-                    myLocationEnabled: true,
+                    myLocationEnabled: isLocationEnabled,
                     initialCameraPosition: CameraPosition(
-                      target: LatLng(
-                        value.$1.latitude,
-                        value.$1.longitude,
-                      ),
-                      zoom: 16,
+                      target: isLocationEnabled ? value.$1 : defaultLocation,
+                      zoom: isLocationEnabled ? 16 : 3.8,
                     ),
                     trackCameraPosition: true,
                     tiltGesturesEnabled: false,
@@ -100,45 +102,46 @@ class MapScreen extends HookConsumerWidget {
                     visible: isTapPin.value,
                     child: AppMapRestaurantModalSheet(post: post.value),
                   ),
-                  Positioned(
-                    top: 40,
-                    right: 10,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8, left: 8),
-                          child: SizedBox(
-                            width: 62,
-                            height: 62,
-                            child: Theme(
-                              data: Theme.of(context)
-                                  .copyWith(highlightColor: Colors.white),
-                              child: FloatingActionButton(
-                                heroTag: null,
-                                shape: const RoundedRectangleBorder(
-                                  side: BorderSide(color: Colors.white),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                ),
-                                foregroundColor: Colors.white,
-                                backgroundColor: Colors.white,
-                                focusColor: Colors.white,
-                                splashColor: Colors.white,
-                                hoverColor: Colors.white,
-                                elevation: 10,
-                                onPressed: controller.moveToCurrentLocation,
-                                child: const Icon(
-                                  CupertinoIcons.location_fill,
-                                  color: Color(0xFF1A73E8),
-                                  size: 26,
+                  if (isLocationEnabled)
+                    Positioned(
+                      top: 40,
+                      right: 10,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8, left: 8),
+                            child: SizedBox(
+                              width: 62,
+                              height: 62,
+                              child: Theme(
+                                data: Theme.of(context)
+                                    .copyWith(highlightColor: Colors.white),
+                                child: FloatingActionButton(
+                                  heroTag: null,
+                                  shape: const RoundedRectangleBorder(
+                                    side: BorderSide(color: Colors.white),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                  ),
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: Colors.white,
+                                  focusColor: Colors.white,
+                                  splashColor: Colors.white,
+                                  hoverColor: Colors.white,
+                                  elevation: 10,
+                                  onPressed: controller.moveToCurrentLocation,
+                                  child: const Icon(
+                                    CupertinoIcons.location_fill,
+                                    color: Color(0xFF1A73E8),
+                                    size: 26,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
                 ],
               );
             },
