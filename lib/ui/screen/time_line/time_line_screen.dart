@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
@@ -10,6 +11,7 @@ import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/time_line/app_category_tab.dart';
 import 'package:food_gram_app/ui/component/time_line/app_story_widget.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -117,10 +119,23 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
           SliverToBoxAdapter(
             child: Column(
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 100,
-                  child: AppStoryWidget(data: postState.value ?? []),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final isLocationEnabled =
+                        ref.watch(isLocationEnabledProvider);
+                    return isLocationEnabled.when(
+                      data: (enabled) => enabled
+                          ? SizedBox(
+                              width: double.infinity,
+                              height: 100,
+                              child:
+                                  AppStoryWidget(data: postState.value ?? []),
+                            )
+                          : const Gap(8),
+                      loading: () => const SizedBox.shrink(),
+                      error: (_, __) => const SizedBox.shrink(),
+                    );
+                  },
                 ),
                 AppCategoryTab(selectedCategoryName: selectedCategoryName),
               ],
