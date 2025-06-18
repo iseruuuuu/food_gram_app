@@ -70,7 +70,7 @@ class MapScreen extends HookConsumerWidget {
             },
             onData: (value) {
               final isLocationEnabled =
-                  value.$1.latitude != 0 || value.$1.longitude != 0;
+                  value.$1.latitude != 0 && value.$1.longitude != 0;
               return Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
