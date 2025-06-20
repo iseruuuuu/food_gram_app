@@ -9,8 +9,8 @@ import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
-import 'package:food_gram_app/ui/component/time_line/app_category_tab.dart';
-import 'package:food_gram_app/ui/component/time_line/app_story_widget.dart';
+import 'package:food_gram_app/ui/screen/time_line/components/category_tab.dart';
+import 'package:food_gram_app/ui/screen/time_line/components/story_widget.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -128,8 +128,7 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
                           ? SizedBox(
                               width: double.infinity,
                               height: 100,
-                              child:
-                                  AppStoryWidget(data: postState.value ?? []),
+                              child: StoryWidget(data: postState.value ?? []),
                             )
                           : const Gap(8),
                       loading: () => const SizedBox.shrink(),
@@ -137,7 +136,7 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
                     );
                   },
                 ),
-                AppCategoryTab(selectedCategoryName: selectedCategoryName),
+                CategoryTab(selectedCategoryName: selectedCategoryName),
               ],
             ),
           ),
