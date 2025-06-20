@@ -7,5 +7,5 @@ class UserProfileState with _$UserProfileState {
   const factory UserProfileState({
     @Default(0) int length,
     @Default(0) int heartAmount,
-  }) = _ProfileState;
+  }) = _UserProfileState;
 }
