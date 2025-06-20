@@ -20,15 +20,14 @@ import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/go_router_extension.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
-import 'package:food_gram_app/ui/component/app_floating_button.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
-import 'package:food_gram_app/ui/component/app_loading.dart';
-import 'package:food_gram_app/ui/component/app_profile_image.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/dialog/app_share_dialog.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_master_modal_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_my_info_modal_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_other_info_modal_sheet.dart';
-import 'package:food_gram_app/ui/screen/detail/detail_post_view_model.dart';
+import 'package:food_gram_app/ui/component/profile/app_profile_image.dart';
+import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
@@ -36,8 +35,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:photo_viewer/photo_viewer.dart';
 
-class DetailPostScreen extends HookConsumerWidget {
-  const DetailPostScreen({
+class PostDetailScreen extends HookConsumerWidget {
+  const PostDetailScreen({
     required this.posts,
     required this.users,
     super.key,
@@ -52,7 +51,6 @@ class DetailPostScreen extends HookConsumerWidget {
     final heartList = useState<List<String>>([]);
     final isHeart = useState(false);
     final isAppearHeart = useState(false);
-    final tickerProvider = useSingleTickerProvider();
     final adInterstitial =
         useMemoized(() => ref.read(admobInterstitialNotifierProvider));
     final preference = Preference();
@@ -122,7 +120,7 @@ class DetailPostScreen extends HookConsumerWidget {
             automaticallyImplyLeading: false,
             surfaceTintColor: Colors.transparent,
           ),
-          body: const AppLoading(
+          body: const AppProcessLoading(
             loading: true,
             status: '',
           ),
@@ -153,6 +151,11 @@ class DetailPostScreen extends HookConsumerWidget {
                           return AppDetailMasterModalSheet(
                             posts: posts,
                             users: users,
+                            delete: (posts) async {
+                              await ref
+                                  .read(postDetailViewModelProvider().notifier)
+                                  .delete(posts);
+                            },
                           );
                         }
                         if (users.userId != currentUser) {
@@ -160,12 +163,29 @@ class DetailPostScreen extends HookConsumerWidget {
                             users: users,
                             posts: posts,
                             loading: menuLoading,
+                            block: (userId) async {
+                              return ref
+                                  .read(postDetailViewModelProvider().notifier)
+                                  .block(userId);
+                            },
                           );
                         } else {
                           return AppDetailMyInfoModalSheet(
                             users: users,
                             posts: state,
                             loading: menuLoading,
+                            delete: (posts) async {
+                              await ref
+                                  .read(postDetailViewModelProvider().notifier)
+                                  .delete(posts);
+                            },
+                            setUser: (posts) {
+                              ref
+                                  .read(
+                                    postsViewModelProvider(posts.id).notifier,
+                                  )
+                                  .setUser(posts);
+                            },
                           );
                         }
                       },
@@ -441,32 +461,46 @@ class DetailPostScreen extends HookConsumerWidget {
                   ),
                 ),
                 AppHeart(isHeart: isAppearHeart.value),
-                AppLoading(
+                AppProcessLoading(
                   loading: menuLoading.value || loading,
                   status: 'Loading...',
                 ),
               ],
             ),
           ),
-          floatingActionButton: AppFloatingButton(
-            onTap: () async {
-              final currentPath = GoRouter.of(context).isCurrentLocation();
-              await context
-                  .pushNamed(
-                currentPath,
-                extra: Restaurant(
-                  name: posts.restaurant,
-                  lat: posts.lat,
-                  lng: posts.lng,
-                  address: '',
-                ),
-              )
-                  .then((value) async {
-                if (value != null) {
-                  ref.invalidate(postStreamProvider);
-                }
-              });
-            },
+          floatingActionButton: SizedBox(
+            width: 70,
+            height: 70,
+            child: FloatingActionButton(
+              heroTag: null,
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.black,
+              elevation: 10,
+              shape: const CircleBorder(side: BorderSide()),
+              onPressed: () async {
+                final currentPath = GoRouter.of(context).isCurrentLocation();
+                await context
+                    .pushNamed(
+                  currentPath,
+                  extra: Restaurant(
+                    name: posts.restaurant,
+                    lat: posts.lat,
+                    lng: posts.lng,
+                    address: '',
+                  ),
+                )
+                    .then((value) async {
+                  if (value != null) {
+                    ref.invalidate(postStreamProvider);
+                  }
+                });
+              },
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 35,
+              ),
+            ),
           ),
         ),
         error: () => Scaffold(

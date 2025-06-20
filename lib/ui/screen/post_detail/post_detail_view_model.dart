@@ -5,17 +5,17 @@ import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/delete_service.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/ui/screen/detail/detail_post_state.dart';
+import 'package:food_gram_app/ui/screen/post_detail/post_detail_state.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'detail_post_view_model.g.dart';
+part 'post_detail_view_model.g.dart';
 
 @riverpod
-class DetailPostViewModel extends _$DetailPostViewModel {
+class PostDetailViewModel extends _$PostDetailViewModel {
   @override
-  DetailPostState build({
-    DetailPostState initState = const DetailPostState(),
+  PostDetailState build({
+    PostDetailState initState = const PostDetailState(),
   }) {
     return initState;
   }

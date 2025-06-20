@@ -25,7 +25,7 @@ class SearchDetailScreen extends ConsumerWidget {
         surfaceTintColor: Colors.white,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8),
         child: MasonryGridView.count(
           crossAxisCount: 2,
           mainAxisSpacing: 8,
@@ -53,7 +53,7 @@ class SearchDetailScreen extends ConsumerWidget {
                         imageUrl: itemImageUrl,
                         fit: BoxFit.cover,
                         width: double.infinity,
-                        height: (index % 2 == 0) ? 200 : 300,
+                        height: index.isEven ? 200 : 300,
                         placeholder: (context, url) => Container(
                           color: Colors.white,
                         ),
@@ -72,7 +72,7 @@ class SearchDetailScreen extends ConsumerWidget {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.7),
+                        color: Colors.black.withValues(alpha: 0.7),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(

@@ -62,19 +62,23 @@ class AccountService {
     if (_currentUserId == null) {
       return Failure(Exception('User not authenticated'));
     }
-    try {
-      final updates = {
-        'name': name,
-        'user_name': userName,
-        'self_introduce': selfIntroduce,
-        'image': _getImagePath(image, uploadImage),
-        'updated_at': DateTime.now().toIso8601String(),
-        'tag': favoriteTags,
-      };
 
-      if (uploadImage != null && uploadImage.isNotEmpty && imageBytes != null) {
-        await _handleImageUpdate(uploadImage, imageBytes);
-      }
+    try {
+      final userData = await _getCurrentUserData();
+      final updates = _createBaseUpdates(
+        name: name,
+        userName: userName,
+        selfIntroduce: selfIntroduce,
+        favoriteTags: favoriteTags,
+      );
+
+      await _handleImageUpdateIfNeeded(
+        updates: updates,
+        userData: userData,
+        image: image,
+        imageBytes: imageBytes,
+        uploadImage: uploadImage,
+      );
 
       await supabase
           .from('users')
@@ -87,11 +91,59 @@ class AccountService {
     }
   }
 
-  String _getImagePath(String image, String? uploadImage) {
-    if (uploadImage == null || uploadImage.isEmpty) {
-      return 'assets/icon/icon$image.png';
+  Future<Map<String, dynamic>> _getCurrentUserData() async {
+    final userData = await supabase
+        .from('users')
+        .select('is_subscribe, image')
+        .eq('user_id', _currentUserId!)
+        .single();
+    return userData;
+  }
+
+  Map<String, dynamic> _createBaseUpdates({
+    required String name,
+    required String userName,
+    required String selfIntroduce,
+    required String favoriteTags,
+  }) {
+    return {
+      'name': name,
+      'user_name': userName,
+      'self_introduce': selfIntroduce,
+      'updated_at': DateTime.now().toIso8601String(),
+      'tag': favoriteTags,
+    };
+  }
+
+  Future<void> _handleImageUpdateIfNeeded({
+    required Map<String, dynamic> updates,
+    required Map<String, dynamic> userData,
+    required String image,
+    Uint8List? imageBytes,
+    String? uploadImage,
+  }) async {
+    final isSubscribe = userData['is_subscribe'] as bool;
+    final currentImage = userData['image'] as String;
+
+    if (_shouldUpdateWithUploadedImage(uploadImage, imageBytes)) {
+      await _handleImageUpdate(uploadImage!, imageBytes!);
+      updates['image'] = '/$_currentUserId/$uploadImage';
+    } else if (_shouldUpdateWithIcon(image, currentImage)) {
+      updates['image'] = 'assets/icon/icon$image.png';
+    } else if (!isSubscribe) {
+      updates['image'] = 'assets/icon/icon$image.png';
     }
-    return '/$_currentUserId/$uploadImage';
+  }
+
+  bool _shouldUpdateWithUploadedImage(
+    String? uploadImage,
+    Uint8List? imageBytes,
+  ) {
+    return uploadImage != null && uploadImage.isNotEmpty && imageBytes != null;
+  }
+
+  bool _shouldUpdateWithIcon(String image, String currentImage) {
+    return image != '0' && !currentImage.startsWith('/');
   }
 
   Future<void> _handleImageUpdate(

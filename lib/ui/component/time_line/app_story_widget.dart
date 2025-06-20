@@ -4,6 +4,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:go_router/go_router.dart';
 
 class AppStoryWidget extends ConsumerWidget {
@@ -37,7 +38,7 @@ class AppStoryWidget extends ConsumerWidget {
           },
         );
       },
-      loading: () => const _LoadingStories(),
+      loading: () => const AppStoryLoading(),
       error: (error, stack) => Center(child: Text('Error: $error')),
     );
   }
@@ -64,21 +65,6 @@ class AppStoryWidget extends ConsumerWidget {
         },
       );
     }
-  }
-}
-
-class _LoadingStories extends StatelessWidget {
-  const _LoadingStories();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: SizedBox(
-        width: 24,
-        height: 24,
-        child: CircularProgressIndicator(strokeWidth: 2),
-      ),
-    );
   }
 }
 

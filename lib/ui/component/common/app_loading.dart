@@ -1,11 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:lottie/lottie.dart';
 
-class AppLoading extends StatelessWidget {
-  const AppLoading({
+class AppProcessLoading extends StatelessWidget {
+  const AppProcessLoading({
     required this.loading,
     required this.status,
     super.key,
@@ -119,19 +121,58 @@ class AppMapLoading extends StatelessWidget {
   }
 }
 
-class AppListItemLoading extends StatelessWidget {
-  const AppListItemLoading({super.key});
+class AppContentLoading extends StatelessWidget {
+  const AppContentLoading({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Lottie.asset(
+          Assets.lottie.loading,
+          width: 150,
+          height: 150,
+        ),
+        const Text(
+          'Loading...',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFFDAA187),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class AppStoryLoading extends StatelessWidget {
+  const AppStoryLoading({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 100,
+      width: MediaQuery.sizeOf(context).width,
       height: 100,
-      child: Center(
-        child: LoadingAnimationWidget.discreteCircle(
-          color: Theme.of(context).primaryColor,
-          size: 30,
-        ),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(8),
+            child: SizedBox(
+              width: 100,
+              height: 100,
+              child: Center(
+                child: LoadingAnimationWidget.discreteCircle(
+                  color: Theme.of(context).primaryColor,
+                  size: 30,
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

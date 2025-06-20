@@ -637,4 +637,10 @@ class L10nEn extends L10n {
 
   @override
   String get seeMore => 'See More';
+
+  @override
+  String get selectCountryTag => 'Select a Country Category';
+
+  @override
+  String get selectFoodTag => 'Select Food Tag';
 }

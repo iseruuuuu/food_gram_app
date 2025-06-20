@@ -116,7 +116,7 @@ final timeLineRouter = GoRoute(
       pageBuilder: (context, state) {
         final model = state.extra! as Model;
         return slideUpTransition(
-          DetailPostScreen(
+          PostDetailScreen(
             posts: model.posts,
             users: model.users,
           ),
@@ -143,7 +143,7 @@ final timeLineRouter = GoRoute(
       pageBuilder: (context, state) {
         final users = state.extra! as Users;
         return slideUpTransition(
-          ProfileScreen(users: users),
+          UserProfileScreen(users: users),
         );
       },
     ),
@@ -224,7 +224,7 @@ final myProfileRouter = GoRoute(
       name: RouterPath.myProfileDetail,
       builder: (context, state) {
         final model = state.extra! as Model;
-        return DetailPostScreen(posts: model.posts, users: model.users);
+        return PostDetailScreen(posts: model.posts, users: model.users);
       },
     ),
     GoRoute(
@@ -314,7 +314,7 @@ final mapRouter = GoRoute(
       pageBuilder: (context, state) {
         final model = state.extra! as Model;
         return slideUpTransition(
-          DetailPostScreen(
+          PostDetailScreen(
             posts: model.posts,
             users: model.users,
           ),
@@ -341,7 +341,7 @@ final mapRouter = GoRoute(
       pageBuilder: (context, state) {
         final users = state.extra! as Users;
         return slideUpTransition(
-          ProfileScreen(users: users),
+          UserProfileScreen(users: users),
         );
       },
     ),

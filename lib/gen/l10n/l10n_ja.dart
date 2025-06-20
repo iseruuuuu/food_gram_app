@@ -637,4 +637,10 @@ class L10nJa extends L10n {
 
   @override
   String get seeMore => 'もっとみる';
+
+  @override
+  String get selectCountryTag => '国カテゴリーの選択';
+
+  @override
+  String get selectFoodTag => '料理カテゴリーの選択';
 }

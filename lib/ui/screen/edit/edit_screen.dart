@@ -6,12 +6,12 @@ import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/theme/style/edit_style.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/ui/component/app_favorite_tags_selector.dart';
 import 'package:food_gram_app/ui/component/app_icon.dart';
-import 'package:food_gram_app/ui/component/app_loading.dart';
-import 'package:food_gram_app/ui/component/app_profile_image.dart';
+import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
+import 'package:food_gram_app/ui/component/profile/app_profile_image.dart';
 import 'package:food_gram_app/ui/screen/edit/edit_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -68,7 +68,8 @@ class EditScreen extends HookConsumerWidget {
                     if (success) {
                       while (loading) {
                         await Future<void>.delayed(
-                            const Duration(milliseconds: 100));
+                          const Duration(milliseconds: 100),
+                        );
                       }
                       final updatedUser =
                           ref.read(editViewModelProvider()).user;
@@ -206,7 +207,7 @@ class EditScreen extends HookConsumerWidget {
                               ),
                             ),
                             const Gap(10),
-                            AppFavoriteTagsSelector(
+                            AppFoodTag(
                               selectedTags: state.favoriteTags,
                               onTagSelected: (tag) {
                                 ref
@@ -215,6 +216,7 @@ class EditScreen extends HookConsumerWidget {
                                     )
                                     .updateFavoriteTags(tag);
                               },
+                              favoriteTagText: L10n.of(context).selectFoodTag,
                             ),
                           ],
                         ),
@@ -223,7 +225,7 @@ class EditScreen extends HookConsumerWidget {
                   ),
                 ),
               ),
-              AppLoading(
+              AppProcessLoading(
                 loading: loading,
                 status: 'Loading...',
               ),

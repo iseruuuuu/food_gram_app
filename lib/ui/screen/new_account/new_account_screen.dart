@@ -7,8 +7,8 @@ import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/app_icon.dart';
-import 'package:food_gram_app/ui/component/app_loading.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/screen/new_account/new_account_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -116,7 +116,7 @@ class NewAccountScreen extends ConsumerWidget {
                 ),
               ),
             ),
-            AppLoading(
+            AppProcessLoading(
               loading: loading,
               status: 'Loading...',
             ),

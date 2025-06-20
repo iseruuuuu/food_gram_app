@@ -1,23 +1,17 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/admob/services/admob_open.dart';
-import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
-import 'package:food_gram_app/core/local/force_update_checker.dart';
-import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
-import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
+import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/component/app_category_item.dart';
-import 'package:food_gram_app/ui/component/app_data_loading.dart';
-import 'package:food_gram_app/ui/component/app_empty.dart';
-import 'package:food_gram_app/ui/component/app_error_widget.dart';
-import 'package:food_gram_app/ui/component/app_floating_button.dart';
-import 'package:food_gram_app/ui/component/app_list_view.dart';
-import 'package:food_gram_app/ui/component/app_story_widget.dart';
+import 'package:food_gram_app/ui/component/common/app_empty.dart';
+import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
+import 'package:food_gram_app/ui/component/common/app_list_view.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/time_line/app_category_tab.dart';
+import 'package:food_gram_app/ui/component/time_line/app_story_widget.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -27,30 +21,6 @@ class TimeLineScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeMade = ref.watch(postHomeMadeStreamProvider);
-    useEffect(
-      () {
-        AdTrackingPermission().requestTracking();
-        ref
-            .read(revenueCatServiceProvider.notifier)
-            .initInAppPurchase()
-            .then((isSubscribed) {
-          final value = math.Random().nextInt(10);
-          if (value == 0) {
-            if (!isSubscribed) {
-              AdmobOpen().loadAd();
-            }
-          }
-        });
-        ref.read(forceUpdateCheckerProvider.notifier).checkForceUpdate(
-          openDialog: () {
-            DialogHelper().forceUpdateDialog(context);
-          },
-        );
-        return null;
-      },
-      [],
-    );
-
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -92,19 +62,33 @@ class TimeLineScreen extends HookConsumerWidget {
             ),
           ],
         ),
-        floatingActionButton: AppFloatingButton(
-          onTap: () async {
-            await context
-                .pushNamed(RouterPath.timeLinePost)
-                .then((value) async {
-              if (value != null) {
-                ref
-                  ..invalidate(postStreamProvider)
-                  ..invalidate(postHomeMadeStreamProvider)
-                  ..invalidate(blockListProvider);
-              }
-            });
-          },
+        floatingActionButton: SizedBox(
+          width: 70,
+          height: 70,
+          child: FloatingActionButton(
+            heroTag: null,
+            foregroundColor: Colors.black,
+            backgroundColor: Colors.black,
+            elevation: 10,
+            shape: const CircleBorder(side: BorderSide()),
+            onPressed: () async {
+              await context
+                  .pushNamed(RouterPath.timeLinePost)
+                  .then((value) async {
+                if (value != null) {
+                  ref
+                    ..invalidate(postStreamProvider)
+                    ..invalidate(postHomeMadeStreamProvider)
+                    ..invalidate(blockListProvider);
+                }
+              });
+            },
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 35,
+            ),
+          ),
         ),
       ),
     );
@@ -135,12 +119,25 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
           SliverToBoxAdapter(
             child: Column(
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 100,
-                  child: AppStoryWidget(data: postState.value ?? []),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final isLocationEnabled =
+                        ref.watch(isLocationEnabledProvider);
+                    return isLocationEnabled.when(
+                      data: (enabled) => enabled
+                          ? SizedBox(
+                              width: double.infinity,
+                              height: 100,
+                              child:
+                                  AppStoryWidget(data: postState.value ?? []),
+                            )
+                          : const Gap(8),
+                      loading: () => const SizedBox.shrink(),
+                      error: (_, __) => const SizedBox.shrink(),
+                    );
+                  },
                 ),
-                AppCategoryItem(selectedCategoryName: selectedCategoryName),
+                AppCategoryTab(selectedCategoryName: selectedCategoryName),
               ],
             ),
           ),
@@ -162,7 +159,7 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
           if (postState.isLoading)
             const SliverFillRemaining(
               hasScrollBody: false,
-              child: AppDataLoading(),
+              child: AppContentLoading(),
             ),
           if (postState.hasError)
             SliverToBoxAdapter(

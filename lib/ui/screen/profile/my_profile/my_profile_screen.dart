@@ -5,15 +5,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/component/app_app_bar.dart';
-import 'package:food_gram_app/ui/component/app_async_value_group.dart';
-import 'package:food_gram_app/ui/component/app_empty.dart';
-import 'package:food_gram_app/ui/component/app_floating_button.dart';
-import 'package:food_gram_app/ui/component/app_header.dart';
-import 'package:food_gram_app/ui/component/app_list_view.dart';
-import 'package:food_gram_app/ui/component/app_skeleton.dart';
+import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
+import 'package:food_gram_app/ui/component/common/app_empty.dart';
+import 'package:food_gram_app/ui/component/common/app_list_view.dart';
+import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/dialog/app_promote_dialog.dart';
-import 'package:food_gram_app/ui/screen/my_profile/my_profile_view_model.dart';
+import 'package:food_gram_app/ui/component/profile/app_profile_header.dart';
+import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -47,7 +45,14 @@ class MyProfileScreen extends HookConsumerWidget {
       length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: const AppAppBar(),
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(0),
+          child: AppBar(
+            surfaceTintColor: Colors.transparent,
+            forceMaterialTransparency: true,
+            elevation: 0,
+          ),
+        ),
         body: AsyncValueSwitcher(
           asyncValue: state,
           onErrorTap: () {
@@ -71,14 +76,14 @@ class MyProfileScreen extends HookConsumerWidget {
                   SliverToBoxAdapter(
                     child: users.when(
                       data: (users, length, heartAmount) {
-                        return AppHeader(
+                        return AppProfileHeader(
                           users: users,
                           length: length,
                           heartAmount: heartAmount,
                         );
                       },
                       loading: () {
-                        return const AppHeaderSkeleton();
+                        return const AppProfileHeaderSkeleton();
                       },
                       error: SizedBox.shrink,
                     ),
@@ -101,16 +106,30 @@ class MyProfileScreen extends HookConsumerWidget {
             );
           },
         ),
-        floatingActionButton: AppFloatingButton(
-          onTap: () async {
-            await context
-                .pushNamed(RouterPath.myProfilePost)
-                .then((value) async {
-              if (value != null) {
-                ref.invalidate(myPostStreamProvider);
-              }
-            });
-          },
+        floatingActionButton: SizedBox(
+          width: 70,
+          height: 70,
+          child: FloatingActionButton(
+            heroTag: null,
+            foregroundColor: Colors.black,
+            backgroundColor: Colors.black,
+            elevation: 10,
+            shape: const CircleBorder(side: BorderSide()),
+            onPressed: () async {
+              await context
+                  .pushNamed(RouterPath.myProfilePost)
+                  .then((value) async {
+                if (value != null) {
+                  ref.invalidate(myPostStreamProvider);
+                }
+              });
+            },
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 35,
+            ),
+          ),
         ),
       ),
     );

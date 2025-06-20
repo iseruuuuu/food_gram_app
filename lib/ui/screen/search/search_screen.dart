@@ -2,13 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
+import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/component/app_category_item.dart';
-import 'package:food_gram_app/ui/component/app_loading.dart';
+import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -47,94 +48,98 @@ class SearchScreen extends HookConsumerWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    l10n.nearbyRestaurants,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      final posts = nearbyPosts.value!;
-                      context.pushNamed(
-                        RouterPath.searchDetail,
-                        extra: posts,
-                      );
-                    },
-                    child: Text(
-                      l10n.seeMore,
+              if (ref.watch(locationProvider).value?.latitude != 0)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      l10n.nearbyRestaurants,
                       style: const TextStyle(
-                        color: Colors.blue,
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width,
-                height: 100,
-                child: nearbyPosts.when(
-                  data: (posts) {
-                    return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: posts.length,
-                      itemBuilder: (context, index) {
-                        final post = posts[index];
-                        final imageUrl = supabase.storage
-                            .from('food')
-                            .getPublicUrl(post.foodImage);
-                        return GestureDetector(
-                          onTap: () {
-                            context.pushNamed(
-                              RouterPath.searchRestaurantReview,
-                              extra: post,
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 4,
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: CachedNetworkImage(
-                                imageUrl: imageUrl,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
+                    TextButton(
+                      onPressed: () {
+                        final posts = nearbyPosts.value!;
+                        context.pushNamed(
+                          RouterPath.searchDetail,
+                          extra: posts,
                         );
                       },
-                    );
-                  },
-                  loading: AppListItemLoading.new,
-                  error: (error, stack) => Container(
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.error, color: Colors.grey),
+                      child: Text(
+                        l10n.seeMore,
+                        style: const TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              if (ref.watch(locationProvider).value?.latitude != 0)
+                SizedBox(
+                  width: MediaQuery.sizeOf(context).width,
+                  height: 100,
+                  child: nearbyPosts.when(
+                    data: (posts) {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: posts.length,
+                        itemBuilder: (context, index) {
+                          final post = posts[index];
+                          final imageUrl = supabase.storage
+                              .from('food')
+                              .getPublicUrl(post.foodImage);
+                          return GestureDetector(
+                            onTap: () {
+                              context.pushNamed(
+                                RouterPath.searchRestaurantReview,
+                                extra: post,
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: CachedNetworkImage(
+                                  imageUrl: imageUrl,
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    loading: AppListViewSkeleton.new,
+                    error: (error, stack) => Container(
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.error, color: Colors.grey),
+                    ),
                   ),
                 ),
-              ),
               ...categoriesData
                   .where((category) => !category.isAllCategory)
                   .map(
                 (category) {
                   final selectedCategoryName = useState(category.name);
                   final postState = ref.watch(
-                      postStreamByCategoryProvider(selectedCategoryName.value));
+                    postStreamByCategoryProvider(selectedCategoryName.value),
+                  );
                   return Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${category.displayIcon} ${_l10nCategory(category.name, l10n)}',
+                            '${category.displayIcon}'
+                            '${_l10nCategory(category.name, l10n)}',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
@@ -201,7 +206,7 @@ class SearchScreen extends HookConsumerWidget {
                             ),
                           );
                         },
-                        loading: AppListItemLoading.new,
+                        loading: AppListViewSkeleton.new,
                         error: (error, stack) => Container(
                           color: Colors.grey[300],
                           child: const Icon(Icons.error, color: Colors.grey),

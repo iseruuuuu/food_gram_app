@@ -1,16 +1,16 @@
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'detail_post_state.freezed.dart';
+part 'post_detail_state.freezed.dart';
 
 @freezed
-abstract class DetailPostState with _$DetailPostState {
-  const factory DetailPostState({
+abstract class PostDetailState with _$PostDetailState {
+  const factory PostDetailState({
     @Default('') String status,
     @Default(0) int heart,
     @Default(false) bool isSuccess,
     @Default(false) bool isLoading,
-  }) = _DetailPostState;
+  }) = _PostDetailState;
 }
 
 @freezed

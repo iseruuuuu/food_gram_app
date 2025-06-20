@@ -12,7 +12,7 @@ import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/component/app_loading.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -146,7 +146,7 @@ class AuthenticationScreen extends HookConsumerWidget {
               ],
             ),
           ),
-          AppLoading(loading: loading, status: 'Loading...'),
+          AppProcessLoading(loading: loading, status: 'Loading...'),
         ],
       ),
     );

@@ -117,7 +117,6 @@
   "enterTheCorrectFormat": "Please enter the correct format",
   "camera": "Camera",
   "album": "Album",
-  "close": "Close",
   "snsLogin": "SNS login",
   "tutorialFirstPageTitle": "Share your delicious moments",
   "tutorialFirstPageSubTitle": "With FoodGram, make every meal more special.\nEnjoy discovering new flavors!",
@@ -209,5 +208,7 @@
   "appSubtitle": "Share your delicious moments",
   "searchRestaurantTitle": "Search Restaurants",
   "nearbyRestaurants": "📍Nearby Restaurants",
-  "seeMore": "See More"
+  "seeMore": "See More",
+  "selectCountryTag": "Select a Country Category",
+  "selectFoodTag": "Select Food Tag"
 }

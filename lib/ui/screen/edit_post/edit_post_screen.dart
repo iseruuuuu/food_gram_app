@@ -11,9 +11,9 @@ import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/component/app_loading.dart';
-import 'package:food_gram_app/ui/component/app_post_category_widget.dart';
+import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_view_model.dart';
 import 'package:gap/gap.dart';
@@ -168,7 +168,7 @@ class EditPostScreen extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    const Gap(28),
+                    const Gap(18),
                     AppFoodTextField(
                       controller: viewModel.foodController,
                     ),
@@ -191,30 +191,34 @@ class EditPostScreen extends HookConsumerWidget {
                             const Gap(5),
                             const Icon(
                               Icons.place,
-                              size: 30,
+                              size: 28,
                               color: Colors.black,
                             ),
                             const Gap(10),
                             Expanded(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                shape: RoundedRectangleBorder(
-                                  side: const BorderSide(),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                title: FittedBox(
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 16,
+                              child: SizedBox(
+                                height: 50,
+                                child: ListTile(
+                                  dense: true,
+                                  contentPadding: EdgeInsets.zero,
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  title: FittedBox(
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                          ),
+                                          child: Text(
+                                            state.restaurant,
+                                            style: EditPostStyle.restaurant(),
+                                          ),
                                         ),
-                                        child: Text(
-                                          state.restaurant,
-                                          style: EditPostStyle.restaurant(),
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -223,26 +227,26 @@ class EditPostScreen extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    const Gap(18),
+                    const Gap(16),
                     Text(
                       l10n.postCategoryTitle,
                       style: EditPostStyle.category(),
                     ),
-                    const Gap(12),
-                    Row(
-                      children: [
-                        AppPostCountryCategoryWidget(
-                          tag: countryTag,
-                          title: l10n.postCountryCategory,
-                        ),
-                        const Gap(30),
-                        AppPostFoodCategoryWidget(
-                          tag: foodTag,
-                          title: l10n.postCuisineCategory,
-                        ),
-                      ],
+                    const Gap(9),
+                    AppCountryTag(
+                      selectedTags: countryTag.value,
+                      onTagSelected: (tag) {
+                        countryTag.value = tag;
+                      },
                     ),
-                    const Gap(30),
+                    AppFoodTag(
+                      selectedTags: foodTag.value,
+                      onTagSelected: (tag) {
+                        foodTag.value = tag;
+                      },
+                      favoriteTagText: L10n.of(context).selectFavoriteTag,
+                    ),
+                    const Gap(18),
                     AppCommentTextField(
                       controller: viewModel.commentController,
                     ),
@@ -251,7 +255,7 @@ class EditPostScreen extends HookConsumerWidget {
                 ),
               ),
             ),
-            AppLoading(
+            AppProcessLoading(
               loading: loading,
               status: state.status,
             ),

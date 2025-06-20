@@ -14,9 +14,8 @@ import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/component/app_app_bar.dart';
-import 'package:food_gram_app/ui/component/app_loading.dart';
-import 'package:food_gram_app/ui/component/app_setting_tile.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/screen/setting/components/setting_tile.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -33,7 +32,14 @@ class SettingScreen extends HookConsumerWidget {
     final subscriptionState = ref.watch(subscriptionProvider);
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const AppAppBar(),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(0),
+        child: AppBar(
+          surfaceTintColor: Colors.transparent,
+          forceMaterialTransparency: true,
+          elevation: 0,
+        ),
+      ),
       body: Stack(
         children: [
           Column(
@@ -45,25 +51,25 @@ class SettingScreen extends HookConsumerWidget {
                       const Gap(12),
                       Wrap(
                         children: [
-                          AppSettingTile(
+                          SettingTile(
                             icon: FontAwesomeIcons.twitter,
                             color: Colors.blue,
                             title: l10n.settingsDeveloper,
                             onTap: () => LaunchUrlHelper().openSNSUrl(URL.sns),
                           ),
-                          AppSettingTile(
+                          SettingTile(
                             icon: FontAwesomeIcons.github,
                             title: l10n.settingsGithub,
                             onTap: () =>
                                 LaunchUrlHelper().openSNSUrl(URL.github),
                           ),
-                          AppSettingTile(
+                          SettingTile(
                             icon: Icons.verified,
                             color: Colors.blue,
                             title: l10n.settingsLicense,
                             onTap: () => context.pushNamed(RouterPath.license),
                           ),
-                          AppSettingTile(
+                          SettingTile(
                             icon: Icons.share,
                             color: Colors.lightBlue,
                             title: l10n.settingsShareApp,
@@ -74,7 +80,7 @@ class SettingScreen extends HookConsumerWidget {
                               ShareHelpers().shareNormal(url);
                             },
                           ),
-                          AppSettingTile(
+                          SettingTile(
                             icon: Icons.rate_review_outlined,
                             color: Colors.indigoAccent,
                             title: l10n.settingsReview,
@@ -82,7 +88,7 @@ class SettingScreen extends HookConsumerWidget {
                                 .read(settingViewModelProvider().notifier)
                                 .review(),
                           ),
-                          AppSettingTile(
+                          SettingTile(
                             icon: Icons.system_update,
                             color: Colors.deepPurpleAccent,
                             title: l10n.settingsCheckVersion,
@@ -90,34 +96,34 @@ class SettingScreen extends HookConsumerWidget {
                                 .read(settingViewModelProvider().notifier)
                                 .checkNewVersion(context),
                           ),
-                          AppSettingTile(
+                          SettingTile(
                             icon: Icons.help_outline,
                             color: Colors.lightBlue,
                             size: 32,
                             title: l10n.settingsFaq,
                             onTap: () => LaunchUrlHelper().open(URL.faq),
                           ),
-                          AppSettingTile(
+                          SettingTile(
                             icon: Icons.security,
                             color: Colors.indigoAccent,
                             title: l10n.settingsPrivacyPolicy,
                             onTap: () =>
                                 LaunchUrlHelper().open(URL.privacyPolicy),
                           ),
-                          AppSettingTile(
+                          SettingTile(
                             icon: Icons.assignment,
                             color: Colors.deepPurpleAccent,
                             title: l10n.settingsTermsOfUse,
                             onTap: () => LaunchUrlHelper().open(URL.termsOfUse),
                           ),
-                          AppSettingTile(
+                          SettingTile(
                             icon: Icons.chat,
                             size: 32,
                             color: Colors.lightBlue,
                             title: l10n.settingsContact,
                             onTap: () => LaunchUrlHelper().open(URL.contact),
                           ),
-                          AppSettingTile(
+                          SettingTile(
                             icon: Icons.school,
                             size: 32,
                             color: Colors.indigoAccent,
@@ -125,7 +131,7 @@ class SettingScreen extends HookConsumerWidget {
                             onTap: () =>
                                 context.pushNamed(RouterPath.settingTutorial),
                           ),
-                          AppSettingTile(
+                          SettingTile(
                             icon: CupertinoIcons.cube_box_fill,
                             size: 32,
                             color: Colors.purple,
@@ -196,7 +202,7 @@ class SettingScreen extends HookConsumerWidget {
                       ),
                       Wrap(
                         children: [
-                          AppSettingTile(
+                          SettingTile(
                             icon: Icons.power_settings_new,
                             size: 32,
                             color: Colors.red,
@@ -231,7 +237,7 @@ class SettingScreen extends HookConsumerWidget {
                               );
                             },
                           ),
-                          AppSettingTile(
+                          SettingTile(
                             icon: Icons.delete,
                             size: 36,
                             color: Colors.red,
@@ -250,7 +256,7 @@ class SettingScreen extends HookConsumerWidget {
                               });
                             },
                           ),
-                          AppSettingTile(
+                          SettingTile(
                             icon: Icons.restore,
                             size: 32,
                             color: Colors.black,
@@ -308,7 +314,7 @@ class SettingScreen extends HookConsumerWidget {
               const AdmobBanner(id: 'setting'),
             ],
           ),
-          AppLoading(
+          AppProcessLoading(
             loading: loading,
             status: 'Loading...',
           ),

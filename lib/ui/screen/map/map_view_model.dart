@@ -96,63 +96,6 @@ class MapViewModel extends _$MapViewModel {
     }
   }
 
-  Future<void> setRamenPin({
-    required void Function(List<Posts> posts) onPinTap,
-    required double iconSize,
-  }) async {
-    await state.mapController!.clearSymbols();
-    try {
-      final screenshotBytes = await screenshotController.captureFromWidget(
-        AppPinWidget(image: Assets.image.pinRamen.path),
-      );
-      final list = screenshotBytes.buffer.asUint8List();
-      await state.mapController?.addImage('pin_ramen', list);
-      final symbols = <SymbolOptions>[];
-      final posts = await ref.watch(mapRamenRepositoryProvider.future);
-      for (var i = 0; i < posts.length; i++) {
-        symbols.add(
-          SymbolOptions(
-            geometry: LatLng(posts[i].lat, posts[i].lng),
-            iconImage: 'pin_ramen',
-            iconSize: iconSize,
-          ),
-        );
-      }
-      await state.mapController?.addSymbols(symbols);
-      // 他のシンボルがアイコンに衝突した場合、表示されないようにする
-      await state.mapController?.setSymbolIconIgnorePlacement(true);
-      // アイコンは以前に描画された他のシンボルと衝突しても表示される。
-      await state.mapController?.setSymbolIconAllowOverlap(true);
-      state.mapController?.onSymbolTapped.add((symbol) async {
-        state = state.copyWith(isLoading: true);
-        final latLng = symbol.options.geometry;
-        final lat = latLng!.latitude;
-        final lng = latLng.longitude;
-        final restaurant = await ref
-            .read(postRepositoryProvider.notifier)
-            .getRestaurantPosts(lat: lat, lng: lng);
-        restaurant.whenOrNull(
-          success: (posts) {
-            onPinTap(posts);
-          },
-        );
-        await state.mapController?.animateCamera(
-          CameraUpdate.newLatLng(latLng),
-          duration: const Duration(seconds: 1),
-        );
-        state = state.copyWith(
-          isLoading: false,
-          hasError: false,
-        );
-      });
-    } on PlatformException catch (_) {
-      state = state.copyWith(
-        isLoading: false,
-        hasError: true,
-      );
-    }
-  }
-
   Future<void> moveToCurrentLocation() async {
     final currentLocation = ref.read(locationProvider);
     await currentLocation.whenOrNull(

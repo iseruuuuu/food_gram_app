@@ -407,47 +407,6 @@ class PostService extends _$PostService {
     );
   }
 
-  /// カテゴリーが🍜の投稿を取得
-  Future<List<Map<String, dynamic>>> getRamenMapPosts() async {
-    return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'ramen_posts',
-      fetcher: () async {
-        final posts = blockList.isEmpty
-            ? await supabase
-                .from('posts')
-                .select()
-                .eq('food_tag', '🍜')
-                .order('created_at', ascending: false)
-            : await supabase
-                .from('posts')
-                .select()
-                .not('user_id', 'in', blockList)
-                .eq('food_tag', '🍜')
-                .order('created_at', ascending: false);
-
-        final filteredPosts = posts.where((post) {
-          final lat = double.parse(post['lat'].toString());
-          final lng = double.parse(post['lng'].toString());
-          return lat != 0.0 && lng != 0;
-        }).toList();
-
-        final userPosts = <String, Map<String, dynamic>>{};
-        for (final post in filteredPosts) {
-          final userId = post['user_id'] as String;
-          if (!userPosts.containsKey(userId) ||
-              DateTime.parse(post['created_at'] as String).isAfter(
-                DateTime.parse(userPosts[userId]!['created_at'] as String),
-              )) {
-            userPosts[userId] = post;
-          }
-        }
-
-        return userPosts.values.toList();
-      },
-      duration: const Duration(minutes: 5),
-    );
-  }
-
   /// ユーザーIDからユーザーデータを取得
   Future<Map<String, dynamic>> getUserData(String userId) async {
     return _cacheManager.get<Map<String, dynamic>>(

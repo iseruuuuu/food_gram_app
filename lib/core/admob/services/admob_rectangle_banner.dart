@@ -4,15 +4,15 @@ import 'package:food_gram_app/core/admob/config/admob_config.dart';
 import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-/// バナー広告の状態を管理するプロバイダー
-final bannerAdProvider =
-    StateNotifierProvider.family<BannerAdNotifier, BannerAd?, String>(
-  BannerAdNotifier.new,
+/// レクタングル広告の状態を管理するプロバイダー
+final rectangleBannerProvider =
+    StateNotifierProvider.family<RectangleBannerNotifier, BannerAd?, String>(
+  RectangleBannerNotifier.new,
 );
 
-/// バナー広告の状態を管理するNotifier
-class BannerAdNotifier extends StateNotifier<BannerAd?> {
-  BannerAdNotifier(this.ref, this.id) : super(null) {
+/// レクタングル広告の状態を管理するNotifier
+class RectangleBannerNotifier extends StateNotifier<BannerAd?> {
+  RectangleBannerNotifier(this.ref, this.id) : super(null) {
     _loadAd();
   }
 
@@ -26,7 +26,7 @@ class BannerAdNotifier extends StateNotifier<BannerAd?> {
 
     BannerAd(
       adUnitId: bannerAdUnitId,
-      size: AdSize.banner,
+      size: AdSize.mediumRectangle,
       request: const AdRequest(),
       listener: BannerAdListener(
         onAdFailedToLoad: (ad, error) {
@@ -47,9 +47,9 @@ class BannerAdNotifier extends StateNotifier<BannerAd?> {
   }
 }
 
-/// バナー広告を表示するウィジェット
-class AdmobBanner extends ConsumerWidget {
-  const AdmobBanner({
+/// レクタングル広告を表示するウィジェット
+class RectangleBanner extends ConsumerWidget {
+  const RectangleBanner({
     required this.id,
     super.key,
   });
@@ -58,7 +58,7 @@ class AdmobBanner extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bannerAd = ref.watch(bannerAdProvider(id));
+    final bannerAd = ref.watch(rectangleBannerProvider(id));
     final subscriptionState = ref.watch(subscriptionProvider);
 
     return subscriptionState.when(
@@ -73,21 +73,18 @@ class AdmobBanner extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    return Container(
-      width: double.infinity,
-      alignment: Alignment.center,
-      height: bannerAd.size.height.toDouble(),
-      child: AdWidget(ad: bannerAd),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 24),
+      child: Container(
+        width: 300,
+        height: 250,
+        alignment: Alignment.center,
+        child: AdWidget(ad: bannerAd),
+      ),
     );
   }
 
   Widget _buildLoadingContainer(BannerAd? bannerAd) {
-    return const SizedBox(
-      width: double.infinity,
-      height: 0,
-    );
+    return const SizedBox.shrink();
   }
 }
-
-const adEvery = 30;
-final adRowInterval = (adEvery / 3).floor();
