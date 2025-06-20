@@ -7,8 +7,8 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:go_router/go_router.dart';
 
-class AppStoryWidget extends ConsumerWidget {
-  const AppStoryWidget({
+class StoryWidget extends ConsumerWidget {
+  const StoryWidget({
     required this.data,
     super.key,
   });

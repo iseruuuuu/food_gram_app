@@ -4,8 +4,8 @@ import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AppCategoryTab extends HookConsumerWidget {
-  const AppCategoryTab({
+class CategoryTab extends HookConsumerWidget {
+  const CategoryTab({
     required this.selectedCategoryName,
     super.key,
   });
