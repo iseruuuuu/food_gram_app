@@ -8,12 +8,12 @@ import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/profile/app_profile_header.dart';
-import 'package:food_gram_app/ui/screen/profile/profile_view_model.dart';
+import 'package:food_gram_app/ui/screen/profile/user_profile/user_profile_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ProfileScreen extends ConsumerWidget {
-  const ProfileScreen({
+class UserProfileScreen extends ConsumerWidget {
+  const UserProfileScreen({
     required this.users,
     super.key,
   });
@@ -22,7 +22,7 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(profileViewModelProvider(users.userId));
+    final state = ref.watch(userProfileViewModelProvider(users.userId));
     final posts = ref.watch(profileRepositoryProvider(userId: users.userId));
     return DefaultTabController(
       length: 2,

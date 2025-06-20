@@ -143,7 +143,7 @@ final timeLineRouter = GoRoute(
       pageBuilder: (context, state) {
         final users = state.extra! as Users;
         return slideUpTransition(
-          ProfileScreen(users: users),
+          UserProfileScreen(users: users),
         );
       },
     ),
@@ -341,7 +341,7 @@ final mapRouter = GoRoute(
       pageBuilder: (context, state) {
         final users = state.extra! as Users;
         return slideUpTransition(
-          ProfileScreen(users: users),
+          UserProfileScreen(users: users),
         );
       },
     ),
