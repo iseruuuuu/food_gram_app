@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class AppSettingTile extends StatelessWidget {
-  const AppSettingTile({
+class SettingTile extends StatelessWidget {
+  const SettingTile({
     required this.icon,
     required this.title,
     required this.onTap,
