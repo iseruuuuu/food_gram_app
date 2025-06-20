@@ -26,6 +26,8 @@ abstract class Env {
   static final String masterAccount = _Env.masterAccount;
   @EnviedField(varName: 'IOS_PURCHASE_KEY', obfuscate: true)
   static final String iOSPurchaseKey = _Env.iOSPurchaseKey;
+  @EnviedField(varName: 'ANDROID_PURCHASE_KEY', obfuscate: true)
+  static final String androidPurchaseKey = _Env.androidPurchaseKey;
   @EnviedField(varName: 'IOS_BANNER', obfuscate: true)
   static final String iOSBanner = _Env.iOSBanner;
   @EnviedField(varName: 'IOS_INTERSTITIAL', obfuscate: true)

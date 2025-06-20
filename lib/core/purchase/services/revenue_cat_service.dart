@@ -27,8 +27,7 @@ class RevenueCatService extends _$RevenueCatService {
     try {
       late PurchasesConfiguration configuration;
       if (Platform.isAndroid) {
-        // TODO Android用のRevenuecat APIキーを入れる必要がありそう
-        configuration = PurchasesConfiguration('');
+        configuration = PurchasesConfiguration(Env.androidPurchaseKey);
       } else if (Platform.isIOS) {
         configuration = PurchasesConfiguration(Env.iOSPurchaseKey);
       }
