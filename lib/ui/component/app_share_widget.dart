@@ -33,7 +33,6 @@ class AppShareWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: Stack(
               children: [
-                // 背景画像
                 SizedBox.expand(
                   child: CachedNetworkImage(
                     imageUrl: supabase.storage
@@ -42,7 +41,6 @@ class AppShareWidget extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                // グラデーションオーバーレイ（下部）
                 Positioned(
                   bottom: 0,
                   left: 0,
@@ -61,7 +59,6 @@ class AppShareWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                // テキスト情報（下部に配置）
                 Positioned(
                   bottom: 0,
                   left: 0,
