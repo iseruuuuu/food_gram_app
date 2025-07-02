@@ -201,7 +201,9 @@ class AppCommentTextField extends StatelessWidget {
       child: TextField(
         contextMenuBuilder: (context, state) {
           if (SystemContextMenu.isSupported(context)) {
-            return SystemContextMenu.editableText(editableTextState: state);
+            return SystemContextMenu.editableText(
+              editableTextState: state,
+            );
           }
           return AdaptiveTextSelectionToolbar.editableText(
             editableTextState: state,
@@ -209,7 +211,7 @@ class AppCommentTextField extends StatelessWidget {
         },
         selectionHeightStyle: BoxHeightStyle.strut,
         decoration: InputDecoration(
-          floatingLabelBehavior: FloatingLabelBehavior.always,
+          alignLabelWithHint: true,
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: Colors.black87),
             borderRadius: BorderRadius.circular(6),
@@ -220,13 +222,14 @@ class AppCommentTextField extends StatelessWidget {
           ),
           label: Text(
             L10n.of(context).postComment,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.grey,
-            ),
+          ),
+          labelStyle: const TextStyle(
+            color: Colors.grey,
+            fontWeight: FontWeight.bold,
           ),
         ),
         controller: controller,
+        keyboardType: TextInputType.text,
         maxLines: 6,
         autocorrect: false,
         style: const TextStyle(

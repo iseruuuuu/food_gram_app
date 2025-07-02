@@ -327,19 +327,19 @@ abstract class L10n {
   /// No description provided for @postFoodNameInputField.
   ///
   /// In ja, this message translates to:
-  /// **'食べたものを入力'**
+  /// **'食べたものを入力(必須)'**
   String get postFoodNameInputField;
 
   /// No description provided for @postRestaurantNameInputField.
   ///
   /// In ja, this message translates to:
-  /// **'レストラン名を追加'**
+  /// **'レストラン名を追加(必須)'**
   String get postRestaurantNameInputField;
 
   /// No description provided for @postComment.
   ///
   /// In ja, this message translates to:
-  /// **'コメントを入力'**
+  /// **'コメントを入力(任意)'**
   String get postComment;
 
   /// No description provided for @postCommentInputField.
