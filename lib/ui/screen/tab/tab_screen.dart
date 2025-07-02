@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,9 +18,11 @@ class TabScreen extends ConsumerWidget {
     final l10n = L10n.of(context);
     return MediaQuery.removePadding(
       context: context,
-      removeBottom: true,
+      removeBottom: Platform.isIOS,
       child: Scaffold(
-        body: controller.pageList[state.selectedIndex],
+        body: Platform.isIOS
+            ? controller.pageList[state.selectedIndex]
+            : SafeArea(child: controller.pageList[state.selectedIndex]),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(
