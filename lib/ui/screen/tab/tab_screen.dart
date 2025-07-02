@@ -20,6 +20,7 @@ class TabScreen extends ConsumerWidget {
       context: context,
       removeBottom: Platform.isIOS,
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Platform.isIOS
             ? controller.pageList[state.selectedIndex]
             : SafeArea(child: controller.pageList[state.selectedIndex]),
