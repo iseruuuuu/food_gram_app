@@ -32,13 +32,13 @@ class TabScreen extends ConsumerWidget {
           child: BottomNavigationBar(
             currentIndex: state.selectedIndex,
             onTap: controller.onTap,
-            items: <BottomNavigationBarItem>[
+            items: [
               BottomNavigationBarItem(
                 icon: Column(
                   children: [
                     const Gap(12),
                     Icon(
-                      (state.selectedIndex == 0)
+                      state.selectedIndex == 0
                           ? CupertinoIcons.map_fill
                           : CupertinoIcons.map,
                       semanticLabel: 'mapIcon',
@@ -58,7 +58,7 @@ class TabScreen extends ConsumerWidget {
                   children: [
                     const Gap(12),
                     Icon(
-                      (state.selectedIndex == 1)
+                      state.selectedIndex == 1
                           ? Icons.fastfood
                           : Icons.fastfood_outlined,
                       semanticLabel: 'timelineIcon',
@@ -78,7 +78,7 @@ class TabScreen extends ConsumerWidget {
                   children: [
                     const Gap(12),
                     Icon(
-                      (state.selectedIndex == 2)
+                      state.selectedIndex == 2
                           ? CupertinoIcons.search_circle_fill
                           : CupertinoIcons.search_circle,
                       size: 30,
@@ -99,7 +99,7 @@ class TabScreen extends ConsumerWidget {
                   children: [
                     const Gap(12),
                     Icon(
-                      (state.selectedIndex == 3)
+                      state.selectedIndex == 3
                           ? CupertinoIcons.person_circle_fill
                           : CupertinoIcons.person_circle,
                       size: 30,
@@ -120,7 +120,7 @@ class TabScreen extends ConsumerWidget {
                   children: [
                     const Gap(12),
                     Icon(
-                      (state.selectedIndex == 4)
+                      state.selectedIndex == 4
                           ? Icons.settings
                           : Icons.settings_outlined,
                       semanticLabel: 'settingIcon',
