@@ -41,7 +41,6 @@ class TabScreen extends ConsumerWidget {
                       state.selectedIndex == 0
                           ? CupertinoIcons.map_fill
                           : CupertinoIcons.map,
-                      semanticLabel: 'mapIcon',
                     ),
                     const Gap(6),
                     Text(
@@ -61,7 +60,6 @@ class TabScreen extends ConsumerWidget {
                       state.selectedIndex == 1
                           ? Icons.fastfood
                           : Icons.fastfood_outlined,
-                      semanticLabel: 'timelineIcon',
                     ),
                     const Gap(6),
                     Text(
@@ -82,7 +80,6 @@ class TabScreen extends ConsumerWidget {
                           ? CupertinoIcons.search_circle_fill
                           : CupertinoIcons.search_circle,
                       size: 30,
-                      semanticLabel: 'profileIcon',
                     ),
                     const Gap(6),
                     Text(
@@ -103,7 +100,6 @@ class TabScreen extends ConsumerWidget {
                           ? CupertinoIcons.person_circle_fill
                           : CupertinoIcons.person_circle,
                       size: 30,
-                      semanticLabel: 'profileIcon',
                     ),
                     const Gap(6),
                     Text(
@@ -123,7 +119,6 @@ class TabScreen extends ConsumerWidget {
                       state.selectedIndex == 4
                           ? Icons.settings
                           : Icons.settings_outlined,
-                      semanticLabel: 'settingIcon',
                     ),
                     const Gap(6),
                     Text(
