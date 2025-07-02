@@ -123,13 +123,13 @@ class L10nJa extends L10n {
   String get postFoodName => '食べたもの';
 
   @override
-  String get postFoodNameInputField => '食べたものを入力';
+  String get postFoodNameInputField => '食べたものを入力(必須)';
 
   @override
-  String get postRestaurantNameInputField => 'レストラン名を追加';
+  String get postRestaurantNameInputField => 'レストラン名を追加(必須)';
 
   @override
-  String get postComment => 'コメントを入力';
+  String get postComment => 'コメントを入力(任意)';
 
   @override
   String get postCommentInputField => 'コメント(任意)';

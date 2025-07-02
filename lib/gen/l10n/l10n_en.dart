@@ -123,16 +123,16 @@ class L10nEn extends L10n {
   String get postFoodName => 'Food Name';
 
   @override
-  String get postFoodNameInputField => 'Enter food name';
+  String get postFoodNameInputField => 'Enter food name(Required)';
 
   @override
-  String get postRestaurantNameInputField => 'Add restaurant';
+  String get postRestaurantNameInputField => 'Add restaurant(Required)';
 
   @override
-  String get postComment => 'Enter Comment';
+  String get postComment => 'Enter Comment(Optional)';
 
   @override
-  String get postCommentInputField => 'Comment (optional)';
+  String get postCommentInputField => 'Comment';
 
   @override
   String get postError => 'Submission failure';
