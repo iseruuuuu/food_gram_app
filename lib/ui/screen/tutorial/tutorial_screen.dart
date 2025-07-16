@@ -128,33 +128,79 @@ class _TutorialScreenState extends State<TutorialScreen> {
                               isAccept = value ?? false;
                             });
                           },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: 200,
-                      child: ElevatedButton(
-                        style: TutorialStyle.button(),
-                        onPressed: isAccept
-                            ? () async {
-                                if (!isFinishedTutorial) {
-                                  await preference.setBool(
-                                    PreferenceKey.isFinishedTutorial,
-                                  );
-                                  context.go(RouterPath.splash);
-                                } else {
-                                  context.pop();
-                                }
-                              }
-                            : null,
+              SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Gap(60),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Gap(10),
+                          Assets.gif.tutorial1.image(width: 60),
+                          Text(
+                            l10n.tutorialThirdPageTitle,
+                            style: TutorialStyle.thirdTitle(),
+                          ),
+                          Assets.gif.tutorial1.image(width: 60),
+                          const Gap(10),
+                        ],
+                      ),
+                      const Gap(20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Text(
-                          l10n.tutorialThirdPageClose,
-                          style: TutorialStyle.close(),
+                          l10n.tutorialThirdPageSubTitle,
+                          style: TutorialStyle.thirdSubTitle(),
                         ),
                       ),
-                    ),
-                  ],
+                      const Gap(30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            l10n.tutorialThirdPageButton,
+                            style: TutorialStyle.accept(),
+                          ),
+                          const Gap(10),
+                          Checkbox(
+                            checkColor: Colors.white,
+                            activeColor: Colors.black,
+                            value: isAccept,
+                            onChanged: (value) {
+                              setState(() {
+                                isAccept = value ?? false;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      const Gap(20),
+                      SizedBox(
+                        width: 200,
+                        child: ElevatedButton(
+                          style: TutorialStyle.button(),
+                          onPressed: isAccept
+                              ? () async {
+                                  if (!isFinishedTutorial) {
+                                    await preference.setBool(
+                                      PreferenceKey.isFinishedTutorial,
+                                    );
+                                    context.go(RouterPath.splash);
+                                  } else {
+                                    context.pop();
+                                  }
+                                }
+                              : null,
+                          child: Text(
+                            l10n.tutorialThirdPageClose,
+                            style: TutorialStyle.close(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

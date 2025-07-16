@@ -381,7 +381,7 @@ class L10nEn extends L10n {
   String get tutorialThirdPageTitle => 'Terms of Use';
 
   @override
-  String get tutorialThirdPageSubTitle => '・Be cautious about sharing personal information, such as your name, address, phone number, or location.\n\n・Avoid posting offensive, inappropriate, or harmful content, and do not use others\' works without permission.\n\n・Non-food-related posts may be removed.\n\n・Users who repeatedly violate the rules or post objectionable content may be removed by the management team.\n\n・Please understand that the app might have some incomplete aspects.\n\n・We look forward to improving this app together with everyone.\n\n・Please cooperate with us to improve the service. 🙇 by the developers';
+  String get tutorialThirdPageSubTitle => '・Be cautious about sharing personal information, such as your name, address, phone number, or location.\n\n・Avoid posting offensive, inappropriate, or harmful content, and do not use others\' works without permission.\n\n・Non-food-related posts may be removed.\n\n・Users who repeatedly violate the rules or post objectionable content may be removed by the management team.\n\n・We look forward to improving this app together with everyone. by the developers';
 
   @override
   String get tutorialThirdPageButton => 'Agree to the terms of use';
@@ -615,7 +615,7 @@ class L10nEn extends L10n {
   String get paywallSubscribeButton => 'Become a Premium Member';
 
   @override
-  String get paywallPrice => '\$3/month';
+  String get paywallPrice => 'monthly  \$3 / month';
 
   @override
   String get paywallCancelNote => 'Cancel anytime';
