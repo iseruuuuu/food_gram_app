@@ -182,7 +182,6 @@ class NotificationService {
       );
       final scheduledTZDate = tz.TZDateTime.from(scheduledDate, tz.local);
       try {
-        // まずExact alarms権限で試行
         await _flutterLocalNotificationsPlugin.zonedSchedule(
           id,
           title,
@@ -192,12 +191,8 @@ class NotificationService {
           androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
           payload: payload,
         );
-        _logger.i(
-          'Exact alarms権限でスケジュール通知を設定しました: $title - $body at $scheduledDate',
-        );
       } on Exception catch (e) {
         if (e.toString().contains('exact_alarms_not_permitted')) {
-          _logger.w('Exact alarms権限がありません。代替手段を使用します。');
           // Exact alarms権限がない場合は、通常のスケジュールモードを使用
           await _flutterLocalNotificationsPlugin.zonedSchedule(
             id,
@@ -208,7 +203,6 @@ class NotificationService {
             androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
             payload: payload,
           );
-          _logger.i('代替手段でスケジュール通知を設定しました: $title - $body at $scheduledDate');
         } else {
           rethrow;
         }
@@ -221,8 +215,6 @@ class NotificationService {
   /// 通知がタップされたときの処理
   void _onNotificationTapped(NotificationResponse response) {
     try {
-      _logger.i('通知がタップされました: ${response.payload}');
-
       // ペイロードがある場合は処理
       if (response.payload != null) {
         final dynamic decoded = json.decode(response.payload!);
