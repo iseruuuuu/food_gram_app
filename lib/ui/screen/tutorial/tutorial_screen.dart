@@ -225,7 +225,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                                       );
                                     },
                                     child: Text(
-                                      'スキップ',
+                                      l10n.paywallSkip,
                                       style: TutorialStyle.subTitle(),
                                     ),
                                   ),

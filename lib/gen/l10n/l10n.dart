@@ -1367,6 +1367,12 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'料理カテゴリーの選択'**
   String get selectFoodTag;
+
+  /// No description provided for @paywallSkip.
+  ///
+  /// In ja, this message translates to:
+  /// **'スキップ'**
+  String get paywallSkip;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

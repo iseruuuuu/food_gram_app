@@ -643,4 +643,7 @@ class L10nJa extends L10n {
 
   @override
   String get selectFoodTag => '料理カテゴリーの選択';
+
+  @override
+  String get paywallSkip => 'スキップ';
 }
