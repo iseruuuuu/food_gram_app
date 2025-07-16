@@ -316,15 +316,11 @@ class NotificationService {
   /// 次の日の食事リマインダーを設定
   Future<void> _scheduleNextDayReminder(String mealType) async {
     try {
-      final now = DateTime.now();
-      now.add(const Duration(days: 1));
-
       if (mealType == 'lunch') {
         await scheduleLunchReminder();
       } else if (mealType == 'dinner') {
         await scheduleDinnerReminder();
       }
-
       _logger.i('次の日の$mealTypeリマインダーを設定しました');
     } on Exception catch (e) {
       _logger.e('次の日のリマインダー設定に失敗しました: $e');
