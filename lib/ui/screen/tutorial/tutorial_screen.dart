@@ -56,6 +56,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
             notifier: notifier,
             pageCount: 4,
             pages: [
+              /// 1ページ目
               Column(
                 children: [
                   const Spacer(),
@@ -74,6 +75,8 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                   const Spacer(),
                 ],
               ),
+
+              /// 2ページ目
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -236,6 +239,8 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                   ),
                 ),
               ),
+
+              /// 4ページ目
               SingleChildScrollView(
                 child: Center(
                   child: Column(
