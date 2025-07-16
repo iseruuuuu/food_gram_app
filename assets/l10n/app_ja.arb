@@ -211,5 +211,6 @@
   "seeMore": "もっとみる",
   "selectCountryTag": "国カテゴリーの選択",
   "selectFoodTag": "料理カテゴリーの選択",
-  "paywallSkip": "スキップ"
+  "paywallSkip": "スキップ",
+  "purchaseError": "購入処理中にエラーが発生しました"
 }

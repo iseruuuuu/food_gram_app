@@ -498,7 +498,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('購入処理中にエラーが発生しました: $e'),
+            content: Text('${l10n.purchaseError}: $e'),
           ),
         );
         await pageController.nextPage(

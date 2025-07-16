@@ -1373,6 +1373,12 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'スキップ'**
   String get paywallSkip;
+
+  /// No description provided for @purchaseError.
+  ///
+  /// In ja, this message translates to:
+  /// **'購入処理中にエラーが発生しました'**
+  String get purchaseError;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

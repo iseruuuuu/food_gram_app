@@ -646,4 +646,7 @@ class L10nEn extends L10n {
 
   @override
   String get paywallSkip => 'Skip';
+
+  @override
+  String get purchaseError => 'An error occurred during purchase';
 }
