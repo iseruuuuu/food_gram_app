@@ -36,6 +36,13 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    controller.dispose();
+    pageController.dispose();
+    super.dispose();
+  }
+
   Future<void> loadPreference() async {
     isAccept = await preference.getBool(PreferenceKey.isAccept);
     isFinishedTutorial = await preference.getBool(
@@ -398,12 +405,12 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
   }
 
   Future<void> _handlePurchase(L10n l10n) async {
-    await ref
-        .read(
-          settingViewModelProvider().notifier,
-        )
-        .purchase()
-        .then((result) async {
+    try {
+      final result = await ref
+          .read(
+            settingViewModelProvider().notifier,
+          )
+          .purchase();
       if (result) {
         controller.play();
         try {
@@ -467,7 +474,18 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
             const Duration(seconds: 3),
           );
         } on TimeoutException {
-          context.pop();
+          if (context.mounted) {
+            context.pop();
+            await pageController.nextPage(
+              duration: const Duration(
+                milliseconds: 500,
+              ),
+              curve: Curves.easeInOut,
+            );
+          }
+        }
+      } else {
+        if (context.mounted) {
           await pageController.nextPage(
             duration: const Duration(
               milliseconds: 500,
@@ -475,7 +493,14 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
             curve: Curves.easeInOut,
           );
         }
-      } else {
+      }
+    } on Exception catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('購入処理中にエラーが発生しました: $e'),
+          ),
+        );
         await pageController.nextPage(
           duration: const Duration(
             milliseconds: 500,
@@ -483,7 +508,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
           curve: Curves.easeInOut,
         );
       }
-    });
+    }
   }
 }
 
