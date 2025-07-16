@@ -131,7 +131,7 @@ class NotificationService {
             .resolvePlatformSpecificImplementation<
                 IOSFlutterLocalNotificationsPlugin>()
             ?.checkPermissions();
-        return result != null;
+        return result?.isEnabled ?? false;
       } else if (Platform.isAndroid) {
         // Android 13以降の通知権限を確認
         final result = await _flutterLocalNotificationsPlugin
