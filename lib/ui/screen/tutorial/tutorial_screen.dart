@@ -1,31 +1,44 @@
+import 'dart:async';
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sliding_tutorial/flutter_sliding_tutorial.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/theme/style/tutorial_style.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/paywall_widget.dart';
+import 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class TutorialScreen extends StatefulWidget {
+class TutorialScreen extends ConsumerStatefulWidget {
   const TutorialScreen({super.key});
 
   @override
-  State<TutorialScreen> createState() => _TutorialScreenState();
+  ConsumerState<TutorialScreen> createState() => _TutorialScreenState();
 }
 
-class _TutorialScreenState extends State<TutorialScreen> {
+class _TutorialScreenState extends ConsumerState<TutorialScreen> {
   bool isAccept = false;
   bool isFinishedTutorial = false;
   final ValueNotifier<double> notifier = ValueNotifier(0);
   final PageController pageController = PageController();
   final preference = Preference();
+  final controller = ConfettiController(duration: const Duration(seconds: 2));
 
   @override
   void initState() {
     loadPreference();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    pageController.dispose();
+    super.dispose();
   }
 
   Future<void> loadPreference() async {
@@ -46,8 +59,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
           SlidingTutorial(
             controller: pageController,
             notifier: notifier,
-            pageCount: 3,
+            pageCount: 4,
             pages: [
+              /// 1ページ目
               Column(
                 children: [
                   const Spacer(),
@@ -66,6 +80,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
                   const Spacer(),
                 ],
               ),
+
+              /// 2ページ目
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -85,76 +101,105 @@ class _TutorialScreenState extends State<TutorialScreen> {
                   const Spacer(),
                 ],
               ),
-              SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Gap(30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Gap(10),
-                        Assets.gif.tutorial1.image(width: 60),
-                        Text(
-                          l10n.tutorialThirdPageTitle,
-                          style: TutorialStyle.thirdTitle(),
-                        ),
-                        Assets.gif.tutorial1.image(width: 60),
-                        const Gap(10),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: Text(
-                        l10n.tutorialThirdPageSubTitle,
-                        style: TutorialStyle.thirdSubTitle(),
-                      ),
-                    ),
-                    Row(
+
+              /// 3ページ目
+              PaywallBackground(
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          l10n.tutorialThirdPageButton,
-                          style: TutorialStyle.accept(),
-                        ),
-                        const Gap(10),
-                        Checkbox(
-                          checkColor: Colors.white,
-                          activeColor: Colors.black,
-                          value: isAccept,
-                          onChanged: (value) {
-                            setState(() {
-                              isAccept = value ?? false;
-                            });
+                        PaywallContent(
+                          onPurchase: _handlePurchase,
+                          onSkip: () async {
+                            await pageController.nextPage(
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut,
+                            );
                           },
+                          showSkipButton: true,
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: 200,
-                      child: ElevatedButton(
-                        style: TutorialStyle.button(),
-                        onPressed: isAccept
-                            ? () async {
-                                if (!isFinishedTutorial) {
-                                  await preference.setBool(
-                                    PreferenceKey.isFinishedTutorial,
-                                  );
-                                  context.go(RouterPath.splash);
-                                } else {
-                                  context.pop();
-                                }
-                              }
-                            : null,
+                  ),
+                ),
+              ),
+
+              /// 4ページ目
+              SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Gap(60),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Gap(10),
+                          Assets.gif.tutorial1.image(width: 60),
+                          Text(
+                            l10n.tutorialThirdPageTitle,
+                            style: TutorialStyle.thirdTitle(),
+                          ),
+                          Assets.gif.tutorial1.image(width: 60),
+                          const Gap(10),
+                        ],
+                      ),
+                      const Gap(20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Text(
-                          l10n.tutorialThirdPageClose,
-                          style: TutorialStyle.close(),
+                          l10n.tutorialThirdPageSubTitle,
+                          style: TutorialStyle.thirdSubTitle(),
                         ),
                       ),
-                    ),
-                  ],
+                      const Gap(30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            l10n.tutorialThirdPageButton,
+                            style: TutorialStyle.accept(),
+                          ),
+                          const Gap(10),
+                          Checkbox(
+                            checkColor: Colors.white,
+                            activeColor: Colors.black,
+                            value: isAccept,
+                            onChanged: (value) {
+                              setState(() {
+                                isAccept = value ?? false;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      const Gap(20),
+                      SizedBox(
+                        width: 200,
+                        child: ElevatedButton(
+                          style: TutorialStyle.button(),
+                          onPressed: isAccept
+                              ? () async {
+                                  if (!isFinishedTutorial) {
+                                    await preference.setBool(
+                                      PreferenceKey.isFinishedTutorial,
+                                    );
+                                    context.go(RouterPath.splash);
+                                  } else {
+                                    context.pop();
+                                  }
+                                }
+                              : null,
+                          child: Text(
+                            l10n.tutorialThirdPageClose,
+                            style: TutorialStyle.close(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -167,7 +212,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
                 child: IconButton(
                   icon: const Icon(Icons.arrow_forward_ios),
                   onPressed: () {
-                    if (pageController.page?.toInt() == 2 && !isAccept) {
+                    final currentPage = pageController.page?.toInt() ?? 0;
+                    if (currentPage == 3 && !isAccept) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
@@ -175,7 +221,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                           ),
                         ),
                       );
-                    } else {
+                    } else if (currentPage < 3) {
                       pageController.nextPage(
                         duration: const Duration(milliseconds: 500),
                         curve: Curves.easeInOut,
@@ -189,6 +235,41 @@ class _TutorialScreenState extends State<TutorialScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _handlePurchase() async {
+    final l10n = L10n.of(context);
+    try {
+      final result =
+          await ref.read(settingViewModelProvider().notifier).purchase();
+      if (!context.mounted) {
+        return;
+      }
+      if (result) {
+        controller.play();
+        await showPaywallSuccessDialog(
+          context: context,
+          controller: controller,
+        );
+        _goToNextPage();
+      }
+    } on Exception catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${l10n.purchaseError}: $e'),
+          ),
+        );
+        _goToNextPage();
+      }
+    }
+  }
+
+  void _goToNextPage() {
+    pageController.nextPage(
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
     );
   }
 }

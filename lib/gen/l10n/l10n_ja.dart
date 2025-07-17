@@ -381,7 +381,7 @@ class L10nJa extends L10n {
   String get tutorialThirdPageTitle => '利用規約';
 
   @override
-  String get tutorialThirdPageSubTitle => '・氏名、住所、電話番号などの個人情報や位置情報の公開には注意しましょう。\n\n・攻撃的、不適切、または有害なコンテンツの投稿を避け、他人の作品を無断で使用しないようにしましょう。\n\n・食べ物以外の投稿は削除させていただく場合があります。\n\n・違反が繰り返されるユーザーや不快なコンテンツは運営側で削除します。\n\n・アプリには不完全な部分があるかもしれませんので、ご理解ください。\n\n・みなさんと一緒にこのアプリをより良くしていけることを楽しみにしています。\n\n・サービス向上のため、ご協力お願いします🙇 by 開発者';
+  String get tutorialThirdPageSubTitle => '・氏名、住所、電話番号などの個人情報や位置情報の公開には注意しましょう。\n\n・攻撃的、不適切、または有害なコンテンツの投稿を避け、他人の作品を無断で使用しないようにしましょう。\n\n・食べ物以外の投稿は削除させていただく場合があります。\n\n・違反が繰り返されるユーザーや不快なコンテンツは運営側で削除します。\n\n・みなさんと一緒にこのアプリをより良くしていけることを楽しみにしています by 開発者';
 
   @override
   String get tutorialThirdPageButton => '利用規約に同意する';
@@ -615,7 +615,7 @@ class L10nJa extends L10n {
   String get paywallSubscribeButton => 'プレミアム会員になる';
 
   @override
-  String get paywallPrice => '￥ 300/月';
+  String get paywallPrice => '月額  ￥ 300 / 月';
 
   @override
   String get paywallCancelNote => 'いつでも解約可能';
@@ -643,4 +643,10 @@ class L10nJa extends L10n {
 
   @override
   String get selectFoodTag => '料理カテゴリーの選択';
+
+  @override
+  String get paywallSkip => 'スキップ';
+
+  @override
+  String get purchaseError => '購入処理中にエラーが発生しました';
 }

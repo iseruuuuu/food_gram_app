@@ -843,7 +843,7 @@ abstract class L10n {
   /// No description provided for @tutorialThirdPageSubTitle.
   ///
   /// In ja, this message translates to:
-  /// **'・氏名、住所、電話番号などの個人情報や位置情報の公開には注意しましょう。\n\n・攻撃的、不適切、または有害なコンテンツの投稿を避け、他人の作品を無断で使用しないようにしましょう。\n\n・食べ物以外の投稿は削除させていただく場合があります。\n\n・違反が繰り返されるユーザーや不快なコンテンツは運営側で削除します。\n\n・アプリには不完全な部分があるかもしれませんので、ご理解ください。\n\n・みなさんと一緒にこのアプリをより良くしていけることを楽しみにしています。\n\n・サービス向上のため、ご協力お願いします🙇 by 開発者'**
+  /// **'・氏名、住所、電話番号などの個人情報や位置情報の公開には注意しましょう。\n\n・攻撃的、不適切、または有害なコンテンツの投稿を避け、他人の作品を無断で使用しないようにしましょう。\n\n・食べ物以外の投稿は削除させていただく場合があります。\n\n・違反が繰り返されるユーザーや不快なコンテンツは運営側で削除します。\n\n・みなさんと一緒にこのアプリをより良くしていけることを楽しみにしています by 開発者'**
   String get tutorialThirdPageSubTitle;
 
   /// No description provided for @tutorialThirdPageButton.
@@ -1311,7 +1311,7 @@ abstract class L10n {
   /// No description provided for @paywallPrice.
   ///
   /// In ja, this message translates to:
-  /// **'￥ 300/月'**
+  /// **'月額  ￥ 300 / 月'**
   String get paywallPrice;
 
   /// No description provided for @paywallCancelNote.
@@ -1367,6 +1367,18 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'料理カテゴリーの選択'**
   String get selectFoodTag;
+
+  /// No description provided for @paywallSkip.
+  ///
+  /// In ja, this message translates to:
+  /// **'スキップ'**
+  String get paywallSkip;
+
+  /// No description provided for @purchaseError.
+  ///
+  /// In ja, this message translates to:
+  /// **'購入処理中にエラーが発生しました'**
+  String get purchaseError;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

@@ -36,6 +36,7 @@ class PaywallStyle {
 
   static ButtonStyle button() {
     return ElevatedButton.styleFrom(
+      elevation: 10,
       backgroundColor: Colors.amber[700],
       foregroundColor: Colors.white,
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -69,7 +70,7 @@ class PaywallStyle {
 
   static TextStyle contentsTitle() {
     return TextStyle(
-      fontSize: 16,
+      fontSize: 17,
       fontWeight: FontWeight.bold,
       color: Colors.amber[700],
     );
@@ -77,7 +78,7 @@ class PaywallStyle {
 
   static TextStyle contentsDescription() {
     return const TextStyle(
-      fontSize: 13,
+      fontSize: 14,
       color: Colors.black,
     );
   }

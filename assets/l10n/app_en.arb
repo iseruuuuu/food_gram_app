@@ -123,7 +123,7 @@
   "tutorialSecondPageTitle": "A unique food map for this app",
   "tutorialSecondPageSubTitle": "Let's create a unique map for this app.\nYour posts will help evolve the map.",
   "tutorialThirdPageTitle": "Terms of Use",
-  "tutorialThirdPageSubTitle": "・Be cautious about sharing personal information, such as your name, address, phone number, or location.\n\n・Avoid posting offensive, inappropriate, or harmful content, and do not use others' works without permission.\n\n・Non-food-related posts may be removed.\n\n・Users who repeatedly violate the rules or post objectionable content may be removed by the management team.\n\n・Please understand that the app might have some incomplete aspects.\n\n・We look forward to improving this app together with everyone.\n\n・Please cooperate with us to improve the service. 🙇 by the developers",
+  "tutorialThirdPageSubTitle": "・Be cautious about sharing personal information, such as your name, address, phone number, or location.\n\n・Avoid posting offensive, inappropriate, or harmful content, and do not use others' works without permission.\n\n・Non-food-related posts may be removed.\n\n・Users who repeatedly violate the rules or post objectionable content may be removed by the management team.\n\n・We look forward to improving this app together with everyone. by the developers",
   "tutorialThirdPageButton":"Agree to the terms of use",
   "tutorialThirdPageClose":"Close",
   "settingRestoreSuccessTitle": "Restore successful",
@@ -201,7 +201,7 @@
   "paywallComingSoon": "Coming Soon...",
   "paywallNewFeatures": "New premium-exclusive features\ncoming soon!",
   "paywallSubscribeButton": "Become a Premium Member",
-  "paywallPrice": "$3/month",
+  "paywallPrice": "monthly  $3 / month",
   "paywallCancelNote": "Cancel anytime",
   "paywallWelcomeTitle": "Welcome to\nFoodGram Members!",
   "appTitle": "FoodGram",
@@ -210,5 +210,7 @@
   "nearbyRestaurants": "📍Nearby Restaurants",
   "seeMore": "See More",
   "selectCountryTag": "Select a Country Category",
-  "selectFoodTag": "Select Food Tag"
+  "selectFoodTag": "Select Food Tag",
+  "paywallSkip": "Skip",
+  "purchaseError": "An error occurred during purchase"
 }
