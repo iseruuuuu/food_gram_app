@@ -1379,6 +1379,24 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'購入処理中にエラーが発生しました'**
   String get purchaseError;
+
+  /// No description provided for @anonymousPost.
+  ///
+  /// In ja, this message translates to:
+  /// **'匿名で投稿'**
+  String get anonymousPost;
+
+  /// No description provided for @anonymousPostDescription.
+  ///
+  /// In ja, this message translates to:
+  /// **'ユーザー名が非表示になります'**
+  String get anonymousPostDescription;
+
+  /// No description provided for @anonymousShare.
+  ///
+  /// In ja, this message translates to:
+  /// **'匿名でシェア'**
+  String get anonymousShare;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

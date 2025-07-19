@@ -212,5 +212,8 @@
   "selectCountryTag": "Select a Country Category",
   "selectFoodTag": "Select Food Tag",
   "paywallSkip": "Skip",
-  "purchaseError": "An error occurred during purchase"
+  "purchaseError": "An error occurred during purchase",
+  "anonymousPost": "Post Anonymously",
+  "anonymousPostDescription": "Username will be hidden",
+  "anonymousShare": "Share Anonymously"
 }

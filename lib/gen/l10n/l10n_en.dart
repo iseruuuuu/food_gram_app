@@ -649,4 +649,13 @@ class L10nEn extends L10n {
 
   @override
   String get purchaseError => 'An error occurred during purchase';
+
+  @override
+  String get anonymousPost => 'Post Anonymously';
+
+  @override
+  String get anonymousPostDescription => 'Username will be hidden';
+
+  @override
+  String get anonymousShare => 'Share Anonymously';
 }

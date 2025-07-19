@@ -229,7 +229,8 @@ class AppCommentTextField extends StatelessWidget {
           ),
         ),
         controller: controller,
-        keyboardType: TextInputType.text,
+        keyboardType: TextInputType.multiline,
+        textInputAction: TextInputAction.newline,
         maxLines: 6,
         autocorrect: false,
         style: const TextStyle(

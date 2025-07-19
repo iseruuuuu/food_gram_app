@@ -212,5 +212,8 @@
   "selectCountryTag": "国カテゴリーの選択",
   "selectFoodTag": "料理カテゴリーの選択",
   "paywallSkip": "スキップ",
-  "purchaseError": "購入処理中にエラーが発生しました"
+  "purchaseError": "購入処理中にエラーが発生しました",
+  "anonymousPost": "匿名で投稿",
+  "anonymousPostDescription": "ユーザー名が非表示になります",
+  "anonymousShare": "匿名でシェア"
 }
