@@ -45,6 +45,7 @@ class PostService extends _$PostService {
     required double lng,
     required String restaurantTag,
     required String foodTag,
+    required bool isAnonymous,
   }) async {
     try {
       await _uploadImage(uploadImage, imageBytes);
@@ -57,6 +58,7 @@ class PostService extends _$PostService {
         lng: lng,
         restaurantTag: restaurantTag,
         foodTag: foodTag,
+        isAnonymous: isAnonymous,
       );
       // 新規投稿後は関連するキャッシュを無効化
       invalidatePostsCache();
@@ -157,6 +159,7 @@ class PostService extends _$PostService {
     required double lng,
     required String restaurantTag,
     required String foodTag,
+    required bool isAnonymous,
   }) async {
     final post = {
       'user_id': _currentUserId,
@@ -170,6 +173,7 @@ class PostService extends _$PostService {
       'lng': lng,
       'restaurant_tag': restaurantTag,
       'food_tag': foodTag,
+      'is_anonymous': isAnonymous,
     };
 
     await supabase.from('posts').insert(post);

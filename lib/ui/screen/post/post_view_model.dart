@@ -104,6 +104,7 @@ class PostViewModel extends _$PostViewModel {
           lat: state.lat,
           restaurantTag: restaurantTag,
           foodTag: foodTag,
+          isAnonymous: state.isAnonymous,
         );
     await result.when(
       success: (_) async {
@@ -189,6 +190,10 @@ class PostViewModel extends _$PostViewModel {
         showCancelConfirmationDialog: true,
       ),
     ];
+  }
+
+  void setAnonymous({required bool value}) {
+    state = state.copyWith(isAnonymous: value);
   }
 }
 
