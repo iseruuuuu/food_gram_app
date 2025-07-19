@@ -216,5 +216,7 @@
   "anonymousPost": "Post Anonymously",
   "anonymousPostDescription": "Username will be hidden",
   "anonymousShare": "Share Anonymously",
-  "anonymousUpdate": "Update Anonymously"
+  "anonymousUpdate": "Update Anonymously",
+  "anonymousPoster": "Anonymous Poster",
+  "anonymousUsername": "foodgramer"
 }

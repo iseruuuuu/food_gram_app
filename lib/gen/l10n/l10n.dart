@@ -1403,6 +1403,18 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'匿名で更新'**
   String get anonymousUpdate;
+
+  /// No description provided for @anonymousPoster.
+  ///
+  /// In ja, this message translates to:
+  /// **'とある投稿者'**
+  String get anonymousPoster;
+
+  /// No description provided for @anonymousUsername.
+  ///
+  /// In ja, this message translates to:
+  /// **'foodgramer'**
+  String get anonymousUsername;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

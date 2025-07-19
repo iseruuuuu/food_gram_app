@@ -661,4 +661,10 @@ class L10nJa extends L10n {
 
   @override
   String get anonymousUpdate => '匿名で更新';
+
+  @override
+  String get anonymousPoster => 'とある投稿者';
+
+  @override
+  String get anonymousUsername => 'foodgramer';
 }

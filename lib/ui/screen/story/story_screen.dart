@@ -6,6 +6,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/theme/style/story_style.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/profile/app_profile_image.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -25,6 +26,7 @@ class StoryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final screenWidth = MediaQuery.of(context).size.width;
     final supabase = ref.watch(supabaseProvider);
+    final l10n = L10n.of(context);
     return SafeArea(
       child: GestureDetector(
         onVerticalDragEnd: (details) {
@@ -46,13 +48,18 @@ class StoryScreen extends ConsumerWidget {
                       padding: const EdgeInsets.only(top: 44, left: 8),
                       child: Row(
                         children: [
+                          //TODO あとでできているか確認をする
                           AppProfileImage(
-                            imagePath: users[storyIndex].image,
+                            imagePath: posts[storyIndex].isAnonymous
+                                ? 'assets/icon/icon1.png'
+                                : users[storyIndex].image,
                             radius: 28,
                           ),
                           const Gap(12),
                           Text(
-                            users[storyIndex].name,
+                            posts[storyIndex].isAnonymous
+                                ? l10n.anonymousPoster
+                                : users[storyIndex].name,
                             style: StoryStyle.name(),
                           ),
                         ],

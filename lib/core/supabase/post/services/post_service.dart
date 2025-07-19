@@ -214,6 +214,7 @@ class PostService extends _$PostService {
           'heart': int.parse(data[index]['heart'].toString()),
           'restaurant_tag': data[index]['restaurant_tag'],
           'food_tag': data[index]['food_tag'],
+          'is_anonymous': data[index]['is_anonymous'],
         };
         final userData = await supabase
             .from('users')
@@ -257,6 +258,7 @@ class PostService extends _$PostService {
                 'heart': int.parse(postData['heart'].toString()),
                 'restaurant_tag': postData['restaurant_tag'],
                 'food_tag': postData['food_tag'],
+                'is_anonymous': postData['is_anonymous'],
               },
               'user': userData,
             };

@@ -661,4 +661,10 @@ class L10nEn extends L10n {
 
   @override
   String get anonymousUpdate => 'Update Anonymously';
+
+  @override
+  String get anonymousPoster => 'Anonymous Poster';
+
+  @override
+  String get anonymousUsername => 'foodgramer';
 }
