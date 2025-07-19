@@ -1397,6 +1397,12 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'匿名でシェア'**
   String get anonymousShare;
+
+  /// No description provided for @anonymousUpdate.
+  ///
+  /// In ja, this message translates to:
+  /// **'匿名で更新'**
+  String get anonymousUpdate;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

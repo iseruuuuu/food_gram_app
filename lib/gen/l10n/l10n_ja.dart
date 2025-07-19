@@ -658,4 +658,7 @@ class L10nJa extends L10n {
 
   @override
   String get anonymousShare => '匿名でシェア';
+
+  @override
+  String get anonymousUpdate => '匿名で更新';
 }

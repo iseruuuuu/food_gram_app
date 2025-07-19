@@ -215,5 +215,6 @@
   "purchaseError": "An error occurred during purchase",
   "anonymousPost": "Post Anonymously",
   "anonymousPostDescription": "Username will be hidden",
-  "anonymousShare": "Share Anonymously"
+  "anonymousShare": "Share Anonymously",
+  "anonymousUpdate": "Update Anonymously"
 }

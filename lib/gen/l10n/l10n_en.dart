@@ -658,4 +658,7 @@ class L10nEn extends L10n {
 
   @override
   String get anonymousShare => 'Share Anonymously';
+
+  @override
+  String get anonymousUpdate => 'Update Anonymously';
 }

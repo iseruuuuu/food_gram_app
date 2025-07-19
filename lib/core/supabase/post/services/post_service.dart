@@ -82,6 +82,7 @@ class PostService extends _$PostService {
     required String foodTag,
     required double lat,
     required double lng,
+    required bool isAnonymous,
     String? newImagePath,
     Uint8List? imageBytes,
   }) async {
@@ -94,6 +95,7 @@ class PostService extends _$PostService {
           foodTag == posts.foodTag &&
           lat == posts.lat &&
           lng == posts.lng &&
+          isAnonymous == posts.isAnonymous &&
           (newImagePath == null ||
               '/$_currentUserId/$newImagePath' == posts.foodImage);
 
@@ -110,6 +112,7 @@ class PostService extends _$PostService {
         'food_tag': foodTag,
         'lat': lat,
         'lng': lng,
+        'is_anonymous': isAnonymous,
       };
 
       // 新しい画像がある場合、古い画像を削除してから新しい画像をアップロード

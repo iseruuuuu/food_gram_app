@@ -215,5 +215,6 @@
   "purchaseError": "購入処理中にエラーが発生しました",
   "anonymousPost": "匿名で投稿",
   "anonymousPostDescription": "ユーザー名が非表示になります",
-  "anonymousShare": "匿名でシェア"
+  "anonymousShare": "匿名でシェア",
+  "anonymousUpdate": "匿名で更新"
 }
