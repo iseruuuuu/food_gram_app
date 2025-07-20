@@ -45,6 +45,7 @@ class PostService extends _$PostService {
     required double lng,
     required String restaurantTag,
     required String foodTag,
+    required bool isAnonymous,
   }) async {
     try {
       await _uploadImage(uploadImage, imageBytes);
@@ -57,6 +58,7 @@ class PostService extends _$PostService {
         lng: lng,
         restaurantTag: restaurantTag,
         foodTag: foodTag,
+        isAnonymous: isAnonymous,
       );
       // 新規投稿後は関連するキャッシュを無効化
       invalidatePostsCache();
@@ -80,6 +82,7 @@ class PostService extends _$PostService {
     required String foodTag,
     required double lat,
     required double lng,
+    required bool isAnonymous,
     String? newImagePath,
     Uint8List? imageBytes,
   }) async {
@@ -92,6 +95,7 @@ class PostService extends _$PostService {
           foodTag == posts.foodTag &&
           lat == posts.lat &&
           lng == posts.lng &&
+          isAnonymous == posts.isAnonymous &&
           (newImagePath == null ||
               '/$_currentUserId/$newImagePath' == posts.foodImage);
 
@@ -108,6 +112,7 @@ class PostService extends _$PostService {
         'food_tag': foodTag,
         'lat': lat,
         'lng': lng,
+        'is_anonymous': isAnonymous,
       };
 
       // 新しい画像がある場合、古い画像を削除してから新しい画像をアップロード
@@ -157,6 +162,7 @@ class PostService extends _$PostService {
     required double lng,
     required String restaurantTag,
     required String foodTag,
+    required bool isAnonymous,
   }) async {
     final post = {
       'user_id': _currentUserId,
@@ -170,6 +176,7 @@ class PostService extends _$PostService {
       'lng': lng,
       'restaurant_tag': restaurantTag,
       'food_tag': foodTag,
+      'is_anonymous': isAnonymous,
     };
 
     await supabase.from('posts').insert(post);
@@ -207,6 +214,7 @@ class PostService extends _$PostService {
           'heart': int.parse(data[index]['heart'].toString()),
           'restaurant_tag': data[index]['restaurant_tag'],
           'food_tag': data[index]['food_tag'],
+          'is_anonymous': data[index]['is_anonymous'],
         };
         final userData = await supabase
             .from('users')
@@ -250,6 +258,7 @@ class PostService extends _$PostService {
                 'heart': int.parse(postData['heart'].toString()),
                 'restaurant_tag': postData['restaurant_tag'],
                 'food_tag': postData['food_tag'],
+                'is_anonymous': postData['is_anonymous'],
               },
               'user': userData,
             };

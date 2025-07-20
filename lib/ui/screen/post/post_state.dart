@@ -11,5 +11,6 @@ class PostState with _$PostState {
     @Default(false) bool isSuccess,
     @Default(0.0) double lat,
     @Default(0.0) double lng,
+    @Default(false) bool isAnonymous,
   }) = _PostState;
 }

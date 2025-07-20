@@ -65,35 +65,9 @@ class PostScreen extends HookConsumerWidget {
                     );
                     context.pop();
                   },
-                  icon: const Icon(
-                    Icons.close,
-                    size: 28,
-                    color: Colors.black,
-                  ),
+                  icon: const Icon(Icons.close, size: 28, color: Colors.black),
                 )
               : const SizedBox(),
-          actions: [
-            if (!loading)
-              TextButton(
-                onPressed: () async {
-                  final result =
-                      await ref.read(postViewModelProvider().notifier).post(
-                            restaurantTag: countryTag.value,
-                            foodTag: foodTag.value,
-                          );
-                  if (result) {
-                    context.pop(true);
-                  } else {
-                    SnackBarHelper().openErrorSnackBar(
-                      context,
-                      l10n.postError,
-                      _getLocalizedStatus(context, state.status),
-                    );
-                  }
-                },
-                child: Text(l10n.postShareButton, style: PostStyle.share()),
-              ),
-          ],
         ),
         body: Stack(
           children: [
@@ -128,31 +102,34 @@ class PostScreen extends HookConsumerWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(8),
                             border: Border.all(color: Colors.black87),
                           ),
                           width: deviceWidth,
                           height: deviceWidth / 1.7,
                           child: state.foodImage.isNotEmpty
-                              ? Image.file(
-                                  File(state.foodImage),
-                                  fit: BoxFit.cover,
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.file(
+                                    File(state.foodImage),
+                                    fit: BoxFit.cover,
+                                  ),
                                 )
                               : const Icon(
                                   Icons.add,
-                                  size: 36,
+                                  size: 40,
                                   color: Colors.black,
                                 ),
                         ),
                       ),
                     ),
-                    const Gap(18),
+                    const Gap(20),
                     AppFoodTextField(
                       controller: ref
                           .read(postViewModelProvider().notifier)
                           .foodController,
                     ),
-                    const Gap(18),
+                    const Gap(12),
                     GestureDetector(
                       onTap: () async {
                         primaryFocus?.unfocus();
@@ -189,16 +166,18 @@ class PostScreen extends HookConsumerWidget {
                                   title: Row(
                                     children: [
                                       const Gap(16),
-                                      Text(
-                                        state.restaurant == '場所を追加'
-                                            ? l10n.postRestaurantNameInputField
-                                            : state.restaurant,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: PostStyle.restaurant(
-                                          value: state.restaurant == '場所を追加',
+                                      Expanded(
+                                        child: Text(
+                                          state.restaurant == '場所を追加'
+                                              ? l10n
+                                                  .postRestaurantNameInputField
+                                              : state.restaurant,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: PostStyle.restaurant(
+                                            value: state.restaurant == '場所を追加',
+                                          ),
                                         ),
                                       ),
-                                      const Spacer(),
                                       if (state.restaurant == '場所を追加')
                                         const Row(
                                           children: [
@@ -219,12 +198,12 @@ class PostScreen extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    const Gap(16),
+                    const Gap(12),
                     Text(
                       l10n.postCategoryTitle,
                       style: PostStyle.categoryTitle(),
                     ),
-                    const Gap(9),
+                    const Gap(4),
                     AppCountryTag(
                       selectedTags: countryTag.value,
                       onTagSelected: (tag) {
@@ -238,11 +217,48 @@ class PostScreen extends HookConsumerWidget {
                       },
                       favoriteTagText: L10n.of(context).selectFoodTag,
                     ),
-                    const Gap(18),
+                    const Gap(12),
                     AppCommentTextField(
                       controller: ref
                           .read(postViewModelProvider().notifier)
                           .commentController,
+                    ),
+                    const Gap(12),
+                    ListTile(
+                      dense: true,
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 10),
+                      leading: const Icon(
+                        Icons.visibility_off,
+                        size: 28,
+                        color: Colors.black,
+                      ),
+                      title: Text(
+                        l10n.anonymousPost,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      subtitle: Text(
+                        l10n.anonymousPostDescription,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      trailing: Switch(
+                        value: state.isAnonymous,
+                        activeColor: Colors.blue[600],
+                        activeTrackColor: Colors.blue[100],
+                        inactiveTrackColor: Colors.grey[300],
+                        inactiveThumbColor: Colors.white,
+                        onChanged: (value) {
+                          ref
+                              .read(postViewModelProvider().notifier)
+                              .setAnonymous(value: value);
+                        },
+                      ),
                     ),
                     const Gap(20),
                   ],
@@ -255,6 +271,51 @@ class PostScreen extends HookConsumerWidget {
             ),
           ],
         ),
+        bottomNavigationBar: !loading
+            ? Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final result =
+                          await ref.read(postViewModelProvider().notifier).post(
+                                restaurantTag: countryTag.value,
+                                foodTag: foodTag.value,
+                              );
+                      if (result) {
+                        context.pop(true);
+                      } else {
+                        SnackBarHelper().openErrorSnackBar(
+                          context,
+                          l10n.postError,
+                          _getLocalizedStatus(context, state.status),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    child: Text(
+                      state.isAnonymous
+                          ? l10n.anonymousShare
+                          : l10n.postShareButton,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            : null,
       ),
     );
   }

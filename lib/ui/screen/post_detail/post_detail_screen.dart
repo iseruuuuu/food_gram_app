@@ -206,7 +206,8 @@ class PostDetailScreen extends HookConsumerWidget {
                     children: [
                       GestureDetector(
                         onTap: () async {
-                          if (users.userId != currentUser) {
+                          if (users.userId != currentUser &&
+                              !posts.isAnonymous) {
                             await context.pushNamed(
                               RouterPath.mapProfile,
                               extra: users,
@@ -218,7 +219,9 @@ class PostDetailScreen extends HookConsumerWidget {
                             Padding(
                               padding: const EdgeInsets.all(10),
                               child: AppProfileImage(
-                                imagePath: users.image,
+                                imagePath: posts.isAnonymous
+                                    ? 'assets/icon/icon1.png'
+                                    : users.image,
                                 radius: 30,
                               ),
                             ),
@@ -228,13 +231,22 @@ class PostDetailScreen extends HookConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    users.name,
+                                    posts.isAnonymous
+                                        ? l10n.anonymousPoster
+                                        : users.name,
                                     style: DetailPostStyle.name(),
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                  Text(
-                                    '@${users.userName}',
-                                    style: DetailPostStyle.userName(),
+                                  Builder(
+                                    builder: (context) {
+                                      final username = posts.isAnonymous
+                                          ? l10n.anonymousUsername
+                                          : users.userName;
+                                      return Text(
+                                        '@$username',
+                                        style: DetailPostStyle.userName(),
+                                      );
+                                    },
                                   ),
                                 ],
                               ),

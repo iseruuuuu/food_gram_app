@@ -649,4 +649,22 @@ class L10nJa extends L10n {
 
   @override
   String get purchaseError => '購入処理中にエラーが発生しました';
+
+  @override
+  String get anonymousPost => '匿名で投稿';
+
+  @override
+  String get anonymousPostDescription => 'ユーザー名が非表示になります';
+
+  @override
+  String get anonymousShare => '匿名でシェア';
+
+  @override
+  String get anonymousUpdate => '匿名で更新';
+
+  @override
+  String get anonymousPoster => 'とある投稿者';
+
+  @override
+  String get anonymousUsername => 'foodgramer';
 }

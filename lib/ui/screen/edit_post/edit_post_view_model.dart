@@ -77,6 +77,7 @@ class EditPostViewModel extends _$EditPostViewModel {
       restaurant: posts.restaurant,
       lat: posts.lat,
       lng: posts.lng,
+      isAnonymous: posts.isAnonymous,
     );
   }
 
@@ -124,6 +125,7 @@ class EditPostViewModel extends _$EditPostViewModel {
           foodTag: foodTag,
           lat: state.lat,
           lng: state.lng,
+          isAnonymous: state.isAnonymous,
           newImagePath: state.foodImage.isNotEmpty ? _uploadImage : null,
           imageBytes: state.foodImage.isNotEmpty ? _imageBytes : null,
         );
@@ -210,6 +212,10 @@ class EditPostViewModel extends _$EditPostViewModel {
       lat: restaurant.lat,
       lng: restaurant.lng,
     );
+  }
+
+  void setAnonymous({required bool value}) {
+    state = state.copyWith(isAnonymous: value);
   }
 }
 

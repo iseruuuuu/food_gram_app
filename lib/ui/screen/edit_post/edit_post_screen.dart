@@ -78,41 +78,6 @@ class EditPostScreen extends HookConsumerWidget {
                   ),
                 )
               : const SizedBox(),
-          actions: [
-            if (!loading)
-              TextButton(
-                onPressed: () async {
-                  final isSuccess = await ref
-                      .read(editPostViewModelProvider().notifier)
-                      .update(
-                        restaurantTag: countryTag.value,
-                        foodTag: foodTag.value,
-                      );
-                  if (isSuccess) {
-                    while (loading) {
-                      await Future<void>.delayed(
-                        const Duration(milliseconds: 100),
-                      );
-                    }
-                    final updatePosts =
-                        ref.read(editPostViewModelProvider()).posts;
-                    if (updatePosts != null) {
-                      context.pop(updatePosts);
-                    }
-                  } else {
-                    SnackBarHelper().openErrorSnackBar(
-                      context,
-                      l10n.postError,
-                      _getLocalizedStatus(context, state.status),
-                    );
-                  }
-                },
-                child: Text(
-                  l10n.editUpdateButton,
-                  style: EditPostStyle.editButton(),
-                ),
-              ),
-          ],
         ),
         body: Stack(
           children: [
@@ -122,6 +87,7 @@ class EditPostScreen extends HookConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Gap(12),
                     Center(
                       child: GestureDetector(
                         onTap: () async {
@@ -151,28 +117,34 @@ class EditPostScreen extends HookConsumerWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.black87),
                           ),
                           width: deviceWidth,
                           height: deviceWidth / 1.7,
                           child: state.foodImage.isNotEmpty
-                              ? Image.file(
-                                  File(state.foodImage),
-                                  fit: BoxFit.cover,
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.file(
+                                    File(state.foodImage),
+                                    fit: BoxFit.cover,
+                                  ),
                                 )
-                              : CachedNetworkImage(
-                                  imageUrl: foodImageUrl,
-                                  fit: BoxFit.cover,
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: CachedNetworkImage(
+                                    imageUrl: foodImageUrl,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                         ),
                       ),
                     ),
-                    const Gap(18),
+                    const Gap(20),
                     AppFoodTextField(
                       controller: viewModel.foodController,
                     ),
-                    const Gap(18),
+                    const Gap(12),
                     GestureDetector(
                       onTap: () async {
                         primaryFocus?.unfocus();
@@ -202,23 +174,21 @@ class EditPostScreen extends HookConsumerWidget {
                                   dense: true,
                                   contentPadding: EdgeInsets.zero,
                                   shape: RoundedRectangleBorder(
-                                    side: const BorderSide(),
+                                    side:
+                                        const BorderSide(color: Colors.black87),
                                     borderRadius: BorderRadius.circular(6),
                                   ),
-                                  title: FittedBox(
-                                    child: Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 16,
-                                          ),
-                                          child: Text(
-                                            state.restaurant,
-                                            style: EditPostStyle.restaurant(),
-                                          ),
+                                  title: Row(
+                                    children: [
+                                      const Gap(16),
+                                      Expanded(
+                                        child: Text(
+                                          state.restaurant,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: EditPostStyle.restaurant(),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -227,12 +197,12 @@ class EditPostScreen extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    const Gap(16),
+                    const Gap(12),
                     Text(
                       l10n.postCategoryTitle,
                       style: EditPostStyle.category(),
                     ),
-                    const Gap(9),
+                    const Gap(4),
                     AppCountryTag(
                       selectedTags: countryTag.value,
                       onTagSelected: (tag) {
@@ -246,9 +216,46 @@ class EditPostScreen extends HookConsumerWidget {
                       },
                       favoriteTagText: L10n.of(context).selectFavoriteTag,
                     ),
-                    const Gap(18),
+                    const Gap(12),
                     AppCommentTextField(
                       controller: viewModel.commentController,
+                    ),
+                    const Gap(12),
+                    ListTile(
+                      dense: true,
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 10),
+                      leading: const Icon(
+                        Icons.visibility_off,
+                        size: 28,
+                        color: Colors.black,
+                      ),
+                      title: Text(
+                        l10n.anonymousPost,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      subtitle: Text(
+                        l10n.anonymousPostDescription,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      trailing: Switch(
+                        value: state.isAnonymous,
+                        activeColor: Colors.blue[600],
+                        activeTrackColor: Colors.blue[100],
+                        inactiveTrackColor: Colors.grey[300],
+                        inactiveThumbColor: Colors.white,
+                        onChanged: (value) {
+                          ref
+                              .read(editPostViewModelProvider().notifier)
+                              .setAnonymous(value: value);
+                        },
+                      ),
                     ),
                     const Gap(20),
                   ],
@@ -261,6 +268,59 @@ class EditPostScreen extends HookConsumerWidget {
             ),
           ],
         ),
+        bottomNavigationBar: !loading
+            ? Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final isSuccess = await ref
+                          .read(editPostViewModelProvider().notifier)
+                          .update(
+                            restaurantTag: countryTag.value,
+                            foodTag: foodTag.value,
+                          );
+                      if (isSuccess) {
+                        while (loading) {
+                          await Future<void>.delayed(
+                            const Duration(milliseconds: 100),
+                          );
+                        }
+                        final updatePosts =
+                            ref.read(editPostViewModelProvider()).posts;
+                        if (updatePosts != null) {
+                          context.pop(updatePosts);
+                        }
+                      } else {
+                        SnackBarHelper().openErrorSnackBar(
+                          context,
+                          l10n.postError,
+                          _getLocalizedStatus(context, state.status),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    child: Text(
+                      state.isAnonymous
+                          ? l10n.anonymousUpdate
+                          : l10n.editUpdateButton,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              )
+            : null,
       ),
     );
   }

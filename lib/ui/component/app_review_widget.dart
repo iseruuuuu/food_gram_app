@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/profile/app_profile_image.dart';
@@ -24,6 +25,7 @@ class ReviewWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = L10n.of(context);
     return AsyncValueSwitcher(
       asyncValue: reviewsAsync,
       onErrorTap: () async => ref.refresh(
@@ -59,7 +61,9 @@ class ReviewWidget extends ConsumerWidget {
                         Row(
                           children: [
                             AppProfileImage(
-                              imagePath: model.users.image,
+                              imagePath: model.posts.isAnonymous
+                                  ? 'assets/icon/icon1.png'
+                                  : model.users.image,
                               radius: 28,
                             ),
                             const Gap(8),
@@ -67,7 +71,9 @@ class ReviewWidget extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  model.users.name,
+                                  model.posts.isAnonymous
+                                      ? l10n.anonymousPoster
+                                      : model.users.name,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
