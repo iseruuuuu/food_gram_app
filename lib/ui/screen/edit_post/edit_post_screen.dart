@@ -188,16 +188,6 @@ class EditPostScreen extends HookConsumerWidget {
                                           style: EditPostStyle.restaurant(),
                                         ),
                                       ),
-                                      const Row(
-                                        children: [
-                                          Icon(
-                                            Icons.arrow_forward_ios,
-                                            color: Colors.black,
-                                            size: 20,
-                                          ),
-                                          Gap(10),
-                                        ],
-                                      ),
                                     ],
                                   ),
                                 ),

@@ -166,16 +166,18 @@ class PostScreen extends HookConsumerWidget {
                                   title: Row(
                                     children: [
                                       const Gap(16),
-                                      Text(
-                                        state.restaurant == '場所を追加'
-                                            ? l10n.postRestaurantNameInputField
-                                            : state.restaurant,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: PostStyle.restaurant(
-                                          value: state.restaurant == '場所を追加',
+                                      Expanded(
+                                        child: Text(
+                                          state.restaurant == '場所を追加'
+                                              ? l10n
+                                                  .postRestaurantNameInputField
+                                              : state.restaurant,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: PostStyle.restaurant(
+                                            value: state.restaurant == '場所を追加',
+                                          ),
                                         ),
                                       ),
-                                      const Spacer(),
                                       if (state.restaurant == '場所を追加')
                                         const Row(
                                           children: [
