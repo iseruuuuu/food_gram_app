@@ -48,7 +48,6 @@ class StoryScreen extends ConsumerWidget {
                       padding: const EdgeInsets.only(top: 44, left: 8),
                       child: Row(
                         children: [
-                          //TODO あとでできているか確認をする
                           AppProfileImage(
                             imagePath: posts[storyIndex].isAnonymous
                                 ? 'assets/icon/icon1.png'
