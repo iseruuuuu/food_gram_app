@@ -218,5 +218,10 @@
   "anonymousShare": "匿名でシェア",
   "anonymousUpdate": "匿名で更新",
   "anonymousPoster": "とある投稿者",
-  "anonymousUsername": "foodgramer"
+  "anonymousUsername": "foodgramer",
+  "restaurantReviewNew": "新着",
+  "restaurantReviewViewDetails": "詳細を見る",
+  "restaurantReviewOtherPosts": "他の投稿も見てみる",
+  "restaurantReviewReviewList": "レビュー一覧",
+  "restaurantReviewError": "エラーが発生しました"
 }

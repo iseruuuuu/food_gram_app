@@ -667,4 +667,19 @@ class L10nJa extends L10n {
 
   @override
   String get anonymousUsername => 'foodgramer';
+
+  @override
+  String get restaurantReviewNew => '新着';
+
+  @override
+  String get restaurantReviewViewDetails => '詳細を見る';
+
+  @override
+  String get restaurantReviewOtherPosts => '他の投稿も見てみる';
+
+  @override
+  String get restaurantReviewReviewList => 'レビュー一覧';
+
+  @override
+  String get restaurantReviewError => 'エラーが発生しました';
 }

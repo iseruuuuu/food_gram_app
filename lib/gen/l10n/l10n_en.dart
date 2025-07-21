@@ -667,4 +667,19 @@ class L10nEn extends L10n {
 
   @override
   String get anonymousUsername => 'foodgramer';
+
+  @override
+  String get restaurantReviewNew => 'New';
+
+  @override
+  String get restaurantReviewViewDetails => 'View Details';
+
+  @override
+  String get restaurantReviewOtherPosts => 'Other Posts';
+
+  @override
+  String get restaurantReviewReviewList => 'Review List';
+
+  @override
+  String get restaurantReviewError => 'An error occurred';
 }

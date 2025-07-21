@@ -6,6 +6,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/theme/style/restaurant_review_style.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/profile/app_profile_image.dart';
@@ -24,6 +25,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = L10n.of(context);
     final animationController =
         useAnimationController(duration: const Duration(seconds: 2));
     useEffect(
@@ -160,9 +162,9 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                         ),
                                       ],
                                     ),
-                                    child: const Text(
-                                      '新着',
-                                      style: TextStyle(
+                                    child: Text(
+                                      l10n.restaurantReviewNew,
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
@@ -226,13 +228,13 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                         shadowColor:
                                             Colors.black.withValues(alpha: 0.3),
                                       ),
-                                      child: const Row(
+                                      child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            '詳細を見る',
-                                            style: TextStyle(
+                                            l10n.restaurantReviewViewDetails,
+                                            style: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -262,9 +264,9 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                               ),
                             ),
                             const Gap(8),
-                            const Text(
-                              '他の投稿も見てみる',
-                              style: TextStyle(
+                            Text(
+                              l10n.restaurantReviewOtherPosts,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
@@ -366,9 +368,9 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                             ),
                           ),
                           const Gap(8),
-                          const Text(
-                            'レビュー一覧',
-                            style: TextStyle(
+                          Text(
+                            l10n.restaurantReviewReviewList,
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -449,7 +451,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                         children: [
                                           Text(
                                             model.posts.isAnonymous
-                                                ? '匿名ユーザー'
+                                                ? l10n.anonymousPoster
                                                 : model.users.name,
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
@@ -496,9 +498,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
               );
             },
             failure: (_) {
-              return const Center(
-                child: Text('エラーが発生しました'),
-              );
+              return Center(child: Text(l10n.restaurantReviewError));
             },
           ),
         ),
