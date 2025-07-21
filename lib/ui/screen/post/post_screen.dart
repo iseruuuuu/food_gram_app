@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/theme/style/post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
@@ -205,17 +206,26 @@ class PostScreen extends HookConsumerWidget {
                     ),
                     const Gap(4),
                     AppCountryTag(
-                      selectedTags: countryTag.value,
+                      countryTag: countryTag.value,
+                      countryText: ValueNotifier(
+                        countryTag.value.isNotEmpty
+                            ? countryCategory[countryTag.value] ?? ''
+                            : '',
+                      ),
                       onTagSelected: (tag) {
                         countryTag.value = tag;
                       },
                     ),
                     AppFoodTag(
-                      selectedTags: foodTag.value,
+                      foodTag: foodTag.value,
+                      foodText: ValueNotifier(
+                        foodTag.value.isNotEmpty
+                            ? getFoodName(foodTag.value)
+                            : '',
+                      ),
                       onTagSelected: (tag) {
                         foodTag.value = tag;
                       },
-                      favoriteTagText: L10n.of(context).selectFoodTag,
                     ),
                     const Gap(12),
                     AppCommentTextField(
