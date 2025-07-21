@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
+import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/theme/style/edit_style.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -25,6 +26,7 @@ class EditScreen extends HookConsumerWidget {
     final controller = ref.watch(editViewModelProvider().notifier);
     final state = ref.watch(editViewModelProvider());
     final loading = ref.watch(loadingProvider);
+    final foodTag = ValueNotifier(state.favoriteTags);
     final adInterstitial =
         useMemoized(() => ref.read(admobInterstitialNotifierProvider));
     useEffect(
@@ -208,7 +210,12 @@ class EditScreen extends HookConsumerWidget {
                             ),
                             const Gap(10),
                             AppFoodTag(
-                              selectedTags: state.favoriteTags,
+                              foodTag: foodTag.value,
+                              foodText: ValueNotifier(
+                                state.favoriteTags.isNotEmpty
+                                    ? getFoodName(state.favoriteTags)
+                                    : '',
+                              ),
                               onTagSelected: (tag) {
                                 ref
                                     .read(
@@ -216,7 +223,6 @@ class EditScreen extends HookConsumerWidget {
                                     )
                                     .updateFavoriteTags(tag);
                               },
-                              favoriteTagText: L10n.of(context).selectFoodTag,
                             ),
                           ],
                         ),
