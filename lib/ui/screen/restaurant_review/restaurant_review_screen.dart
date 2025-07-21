@@ -138,15 +138,9 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                             child: AnimatedBuilder(
                               animation: animationController,
                               builder: (context, child) {
-                                final scale = 0.8 +
-                                    (0.2 *
-                                        (0.5 +
-                                            0.5 *
-                                                sin(
-                                                  animationController.value *
-                                                      2 *
-                                                      pi,
-                                                )));
+                                final scale = 0.9 +
+                                    0.1 *
+                                        sin(animationController.value * 2 * pi);
                                 return Transform.scale(
                                   scale: scale,
                                   child: Container(
