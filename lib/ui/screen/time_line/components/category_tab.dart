@@ -97,15 +97,20 @@ class CategoryTab extends HookConsumerWidget {
                               height: 1.5,
                             ),
                           ),
-                          Text(
-                            category.isAllCategory
-                                ? l10n.foodCategoryAll
-                                                                  : getLocalizedCategoryName(category.name, context),
-                            style: const TextStyle(
-                              fontSize: 13,
-                              height: 1,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
+                          FittedBox(
+                            child: Text(
+                              category.isAllCategory
+                                  ? l10n.foodCategoryAll
+                                  : getLocalizedCategoryName(
+                                      category.name,
+                                      context,
+                                    ),
+                              style: const TextStyle(
+                                fontSize: 13,
+                                height: 1,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ],
@@ -119,6 +124,4 @@ class CategoryTab extends HookConsumerWidget {
       ],
     );
   }
-
-
 }
