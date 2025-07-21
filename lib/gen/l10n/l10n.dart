@@ -258,6 +258,12 @@ abstract class L10n {
   /// **'クレジット'**
   String get settingsCredit;
 
+  /// No description provided for @unregistered.
+  ///
+  /// In ja, this message translates to:
+  /// **'未登録'**
+  String get unregistered;
+
   /// No description provided for @settingsBatteryLevel.
   ///
   /// In ja, this message translates to:

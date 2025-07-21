@@ -90,6 +90,9 @@ class L10nEn extends L10n {
   String get settingsCredit => 'Credit';
 
   @override
+  String get unregistered => 'Unregistered';
+
+  @override
   String get settingsBatteryLevel => 'Battery Level';
 
   @override
