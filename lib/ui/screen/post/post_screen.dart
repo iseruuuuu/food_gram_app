@@ -209,7 +209,7 @@ class PostScreen extends HookConsumerWidget {
                       countryTag: countryTag.value,
                       countryText: ValueNotifier(
                         countryTag.value.isNotEmpty
-                            ? countryCategory[countryTag.value] ?? ''
+                            ? getLocalizedCountryName(countryTag.value, context)
                             : '',
                       ),
                       onTagSelected: (tag) {
@@ -220,7 +220,7 @@ class PostScreen extends HookConsumerWidget {
                       foodTag: foodTag.value,
                       foodText: ValueNotifier(
                         foodTag.value.isNotEmpty
-                            ? getFoodName(foodTag.value)
+                            ? getLocalizedFoodName(foodTag.value, context)
                             : '',
                       ),
                       onTagSelected: (tag) {

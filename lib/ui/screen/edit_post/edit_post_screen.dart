@@ -206,7 +206,10 @@ class EditPostScreen extends HookConsumerWidget {
                       countryTag: countryTag.value.emoji,
                       countryText: ValueNotifier(
                         countryTag.value.emoji.isNotEmpty
-                            ? countryTag.value.name
+                            ? getLocalizedCountryName(
+                                countryTag.value.emoji,
+                                context,
+                              )
                             : '',
                       ),
                       onTagSelected: (tag) {
@@ -217,7 +220,7 @@ class EditPostScreen extends HookConsumerWidget {
                       foodTag: foodTag.value.emoji,
                       foodText: ValueNotifier(
                         foodTag.value.emoji.isNotEmpty
-                            ? foodTag.value.name
+                            ? getLocalizedFoodName(foodTag.value.emoji, context)
                             : '',
                       ),
                       onTagSelected: (tag) {

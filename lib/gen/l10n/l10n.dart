@@ -1445,6 +1445,1398 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'エラーが発生しました'**
   String get restaurantReviewError;
+
+  /// No description provided for @tagOtherCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'その他の料理'**
+  String get tagOtherCuisine;
+
+  /// No description provided for @tagOtherFood.
+  ///
+  /// In ja, this message translates to:
+  /// **'その他の食べ物'**
+  String get tagOtherFood;
+
+  /// No description provided for @tagJapaneseCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'日本料理'**
+  String get tagJapaneseCuisine;
+
+  /// No description provided for @tagItalianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'イタリアン料理'**
+  String get tagItalianCuisine;
+
+  /// No description provided for @tagFrenchCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'フレンチ料理'**
+  String get tagFrenchCuisine;
+
+  /// No description provided for @tagChineseCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'中華料理'**
+  String get tagChineseCuisine;
+
+  /// No description provided for @tagIndianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'インド料理'**
+  String get tagIndianCuisine;
+
+  /// No description provided for @tagMexicanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'メキシカン料理'**
+  String get tagMexicanCuisine;
+
+  /// No description provided for @tagHongKongCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'香港料理'**
+  String get tagHongKongCuisine;
+
+  /// No description provided for @tagAmericanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'アメリカ料理'**
+  String get tagAmericanCuisine;
+
+  /// No description provided for @tagMediterraneanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'地中海料理'**
+  String get tagMediterraneanCuisine;
+
+  /// No description provided for @tagThaiCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'タイ料理'**
+  String get tagThaiCuisine;
+
+  /// No description provided for @tagGreekCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ギリシャ料理'**
+  String get tagGreekCuisine;
+
+  /// No description provided for @tagTurkishCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'トルコ料理'**
+  String get tagTurkishCuisine;
+
+  /// No description provided for @tagKoreanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'韓国料理'**
+  String get tagKoreanCuisine;
+
+  /// No description provided for @tagRussianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ロシア料理'**
+  String get tagRussianCuisine;
+
+  /// No description provided for @tagSpanishCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'スペイン料理'**
+  String get tagSpanishCuisine;
+
+  /// No description provided for @tagVietnameseCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ベトナム料理'**
+  String get tagVietnameseCuisine;
+
+  /// No description provided for @tagPortugueseCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ポルトガル料理'**
+  String get tagPortugueseCuisine;
+
+  /// No description provided for @tagAustrianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'オーストリア料理'**
+  String get tagAustrianCuisine;
+
+  /// No description provided for @tagBelgianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ベルギー料理'**
+  String get tagBelgianCuisine;
+
+  /// No description provided for @tagSwedishCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'スウェーデン料理'**
+  String get tagSwedishCuisine;
+
+  /// No description provided for @tagGermanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ドイツ料理'**
+  String get tagGermanCuisine;
+
+  /// No description provided for @tagBritishCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'イギリス料理'**
+  String get tagBritishCuisine;
+
+  /// No description provided for @tagDutchCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'オランダ料理'**
+  String get tagDutchCuisine;
+
+  /// No description provided for @tagAustralianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'オーストラリア料理'**
+  String get tagAustralianCuisine;
+
+  /// No description provided for @tagBrazilianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ブラジル料理'**
+  String get tagBrazilianCuisine;
+
+  /// No description provided for @tagArgentineCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'アルゼンチン料理'**
+  String get tagArgentineCuisine;
+
+  /// No description provided for @tagColombianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'コロンビア料理'**
+  String get tagColombianCuisine;
+
+  /// No description provided for @tagPeruvianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ペルー料理'**
+  String get tagPeruvianCuisine;
+
+  /// No description provided for @tagNorwegianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ノルウェー料理'**
+  String get tagNorwegianCuisine;
+
+  /// No description provided for @tagDanishCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'デンマーク料理'**
+  String get tagDanishCuisine;
+
+  /// No description provided for @tagPolishCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ポーランド料理'**
+  String get tagPolishCuisine;
+
+  /// No description provided for @tagCzechCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'チェコ料理'**
+  String get tagCzechCuisine;
+
+  /// No description provided for @tagHungarianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ハンガリー料理'**
+  String get tagHungarianCuisine;
+
+  /// No description provided for @tagSouthAfricanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'南アフリカ料理'**
+  String get tagSouthAfricanCuisine;
+
+  /// No description provided for @tagEgyptianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'エジプト料理'**
+  String get tagEgyptianCuisine;
+
+  /// No description provided for @tagMoroccanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'モロッコ料理'**
+  String get tagMoroccanCuisine;
+
+  /// No description provided for @tagNewZealandCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ニュージーランド料理'**
+  String get tagNewZealandCuisine;
+
+  /// No description provided for @tagFilipinoCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'フィリピン料理'**
+  String get tagFilipinoCuisine;
+
+  /// No description provided for @tagMalaysianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'マレーシア料理'**
+  String get tagMalaysianCuisine;
+
+  /// No description provided for @tagSingaporeanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'シンガポール料理'**
+  String get tagSingaporeanCuisine;
+
+  /// No description provided for @tagIndonesianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'インドネシア料理'**
+  String get tagIndonesianCuisine;
+
+  /// No description provided for @tagIranianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'イラン料理'**
+  String get tagIranianCuisine;
+
+  /// No description provided for @tagSaudiArabianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'サウジアラビア料理'**
+  String get tagSaudiArabianCuisine;
+
+  /// No description provided for @tagMongolianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'モンゴル料理'**
+  String get tagMongolianCuisine;
+
+  /// No description provided for @tagCambodianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'カンボジア料理'**
+  String get tagCambodianCuisine;
+
+  /// No description provided for @tagLaotianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ラオス料理'**
+  String get tagLaotianCuisine;
+
+  /// No description provided for @tagCubanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'キューバ料理'**
+  String get tagCubanCuisine;
+
+  /// No description provided for @tagJamaicanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ジャマイカ料理'**
+  String get tagJamaicanCuisine;
+
+  /// No description provided for @tagChileanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'チリ料理'**
+  String get tagChileanCuisine;
+
+  /// No description provided for @tagVenezuelanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ベネズエラ料理'**
+  String get tagVenezuelanCuisine;
+
+  /// No description provided for @tagPanamanianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'パナマ料理'**
+  String get tagPanamanianCuisine;
+
+  /// No description provided for @tagBolivianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ボリビア料理'**
+  String get tagBolivianCuisine;
+
+  /// No description provided for @tagIcelandicCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'アイスランド料理'**
+  String get tagIcelandicCuisine;
+
+  /// No description provided for @tagLithuanianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'リトアニア料理'**
+  String get tagLithuanianCuisine;
+
+  /// No description provided for @tagEstonianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'エストニア料理'**
+  String get tagEstonianCuisine;
+
+  /// No description provided for @tagLatvianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ラトビア料理'**
+  String get tagLatvianCuisine;
+
+  /// No description provided for @tagFinnishCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'フィンランド料理'**
+  String get tagFinnishCuisine;
+
+  /// No description provided for @tagCroatianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'クロアチア料理'**
+  String get tagCroatianCuisine;
+
+  /// No description provided for @tagSlovenianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'スロベニア料理'**
+  String get tagSlovenianCuisine;
+
+  /// No description provided for @tagSlovakCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'スロバキア料理'**
+  String get tagSlovakCuisine;
+
+  /// No description provided for @tagRomanianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ルーマニア料理'**
+  String get tagRomanianCuisine;
+
+  /// No description provided for @tagBulgarianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ブルガリア料理'**
+  String get tagBulgarianCuisine;
+
+  /// No description provided for @tagSerbianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'セルビア料理'**
+  String get tagSerbianCuisine;
+
+  /// No description provided for @tagAlbanianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'アルバニア料理'**
+  String get tagAlbanianCuisine;
+
+  /// No description provided for @tagGeorgianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ジョージア料理'**
+  String get tagGeorgianCuisine;
+
+  /// No description provided for @tagArmenianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'アルメニア料理'**
+  String get tagArmenianCuisine;
+
+  /// No description provided for @tagAzerbaijaniCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'アゼルバイジャン料理'**
+  String get tagAzerbaijaniCuisine;
+
+  /// No description provided for @tagUkrainianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ウクライナ料理'**
+  String get tagUkrainianCuisine;
+
+  /// No description provided for @tagBelarusianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ベラルーシ料理'**
+  String get tagBelarusianCuisine;
+
+  /// No description provided for @tagKazakhCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'カザフスタン料理'**
+  String get tagKazakhCuisine;
+
+  /// No description provided for @tagUzbekCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ウズベキスタン料理'**
+  String get tagUzbekCuisine;
+
+  /// No description provided for @tagKyrgyzCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'キルギス料理'**
+  String get tagKyrgyzCuisine;
+
+  /// No description provided for @tagTurkmenCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'トルクメニスタン料理'**
+  String get tagTurkmenCuisine;
+
+  /// No description provided for @tagTajikCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'タジキスタン料理'**
+  String get tagTajikCuisine;
+
+  /// No description provided for @tagMaldivianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'モルディブ料理'**
+  String get tagMaldivianCuisine;
+
+  /// No description provided for @tagNepaleseCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ネパール料理'**
+  String get tagNepaleseCuisine;
+
+  /// No description provided for @tagBangladeshiCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'バングラデシュ料理'**
+  String get tagBangladeshiCuisine;
+
+  /// No description provided for @tagMyanmarCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ミャンマー料理'**
+  String get tagMyanmarCuisine;
+
+  /// No description provided for @tagBruneianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ブルネイ料理'**
+  String get tagBruneianCuisine;
+
+  /// No description provided for @tagTaiwaneseCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'台湾料理'**
+  String get tagTaiwaneseCuisine;
+
+  /// No description provided for @tagNigerianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ナイジェリア料理'**
+  String get tagNigerianCuisine;
+
+  /// No description provided for @tagKenyanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ケニア料理'**
+  String get tagKenyanCuisine;
+
+  /// No description provided for @tagGhanaianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ガーナ料理'**
+  String get tagGhanaianCuisine;
+
+  /// No description provided for @tagEthiopianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'エチオピア料理'**
+  String get tagEthiopianCuisine;
+
+  /// No description provided for @tagSudaneseCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'スーダン料理'**
+  String get tagSudaneseCuisine;
+
+  /// No description provided for @tagTunisianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'チュニジア料理'**
+  String get tagTunisianCuisine;
+
+  /// No description provided for @tagAngolanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'アンゴラ料理'**
+  String get tagAngolanCuisine;
+
+  /// No description provided for @tagCongoleseCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'コンゴ料理'**
+  String get tagCongoleseCuisine;
+
+  /// No description provided for @tagZimbabweanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ジンバブエ料理'**
+  String get tagZimbabweanCuisine;
+
+  /// No description provided for @tagMalagasyCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'マダガスカル料理'**
+  String get tagMalagasyCuisine;
+
+  /// No description provided for @tagPapuaNewGuineanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'パプアニューギニア料理'**
+  String get tagPapuaNewGuineanCuisine;
+
+  /// No description provided for @tagSamoanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'サモア料理'**
+  String get tagSamoanCuisine;
+
+  /// No description provided for @tagTuvaluanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ツバル料理'**
+  String get tagTuvaluanCuisine;
+
+  /// No description provided for @tagFijianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'フィジー料理'**
+  String get tagFijianCuisine;
+
+  /// No description provided for @tagPalauanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'パラオ料理'**
+  String get tagPalauanCuisine;
+
+  /// No description provided for @tagKiribatiCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'キリバス料理'**
+  String get tagKiribatiCuisine;
+
+  /// No description provided for @tagVanuatuanCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'バヌアツ料理'**
+  String get tagVanuatuanCuisine;
+
+  /// No description provided for @tagBahrainiCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'バーレーン料理'**
+  String get tagBahrainiCuisine;
+
+  /// No description provided for @tagQatariCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'カタール料理'**
+  String get tagQatariCuisine;
+
+  /// No description provided for @tagKuwaitiCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'クウェート料理'**
+  String get tagKuwaitiCuisine;
+
+  /// No description provided for @tagOmaniCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'オマーン料理'**
+  String get tagOmaniCuisine;
+
+  /// No description provided for @tagYemeniCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'イエメン料理'**
+  String get tagYemeniCuisine;
+
+  /// No description provided for @tagLebaneseCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'レバノン料理'**
+  String get tagLebaneseCuisine;
+
+  /// No description provided for @tagSyrianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'シリア料理'**
+  String get tagSyrianCuisine;
+
+  /// No description provided for @tagJordanianCuisine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ヨルダン料理'**
+  String get tagJordanianCuisine;
+
+  /// No description provided for @tagNoodles.
+  ///
+  /// In ja, this message translates to:
+  /// **'麺類'**
+  String get tagNoodles;
+
+  /// No description provided for @tagMeatDishes.
+  ///
+  /// In ja, this message translates to:
+  /// **'肉料理'**
+  String get tagMeatDishes;
+
+  /// No description provided for @tagFastFood.
+  ///
+  /// In ja, this message translates to:
+  /// **'軽食系'**
+  String get tagFastFood;
+
+  /// No description provided for @tagRiceDishes.
+  ///
+  /// In ja, this message translates to:
+  /// **'ご飯物'**
+  String get tagRiceDishes;
+
+  /// No description provided for @tagSeafood.
+  ///
+  /// In ja, this message translates to:
+  /// **'魚介類'**
+  String get tagSeafood;
+
+  /// No description provided for @tagBread.
+  ///
+  /// In ja, this message translates to:
+  /// **'パン類'**
+  String get tagBread;
+
+  /// No description provided for @tagSweetsAndSnacks.
+  ///
+  /// In ja, this message translates to:
+  /// **'おやつ'**
+  String get tagSweetsAndSnacks;
+
+  /// No description provided for @tagFruits.
+  ///
+  /// In ja, this message translates to:
+  /// **'フルーツ'**
+  String get tagFruits;
+
+  /// No description provided for @tagVegetables.
+  ///
+  /// In ja, this message translates to:
+  /// **'野菜類'**
+  String get tagVegetables;
+
+  /// No description provided for @tagBeverages.
+  ///
+  /// In ja, this message translates to:
+  /// **'ドリンク'**
+  String get tagBeverages;
+
+  /// No description provided for @tagOthers.
+  ///
+  /// In ja, this message translates to:
+  /// **'その他'**
+  String get tagOthers;
+
+  /// No description provided for @tagPasta.
+  ///
+  /// In ja, this message translates to:
+  /// **'パスタ'**
+  String get tagPasta;
+
+  /// No description provided for @tagRamen.
+  ///
+  /// In ja, this message translates to:
+  /// **'ラーメン'**
+  String get tagRamen;
+
+  /// No description provided for @tagSteak.
+  ///
+  /// In ja, this message translates to:
+  /// **'ステーキ'**
+  String get tagSteak;
+
+  /// No description provided for @tagYakiniku.
+  ///
+  /// In ja, this message translates to:
+  /// **'焼き肉'**
+  String get tagYakiniku;
+
+  /// No description provided for @tagChicken.
+  ///
+  /// In ja, this message translates to:
+  /// **'チキン'**
+  String get tagChicken;
+
+  /// No description provided for @tagBacon.
+  ///
+  /// In ja, this message translates to:
+  /// **'ベーコン'**
+  String get tagBacon;
+
+  /// No description provided for @tagHamburger.
+  ///
+  /// In ja, this message translates to:
+  /// **'ハンバーガー'**
+  String get tagHamburger;
+
+  /// No description provided for @tagFrenchFries.
+  ///
+  /// In ja, this message translates to:
+  /// **'フライドポテト'**
+  String get tagFrenchFries;
+
+  /// No description provided for @tagPizza.
+  ///
+  /// In ja, this message translates to:
+  /// **'ピザ'**
+  String get tagPizza;
+
+  /// No description provided for @tagTacos.
+  ///
+  /// In ja, this message translates to:
+  /// **'タコス'**
+  String get tagTacos;
+
+  /// No description provided for @tagTamales.
+  ///
+  /// In ja, this message translates to:
+  /// **'タマル'**
+  String get tagTamales;
+
+  /// No description provided for @tagGyoza.
+  ///
+  /// In ja, this message translates to:
+  /// **'餃子'**
+  String get tagGyoza;
+
+  /// No description provided for @tagFriedShrimp.
+  ///
+  /// In ja, this message translates to:
+  /// **'エビフライ'**
+  String get tagFriedShrimp;
+
+  /// No description provided for @tagHotPot.
+  ///
+  /// In ja, this message translates to:
+  /// **'鍋'**
+  String get tagHotPot;
+
+  /// No description provided for @tagCurry.
+  ///
+  /// In ja, this message translates to:
+  /// **'カレー'**
+  String get tagCurry;
+
+  /// No description provided for @tagPaella.
+  ///
+  /// In ja, this message translates to:
+  /// **'パエリア'**
+  String get tagPaella;
+
+  /// No description provided for @tagFondue.
+  ///
+  /// In ja, this message translates to:
+  /// **'フォンデュ'**
+  String get tagFondue;
+
+  /// No description provided for @tagOnigiri.
+  ///
+  /// In ja, this message translates to:
+  /// **'おにぎり'**
+  String get tagOnigiri;
+
+  /// No description provided for @tagRice.
+  ///
+  /// In ja, this message translates to:
+  /// **'ご飯'**
+  String get tagRice;
+
+  /// No description provided for @tagBento.
+  ///
+  /// In ja, this message translates to:
+  /// **'弁当'**
+  String get tagBento;
+
+  /// No description provided for @tagSushi.
+  ///
+  /// In ja, this message translates to:
+  /// **'寿司'**
+  String get tagSushi;
+
+  /// No description provided for @tagFish.
+  ///
+  /// In ja, this message translates to:
+  /// **'魚'**
+  String get tagFish;
+
+  /// No description provided for @tagOctopus.
+  ///
+  /// In ja, this message translates to:
+  /// **'タコ'**
+  String get tagOctopus;
+
+  /// No description provided for @tagSquid.
+  ///
+  /// In ja, this message translates to:
+  /// **'イカ'**
+  String get tagSquid;
+
+  /// No description provided for @tagShrimp.
+  ///
+  /// In ja, this message translates to:
+  /// **'エビ'**
+  String get tagShrimp;
+
+  /// No description provided for @tagCrab.
+  ///
+  /// In ja, this message translates to:
+  /// **'カニ'**
+  String get tagCrab;
+
+  /// No description provided for @tagShellfish.
+  ///
+  /// In ja, this message translates to:
+  /// **'貝'**
+  String get tagShellfish;
+
+  /// No description provided for @tagOyster.
+  ///
+  /// In ja, this message translates to:
+  /// **'カキ'**
+  String get tagOyster;
+
+  /// No description provided for @tagSandwich.
+  ///
+  /// In ja, this message translates to:
+  /// **'サンドイッチ'**
+  String get tagSandwich;
+
+  /// No description provided for @tagHotDog.
+  ///
+  /// In ja, this message translates to:
+  /// **'ホットドッグ'**
+  String get tagHotDog;
+
+  /// No description provided for @tagDonut.
+  ///
+  /// In ja, this message translates to:
+  /// **'ドーナツ'**
+  String get tagDonut;
+
+  /// No description provided for @tagPancake.
+  ///
+  /// In ja, this message translates to:
+  /// **'パンケーキ'**
+  String get tagPancake;
+
+  /// No description provided for @tagCroissant.
+  ///
+  /// In ja, this message translates to:
+  /// **'クロワッサン'**
+  String get tagCroissant;
+
+  /// No description provided for @tagBagel.
+  ///
+  /// In ja, this message translates to:
+  /// **'ベーグル'**
+  String get tagBagel;
+
+  /// No description provided for @tagBaguette.
+  ///
+  /// In ja, this message translates to:
+  /// **'バゲット'**
+  String get tagBaguette;
+
+  /// No description provided for @tagPretzel.
+  ///
+  /// In ja, this message translates to:
+  /// **'プレッツェル'**
+  String get tagPretzel;
+
+  /// No description provided for @tagBurrito.
+  ///
+  /// In ja, this message translates to:
+  /// **'ブリトー'**
+  String get tagBurrito;
+
+  /// No description provided for @tagIceCream.
+  ///
+  /// In ja, this message translates to:
+  /// **'アイスクリーム'**
+  String get tagIceCream;
+
+  /// No description provided for @tagPudding.
+  ///
+  /// In ja, this message translates to:
+  /// **'プリン'**
+  String get tagPudding;
+
+  /// No description provided for @tagRiceCracker.
+  ///
+  /// In ja, this message translates to:
+  /// **'せんべい'**
+  String get tagRiceCracker;
+
+  /// No description provided for @tagDango.
+  ///
+  /// In ja, this message translates to:
+  /// **'団子'**
+  String get tagDango;
+
+  /// No description provided for @tagShavedIce.
+  ///
+  /// In ja, this message translates to:
+  /// **'かき氷'**
+  String get tagShavedIce;
+
+  /// No description provided for @tagPie.
+  ///
+  /// In ja, this message translates to:
+  /// **'パイ'**
+  String get tagPie;
+
+  /// No description provided for @tagCupcake.
+  ///
+  /// In ja, this message translates to:
+  /// **'カップケーキ'**
+  String get tagCupcake;
+
+  /// No description provided for @tagCake.
+  ///
+  /// In ja, this message translates to:
+  /// **'ケーキ'**
+  String get tagCake;
+
+  /// No description provided for @tagCandy.
+  ///
+  /// In ja, this message translates to:
+  /// **'飴'**
+  String get tagCandy;
+
+  /// No description provided for @tagLollipop.
+  ///
+  /// In ja, this message translates to:
+  /// **'キャンディ'**
+  String get tagLollipop;
+
+  /// No description provided for @tagChocolate.
+  ///
+  /// In ja, this message translates to:
+  /// **'チョコレート'**
+  String get tagChocolate;
+
+  /// No description provided for @tagPopcorn.
+  ///
+  /// In ja, this message translates to:
+  /// **'ポップコーン'**
+  String get tagPopcorn;
+
+  /// No description provided for @tagCookie.
+  ///
+  /// In ja, this message translates to:
+  /// **'クッキー'**
+  String get tagCookie;
+
+  /// No description provided for @tagPeanuts.
+  ///
+  /// In ja, this message translates to:
+  /// **'ピーナッツ'**
+  String get tagPeanuts;
+
+  /// No description provided for @tagBeans.
+  ///
+  /// In ja, this message translates to:
+  /// **'豆'**
+  String get tagBeans;
+
+  /// No description provided for @tagChestnut.
+  ///
+  /// In ja, this message translates to:
+  /// **'栗'**
+  String get tagChestnut;
+
+  /// No description provided for @tagFortuneCookie.
+  ///
+  /// In ja, this message translates to:
+  /// **'フォーチュンクッキー'**
+  String get tagFortuneCookie;
+
+  /// No description provided for @tagMooncake.
+  ///
+  /// In ja, this message translates to:
+  /// **'月餅'**
+  String get tagMooncake;
+
+  /// No description provided for @tagHoney.
+  ///
+  /// In ja, this message translates to:
+  /// **'はちみつ'**
+  String get tagHoney;
+
+  /// No description provided for @tagWaffle.
+  ///
+  /// In ja, this message translates to:
+  /// **'ワッフル'**
+  String get tagWaffle;
+
+  /// No description provided for @tagApple.
+  ///
+  /// In ja, this message translates to:
+  /// **'りんご'**
+  String get tagApple;
+
+  /// No description provided for @tagPear.
+  ///
+  /// In ja, this message translates to:
+  /// **'梨'**
+  String get tagPear;
+
+  /// No description provided for @tagOrange.
+  ///
+  /// In ja, this message translates to:
+  /// **'みかん'**
+  String get tagOrange;
+
+  /// No description provided for @tagLemon.
+  ///
+  /// In ja, this message translates to:
+  /// **'レモン'**
+  String get tagLemon;
+
+  /// No description provided for @tagLime.
+  ///
+  /// In ja, this message translates to:
+  /// **'ライム'**
+  String get tagLime;
+
+  /// No description provided for @tagBanana.
+  ///
+  /// In ja, this message translates to:
+  /// **'バナナ'**
+  String get tagBanana;
+
+  /// No description provided for @tagWatermelon.
+  ///
+  /// In ja, this message translates to:
+  /// **'スイカ'**
+  String get tagWatermelon;
+
+  /// No description provided for @tagGrapes.
+  ///
+  /// In ja, this message translates to:
+  /// **'ぶどう'**
+  String get tagGrapes;
+
+  /// No description provided for @tagStrawberry.
+  ///
+  /// In ja, this message translates to:
+  /// **'いちご'**
+  String get tagStrawberry;
+
+  /// No description provided for @tagBlueberry.
+  ///
+  /// In ja, this message translates to:
+  /// **'ブルーベリー'**
+  String get tagBlueberry;
+
+  /// No description provided for @tagMelon.
+  ///
+  /// In ja, this message translates to:
+  /// **'メロン'**
+  String get tagMelon;
+
+  /// No description provided for @tagCherry.
+  ///
+  /// In ja, this message translates to:
+  /// **'さくらんぼ'**
+  String get tagCherry;
+
+  /// No description provided for @tagPeach.
+  ///
+  /// In ja, this message translates to:
+  /// **'もも'**
+  String get tagPeach;
+
+  /// No description provided for @tagMango.
+  ///
+  /// In ja, this message translates to:
+  /// **'マンゴー'**
+  String get tagMango;
+
+  /// No description provided for @tagPineapple.
+  ///
+  /// In ja, this message translates to:
+  /// **'パイナップル'**
+  String get tagPineapple;
+
+  /// No description provided for @tagCoconut.
+  ///
+  /// In ja, this message translates to:
+  /// **'ココナッツ'**
+  String get tagCoconut;
+
+  /// No description provided for @tagKiwi.
+  ///
+  /// In ja, this message translates to:
+  /// **'キウイ'**
+  String get tagKiwi;
+
+  /// No description provided for @tagSalad.
+  ///
+  /// In ja, this message translates to:
+  /// **'サラダ'**
+  String get tagSalad;
+
+  /// No description provided for @tagTomato.
+  ///
+  /// In ja, this message translates to:
+  /// **'トマト'**
+  String get tagTomato;
+
+  /// No description provided for @tagEggplant.
+  ///
+  /// In ja, this message translates to:
+  /// **'なす'**
+  String get tagEggplant;
+
+  /// No description provided for @tagAvocado.
+  ///
+  /// In ja, this message translates to:
+  /// **'アボカド'**
+  String get tagAvocado;
+
+  /// No description provided for @tagGreenBeans.
+  ///
+  /// In ja, this message translates to:
+  /// **'さやいんげん'**
+  String get tagGreenBeans;
+
+  /// No description provided for @tagBroccoli.
+  ///
+  /// In ja, this message translates to:
+  /// **'ブロッコリー'**
+  String get tagBroccoli;
+
+  /// No description provided for @tagLettuce.
+  ///
+  /// In ja, this message translates to:
+  /// **'レタス'**
+  String get tagLettuce;
+
+  /// No description provided for @tagCucumber.
+  ///
+  /// In ja, this message translates to:
+  /// **'きゅうり'**
+  String get tagCucumber;
+
+  /// No description provided for @tagChili.
+  ///
+  /// In ja, this message translates to:
+  /// **'唐辛子'**
+  String get tagChili;
+
+  /// No description provided for @tagBellPepper.
+  ///
+  /// In ja, this message translates to:
+  /// **'ピーマン'**
+  String get tagBellPepper;
+
+  /// No description provided for @tagCorn.
+  ///
+  /// In ja, this message translates to:
+  /// **'とうもろこし'**
+  String get tagCorn;
+
+  /// No description provided for @tagCarrot.
+  ///
+  /// In ja, this message translates to:
+  /// **'にんじん'**
+  String get tagCarrot;
+
+  /// No description provided for @tagOlive.
+  ///
+  /// In ja, this message translates to:
+  /// **'オリーブ'**
+  String get tagOlive;
+
+  /// No description provided for @tagGarlic.
+  ///
+  /// In ja, this message translates to:
+  /// **'にんにく'**
+  String get tagGarlic;
+
+  /// No description provided for @tagOnion.
+  ///
+  /// In ja, this message translates to:
+  /// **'玉ねぎ'**
+  String get tagOnion;
+
+  /// No description provided for @tagPotato.
+  ///
+  /// In ja, this message translates to:
+  /// **'じゃがいも'**
+  String get tagPotato;
+
+  /// No description provided for @tagSweetPotato.
+  ///
+  /// In ja, this message translates to:
+  /// **'さつまいも'**
+  String get tagSweetPotato;
+
+  /// No description provided for @tagGinger.
+  ///
+  /// In ja, this message translates to:
+  /// **'しょうが'**
+  String get tagGinger;
+
+  /// No description provided for @tagShiitake.
+  ///
+  /// In ja, this message translates to:
+  /// **'しいたけ'**
+  String get tagShiitake;
+
+  /// No description provided for @tagTeapot.
+  ///
+  /// In ja, this message translates to:
+  /// **'ティーポット'**
+  String get tagTeapot;
+
+  /// No description provided for @tagCoffee.
+  ///
+  /// In ja, this message translates to:
+  /// **'コーヒー'**
+  String get tagCoffee;
+
+  /// No description provided for @tagTea.
+  ///
+  /// In ja, this message translates to:
+  /// **'お茶'**
+  String get tagTea;
+
+  /// No description provided for @tagJuice.
+  ///
+  /// In ja, this message translates to:
+  /// **'ジュース'**
+  String get tagJuice;
+
+  /// No description provided for @tagSoftDrink.
+  ///
+  /// In ja, this message translates to:
+  /// **'ソフトドリンク'**
+  String get tagSoftDrink;
+
+  /// No description provided for @tagBubbleTea.
+  ///
+  /// In ja, this message translates to:
+  /// **'タピオカティー'**
+  String get tagBubbleTea;
+
+  /// No description provided for @tagSake.
+  ///
+  /// In ja, this message translates to:
+  /// **'日本酒'**
+  String get tagSake;
+
+  /// No description provided for @tagBeer.
+  ///
+  /// In ja, this message translates to:
+  /// **'ビール'**
+  String get tagBeer;
+
+  /// No description provided for @tagChampagne.
+  ///
+  /// In ja, this message translates to:
+  /// **'シャンパン'**
+  String get tagChampagne;
+
+  /// No description provided for @tagWine.
+  ///
+  /// In ja, this message translates to:
+  /// **'ワイン'**
+  String get tagWine;
+
+  /// No description provided for @tagWhiskey.
+  ///
+  /// In ja, this message translates to:
+  /// **'ウィスキー'**
+  String get tagWhiskey;
+
+  /// No description provided for @tagCocktail.
+  ///
+  /// In ja, this message translates to:
+  /// **'カクテル'**
+  String get tagCocktail;
+
+  /// No description provided for @tagTropicalCocktail.
+  ///
+  /// In ja, this message translates to:
+  /// **'トロピカルカクテル'**
+  String get tagTropicalCocktail;
+
+  /// No description provided for @tagMateTea.
+  ///
+  /// In ja, this message translates to:
+  /// **'マテ茶'**
+  String get tagMateTea;
+
+  /// No description provided for @tagMilk.
+  ///
+  /// In ja, this message translates to:
+  /// **'ミルク'**
+  String get tagMilk;
+
+  /// No description provided for @tagKamaboko.
+  ///
+  /// In ja, this message translates to:
+  /// **'かまぼこ'**
+  String get tagKamaboko;
+
+  /// No description provided for @tagOden.
+  ///
+  /// In ja, this message translates to:
+  /// **'おでん'**
+  String get tagOden;
+
+  /// No description provided for @tagCheese.
+  ///
+  /// In ja, this message translates to:
+  /// **'チーズ'**
+  String get tagCheese;
+
+  /// No description provided for @tagEgg.
+  ///
+  /// In ja, this message translates to:
+  /// **'卵'**
+  String get tagEgg;
+
+  /// No description provided for @tagFriedEgg.
+  ///
+  /// In ja, this message translates to:
+  /// **'目玉焼き'**
+  String get tagFriedEgg;
+
+  /// No description provided for @tagButter.
+  ///
+  /// In ja, this message translates to:
+  /// **'バター'**
+  String get tagButter;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

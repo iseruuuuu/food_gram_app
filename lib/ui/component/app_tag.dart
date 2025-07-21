@@ -77,7 +77,7 @@ class AppFoodTag extends HookWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             child: Text(
-                              entry.key,
+                              getLocalizedCategoryName(entry.key, context),
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -89,7 +89,8 @@ class AppFoodTag extends HookWidget {
                             runSpacing: 8,
                             children: entry.value.map((food) {
                               final emoji = food[0];
-                              final text = food[1];
+                              final text =
+                                  getLocalizedFoodName(food[0], context);
                               final isSelected = foodTag.contains(emoji);
                               return GestureDetector(
                                 onTap: () {
@@ -121,7 +122,7 @@ class AppFoodTag extends HookWidget {
                                       ),
                                       const Gap(4),
                                       Text(
-                                        food[1],
+                                        text,
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: isSelected
@@ -269,7 +270,8 @@ class AppCountryTag extends HookWidget {
                       return GestureDetector(
                         onTap: () {
                           onTagSelected(entry.key);
-                          countryText.value = entry.value;
+                          countryText.value =
+                              getLocalizedCountryName(entry.key, context);
                           context.pop();
                         },
                         child: Container(
@@ -300,7 +302,7 @@ class AppCountryTag extends HookWidget {
                                 ),
                                 const Gap(4),
                                 Text(
-                                  entry.value,
+                                  getLocalizedCountryName(entry.key, context),
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: isSelected

@@ -213,7 +213,10 @@ class EditScreen extends HookConsumerWidget {
                               foodTag: foodTag.value,
                               foodText: ValueNotifier(
                                 state.favoriteTags.isNotEmpty
-                                    ? getFoodName(state.favoriteTags)
+                                    ? getLocalizedFoodName(
+                                        state.favoriteTags,
+                                        context,
+                                      )
                                     : '',
                               ),
                               onTagSelected: (tag) {

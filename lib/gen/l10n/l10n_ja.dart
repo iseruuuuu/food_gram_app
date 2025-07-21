@@ -682,4 +682,700 @@ class L10nJa extends L10n {
 
   @override
   String get restaurantReviewError => 'エラーが発生しました';
+
+  @override
+  String get tagOtherCuisine => 'その他の料理';
+
+  @override
+  String get tagOtherFood => 'その他の食べ物';
+
+  @override
+  String get tagJapaneseCuisine => '日本料理';
+
+  @override
+  String get tagItalianCuisine => 'イタリアン料理';
+
+  @override
+  String get tagFrenchCuisine => 'フレンチ料理';
+
+  @override
+  String get tagChineseCuisine => '中華料理';
+
+  @override
+  String get tagIndianCuisine => 'インド料理';
+
+  @override
+  String get tagMexicanCuisine => 'メキシカン料理';
+
+  @override
+  String get tagHongKongCuisine => '香港料理';
+
+  @override
+  String get tagAmericanCuisine => 'アメリカ料理';
+
+  @override
+  String get tagMediterraneanCuisine => '地中海料理';
+
+  @override
+  String get tagThaiCuisine => 'タイ料理';
+
+  @override
+  String get tagGreekCuisine => 'ギリシャ料理';
+
+  @override
+  String get tagTurkishCuisine => 'トルコ料理';
+
+  @override
+  String get tagKoreanCuisine => '韓国料理';
+
+  @override
+  String get tagRussianCuisine => 'ロシア料理';
+
+  @override
+  String get tagSpanishCuisine => 'スペイン料理';
+
+  @override
+  String get tagVietnameseCuisine => 'ベトナム料理';
+
+  @override
+  String get tagPortugueseCuisine => 'ポルトガル料理';
+
+  @override
+  String get tagAustrianCuisine => 'オーストリア料理';
+
+  @override
+  String get tagBelgianCuisine => 'ベルギー料理';
+
+  @override
+  String get tagSwedishCuisine => 'スウェーデン料理';
+
+  @override
+  String get tagGermanCuisine => 'ドイツ料理';
+
+  @override
+  String get tagBritishCuisine => 'イギリス料理';
+
+  @override
+  String get tagDutchCuisine => 'オランダ料理';
+
+  @override
+  String get tagAustralianCuisine => 'オーストラリア料理';
+
+  @override
+  String get tagBrazilianCuisine => 'ブラジル料理';
+
+  @override
+  String get tagArgentineCuisine => 'アルゼンチン料理';
+
+  @override
+  String get tagColombianCuisine => 'コロンビア料理';
+
+  @override
+  String get tagPeruvianCuisine => 'ペルー料理';
+
+  @override
+  String get tagNorwegianCuisine => 'ノルウェー料理';
+
+  @override
+  String get tagDanishCuisine => 'デンマーク料理';
+
+  @override
+  String get tagPolishCuisine => 'ポーランド料理';
+
+  @override
+  String get tagCzechCuisine => 'チェコ料理';
+
+  @override
+  String get tagHungarianCuisine => 'ハンガリー料理';
+
+  @override
+  String get tagSouthAfricanCuisine => '南アフリカ料理';
+
+  @override
+  String get tagEgyptianCuisine => 'エジプト料理';
+
+  @override
+  String get tagMoroccanCuisine => 'モロッコ料理';
+
+  @override
+  String get tagNewZealandCuisine => 'ニュージーランド料理';
+
+  @override
+  String get tagFilipinoCuisine => 'フィリピン料理';
+
+  @override
+  String get tagMalaysianCuisine => 'マレーシア料理';
+
+  @override
+  String get tagSingaporeanCuisine => 'シンガポール料理';
+
+  @override
+  String get tagIndonesianCuisine => 'インドネシア料理';
+
+  @override
+  String get tagIranianCuisine => 'イラン料理';
+
+  @override
+  String get tagSaudiArabianCuisine => 'サウジアラビア料理';
+
+  @override
+  String get tagMongolianCuisine => 'モンゴル料理';
+
+  @override
+  String get tagCambodianCuisine => 'カンボジア料理';
+
+  @override
+  String get tagLaotianCuisine => 'ラオス料理';
+
+  @override
+  String get tagCubanCuisine => 'キューバ料理';
+
+  @override
+  String get tagJamaicanCuisine => 'ジャマイカ料理';
+
+  @override
+  String get tagChileanCuisine => 'チリ料理';
+
+  @override
+  String get tagVenezuelanCuisine => 'ベネズエラ料理';
+
+  @override
+  String get tagPanamanianCuisine => 'パナマ料理';
+
+  @override
+  String get tagBolivianCuisine => 'ボリビア料理';
+
+  @override
+  String get tagIcelandicCuisine => 'アイスランド料理';
+
+  @override
+  String get tagLithuanianCuisine => 'リトアニア料理';
+
+  @override
+  String get tagEstonianCuisine => 'エストニア料理';
+
+  @override
+  String get tagLatvianCuisine => 'ラトビア料理';
+
+  @override
+  String get tagFinnishCuisine => 'フィンランド料理';
+
+  @override
+  String get tagCroatianCuisine => 'クロアチア料理';
+
+  @override
+  String get tagSlovenianCuisine => 'スロベニア料理';
+
+  @override
+  String get tagSlovakCuisine => 'スロバキア料理';
+
+  @override
+  String get tagRomanianCuisine => 'ルーマニア料理';
+
+  @override
+  String get tagBulgarianCuisine => 'ブルガリア料理';
+
+  @override
+  String get tagSerbianCuisine => 'セルビア料理';
+
+  @override
+  String get tagAlbanianCuisine => 'アルバニア料理';
+
+  @override
+  String get tagGeorgianCuisine => 'ジョージア料理';
+
+  @override
+  String get tagArmenianCuisine => 'アルメニア料理';
+
+  @override
+  String get tagAzerbaijaniCuisine => 'アゼルバイジャン料理';
+
+  @override
+  String get tagUkrainianCuisine => 'ウクライナ料理';
+
+  @override
+  String get tagBelarusianCuisine => 'ベラルーシ料理';
+
+  @override
+  String get tagKazakhCuisine => 'カザフスタン料理';
+
+  @override
+  String get tagUzbekCuisine => 'ウズベキスタン料理';
+
+  @override
+  String get tagKyrgyzCuisine => 'キルギス料理';
+
+  @override
+  String get tagTurkmenCuisine => 'トルクメニスタン料理';
+
+  @override
+  String get tagTajikCuisine => 'タジキスタン料理';
+
+  @override
+  String get tagMaldivianCuisine => 'モルディブ料理';
+
+  @override
+  String get tagNepaleseCuisine => 'ネパール料理';
+
+  @override
+  String get tagBangladeshiCuisine => 'バングラデシュ料理';
+
+  @override
+  String get tagMyanmarCuisine => 'ミャンマー料理';
+
+  @override
+  String get tagBruneianCuisine => 'ブルネイ料理';
+
+  @override
+  String get tagTaiwaneseCuisine => '台湾料理';
+
+  @override
+  String get tagNigerianCuisine => 'ナイジェリア料理';
+
+  @override
+  String get tagKenyanCuisine => 'ケニア料理';
+
+  @override
+  String get tagGhanaianCuisine => 'ガーナ料理';
+
+  @override
+  String get tagEthiopianCuisine => 'エチオピア料理';
+
+  @override
+  String get tagSudaneseCuisine => 'スーダン料理';
+
+  @override
+  String get tagTunisianCuisine => 'チュニジア料理';
+
+  @override
+  String get tagAngolanCuisine => 'アンゴラ料理';
+
+  @override
+  String get tagCongoleseCuisine => 'コンゴ料理';
+
+  @override
+  String get tagZimbabweanCuisine => 'ジンバブエ料理';
+
+  @override
+  String get tagMalagasyCuisine => 'マダガスカル料理';
+
+  @override
+  String get tagPapuaNewGuineanCuisine => 'パプアニューギニア料理';
+
+  @override
+  String get tagSamoanCuisine => 'サモア料理';
+
+  @override
+  String get tagTuvaluanCuisine => 'ツバル料理';
+
+  @override
+  String get tagFijianCuisine => 'フィジー料理';
+
+  @override
+  String get tagPalauanCuisine => 'パラオ料理';
+
+  @override
+  String get tagKiribatiCuisine => 'キリバス料理';
+
+  @override
+  String get tagVanuatuanCuisine => 'バヌアツ料理';
+
+  @override
+  String get tagBahrainiCuisine => 'バーレーン料理';
+
+  @override
+  String get tagQatariCuisine => 'カタール料理';
+
+  @override
+  String get tagKuwaitiCuisine => 'クウェート料理';
+
+  @override
+  String get tagOmaniCuisine => 'オマーン料理';
+
+  @override
+  String get tagYemeniCuisine => 'イエメン料理';
+
+  @override
+  String get tagLebaneseCuisine => 'レバノン料理';
+
+  @override
+  String get tagSyrianCuisine => 'シリア料理';
+
+  @override
+  String get tagJordanianCuisine => 'ヨルダン料理';
+
+  @override
+  String get tagNoodles => '麺類';
+
+  @override
+  String get tagMeatDishes => '肉料理';
+
+  @override
+  String get tagFastFood => '軽食系';
+
+  @override
+  String get tagRiceDishes => 'ご飯物';
+
+  @override
+  String get tagSeafood => '魚介類';
+
+  @override
+  String get tagBread => 'パン類';
+
+  @override
+  String get tagSweetsAndSnacks => 'おやつ';
+
+  @override
+  String get tagFruits => 'フルーツ';
+
+  @override
+  String get tagVegetables => '野菜類';
+
+  @override
+  String get tagBeverages => 'ドリンク';
+
+  @override
+  String get tagOthers => 'その他';
+
+  @override
+  String get tagPasta => 'パスタ';
+
+  @override
+  String get tagRamen => 'ラーメン';
+
+  @override
+  String get tagSteak => 'ステーキ';
+
+  @override
+  String get tagYakiniku => '焼き肉';
+
+  @override
+  String get tagChicken => 'チキン';
+
+  @override
+  String get tagBacon => 'ベーコン';
+
+  @override
+  String get tagHamburger => 'ハンバーガー';
+
+  @override
+  String get tagFrenchFries => 'フライドポテト';
+
+  @override
+  String get tagPizza => 'ピザ';
+
+  @override
+  String get tagTacos => 'タコス';
+
+  @override
+  String get tagTamales => 'タマル';
+
+  @override
+  String get tagGyoza => '餃子';
+
+  @override
+  String get tagFriedShrimp => 'エビフライ';
+
+  @override
+  String get tagHotPot => '鍋';
+
+  @override
+  String get tagCurry => 'カレー';
+
+  @override
+  String get tagPaella => 'パエリア';
+
+  @override
+  String get tagFondue => 'フォンデュ';
+
+  @override
+  String get tagOnigiri => 'おにぎり';
+
+  @override
+  String get tagRice => 'ご飯';
+
+  @override
+  String get tagBento => '弁当';
+
+  @override
+  String get tagSushi => '寿司';
+
+  @override
+  String get tagFish => '魚';
+
+  @override
+  String get tagOctopus => 'タコ';
+
+  @override
+  String get tagSquid => 'イカ';
+
+  @override
+  String get tagShrimp => 'エビ';
+
+  @override
+  String get tagCrab => 'カニ';
+
+  @override
+  String get tagShellfish => '貝';
+
+  @override
+  String get tagOyster => 'カキ';
+
+  @override
+  String get tagSandwich => 'サンドイッチ';
+
+  @override
+  String get tagHotDog => 'ホットドッグ';
+
+  @override
+  String get tagDonut => 'ドーナツ';
+
+  @override
+  String get tagPancake => 'パンケーキ';
+
+  @override
+  String get tagCroissant => 'クロワッサン';
+
+  @override
+  String get tagBagel => 'ベーグル';
+
+  @override
+  String get tagBaguette => 'バゲット';
+
+  @override
+  String get tagPretzel => 'プレッツェル';
+
+  @override
+  String get tagBurrito => 'ブリトー';
+
+  @override
+  String get tagIceCream => 'アイスクリーム';
+
+  @override
+  String get tagPudding => 'プリン';
+
+  @override
+  String get tagRiceCracker => 'せんべい';
+
+  @override
+  String get tagDango => '団子';
+
+  @override
+  String get tagShavedIce => 'かき氷';
+
+  @override
+  String get tagPie => 'パイ';
+
+  @override
+  String get tagCupcake => 'カップケーキ';
+
+  @override
+  String get tagCake => 'ケーキ';
+
+  @override
+  String get tagCandy => '飴';
+
+  @override
+  String get tagLollipop => 'キャンディ';
+
+  @override
+  String get tagChocolate => 'チョコレート';
+
+  @override
+  String get tagPopcorn => 'ポップコーン';
+
+  @override
+  String get tagCookie => 'クッキー';
+
+  @override
+  String get tagPeanuts => 'ピーナッツ';
+
+  @override
+  String get tagBeans => '豆';
+
+  @override
+  String get tagChestnut => '栗';
+
+  @override
+  String get tagFortuneCookie => 'フォーチュンクッキー';
+
+  @override
+  String get tagMooncake => '月餅';
+
+  @override
+  String get tagHoney => 'はちみつ';
+
+  @override
+  String get tagWaffle => 'ワッフル';
+
+  @override
+  String get tagApple => 'りんご';
+
+  @override
+  String get tagPear => '梨';
+
+  @override
+  String get tagOrange => 'みかん';
+
+  @override
+  String get tagLemon => 'レモン';
+
+  @override
+  String get tagLime => 'ライム';
+
+  @override
+  String get tagBanana => 'バナナ';
+
+  @override
+  String get tagWatermelon => 'スイカ';
+
+  @override
+  String get tagGrapes => 'ぶどう';
+
+  @override
+  String get tagStrawberry => 'いちご';
+
+  @override
+  String get tagBlueberry => 'ブルーベリー';
+
+  @override
+  String get tagMelon => 'メロン';
+
+  @override
+  String get tagCherry => 'さくらんぼ';
+
+  @override
+  String get tagPeach => 'もも';
+
+  @override
+  String get tagMango => 'マンゴー';
+
+  @override
+  String get tagPineapple => 'パイナップル';
+
+  @override
+  String get tagCoconut => 'ココナッツ';
+
+  @override
+  String get tagKiwi => 'キウイ';
+
+  @override
+  String get tagSalad => 'サラダ';
+
+  @override
+  String get tagTomato => 'トマト';
+
+  @override
+  String get tagEggplant => 'なす';
+
+  @override
+  String get tagAvocado => 'アボカド';
+
+  @override
+  String get tagGreenBeans => 'さやいんげん';
+
+  @override
+  String get tagBroccoli => 'ブロッコリー';
+
+  @override
+  String get tagLettuce => 'レタス';
+
+  @override
+  String get tagCucumber => 'きゅうり';
+
+  @override
+  String get tagChili => '唐辛子';
+
+  @override
+  String get tagBellPepper => 'ピーマン';
+
+  @override
+  String get tagCorn => 'とうもろこし';
+
+  @override
+  String get tagCarrot => 'にんじん';
+
+  @override
+  String get tagOlive => 'オリーブ';
+
+  @override
+  String get tagGarlic => 'にんにく';
+
+  @override
+  String get tagOnion => '玉ねぎ';
+
+  @override
+  String get tagPotato => 'じゃがいも';
+
+  @override
+  String get tagSweetPotato => 'さつまいも';
+
+  @override
+  String get tagGinger => 'しょうが';
+
+  @override
+  String get tagShiitake => 'しいたけ';
+
+  @override
+  String get tagTeapot => 'ティーポット';
+
+  @override
+  String get tagCoffee => 'コーヒー';
+
+  @override
+  String get tagTea => 'お茶';
+
+  @override
+  String get tagJuice => 'ジュース';
+
+  @override
+  String get tagSoftDrink => 'ソフトドリンク';
+
+  @override
+  String get tagBubbleTea => 'タピオカティー';
+
+  @override
+  String get tagSake => '日本酒';
+
+  @override
+  String get tagBeer => 'ビール';
+
+  @override
+  String get tagChampagne => 'シャンパン';
+
+  @override
+  String get tagWine => 'ワイン';
+
+  @override
+  String get tagWhiskey => 'ウィスキー';
+
+  @override
+  String get tagCocktail => 'カクテル';
+
+  @override
+  String get tagTropicalCocktail => 'トロピカルカクテル';
+
+  @override
+  String get tagMateTea => 'マテ茶';
+
+  @override
+  String get tagMilk => 'ミルク';
+
+  @override
+  String get tagKamaboko => 'かまぼこ';
+
+  @override
+  String get tagOden => 'おでん';
+
+  @override
+  String get tagCheese => 'チーズ';
+
+  @override
+  String get tagEgg => '卵';
+
+  @override
+  String get tagFriedEgg => '目玉焼き';
+
+  @override
+  String get tagButter => 'バター';
 }
