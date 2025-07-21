@@ -277,7 +277,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                       ),
                       const Gap(12),
                       SizedBox(
-                        height: 200,
+                        height: 240,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -292,17 +292,27 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                 );
                               },
                               child: Container(
-                                width: 180,
+                                width: 240,
                                 margin: const EdgeInsets.only(right: 12),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
-                                  color: Colors.grey[100],
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    color: Colors.black.withValues(alpha: 0.1),
+                                    width: 2,
+                                  ),
                                   boxShadow: [
                                     BoxShadow(
                                       color:
                                           Colors.black.withValues(alpha: 0.1),
-                                      blurRadius: 8,
-                                      offset: const Offset(0, 2),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                    BoxShadow(
+                                      color:
+                                          Colors.black.withValues(alpha: 0.05),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, -4),
                                     ),
                                   ],
                                 ),
