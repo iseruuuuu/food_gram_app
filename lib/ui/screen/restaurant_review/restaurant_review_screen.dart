@@ -384,85 +384,108 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                       itemCount: data.length,
                       itemBuilder: (context, index) {
                         final model = data[index];
-                        return Card(
-                          color: Colors.white70,
+                        return Container(
                           margin: const EdgeInsets.symmetric(
                             horizontal: 16,
                             vertical: 8,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 48,
-                                      height: 48,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.grey[300],
-                                        border: Border.all(
-                                          color: Colors.white,
-                                          width: 2,
-                                        ),
-                                      ),
-                                      child: ClipOval(
-                                        child: model.posts.isAnonymous
-                                            ? Image.asset(
-                                                'assets/icon/icon1.png',
-                                                fit: BoxFit.cover,
-                                              )
-                                            : AppProfileImage(
-                                                imagePath: model.users.image,
-                                                radius: 28,
-                                              ),
-                                      ),
-                                    ),
-                                    const Gap(8),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          model.posts.isAnonymous
-                                              ? '匿名ユーザー'
-                                              : model.users.name,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.black.withValues(alpha: 0.1),
+                              width: 2,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.1),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.05),
+                                blurRadius: 10,
+                                offset: const Offset(0, -4),
+                              ),
+                            ],
+                          ),
+                          child: Card(
+                            elevation: 0,
+                            color: Colors.white,
+                            margin: EdgeInsets.zero,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 48,
+                                        height: 48,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.grey[300],
+                                          border: Border.all(
+                                            color: Colors.white,
+                                            width: 2,
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const Gap(8),
-                                Text(
-                                  model.posts.foodName,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                                        child: ClipOval(
+                                          child: model.posts.isAnonymous
+                                              ? Image.asset(
+                                                  'assets/icon/icon1.png',
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : AppProfileImage(
+                                                  imagePath: model.users.image,
+                                                  radius: 28,
+                                                ),
+                                        ),
+                                      ),
+                                      const Gap(8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            model.posts.isAnonymous
+                                                ? '匿名ユーザー'
+                                                : model.users.name,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                if (model.posts.comment.isNotEmpty) ...[
-                                  const Gap(4),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 4,
+                                  const Gap(8),
+                                  Text(
+                                    model.posts.foodName,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    child: Text(
-                                      model.posts.comment,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.normal,
+                                  ),
+                                  if (model.posts.comment.isNotEmpty) ...[
+                                    const Gap(4),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 4,
+                                      ),
+                                      child: Text(
+                                        model.posts.comment,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.normal,
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                  ],
+                                  const Gap(4),
                                 ],
-                                const Gap(4),
-                              ],
+                              ),
                             ),
                           ),
                         );
