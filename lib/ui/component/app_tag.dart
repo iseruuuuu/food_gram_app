@@ -9,19 +9,19 @@ typedef OnTagSelected = void Function(String tag);
 
 class AppFoodTag extends HookWidget {
   const AppFoodTag({
-    required this.selectedTags,
     required this.onTagSelected,
-    required this.favoriteTagText,
+    required this.foodTag,
+    required this.foodText,
     super.key,
   });
 
-  final String selectedTags;
   final OnTagSelected onTagSelected;
-  final String favoriteTagText;
+  final String foodTag;
+  final ValueNotifier<String> foodText;
 
   Future<void> _showTagSelector(
     BuildContext context,
-    ValueNotifier<String> selectedCategoryName,
+    ValueNotifier<String> foodText,
   ) async {
     await showModalBottomSheet<void>(
       context: context,
@@ -51,7 +51,7 @@ class AppFoodTag extends HookWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    favoriteTagText,
+                    L10n.of(context).selectFoodTag,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -90,11 +90,11 @@ class AppFoodTag extends HookWidget {
                             children: entry.value.map((food) {
                               final emoji = food[0];
                               final text = food[1];
-                              final isSelected = selectedTags.contains(emoji);
+                              final isSelected = foodTag.contains(emoji);
                               return GestureDetector(
                                 onTap: () {
                                   onTagSelected(emoji);
-                                  selectedCategoryName.value = text;
+                                  foodText.value = text;
                                   context.pop();
                                 },
                                 child: Container(
@@ -151,9 +151,9 @@ class AppFoodTag extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final foodLabel = useState('');
+    final currentFoodText = useValueListenable(foodText);
     return GestureDetector(
-      onTap: () => _showTagSelector(context, foodLabel),
+      onTap: () => _showTagSelector(context, foodText),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
         child: Container(
@@ -167,24 +167,24 @@ class AppFoodTag extends HookWidget {
             children: [
               const Gap(16),
               Text(
-                (selectedTags != '') ? selectedTags : favoriteTagText,
+                (foodTag != '') ? foodTag : L10n.of(context).selectFoodTag,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: (foodTag != '') ? 24 : 16,
                   fontWeight: FontWeight.bold,
-                  color: (selectedTags != '') ? Colors.black : Colors.grey,
+                  color: (foodTag != '') ? Colors.black : Colors.grey,
                 ),
               ),
               const Gap(8),
               Text(
-                (foodLabel.value != '') ? foodLabel.value : '',
+                (currentFoodText != '') ? currentFoodText : '',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: (selectedTags != '') ? Colors.black : Colors.grey,
+                  color: (foodTag != '') ? Colors.black : Colors.grey,
                 ),
               ),
               const Spacer(),
-              if (selectedTags == '')
+              if (foodTag == '')
                 const Padding(
                   padding: EdgeInsets.only(right: 8),
                   child: Icon(
@@ -202,17 +202,19 @@ class AppFoodTag extends HookWidget {
 
 class AppCountryTag extends HookWidget {
   const AppCountryTag({
-    required this.selectedTags,
     required this.onTagSelected,
+    required this.countryTag,
+    required this.countryText,
     super.key,
   });
 
-  final String selectedTags;
   final OnTagSelected onTagSelected;
+  final String countryTag;
+  final ValueNotifier<String> countryText;
 
   Future<void> _showTagSelector(
     BuildContext context,
-    ValueNotifier<String> selectedCategoryName,
+    ValueNotifier<String> countryText,
   ) async {
     await showModalBottomSheet<void>(
       context: context,
@@ -249,7 +251,7 @@ class AppCountryTag extends HookWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () => context.pop,
+                    onPressed: context.pop,
                     icon: const Icon(Icons.close),
                   ),
                 ],
@@ -261,56 +263,59 @@ class AppCountryTag extends HookWidget {
                 child: Wrap(
                   spacing: 8,
                   runSpacing: 8,
-                  children: countryCategory.entries.map((entry) {
-                    final isSelected = selectedTags.contains(entry.key);
-                    return GestureDetector(
-                      onTap: () {
-                        onTagSelected(entry.key);
-                        selectedCategoryName.value = entry.value;
-                        context.pop();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: isSelected ? Colors.blue : Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: isSelected ? Colors.blue : Colors.grey[300]!,
+                  children: [
+                    ...countryCategory.entries.map((entry) {
+                      final isSelected = countryTag.contains(entry.key);
+                      return GestureDetector(
+                        onTap: () {
+                          onTagSelected(entry.key);
+                          countryText.value = entry.value;
+                          context.pop();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isSelected ? Colors.blue : Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color:
+                                  isSelected ? Colors.blue : Colors.grey[300]!,
+                            ),
+                          ),
+                          child: FittedBox(
+                            child: Row(
+                              children: [
+                                Text(
+                                  entry.key,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: isSelected
+                                        ? Colors.white
+                                        : Colors.black87,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Gap(4),
+                                Text(
+                                  entry.value,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: isSelected
+                                        ? Colors.white
+                                        : Colors.black87,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        child: FittedBox(
-                          child: Row(
-                            children: [
-                              Text(
-                                entry.key,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: isSelected
-                                      ? Colors.white
-                                      : Colors.black87,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const Gap(4),
-                              Text(
-                                entry.value,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: isSelected
-                                      ? Colors.white
-                                      : Colors.black87,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                      );
+                    }),
+                  ],
                 ),
               ),
             ),
@@ -322,9 +327,9 @@ class AppCountryTag extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final countryLabel = useState('');
+    final currentCountryText = useValueListenable(countryText);
     return GestureDetector(
-      onTap: () => _showTagSelector(context, countryLabel),
+      onTap: () => _showTagSelector(context, countryText),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
         child: Container(
@@ -338,26 +343,26 @@ class AppCountryTag extends HookWidget {
             children: [
               const Gap(16),
               Text(
-                (selectedTags != '')
-                    ? selectedTags
+                (countryTag != '')
+                    ? countryTag
                     : L10n.of(context).selectCountryTag,
                 style: TextStyle(
-                  fontSize: (selectedTags != '') ? 20 : 16,
+                  fontSize: (countryTag != '') ? 24 : 16,
                   fontWeight: FontWeight.bold,
-                  color: (selectedTags != '') ? Colors.black : Colors.grey,
+                  color: (countryTag != '') ? Colors.black : Colors.grey,
                 ),
               ),
               const Gap(8),
               Text(
-                (countryLabel.value != '') ? countryLabel.value : '',
+                (currentCountryText != '') ? currentCountryText : '',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: (selectedTags != '') ? Colors.black : Colors.grey,
+                  color: (countryTag != '') ? Colors.black : Colors.grey,
                 ),
               ),
               const Spacer(),
-              if (selectedTags == '')
+              if (countryTag == '')
                 const Padding(
                   padding: EdgeInsets.only(right: 8),
                   child: Icon(
