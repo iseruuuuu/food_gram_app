@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/theme/style/edit_post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
@@ -33,8 +34,8 @@ class EditPostScreen extends HookConsumerWidget {
     final l10n = L10n.of(context);
     final deviceWidth = MediaQuery.of(context).size.width;
     final loading = ref.watch(loadingProvider);
-    final countryTag = useState(posts.restaurantTag);
-    final foodTag = useState(posts.foodTag);
+    final countryTag = useState(getCountryTagData(posts.restaurantTag));
+    final foodTag = useState(getFoodTagData(posts.foodTag));
     final state = ref.watch(editPostViewModelProvider());
     final viewModel = ref.watch(editPostViewModelProvider().notifier);
     useEffect(
@@ -141,9 +142,7 @@ class EditPostScreen extends HookConsumerWidget {
                       ),
                     ),
                     const Gap(20),
-                    AppFoodTextField(
-                      controller: viewModel.foodController,
-                    ),
+                    AppFoodTextField(controller: viewModel.foodController),
                     const Gap(12),
                     GestureDetector(
                       onTap: () async {
@@ -204,17 +203,26 @@ class EditPostScreen extends HookConsumerWidget {
                     ),
                     const Gap(4),
                     AppCountryTag(
-                      selectedTags: countryTag.value,
+                      countryTag: countryTag.value.emoji,
+                      countryText: ValueNotifier(
+                        countryTag.value.emoji.isNotEmpty
+                            ? countryTag.value.name
+                            : '',
+                      ),
                       onTagSelected: (tag) {
-                        countryTag.value = tag;
+                        countryTag.value = getCountryTagData(tag);
                       },
                     ),
                     AppFoodTag(
-                      selectedTags: foodTag.value,
+                      foodTag: foodTag.value.emoji,
+                      foodText: ValueNotifier(
+                        foodTag.value.emoji.isNotEmpty
+                            ? foodTag.value.name
+                            : '',
+                      ),
                       onTagSelected: (tag) {
-                        foodTag.value = tag;
+                        foodTag.value = getFoodTagData(tag);
                       },
-                      favoriteTagText: L10n.of(context).selectFavoriteTag,
                     ),
                     const Gap(12),
                     AppCommentTextField(
@@ -279,8 +287,8 @@ class EditPostScreen extends HookConsumerWidget {
                       final isSuccess = await ref
                           .read(editPostViewModelProvider().notifier)
                           .update(
-                            restaurantTag: countryTag.value,
-                            foodTag: foodTag.value,
+                            restaurantTag: countryTag.value.emoji,
+                            foodTag: foodTag.value.emoji,
                           );
                       if (isSuccess) {
                         while (loading) {
