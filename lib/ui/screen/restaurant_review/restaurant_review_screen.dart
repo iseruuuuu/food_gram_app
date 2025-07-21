@@ -25,6 +25,12 @@ class RestaurantReviewScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final reviewsAsync = ref.watch(
+      restaurantReviewsProvider(
+        lat: posts.lat,
+        lng: posts.lng,
+      ),
+    );
     final l10n = L10n.of(context);
     final animationController =
         useAnimationController(duration: const Duration(seconds: 2));
@@ -35,8 +41,6 @@ class RestaurantReviewScreen extends HookConsumerWidget {
       },
       [animationController],
     );
-    final reviewsAsync =
-        ref.watch(restaurantReviewsProvider(lat: posts.lat, lng: posts.lng));
     final deviceWidth = MediaQuery.of(context).size.width;
     String getImageUrl(String imagePath) {
       return ref
