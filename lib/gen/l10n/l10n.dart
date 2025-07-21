@@ -1415,6 +1415,36 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'foodgramer'**
   String get anonymousUsername;
+
+  /// No description provided for @restaurantReviewNew.
+  ///
+  /// In ja, this message translates to:
+  /// **'新着'**
+  String get restaurantReviewNew;
+
+  /// No description provided for @restaurantReviewViewDetails.
+  ///
+  /// In ja, this message translates to:
+  /// **'詳細を見る'**
+  String get restaurantReviewViewDetails;
+
+  /// No description provided for @restaurantReviewOtherPosts.
+  ///
+  /// In ja, this message translates to:
+  /// **'他の投稿も見てみる'**
+  String get restaurantReviewOtherPosts;
+
+  /// No description provided for @restaurantReviewReviewList.
+  ///
+  /// In ja, this message translates to:
+  /// **'レビュー一覧'**
+  String get restaurantReviewReviewList;
+
+  /// No description provided for @restaurantReviewError.
+  ///
+  /// In ja, this message translates to:
+  /// **'エラーが発生しました'**
+  String get restaurantReviewError;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
