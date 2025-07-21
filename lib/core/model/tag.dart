@@ -274,6 +274,24 @@ String getFoodName(String emoji) {
 /// カテゴリーを表すレコード型
 typedef CategoryData = ({String name, String displayIcon, bool isAllCategory});
 
+/// 国の絵文字からアイコンと料理名の両方を取得する関数
+({String emoji, String name}) getCountryTagData(String emoji) {
+  final name = countryCategory[emoji] ?? '';
+  return (emoji: emoji, name: name);
+}
+
+/// 食べ物の絵文字からアイコンと食べ物名の両方を取得する関数
+({String emoji, String name}) getFoodTagData(String emoji) {
+  for (final category in foodCategory.values) {
+    for (final food in category) {
+      if (food[0] == emoji) {
+        return (emoji: emoji, name: food[1]);
+      }
+    }
+  }
+  return (emoji: emoji, name: '');
+}
+
 final categoriesProvider = Provider<List<CategoryData>>((ref) {
   final result = <CategoryData>[
     (name: '', displayIcon: '🍽️', isAllCategory: true),
