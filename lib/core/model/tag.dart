@@ -1,9 +1,7 @@
-// 国の絵文字と料理名を紐付けるマップ
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 
-// 元のマップ（既存のロジック用）
 final Map<String, String> countryCategory = {
   '🇯🇵': '日本料理',
   '🇮🇹': 'イタリアン料理',
@@ -112,16 +110,15 @@ final Map<String, String> countryCategory = {
   '🇯🇴': 'ヨルダン料理',
 };
 
-/// 国の絵文字から料理名を取得する関数（既存ロジック用）
+/// 国の絵文字から料理名を取得する関数
 String getCountryName(String emoji) {
   return countryCategory[emoji] ?? 'その他の料理';
 }
 
-/// 国の絵文字から料理名を取得する関数（多言語表示用）
+/// 国の絵文字から料理名を取得する関数
 String getLocalizedCountryName(String emoji, BuildContext context) {
   final l10n = L10n.of(context);
 
-  // マップベースのアプローチに変更
   final countryNameMap = {
     '🇯🇵': l10n.tagJapaneseCuisine,
     '🇮🇹': l10n.tagItalianCuisine,
@@ -233,7 +230,7 @@ String getLocalizedCountryName(String emoji, BuildContext context) {
   return countryNameMap[emoji] ?? l10n.tagOtherCuisine;
 }
 
-/// 食べ物のカテゴリーと絵文字、食べ物名の対応（既存ロジック用）
+/// 食べ物のカテゴリーと絵文字、食べ物名の対応
 final Map<String, List<List<String>>> foodCategory = {
   '麺類': [
     ['🍝', 'パスタ'],
@@ -378,7 +375,7 @@ final Map<String, List<List<String>>> foodCategory = {
   ],
 };
 
-/// 食べ物の絵文字から食べ物名を取得する関数（既存ロジック用）
+/// 食べ物の絵文字から食べ物名を取得する関数
 String getFoodName(String emoji) {
   for (final category in foodCategory.values) {
     for (final food in category) {
@@ -390,11 +387,9 @@ String getFoodName(String emoji) {
   return 'その他の食べ物';
 }
 
-/// 食べ物の絵文字から食べ物名を取得する関数（多言語表示用）
 String getLocalizedFoodName(String emoji, BuildContext context) {
   final l10n = L10n.of(context);
 
-  // マップベースのアプローチに変更
   final foodNameMap = {
     '🍝': l10n.tagPasta,
     '🍜': l10n.tagRamen,
@@ -520,7 +515,6 @@ String getLocalizedFoodName(String emoji, BuildContext context) {
   return foodNameMap[emoji] ?? l10n.tagOtherFood;
 }
 
-/// カテゴリー名を多言語化する関数
 String getLocalizedCategoryName(String categoryName, BuildContext context) {
   final l10n = L10n.of(context);
 
@@ -552,16 +546,15 @@ String getLocalizedCategoryName(String categoryName, BuildContext context) {
   }
 }
 
-/// カテゴリーを表すレコード型
 typedef CategoryData = ({String name, String displayIcon, bool isAllCategory});
 
-/// 国の絵文字からアイコンと料理名の両方を取得する関数（既存ロジック用）
+/// 国の絵文字からアイコンと料理名の両方を取得する関数
 ({String emoji, String name}) getCountryTagData(String emoji) {
   final name = countryCategory[emoji] ?? '';
   return (emoji: emoji, name: name);
 }
 
-/// 食べ物の絵文字からアイコンと食べ物名の両方を取得する関数（既存ロジック用）
+/// 食べ物の絵文字からアイコンと食べ物名の両方を取得する関数
 ({String emoji, String name}) getFoodTagData(String emoji) {
   for (final category in foodCategory.values) {
     for (final food in category) {
