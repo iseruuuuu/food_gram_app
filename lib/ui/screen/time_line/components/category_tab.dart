@@ -97,15 +97,20 @@ class CategoryTab extends HookConsumerWidget {
                               height: 1.5,
                             ),
                           ),
-                          Text(
-                            category.isAllCategory
-                                ? l10n.foodCategoryAll
-                                : _l10nCategory(category.name, l10n),
-                            style: const TextStyle(
-                              fontSize: 13,
-                              height: 1,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
+                          FittedBox(
+                            child: Text(
+                              category.isAllCategory
+                                  ? l10n.foodCategoryAll
+                                  : getLocalizedCategoryName(
+                                      category.name,
+                                      context,
+                                    ),
+                              style: const TextStyle(
+                                fontSize: 13,
+                                height: 1,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ],
@@ -118,35 +123,5 @@ class CategoryTab extends HookConsumerWidget {
         ),
       ],
     );
-  }
-
-  // プライベートヘルパーメソッド
-  String _l10nCategory(String categoryName, L10n l10n) {
-    switch (categoryName) {
-      case 'Noodles':
-        return l10n.foodCategoryNoodles;
-      case 'Meat':
-        return l10n.foodCategoryMeat;
-      case 'Fast Food':
-        return l10n.foodCategoryFastFood;
-      case 'Rice Dishes':
-        return l10n.foodCategoryRiceDishes;
-      case 'Seafood':
-        return l10n.foodCategorySeafood;
-      case 'Bread':
-        return l10n.foodCategoryBread;
-      case 'Sweets & Snacks':
-        return l10n.foodCategorySweetsAndSnacks;
-      case 'Fruits':
-        return l10n.foodCategoryFruits;
-      case 'Vegetables':
-        return l10n.foodCategoryVegetables;
-      case 'Beverages':
-        return l10n.foodCategoryBeverages;
-      case 'Others':
-        return l10n.foodCategoryOthers;
-      default:
-        return categoryName;
-    }
   }
 }

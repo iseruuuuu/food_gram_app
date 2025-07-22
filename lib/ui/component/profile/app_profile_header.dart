@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
@@ -302,8 +303,12 @@ class AppProfileHeader extends ConsumerWidget {
                                     children: [
                                       Text(
                                         users.tag.isNotEmpty
-                                            ? users.tag
-                                            : '未登録',
+                                            ? users.tag +
+                                                getLocalizedFoodName(
+                                                  users.tag,
+                                                  context,
+                                                )
+                                            : l10n.selectFoodTag,
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,

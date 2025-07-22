@@ -90,6 +90,9 @@ class L10nEn extends L10n {
   String get settingsCredit => 'Credit';
 
   @override
+  String get unregistered => 'Unregistered';
+
+  @override
   String get settingsBatteryLevel => 'Battery Level';
 
   @override
@@ -682,4 +685,700 @@ class L10nEn extends L10n {
 
   @override
   String get restaurantReviewError => 'An error occurred';
+
+  @override
+  String get tagOtherCuisine => 'Other Cuisine';
+
+  @override
+  String get tagOtherFood => 'Other Food';
+
+  @override
+  String get tagJapaneseCuisine => 'Japanese Cuisine';
+
+  @override
+  String get tagItalianCuisine => 'Italian Cuisine';
+
+  @override
+  String get tagFrenchCuisine => 'French Cuisine';
+
+  @override
+  String get tagChineseCuisine => 'Chinese Cuisine';
+
+  @override
+  String get tagIndianCuisine => 'Indian Cuisine';
+
+  @override
+  String get tagMexicanCuisine => 'Mexican Cuisine';
+
+  @override
+  String get tagHongKongCuisine => 'Hong Kong Cuisine';
+
+  @override
+  String get tagAmericanCuisine => 'American Cuisine';
+
+  @override
+  String get tagMediterraneanCuisine => 'Mediterranean Cuisine';
+
+  @override
+  String get tagThaiCuisine => 'Thai Cuisine';
+
+  @override
+  String get tagGreekCuisine => 'Greek Cuisine';
+
+  @override
+  String get tagTurkishCuisine => 'Turkish Cuisine';
+
+  @override
+  String get tagKoreanCuisine => 'Korean Cuisine';
+
+  @override
+  String get tagRussianCuisine => 'Russian Cuisine';
+
+  @override
+  String get tagSpanishCuisine => 'Spanish Cuisine';
+
+  @override
+  String get tagVietnameseCuisine => 'Vietnamese Cuisine';
+
+  @override
+  String get tagPortugueseCuisine => 'Portuguese Cuisine';
+
+  @override
+  String get tagAustrianCuisine => 'Austrian Cuisine';
+
+  @override
+  String get tagBelgianCuisine => 'Belgian Cuisine';
+
+  @override
+  String get tagSwedishCuisine => 'Swedish Cuisine';
+
+  @override
+  String get tagGermanCuisine => 'German Cuisine';
+
+  @override
+  String get tagBritishCuisine => 'British Cuisine';
+
+  @override
+  String get tagDutchCuisine => 'Dutch Cuisine';
+
+  @override
+  String get tagAustralianCuisine => 'Australian Cuisine';
+
+  @override
+  String get tagBrazilianCuisine => 'Brazilian Cuisine';
+
+  @override
+  String get tagArgentineCuisine => 'Argentine Cuisine';
+
+  @override
+  String get tagColombianCuisine => 'Colombian Cuisine';
+
+  @override
+  String get tagPeruvianCuisine => 'Peruvian Cuisine';
+
+  @override
+  String get tagNorwegianCuisine => 'Norwegian Cuisine';
+
+  @override
+  String get tagDanishCuisine => 'Danish Cuisine';
+
+  @override
+  String get tagPolishCuisine => 'Polish Cuisine';
+
+  @override
+  String get tagCzechCuisine => 'Czech Cuisine';
+
+  @override
+  String get tagHungarianCuisine => 'Hungarian Cuisine';
+
+  @override
+  String get tagSouthAfricanCuisine => 'South African Cuisine';
+
+  @override
+  String get tagEgyptianCuisine => 'Egyptian Cuisine';
+
+  @override
+  String get tagMoroccanCuisine => 'Moroccan Cuisine';
+
+  @override
+  String get tagNewZealandCuisine => 'New Zealand Cuisine';
+
+  @override
+  String get tagFilipinoCuisine => 'Filipino Cuisine';
+
+  @override
+  String get tagMalaysianCuisine => 'Malaysian Cuisine';
+
+  @override
+  String get tagSingaporeanCuisine => 'Singaporean Cuisine';
+
+  @override
+  String get tagIndonesianCuisine => 'Indonesian Cuisine';
+
+  @override
+  String get tagIranianCuisine => 'Iranian Cuisine';
+
+  @override
+  String get tagSaudiArabianCuisine => 'Saudi Arabian Cuisine';
+
+  @override
+  String get tagMongolianCuisine => 'Mongolian Cuisine';
+
+  @override
+  String get tagCambodianCuisine => 'Cambodian Cuisine';
+
+  @override
+  String get tagLaotianCuisine => 'Laotian Cuisine';
+
+  @override
+  String get tagCubanCuisine => 'Cuban Cuisine';
+
+  @override
+  String get tagJamaicanCuisine => 'Jamaican Cuisine';
+
+  @override
+  String get tagChileanCuisine => 'Chilean Cuisine';
+
+  @override
+  String get tagVenezuelanCuisine => 'Venezuelan Cuisine';
+
+  @override
+  String get tagPanamanianCuisine => 'Panamanian Cuisine';
+
+  @override
+  String get tagBolivianCuisine => 'Bolivian Cuisine';
+
+  @override
+  String get tagIcelandicCuisine => 'Icelandic Cuisine';
+
+  @override
+  String get tagLithuanianCuisine => 'Lithuanian Cuisine';
+
+  @override
+  String get tagEstonianCuisine => 'Estonian Cuisine';
+
+  @override
+  String get tagLatvianCuisine => 'Latvian Cuisine';
+
+  @override
+  String get tagFinnishCuisine => 'Finnish Cuisine';
+
+  @override
+  String get tagCroatianCuisine => 'Croatian Cuisine';
+
+  @override
+  String get tagSlovenianCuisine => 'Slovenian Cuisine';
+
+  @override
+  String get tagSlovakCuisine => 'Slovak Cuisine';
+
+  @override
+  String get tagRomanianCuisine => 'Romanian Cuisine';
+
+  @override
+  String get tagBulgarianCuisine => 'Bulgarian Cuisine';
+
+  @override
+  String get tagSerbianCuisine => 'Serbian Cuisine';
+
+  @override
+  String get tagAlbanianCuisine => 'Albanian Cuisine';
+
+  @override
+  String get tagGeorgianCuisine => 'Georgian Cuisine';
+
+  @override
+  String get tagArmenianCuisine => 'Armenian Cuisine';
+
+  @override
+  String get tagAzerbaijaniCuisine => 'Azerbaijani Cuisine';
+
+  @override
+  String get tagUkrainianCuisine => 'Ukrainian Cuisine';
+
+  @override
+  String get tagBelarusianCuisine => 'Belarusian Cuisine';
+
+  @override
+  String get tagKazakhCuisine => 'Kazakh Cuisine';
+
+  @override
+  String get tagUzbekCuisine => 'Uzbek Cuisine';
+
+  @override
+  String get tagKyrgyzCuisine => 'Kyrgyz Cuisine';
+
+  @override
+  String get tagTurkmenCuisine => 'Turkmen Cuisine';
+
+  @override
+  String get tagTajikCuisine => 'Tajik Cuisine';
+
+  @override
+  String get tagMaldivianCuisine => 'Maldivian Cuisine';
+
+  @override
+  String get tagNepaleseCuisine => 'Nepalese Cuisine';
+
+  @override
+  String get tagBangladeshiCuisine => 'Bangladeshi Cuisine';
+
+  @override
+  String get tagMyanmarCuisine => 'Myanmar Cuisine';
+
+  @override
+  String get tagBruneianCuisine => 'Bruneian Cuisine';
+
+  @override
+  String get tagTaiwaneseCuisine => 'Taiwanese Cuisine';
+
+  @override
+  String get tagNigerianCuisine => 'Nigerian Cuisine';
+
+  @override
+  String get tagKenyanCuisine => 'Kenyan Cuisine';
+
+  @override
+  String get tagGhanaianCuisine => 'Ghanaian Cuisine';
+
+  @override
+  String get tagEthiopianCuisine => 'Ethiopian Cuisine';
+
+  @override
+  String get tagSudaneseCuisine => 'Sudanese Cuisine';
+
+  @override
+  String get tagTunisianCuisine => 'Tunisian Cuisine';
+
+  @override
+  String get tagAngolanCuisine => 'Angolan Cuisine';
+
+  @override
+  String get tagCongoleseCuisine => 'Congolese Cuisine';
+
+  @override
+  String get tagZimbabweanCuisine => 'Zimbabwean Cuisine';
+
+  @override
+  String get tagMalagasyCuisine => 'Malagasy Cuisine';
+
+  @override
+  String get tagPapuaNewGuineanCuisine => 'Papua New Guinean Cuisine';
+
+  @override
+  String get tagSamoanCuisine => 'Samoan Cuisine';
+
+  @override
+  String get tagTuvaluanCuisine => 'Tuvaluan Cuisine';
+
+  @override
+  String get tagFijianCuisine => 'Fijian Cuisine';
+
+  @override
+  String get tagPalauanCuisine => 'Palauan Cuisine';
+
+  @override
+  String get tagKiribatiCuisine => 'Kiribati Cuisine';
+
+  @override
+  String get tagVanuatuanCuisine => 'Vanuatuan Cuisine';
+
+  @override
+  String get tagBahrainiCuisine => 'Bahraini Cuisine';
+
+  @override
+  String get tagQatariCuisine => 'Qatari Cuisine';
+
+  @override
+  String get tagKuwaitiCuisine => 'Kuwaiti Cuisine';
+
+  @override
+  String get tagOmaniCuisine => 'Omani Cuisine';
+
+  @override
+  String get tagYemeniCuisine => 'Yemeni Cuisine';
+
+  @override
+  String get tagLebaneseCuisine => 'Lebanese Cuisine';
+
+  @override
+  String get tagSyrianCuisine => 'Syrian Cuisine';
+
+  @override
+  String get tagJordanianCuisine => 'Jordanian Cuisine';
+
+  @override
+  String get tagNoodles => 'Noodles';
+
+  @override
+  String get tagMeatDishes => 'Meat Dishes';
+
+  @override
+  String get tagFastFood => 'Fast Food';
+
+  @override
+  String get tagRiceDishes => 'Rice Dishes';
+
+  @override
+  String get tagSeafood => 'Seafood';
+
+  @override
+  String get tagBread => 'Bread';
+
+  @override
+  String get tagSweetsAndSnacks => 'Sweets & Snacks';
+
+  @override
+  String get tagFruits => 'Fruits';
+
+  @override
+  String get tagVegetables => 'Vegetables';
+
+  @override
+  String get tagBeverages => 'Beverages';
+
+  @override
+  String get tagOthers => 'Others';
+
+  @override
+  String get tagPasta => 'Pasta';
+
+  @override
+  String get tagRamen => 'Ramen';
+
+  @override
+  String get tagSteak => 'Steak';
+
+  @override
+  String get tagYakiniku => 'Yakiniku';
+
+  @override
+  String get tagChicken => 'Chicken';
+
+  @override
+  String get tagBacon => 'Bacon';
+
+  @override
+  String get tagHamburger => 'Hamburger';
+
+  @override
+  String get tagFrenchFries => 'French Fries';
+
+  @override
+  String get tagPizza => 'Pizza';
+
+  @override
+  String get tagTacos => 'Tacos';
+
+  @override
+  String get tagTamales => 'Tamales';
+
+  @override
+  String get tagGyoza => 'Gyoza';
+
+  @override
+  String get tagFriedShrimp => 'Fried Shrimp';
+
+  @override
+  String get tagHotPot => 'Hot Pot';
+
+  @override
+  String get tagCurry => 'Curry';
+
+  @override
+  String get tagPaella => 'Paella';
+
+  @override
+  String get tagFondue => 'Fondue';
+
+  @override
+  String get tagOnigiri => 'Onigiri';
+
+  @override
+  String get tagRice => 'Rice';
+
+  @override
+  String get tagBento => 'Bento';
+
+  @override
+  String get tagSushi => 'Sushi';
+
+  @override
+  String get tagFish => 'Fish';
+
+  @override
+  String get tagOctopus => 'Octopus';
+
+  @override
+  String get tagSquid => 'Squid';
+
+  @override
+  String get tagShrimp => 'Shrimp';
+
+  @override
+  String get tagCrab => 'Crab';
+
+  @override
+  String get tagShellfish => 'Shellfish';
+
+  @override
+  String get tagOyster => 'Oyster';
+
+  @override
+  String get tagSandwich => 'Sandwich';
+
+  @override
+  String get tagHotDog => 'Hot Dog';
+
+  @override
+  String get tagDonut => 'Donut';
+
+  @override
+  String get tagPancake => 'Pancake';
+
+  @override
+  String get tagCroissant => 'Croissant';
+
+  @override
+  String get tagBagel => 'Bagel';
+
+  @override
+  String get tagBaguette => 'Baguette';
+
+  @override
+  String get tagPretzel => 'Pretzel';
+
+  @override
+  String get tagBurrito => 'Burrito';
+
+  @override
+  String get tagIceCream => 'Ice Cream';
+
+  @override
+  String get tagPudding => 'Pudding';
+
+  @override
+  String get tagRiceCracker => 'Rice Cracker';
+
+  @override
+  String get tagDango => 'Dango';
+
+  @override
+  String get tagShavedIce => 'Shaved Ice';
+
+  @override
+  String get tagPie => 'Pie';
+
+  @override
+  String get tagCupcake => 'Cupcake';
+
+  @override
+  String get tagCake => 'Cake';
+
+  @override
+  String get tagCandy => 'Candy';
+
+  @override
+  String get tagLollipop => 'Lollipop';
+
+  @override
+  String get tagChocolate => 'Chocolate';
+
+  @override
+  String get tagPopcorn => 'Popcorn';
+
+  @override
+  String get tagCookie => 'Cookie';
+
+  @override
+  String get tagPeanuts => 'Peanuts';
+
+  @override
+  String get tagBeans => 'Beans';
+
+  @override
+  String get tagChestnut => 'Chestnut';
+
+  @override
+  String get tagFortuneCookie => 'Fortune Cookie';
+
+  @override
+  String get tagMooncake => 'Mooncake';
+
+  @override
+  String get tagHoney => 'Honey';
+
+  @override
+  String get tagWaffle => 'Waffle';
+
+  @override
+  String get tagApple => 'Apple';
+
+  @override
+  String get tagPear => 'Pear';
+
+  @override
+  String get tagOrange => 'Orange';
+
+  @override
+  String get tagLemon => 'Lemon';
+
+  @override
+  String get tagLime => 'Lime';
+
+  @override
+  String get tagBanana => 'Banana';
+
+  @override
+  String get tagWatermelon => 'Watermelon';
+
+  @override
+  String get tagGrapes => 'Grapes';
+
+  @override
+  String get tagStrawberry => 'Strawberry';
+
+  @override
+  String get tagBlueberry => 'Blueberry';
+
+  @override
+  String get tagMelon => 'Melon';
+
+  @override
+  String get tagCherry => 'Cherry';
+
+  @override
+  String get tagPeach => 'Peach';
+
+  @override
+  String get tagMango => 'Mango';
+
+  @override
+  String get tagPineapple => 'Pineapple';
+
+  @override
+  String get tagCoconut => 'Coconut';
+
+  @override
+  String get tagKiwi => 'Kiwi';
+
+  @override
+  String get tagSalad => 'Salad';
+
+  @override
+  String get tagTomato => 'Tomato';
+
+  @override
+  String get tagEggplant => 'Eggplant';
+
+  @override
+  String get tagAvocado => 'Avocado';
+
+  @override
+  String get tagGreenBeans => 'Green Beans';
+
+  @override
+  String get tagBroccoli => 'Broccoli';
+
+  @override
+  String get tagLettuce => 'Lettuce';
+
+  @override
+  String get tagCucumber => 'Cucumber';
+
+  @override
+  String get tagChili => 'Chili';
+
+  @override
+  String get tagBellPepper => 'Bell Pepper';
+
+  @override
+  String get tagCorn => 'Corn';
+
+  @override
+  String get tagCarrot => 'Carrot';
+
+  @override
+  String get tagOlive => 'Olive';
+
+  @override
+  String get tagGarlic => 'Garlic';
+
+  @override
+  String get tagOnion => 'Onion';
+
+  @override
+  String get tagPotato => 'Potato';
+
+  @override
+  String get tagSweetPotato => 'Sweet Potato';
+
+  @override
+  String get tagGinger => 'Ginger';
+
+  @override
+  String get tagShiitake => 'Shiitake';
+
+  @override
+  String get tagTeapot => 'Teapot';
+
+  @override
+  String get tagCoffee => 'Coffee';
+
+  @override
+  String get tagTea => 'Tea';
+
+  @override
+  String get tagJuice => 'Juice';
+
+  @override
+  String get tagSoftDrink => 'Soft Drink';
+
+  @override
+  String get tagBubbleTea => 'Bubble Tea';
+
+  @override
+  String get tagSake => 'Sake';
+
+  @override
+  String get tagBeer => 'Beer';
+
+  @override
+  String get tagChampagne => 'Champagne';
+
+  @override
+  String get tagWine => 'Wine';
+
+  @override
+  String get tagWhiskey => 'Whiskey';
+
+  @override
+  String get tagCocktail => 'Cocktail';
+
+  @override
+  String get tagTropicalCocktail => 'Tropical Cocktail';
+
+  @override
+  String get tagMateTea => 'Mate Tea';
+
+  @override
+  String get tagMilk => 'Milk';
+
+  @override
+  String get tagKamaboko => 'Kamaboko';
+
+  @override
+  String get tagOden => 'Oden';
+
+  @override
+  String get tagCheese => 'Cheese';
+
+  @override
+  String get tagEgg => 'Egg';
+
+  @override
+  String get tagFriedEgg => 'Fried Egg';
+
+  @override
+  String get tagButter => 'Butter';
 }
