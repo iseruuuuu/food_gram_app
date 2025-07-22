@@ -34,10 +34,26 @@ class EditPostScreen extends HookConsumerWidget {
     final l10n = L10n.of(context);
     final deviceWidth = MediaQuery.of(context).size.width;
     final loading = ref.watch(loadingProvider);
-    final countryTag = useState(getCountryTagData(posts.restaurantTag));
-    final foodTag = useState(getFoodTagData(posts.foodTag));
     final state = ref.watch(editPostViewModelProvider());
     final viewModel = ref.watch(editPostViewModelProvider().notifier);
+    final countryTag = useState(getCountryTagData(posts.restaurantTag));
+    final countryText = useMemoized(
+      () => ValueNotifier(
+        countryTag.value.emoji.isNotEmpty
+            ? getLocalizedCountryName(countryTag.value.emoji, context)
+            : '',
+      ),
+      [countryTag.value],
+    );
+    final foodTag = useState(getFoodTagData(posts.foodTag));
+    final foodText = useMemoized(
+      () => ValueNotifier(
+        foodTag.value.emoji.isNotEmpty
+            ? getLocalizedFoodName(foodTag.value.emoji, context)
+            : '',
+      ),
+      [foodTag.value],
+    );
     useEffect(
       () {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -204,25 +220,14 @@ class EditPostScreen extends HookConsumerWidget {
                     const Gap(4),
                     AppCountryTag(
                       countryTag: countryTag.value.emoji,
-                      countryText: ValueNotifier(
-                        countryTag.value.emoji.isNotEmpty
-                            ? getLocalizedCountryName(
-                                countryTag.value.emoji,
-                                context,
-                              )
-                            : '',
-                      ),
+                      countryText: countryText,
                       onTagSelected: (tag) {
                         countryTag.value = getCountryTagData(tag);
                       },
                     ),
                     AppFoodTag(
                       foodTag: foodTag.value.emoji,
-                      foodText: ValueNotifier(
-                        foodTag.value.emoji.isNotEmpty
-                            ? getLocalizedFoodName(foodTag.value.emoji, context)
-                            : '',
-                      ),
+                      foodText: foodText,
                       onTagSelected: (tag) {
                         foodTag.value = getFoodTagData(tag);
                       },

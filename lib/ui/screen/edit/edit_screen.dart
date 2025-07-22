@@ -27,6 +27,14 @@ class EditScreen extends HookConsumerWidget {
     final state = ref.watch(editViewModelProvider());
     final loading = ref.watch(loadingProvider);
     final foodTag = ValueNotifier(state.favoriteTags);
+    final foodText = useMemoized(
+      () => ValueNotifier(
+        foodTag.value.isNotEmpty
+            ? getLocalizedFoodName(foodTag.value, context)
+            : '',
+      ),
+      [foodTag.value],
+    );
     final adInterstitial =
         useMemoized(() => ref.read(admobInterstitialNotifierProvider));
     useEffect(
@@ -211,14 +219,7 @@ class EditScreen extends HookConsumerWidget {
                             const Gap(10),
                             AppFoodTag(
                               foodTag: foodTag.value,
-                              foodText: ValueNotifier(
-                                state.favoriteTags.isNotEmpty
-                                    ? getLocalizedFoodName(
-                                        state.favoriteTags,
-                                        context,
-                                      )
-                                    : '',
-                              ),
+                              foodText: foodText,
                               onTagSelected: (tag) {
                                 ref
                                     .read(

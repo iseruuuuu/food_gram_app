@@ -34,7 +34,24 @@ class PostScreen extends HookConsumerWidget {
     final state = ref.watch(postViewModelProvider());
     final loading = ref.watch(loadingProvider);
     final countryTag = useState('');
+    final countryText = useMemoized(
+      () => ValueNotifier(
+        countryTag.value.isNotEmpty
+            ? getLocalizedCountryName(countryTag.value, context)
+            : '',
+      ),
+      [countryTag.value],
+    );
     final foodTag = useState('');
+    final foodText = useMemoized(
+      () => ValueNotifier(
+        foodTag.value.isNotEmpty
+            ? getLocalizedFoodName(foodTag.value, context)
+            : '',
+      ),
+      [foodTag.value],
+    );
+
     useEffect(
       () {
         if (restaurant != null) {
@@ -207,22 +224,14 @@ class PostScreen extends HookConsumerWidget {
                     const Gap(4),
                     AppCountryTag(
                       countryTag: countryTag.value,
-                      countryText: ValueNotifier(
-                        countryTag.value.isNotEmpty
-                            ? getLocalizedCountryName(countryTag.value, context)
-                            : '',
-                      ),
+                      countryText: countryText,
                       onTagSelected: (tag) {
                         countryTag.value = tag;
                       },
                     ),
                     AppFoodTag(
                       foodTag: foodTag.value,
-                      foodText: ValueNotifier(
-                        foodTag.value.isNotEmpty
-                            ? getLocalizedFoodName(foodTag.value, context)
-                            : '',
-                      ),
+                      foodText: foodText,
                       onTagSelected: (tag) {
                         foodTag.value = tag;
                       },
