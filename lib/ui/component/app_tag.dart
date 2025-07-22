@@ -91,7 +91,7 @@ class AppFoodTag extends HookWidget {
                               final emoji = food[0];
                               final text =
                                   getLocalizedFoodName(food[0], context);
-                              final isSelected = foodTag.contains(emoji);
+                              final isSelected = foodTag == emoji;
                               return GestureDetector(
                                 onTap: () {
                                   onTagSelected(emoji);
@@ -266,7 +266,7 @@ class AppCountryTag extends HookWidget {
                   runSpacing: 8,
                   children: [
                     ...countryCategory.entries.map((entry) {
-                      final isSelected = countryTag.contains(entry.key);
+                      final isSelected = countryTag == entry.key;
                       return GestureDetector(
                         onTap: () {
                           onTagSelected(entry.key);
