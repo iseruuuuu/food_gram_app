@@ -230,7 +230,6 @@ String getLocalizedCountryName(String emoji, BuildContext context) {
   return countryNameMap[emoji] ?? l10n.tagOtherCuisine;
 }
 
-/// 食べ物のカテゴリーと絵文字、食べ物名の対応
 final Map<String, List<List<String>>> foodCategory = {
   '麺類': [
     ['🍝', 'パスタ'],
