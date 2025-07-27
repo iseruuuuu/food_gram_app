@@ -95,8 +95,8 @@ class MapScreen extends HookConsumerWidget {
                     ),
                     trackCameraPosition: true,
                     tiltGesturesEnabled: false,
-                    styleString:
-                        'https://tile.openstreetmap.jp/styles/maptiler-basic-ja/style.json',
+                    // styleString:   'https://tile.openstreetmap.jp/styles/maptiler-basic-ja/style.json',
+                    styleString: 'assets/map/foodgram.json',
                   ),
                   Visibility(
                     visible: isTapPin.value,
