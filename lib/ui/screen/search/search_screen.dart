@@ -146,9 +146,11 @@ class SearchScreen extends HookConsumerWidget {
                             ),
                           ),
                           TextButton(
-                            onPressed: nearbyPosts.hasValue
+                            onPressed: postState.hasValue
                                 ? () {
-                                    final posts = nearbyPosts.value!;
+                                    final posts = postState.value!
+                                        .map(Posts.fromJson)
+                                        .toList();
                                     context.pushNamed(
                                       RouterPath.searchDetail,
                                       extra: posts,
