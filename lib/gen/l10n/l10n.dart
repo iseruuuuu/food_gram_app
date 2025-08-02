@@ -2843,6 +2843,12 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'バター'**
   String get tagButter;
+
+  /// No description provided for @settingsAccountManagement.
+  ///
+  /// In ja, this message translates to:
+  /// **'アカウント管理'**
+  String get settingsAccountManagement;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
