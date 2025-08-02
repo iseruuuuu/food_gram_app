@@ -53,7 +53,6 @@ class SettingScreen extends HookConsumerWidget {
                         children: [
                           SettingTile(
                             icon: FontAwesomeIcons.twitter,
-                            color: Colors.blue,
                             title: l10n.settingsDeveloper,
                             onTap: () => LaunchUrlHelper().openSNSUrl(URL.sns),
                           ),
@@ -65,13 +64,11 @@ class SettingScreen extends HookConsumerWidget {
                           ),
                           SettingTile(
                             icon: Icons.verified,
-                            color: Colors.blue,
                             title: l10n.settingsLicense,
                             onTap: () => context.pushNamed(RouterPath.license),
                           ),
                           SettingTile(
                             icon: Icons.share,
-                            color: Colors.lightBlue,
                             title: l10n.settingsShareApp,
                             onTap: () {
                               final url = Platform.isIOS
@@ -82,7 +79,6 @@ class SettingScreen extends HookConsumerWidget {
                           ),
                           SettingTile(
                             icon: Icons.rate_review_outlined,
-                            color: Colors.indigoAccent,
                             title: l10n.settingsReview,
                             onTap: () => ref
                                 .read(settingViewModelProvider().notifier)
@@ -90,7 +86,6 @@ class SettingScreen extends HookConsumerWidget {
                           ),
                           SettingTile(
                             icon: Icons.system_update,
-                            color: Colors.deepPurpleAccent,
                             title: l10n.settingsCheckVersion,
                             onTap: () => ref
                                 .read(settingViewModelProvider().notifier)
@@ -98,43 +93,33 @@ class SettingScreen extends HookConsumerWidget {
                           ),
                           SettingTile(
                             icon: Icons.help_outline,
-                            color: Colors.lightBlue,
-                            size: 32,
                             title: l10n.settingsFaq,
                             onTap: () => LaunchUrlHelper().open(URL.faq),
                           ),
                           SettingTile(
                             icon: Icons.security,
-                            color: Colors.indigoAccent,
                             title: l10n.settingsPrivacyPolicy,
                             onTap: () =>
                                 LaunchUrlHelper().open(URL.privacyPolicy),
                           ),
                           SettingTile(
                             icon: Icons.assignment,
-                            color: Colors.deepPurpleAccent,
                             title: l10n.settingsTermsOfUse,
                             onTap: () => LaunchUrlHelper().open(URL.termsOfUse),
                           ),
                           SettingTile(
                             icon: Icons.chat,
-                            size: 32,
-                            color: Colors.lightBlue,
                             title: l10n.settingsContact,
                             onTap: () => LaunchUrlHelper().open(URL.contact),
                           ),
                           SettingTile(
                             icon: Icons.school,
-                            size: 32,
-                            color: Colors.indigoAccent,
                             title: l10n.settingsTutorial,
                             onTap: () =>
                                 context.pushNamed(RouterPath.settingTutorial),
                           ),
                           SettingTile(
                             icon: CupertinoIcons.cube_box_fill,
-                            size: 32,
-                            color: Colors.purple,
                             title: l10n.settingQuestion,
                             onTap: () {
                               LaunchUrlHelper().open(URL.question);
@@ -200,12 +185,38 @@ class SettingScreen extends HookConsumerWidget {
                         error: (_, __) => const SizedBox.shrink(),
                         loading: () => const SizedBox.shrink(),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 4,
+                              height: 28,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF0168B7),
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                            ),
+                            const Gap(8),
+                            Text(
+                              l10n.settingsAccountManagement,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Gap(16),
                       Wrap(
                         children: [
                           SettingTile(
                             icon: Icons.power_settings_new,
-                            size: 32,
-                            color: Colors.red,
                             title: l10n.settingsLogoutButton,
                             onTap: () {
                               DialogHelper().openLogoutDialog(
@@ -239,8 +250,6 @@ class SettingScreen extends HookConsumerWidget {
                           ),
                           SettingTile(
                             icon: Icons.delete,
-                            size: 36,
-                            color: Colors.red,
                             title: l10n.settingsDeleteAccountButton,
                             onTap: () {
                               LaunchUrlHelper()
@@ -258,8 +267,6 @@ class SettingScreen extends HookConsumerWidget {
                           ),
                           SettingTile(
                             icon: Icons.restore,
-                            size: 32,
-                            color: Colors.black,
                             title: l10n.settingRestore,
                             onTap: () {
                               ref

@@ -1381,4 +1381,7 @@ class L10nJa extends L10n {
 
   @override
   String get tagButter => 'バター';
+
+  @override
+  String get settingsAccountManagement => 'アカウント管理';
 }
