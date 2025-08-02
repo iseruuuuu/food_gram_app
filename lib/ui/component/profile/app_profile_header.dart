@@ -154,7 +154,7 @@ class AppProfileHeader extends ConsumerWidget {
                       ),
                       BuildStatColumn(
                         count: heartAmount.toString(),
-                        label: l10n.postDetailLikeButton,
+                        label: l10n.likeButton,
                       ),
                       if (currentUser == users.userId)
                         BuildStatColumn(

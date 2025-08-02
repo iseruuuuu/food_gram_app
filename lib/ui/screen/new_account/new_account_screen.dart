@@ -62,7 +62,7 @@ class NewAccountScreen extends ConsumerWidget {
                     ),
                     const Gap(10),
                     Text(
-                      L10n.of(context).settingsIcon,
+                      L10n.of(context).settingIcon,
                       style: NewAccountStyle.icon(),
                     ),
                     const Gap(10),

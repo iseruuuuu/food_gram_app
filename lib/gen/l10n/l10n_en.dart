@@ -24,7 +24,7 @@ class L10nEn extends L10n {
   String get emailInputField => 'Enter your email address';
 
   @override
-  String get settingsIcon => 'Select Icon';
+  String get settingIcon => 'Select Icon';
 
   @override
   String get userName => 'Username';
@@ -42,85 +42,103 @@ class L10nEn extends L10n {
   String get registerButton => 'Register';
 
   @override
-  String get settingsAppBar => 'Settings';
+  String get settingAppBar => 'Settings';
 
   @override
-  String get settingsCheckVersion => 'Check for latest version';
+  String get settingCheckVersion => 'Check for latest version';
 
   @override
-  String get settingsCheckVersionDialogTitle => 'Update Information';
+  String get settingCheckVersionDialogTitle => 'Update Information';
 
   @override
-  String get settingsCheckVersionDialogText1 => 'A newer version is available.';
+  String get settingCheckVersionDialogText1 => 'A newer version is available.';
 
   @override
-  String get settingsCheckVersionDialogText2 => 'Please update to the latest version.';
+  String get settingCheckVersionDialogText2 => 'Please update to the latest version.';
 
   @override
-  String get settingsDeveloper => 'Twitter';
+  String get settingDeveloper => 'Twitter';
 
   @override
-  String get settingsGithub => 'Github';
+  String get settingGithub => 'Github';
 
   @override
-  String get settingsReview => 'Support with a Review';
+  String get settingReview => 'Support with a Review';
 
   @override
-  String get settingsLicense => 'License';
+  String get settingLicense => 'License';
 
   @override
-  String get settingsShareApp => 'Share this app';
+  String get settingShareApp => 'Share this app';
 
   @override
-  String get settingsFaq => 'FAQ';
+  String get settingFaq => 'FAQ';
 
   @override
-  String get settingsPrivacyPolicy => 'Privacy Policy';
+  String get settingPrivacyPolicy => 'Privacy Policy';
 
   @override
-  String get settingsTermsOfUse => 'Terms of Use';
+  String get settingTermsOfUse => 'Terms of Use';
 
   @override
-  String get settingsContact => 'Contact';
+  String get settingContact => 'Contact';
 
   @override
-  String get settingsTutorial => 'Tutorial';
+  String get settingTutorial => 'Tutorial';
 
   @override
-  String get settingsCredit => 'Credit';
+  String get settingCredit => 'Credit';
 
   @override
   String get unregistered => 'Unregistered';
 
   @override
-  String get settingsBatteryLevel => 'Battery Level';
+  String get settingBatteryLevel => 'Battery Level';
 
   @override
-  String get settingsDeviceInfo => 'Device Info';
+  String get settingDeviceInfo => 'Device Info';
 
   @override
-  String get settingsIosVersion => 'iOS Version';
+  String get settingIosVersion => 'iOS Version';
 
   @override
-  String get settingsAndroidSdk => 'SDK';
+  String get settingAndroidSdk => 'SDK';
 
   @override
-  String get settingsAppVersion => 'App Version';
+  String get settingAppVersion => 'App Version';
 
   @override
-  String get settingsAccount => 'Account';
+  String get settingAccount => 'Account';
 
   @override
-  String get settingsLogoutButton => 'Logout';
+  String get settingLogoutButton => 'Logout';
 
   @override
-  String get settingsDeleteAccountButton => 'Request Account Deletion';
+  String get settingDeleteAccountButton => 'Request Account Deletion';
 
   @override
   String get settingQuestion => 'Question Box';
 
   @override
-  String get postShareButton => 'Share';
+  String get settingAccountManagement => 'Account Management';
+
+  @override
+  String get settingRestoreSuccessTitle => 'Restore successful';
+
+  @override
+  String get settingRestoreSuccessSubtitle => 'Premium features enabled!';
+
+  @override
+  String get settingRestoreFailureTitle => 'Restore failed';
+
+  @override
+  String get settingRestoreFailureSubtitle => 'No purchase history? Contact support';
+
+  @override
+  String get settingRestore => 'Restore purchase';
+
+  @override
+  String get shareButton => 'Share';
 
   @override
   String get postFoodName => 'Food Name';
@@ -153,6 +171,24 @@ class L10nEn extends L10n {
   String get postTitle => 'Post';
 
   @override
+  String get postMissingInfo => 'Please fill in all required fields';
+
+  @override
+  String get postPhotoSuccess => 'Photo added successfully';
+
+  @override
+  String get postCameraPermission => 'Camera permission is required';
+
+  @override
+  String get postAlbumPermission => 'Photo library permission is required';
+
+  @override
+  String get postSuccess => 'Post successful';
+
+  @override
+  String get postSearchError => 'Unable to search for place names';
+
+  @override
   String get editUpdateButton => 'Update';
 
   @override
@@ -162,10 +198,19 @@ class L10nEn extends L10n {
   String get editBioInputField => 'Enter bio';
 
   @override
+  String get editFavoriteTagTitle => 'Select Favorite Tag';
+
+  @override
   String get emptyPosts => 'There are no posts';
 
   @override
   String get searchEmptyResult => 'No results found for your search.';
+
+  @override
+  String get searchButton => 'Search';
+
+  @override
+  String get searchRestaurantTitle => 'Search Restaurants';
 
   @override
   String get homeCooking => 'homeCooking';
@@ -186,7 +231,10 @@ class L10nEn extends L10n {
   String get profileExchangePointsButton => 'Exchange Points';
 
   @override
-  String get postDetailLikeButton => 'Like';
+  String get profileFavoriteGenre => 'Favorite Genre';
+
+  @override
+  String get likeButton => 'Like';
 
   @override
   String get shareReviewPrefix => 'Just shared my review of what I ate!';
@@ -205,9 +253,6 @@ class L10nEn extends L10n {
 
   @override
   String get postDetailSheetBlockButton => 'Block this user';
-
-  @override
-  String get postSearchError => 'Unable to search for place names';
 
   @override
   String get dialogYesButton => 'Yes';
@@ -273,6 +318,15 @@ class L10nEn extends L10n {
   String get errorRefreshButton => 'Reload';
 
   @override
+  String get error => 'Errors have occurred';
+
+  @override
+  String get mapLoadingError => 'An error occurred';
+
+  @override
+  String get mapLoadingRestaurant => 'Getting restaurant information...';
+
+  @override
   String get appShareTitle => 'Share';
 
   @override
@@ -288,16 +342,67 @@ class L10nEn extends L10n {
   String get appShareCloseButton => 'Close';
 
   @override
-  String get agreeToTheTermsOfUse => 'Please agree to the Terms of Use';
+  String get appRestaurantLabel => 'Search Restaurant';
 
   @override
-  String get appRestaurantLabel => 'Search Restaurant';
+  String get appRequestTitle => '🙇 Turn on the current location 🙇';
+
+  @override
+  String get appRequestReason => 'Current location data is required for restaurant selection';
+
+  @override
+  String get appRequestInduction => 'The following buttons take you to the settings screen';
+
+  @override
+  String get appRequestOpenSetting => 'Open the settings screen';
+
+  @override
+  String get appTitle => 'FoodGram';
+
+  @override
+  String get appSubtitle => 'Share your delicious moments';
+
+  @override
+  String get agreeToTheTermsOfUse => 'Please agree to the Terms of Use';
 
   @override
   String get restaurantCategoryList => 'Select a Cuisine by Country';
 
   @override
   String get cookingCategoryList => 'Select a food category';
+
+  @override
+  String get restaurantReviewNew => 'New';
+
+  @override
+  String get restaurantReviewViewDetails => 'View Details';
+
+  @override
+  String get restaurantReviewOtherPosts => 'Other Posts';
+
+  @override
+  String get restaurantReviewReviewList => 'Review List';
+
+  @override
+  String get restaurantReviewError => 'An error occurred';
+
+  @override
+  String get nearbyRestaurants => '📍Nearby Restaurants';
+
+  @override
+  String get seeMore => 'See More';
+
+  @override
+  String get selectCountryTag => 'Select a Country Category';
+
+  @override
+  String get selectFavoriteTag => 'Select Favorite Tag';
+
+  @override
+  String get favoriteTagPlaceholder => 'Select your favorite tag';
+
+  @override
+  String get selectFoodTag => 'Select Food Tag';
 
   @override
   String get tabHome => 'Food';
@@ -339,25 +444,16 @@ class L10nEn extends L10n {
   String get emailEmpty => 'No email address has been entered';
 
   @override
-  String get error => 'Errors have occurred';
-
-  @override
-  String get appRequestTitle => '🙇 Turn on the current location 🙇';
-
-  @override
-  String get appRequestReason => 'Current location data is required for restaurant selection';
-
-  @override
-  String get appRequestInduction => 'The following buttons take you to the settings screen';
-
-  @override
-  String get appRequestOpenSetting => 'Open the settings screen';
-
-  @override
   String get email => 'Email Address';
 
   @override
   String get enterTheCorrectFormat => 'Please enter the correct format';
+
+  @override
+  String get authInvalidFormat => 'Email address format is incorrect.';
+
+  @override
+  String get authSocketException => 'There is a problem with the network. Please check the connection.';
 
   @override
   String get camera => 'Camera';
@@ -393,27 +489,6 @@ class L10nEn extends L10n {
   String get tutorialThirdPageClose => 'Close';
 
   @override
-  String get settingRestoreSuccessTitle => 'Restore successful';
-
-  @override
-  String get settingRestoreSuccessSubtitle => 'Premium features enabled!';
-
-  @override
-  String get settingRestoreFailureTitle => 'Restore failed';
-
-  @override
-  String get settingRestoreFailureSubtitle => 'No purchase history? Contact support';
-
-  @override
-  String get settingRestore => 'Restore purchase';
-
-  @override
-  String get authInvalidFormat => 'Email address format is incorrect.';
-
-  @override
-  String get authSocketException => 'There is a problem with the network. Please check the connection.';
-
-  @override
   String get detailMenuShare => 'Share';
 
   @override
@@ -433,30 +508,6 @@ class L10nEn extends L10n {
 
   @override
   String get forceUpdateButtonTitle => 'Update';
-
-  @override
-  String get mapLoadingError => 'An error occurred';
-
-  @override
-  String get mapLoadingRestaurant => 'Getting restaurant information...';
-
-  @override
-  String get postMissingInfo => 'Please fill in all required fields';
-
-  @override
-  String get postPhotoSuccess => 'Photo added successfully';
-
-  @override
-  String get postCameraPermission => 'Camera permission is required';
-
-  @override
-  String get postAlbumPermission => 'Photo library permission is required';
-
-  @override
-  String get postSuccess => 'Post successful';
-
-  @override
-  String get searchButton => 'Search';
 
   @override
   String get newAccountImportantTitle => 'Important Note';
@@ -532,18 +583,6 @@ class L10nEn extends L10n {
 
   @override
   String get rank => 'Rank';
-
-  @override
-  String get profileFavoriteGenre => 'Favorite Genre';
-
-  @override
-  String get editFavoriteTagTitle => 'Select Favorite Tag';
-
-  @override
-  String get selectFavoriteTag => 'Select Favorite Tag';
-
-  @override
-  String get favoriteTagPlaceholder => 'Select your favorite tag';
 
   @override
   String get promoteDialogTitle => '✨Become a Premium Member✨';
@@ -627,27 +666,6 @@ class L10nEn extends L10n {
   String get paywallWelcomeTitle => 'Welcome to\nFoodGram Members!';
 
   @override
-  String get appTitle => 'FoodGram';
-
-  @override
-  String get appSubtitle => 'Share your delicious moments';
-
-  @override
-  String get searchRestaurantTitle => 'Search Restaurants';
-
-  @override
-  String get nearbyRestaurants => '📍Nearby Restaurants';
-
-  @override
-  String get seeMore => 'See More';
-
-  @override
-  String get selectCountryTag => 'Select a Country Category';
-
-  @override
-  String get selectFoodTag => 'Select Food Tag';
-
-  @override
   String get paywallSkip => 'Skip';
 
   @override
@@ -670,21 +688,6 @@ class L10nEn extends L10n {
 
   @override
   String get anonymousUsername => 'foodgramer';
-
-  @override
-  String get restaurantReviewNew => 'New';
-
-  @override
-  String get restaurantReviewViewDetails => 'View Details';
-
-  @override
-  String get restaurantReviewOtherPosts => 'Other Posts';
-
-  @override
-  String get restaurantReviewReviewList => 'Review List';
-
-  @override
-  String get restaurantReviewError => 'An error occurred';
 
   @override
   String get tagOtherCuisine => 'Other Cuisine';
@@ -1381,7 +1384,4 @@ class L10nEn extends L10n {
 
   @override
   String get tagButter => 'Butter';
-
-  @override
-  String get settingsAccountManagement => 'Account Management';
 }

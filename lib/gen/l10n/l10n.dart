@@ -126,11 +126,11 @@ abstract class L10n {
   /// **'メールアドレスを入力してください'**
   String get emailInputField;
 
-  /// No description provided for @settingsIcon.
+  /// No description provided for @settingIcon.
   ///
   /// In ja, this message translates to:
   /// **'アイコンの設定'**
-  String get settingsIcon;
+  String get settingIcon;
 
   /// No description provided for @userName.
   ///
@@ -162,101 +162,101 @@ abstract class L10n {
   /// **'登録'**
   String get registerButton;
 
-  /// No description provided for @settingsAppBar.
+  /// No description provided for @settingAppBar.
   ///
   /// In ja, this message translates to:
   /// **'基本設定'**
-  String get settingsAppBar;
+  String get settingAppBar;
 
-  /// No description provided for @settingsCheckVersion.
+  /// No description provided for @settingCheckVersion.
   ///
   /// In ja, this message translates to:
   /// **'アップデート'**
-  String get settingsCheckVersion;
+  String get settingCheckVersion;
 
-  /// No description provided for @settingsCheckVersionDialogTitle.
+  /// No description provided for @settingCheckVersionDialogTitle.
   ///
   /// In ja, this message translates to:
   /// **'更新情報'**
-  String get settingsCheckVersionDialogTitle;
+  String get settingCheckVersionDialogTitle;
 
-  /// No description provided for @settingsCheckVersionDialogText1.
+  /// No description provided for @settingCheckVersionDialogText1.
   ///
   /// In ja, this message translates to:
   /// **'新しいバージョンがご利用いただけます。'**
-  String get settingsCheckVersionDialogText1;
+  String get settingCheckVersionDialogText1;
 
-  /// No description provided for @settingsCheckVersionDialogText2.
+  /// No description provided for @settingCheckVersionDialogText2.
   ///
   /// In ja, this message translates to:
   /// **'最新版にアップデートしてご利用ください。'**
-  String get settingsCheckVersionDialogText2;
+  String get settingCheckVersionDialogText2;
 
-  /// No description provided for @settingsDeveloper.
+  /// No description provided for @settingDeveloper.
   ///
   /// In ja, this message translates to:
   /// **'公式Twitter'**
-  String get settingsDeveloper;
+  String get settingDeveloper;
 
-  /// No description provided for @settingsGithub.
+  /// No description provided for @settingGithub.
   ///
   /// In ja, this message translates to:
   /// **'Github'**
-  String get settingsGithub;
+  String get settingGithub;
 
-  /// No description provided for @settingsReview.
+  /// No description provided for @settingReview.
   ///
   /// In ja, this message translates to:
   /// **'レビューする'**
-  String get settingsReview;
+  String get settingReview;
 
-  /// No description provided for @settingsLicense.
+  /// No description provided for @settingLicense.
   ///
   /// In ja, this message translates to:
   /// **'ライセンス'**
-  String get settingsLicense;
+  String get settingLicense;
 
-  /// No description provided for @settingsShareApp.
+  /// No description provided for @settingShareApp.
   ///
   /// In ja, this message translates to:
   /// **'シェアする'**
-  String get settingsShareApp;
+  String get settingShareApp;
 
-  /// No description provided for @settingsFaq.
+  /// No description provided for @settingFaq.
   ///
   /// In ja, this message translates to:
   /// **'FAQ'**
-  String get settingsFaq;
+  String get settingFaq;
 
-  /// No description provided for @settingsPrivacyPolicy.
+  /// No description provided for @settingPrivacyPolicy.
   ///
   /// In ja, this message translates to:
   /// **'プライバシー'**
-  String get settingsPrivacyPolicy;
+  String get settingPrivacyPolicy;
 
-  /// No description provided for @settingsTermsOfUse.
+  /// No description provided for @settingTermsOfUse.
   ///
   /// In ja, this message translates to:
   /// **'利用規約'**
-  String get settingsTermsOfUse;
+  String get settingTermsOfUse;
 
-  /// No description provided for @settingsContact.
+  /// No description provided for @settingContact.
   ///
   /// In ja, this message translates to:
   /// **'お問い合せ'**
-  String get settingsContact;
+  String get settingContact;
 
-  /// No description provided for @settingsTutorial.
+  /// No description provided for @settingTutorial.
   ///
   /// In ja, this message translates to:
   /// **'チュートリアル'**
-  String get settingsTutorial;
+  String get settingTutorial;
 
-  /// No description provided for @settingsCredit.
+  /// No description provided for @settingCredit.
   ///
   /// In ja, this message translates to:
   /// **'クレジット'**
-  String get settingsCredit;
+  String get settingCredit;
 
   /// No description provided for @unregistered.
   ///
@@ -264,53 +264,53 @@ abstract class L10n {
   /// **'未登録'**
   String get unregistered;
 
-  /// No description provided for @settingsBatteryLevel.
+  /// No description provided for @settingBatteryLevel.
   ///
   /// In ja, this message translates to:
   /// **'バッテリー残量'**
-  String get settingsBatteryLevel;
+  String get settingBatteryLevel;
 
-  /// No description provided for @settingsDeviceInfo.
+  /// No description provided for @settingDeviceInfo.
   ///
   /// In ja, this message translates to:
   /// **'端末情報'**
-  String get settingsDeviceInfo;
+  String get settingDeviceInfo;
 
-  /// No description provided for @settingsIosVersion.
+  /// No description provided for @settingIosVersion.
   ///
   /// In ja, this message translates to:
   /// **'iOSバージョン'**
-  String get settingsIosVersion;
+  String get settingIosVersion;
 
-  /// No description provided for @settingsAndroidSdk.
+  /// No description provided for @settingAndroidSdk.
   ///
   /// In ja, this message translates to:
   /// **'SDK'**
-  String get settingsAndroidSdk;
+  String get settingAndroidSdk;
 
-  /// No description provided for @settingsAppVersion.
+  /// No description provided for @settingAppVersion.
   ///
   /// In ja, this message translates to:
   /// **'アプリバージョン'**
-  String get settingsAppVersion;
+  String get settingAppVersion;
 
-  /// No description provided for @settingsAccount.
+  /// No description provided for @settingAccount.
   ///
   /// In ja, this message translates to:
   /// **'アカウント'**
-  String get settingsAccount;
+  String get settingAccount;
 
-  /// No description provided for @settingsLogoutButton.
+  /// No description provided for @settingLogoutButton.
   ///
   /// In ja, this message translates to:
   /// **'ログアウト'**
-  String get settingsLogoutButton;
+  String get settingLogoutButton;
 
-  /// No description provided for @settingsDeleteAccountButton.
+  /// No description provided for @settingDeleteAccountButton.
   ///
   /// In ja, this message translates to:
   /// **'アカウント削除申請'**
-  String get settingsDeleteAccountButton;
+  String get settingDeleteAccountButton;
 
   /// No description provided for @settingQuestion.
   ///
@@ -318,11 +318,47 @@ abstract class L10n {
   /// **'質問箱'**
   String get settingQuestion;
 
-  /// No description provided for @postShareButton.
+  /// No description provided for @settingAccountManagement.
+  ///
+  /// In ja, this message translates to:
+  /// **'アカウント管理'**
+  String get settingAccountManagement;
+
+  /// No description provided for @settingRestoreSuccessTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'復元が成功しました'**
+  String get settingRestoreSuccessTitle;
+
+  /// No description provided for @settingRestoreSuccessSubtitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'プレミアム機能が有効になりました！'**
+  String get settingRestoreSuccessSubtitle;
+
+  /// No description provided for @settingRestoreFailureTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'復元失敗'**
+  String get settingRestoreFailureTitle;
+
+  /// No description provided for @settingRestoreFailureSubtitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'購入履歴がない場合はサポートにご連絡を'**
+  String get settingRestoreFailureSubtitle;
+
+  /// No description provided for @settingRestore.
+  ///
+  /// In ja, this message translates to:
+  /// **'購入を復元'**
+  String get settingRestore;
+
+  /// No description provided for @shareButton.
   ///
   /// In ja, this message translates to:
   /// **'シェア'**
-  String get postShareButton;
+  String get shareButton;
 
   /// No description provided for @postFoodName.
   ///
@@ -384,6 +420,42 @@ abstract class L10n {
   /// **'投稿'**
   String get postTitle;
 
+  /// No description provided for @postMissingInfo.
+  ///
+  /// In ja, this message translates to:
+  /// **'必須項目を入力してください'**
+  String get postMissingInfo;
+
+  /// No description provided for @postPhotoSuccess.
+  ///
+  /// In ja, this message translates to:
+  /// **'写真を追加しました'**
+  String get postPhotoSuccess;
+
+  /// No description provided for @postCameraPermission.
+  ///
+  /// In ja, this message translates to:
+  /// **'カメラの許可が必要です'**
+  String get postCameraPermission;
+
+  /// No description provided for @postAlbumPermission.
+  ///
+  /// In ja, this message translates to:
+  /// **'フォトライブラリの許可が必要です'**
+  String get postAlbumPermission;
+
+  /// No description provided for @postSuccess.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿が完了しました'**
+  String get postSuccess;
+
+  /// No description provided for @postSearchError.
+  ///
+  /// In ja, this message translates to:
+  /// **'場所名の検索ができません'**
+  String get postSearchError;
+
   /// No description provided for @editUpdateButton.
   ///
   /// In ja, this message translates to:
@@ -402,6 +474,12 @@ abstract class L10n {
   /// **'自己紹介を入力してください'**
   String get editBioInputField;
 
+  /// No description provided for @editFavoriteTagTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'お気に入りタグの選択'**
+  String get editFavoriteTagTitle;
+
   /// No description provided for @emptyPosts.
   ///
   /// In ja, this message translates to:
@@ -413,6 +491,18 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'該当する場所が見つかりませんでした'**
   String get searchEmptyResult;
+
+  /// No description provided for @searchButton.
+  ///
+  /// In ja, this message translates to:
+  /// **'検索'**
+  String get searchButton;
+
+  /// No description provided for @searchRestaurantTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'レストランを探す'**
+  String get searchRestaurantTitle;
 
   /// No description provided for @homeCooking.
   ///
@@ -450,11 +540,17 @@ abstract class L10n {
   /// **'ポイントを交換する'**
   String get profileExchangePointsButton;
 
-  /// No description provided for @postDetailLikeButton.
+  /// No description provided for @profileFavoriteGenre.
+  ///
+  /// In ja, this message translates to:
+  /// **'好きなジャンル'**
+  String get profileFavoriteGenre;
+
+  /// No description provided for @likeButton.
   ///
   /// In ja, this message translates to:
   /// **'いいね'**
-  String get postDetailLikeButton;
+  String get likeButton;
 
   /// No description provided for @shareReviewPrefix.
   ///
@@ -491,12 +587,6 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'このユーザーをブロックする'**
   String get postDetailSheetBlockButton;
-
-  /// No description provided for @postSearchError.
-  ///
-  /// In ja, this message translates to:
-  /// **'場所名の検索ができません'**
-  String get postSearchError;
 
   /// No description provided for @dialogYesButton.
   ///
@@ -624,6 +714,24 @@ abstract class L10n {
   /// **'再読み込み'**
   String get errorRefreshButton;
 
+  /// No description provided for @error.
+  ///
+  /// In ja, this message translates to:
+  /// **'エラーが発生しました'**
+  String get error;
+
+  /// No description provided for @mapLoadingError.
+  ///
+  /// In ja, this message translates to:
+  /// **'エラーが発生しました'**
+  String get mapLoadingError;
+
+  /// No description provided for @mapLoadingRestaurant.
+  ///
+  /// In ja, this message translates to:
+  /// **'店舗情報を取得中...'**
+  String get mapLoadingRestaurant;
+
   /// No description provided for @appShareTitle.
   ///
   /// In ja, this message translates to:
@@ -654,17 +762,53 @@ abstract class L10n {
   /// **'閉じる'**
   String get appShareCloseButton;
 
-  /// No description provided for @agreeToTheTermsOfUse.
-  ///
-  /// In ja, this message translates to:
-  /// **'利用規約に同意してください'**
-  String get agreeToTheTermsOfUse;
-
   /// No description provided for @appRestaurantLabel.
   ///
   /// In ja, this message translates to:
   /// **'レストランを検索'**
   String get appRestaurantLabel;
+
+  /// No description provided for @appRequestTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'🙇現在地をオンにしてください🙇'**
+  String get appRequestTitle;
+
+  /// No description provided for @appRequestReason.
+  ///
+  /// In ja, this message translates to:
+  /// **'レストランの選択には現在地のデータが必要になります'**
+  String get appRequestReason;
+
+  /// No description provided for @appRequestInduction.
+  ///
+  /// In ja, this message translates to:
+  /// **'以下のボタンから設定画面に遷移します'**
+  String get appRequestInduction;
+
+  /// No description provided for @appRequestOpenSetting.
+  ///
+  /// In ja, this message translates to:
+  /// **'設定画面を開く'**
+  String get appRequestOpenSetting;
+
+  /// No description provided for @appTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'FoodGram'**
+  String get appTitle;
+
+  /// No description provided for @appSubtitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'美味しい瞬間、シェアしよう'**
+  String get appSubtitle;
+
+  /// No description provided for @agreeToTheTermsOfUse.
+  ///
+  /// In ja, this message translates to:
+  /// **'利用規約に同意してください'**
+  String get agreeToTheTermsOfUse;
 
   /// No description provided for @restaurantCategoryList.
   ///
@@ -677,6 +821,72 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'料理カテゴリーを選ぶ'**
   String get cookingCategoryList;
+
+  /// No description provided for @restaurantReviewNew.
+  ///
+  /// In ja, this message translates to:
+  /// **'新着'**
+  String get restaurantReviewNew;
+
+  /// No description provided for @restaurantReviewViewDetails.
+  ///
+  /// In ja, this message translates to:
+  /// **'詳細を見る'**
+  String get restaurantReviewViewDetails;
+
+  /// No description provided for @restaurantReviewOtherPosts.
+  ///
+  /// In ja, this message translates to:
+  /// **'他の投稿も見てみる'**
+  String get restaurantReviewOtherPosts;
+
+  /// No description provided for @restaurantReviewReviewList.
+  ///
+  /// In ja, this message translates to:
+  /// **'レビュー一覧'**
+  String get restaurantReviewReviewList;
+
+  /// No description provided for @restaurantReviewError.
+  ///
+  /// In ja, this message translates to:
+  /// **'エラーが発生しました'**
+  String get restaurantReviewError;
+
+  /// No description provided for @nearbyRestaurants.
+  ///
+  /// In ja, this message translates to:
+  /// **'📍近いレストラン'**
+  String get nearbyRestaurants;
+
+  /// No description provided for @seeMore.
+  ///
+  /// In ja, this message translates to:
+  /// **'もっとみる'**
+  String get seeMore;
+
+  /// No description provided for @selectCountryTag.
+  ///
+  /// In ja, this message translates to:
+  /// **'国カテゴリーの選択'**
+  String get selectCountryTag;
+
+  /// No description provided for @selectFavoriteTag.
+  ///
+  /// In ja, this message translates to:
+  /// **'お気に入りタグを選択'**
+  String get selectFavoriteTag;
+
+  /// No description provided for @favoriteTagPlaceholder.
+  ///
+  /// In ja, this message translates to:
+  /// **'お気に入りのタグ'**
+  String get favoriteTagPlaceholder;
+
+  /// No description provided for @selectFoodTag.
+  ///
+  /// In ja, this message translates to:
+  /// **'料理カテゴリーの選択'**
+  String get selectFoodTag;
 
   /// No description provided for @tabHome.
   ///
@@ -756,36 +966,6 @@ abstract class L10n {
   /// **'メールアドレスが入力されていません'**
   String get emailEmpty;
 
-  /// No description provided for @error.
-  ///
-  /// In ja, this message translates to:
-  /// **'エラーが発生しました'**
-  String get error;
-
-  /// No description provided for @appRequestTitle.
-  ///
-  /// In ja, this message translates to:
-  /// **'🙇現在地をオンにしてください🙇'**
-  String get appRequestTitle;
-
-  /// No description provided for @appRequestReason.
-  ///
-  /// In ja, this message translates to:
-  /// **'レストランの選択には現在地のデータが必要になります'**
-  String get appRequestReason;
-
-  /// No description provided for @appRequestInduction.
-  ///
-  /// In ja, this message translates to:
-  /// **'以下のボタンから設定画面に遷移します'**
-  String get appRequestInduction;
-
-  /// No description provided for @appRequestOpenSetting.
-  ///
-  /// In ja, this message translates to:
-  /// **'設定画面を開く'**
-  String get appRequestOpenSetting;
-
   /// No description provided for @email.
   ///
   /// In ja, this message translates to:
@@ -797,6 +977,18 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'正しい形式で入力してください'**
   String get enterTheCorrectFormat;
+
+  /// No description provided for @authInvalidFormat.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールアドレスのフォーマットが間違っています'**
+  String get authInvalidFormat;
+
+  /// No description provided for @authSocketException.
+  ///
+  /// In ja, this message translates to:
+  /// **'ネットワークに問題があります。接続を確認してください'**
+  String get authSocketException;
 
   /// No description provided for @camera.
   ///
@@ -864,48 +1056,6 @@ abstract class L10n {
   /// **'閉じる'**
   String get tutorialThirdPageClose;
 
-  /// No description provided for @settingRestoreSuccessTitle.
-  ///
-  /// In ja, this message translates to:
-  /// **'復元が成功しました'**
-  String get settingRestoreSuccessTitle;
-
-  /// No description provided for @settingRestoreSuccessSubtitle.
-  ///
-  /// In ja, this message translates to:
-  /// **'プレミアム機能が有効になりました！'**
-  String get settingRestoreSuccessSubtitle;
-
-  /// No description provided for @settingRestoreFailureTitle.
-  ///
-  /// In ja, this message translates to:
-  /// **'復元失敗'**
-  String get settingRestoreFailureTitle;
-
-  /// No description provided for @settingRestoreFailureSubtitle.
-  ///
-  /// In ja, this message translates to:
-  /// **'購入履歴がない場合はサポートにご連絡を'**
-  String get settingRestoreFailureSubtitle;
-
-  /// No description provided for @settingRestore.
-  ///
-  /// In ja, this message translates to:
-  /// **'購入を復元'**
-  String get settingRestore;
-
-  /// No description provided for @authInvalidFormat.
-  ///
-  /// In ja, this message translates to:
-  /// **'メールアドレスのフォーマットが間違っています'**
-  String get authInvalidFormat;
-
-  /// No description provided for @authSocketException.
-  ///
-  /// In ja, this message translates to:
-  /// **'ネットワークに問題があります。接続を確認してください'**
-  String get authSocketException;
-
   /// No description provided for @detailMenuShare.
   ///
   /// In ja, this message translates to:
@@ -947,54 +1097,6 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'アップデート'**
   String get forceUpdateButtonTitle;
-
-  /// No description provided for @mapLoadingError.
-  ///
-  /// In ja, this message translates to:
-  /// **'エラーが発生しました'**
-  String get mapLoadingError;
-
-  /// No description provided for @mapLoadingRestaurant.
-  ///
-  /// In ja, this message translates to:
-  /// **'店舗情報を取得中...'**
-  String get mapLoadingRestaurant;
-
-  /// No description provided for @postMissingInfo.
-  ///
-  /// In ja, this message translates to:
-  /// **'必須項目を入力してください'**
-  String get postMissingInfo;
-
-  /// No description provided for @postPhotoSuccess.
-  ///
-  /// In ja, this message translates to:
-  /// **'写真を追加しました'**
-  String get postPhotoSuccess;
-
-  /// No description provided for @postCameraPermission.
-  ///
-  /// In ja, this message translates to:
-  /// **'カメラの許可が必要です'**
-  String get postCameraPermission;
-
-  /// No description provided for @postAlbumPermission.
-  ///
-  /// In ja, this message translates to:
-  /// **'フォトライブラリの許可が必要です'**
-  String get postAlbumPermission;
-
-  /// No description provided for @postSuccess.
-  ///
-  /// In ja, this message translates to:
-  /// **'投稿が完了しました'**
-  String get postSuccess;
-
-  /// No description provided for @searchButton.
-  ///
-  /// In ja, this message translates to:
-  /// **'検索'**
-  String get searchButton;
 
   /// No description provided for @newAccountImportantTitle.
   ///
@@ -1145,30 +1247,6 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'ランク'**
   String get rank;
-
-  /// No description provided for @profileFavoriteGenre.
-  ///
-  /// In ja, this message translates to:
-  /// **'好きなジャンル'**
-  String get profileFavoriteGenre;
-
-  /// No description provided for @editFavoriteTagTitle.
-  ///
-  /// In ja, this message translates to:
-  /// **'お気に入りタグの選択'**
-  String get editFavoriteTagTitle;
-
-  /// No description provided for @selectFavoriteTag.
-  ///
-  /// In ja, this message translates to:
-  /// **'お気に入りタグを選択'**
-  String get selectFavoriteTag;
-
-  /// No description provided for @favoriteTagPlaceholder.
-  ///
-  /// In ja, this message translates to:
-  /// **'お気に入りのタグ'**
-  String get favoriteTagPlaceholder;
 
   /// No description provided for @promoteDialogTitle.
   ///
@@ -1332,48 +1410,6 @@ abstract class L10n {
   /// **'Welcome to\nFoodGram Members!'**
   String get paywallWelcomeTitle;
 
-  /// No description provided for @appTitle.
-  ///
-  /// In ja, this message translates to:
-  /// **'FoodGram'**
-  String get appTitle;
-
-  /// No description provided for @appSubtitle.
-  ///
-  /// In ja, this message translates to:
-  /// **'美味しい瞬間、シェアしよう'**
-  String get appSubtitle;
-
-  /// No description provided for @searchRestaurantTitle.
-  ///
-  /// In ja, this message translates to:
-  /// **'レストランを探す'**
-  String get searchRestaurantTitle;
-
-  /// No description provided for @nearbyRestaurants.
-  ///
-  /// In ja, this message translates to:
-  /// **'📍近いレストラン'**
-  String get nearbyRestaurants;
-
-  /// No description provided for @seeMore.
-  ///
-  /// In ja, this message translates to:
-  /// **'もっとみる'**
-  String get seeMore;
-
-  /// No description provided for @selectCountryTag.
-  ///
-  /// In ja, this message translates to:
-  /// **'国カテゴリーの選択'**
-  String get selectCountryTag;
-
-  /// No description provided for @selectFoodTag.
-  ///
-  /// In ja, this message translates to:
-  /// **'料理カテゴリーの選択'**
-  String get selectFoodTag;
-
   /// No description provided for @paywallSkip.
   ///
   /// In ja, this message translates to:
@@ -1421,36 +1457,6 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'foodgramer'**
   String get anonymousUsername;
-
-  /// No description provided for @restaurantReviewNew.
-  ///
-  /// In ja, this message translates to:
-  /// **'新着'**
-  String get restaurantReviewNew;
-
-  /// No description provided for @restaurantReviewViewDetails.
-  ///
-  /// In ja, this message translates to:
-  /// **'詳細を見る'**
-  String get restaurantReviewViewDetails;
-
-  /// No description provided for @restaurantReviewOtherPosts.
-  ///
-  /// In ja, this message translates to:
-  /// **'他の投稿も見てみる'**
-  String get restaurantReviewOtherPosts;
-
-  /// No description provided for @restaurantReviewReviewList.
-  ///
-  /// In ja, this message translates to:
-  /// **'レビュー一覧'**
-  String get restaurantReviewReviewList;
-
-  /// No description provided for @restaurantReviewError.
-  ///
-  /// In ja, this message translates to:
-  /// **'エラーが発生しました'**
-  String get restaurantReviewError;
 
   /// No description provided for @tagOtherCuisine.
   ///
@@ -2843,12 +2849,6 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'バター'**
   String get tagButter;
-
-  /// No description provided for @settingsAccountManagement.
-  ///
-  /// In ja, this message translates to:
-  /// **'アカウント管理'**
-  String get settingsAccountManagement;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

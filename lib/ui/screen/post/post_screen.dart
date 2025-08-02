@@ -326,7 +326,7 @@ class PostScreen extends HookConsumerWidget {
                     child: Text(
                       state.isAnonymous
                           ? l10n.anonymousShare
-                          : l10n.postShareButton,
+                          : l10n.shareButton,
                       style: const TextStyle(
                         color: Colors.white,
                       ),

@@ -128,7 +128,7 @@ class EditScreen extends HookConsumerWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          L10n.of(context).settingsIcon,
+                          L10n.of(context).settingIcon,
                           style: EditStyle.settingsIcon(),
                         ),
                       ),

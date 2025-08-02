@@ -59,9 +59,9 @@ class SettingViewModel extends _$SettingViewModel {
       newVersion.showUpdateDialog(
         context: context,
         versionStatus: status,
-        dialogTitle: l10n.settingsCheckVersionDialogTitle,
-        dialogText: '${l10n.settingsCheckVersionDialogText1}\n'
-            '${l10n.settingsCheckVersionDialogText2}',
+        dialogTitle: l10n.settingCheckVersionDialogTitle,
+        dialogText: '${l10n.settingCheckVersionDialogText1}\n'
+            '${l10n.settingCheckVersionDialogText2}',
         launchModeVersion: LaunchModeVersion.external,
       );
     } else {
