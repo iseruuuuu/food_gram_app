@@ -6,14 +6,10 @@ class SettingTile extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.onTap,
-    this.size,
-    this.color,
     super.key,
   });
 
   final IconData icon;
-  final double? size;
-  final Color? color;
   final String title;
   final VoidCallback onTap;
 
@@ -32,16 +28,19 @@ class SettingTile extends StatelessWidget {
               backgroundColor: Colors.transparent,
               child: Icon(
                 icon,
-                size: size ?? 28,
-                color: color ?? Colors.black,
+                size: 32,
+                color: const Color(0xFF0168B7),
               ),
             ),
             const Gap(5),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 13.5,
-                fontWeight: FontWeight.w600,
+            FittedBox(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
               ),
             ),
             const Gap(10),
