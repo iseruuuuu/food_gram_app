@@ -24,7 +24,7 @@ class L10nJa extends L10n {
   String get emailInputField => 'メールアドレスを入力してください';
 
   @override
-  String get settingsIcon => 'アイコンの設定';
+  String get settingIcon => 'アイコンの設定';
 
   @override
   String get userName => 'ユーザー名';
@@ -42,82 +42,100 @@ class L10nJa extends L10n {
   String get registerButton => '登録';
 
   @override
-  String get settingsAppBar => '基本設定';
+  String get settingAppBar => '基本設定';
 
   @override
-  String get settingsCheckVersion => 'アップデート';
+  String get settingCheckVersion => 'アップデート';
 
   @override
-  String get settingsCheckVersionDialogTitle => '更新情報';
+  String get settingCheckVersionDialogTitle => '更新情報';
 
   @override
-  String get settingsCheckVersionDialogText1 => '新しいバージョンがご利用いただけます。';
+  String get settingCheckVersionDialogText1 => '新しいバージョンがご利用いただけます。';
 
   @override
-  String get settingsCheckVersionDialogText2 => '最新版にアップデートしてご利用ください。';
+  String get settingCheckVersionDialogText2 => '最新版にアップデートしてご利用ください。';
 
   @override
-  String get settingsDeveloper => '公式Twitter';
+  String get settingDeveloper => '公式Twitter';
 
   @override
-  String get settingsGithub => 'Github';
+  String get settingGithub => 'Github';
 
   @override
-  String get settingsReview => 'レビューする';
+  String get settingReview => 'レビューする';
 
   @override
-  String get settingsLicense => 'ライセンス';
+  String get settingLicense => 'ライセンス';
 
   @override
-  String get settingsShareApp => 'シェアする';
+  String get settingShareApp => 'シェアする';
 
   @override
-  String get settingsFaq => 'FAQ';
+  String get settingFaq => 'FAQ';
 
   @override
-  String get settingsPrivacyPolicy => 'プライバシー';
+  String get settingPrivacyPolicy => 'プライバシー';
 
   @override
-  String get settingsTermsOfUse => '利用規約';
+  String get settingTermsOfUse => '利用規約';
 
   @override
-  String get settingsContact => 'お問い合せ';
+  String get settingContact => 'お問い合せ';
 
   @override
-  String get settingsTutorial => 'チュートリアル';
+  String get settingTutorial => 'チュートリアル';
 
   @override
-  String get settingsCredit => 'クレジット';
+  String get settingCredit => 'クレジット';
 
   @override
   String get unregistered => '未登録';
 
   @override
-  String get settingsBatteryLevel => 'バッテリー残量';
+  String get settingBatteryLevel => 'バッテリー残量';
 
   @override
-  String get settingsDeviceInfo => '端末情報';
+  String get settingDeviceInfo => '端末情報';
 
   @override
-  String get settingsIosVersion => 'iOSバージョン';
+  String get settingIosVersion => 'iOSバージョン';
 
   @override
-  String get settingsAndroidSdk => 'SDK';
+  String get settingAndroidSdk => 'SDK';
 
   @override
-  String get settingsAppVersion => 'アプリバージョン';
+  String get settingAppVersion => 'アプリバージョン';
 
   @override
-  String get settingsAccount => 'アカウント';
+  String get settingAccount => 'アカウント';
 
   @override
-  String get settingsLogoutButton => 'ログアウト';
+  String get settingLogoutButton => 'ログアウト';
 
   @override
-  String get settingsDeleteAccountButton => 'アカウント削除申請';
+  String get settingDeleteAccountButton => 'アカウント削除申請';
 
   @override
   String get settingQuestion => '質問箱';
+
+  @override
+  String get settingAccountManagement => 'アカウント管理';
+
+  @override
+  String get settingRestoreSuccessTitle => '復元が成功しました';
+
+  @override
+  String get settingRestoreSuccessSubtitle => 'プレミアム機能が有効になりました！';
+
+  @override
+  String get settingRestoreFailureTitle => '復元失敗';
+
+  @override
+  String get settingRestoreFailureSubtitle => '購入履歴がない場合はサポートにご連絡を';
+
+  @override
+  String get settingRestore => '購入を復元';
 
   @override
   String get shareButton => 'シェア';
@@ -153,6 +171,24 @@ class L10nJa extends L10n {
   String get postTitle => '投稿';
 
   @override
+  String get postMissingInfo => '必須項目を入力してください';
+
+  @override
+  String get postPhotoSuccess => '写真を追加しました';
+
+  @override
+  String get postCameraPermission => 'カメラの許可が必要です';
+
+  @override
+  String get postAlbumPermission => 'フォトライブラリの許可が必要です';
+
+  @override
+  String get postSuccess => '投稿が完了しました';
+
+  @override
+  String get postSearchError => '場所名の検索ができません';
+
+  @override
   String get editUpdateButton => '更新';
 
   @override
@@ -162,10 +198,19 @@ class L10nJa extends L10n {
   String get editBioInputField => '自己紹介を入力してください';
 
   @override
+  String get editFavoriteTagTitle => 'お気に入りタグの選択';
+
+  @override
   String get emptyPosts => '投稿がありません';
 
   @override
   String get searchEmptyResult => '該当する場所が見つかりませんでした';
+
+  @override
+  String get searchButton => '検索';
+
+  @override
+  String get searchRestaurantTitle => 'レストランを探す';
 
   @override
   String get homeCooking => '自炊';
@@ -184,6 +229,9 @@ class L10nJa extends L10n {
 
   @override
   String get profileExchangePointsButton => 'ポイントを交換する';
+
+  @override
+  String get profileFavoriteGenre => '好きなジャンル';
 
   @override
   String get likeButton => 'いいね';
@@ -205,9 +253,6 @@ class L10nJa extends L10n {
 
   @override
   String get postDetailSheetBlockButton => 'このユーザーをブロックする';
-
-  @override
-  String get postSearchError => '場所名の検索ができません';
 
   @override
   String get dialogYesButton => 'はい';
@@ -273,6 +318,15 @@ class L10nJa extends L10n {
   String get errorRefreshButton => '再読み込み';
 
   @override
+  String get error => 'エラーが発生しました';
+
+  @override
+  String get mapLoadingError => 'エラーが発生しました';
+
+  @override
+  String get mapLoadingRestaurant => '店舗情報を取得中...';
+
+  @override
   String get appShareTitle => '共有';
 
   @override
@@ -288,16 +342,67 @@ class L10nJa extends L10n {
   String get appShareCloseButton => '閉じる';
 
   @override
-  String get agreeToTheTermsOfUse => '利用規約に同意してください';
+  String get appRestaurantLabel => 'レストランを検索';
 
   @override
-  String get appRestaurantLabel => 'レストランを検索';
+  String get appRequestTitle => '🙇現在地をオンにしてください🙇';
+
+  @override
+  String get appRequestReason => 'レストランの選択には現在地のデータが必要になります';
+
+  @override
+  String get appRequestInduction => '以下のボタンから設定画面に遷移します';
+
+  @override
+  String get appRequestOpenSetting => '設定画面を開く';
+
+  @override
+  String get appTitle => 'FoodGram';
+
+  @override
+  String get appSubtitle => '美味しい瞬間、シェアしよう';
+
+  @override
+  String get agreeToTheTermsOfUse => '利用規約に同意してください';
 
   @override
   String get restaurantCategoryList => '国別料理を選ぶ';
 
   @override
   String get cookingCategoryList => '料理カテゴリーを選ぶ';
+
+  @override
+  String get restaurantReviewNew => '新着';
+
+  @override
+  String get restaurantReviewViewDetails => '詳細を見る';
+
+  @override
+  String get restaurantReviewOtherPosts => '他の投稿も見てみる';
+
+  @override
+  String get restaurantReviewReviewList => 'レビュー一覧';
+
+  @override
+  String get restaurantReviewError => 'エラーが発生しました';
+
+  @override
+  String get nearbyRestaurants => '📍近いレストラン';
+
+  @override
+  String get seeMore => 'もっとみる';
+
+  @override
+  String get selectCountryTag => '国カテゴリーの選択';
+
+  @override
+  String get selectFavoriteTag => 'お気に入りタグを選択';
+
+  @override
+  String get favoriteTagPlaceholder => 'お気に入りのタグ';
+
+  @override
+  String get selectFoodTag => '料理カテゴリーの選択';
 
   @override
   String get tabHome => 'フード';
@@ -339,25 +444,16 @@ class L10nJa extends L10n {
   String get emailEmpty => 'メールアドレスが入力されていません';
 
   @override
-  String get error => 'エラーが発生しました';
-
-  @override
-  String get appRequestTitle => '🙇現在地をオンにしてください🙇';
-
-  @override
-  String get appRequestReason => 'レストランの選択には現在地のデータが必要になります';
-
-  @override
-  String get appRequestInduction => '以下のボタンから設定画面に遷移します';
-
-  @override
-  String get appRequestOpenSetting => '設定画面を開く';
-
-  @override
   String get email => 'メールアドレス';
 
   @override
   String get enterTheCorrectFormat => '正しい形式で入力してください';
+
+  @override
+  String get authInvalidFormat => 'メールアドレスのフォーマットが間違っています';
+
+  @override
+  String get authSocketException => 'ネットワークに問題があります。接続を確認してください';
 
   @override
   String get camera => 'カメラ';
@@ -393,27 +489,6 @@ class L10nJa extends L10n {
   String get tutorialThirdPageClose => '閉じる';
 
   @override
-  String get settingRestoreSuccessTitle => '復元が成功しました';
-
-  @override
-  String get settingRestoreSuccessSubtitle => 'プレミアム機能が有効になりました！';
-
-  @override
-  String get settingRestoreFailureTitle => '復元失敗';
-
-  @override
-  String get settingRestoreFailureSubtitle => '購入履歴がない場合はサポートにご連絡を';
-
-  @override
-  String get settingRestore => '購入を復元';
-
-  @override
-  String get authInvalidFormat => 'メールアドレスのフォーマットが間違っています';
-
-  @override
-  String get authSocketException => 'ネットワークに問題があります。接続を確認してください';
-
-  @override
   String get detailMenuShare => 'シェア';
 
   @override
@@ -433,30 +508,6 @@ class L10nJa extends L10n {
 
   @override
   String get forceUpdateButtonTitle => 'アップデート';
-
-  @override
-  String get mapLoadingError => 'エラーが発生しました';
-
-  @override
-  String get mapLoadingRestaurant => '店舗情報を取得中...';
-
-  @override
-  String get postMissingInfo => '必須項目を入力してください';
-
-  @override
-  String get postPhotoSuccess => '写真を追加しました';
-
-  @override
-  String get postCameraPermission => 'カメラの許可が必要です';
-
-  @override
-  String get postAlbumPermission => 'フォトライブラリの許可が必要です';
-
-  @override
-  String get postSuccess => '投稿が完了しました';
-
-  @override
-  String get searchButton => '検索';
 
   @override
   String get newAccountImportantTitle => '重要な注意事項';
@@ -532,18 +583,6 @@ class L10nJa extends L10n {
 
   @override
   String get rank => 'ランク';
-
-  @override
-  String get profileFavoriteGenre => '好きなジャンル';
-
-  @override
-  String get editFavoriteTagTitle => 'お気に入りタグの選択';
-
-  @override
-  String get selectFavoriteTag => 'お気に入りタグを選択';
-
-  @override
-  String get favoriteTagPlaceholder => 'お気に入りのタグ';
 
   @override
   String get promoteDialogTitle => '✨プレミアム会員になろう✨';
@@ -627,27 +666,6 @@ class L10nJa extends L10n {
   String get paywallWelcomeTitle => 'Welcome to\nFoodGram Members!';
 
   @override
-  String get appTitle => 'FoodGram';
-
-  @override
-  String get appSubtitle => '美味しい瞬間、シェアしよう';
-
-  @override
-  String get searchRestaurantTitle => 'レストランを探す';
-
-  @override
-  String get nearbyRestaurants => '📍近いレストラン';
-
-  @override
-  String get seeMore => 'もっとみる';
-
-  @override
-  String get selectCountryTag => '国カテゴリーの選択';
-
-  @override
-  String get selectFoodTag => '料理カテゴリーの選択';
-
-  @override
   String get paywallSkip => 'スキップ';
 
   @override
@@ -670,21 +688,6 @@ class L10nJa extends L10n {
 
   @override
   String get anonymousUsername => 'foodgramer';
-
-  @override
-  String get restaurantReviewNew => '新着';
-
-  @override
-  String get restaurantReviewViewDetails => '詳細を見る';
-
-  @override
-  String get restaurantReviewOtherPosts => '他の投稿も見てみる';
-
-  @override
-  String get restaurantReviewReviewList => 'レビュー一覧';
-
-  @override
-  String get restaurantReviewError => 'エラーが発生しました';
 
   @override
   String get tagOtherCuisine => 'その他の料理';
@@ -1381,7 +1384,4 @@ class L10nJa extends L10n {
 
   @override
   String get tagButter => 'バター';
-
-  @override
-  String get settingsAccountManagement => 'アカウント管理';
 }

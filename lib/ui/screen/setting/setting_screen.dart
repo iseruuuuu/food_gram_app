@@ -53,23 +53,23 @@ class SettingScreen extends HookConsumerWidget {
                         children: [
                           SettingTile(
                             icon: FontAwesomeIcons.twitter,
-                            title: l10n.settingsDeveloper,
+                            title: l10n.settingDeveloper,
                             onTap: () => LaunchUrlHelper().openSNSUrl(URL.sns),
                           ),
                           SettingTile(
                             icon: FontAwesomeIcons.github,
-                            title: l10n.settingsGithub,
+                            title: l10n.settingGithub,
                             onTap: () =>
                                 LaunchUrlHelper().openSNSUrl(URL.github),
                           ),
                           SettingTile(
                             icon: Icons.verified,
-                            title: l10n.settingsLicense,
+                            title: l10n.settingLicense,
                             onTap: () => context.pushNamed(RouterPath.license),
                           ),
                           SettingTile(
                             icon: Icons.share,
-                            title: l10n.settingsShareApp,
+                            title: l10n.settingShareApp,
                             onTap: () {
                               final url = Platform.isIOS
                                   ? URL.appleStore
@@ -79,42 +79,42 @@ class SettingScreen extends HookConsumerWidget {
                           ),
                           SettingTile(
                             icon: Icons.rate_review_outlined,
-                            title: l10n.settingsReview,
+                            title: l10n.settingReview,
                             onTap: () => ref
                                 .read(settingViewModelProvider().notifier)
                                 .review(),
                           ),
                           SettingTile(
                             icon: Icons.system_update,
-                            title: l10n.settingsCheckVersion,
+                            title: l10n.settingCheckVersion,
                             onTap: () => ref
                                 .read(settingViewModelProvider().notifier)
                                 .checkNewVersion(context),
                           ),
                           SettingTile(
                             icon: Icons.help_outline,
-                            title: l10n.settingsFaq,
+                            title: l10n.settingFaq,
                             onTap: () => LaunchUrlHelper().open(URL.faq),
                           ),
                           SettingTile(
                             icon: Icons.security,
-                            title: l10n.settingsPrivacyPolicy,
+                            title: l10n.settingPrivacyPolicy,
                             onTap: () =>
                                 LaunchUrlHelper().open(URL.privacyPolicy),
                           ),
                           SettingTile(
                             icon: Icons.assignment,
-                            title: l10n.settingsTermsOfUse,
+                            title: l10n.settingTermsOfUse,
                             onTap: () => LaunchUrlHelper().open(URL.termsOfUse),
                           ),
                           SettingTile(
                             icon: Icons.chat,
-                            title: l10n.settingsContact,
+                            title: l10n.settingContact,
                             onTap: () => LaunchUrlHelper().open(URL.contact),
                           ),
                           SettingTile(
                             icon: Icons.school,
-                            title: l10n.settingsTutorial,
+                            title: l10n.settingTutorial,
                             onTap: () =>
                                 context.pushNamed(RouterPath.settingTutorial),
                           ),
