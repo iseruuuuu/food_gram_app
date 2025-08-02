@@ -318,11 +318,11 @@ abstract class L10n {
   /// **'質問箱'**
   String get settingQuestion;
 
-  /// No description provided for @postShareButton.
+  /// No description provided for @shareButton.
   ///
   /// In ja, this message translates to:
   /// **'シェア'**
-  String get postShareButton;
+  String get shareButton;
 
   /// No description provided for @postFoodName.
   ///
@@ -450,11 +450,11 @@ abstract class L10n {
   /// **'ポイントを交換する'**
   String get profileExchangePointsButton;
 
-  /// No description provided for @postDetailLikeButton.
+  /// No description provided for @likeButton.
   ///
   /// In ja, this message translates to:
   /// **'いいね'**
-  String get postDetailLikeButton;
+  String get likeButton;
 
   /// No description provided for @shareReviewPrefix.
   ///

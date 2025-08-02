@@ -120,7 +120,7 @@ class L10nJa extends L10n {
   String get settingQuestion => '質問箱';
 
   @override
-  String get postShareButton => 'シェア';
+  String get shareButton => 'シェア';
 
   @override
   String get postFoodName => '食べたもの';
@@ -186,7 +186,7 @@ class L10nJa extends L10n {
   String get profileExchangePointsButton => 'ポイントを交換する';
 
   @override
-  String get postDetailLikeButton => 'いいね';
+  String get likeButton => 'いいね';
 
   @override
   String get shareReviewPrefix => 'で食べたレビューを投稿しました！';

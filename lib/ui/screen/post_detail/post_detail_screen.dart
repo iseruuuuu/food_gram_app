@@ -329,7 +329,7 @@ class PostDetailScreen extends HookConsumerWidget {
                                 padding: const EdgeInsets.only(right: 12),
                                 child: Text(
                                   '${initialHeart.value} '
-                                  '${l10n.postDetailLikeButton}',
+                                  '${l10n.likeButton}',
                                   style: DetailPostStyle.like(),
                                 ),
                               ),

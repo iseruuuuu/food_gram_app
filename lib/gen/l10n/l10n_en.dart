@@ -120,7 +120,7 @@ class L10nEn extends L10n {
   String get settingQuestion => 'Question Box';
 
   @override
-  String get postShareButton => 'Share';
+  String get shareButton => 'Share';
 
   @override
   String get postFoodName => 'Food Name';
@@ -186,7 +186,7 @@ class L10nEn extends L10n {
   String get profileExchangePointsButton => 'Exchange Points';
 
   @override
-  String get postDetailLikeButton => 'Like';
+  String get likeButton => 'Like';
 
   @override
   String get shareReviewPrefix => 'Just shared my review of what I ate!';
