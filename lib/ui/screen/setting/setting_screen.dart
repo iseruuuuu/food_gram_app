@@ -202,7 +202,7 @@ class SettingScreen extends HookConsumerWidget {
                             ),
                             const Gap(8),
                             Text(
-                              l10n.settingsAccountManagement,
+                              l10n.settingAccountManagement,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -217,7 +217,7 @@ class SettingScreen extends HookConsumerWidget {
                         children: [
                           SettingTile(
                             icon: Icons.power_settings_new,
-                            title: l10n.settingsLogoutButton,
+                            title: l10n.settingLogoutButton,
                             onTap: () {
                               DialogHelper().openLogoutDialog(
                                 title: l10n.dialogLogoutTitle,
@@ -250,7 +250,7 @@ class SettingScreen extends HookConsumerWidget {
                           ),
                           SettingTile(
                             icon: Icons.delete,
-                            title: l10n.settingsDeleteAccountButton,
+                            title: l10n.settingDeleteAccountButton,
                             onTap: () {
                               LaunchUrlHelper()
                                   .open('https://forms.gle/B2cG3FEynh1tbfUdA')
@@ -303,7 +303,7 @@ class SettingScreen extends HookConsumerWidget {
                                 color: Colors.grey,
                               ),
                               title: Text(
-                                l10n.settingsAppVersion,
+                                l10n.settingAppVersion,
                                 style: SettingStyle.appVersion(),
                               ),
                               trailing: Text(
