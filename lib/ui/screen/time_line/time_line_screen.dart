@@ -20,7 +20,6 @@ class TimeLineScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final homeMade = ref.watch(postHomeMadeStreamProvider);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -54,12 +53,10 @@ class TimeLineScreen extends HookConsumerWidget {
             ),
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            const RestaurantCategoryScreen(),
-            FoodListView(
-              state: homeMade,
-            ),
+            CategoryFoodListView(),
+            HomeMadeFoodListView(),
           ],
         ),
         floatingActionButton: SizedBox(
@@ -95,8 +92,8 @@ class TimeLineScreen extends HookConsumerWidget {
   }
 }
 
-class RestaurantCategoryScreen extends HookConsumerWidget {
-  const RestaurantCategoryScreen({super.key});
+class CategoryFoodListView extends HookConsumerWidget {
+  const CategoryFoodListView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -172,16 +169,12 @@ class RestaurantCategoryScreen extends HookConsumerWidget {
   }
 }
 
-class FoodListView extends ConsumerWidget {
-  const FoodListView({
-    required this.state,
-    super.key,
-  });
-
-  final AsyncValue<List<Map<String, dynamic>>> state;
+class HomeMadeFoodListView extends ConsumerWidget {
+  const HomeMadeFoodListView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(postHomeMadeStreamProvider);
     return state.when(
       data: (data) => CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(
