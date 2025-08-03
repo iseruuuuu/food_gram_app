@@ -304,7 +304,7 @@ class AppProfileHeader extends ConsumerWidget {
                                       Text(
                                         users.tag.isNotEmpty
                                             ? users.tag +
-                                                getLocalizedFoodName(
+                                                getLocalizedCountryName(
                                                   users.tag,
                                                   context,
                                                 )

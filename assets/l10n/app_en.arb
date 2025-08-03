@@ -49,7 +49,7 @@
   "postComment": "Enter Comment(Optional)",
   "postCommentInputField": "Comment",
   "postError": "Submission failure",
-  "postCategoryTitle": "Select country/cuisine category (optional)",
+  "postCategoryTitle": "Select country/cuisine tag (optional)",
   "postCountryCategory": "Country",
   "postCuisineCategory": "Cuisine",
   "postTitle":"Post",
@@ -119,7 +119,7 @@
   "appSubtitle": "Share your delicious moments",
   "agreeToTheTermsOfUse": "Please agree to the Terms of Use",
   "restaurantCategoryList": "Select a Cuisine by Country",
-  "cookingCategoryList": "Select a food category",
+  "cookingCategoryList": "Select a food tag",
   "restaurantReviewNew": "New",
   "restaurantReviewViewDetails": "View Details",
   "restaurantReviewOtherPosts": "Other Posts",
@@ -127,7 +127,7 @@
   "restaurantReviewError": "An error occurred",
   "nearbyRestaurants": "📍Nearby Restaurants",
   "seeMore": "See More",
-  "selectCountryTag": "Select a Country Category",
+  "selectCountryTag": "Select a Country Tag",
   "selectFavoriteTag": "Select Favorite Tag",
   "favoriteTagPlaceholder": "Select your favorite tag",
   "selectFoodTag": "Select Food Tag",
@@ -457,5 +457,8 @@
   "tagCheese": "Cheese",
   "tagEgg": "Egg",
   "tagFriedEgg": "Fried Egg",
-  "tagButter": "Butter"
+  "tagButter": "Butter",
+  "done": "Done",
+  "cancel": "Cancel",
+  "save": "Save"
 }

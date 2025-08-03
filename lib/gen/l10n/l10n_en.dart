@@ -159,7 +159,7 @@ class L10nEn extends L10n {
   String get postError => 'Submission failure';
 
   @override
-  String get postCategoryTitle => 'Select country/cuisine category (optional)';
+  String get postCategoryTitle => 'Select country/cuisine tag (optional)';
 
   @override
   String get postCountryCategory => 'Country';
@@ -369,7 +369,7 @@ class L10nEn extends L10n {
   String get restaurantCategoryList => 'Select a Cuisine by Country';
 
   @override
-  String get cookingCategoryList => 'Select a food category';
+  String get cookingCategoryList => 'Select a food tag';
 
   @override
   String get restaurantReviewNew => 'New';
@@ -393,7 +393,7 @@ class L10nEn extends L10n {
   String get seeMore => 'See More';
 
   @override
-  String get selectCountryTag => 'Select a Country Category';
+  String get selectCountryTag => 'Select a Country Tag';
 
   @override
   String get selectFavoriteTag => 'Select Favorite Tag';
@@ -1384,4 +1384,10 @@ class L10nEn extends L10n {
 
   @override
   String get tagButter => 'Butter';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String get save => 'Save';
 }

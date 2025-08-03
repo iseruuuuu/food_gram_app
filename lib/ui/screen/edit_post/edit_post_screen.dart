@@ -36,23 +36,25 @@ class EditPostScreen extends HookConsumerWidget {
     final loading = ref.watch(loadingProvider);
     final state = ref.watch(editPostViewModelProvider());
     final viewModel = ref.watch(editPostViewModelProvider().notifier);
-    final countryTag = useState(getCountryTagData(posts.restaurantTag));
+    final countryTag = useState(posts.restaurantTag);
     final countryText = useMemoized(
       () => ValueNotifier(
-        countryTag.value.emoji.isNotEmpty
-            ? getLocalizedCountryName(countryTag.value.emoji, context)
+        countryTag.value.isNotEmpty
+            ? getLocalizedCountryName(countryTag.value, context)
             : '',
       ),
       [countryTag.value],
     );
-    final foodTag = useState(getFoodTagData(posts.foodTag));
-    final foodText = useMemoized(
-      () => ValueNotifier(
-        foodTag.value.emoji.isNotEmpty
-            ? getLocalizedFoodName(foodTag.value.emoji, context)
-            : '',
+    final foodTags = useState<List<String>>(
+      posts.foodTag.isNotEmpty ? posts.foodTag.split(',') : [],
+    );
+    final foodTexts = useMemoized(
+      () => ValueNotifier<List<String>>(
+        foodTags.value
+            .map((tag) => getLocalizedFoodName(tag, context))
+            .toList(),
       ),
-      [foodTag.value],
+      [foodTags.value],
     );
     useEffect(
       () {
@@ -219,17 +221,17 @@ class EditPostScreen extends HookConsumerWidget {
                     ),
                     const Gap(4),
                     AppCountryTag(
-                      countryTag: countryTag.value.emoji,
+                      countryTag: countryTag.value,
                       countryText: countryText,
                       onTagSelected: (tag) {
-                        countryTag.value = getCountryTagData(tag);
+                        countryTag.value = tag;
                       },
                     ),
                     AppFoodTag(
-                      foodTag: foodTag.value.emoji,
-                      foodText: foodText,
-                      onTagSelected: (tag) {
-                        foodTag.value = getFoodTagData(tag);
+                      foodTags: foodTags.value,
+                      foodTexts: foodTexts,
+                      onTagSelected: (tags) {
+                        foodTags.value = tags;
                       },
                     ),
                     const Gap(12),
@@ -292,11 +294,14 @@ class EditPostScreen extends HookConsumerWidget {
                   height: 52,
                   child: ElevatedButton(
                     onPressed: () async {
+                      final foodTagString = foodTags.value.isEmpty
+                          ? ''
+                          : foodTags.value.join(',');
                       final isSuccess = await ref
                           .read(editPostViewModelProvider().notifier)
                           .update(
-                            restaurantTag: countryTag.value.emoji,
-                            foodTag: foodTag.value.emoji,
+                            restaurantTag: countryTag.value,
+                            foodTag: foodTagString,
                           );
                       if (isSuccess) {
                         while (loading) {
