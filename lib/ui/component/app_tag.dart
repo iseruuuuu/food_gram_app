@@ -27,15 +27,91 @@ class AppFoodTag extends HookWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => _TagSelectorModal(
-        initialTags: foodTags,
-        initialTexts: foodTexts.value,
-        onConfirm: (selectedTags, selectedTexts) {
-          onTagSelected(selectedTags);
-          foodTexts.value = selectedTexts;
+      builder: (context) => HookBuilder(
+        builder: (context) {
+          final selectedTags = useState<List<String>>(foodTags);
+          final selectedTexts = useState<List<String>>(foodTexts.value);
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.7,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  decoration: const BoxDecoration(
+                    border: Border(bottom: BorderSide(color: Colors.grey)),
+                  ),
+                  child: Row(
+                    children: [
+                      TextButton(
+                        onPressed: context.pop,
+                        child: Text(
+                          L10n.of(context).cancel,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        L10n.of(context).selectFoodTag,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          onTagSelected(selectedTags.value);
+                          foodTexts.value = selectedTexts.value;
+                          context.pop();
+                        },
+                        child: Text(
+                          L10n.of(context).save,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF0168B7),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: _buildFoodTagItems(
+                        context,
+                        selectedTags.value,
+                        selectedTexts.value,
+                        (tags, texts) {
+                          selectedTags.value = tags;
+                          selectedTexts.value = texts;
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
         },
-        title: L10n.of(context).selectFoodTag,
-        tagItems: _buildFoodTagItems,
       ),
     );
   }
@@ -282,15 +358,91 @@ class AppCountryTag extends HookWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => _SingleTagSelectorModal(
-        initialTag: countryTag,
-        initialText: countryText.value,
-        onConfirm: (selectedTag, selectedText) {
-          onTagSelected(selectedTag);
-          countryText.value = selectedText;
+      builder: (context) => HookBuilder(
+        builder: (context) {
+          final selectedTag = useState<String>(countryTag);
+          final selectedText = useState<String>(countryText.value);
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.7,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  decoration: const BoxDecoration(
+                    border: Border(bottom: BorderSide(color: Colors.grey)),
+                  ),
+                  child: Row(
+                    children: [
+                      TextButton(
+                        onPressed: context.pop,
+                        child: Text(
+                          L10n.of(context).cancel,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        L10n.of(context).selectCountryTag,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          onTagSelected(selectedTag.value);
+                          countryText.value = selectedText.value;
+                          context.pop();
+                        },
+                        child: Text(
+                          L10n.of(context).save,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF0168B7),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: _buildCountryTagItems(
+                        context,
+                        selectedTag.value,
+                        selectedText.value,
+                        (tag, text) {
+                          selectedTag.value = tag;
+                          selectedText.value = text;
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
         },
-        title: L10n.of(context).selectCountryTag,
-        tagItems: _buildCountryTagItems,
       ),
     );
   }
@@ -437,212 +589,6 @@ class AppCountryTag extends HookWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _TagSelectorModal extends HookWidget {
-  const _TagSelectorModal({
-    required this.initialTags,
-    required this.initialTexts,
-    required this.onConfirm,
-    required this.title,
-    required this.tagItems,
-  });
-
-  final List<String> initialTags;
-  final List<String> initialTexts;
-  final void Function(List<String>, List<String>) onConfirm;
-  final String title;
-  final List<Widget> Function(
-    BuildContext context,
-    List<String> selectedTags,
-    List<String> selectedTexts,
-    void Function(List<String>, List<String>) onSelectionChanged,
-  ) tagItems;
-
-  @override
-  Widget build(BuildContext context) {
-    final selectedTags = useState<List<String>>(initialTags);
-    final selectedTexts = useState<List<String>>(initialTexts);
-
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Colors.grey[300]!,
-                ),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Row(
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        onConfirm(selectedTags.value, selectedTexts.value);
-                        context.pop();
-                      },
-                      child: Text(
-                        L10n.of(context).done,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: context.pop,
-                      icon: const Icon(Icons.close),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: tagItems(
-                  context,
-                  selectedTags.value,
-                  selectedTexts.value,
-                  (tags, texts) {
-                    selectedTags.value = tags;
-                    selectedTexts.value = texts;
-                  },
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SingleTagSelectorModal extends HookWidget {
-  const _SingleTagSelectorModal({
-    required this.initialTag,
-    required this.initialText,
-    required this.onConfirm,
-    required this.title,
-    required this.tagItems,
-  });
-
-  final String initialTag;
-  final String initialText;
-  final void Function(String, String) onConfirm;
-  final String title;
-  final List<Widget> Function(
-    BuildContext context,
-    String selectedTag,
-    String selectedText,
-    void Function(String, String) onSelectionChanged,
-  ) tagItems;
-
-  @override
-  Widget build(BuildContext context) {
-    final selectedTag = useState<String>(initialTag);
-    final selectedText = useState<String>(initialText);
-
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Colors.grey[300]!,
-                ),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Row(
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        onConfirm(selectedTag.value, selectedText.value);
-                        context.pop();
-                      },
-                      child: Text(
-                        L10n.of(context).done,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: context.pop,
-                      icon: const Icon(Icons.close),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: tagItems(
-                  context,
-                  selectedTag.value,
-                  selectedText.value,
-                  (tag, text) {
-                    selectedTag.value = tag;
-                    selectedText.value = text;
-                  },
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
