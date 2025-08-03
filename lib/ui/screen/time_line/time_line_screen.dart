@@ -60,6 +60,7 @@ class TimeLineScreen extends HookConsumerWidget {
             FoodListView(
               state: homeMade,
             ),
+            CategoryFoodListView(),
           ],
         ),
         floatingActionButton: SizedBox(
@@ -95,8 +96,8 @@ class TimeLineScreen extends HookConsumerWidget {
   }
 }
 
-class RestaurantCategoryScreen extends HookConsumerWidget {
-  const RestaurantCategoryScreen({super.key});
+class CategoryFoodListView extends HookConsumerWidget {
+  const CategoryFoodListView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
