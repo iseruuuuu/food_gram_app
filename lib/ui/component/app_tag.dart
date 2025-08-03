@@ -504,9 +504,9 @@ class _TagSelectorModal extends HookWidget {
                         onConfirm(selectedTags.value, selectedTexts.value);
                         context.pop();
                       },
-                      child: const Text(
-                        '決定',
-                        style: TextStyle(
+                      child: Text(
+                        L10n.of(context).done,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.blue,
@@ -607,9 +607,9 @@ class _SingleTagSelectorModal extends HookWidget {
                         onConfirm(selectedTag.value, selectedText.value);
                         context.pop();
                       },
-                      child: const Text(
-                        '決定',
-                        style: TextStyle(
+                      child: Text(
+                        L10n.of(context).done,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.blue,

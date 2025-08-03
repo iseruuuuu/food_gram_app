@@ -2849,6 +2849,12 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'バター'**
   String get tagButter;
+
+  /// No description provided for @done.
+  ///
+  /// In ja, this message translates to:
+  /// **'決定'**
+  String get done;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
