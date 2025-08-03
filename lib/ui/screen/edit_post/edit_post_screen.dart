@@ -46,7 +46,7 @@ class EditPostScreen extends HookConsumerWidget {
       [countryTag.value],
     );
     final foodTags = useState<List<String>>(
-      posts.foodTag.isNotEmpty ? [posts.foodTag] : [],
+      posts.foodTag.isNotEmpty ? posts.foodTag.split(',') : [],
     );
     final foodTexts = useMemoized(
       () => ValueNotifier<List<String>>(
@@ -224,6 +224,7 @@ class EditPostScreen extends HookConsumerWidget {
                       countryTag: countryTag.value,
                       countryText: countryText,
                       onTagSelected: (tag) {
+                        print('Country tag selected: $tag');
                         countryTag.value = tag;
                       },
                     ),
@@ -231,6 +232,7 @@ class EditPostScreen extends HookConsumerWidget {
                       foodTags: foodTags.value,
                       foodTexts: foodTexts,
                       onTagSelected: (tags) {
+                        print('Food tags selected: $tags');
                         foodTags.value = tags;
                       },
                     ),
@@ -294,13 +296,15 @@ class EditPostScreen extends HookConsumerWidget {
                   height: 52,
                   child: ElevatedButton(
                     onPressed: () async {
+                      // List<String>をカンマ区切りのStringに変換
+                      final foodTagString = foodTags.value.isEmpty
+                          ? ''
+                          : foodTags.value.join(',');
                       final isSuccess = await ref
                           .read(editPostViewModelProvider().notifier)
                           .update(
                             restaurantTag: countryTag.value,
-                            foodTag: foodTags.value.isNotEmpty
-                                ? foodTags.value.first
-                                : '',
+                            foodTag: foodTagString,
                           );
                       if (isSuccess) {
                         while (loading) {

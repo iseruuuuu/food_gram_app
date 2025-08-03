@@ -298,12 +298,15 @@ class PostScreen extends HookConsumerWidget {
                   height: 52,
                   child: ElevatedButton(
                     onPressed: () async {
+                      // List<String>をカンマ区切りのStringに変換
+                      final foodTagString = foodTags.value.isEmpty
+                          ? ''
+                          : foodTags.value.join(',');
+
                       final result =
                           await ref.read(postViewModelProvider().notifier).post(
                                 restaurantTag: countryTag.value,
-                                foodTag: foodTags.value.isNotEmpty
-                                    ? foodTags.value.first
-                                    : '',
+                                foodTag: foodTagString,
                               );
                       if (result) {
                         context.pop(true);
