@@ -224,7 +224,6 @@ class EditPostScreen extends HookConsumerWidget {
                       countryTag: countryTag.value,
                       countryText: countryText,
                       onTagSelected: (tag) {
-                        print('Country tag selected: $tag');
                         countryTag.value = tag;
                       },
                     ),
@@ -232,7 +231,6 @@ class EditPostScreen extends HookConsumerWidget {
                       foodTags: foodTags.value,
                       foodTexts: foodTexts,
                       onTagSelected: (tags) {
-                        print('Food tags selected: $tags');
                         foodTags.value = tags;
                       },
                     ),
