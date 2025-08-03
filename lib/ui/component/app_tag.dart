@@ -453,7 +453,7 @@ class _TagSelectorModal extends HookWidget {
 
   final List<String> initialTags;
   final List<String> initialTexts;
-  final Function(List<String>, List<String>) onConfirm;
+  final void Function(List<String>, List<String>) onConfirm;
   final String title;
   final List<Widget> Function(
     BuildContext context,
