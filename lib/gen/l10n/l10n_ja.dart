@@ -1387,4 +1387,7 @@ class L10nJa extends L10n {
 
   @override
   String get done => '決定';
+
+  @override
+  String get save => '保存';
 }

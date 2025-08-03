@@ -1387,4 +1387,7 @@ class L10nEn extends L10n {
 
   @override
   String get done => 'Done';
+
+  @override
+  String get save => 'Save';
 }

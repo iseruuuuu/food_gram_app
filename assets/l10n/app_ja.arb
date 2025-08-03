@@ -458,5 +458,7 @@
   "tagEgg": "卵",
   "tagFriedEgg": "目玉焼き",
   "tagButter": "バター",
-  "done": "決定"
+  "done": "決定",
+  "cancel": "キャンセル",
+  "save": "保存"
 }

@@ -2855,6 +2855,12 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'決定'**
   String get done;
+
+  /// No description provided for @save.
+  ///
+  /// In ja, this message translates to:
+  /// **'保存'**
+  String get save;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

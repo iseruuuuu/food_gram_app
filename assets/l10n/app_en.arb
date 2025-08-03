@@ -458,5 +458,7 @@
   "tagEgg": "Egg",
   "tagFriedEgg": "Fried Egg",
   "tagButter": "Butter",
-  "done": "Done"
+  "done": "Done",
+  "cancel": "Cancel",
+  "save": "Save"
 }
