@@ -423,15 +423,69 @@ class AppCountryTag extends HookWidget {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: _buildCountryTagItems(
-                        context,
-                        selectedTag.value,
-                        selectedText.value,
-                        (tag, text) {
-                          selectedTag.value = tag;
-                          selectedText.value = text;
-                        },
-                      ),
+                      children: [
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: countryCategory.entries.map((entry) {
+                            final isSelected = selectedTag.value == entry.key;
+                            return GestureDetector(
+                              onTap: () {
+                                final countryName =
+                                    getLocalizedCountryName(entry.key, context);
+                                selectedTag.value = entry.key;
+                                selectedText.value = countryName;
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      isSelected ? Colors.blue : Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: isSelected
+                                        ? Colors.blue
+                                        : Colors.grey[300]!,
+                                  ),
+                                ),
+                                child: FittedBox(
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        entry.key,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: isSelected
+                                              ? Colors.white
+                                              : Colors.black87,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const Gap(4),
+                                      Text(
+                                        getLocalizedCountryName(
+                                          entry.key,
+                                          context,
+                                        ),
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: isSelected
+                                              ? Colors.white
+                                              : Colors.black87,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -441,65 +495,6 @@ class AppCountryTag extends HookWidget {
         },
       ),
     );
-  }
-
-  List<Widget> _buildCountryTagItems(
-    BuildContext context,
-    String selectedTag,
-    String selectedText,
-    void Function(String, String) onSelectionChanged,
-  ) {
-    return [
-      Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: countryCategory.entries.map((entry) {
-          final isSelected = selectedTag == entry.key;
-          return GestureDetector(
-            onTap: () {
-              final countryName = getLocalizedCountryName(entry.key, context);
-              onSelectionChanged(entry.key, countryName);
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 8,
-              ),
-              decoration: BoxDecoration(
-                color: isSelected ? Colors.blue : Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: isSelected ? Colors.blue : Colors.grey[300]!,
-                ),
-              ),
-              child: FittedBox(
-                child: Row(
-                  children: [
-                    Text(
-                      entry.key,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: isSelected ? Colors.white : Colors.black87,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Gap(4),
-                    Text(
-                      getLocalizedCountryName(entry.key, context),
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: isSelected ? Colors.white : Colors.black87,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }).toList(),
-      ),
-    ];
   }
 
   @override
