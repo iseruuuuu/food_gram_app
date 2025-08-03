@@ -8,6 +8,7 @@ import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
@@ -448,18 +449,68 @@ class PostDetailScreen extends HookConsumerWidget {
                                   spacing: 10,
                                   children: [
                                     if (state.foodTag.isNotEmpty)
-                                      Chip(
-                                        backgroundColor: Colors.white,
-                                        label: Text(state.foodTag),
-                                        labelStyle:
-                                            const TextStyle(fontSize: 28),
-                                      ),
+                                      ...state.foodTag.split(',').map(
+                                            (tag) => Chip(
+                                              backgroundColor: Colors.white,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8,
+                                                      vertical: 4),
+                                              label: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    tag,
+                                                    style: const TextStyle(
+                                                      fontSize: 24,
+                                                    ),
+                                                  ),
+                                                  const Gap(8),
+                                                  Text(
+                                                    getLocalizedFoodName(
+                                                      tag,
+                                                      context,
+                                                    ),
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
                                     if (state.restaurantTag.isNotEmpty)
                                       Chip(
                                         backgroundColor: Colors.white,
-                                        label: Text(state.restaurantTag),
-                                        labelStyle:
-                                            const TextStyle(fontSize: 28),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
+                                        label: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              state.restaurantTag,
+                                              style:
+                                                  const TextStyle(fontSize: 24),
+                                            ),
+                                            const Gap(4),
+                                            Text(
+                                              getLocalizedCountryName(
+                                                state.restaurantTag,
+                                                context,
+                                              ),
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                   ],
                                 ),
