@@ -96,15 +96,90 @@ class AppFoodTag extends HookWidget {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: _buildFoodTagItems(
-                        context,
-                        selectedTags.value,
-                        selectedTexts.value,
-                        (tags, texts) {
-                          selectedTags.value = tags;
-                          selectedTexts.value = texts;
-                        },
-                      ),
+                      children: foodCategory.entries.map((entry) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: Text(
+                                getLocalizedCategoryName(entry.key, context),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: entry.value.map((food) {
+                                final emoji = food[0];
+                                final text =
+                                    getLocalizedFoodName(food[0], context);
+                                final isSelected =
+                                    selectedTags.value.contains(emoji);
+                                return GestureDetector(
+                                  onTap: () {
+                                    final newSelectedTags = <String>[
+                                      ...selectedTags.value,
+                                    ];
+                                    final newSelectedTexts = <String>[
+                                      ...selectedTexts.value,
+                                    ];
+                                    if (isSelected) {
+                                      newSelectedTags.remove(emoji);
+                                      newSelectedTexts.remove(text);
+                                    } else {
+                                      newSelectedTags.add(emoji);
+                                      newSelectedTexts.add(text);
+                                    }
+                                    selectedTags.value = newSelectedTags;
+                                    selectedTexts.value = newSelectedTexts;
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: isSelected
+                                          ? Colors.blue
+                                          : Colors.white,
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(
+                                        color: isSelected
+                                            ? Colors.blue
+                                            : Colors.grey[300]!,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          emoji,
+                                          style: const TextStyle(fontSize: 16),
+                                        ),
+                                        const Gap(4),
+                                        Text(
+                                          text,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: isSelected
+                                                ? Colors.white
+                                                : Colors.black87,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        );
+                      }).toList(),
                     ),
                   ),
                 ),
@@ -114,85 +189,6 @@ class AppFoodTag extends HookWidget {
         },
       ),
     );
-  }
-
-  List<Widget> _buildFoodTagItems(
-    BuildContext context,
-    List<String> selectedTags,
-    List<String> selectedTexts,
-    void Function(List<String>, List<String>) onSelectionChanged,
-  ) {
-    return foodCategory.entries.map((entry) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Text(
-              getLocalizedCategoryName(entry.key, context),
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: entry.value.map((food) {
-              final emoji = food[0];
-              final text = getLocalizedFoodName(food[0], context);
-              final isSelected = selectedTags.contains(emoji);
-              return GestureDetector(
-                onTap: () {
-                  final newSelectedTags = <String>[...selectedTags];
-                  final newSelectedTexts = <String>[...selectedTexts];
-                  if (isSelected) {
-                    newSelectedTags.remove(emoji);
-                    newSelectedTexts.remove(text);
-                  } else {
-                    newSelectedTags.add(emoji);
-                    newSelectedTexts.add(text);
-                  }
-                  onSelectionChanged(newSelectedTags, newSelectedTexts);
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isSelected ? Colors.blue : Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: isSelected ? Colors.blue : Colors.grey[300]!,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        emoji,
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      const Gap(4),
-                      Text(
-                        text,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: isSelected ? Colors.white : Colors.black87,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        ],
-      );
-    }).toList();
   }
 
   @override
