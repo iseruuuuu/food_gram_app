@@ -159,7 +159,7 @@ class L10nJa extends L10n {
   String get postError => '投稿失敗';
 
   @override
-  String get postCategoryTitle => '国・料理カテゴリーの選択(任意)';
+  String get postCategoryTitle => '国・料理タグの選択(任意)';
 
   @override
   String get postCountryCategory => '国';
@@ -369,7 +369,7 @@ class L10nJa extends L10n {
   String get restaurantCategoryList => '国別料理を選ぶ';
 
   @override
-  String get cookingCategoryList => '料理カテゴリーを選ぶ';
+  String get cookingCategoryList => '料理タグを選ぶ';
 
   @override
   String get restaurantReviewNew => '新着';
@@ -393,7 +393,7 @@ class L10nJa extends L10n {
   String get seeMore => 'もっとみる';
 
   @override
-  String get selectCountryTag => '国カテゴリーの選択';
+  String get selectCountryTag => '国タグの選択';
 
   @override
   String get selectFavoriteTag => 'お気に入りタグを選択';
@@ -402,7 +402,7 @@ class L10nJa extends L10n {
   String get favoriteTagPlaceholder => 'お気に入りのタグ';
 
   @override
-  String get selectFoodTag => '料理カテゴリーの選択';
+  String get selectFoodTag => '料理タグの選択';
 
   @override
   String get tabHome => 'フード';

@@ -399,7 +399,7 @@ abstract class L10n {
   /// No description provided for @postCategoryTitle.
   ///
   /// In ja, this message translates to:
-  /// **'国・料理カテゴリーの選択(任意)'**
+  /// **'国・料理タグの選択(任意)'**
   String get postCategoryTitle;
 
   /// No description provided for @postCountryCategory.
@@ -819,7 +819,7 @@ abstract class L10n {
   /// No description provided for @cookingCategoryList.
   ///
   /// In ja, this message translates to:
-  /// **'料理カテゴリーを選ぶ'**
+  /// **'料理タグを選ぶ'**
   String get cookingCategoryList;
 
   /// No description provided for @restaurantReviewNew.
@@ -867,7 +867,7 @@ abstract class L10n {
   /// No description provided for @selectCountryTag.
   ///
   /// In ja, this message translates to:
-  /// **'国カテゴリーの選択'**
+  /// **'国タグの選択'**
   String get selectCountryTag;
 
   /// No description provided for @selectFavoriteTag.
@@ -885,7 +885,7 @@ abstract class L10n {
   /// No description provided for @selectFoodTag.
   ///
   /// In ja, this message translates to:
-  /// **'料理カテゴリーの選択'**
+  /// **'料理タグの選択'**
   String get selectFoodTag;
 
   /// No description provided for @tabHome.
