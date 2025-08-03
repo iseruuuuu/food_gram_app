@@ -26,14 +26,14 @@ class EditScreen extends HookConsumerWidget {
     final controller = ref.watch(editViewModelProvider().notifier);
     final state = ref.watch(editViewModelProvider());
     final loading = ref.watch(loadingProvider);
-    final foodTag = ValueNotifier(state.favoriteTags);
-    final foodText = useMemoized(
+    final countryTag = ValueNotifier(state.favoriteTags);
+    final countryText = useMemoized(
       () => ValueNotifier(
-        foodTag.value.isNotEmpty
-            ? getLocalizedFoodName(foodTag.value, context)
+        countryTag.value.isNotEmpty
+            ? getLocalizedCountryName(countryTag.value, context)
             : '',
       ),
-      [foodTag.value],
+      [countryTag.value],
     );
     final adInterstitial =
         useMemoized(() => ref.read(admobInterstitialNotifierProvider));
@@ -217,9 +217,9 @@ class EditScreen extends HookConsumerWidget {
                               ),
                             ),
                             const Gap(10),
-                            AppFoodTag(
-                              foodTag: foodTag.value,
-                              foodText: foodText,
+                            AppCountryTag(
+                              countryTag: countryTag.value,
+                              countryText: countryText,
                               onTagSelected: (tag) {
                                 ref
                                     .read(
