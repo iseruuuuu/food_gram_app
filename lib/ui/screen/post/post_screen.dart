@@ -298,7 +298,6 @@ class PostScreen extends HookConsumerWidget {
                   height: 52,
                   child: ElevatedButton(
                     onPressed: () async {
-                      // List<String>をカンマ区切りのStringに変換
                       final foodTagString = foodTags.value.isEmpty
                           ? ''
                           : foodTags.value.join(',');
