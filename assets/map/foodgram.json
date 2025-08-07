@@ -1,6 +1,6 @@
 {
     "version": 8,
-    "name": "Foodgram",
+    "name": "Bright",
     "metadata": {
         "mapbox:autocomposite": false,
         "mapbox:groups": {
@@ -67,7 +67,7 @@
             "id": "background",
             "type": "background",
             "paint": {
-                "background-color": "#ffffff"
+                "background-color": "#fff9f5"
             }
         },
         {
@@ -127,11 +127,11 @@
                     "stops": [
                         [
                             12,
-                            "hsla(0, 0%, 100%, 0)"
+                            "hsla(30, 19%, 90%, 0.4)"
                         ],
                         [
                             16,
-                            "hsla(0, 0%, 100%, 0)"
+                            "hsla(30, 19%, 90%, 0.2)"
                         ]
                     ]
                 }
@@ -235,7 +235,7 @@
                 "school"
             ],
             "paint": {
-                "fill-color": "#f0e8f8"
+                "fill-color": "hsla(49, 100%, 88%, 0.34)"
             }
         },
         {
@@ -282,9 +282,9 @@
                         ]
                     ]
                 },
-                "fill-color": "#228b22",
-                "fill-opacity": 0.3,
-                "fill-outline-color": "hsla(0, 0%, 0%, 0.1)"
+                "fill-color": "#6a4",
+                "fill-opacity": 0.1,
+                "fill-outline-color": "hsla(0, 0%, 0%, 0.03)"
             }
         },
         {
@@ -301,8 +301,8 @@
                 "grass"
             ],
             "paint": {
-                "fill-color": "#90ee90",
-                "fill-opacity": 1
+                "fill-color": "#c8d4b8",
+                "fill-opacity": 0.45
             }
         },
         {
@@ -319,7 +319,7 @@
                 "public_park"
             ],
             "paint": {
-                "fill-color": "#90ee90",
+                "fill-color": "#c8d4b8",
                 "fill-opacity": 0.8
             }
         },
@@ -414,6 +414,54 @@
             }
         },
         {
+            "id": "waterway-other-intermittent",
+            "type": "line",
+            "metadata": {
+                "mapbox:group": "1444849382550.77"
+            },
+            "source": "openmaptiles",
+            "source-layer": "waterway",
+            "filter": [
+                "all",
+                [
+                    "!in",
+                    "class",
+                    "canal",
+                    "river",
+                    "stream"
+                ],
+                [
+                    "==",
+                    "intermittent",
+                    1
+                ]
+            ],
+            "layout": {
+                "line-cap": "round",
+                "visibility": "none"
+            },
+            "paint": {
+                "line-color": "#a0c8f0",
+                "line-width": {
+                    "base": 1.3,
+                    "stops": [
+                        [
+                            13,
+                            0.5
+                        ],
+                        [
+                            20,
+                            2
+                        ]
+                    ]
+                },
+                "line-dasharray": [
+                    4,
+                    3
+                ]
+            }
+        },
+        {
             "id": "waterway-stream-canal",
             "type": "line",
             "metadata": {
@@ -504,54 +552,6 @@
                         [
                             20,
                             6
-                        ]
-                    ]
-                },
-                "line-dasharray": [
-                    4,
-                    3
-                ]
-            }
-        },
-        {
-            "id": "waterway-other-intermittent",
-            "type": "line",
-            "metadata": {
-                "mapbox:group": "1444849382550.77"
-            },
-            "source": "openmaptiles",
-            "source-layer": "waterway",
-            "filter": [
-                "all",
-                [
-                    "!in",
-                    "class",
-                    "canal",
-                    "river",
-                    "stream"
-                ],
-                [
-                    "==",
-                    "intermittent",
-                    1
-                ]
-            ],
-            "layout": {
-                "line-cap": "round",
-                "visibility": "none"
-            },
-            "paint": {
-                "line-color": "#a0c8f0",
-                "line-width": {
-                    "base": 1.3,
-                    "stops": [
-                        [
-                            13,
-                            0.5
-                        ],
-                        [
-                            20,
-                            2
                         ]
                     ]
                 },
@@ -660,75 +660,6 @@
             }
         },
         {
-            "id": "water",
-            "type": "fill",
-            "metadata": {
-                "mapbox:group": "1444849382550.77"
-            },
-            "source": "openmaptiles",
-            "source-layer": "water",
-            "filter": [
-                "all",
-                [
-                    "!=",
-                    "intermittent",
-                    1
-                ]
-            ],
-            "layout": {
-                "visibility": "visible"
-            },
-            "paint": {
-                "fill-color": "#4a90e2"
-            }
-        },
-        {
-            "id": "water-intermittent",
-            "type": "fill",
-            "metadata": {
-                "mapbox:group": "1444849382550.77"
-            },
-            "source": "openmaptiles",
-            "source-layer": "water",
-            "filter": [
-                "all",
-                [
-                    "==",
-                    "intermittent",
-                    1
-                ]
-            ],
-            "layout": {
-                "visibility": "visible"
-            },
-            "paint": {
-                "fill-color": "#87ceeb",
-                "fill-opacity": 0.7
-            }
-        },
-        {
-            "id": "water-pattern",
-            "type": "fill",
-            "metadata": {
-                "mapbox:group": "1444849382550.77"
-            },
-            "source": "openmaptiles",
-            "source-layer": "water",
-            "filter": [
-                "all"
-            ],
-            "layout": {
-                "visibility": "none"
-            },
-            "paint": {
-                "fill-pattern": "wave",
-                "fill-translate": [
-                    0,
-                    2.5
-                ]
-            }
-        },
-        {
             "id": "water-offset",
             "type": "fill",
             "metadata": {
@@ -767,6 +698,75 @@
                         ]
                     ]
                 }
+            }
+        },
+        {
+            "id": "water",
+            "type": "fill",
+            "metadata": {
+                "mapbox:group": "1444849382550.77"
+            },
+            "source": "openmaptiles",
+            "source-layer": "water",
+            "filter": [
+                "all",
+                [
+                    "!=",
+                    "intermittent",
+                    1
+                ]
+            ],
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "fill-color": "hsl(210, 85%, 60%)"
+            }
+        },
+        {
+            "id": "water-intermittent",
+            "type": "fill",
+            "metadata": {
+                "mapbox:group": "1444849382550.77"
+            },
+            "source": "openmaptiles",
+            "source-layer": "water",
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "intermittent",
+                    1
+                ]
+            ],
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "fill-color": "hsl(210, 85%, 60%)",
+                "fill-opacity": 0.7
+            }
+        },
+        {
+            "id": "water-pattern",
+            "type": "fill",
+            "metadata": {
+                "mapbox:group": "1444849382550.77"
+            },
+            "source": "openmaptiles",
+            "source-layer": "water",
+            "filter": [
+                "all"
+            ],
+            "layout": {
+                "visibility": "none"
+            },
+            "paint": {
+                "fill-pattern": "wave",
+                "fill-translate": [
+                    0,
+                    2.5
+                ]
             }
         },
         {
@@ -841,11 +841,11 @@
                     "stops": [
                         [
                             14,
-                            "#f5e6d3"
+                            "#e8d5c4"
                         ],
                         [
                             16,
-                            "#e8d5c4"
+                            "#d4c4b8"
                         ]
                     ]
                 },
@@ -864,16 +864,16 @@
                 "visibility": "visible"
             },
             "paint": {
-                "fill-color": "#f5e6d3",
+                "fill-color": "#e8d5c4",
                 "fill-opacity": {
                     "base": 1,
                     "stops": [
                         [
-                            12,
+                            13,
                             0
                         ],
                         [
-                            15,
+                            16,
                             1
                         ]
                     ]
@@ -1279,7 +1279,7 @@
                 "line-join": "round"
             },
             "paint": {
-                "line-color": "#fff",
+                "line-color": "#c4b5fd",
                 "line-opacity": 1,
                 "line-width": {
                     "base": 1.2,
@@ -1482,6 +1482,32 @@
                         ]
                     ]
                 }
+            }
+        },
+        {
+            "id": "ferry",
+            "type": "line",
+            "source": "openmaptiles",
+            "source-layer": "transportation",
+            "filter": [
+                "all",
+                [
+                    "in",
+                    "class",
+                    "ferry"
+                ]
+            ],
+            "layout": {
+                "line-join": "round",
+                "visibility": "visible"
+            },
+            "paint": {
+                "line-color": "rgba(108, 159, 182, 1)",
+                "line-dasharray": [
+                    2,
+                    2
+                ],
+                "line-width": 1.1
             }
         },
         {
@@ -1786,32 +1812,6 @@
                         ]
                     ]
                 }
-            }
-        },
-        {
-            "id": "ferry",
-            "type": "line",
-            "source": "openmaptiles",
-            "source-layer": "transportation",
-            "filter": [
-                "all",
-                [
-                    "in",
-                    "class",
-                    "ferry"
-                ]
-            ],
-            "layout": {
-                "line-join": "round",
-                "visibility": "visible"
-            },
-            "paint": {
-                "line-color": "rgba(108, 159, 182, 1)",
-                "line-dasharray": [
-                    2,
-                    2
-                ],
-                "line-width": 1.1
             }
         },
         {
@@ -2466,7 +2466,7 @@
                 "line-join": "round"
             },
             "paint": {
-                "line-color": "#e9d5ff",
+                "line-color": "#aaaaaa",
                 "line-opacity": 1,
                 "line-width": {
                     "base": 1.2,
@@ -2515,7 +2515,7 @@
                 "line-join": "round"
             },
             "paint": {
-                "line-color": "#ffd699",
+                "line-color": "#888888",
                 "line-width": {
                     "base": 1.2,
                     "stops": [
@@ -2570,7 +2570,7 @@
                 "line-join": "round"
             },
             "paint": {
-                "line-color": "#ffb366",
+                "line-color": "#888888",
                 "line-width": {
                     "base": 1.2,
                     "stops": [
@@ -2625,7 +2625,7 @@
                 "line-join": "round"
             },
             "paint": {
-                "line-color": "#ffb366",
+                "line-color": "#888888",
                 "line-width": {
                     "base": 1.2,
                     "stops": [
@@ -2681,7 +2681,7 @@
                 "line-join": "round"
             },
             "paint": {
-                "line-color": "#ff8c42",
+                "line-color": "#666666",
                 "line-width": {
                     "base": 1.2,
                     "stops": [
@@ -2943,7 +2943,7 @@
                 ]
             ],
             "paint": {
-                "line-color": "#bbb",
+                "line-color": "#8B4513",
                 "line-width": {
                     "base": 1.4,
                     "stops": [
@@ -2998,7 +2998,7 @@
                 ]
             ],
             "paint": {
-                "line-color": "#bbb",
+                "line-color": "#8B4513",
                 "line-dasharray": [
                     0.2,
                     8
@@ -4006,7 +4006,7 @@
                 "text-size": 14
             },
             "paint": {
-                "text-color": "#ffffff",
+                "text-color": "#74aee9",
                 "text-halo-color": "rgba(255,255,255,0.7)",
                 "text-halo-width": 1.5
             }
@@ -4035,9 +4035,9 @@
                 "text-size": 14
             },
             "paint": {
-                "text-color": "#000000",
-                "text-halo-color": "rgba(255,255,255,0.9)",
-                "text-halo-width": 2
+                "text-color": "#74aee9",
+                "text-halo-color": "rgba(255,255,255,0.7)",
+                "text-halo-width": 1.5
             }
         },
         {
@@ -4157,9 +4157,9 @@
                 ]
             ],
             "layout": {
-                "icon-image": "",
+                "icon-image": "{class}_11",
                 "text-anchor": "top",
-                "text-field": "{name:nonlatin}",
+                "text-field": "{name:latin}\n{name:nonlatin}",
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4170,7 +4170,7 @@
                 ],
                 "text-padding": 2,
                 "text-size": 12,
-                "visibility": "visible"
+                "visibility": "none"
             },
             "paint": {
                 "text-color": "#666",
@@ -4215,23 +4215,20 @@
                     ]
                 ],
                 [
-                    "!in",
+                    "==",
                     "class",
-                    "school",
-                    "university",
-                    "college",
-                    "hospital",
-                    "post_office",
-                    "bank",
-                    "pharmacy",
-                    "dentist",
-                    "doctors"
+                    "railway"
+                ],
+                [
+                    "==",
+                    "subclass",
+                    "station"
                 ]
             ],
             "layout": {
-                "icon-image": "",
+                "icon-image": "{class}_11",
                 "text-anchor": "top",
-                "text-field": "{name:nonlatin}",
+                "text-field": "{name:local}\n{name:latin}",
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4286,23 +4283,20 @@
                     ]
                 ],
                 [
-                    "!in",
+                    "==",
                     "class",
-                    "school",
-                    "university",
-                    "college",
-                    "hospital",
-                    "post_office",
-                    "bank",
-                    "pharmacy",
-                    "dentist",
-                    "doctors"
+                    "railway"
+                ],
+                [
+                    "==",
+                    "subclass",
+                    "station"
                 ]
             ],
             "layout": {
-                "icon-image": "",
+                "icon-image": "{class}_11",
                 "text-anchor": "top",
-                "text-field": "{name:nonlatin}",
+                "text-field": "{name:local}\n{name:latin}",
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4349,11 +4343,11 @@
                 ]
             ],
             "layout": {
-                "icon-image": "",
+                "icon-image": "{class}_11",
                 "text-anchor": "top",
-                "text-field": "{name:nonlatin}",
+                "text-field": "{name:latin}\n{name:nonlatin}",
                 "text-font": [
-                    "M PLUS Rounded 1c"
+                    "M PLUS Rounded 1c Bold"
                 ],
                 "text-max-width": 12,
                 "text-offset": [
@@ -4362,13 +4356,13 @@
                 ],
                 "text-padding": 3,
                 "text-size": 14,
-                "visibility": "visible"
+                "visibility": "none"
             },
             "paint": {
                 "text-color": "#666",
                 "text-halo-blur": 0.5,
                 "text-halo-color": "#ffffff",
-                "text-halo-width": 1
+                "text-halo-width": 2
             }
         },
         {
@@ -4400,20 +4394,25 @@
                 ]
             ],
             "layout": {
-                "icon-image": "",
+                "icon-allow-overlap": false,
+                "icon-ignore-placement": false,
+                "icon-image": "{class}_11",
+                "icon-optional": false,
+                "text-allow-overlap": false,
                 "text-anchor": "top",
-                "text-field": "{name:nonlatin}",
+                "text-field": "{name:local}\n{name:latin}",
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
+                "text-ignore-placement": false,
                 "text-max-width": 9,
                 "text-offset": [
                     0,
                     0.6
                 ],
+                "text-optional": true,
                 "text-padding": 2,
-                "text-size": 12,
-                "visibility": "visible"
+                "text-size": 12
             },
             "paint": {
                 "text-color": "#666",
@@ -4864,16 +4863,36 @@
             "source": "openmaptiles",
             "source-layer": "place",
             "filter": [
-                "!in",
-                "class",
-                "city",
-                "town",
-                "village",
-                "country",
-                "continent"
+                "all",
+                [
+                    "!in",
+                    "class",
+                    "city",
+                    "town",
+                    "village",
+                    "country",
+                    "continent"
+                ],
+                [
+                    "any",
+                    [
+                        "!=",
+                        "class",
+                        "country"
+                    ],
+                    [
+                        "<",
+                        "rank",
+                        3
+                    ],
+                    [
+                        "has",
+                        "iso_a2"
+                    ]
+                ]
             ],
             "layout": {
-                "text-field": "{name:latin}\n{name:nonlatin}",
+                "text-field": "{name:nonlatin}",
                 "text-font": [
                     "migu2m-bold"
                 ],
@@ -4897,8 +4916,8 @@
             },
             "paint": {
                 "text-color": "#633",
-                "text-halo-color": "rgba(255,255,255,0.8)",
-                "text-halo-width": 1.2
+                "text-halo-color": "rgba(255,255,255,0.9)",
+                "text-halo-width": 2.0
             }
         },
         {
@@ -4915,7 +4934,7 @@
                 "village"
             ],
             "layout": {
-                "text-field": "{name:latin}\n{name:nonlatin}",
+                "text-field": "{name:local}\n{name:latin}",
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4955,7 +4974,7 @@
                 "town"
             ],
             "layout": {
-                "text-field": "{name:latin}\n{name:nonlatin}",
+                "text-field": "{name:local}\n{name:latin}",
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4973,7 +4992,7 @@
                         ]
                     ]
                 },
-                "visibility": "visible"
+                "visibility": "none"
             },
             "paint": {
                 "text-color": "#333",
@@ -5003,7 +5022,7 @@
                 ]
             ],
             "layout": {
-                "text-field": "{name:latin}\n{name:nonlatin}",
+                "text-field": "{name:local}\n{name:latin}",
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -5021,7 +5040,7 @@
                         ]
                     ]
                 },
-                "visibility": "visible"
+                "visibility": "none"
             },
             "paint": {
                 "text-color": "#333",
@@ -5054,7 +5073,7 @@
                 "icon-image": "star_11",
                 "icon-size": 0.8,
                 "text-anchor": "left",
-                "text-field": "{name:latin}\n{name:nonlatin}",
+                "text-field": "{name:local}\n{name:latin}",
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -5076,7 +5095,7 @@
                         ]
                     ]
                 },
-                "visibility": "visible"
+                "visibility": "none"
             },
             "paint": {
                 "text-color": "#333",
@@ -5131,7 +5150,7 @@
                 "visibility": "visible"
             },
             "paint": {
-                "text-color": "#334",
+                "text-color": "#333",
                 "text-halo-blur": 1,
                 "text-halo-color": "rgba(255,255,255,0.8)",
                 "text-halo-width": 2
@@ -5184,7 +5203,7 @@
                 "visibility": "visible"
             },
             "paint": {
-                "text-color": "#334",
+                "text-color": "#333",
                 "text-halo-blur": 1,
                 "text-halo-color": "rgba(255,255,255,0.8)",
                 "text-halo-width": 2
@@ -5237,7 +5256,7 @@
                 "visibility": "visible"
             },
             "paint": {
-                "text-color": "#334",
+                "text-color": "#333",
                 "text-halo-blur": 1,
                 "text-halo-color": "rgba(255,255,255,0.8)",
                 "text-halo-width": 2
@@ -5290,7 +5309,7 @@
                 "visibility": "visible"
             },
             "paint": {
-                "text-color": "#334",
+                "text-color": "#333",
                 "text-halo-blur": 1,
                 "text-halo-color": "rgba(255,255,255,0.8)",
                 "text-halo-width": 2
@@ -5321,7 +5340,7 @@
                 "visibility": "visible"
             },
             "paint": {
-                "text-color": "#334",
+                "text-color": "#333",
                 "text-halo-blur": 1,
                 "text-halo-color": "rgba(255,255,255,0.8)",
                 "text-halo-width": 2
