@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -80,7 +81,7 @@ class AuthService {
 
   GoogleSignIn _getGoogleSignIn() {
     return GoogleSignIn(
-      clientId: Env.iOSAuthKey,
+      clientId: Platform.isAndroid ? Env.androidAuthKey : Env.iOSAuthKey,
       serverClientId: Env.webAuthKey,
       scopes: ['email'],
     );
