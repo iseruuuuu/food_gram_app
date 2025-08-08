@@ -1,6 +1,7 @@
 # FoodGram 🍽️
 
-![app](https://github.com/iseruuuuu/food_gram_app/assets/67954894/4e5198cf-be5c-46e2-8490-fc32f689121e)
+![app](https://github.com/user-attachments/assets/cb47b6da-1d34-45bf-a9f1-b2a06e81d366)
+
 
 ## 📱 About the App
 
@@ -35,6 +36,10 @@ together 🍜
 |                                         Preview(1)                                          |                                           Preview(2)                                            |                                           Preview(3)                                            |                                           Preview(4)                                            |                                           Preview(5)                                            |
 |:-------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
 | ![Preview](https://github.com/user-attachments/assets/b89b7f84-71bc-4a71-a711-e1dec038980d) | ![Preview (1)](https://github.com/user-attachments/assets/275c8eaa-3906-4751-a7f4-c34f7932c131) | ![Preview (2)](https://github.com/user-attachments/assets/83272b22-2a78-49c1-8d48-585938d3db4e) | ![Preview (3)](https://github.com/user-attachments/assets/99a793d4-4b4c-4e38-9f6e-d241e38ae60d) | ![Preview (4)](https://github.com/user-attachments/assets/bc7e14a9-aa02-40c1-841f-3dc868ce0ffc) |
+
+
+
+
 
 ## 📥 Download
 
