@@ -27,11 +27,17 @@ class AuthenticationScreen extends HookConsumerWidget {
     final buttonWidth = MediaQuery.of(context).size.width;
     final controller = ref.watch(authenticationViewModelProvider().notifier);
     final supabase = ref.read(supabaseProvider);
+    final hasNavigatedRef = useRef(false);
     final authStateSubscription = useMemoized(
       () => supabase.auth.onAuthStateChange.listen((data) {
         final session = data.session;
-        if (session != null) {
-          redirect(context, ref);
+        if (session != null && !hasNavigatedRef.value) {
+          hasNavigatedRef.value = true;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (context.mounted) {
+              redirect(context, ref);
+            }
+          });
         }
       }),
     );
@@ -153,9 +159,17 @@ class AuthenticationScreen extends HookConsumerWidget {
   }
 
   Future<void> redirect(BuildContext context, WidgetRef ref) async {
+    if (!context.mounted) {
+      return;
+    }
     SnackBarHelper().hideSnackBar(context);
     ref.read(currentUserProvider.notifier).update();
-    if (await ref.read(accountServiceProvider).isUserRegistered()) {
+    final isRegistered =
+        await ref.read(accountServiceProvider).isUserRegistered();
+    if (!context.mounted) {
+      return;
+    }
+    if (isRegistered) {
       context.pushReplacementNamed(RouterPath.tab);
     } else {
       context.pushReplacementNamed(RouterPath.newAccount);
