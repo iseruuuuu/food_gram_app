@@ -35,6 +35,7 @@
         android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission
         android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
@@ -43,6 +44,10 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-9259628471292536~5720970271"/>
+        <!-- Google Sign-In -->
+        <meta-data
+            android:name="com.google.android.gms.auth.api.signin.GoogleSignInClientId"
+            android:value="505064710022-ec5dqcu5cdjrpphjt63qqq538jjcjpsm.apps.googleusercontent.com"/>
         <!--ホームWidget(小・Share)-->
         <service
             android:name="es.antonborri.home_widget.HomeWidgetBackgroundService"
