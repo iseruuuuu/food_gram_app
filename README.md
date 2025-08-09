@@ -1,6 +1,7 @@
 # FoodGram 🍽️
 
-![app](https://github.com/iseruuuuu/food_gram_app/assets/67954894/4e5198cf-be5c-46e2-8490-fc32f689121e)
+![app](https://github.com/user-attachments/assets/cb47b6da-1d34-45bf-a9f1-b2a06e81d366)
+
 
 ## 📱 About the App
 
@@ -34,7 +35,17 @@ together 🍜
 
 |                                         Preview(1)                                          |                                           Preview(2)                                            |                                           Preview(3)                                            |                                           Preview(4)                                            |                                           Preview(5)                                            |
 |:-------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
-| ![Preview](https://github.com/user-attachments/assets/b89b7f84-71bc-4a71-a711-e1dec038980d) | ![Preview (1)](https://github.com/user-attachments/assets/275c8eaa-3906-4751-a7f4-c34f7932c131) | ![Preview (2)](https://github.com/user-attachments/assets/83272b22-2a78-49c1-8d48-585938d3db4e) | ![Preview (3)](https://github.com/user-attachments/assets/99a793d4-4b4c-4e38-9f6e-d241e38ae60d) | ![Preview (4)](https://github.com/user-attachments/assets/bc7e14a9-aa02-40c1-841f-3dc868ce0ffc) |
+| <img width="886" height="1920" alt="1" src="https://github.com/user-attachments/assets/3fef3741-6b39-4701-828f-bc022cbd9965" /> | <img width="886" height="1920" alt="2" src="https://github.com/user-attachments/assets/fe18b937-b9ab-423f-97bc-63b1ea684fb8" /> | <img width="886" height="1920" alt="3" src="https://github.com/user-attachments/assets/f4cf56d3-aee9-4862-a6a6-69f41d606035" /> | <img width="886" height="1920" alt="4" src="https://github.com/user-attachments/assets/c68809b8-d65f-4583-bff6-afa6df52945c" /> | <img width="886" height="1920" alt="5" src="https://github.com/user-attachments/assets/67b1f9ab-7a15-4730-9e32-c52701a3e60f" /> |
+
+
+## Moive
+
+
+
+https://github.com/user-attachments/assets/8514a5a7-984a-4738-ba6e-23cee3c293e1
+
+
+
 
 ## 📥 Download
 
