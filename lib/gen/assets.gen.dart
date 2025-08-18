@@ -97,6 +97,9 @@ class $AssetsImageGen {
   /// File path: assets/image/food.png
   AssetGenImage get food => const AssetGenImage('assets/image/food.png');
 
+  /// File path: assets/image/frame.png
+  AssetGenImage get frame => const AssetGenImage('assets/image/frame.png');
+
   /// File path: assets/image/loading.gif
   AssetGenImage get loading => const AssetGenImage('assets/image/loading.gif');
 
@@ -147,6 +150,7 @@ class $AssetsImageGen {
         empty,
         error,
         food,
+        frame,
         loading,
         logoGoogle,
         paywall2,
@@ -173,6 +177,16 @@ class $AssetsLottieGen {
 
   /// List of all assets
   List<String> get values => [heart, loading];
+}
+
+class $AssetsMapGen {
+  const $AssetsMapGen();
+
+  /// File path: assets/map/foodgram.json
+  String get foodgram => 'assets/map/foodgram.json';
+
+  /// List of all assets
+  List<String> get values => [foodgram];
 }
 
 class $AssetsSplashGen {
@@ -219,12 +233,13 @@ class $AssetsTrophyGen {
 }
 
 class Assets {
-  Assets._();
+  const Assets._();
 
   static const $AssetsGifGen gif = $AssetsGifGen();
   static const $AssetsIconGen icon = $AssetsIconGen();
   static const $AssetsImageGen image = $AssetsImageGen();
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
+  static const $AssetsMapGen map = $AssetsMapGen();
   static const $AssetsSplashGen splash = $AssetsSplashGen();
   static const $AssetsTrophyGen trophy = $AssetsTrophyGen();
 }
@@ -262,7 +277,7 @@ class AssetGenImage {
     bool gaplessPlayback = true,
     bool isAntiAlias = false,
     String? package,
-    FilterQuality filterQuality = FilterQuality.low,
+    FilterQuality filterQuality = FilterQuality.medium,
     int? cacheWidth,
     int? cacheHeight,
   }) {
