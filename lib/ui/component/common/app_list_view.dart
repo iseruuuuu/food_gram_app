@@ -28,7 +28,6 @@ class AppListView extends HookConsumerWidget {
     final screenWidth = MediaQuery.of(context).size.width / 3;
     final supabase = ref.watch(supabaseProvider);
     final subscribedUsersAsync = ref.watch(subscribedUsersProvider);
-
     if (data.isEmpty) {
       return const AppEmpty();
     }
@@ -93,13 +92,12 @@ class AppListView extends HookConsumerWidget {
                         borderRadius: BorderRadius.circular(10),
                         child: subscribedUsersAsync.when(
                           data: (subscribedUsers) {
-                            final postUserId = data[itemIndex]['user_id'] as String?;
-                            final isSubscribed = postUserId != null && 
+                            final postUserId =
+                                data[itemIndex]['user_id'] as String?;
+                            final isSubscribed = postUserId != null &&
                                 subscribedUsers.contains(postUserId);
-                            
                             return Stack(
                               children: [
-                                // 基本の画像
                                 Positioned.fill(
                                   child: Card(
                                     elevation: isSubscribed ? 0 : 10,
@@ -110,14 +108,14 @@ class AppListView extends HookConsumerWidget {
                                         fit: BoxFit.cover,
                                         width: screenWidth,
                                         height: screenWidth,
-                                        placeholder: (context, url) => Container(
+                                        placeholder: (context, url) =>
+                                            Container(
                                           color: Colors.white,
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                                // サブスク登録ユーザーの投稿のみ枠を表示
                                 if (isSubscribed)
                                   Positioned.fill(
                                     child: ClipRRect(
