@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/admob/services/admob_rectangle_banner.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
+import 'package:food_gram_app/core/supabase/user/providers/subscribed_users_provider.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
@@ -25,6 +27,8 @@ class AppListView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final screenWidth = MediaQuery.of(context).size.width / 3;
     final supabase = ref.watch(supabaseProvider);
+    final subscribedUsersAsync = ref.watch(subscribedUsersProvider);
+
     if (data.isEmpty) {
       return const AppEmpty();
     }
@@ -82,18 +86,53 @@ class AppListView extends HookConsumerWidget {
                     tag: 'image-${data[itemIndex]['id']}',
                     flightShuttleBuilder: const FlipShuttleBuilder().call,
                     spring: SimpleSpring.bouncy,
-                    child: Card(
-                      elevation: 10,
+                    child: SizedBox(
+                      width: screenWidth,
+                      height: screenWidth,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: CachedNetworkImage(
-                          imageUrl: itemImageUrl,
-                          fit: BoxFit.cover,
-                          width: screenWidth,
-                          height: screenWidth,
-                          placeholder: (context, url) => Container(
-                            color: Colors.white,
-                          ),
+                        child: subscribedUsersAsync.when(
+                          data: (subscribedUsers) {
+                            final postUserId = data[itemIndex]['user_id'] as String?;
+                            final isSubscribed = postUserId != null && 
+                                subscribedUsers.contains(postUserId);
+                            
+                            return Stack(
+                              children: [
+                                // 基本の画像
+                                Positioned.fill(
+                                  child: Card(
+                                    elevation: isSubscribed ? 0 : 10,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        imageUrl: itemImageUrl,
+                                        fit: BoxFit.cover,
+                                        width: screenWidth,
+                                        height: screenWidth,
+                                        placeholder: (context, url) => Container(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                // サブスク登録ユーザーの投稿のみ枠を表示
+                                if (isSubscribed)
+                                  Positioned.fill(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.asset(
+                                        Assets.image.frame.path,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            );
+                          },
+                          loading: () => const SizedBox.shrink(),
+                          error: (_, __) => const SizedBox.shrink(),
                         ),
                       ),
                     ),
