@@ -181,7 +181,8 @@ class AppFoodTag extends HookWidget {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 8),
+                                        vertical: 8,
+                                      ),
                                       child: Text(
                                         getLocalizedCategoryName(
                                           entry.key,

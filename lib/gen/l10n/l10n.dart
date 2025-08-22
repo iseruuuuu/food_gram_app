@@ -2873,6 +2873,30 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'国を検索'**
   String get searchCountry;
+
+  /// No description provided for @searchEmptyTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'店舗名を入力して検索してください'**
+  String get searchEmptyTitle;
+
+  /// No description provided for @searchEmptyHintTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'検索のヒント'**
+  String get searchEmptyHintTitle;
+
+  /// No description provided for @searchEmptyHintLocation.
+  ///
+  /// In ja, this message translates to:
+  /// **'位置情報をオンにすると近い順で表示します'**
+  String get searchEmptyHintLocation;
+
+  /// No description provided for @searchEmptyHintSearch.
+  ///
+  /// In ja, this message translates to:
+  /// **'店舗名や料理ジャンルで検索できます'**
+  String get searchEmptyHintSearch;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

@@ -12,6 +12,9 @@ import 'package:flutter/widgets.dart';
 class $AssetsGifGen {
   const $AssetsGifGen();
 
+  /// File path: assets/gif/empty.gif
+  AssetGenImage get empty => const AssetGenImage('assets/gif/empty.gif');
+
   /// File path: assets/gif/error.gif
   AssetGenImage get error => const AssetGenImage('assets/gif/error.gif');
 
@@ -41,6 +44,7 @@ class $AssetsGifGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+        empty,
         error,
         login1,
         login2,

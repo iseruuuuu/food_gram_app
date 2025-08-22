@@ -64,45 +64,49 @@ class RestaurantScreen extends HookConsumerWidget {
             const Gap(10),
             Expanded(
               flex: 10,
-              child: AsyncValueSwitcher(
-                asyncValue: restaurant,
-                onErrorTap: () {
-                  ref.invalidate(restaurantRepositoryProvider(keyword.value));
-                },
-                onData: (value) {
-                  return value.isNotEmpty
-                      ? ListView.builder(
-                          itemCount: value.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              onTap: () {
-                                final restaurant = Restaurant(
-                                  name: value[index].name,
-                                  address: value[index].address,
-                                  lat: value[index].lat,
-                                  lng: value[index].lng,
-                                );
-                                primaryFocus?.unfocus();
-                                context.pop(restaurant);
-                              },
-                              trailing: const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 20,
-                              ),
-                              title: Text(
-                                value[index].name,
-                                style: RestaurantStyle.name(),
-                              ),
-                              subtitle: Text(
-                                value[index].address,
-                                style: RestaurantStyle.address(),
-                              ),
-                            );
-                          },
-                        )
-                      : const AppSearchEmpty();
-                },
-              ),
+              child: keyword.value.isEmpty
+                  ? const AppSearchEmpty()
+                  : AsyncValueSwitcher(
+                      asyncValue: restaurant,
+                      onErrorTap: () {
+                        ref.invalidate(
+                          restaurantRepositoryProvider(keyword.value),
+                        );
+                      },
+                      onData: (value) {
+                        return value.isNotEmpty
+                            ? ListView.builder(
+                                itemCount: value.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    onTap: () {
+                                      final restaurant = Restaurant(
+                                        name: value[index].name,
+                                        address: value[index].address,
+                                        lat: value[index].lat,
+                                        lng: value[index].lng,
+                                      );
+                                      primaryFocus?.unfocus();
+                                      context.pop(restaurant);
+                                    },
+                                    trailing: const Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 20,
+                                    ),
+                                    title: Text(
+                                      value[index].name,
+                                      style: RestaurantStyle.name(),
+                                    ),
+                                    subtitle: Text(
+                                      value[index].address,
+                                      style: RestaurantStyle.address(),
+                                    ),
+                                  );
+                                },
+                              )
+                            : const AppSearchResultEmpty();
+                      },
+                    ),
             ),
           ],
         ),
