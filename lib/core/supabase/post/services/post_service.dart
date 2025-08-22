@@ -353,50 +353,6 @@ class PostService extends _$PostService {
     }
   }
 
-  /// 同じレストランの投稿とユーザー情報を取得
-  Future<Result<List<Map<String, dynamic>>, Exception>> getStoryPosts({
-    required double lat,
-    required double lng,
-  }) async {
-    try {
-      return Success(
-        await _cacheManager.get<List<Map<String, dynamic>>>(
-          key: 'story_posts_${lat}_$lng',
-          fetcher: () async {
-            final blockList = ref.watch(blockListProvider).asData?.value ?? [];
-            final posts = await supabase
-                .from('posts')
-                .select()
-                .gte('lat', lat - 0.00001)
-                .lte('lat', lat + 0.00001)
-                .gte('lng', lng - 0.00001)
-                .lte('lng', lng + 0.00001)
-                .order('created_at');
-
-            final filteredPosts = posts
-                .where((post) => !blockList.contains(post['user_id']))
-                .toList();
-
-            // ユーザー情報を取得して結合
-            final results = <Map<String, dynamic>>[];
-            for (final post in filteredPosts) {
-              final userData = await getUserData(post['user_id'] as String);
-              results.add({
-                'post': post,
-                'user': userData,
-              });
-            }
-            return results;
-          },
-          duration: const Duration(minutes: 5),
-        ),
-      );
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
-  }
-
   /// マップ表示用の全投稿を取得🗾
   Future<List<Map<String, dynamic>>> getMapPosts() async {
     return _cacheManager.get<List<Map<String, dynamic>>>(

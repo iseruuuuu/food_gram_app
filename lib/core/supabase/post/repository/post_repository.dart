@@ -118,30 +118,6 @@ class PostRepository extends _$PostRepository {
       failure: Failure.new,
     );
   }
-
-  /// 同じレストランの投稿とユーザー情報を取得
-  Future<Result<List<Model>, Exception>> getStoryPosts({
-    required double lat,
-    required double lng,
-  }) async {
-    final result = await ref.read(postServiceProvider.notifier).getStoryPosts(
-          lat: lat,
-          lng: lng,
-        );
-    return result.when(
-      success: (data) => Success(
-        data
-            .map(
-              (item) => Model(
-                Users.fromJson(item['user'] as Map<String, dynamic>),
-                Posts.fromJson(item['post'] as Map<String, dynamic>),
-              ),
-            )
-            .toList(),
-      ),
-      failure: Failure.new,
-    );
-  }
 }
 
 /// マップ表示用の全投稿を取得🗾

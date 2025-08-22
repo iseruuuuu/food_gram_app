@@ -148,18 +148,6 @@ final timeLineRouter = GoRoute(
       },
     ),
     GoRoute(
-      path: '${RouterPath.timeLine}/${RouterPath.storyPage}',
-      name: RouterPath.storyPage,
-      pageBuilder: (context, state) {
-        final model = state.extra! as List<Model>;
-        final posts = model.map((m) => m.posts).toList();
-        final users = model.map((m) => m.users).toList();
-        return zoomTransition(
-          StoryScreen(posts: posts, users: users),
-        );
-      },
-    ),
-    GoRoute(
       path:
           '${RouterPath.timeLine}/${RouterPath.timeLineDetail}/${RouterPath.timeLineDetailPost}',
       name: RouterPath.timeLineDetailPost,

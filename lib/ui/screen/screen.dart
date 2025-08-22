@@ -11,7 +11,6 @@ export 'package:food_gram_app/ui/screen/restaurant/restaurant_screen.dart';
 export 'package:food_gram_app/ui/screen/screen.dart';
 export 'package:food_gram_app/ui/screen/setting/setting_screen.dart';
 export 'package:food_gram_app/ui/screen/splash/splash_screen.dart';
-export 'package:food_gram_app/ui/screen/story/story_screen.dart';
 export 'package:food_gram_app/ui/screen/tab/tab_screen.dart';
 export 'package:food_gram_app/ui/screen/time_line/time_line_screen.dart';
 export 'package:food_gram_app/ui/screen/tutorial/tutorial_screen.dart';
