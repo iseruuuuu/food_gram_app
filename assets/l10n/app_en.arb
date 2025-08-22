@@ -460,5 +460,8 @@
   "tagButter": "Butter",
   "done": "Done",
   "cancel": "Cancel",
-  "save": "Save"
+  "save": "Save",
+  "searchFood": "Search food",
+  "noResultsFound": "No results found",
+  "searchCountry": "Search country"
 }

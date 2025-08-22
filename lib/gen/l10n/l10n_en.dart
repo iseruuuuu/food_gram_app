@@ -1390,4 +1390,13 @@ class L10nEn extends L10n {
 
   @override
   String get save => 'Save';
+
+  @override
+  String get searchFood => 'Search food';
+
+  @override
+  String get noResultsFound => 'No results found';
+
+  @override
+  String get searchCountry => 'Search country';
 }

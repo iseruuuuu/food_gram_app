@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/tag.dart';
+import 'package:food_gram_app/core/utils/search_utils.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -31,159 +32,249 @@ class AppFoodTag extends HookWidget {
         builder: (context) {
           final selectedTags = useState<List<String>>(foodTags);
           final selectedTexts = useState<List<String>>(foodTexts.value);
-          return Container(
-            height: MediaQuery.of(context).size.height * 0.7,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  decoration: const BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.grey)),
-                  ),
-                  child: Row(
-                    children: [
-                      TextButton(
-                        onPressed: context.pop,
-                        child: Text(
-                          L10n.of(context).cancel,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        L10n.of(context).selectFoodTag,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const Spacer(),
-                      TextButton(
-                        onPressed: () {
-                          onTagSelected(selectedTags.value);
-                          foodTexts.value = selectedTexts.value;
-                          context.pop();
-                        },
-                        child: Text(
-                          L10n.of(context).save,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF0168B7),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+          final searchController = useTextEditingController();
+          final searchQuery = useState<String>('');
+          final filteredCategories = useMemoized(
+            () {
+              if (searchQuery.value.isEmpty) {
+                return foodCategory.entries.toList();
+              }
+              final filtered = <MapEntry<String, List<List<String>>>>[];
+              for (final entry in foodCategory.entries) {
+                final filteredFoods = entry.value.where((food) {
+                  final emoji = food[0];
+                  final text = getLocalizedFoodName(food[0], context);
+                  return isSearchMatch(searchQuery.value, emoji) ||
+                      isSearchMatch(searchQuery.value, text);
+                }).toList();
+                if (filteredFoods.isNotEmpty) {
+                  filtered.add(MapEntry(entry.key, filteredFoods));
+                }
+              }
+              return filtered;
+            },
+            [searchQuery.value, context],
+          );
+          useEffect(
+            () {
+              void listener() {
+                searchQuery.value = searchController.text;
+              }
+
+              searchController.addListener(listener);
+              return () => searchController.removeListener(listener);
+            },
+            [searchController],
+          );
+          return GestureDetector(
+            onTap: () => primaryFocus?.unfocus(),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.7,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: foodCategory.entries.map((entry) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: Text(
-                                getLocalizedCategoryName(entry.key, context),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Row(
+                      children: [
+                        TextButton(
+                          onPressed: context.pop,
+                          child: Text(
+                            L10n.of(context).cancel,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
                             ),
-                            Wrap(
-                              spacing: 8,
-                              runSpacing: 8,
-                              children: entry.value.map((food) {
-                                final emoji = food[0];
-                                final text =
-                                    getLocalizedFoodName(food[0], context);
-                                final isSelected =
-                                    selectedTags.value.contains(emoji);
-                                return GestureDetector(
-                                  onTap: () {
-                                    final newSelectedTags = <String>[
-                                      ...selectedTags.value,
-                                    ];
-                                    final newSelectedTexts = <String>[
-                                      ...selectedTexts.value,
-                                    ];
-                                    if (isSelected) {
-                                      newSelectedTags.remove(emoji);
-                                      newSelectedTexts.remove(text);
-                                    } else {
-                                      newSelectedTags.add(emoji);
-                                      newSelectedTexts.add(text);
-                                    }
-                                    selectedTags.value = newSelectedTags;
-                                    selectedTexts.value = newSelectedTexts;
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: isSelected
-                                          ? Colors.blue
-                                          : Colors.white,
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                        color: isSelected
-                                            ? Colors.blue
-                                            : Colors.grey[300]!,
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          emoji,
-                                          style: const TextStyle(fontSize: 16),
-                                        ),
-                                        const Gap(4),
-                                        Text(
-                                          text,
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: isSelected
-                                                ? Colors.white
-                                                : Colors.black87,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
+                          ),
+                        ),
+                        const Spacer(),
+                        Text(
+                          L10n.of(context).selectFoodTag,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const Spacer(),
+                        TextButton(
+                          onPressed: () {
+                            onTagSelected(selectedTags.value);
+                            foodTexts.value = selectedTexts.value;
+                            context.pop();
+                          },
+                          child: Text(
+                            L10n.of(context).save,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF0168B7),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                    ),
+                    child: TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: L10n.of(context).searchFood,
+                        prefixIcon: const Icon(Icons.search),
+                        suffixIcon: searchQuery.value.isNotEmpty
+                            ? IconButton(
+                                icon: const Icon(Icons.clear),
+                                onPressed: searchController.clear,
+                              )
+                            : null,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Gap(12),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: filteredCategories.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.search_off,
+                                    size: 64,
+                                    color: Colors.grey,
+                                  ),
+                                  const Gap(16),
+                                  Text(
+                                    L10n.of(context).noResultsFound,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey,
                                     ),
                                   ),
+                                ],
+                              ),
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: filteredCategories.map((entry) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8),
+                                      child: Text(
+                                        getLocalizedCategoryName(
+                                          entry.key,
+                                          context,
+                                        ),
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Wrap(
+                                      spacing: 8,
+                                      runSpacing: 8,
+                                      children: entry.value.map((food) {
+                                        final emoji = food[0];
+                                        final text = getLocalizedFoodName(
+                                          food[0],
+                                          context,
+                                        );
+                                        final isSelected =
+                                            selectedTags.value.contains(emoji);
+                                        return GestureDetector(
+                                          onTap: () {
+                                            final newSelectedTags = <String>[
+                                              ...selectedTags.value,
+                                            ];
+                                            final newSelectedTexts = <String>[
+                                              ...selectedTexts.value,
+                                            ];
+                                            if (isSelected) {
+                                              newSelectedTags.remove(emoji);
+                                              newSelectedTexts.remove(text);
+                                            } else {
+                                              newSelectedTags.add(emoji);
+                                              newSelectedTexts.add(text);
+                                            }
+                                            selectedTags.value =
+                                                newSelectedTags;
+                                            selectedTexts.value =
+                                                newSelectedTexts;
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 12,
+                                              vertical: 8,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: isSelected
+                                                  ? Colors.blue
+                                                  : Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              border: Border.all(
+                                                color: isSelected
+                                                    ? Colors.blue
+                                                    : Colors.grey[300]!,
+                                              ),
+                                            ),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  emoji,
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                const Gap(4),
+                                                Text(
+                                                  text,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: isSelected
+                                                        ? Colors.white
+                                                        : Colors.black87,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ],
                                 );
                               }).toList(),
                             ),
-                          ],
-                        );
-                      }).toList(),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },
@@ -358,138 +449,216 @@ class AppCountryTag extends HookWidget {
         builder: (context) {
           final selectedTag = useState<String>(countryTag);
           final selectedText = useState<String>(countryText.value);
-          return Container(
-            height: MediaQuery.of(context).size.height * 0.7,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  decoration: const BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.grey)),
-                  ),
-                  child: Row(
-                    children: [
-                      TextButton(
-                        onPressed: context.pop,
-                        child: Text(
-                          L10n.of(context).cancel,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        L10n.of(context).selectCountryTag,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const Spacer(),
-                      TextButton(
-                        onPressed: () {
-                          onTagSelected(selectedTag.value);
-                          countryText.value = selectedText.value;
-                          context.pop();
-                        },
-                        child: Text(
-                          L10n.of(context).save,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF0168B7),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+          final searchController = useTextEditingController();
+          final searchQuery = useState<String>('');
+          final filteredCountries = useMemoized(
+            () {
+              if (searchQuery.value.isEmpty) {
+                return countryCategory.entries.toList();
+              }
+              return countryCategory.entries.where((entry) {
+                final emoji = entry.key;
+                final text = getLocalizedCountryName(entry.key, context);
+                return isSearchMatch(searchQuery.value, emoji) ||
+                    isSearchMatch(searchQuery.value, text);
+              }).toList();
+            },
+            [searchQuery.value, context],
+          );
+          useEffect(
+            () {
+              void listener() {
+                searchQuery.value = searchController.text;
+              }
+
+              searchController.addListener(listener);
+              return () => searchController.removeListener(listener);
+            },
+            [searchController],
+          );
+          return GestureDetector(
+            onTap: () => primaryFocus?.unfocus(),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.7,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Row(
                       children: [
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: countryCategory.entries.map((entry) {
-                            final isSelected = selectedTag.value == entry.key;
-                            return GestureDetector(
-                              onTap: () {
-                                final countryName =
-                                    getLocalizedCountryName(entry.key, context);
-                                selectedTag.value = entry.key;
-                                selectedText.value = countryName;
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 8,
-                                ),
-                                decoration: BoxDecoration(
-                                  color:
-                                      isSelected ? Colors.blue : Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                    color: isSelected
-                                        ? Colors.blue
-                                        : Colors.grey[300]!,
-                                  ),
-                                ),
-                                child: FittedBox(
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        entry.key,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: isSelected
-                                              ? Colors.white
-                                              : Colors.black87,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const Gap(4),
-                                      Text(
-                                        getLocalizedCountryName(
-                                          entry.key,
-                                          context,
-                                        ),
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: isSelected
-                                              ? Colors.white
-                                              : Colors.black87,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          }).toList(),
+                        TextButton(
+                          onPressed: context.pop,
+                          child: Text(
+                            L10n.of(context).cancel,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        Text(
+                          L10n.of(context).selectCountryTag,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const Spacer(),
+                        TextButton(
+                          onPressed: () {
+                            onTagSelected(selectedTag.value);
+                            countryText.value = selectedText.value;
+                            context.pop();
+                          },
+                          child: Text(
+                            L10n.of(context).save,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF0168B7),
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                    ),
+                    child: TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: L10n.of(context).searchCountry,
+                        prefixIcon: const Icon(Icons.search),
+                        suffixIcon: searchQuery.value.isNotEmpty
+                            ? IconButton(
+                                icon: const Icon(Icons.clear),
+                                onPressed: searchController.clear,
+                              )
+                            : null,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Gap(12),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: filteredCountries.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.search_off,
+                                    size: 64,
+                                    color: Colors.grey,
+                                  ),
+                                  const Gap(16),
+                                  Text(
+                                    L10n.of(context).noResultsFound,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children: filteredCountries.map((entry) {
+                                    final isSelected =
+                                        selectedTag.value == entry.key;
+                                    return GestureDetector(
+                                      onTap: () {
+                                        final countryName =
+                                            getLocalizedCountryName(
+                                          entry.key,
+                                          context,
+                                        );
+                                        selectedTag.value = entry.key;
+                                        selectedText.value = countryName;
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 8,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: isSelected
+                                              ? Colors.blue
+                                              : Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          border: Border.all(
+                                            color: isSelected
+                                                ? Colors.blue
+                                                : Colors.grey[300]!,
+                                          ),
+                                        ),
+                                        child: FittedBox(
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                entry.key,
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: isSelected
+                                                      ? Colors.white
+                                                      : Colors.black87,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              const Gap(4),
+                                              Text(
+                                                getLocalizedCountryName(
+                                                  entry.key,
+                                                  context,
+                                                ),
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: isSelected
+                                                      ? Colors.white
+                                                      : Colors.black87,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
