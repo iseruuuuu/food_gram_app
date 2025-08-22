@@ -25,14 +25,6 @@ Stream<List<Map<String, dynamic>>> postStream(Ref ref) {
     return posts;
   });
 }
-
-/// 自炊投稿のストリームを提供
-@riverpod
-Stream<List<Map<String, dynamic>>> postHomeMadeStream(Ref ref) {
-  final blockList = ref.watch(blockListProvider).asData?.value ?? [];
-  return _filteredPostStream('自炊', blockList, ref);
-}
-
 /// 自分の投稿のストリームを提供
 @riverpod
 Stream<List<Map<String, dynamic>>> myPostStream(Ref ref) {
