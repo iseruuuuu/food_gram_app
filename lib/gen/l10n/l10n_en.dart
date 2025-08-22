@@ -213,9 +213,6 @@ class L10nEn extends L10n {
   String get searchRestaurantTitle => 'Search Restaurants';
 
   @override
-  String get homeCooking => 'homeCooking';
-
-  @override
   String get unknown => 'Unknown・No Hits';
 
   @override

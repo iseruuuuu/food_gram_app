@@ -504,12 +504,6 @@ abstract class L10n {
   /// **'レストランを探す'**
   String get searchRestaurantTitle;
 
-  /// No description provided for @homeCooking.
-  ///
-  /// In ja, this message translates to:
-  /// **'自炊'**
-  String get homeCooking;
-
   /// No description provided for @unknown.
   ///
   /// In ja, this message translates to:
