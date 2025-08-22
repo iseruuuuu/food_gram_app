@@ -31,7 +31,6 @@ class PostDetailViewModel extends _$PostDetailViewModel {
         state = state.copyWith(isSuccess: true);
         ref
           ..invalidate(postStreamProvider)
-          ..invalidate(postHomeMadeStreamProvider)
           ..invalidate(blockListProvider);
       },
       failure: (_) {

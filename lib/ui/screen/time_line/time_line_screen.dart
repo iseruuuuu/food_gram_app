@@ -59,7 +59,6 @@ class TimeLineScreen extends HookConsumerWidget {
                       refresh: () {
                         ref
                           ..invalidate(postStreamProvider)
-                          ..invalidate(postHomeMadeStreamProvider)
                           ..invalidate(blockListProvider);
                       },
                     )
@@ -96,7 +95,6 @@ class TimeLineScreen extends HookConsumerWidget {
               if (value != null) {
                 ref
                   ..invalidate(postStreamProvider)
-                  ..invalidate(postHomeMadeStreamProvider)
                   ..invalidate(blockListProvider);
               }
             });
