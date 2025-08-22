@@ -1396,4 +1396,16 @@ class L10nJa extends L10n {
 
   @override
   String get searchCountry => '国を検索';
+
+  @override
+  String get searchEmptyTitle => '店舗名を入力して検索してください';
+
+  @override
+  String get searchEmptyHintTitle => '検索のヒント';
+
+  @override
+  String get searchEmptyHintLocation => '位置情報をオンにすると近い順で表示します';
+
+  @override
+  String get searchEmptyHintSearch => '店舗名や料理ジャンルで検索できます';
 }

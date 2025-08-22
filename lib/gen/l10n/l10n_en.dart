@@ -1396,4 +1396,16 @@ class L10nEn extends L10n {
 
   @override
   String get searchCountry => 'Search country';
+
+  @override
+  String get searchEmptyTitle => 'Enter restaurant name to search';
+
+  @override
+  String get searchEmptyHintTitle => 'Search Tips';
+
+  @override
+  String get searchEmptyHintLocation => 'Turn on location to show nearby results first';
+
+  @override
+  String get searchEmptyHintSearch => 'Search by restaurant name or cuisine type';
 }

@@ -462,5 +462,9 @@
   "save": "Save",
   "searchFood": "Search food",
   "noResultsFound": "No results found",
-  "searchCountry": "Search country"
+  "searchCountry": "Search country",
+  "searchEmptyTitle": "Enter restaurant name to search",
+  "searchEmptyHintTitle": "Search Tips",
+  "searchEmptyHintLocation": "Turn on location to show nearby results first",
+  "searchEmptyHintSearch": "Search by restaurant name or cuisine type"
 }
