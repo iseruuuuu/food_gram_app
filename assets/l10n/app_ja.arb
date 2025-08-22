@@ -460,5 +460,8 @@
   "tagButter": "バター",
   "done": "決定",
   "cancel": "キャンセル",
-  "save": "保存"
+  "save": "保存",
+  "searchFood": "料理を検索",
+  "noResultsFound": "検索結果が見つかりませんでした",
+  "searchCountry": "国を検索"
 }

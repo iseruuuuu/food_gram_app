@@ -1390,4 +1390,13 @@ class L10nJa extends L10n {
 
   @override
   String get save => '保存';
+
+  @override
+  String get searchFood => '料理を検索';
+
+  @override
+  String get noResultsFound => '検索結果が見つかりませんでした';
+
+  @override
+  String get searchCountry => '国を検索';
 }

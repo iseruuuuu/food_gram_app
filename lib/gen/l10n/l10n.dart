@@ -2861,6 +2861,24 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'保存'**
   String get save;
+
+  /// No description provided for @searchFood.
+  ///
+  /// In ja, this message translates to:
+  /// **'料理を検索'**
+  String get searchFood;
+
+  /// No description provided for @noResultsFound.
+  ///
+  /// In ja, this message translates to:
+  /// **'検索結果が見つかりませんでした'**
+  String get noResultsFound;
+
+  /// No description provided for @searchCountry.
+  ///
+  /// In ja, this message translates to:
+  /// **'国を検索'**
+  String get searchCountry;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
