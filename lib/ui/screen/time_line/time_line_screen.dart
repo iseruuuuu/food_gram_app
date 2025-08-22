@@ -23,7 +23,10 @@ class TimeLineScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(0),
-        child: AppBar(),
+        child: AppBar(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+        ),
       ),
       backgroundColor: Colors.white,
       body: RefreshIndicator(
@@ -44,6 +47,7 @@ class TimeLineScreen extends HookConsumerWidget {
                 children: [
                   const Gap(8),
                   CategoryTab(selectedCategoryName: selectedCategoryName),
+                  const Gap(4),
                 ],
               ),
             ),
