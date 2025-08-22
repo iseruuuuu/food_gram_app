@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:gap/gap.dart';
 
 class AppEmpty extends StatelessWidget {
   const AppEmpty({super.key});
@@ -23,8 +24,8 @@ class AppEmpty extends StatelessWidget {
   }
 }
 
-class AppSearchEmpty extends StatelessWidget {
-  const AppSearchEmpty({super.key});
+class AppSearchResultEmpty extends StatelessWidget {
+  const AppSearchResultEmpty({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,120 @@ class AppSearchEmpty extends StatelessWidget {
         ),
         Assets.gif.error.image(width: 180, height: 180),
       ],
+    );
+  }
+}
+
+class AppSearchEmpty extends StatelessWidget {
+  const AppSearchEmpty({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Spacer(),
+          Assets.gif.empty.image(width: 100, height: 100),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Text(
+              L10n.of(context).searchEmptyTitle,
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const Spacer(),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Colors.blue.shade50,
+                  Colors.blue.shade100,
+                ],
+              ),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.blue.shade200),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.lightbulb_outline,
+                      color: Colors.blue.shade700,
+                      size: 28,
+                    ),
+                    const Gap(8),
+                    Text(
+                      L10n.of(context).searchEmptyHintTitle,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.blue.shade700,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(12),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.location_on,
+                      color: Colors.blue.shade600,
+                      size: 24,
+                    ),
+                    const Gap(8),
+                    Expanded(
+                      child: Text(
+                        L10n.of(context).searchEmptyHintLocation,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.blue.shade800,
+                          fontWeight: FontWeight.bold,
+                          height: 1.3,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(8),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.map,
+                      color: Colors.blue.shade600,
+                      size: 24,
+                    ),
+                    const Gap(8),
+                    Expanded(
+                      child: Text(
+                        L10n.of(context).searchEmptyHintSearch,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.blue.shade800,
+                          fontWeight: FontWeight.bold,
+                          height: 1.3,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const Gap(18),
+        ],
+      ),
     );
   }
 }
