@@ -8,6 +8,8 @@ import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/screen/time_line/components/category_tab.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -109,6 +111,14 @@ class CategoryFoodListView extends HookConsumerWidget {
           parent: BouncingScrollPhysics(),
         ),
         slivers: [
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                const Gap(8),
+                CategoryTab(selectedCategoryName: selectedCategoryName),
+              ],
+            ),
+          ),
           if (postState.hasValue)
             postState.value!.isNotEmpty
                 ? AppListView(
