@@ -39,54 +39,27 @@ class RestaurantScreen extends HookConsumerWidget {
             const Gap(5),
             AppSearchTextField(onSubmitted: (value) => keyword.value = value),
             const Gap(10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    const restaurant =
-                        Restaurant(name: '自炊', address: '', lat: 0, lng: 0);
-                    primaryFocus?.unfocus();
-                    context.pop(restaurant);
-                  },
-                  child: Chip(
-                    backgroundColor: Colors.white,
-                    label: Text(L10n.of(context).homeCooking),
-                    labelStyle: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                      color: Colors.black,
-                    ),
-                    avatar: const Icon(
-                      Icons.home,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                  ),
+            GestureDetector(
+              onTap: () {
+                const restaurant =
+                    Restaurant(name: '不明', address: '', lat: 0, lng: 0);
+                primaryFocus?.unfocus();
+                context.pop(restaurant);
+              },
+              child: Chip(
+                backgroundColor: Colors.white,
+                label: Text(L10n.of(context).unknown),
+                labelStyle: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: Colors.black,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    const restaurant =
-                        Restaurant(name: '不明', address: '', lat: 0, lng: 0);
-                    primaryFocus?.unfocus();
-                    context.pop(restaurant);
-                  },
-                  child: Chip(
-                    backgroundColor: Colors.white,
-                    label: Text(L10n.of(context).unknown),
-                    labelStyle: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                      color: Colors.black,
-                    ),
-                    avatar: const Icon(
-                      Icons.restaurant_menu,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                  ),
+                avatar: const Icon(
+                  Icons.restaurant_menu,
+                  size: 20,
+                  color: Colors.black,
                 ),
-              ],
+              ),
             ),
             const Gap(10),
             Expanded(
