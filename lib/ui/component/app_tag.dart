@@ -60,7 +60,6 @@ class AppFoodTag extends HookWidget {
               void listener() {
                 searchQuery.value = searchController.text;
               }
-
               searchController.addListener(listener);
               return () => searchController.removeListener(listener);
             },
@@ -146,31 +145,32 @@ class AppFoodTag extends HookWidget {
                     ),
                   ),
                 ),
+                const Gap(12),
                 Expanded(
-                  child: filteredCategories.isEmpty
-                      ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.search_off,
-                                size: 64,
-                                color: Colors.grey,
-                              ),
-                              const Gap(16),
-                              Text(
-                                L10n.of(context).noResultsFound,
-                                style: const TextStyle(
-                                  fontSize: 16,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: filteredCategories.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.search_off,
+                                  size: 64,
                                   color: Colors.grey,
                                 ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : SingleChildScrollView(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Column(
+                                const Gap(16),
+                                Text(
+                                  L10n.of(context).noResultsFound,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: filteredCategories.map((entry) {
                               return Column(
@@ -196,7 +196,9 @@ class AppFoodTag extends HookWidget {
                                     children: entry.value.map((food) {
                                       final emoji = food[0];
                                       final text = getLocalizedFoodName(
-                                          food[0], context);
+                                        food[0],
+                                        context,
+                                      );
                                       final isSelected =
                                           selectedTags.value.contains(emoji);
                                       return GestureDetector(
@@ -241,7 +243,8 @@ class AppFoodTag extends HookWidget {
                                               Text(
                                                 emoji,
                                                 style: const TextStyle(
-                                                    fontSize: 16),
+                                                  fontSize: 16,
+                                                ),
                                               ),
                                               const Gap(4),
                                               Text(
@@ -264,7 +267,7 @@ class AppFoodTag extends HookWidget {
                               );
                             }).toList(),
                           ),
-                        ),
+                  ),
                 ),
               ],
             ),
@@ -443,7 +446,6 @@ class AppCountryTag extends HookWidget {
           final selectedText = useState<String>(countryText.value);
           final searchController = useTextEditingController();
           final searchQuery = useState<String>('');
-
           final filteredCountries = useMemoized(
             () {
               if (searchQuery.value.isEmpty) {
@@ -463,13 +465,11 @@ class AppCountryTag extends HookWidget {
               void listener() {
                 searchQuery.value = searchController.text;
               }
-
               searchController.addListener(listener);
               return () => searchController.removeListener(listener);
             },
             [searchController],
           );
-
           return Container(
             height: MediaQuery.of(context).size.height * 0.7,
             decoration: const BoxDecoration(
@@ -552,30 +552,30 @@ class AppCountryTag extends HookWidget {
                 ),
                 const Gap(12),
                 Expanded(
-                  child: filteredCountries.isEmpty
-                      ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.search_off,
-                                size: 64,
-                                color: Colors.grey,
-                              ),
-                              const Gap(16),
-                              Text(
-                                L10n.of(context).noResultsFound,
-                                style: const TextStyle(
-                                  fontSize: 16,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: filteredCountries.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.search_off,
+                                  size: 64,
                                   color: Colors.grey,
                                 ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : SingleChildScrollView(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Column(
+                                const Gap(16),
+                                Text(
+                                  L10n.of(context).noResultsFound,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Wrap(
@@ -588,7 +588,9 @@ class AppCountryTag extends HookWidget {
                                     onTap: () {
                                       final countryName =
                                           getLocalizedCountryName(
-                                              entry.key, context);
+                                        entry.key,
+                                        context,
+                                      );
                                       selectedTag.value = entry.key;
                                       selectedText.value = countryName;
                                     },
@@ -644,7 +646,7 @@ class AppCountryTag extends HookWidget {
                               ),
                             ],
                           ),
-                        ),
+                  ),
                 ),
               ],
             ),

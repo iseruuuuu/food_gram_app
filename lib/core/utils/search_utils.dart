@@ -1,5 +1,3 @@
-/// 検索機能のユーティリティ関数群
-
 /// 検索用の文字列正規化関数
 String normalizeSearchText(String text) {
   return text
@@ -51,7 +49,6 @@ String normalizeSearchText(String text) {
       .replaceAll('わ', 'ワ')
       .replaceAll('を', 'ヲ')
       .replaceAll('ん', 'ン')
-      // カタカナをひらがなに変換（逆方向）
       .replaceAll('ア', 'あ')
       .replaceAll('イ', 'い')
       .replaceAll('ウ', 'う')
@@ -98,7 +95,6 @@ String normalizeSearchText(String text) {
       .replaceAll('ワ', 'わ')
       .replaceAll('ヲ', 'を')
       .replaceAll('ン', 'ん')
-      // 濁点・半濁点の正規化
       .replaceAll('が', 'か')
       .replaceAll('ぎ', 'き')
       .replaceAll('ぐ', 'く')
@@ -124,7 +120,6 @@ String normalizeSearchText(String text) {
       .replaceAll('ぷ', 'ふ')
       .replaceAll('ぺ', 'へ')
       .replaceAll('ぽ', 'ほ')
-      // カタカナの濁点・半濁点も正規化
       .replaceAll('ガ', 'か')
       .replaceAll('ギ', 'き')
       .replaceAll('グ', 'く')
@@ -150,7 +145,6 @@ String normalizeSearchText(String text) {
       .replaceAll('プ', 'ふ')
       .replaceAll('ペ', 'へ')
       .replaceAll('ポ', 'ほ')
-      // 英数字の正規化
       .replaceAll('ａ', 'a')
       .replaceAll('ｂ', 'b')
       .replaceAll('ｃ', 'c')
@@ -189,13 +183,12 @@ String normalizeSearchText(String text) {
       .replaceAll('９', '9');
 }
 
-/// 検索マッチング関数
 bool isSearchMatch(String searchQuery, String targetText) {
-  if (searchQuery.isEmpty) return true;
+  if (searchQuery.isEmpty) {
+    return true;
+  }
 
   final normalizedQuery = normalizeSearchText(searchQuery);
   final normalizedTarget = normalizeSearchText(targetText);
-
-  // 部分一致検索
   return normalizedTarget.contains(normalizedQuery);
 }
