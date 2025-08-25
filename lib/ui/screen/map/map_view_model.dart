@@ -50,117 +50,103 @@ class MapViewModel extends _$MapViewModel {
     required void Function(List<Posts> posts) onPinTap,
     required double iconSize,
   }) async {
-    // 初回以外は既存のシンボルをクリア
     if (!isInitialLoading) {
       await state.mapController!.clearSymbols();
     }
+
     try {
-      final symbols = <SymbolOptions>[];
       // 投稿データを取得
-      final mapRepositoryValue = ref.read(mapRepositoryProvider);
-      final posts = mapRepositoryValue.whenOrNull(
-        data: (value) => value,
-      );
-      if (posts != null && posts.isNotEmpty) {
-        // 使用されるピン画像の種類を収集
-        final pinImageTypes = <String>{};
-        for (final post in posts) {
-          final imageType = post.foodTag.isEmpty
-              ? 'default'
-              : post.foodTag.split(',').first.trim();
-          pinImageTypes.add(imageType);
-        }
-
-        // 画像を事前生成（並列処理）
-        final imageKeyMap = <String, String>{};
-        var imageIndex = 0;
-        final imageTasks = <Future<void>>[];
-        for (final imageType in pinImageTypes) {
-          final imageKey = 'pin_${imageType}_$imageIndex';
-          imageKeyMap[imageType] = imageKey;
-          if (_imageCache.containsKey(imageType)) {
-            imageTasks.add(
-              state.mapController!.addImage(
-                imageKey,
-                _imageCache[imageType]!,
-              ),
-            );
-          } else {
-            final samplePost = posts.firstWhere(
-              (post) =>
-                  (post.foodTag.isEmpty
-                      ? 'default'
-                      : post.foodTag.split(',').first.trim()) ==
-                  imageType,
-              orElse: () => posts.first,
-            );
-            imageTasks.add(() async {
-              final screenshotBytes =
-                  await screenshotController.captureFromWidget(
-                AppFoodTagPinWidget(foodTag: samplePost.foodTag),
-              );
-              final list = screenshotBytes.buffer.asUint8List();
-              _imageCache[imageType] = list;
-              await state.mapController!.addImage(imageKey, list);
-            }());
-          }
-          imageIndex++;
-        }
-        // 全ての画像生成を並列で実行
-        await Future.wait(imageTasks);
-
-        for (final post in posts) {
-          final foodTag = post.foodTag.isEmpty
-              ? 'default'
-              : post.foodTag.split(',').first.trim();
-          symbols.add(
-            SymbolOptions(
-              geometry: LatLng(post.lat, post.lng),
-              iconImage: imageKeyMap[foodTag],
-              iconSize: iconSize,
-            ),
-          );
-        }
+      final posts =
+          ref.read(mapRepositoryProvider).whenOrNull(data: (value) => value);
+      if (posts == null || posts.isEmpty) {
+        return;
       }
+      // ピン画像の種類を収集
+      final imageTypes = <String>{};
+      for (final post in posts) {
+        final type = post.foodTag.isEmpty
+            ? 'default'
+            : post.foodTag.split(',').first.trim();
+        imageTypes.add(type);
+      }
+      // 画像を並列で生成してマップに追加
+      final imageKeys = await _generatePinImages(imageTypes, posts);
+      // シンボルを作成して追加
+      final symbols = posts.map((post) {
+        final imageType = post.foodTag.isEmpty
+            ? 'default'
+            : post.foodTag.split(',').first.trim();
+        return SymbolOptions(
+          geometry: LatLng(post.lat, post.lng),
+          iconImage: imageKeys[imageType],
+          iconSize: iconSize,
+        );
+      }).toList();
       if (symbols.isNotEmpty) {
         await state.mapController?.addSymbols(symbols);
-        // 他のシンボルがアイコンに衝突した場合、表示されないようにする
         await state.mapController?.setSymbolIconIgnorePlacement(true);
-        // アイコンは以前に描画された他のシンボルと衝突しても表示される
         await state.mapController?.setSymbolIconAllowOverlap(true);
       }
-
       // タップイベントを設定
       state.mapController?.onSymbolTapped.add((symbol) async {
         state = state.copyWith(isLoading: true);
         final latLng = symbol.options.geometry;
-        final lat = latLng!.latitude;
-        final lng = latLng.longitude;
         final restaurant = await ref
             .read(postRepositoryProvider.notifier)
-            .getRestaurantPosts(lat: lat, lng: lng);
-
-        restaurant.whenOrNull(
-          success: (posts) {
-            onPinTap(posts);
-          },
-        );
+            .getRestaurantPosts(lat: latLng!.latitude, lng: latLng.longitude);
+        restaurant.whenOrNull(success: (posts) => onPinTap(posts));
         await state.mapController?.animateCamera(
           CameraUpdate.newLatLng(latLng),
           duration: const Duration(seconds: 1),
         );
         isInitialLoading = false;
-        state = state.copyWith(
-          isLoading: false,
-          hasError: false,
-        );
+        state = state.copyWith(isLoading: false, hasError: false);
       });
     } on PlatformException catch (_) {
-      state = state.copyWith(
-        isLoading: false,
-        hasError: true,
-      );
+      state = state.copyWith(isLoading: false, hasError: true);
     }
+  }
+
+  /// ピン画像を並列で生成してマップに追加
+  Future<Map<String, String>> _generatePinImages(
+    Set<String> imageTypes,
+    List<Posts> posts,
+  ) async {
+    final imageKeys = <String, String>{};
+    final imageTasks = <Future<void>>[];
+
+    for (final imageType in imageTypes) {
+      final imageKey = 'pin_$imageType';
+      imageKeys[imageType] = imageKey;
+      if (_imageCache.containsKey(imageType)) {
+        // キャッシュ済み → 即座にマップに追加
+        imageTasks.add(
+          state.mapController!.addImage(imageKey, _imageCache[imageType]!),
+        );
+      } else {
+        // 新規生成
+        final samplePost = posts.firstWhere(
+          (post) =>
+              (post.foodTag.isEmpty
+                  ? 'default'
+                  : post.foodTag.split(',').first.trim()) ==
+              imageType,
+          orElse: () => posts.first,
+        );
+        imageTasks.add(() async {
+          final screenshotBytes = await screenshotController.captureFromWidget(
+            AppFoodTagPinWidget(foodTag: samplePost.foodTag),
+          );
+          _imageCache[imageType] = screenshotBytes.buffer.asUint8List();
+          await state.mapController!
+              .addImage(imageKey, _imageCache[imageType]!);
+        }());
+      }
+    }
+
+    // 全ての画像生成を並列で実行
+    await Future.wait(imageTasks);
+    return imageKeys;
   }
 
   Future<void> moveToCurrentLocation() async {
