@@ -58,9 +58,8 @@ class PostViewModel extends _$PostViewModel {
     primaryFocus?.unfocus();
     loading.state = true;
     state = state.copyWith(status: PostStatus.loading.name);
-    if (_isPostDataMissing()) {
+    if (_isPostMissing()) {
       loading.state = false;
-      state = state.copyWith(status: PostStatus.missingInfo.name);
       return false;
     }
     await _submitPost(restaurantTag, foodTag);
@@ -122,13 +121,24 @@ class PostViewModel extends _$PostViewModel {
     );
   }
 
-  bool _isPostDataMissing() {
-    return foodController.text.isEmpty ||
-        state.restaurant == defaultRestaurantText ||
-        _uploadImage.isEmpty;
+  bool _isPostMissing() {
+    if (_uploadImage.isEmpty) {
+      state = state.copyWith(status: PostStatus.missingPhoto.name);
+      return true;
+    }
+    if (foodController.text.isEmpty) {
+      state = state.copyWith(status: PostStatus.missingFoodName.name);
+      return true;
+    }
+    if (state.restaurant == defaultRestaurantText) {
+      state = state.copyWith(status: PostStatus.missingRestaurant.name);
+      return true;
+    }
+
+    return false;
   }
 
-  Future<bool> _pickImage(ImageSource source, String errorMessage) async {
+  Future<bool> _pickImage(ImageSource source, String errorPickerImage) async {
     try {
       final image = await _picker.pickImage(
         source: source,
@@ -144,7 +154,7 @@ class PostViewModel extends _$PostViewModel {
       return true;
     } on PlatformException catch (error) {
       logger.e(error.message);
-      state = state.copyWith(status: errorMessage);
+      state = state.copyWith(status: errorPickerImage);
       return false;
     }
   }
@@ -198,7 +208,6 @@ class PostViewModel extends _$PostViewModel {
 }
 
 enum PostStatus {
-  missingInfo,
   error,
   photoSuccess,
   cameraPermission,
@@ -206,4 +215,8 @@ enum PostStatus {
   success,
   loading,
   initial,
+  errorPickImage,
+  missingPhoto,
+  missingFoodName,
+  missingRestaurant,
 }
