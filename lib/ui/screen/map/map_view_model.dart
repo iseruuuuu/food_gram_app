@@ -21,6 +21,7 @@ class MapViewModel extends _$MapViewModel {
   bool isInitialLoading = true;
   final screenshotController = ScreenshotController();
   final Map<String, Uint8List> _imageCache = {};
+  final Set<String> _registeredImageKeys = {};
   bool _symbolTapHandlerRegistered = false;
 
   /// デフォルト画像を事前生成
@@ -127,9 +128,12 @@ class MapViewModel extends _$MapViewModel {
       imageKeys[imageType] = imageKey;
       if (_imageCache.containsKey(imageType)) {
         // キャッシュ済み → 即座にマップに追加
-        imageTasks.add(
-          state.mapController!.addImage(imageKey, _imageCache[imageType]!),
-        );
+        if (!_registeredImageKeys.contains(imageKey)) {
+          imageTasks.add(
+            state.mapController!.addImage(imageKey, _imageCache[imageType]!),
+          );
+          _registeredImageKeys.add(imageKey);
+        }
       } else {
         // 新規生成
         final samplePost = posts.firstWhere(
@@ -145,8 +149,13 @@ class MapViewModel extends _$MapViewModel {
             AppFoodTagPinWidget(foodTag: samplePost.foodTag),
           );
           _imageCache[imageType] = screenshotBytes.buffer.asUint8List();
-          await state.mapController!
-              .addImage(imageKey, _imageCache[imageType]!);
+          if (!_registeredImageKeys.contains(imageKey)) {
+            await state.mapController!.addImage(
+              imageKey,
+              _imageCache[imageType]!,
+            );
+            _registeredImageKeys.add(imageKey);
+          }
         }());
       }
     }
