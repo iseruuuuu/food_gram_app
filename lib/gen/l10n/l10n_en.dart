@@ -174,6 +174,15 @@ class L10nEn extends L10n {
   String get postMissingInfo => 'Please fill in all required fields';
 
   @override
+  String get postMissingPhoto => 'Please add a photo';
+
+  @override
+  String get postMissingFoodName => 'Please enter what you ate';
+
+  @override
+  String get postMissingRestaurant => 'Please add restaurant name';
+
+  @override
   String get postPhotoSuccess => 'Photo added successfully';
 
   @override
@@ -1408,4 +1417,7 @@ class L10nEn extends L10n {
 
   @override
   String get searchEmptyHintSearch => 'Search by restaurant name or cuisine type';
+
+  @override
+  String get postErrorPickImage => 'Failed to take photo';
 }

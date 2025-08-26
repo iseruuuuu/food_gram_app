@@ -54,6 +54,9 @@
   "postCuisineCategory": "料理",
   "postTitle":"投稿",
   "postMissingInfo": "必須項目を入力してください",
+  "postMissingPhoto": "写真を追加してください",
+  "postMissingFoodName": "食べたものを入力してください",
+  "postMissingRestaurant": "レストラン名を追加してください",
   "postPhotoSuccess": "写真を追加しました",
   "postCameraPermission": "カメラの許可が必要です",
   "postAlbumPermission": "フォトライブラリの許可が必要です",
@@ -466,5 +469,6 @@
   "searchEmptyTitle": "店舗名を入力して検索してください",
   "searchEmptyHintTitle": "検索のヒント",
   "searchEmptyHintLocation": "位置情報をオンにすると近い順で表示します",
-  "searchEmptyHintSearch": "店舗名や料理ジャンルで検索できます"
+  "searchEmptyHintSearch": "店舗名や料理ジャンルで検索できます",
+  "postErrorPickImage": "写真ができませんでした"
 }

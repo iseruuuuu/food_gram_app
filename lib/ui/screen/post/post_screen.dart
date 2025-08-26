@@ -301,7 +301,6 @@ class PostScreen extends HookConsumerWidget {
                       final foodTagString = foodTags.value.isEmpty
                           ? ''
                           : foodTags.value.join(',');
-
                       final result =
                           await ref.read(postViewModelProvider().notifier).post(
                                 restaurantTag: countryTag.value,
@@ -310,10 +309,12 @@ class PostScreen extends HookConsumerWidget {
                       if (result) {
                         context.pop(true);
                       } else {
+                        final status =
+                            ref.watch(postViewModelProvider()).status;
                         SnackBarHelper().openErrorSnackBar(
                           context,
                           l10n.postError,
-                          _getLocalizedStatus(context, state.status),
+                          _getLocalizedStatus(context, status),
                         );
                       }
                     },
@@ -348,23 +349,30 @@ class PostScreen extends HookConsumerWidget {
       (e) => e.name == status,
       orElse: () => PostStatus.initial,
     );
+    final l10n = L10n.of(context);
     switch (postStatus) {
-      case PostStatus.missingInfo:
-        return L10n.of(context).postMissingInfo;
+      case PostStatus.errorPickImage:
+        return l10n.postErrorPickImage;
       case PostStatus.error:
-        return L10n.of(context).postError;
+        return l10n.postError;
       case PostStatus.photoSuccess:
-        return L10n.of(context).postPhotoSuccess;
+        return l10n.postPhotoSuccess;
       case PostStatus.cameraPermission:
-        return L10n.of(context).postCameraPermission;
+        return l10n.postCameraPermission;
       case PostStatus.albumPermission:
-        return L10n.of(context).postAlbumPermission;
+        return l10n.postAlbumPermission;
       case PostStatus.success:
-        return L10n.of(context).postSuccess;
+        return l10n.postSuccess;
       case PostStatus.loading:
         return 'Loading...';
+      case PostStatus.missingPhoto:
+        return l10n.postMissingPhoto;
+      case PostStatus.missingFoodName:
+        return l10n.postMissingFoodName;
+      case PostStatus.missingRestaurant:
+        return l10n.postMissingRestaurant;
       case PostStatus.initial:
-        return '';
+        return 'Loading...';
     }
   }
 }

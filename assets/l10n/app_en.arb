@@ -54,6 +54,9 @@
   "postCuisineCategory": "Cuisine",
   "postTitle":"Post",
   "postMissingInfo": "Please fill in all required fields",
+  "postMissingPhoto": "Please add a photo",
+  "postMissingFoodName": "Please enter what you ate",
+  "postMissingRestaurant": "Please add restaurant name",
   "postPhotoSuccess": "Photo added successfully",
   "postCameraPermission": "Camera permission is required",
   "postAlbumPermission": "Photo library permission is required",
@@ -466,5 +469,6 @@
   "searchEmptyTitle": "Enter restaurant name to search",
   "searchEmptyHintTitle": "Search Tips",
   "searchEmptyHintLocation": "Turn on location to show nearby results first",
-  "searchEmptyHintSearch": "Search by restaurant name or cuisine type"
+  "searchEmptyHintSearch": "Search by restaurant name or cuisine type",
+  "postErrorPickImage": "Failed to take photo"
 }
