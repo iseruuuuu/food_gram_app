@@ -47,7 +47,6 @@ class MapViewModel extends _$MapViewModel {
     );
   }
 
-  /// ピンを設定するメインメソッド
   Future<void> setPin({
     required void Function(List<Posts> posts) onPinTap,
     required double iconSize,
