@@ -426,6 +426,24 @@ abstract class L10n {
   /// **'必須項目を入力してください'**
   String get postMissingInfo;
 
+  /// No description provided for @postMissingPhoto.
+  ///
+  /// In ja, this message translates to:
+  /// **'写真を追加してください'**
+  String get postMissingPhoto;
+
+  /// No description provided for @postMissingFoodName.
+  ///
+  /// In ja, this message translates to:
+  /// **'食べたものを入力してください'**
+  String get postMissingFoodName;
+
+  /// No description provided for @postMissingRestaurant.
+  ///
+  /// In ja, this message translates to:
+  /// **'レストラン名を追加してください'**
+  String get postMissingRestaurant;
+
   /// No description provided for @postPhotoSuccess.
   ///
   /// In ja, this message translates to:
@@ -2897,6 +2915,12 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'店舗名や料理ジャンルで検索できます'**
   String get searchEmptyHintSearch;
+
+  /// No description provided for @postErrorPickImage.
+  ///
+  /// In ja, this message translates to:
+  /// **'写真ができませんでした'**
+  String get postErrorPickImage;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

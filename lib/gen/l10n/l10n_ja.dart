@@ -174,6 +174,15 @@ class L10nJa extends L10n {
   String get postMissingInfo => '必須項目を入力してください';
 
   @override
+  String get postMissingPhoto => '写真を追加してください';
+
+  @override
+  String get postMissingFoodName => '食べたものを入力してください';
+
+  @override
+  String get postMissingRestaurant => 'レストラン名を追加してください';
+
+  @override
   String get postPhotoSuccess => '写真を追加しました';
 
   @override
@@ -1408,4 +1417,7 @@ class L10nJa extends L10n {
 
   @override
   String get searchEmptyHintSearch => '店舗名や料理ジャンルで検索できます';
+
+  @override
+  String get postErrorPickImage => '写真ができませんでした';
 }
