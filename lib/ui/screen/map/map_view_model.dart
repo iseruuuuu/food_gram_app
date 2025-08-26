@@ -21,6 +21,7 @@ class MapViewModel extends _$MapViewModel {
   bool isInitialLoading = true;
   final screenshotController = ScreenshotController();
   final Map<String, Uint8List> _imageCache = {};
+  bool _symbolTapHandlerRegistered = false;
 
   /// デフォルト画像を事前生成
   Future<void> _preloadDefaultImages() async {
@@ -87,21 +88,27 @@ class MapViewModel extends _$MapViewModel {
         await state.mapController?.setSymbolIconIgnorePlacement(true);
         await state.mapController?.setSymbolIconAllowOverlap(true);
       }
-      // タップイベントを設定
-      state.mapController?.onSymbolTapped.add((symbol) async {
-        state = state.copyWith(isLoading: true);
-        final latLng = symbol.options.geometry;
-        final restaurant = await ref
-            .read(postRepositoryProvider.notifier)
-            .getRestaurantPosts(lat: latLng!.latitude, lng: latLng.longitude);
-        restaurant.whenOrNull(success: (posts) => onPinTap(posts));
-        await state.mapController?.animateCamera(
-          CameraUpdate.newLatLng(latLng),
-          duration: const Duration(seconds: 1),
-        );
-        isInitialLoading = false;
-        state = state.copyWith(isLoading: false, hasError: false);
-      });
+
+      // 意図的に1度だけ呼ぶにようにする
+      if (!_symbolTapHandlerRegistered) {
+        // タップイベントを設定
+        state.mapController?.onSymbolTapped.add((symbol) async {
+          state = state.copyWith(isLoading: true);
+          final latLng = symbol.options.geometry;
+          final restaurant = await ref
+              .read(postRepositoryProvider.notifier)
+              .getRestaurantPosts(lat: latLng!.latitude, lng: latLng.longitude);
+          restaurant.whenOrNull(success: (posts) => onPinTap(posts));
+          await state.mapController?.animateCamera(
+            CameraUpdate.newLatLng(latLng),
+            duration: const Duration(seconds: 1),
+          );
+          isInitialLoading = false;
+          state = state.copyWith(isLoading: false, hasError: false);
+        });
+
+        _symbolTapHandlerRegistered = true;
+      }
     } on PlatformException catch (_) {
       state = state.copyWith(isLoading: false, hasError: true);
     }
