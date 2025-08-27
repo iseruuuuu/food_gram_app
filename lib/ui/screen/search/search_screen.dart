@@ -4,8 +4,8 @@ import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/ui/screen/search/component/restaurant_search.dart';
-import 'package:food_gram_app/ui/screen/search/component/user_search.dart';
+import 'package:food_gram_app/ui/screen/search/component/restaurant_search_tab.dart';
+import 'package:food_gram_app/ui/screen/search/component/user_search_tab.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SearchScreen extends HookConsumerWidget {
@@ -41,7 +41,7 @@ class SearchScreen extends HookConsumerWidget {
             controller: tabController,
             tabs: [
               Tab(text: l10n.searchRestaurantTitle),
-              const Tab(text: 'ユーザー検索'),
+              Tab(text: l10n.searchUserTitle),
             ],
           ),
         ),
