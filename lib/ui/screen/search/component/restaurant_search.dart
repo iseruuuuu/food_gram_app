@@ -12,7 +12,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// レストラン検索タブ
 class RestaurantSearchTab extends HookConsumerWidget {
   const RestaurantSearchTab({
     required this.categoriesData,
@@ -28,7 +27,6 @@ class RestaurantSearchTab extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: SingleChildScrollView(
