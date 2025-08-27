@@ -52,6 +52,12 @@ class UserSearchTab extends ConsumerWidget {
                     final latestPosts = user['latest_posts'] as List<dynamic>;
                     return Card(
                       margin: const EdgeInsets.symmetric(vertical: 8),
+                      color: Colors.white,
+                      elevation: 1,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(color: Colors.grey.shade300),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(16),
                         child: Column(
