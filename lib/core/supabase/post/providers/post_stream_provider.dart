@@ -25,6 +25,7 @@ Stream<List<Map<String, dynamic>>> postStream(Ref ref) {
     return posts;
   });
 }
+
 /// 自分の投稿のストリームを提供
 @riverpod
 Stream<List<Map<String, dynamic>>> myPostStream(Ref ref) {
@@ -79,9 +80,7 @@ Stream<List<Map<String, dynamic>>> postStreamByCategory(
         }
         final foodEmojis = foodCategory[categoryName] ?? [];
         final foodTag = post['food_tag'] as String;
-        return foodEmojis.any(
-          (emojiList) => emojiList.isNotEmpty && emojiList[0] == foodTag,
-        );
+        return foodEmojis.contains(foodTag);
       }).toList(),
     );
   }
@@ -108,10 +107,7 @@ Stream<List<Map<String, dynamic>>> postStreamByCategory(
         // カテゴリー内のいずれかの絵文字を含む投稿をフィルタリング
         return filtered.where((post) {
           final foodTag = post['food_tag'] as String;
-          // 各サブリストの最初の要素（絵文字）と比較
-          return foodEmojis.any(
-            (emojiList) => emojiList.isNotEmpty && emojiList[0] == foodTag,
-          );
+          return foodEmojis.contains(foodTag);
         }).toList();
       }
 
