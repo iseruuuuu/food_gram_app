@@ -222,6 +222,9 @@ class L10nZh extends L10n {
   String get searchRestaurantTitle => '搜索餐厅';
 
   @override
+  String get searchUserTitle => 'ユーザー検索';
+
+  @override
   String get unknown => '未知・无结果';
 
   @override

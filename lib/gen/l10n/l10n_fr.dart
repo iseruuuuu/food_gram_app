@@ -222,6 +222,9 @@ class L10nFr extends L10n {
   String get searchRestaurantTitle => 'Rechercher des restaurants';
 
   @override
+  String get searchUserTitle => 'Recherche d\'utilisateurs';
+
+  @override
   String get unknown => 'Inconnu・Aucun résultat';
 
   @override

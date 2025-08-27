@@ -222,6 +222,9 @@ class L10nKo extends L10n {
   String get searchRestaurantTitle => '레스토랑 검색';
 
   @override
+  String get searchUserTitle => 'ユーザー検索';
+
+  @override
   String get unknown => '알 수 없음・검색 결과 없음';
 
   @override

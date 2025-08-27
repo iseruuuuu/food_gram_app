@@ -222,6 +222,9 @@ class L10nPt extends L10n {
   String get searchRestaurantTitle => 'Pesquisar Restaurantes';
 
   @override
+  String get searchUserTitle => 'ユーザー検索';
+
+  @override
   String get unknown => 'Desconhecido・Sem resultados';
 
   @override

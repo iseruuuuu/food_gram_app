@@ -70,6 +70,7 @@
   "searchEmptyResult": "該当する場所が見つかりませんでした",
   "searchButton":"検索",
   "searchRestaurantTitle": "レストランを探す",
+  "searchUserTitle": "ユーザー検索",
   "unknown": "不明・ヒットなし",
   "profilePostCount": "投稿",
   "profilePointCount": "ポイント",

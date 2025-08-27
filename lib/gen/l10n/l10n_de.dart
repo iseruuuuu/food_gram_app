@@ -222,6 +222,9 @@ class L10nDe extends L10n {
   String get searchRestaurantTitle => 'Restaurants suchen';
 
   @override
+  String get searchUserTitle => 'Benutzersuche';
+
+  @override
   String get unknown => 'Unbekannt・Keine Ergebnisse';
 
   @override

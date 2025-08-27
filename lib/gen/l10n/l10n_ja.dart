@@ -222,6 +222,9 @@ class L10nJa extends L10n {
   String get searchRestaurantTitle => 'レストランを探す';
 
   @override
+  String get searchUserTitle => 'ユーザー検索';
+
+  @override
   String get unknown => '不明・ヒットなし';
 
   @override
