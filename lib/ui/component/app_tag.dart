@@ -39,11 +39,11 @@ class AppFoodTag extends HookWidget {
               if (searchQuery.value.isEmpty) {
                 return foodCategory.entries.toList();
               }
-              final filtered = <MapEntry<String, List<List<String>>>>[];
+              final filtered = <MapEntry<String, List<String>>>[];
               for (final entry in foodCategory.entries) {
                 final filteredFoods = entry.value.where((food) {
-                  final emoji = food[0];
-                  final text = getLocalizedFoodName(food[0], context);
+                  final emoji = food;
+                  final text = getLocalizedFoodName(food, context);
                   return isSearchMatch(searchQuery.value, emoji) ||
                       isSearchMatch(searchQuery.value, text);
                 }).toList();
@@ -198,9 +198,9 @@ class AppFoodTag extends HookWidget {
                                       spacing: 8,
                                       runSpacing: 8,
                                       children: entry.value.map((food) {
-                                        final emoji = food[0];
+                                        final emoji = food;
                                         final text = getLocalizedFoodName(
-                                          food[0],
+                                          food,
                                           context,
                                         );
                                         final isSelected =
@@ -455,11 +455,10 @@ class AppCountryTag extends HookWidget {
           final filteredCountries = useMemoized(
             () {
               if (searchQuery.value.isEmpty) {
-                return countryCategory.entries.toList();
+                return countryEmojis.toList();
               }
-              return countryCategory.entries.where((entry) {
-                final emoji = entry.key;
-                final text = getLocalizedCountryName(entry.key, context);
+              return countryEmojis.where((emoji) {
+                final text = getLocalizedCountryName(emoji, context);
                 return isSearchMatch(searchQuery.value, emoji) ||
                     isSearchMatch(searchQuery.value, text);
               }).toList();
@@ -590,17 +589,17 @@ class AppCountryTag extends HookWidget {
                                 Wrap(
                                   spacing: 8,
                                   runSpacing: 8,
-                                  children: filteredCountries.map((entry) {
+                                  children: filteredCountries.map((emoji) {
                                     final isSelected =
-                                        selectedTag.value == entry.key;
+                                        selectedTag.value == emoji;
                                     return GestureDetector(
                                       onTap: () {
                                         final countryName =
                                             getLocalizedCountryName(
-                                          entry.key,
+                                          emoji,
                                           context,
                                         );
-                                        selectedTag.value = entry.key;
+                                        selectedTag.value = emoji;
                                         selectedText.value = countryName;
                                       },
                                       child: Container(
@@ -624,7 +623,7 @@ class AppCountryTag extends HookWidget {
                                           child: Row(
                                             children: [
                                               Text(
-                                                entry.key,
+                                                emoji,
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   color: isSelected
@@ -636,7 +635,7 @@ class AppCountryTag extends HookWidget {
                                               const Gap(4),
                                               Text(
                                                 getLocalizedCountryName(
-                                                  entry.key,
+                                                  emoji,
                                                   context,
                                                 ),
                                                 style: TextStyle(
