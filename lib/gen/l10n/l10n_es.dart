@@ -225,6 +225,20 @@ class L10nEs extends L10n {
   String get searchUserTitle => 'Búsqueda de Usuarios';
 
   @override
+  String get searchUserHeader => 'Búsqueda de Usuarios (por Número de Publicaciones)';
+
+  @override
+  String searchUserPostCount(Object count) {
+    return 'Publicaciones: $count';
+  }
+
+  @override
+  String get searchUserLatestPosts => 'Últimas Publicaciones';
+
+  @override
+  String get searchUserNoUsers => 'No se encontraron usuarios con publicaciones';
+
+  @override
   String get unknown => 'Desconocido・Sin resultados';
 
   @override

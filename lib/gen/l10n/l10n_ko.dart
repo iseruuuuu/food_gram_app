@@ -222,7 +222,21 @@ class L10nKo extends L10n {
   String get searchRestaurantTitle => '레스토랑 검색';
 
   @override
-  String get searchUserTitle => 'ユーザー検索';
+  String get searchUserTitle => '사용자 검색';
+
+  @override
+  String get searchUserHeader => '사용자 검색 (게시물 수순)';
+
+  @override
+  String searchUserPostCount(Object count) {
+    return '게시물: $count개';
+  }
+
+  @override
+  String get searchUserLatestPosts => '최신 게시물';
+
+  @override
+  String get searchUserNoUsers => '게시물이 있는 사용자를 찾을 수 없습니다';
 
   @override
   String get unknown => '알 수 없음・검색 결과 없음';

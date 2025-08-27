@@ -222,7 +222,21 @@ class L10nZh extends L10n {
   String get searchRestaurantTitle => '搜索餐厅';
 
   @override
-  String get searchUserTitle => 'ユーザー検索';
+  String get searchUserTitle => '用户搜索';
+
+  @override
+  String get searchUserHeader => '用户搜索（按帖子数量）';
+
+  @override
+  String searchUserPostCount(Object count) {
+    return '帖子数: $count';
+  }
+
+  @override
+  String get searchUserLatestPosts => '最新帖子';
+
+  @override
+  String get searchUserNoUsers => '没有找到有帖子的用户';
 
   @override
   String get unknown => '未知・无结果';

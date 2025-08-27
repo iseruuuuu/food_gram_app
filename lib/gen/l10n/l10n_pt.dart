@@ -222,7 +222,21 @@ class L10nPt extends L10n {
   String get searchRestaurantTitle => 'Pesquisar Restaurantes';
 
   @override
-  String get searchUserTitle => 'ユーザー検索';
+  String get searchUserTitle => 'Pesquisa de Usuários';
+
+  @override
+  String get searchUserHeader => 'Pesquisa de Usuários (por Número de Publicações)';
+
+  @override
+  String searchUserPostCount(Object count) {
+    return 'Publicações: $count';
+  }
+
+  @override
+  String get searchUserLatestPosts => 'Publicações Recentes';
+
+  @override
+  String get searchUserNoUsers => 'Nenhum usuário com publicações encontrado';
 
   @override
   String get unknown => 'Desconhecido・Sem resultados';
