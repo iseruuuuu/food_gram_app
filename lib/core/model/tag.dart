@@ -341,9 +341,7 @@ final categoriesProvider = Provider<List<CategoryData>>((ref) {
     result.add(
       (
         name: key,
-        displayIcon: foodEmojis.isNotEmpty && foodEmojis[0].isNotEmpty
-            ? foodEmojis[0][0]
-            : '🍽️',
+        displayIcon: foodEmojis.isNotEmpty ? foodEmojis[0] : '🍽️',
         isAllCategory: false
       ),
     );

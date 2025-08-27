@@ -37,7 +37,7 @@ class AppPostCountryCategoryModalSheet extends ConsumerWidget {
             Wrap(
               spacing: 12,
               runSpacing: 12,
-              children: countryCategory.keys.map<Widget>((emoji) {
+              children: countryEmojis.map<Widget>((emoji) {
                 return GestureDetector(
                   onTap: () {
                     onChanged(emoji);
@@ -119,7 +119,7 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
                     children: entry.value.map((food) {
                       return GestureDetector(
                         onTap: () {
-                          onChanged(food[0]);
+                          onChanged(food);
                           Navigator.pop(context);
                         },
                         child: Container(
@@ -127,16 +127,15 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
                           height: 60,
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: tagValue == food[0]
-                                  ? Colors.blue
-                                  : Colors.grey,
-                              width: tagValue == food[0] ? 2 : 1,
+                              color:
+                                  tagValue == food ? Colors.blue : Colors.grey,
+                              width: tagValue == food ? 2 : 1,
                             ),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Center(
                             child: Text(
-                              food[0],
+                              food,
                               style: const TextStyle(fontSize: 36),
                             ),
                           ),
