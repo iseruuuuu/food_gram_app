@@ -1,5 +1,4 @@
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
-import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/ui/screen/profile/user_profile/user_profile_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
