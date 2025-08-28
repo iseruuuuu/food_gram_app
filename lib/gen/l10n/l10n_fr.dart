@@ -222,6 +222,23 @@ class L10nFr extends L10n {
   String get searchRestaurantTitle => 'Rechercher des restaurants';
 
   @override
+  String get searchUserTitle => 'Recherche d\'utilisateurs';
+
+  @override
+  String get searchUserHeader => 'Recherche d\'utilisateurs (par nombre de publications)';
+
+  @override
+  String searchUserPostCount(Object count) {
+    return 'Publications: $count';
+  }
+
+  @override
+  String get searchUserLatestPosts => 'Dernières publications';
+
+  @override
+  String get searchUserNoUsers => 'Aucun utilisateur avec des publications trouvé';
+
+  @override
   String get unknown => 'Inconnu・Aucun résultat';
 
   @override

@@ -222,6 +222,23 @@ class L10nJa extends L10n {
   String get searchRestaurantTitle => 'レストランを探す';
 
   @override
+  String get searchUserTitle => 'ユーザー検索';
+
+  @override
+  String get searchUserHeader => 'ユーザー検索（投稿数順）';
+
+  @override
+  String searchUserPostCount(Object count) {
+    return '投稿数: $count件';
+  }
+
+  @override
+  String get searchUserLatestPosts => '最新の投稿';
+
+  @override
+  String get searchUserNoUsers => '投稿しているユーザーがいません';
+
+  @override
   String get unknown => '不明・ヒットなし';
 
   @override

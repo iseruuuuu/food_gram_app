@@ -222,6 +222,23 @@ class L10nEn extends L10n {
   String get searchRestaurantTitle => 'Search Restaurants';
 
   @override
+  String get searchUserTitle => 'User Search';
+
+  @override
+  String get searchUserHeader => 'User Search (by Post Count)';
+
+  @override
+  String searchUserPostCount(Object count) {
+    return 'Posts: $count';
+  }
+
+  @override
+  String get searchUserLatestPosts => 'Latest Posts';
+
+  @override
+  String get searchUserNoUsers => 'No users with posts found';
+
+  @override
   String get unknown => 'Unknown・No Hits';
 
   @override

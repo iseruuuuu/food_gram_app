@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
@@ -40,15 +41,6 @@ class UserRepository extends _$UserRepository {
     });
   }
 
-  /// 指定したユーザーの投稿数を取得
-  Future<Result<int, Exception>> getOtherUserPostCount(String userId) async {
-    return _handleDatabaseOperation(() async {
-      return ref
-          .read(userServiceProvider.notifier)
-          .getOtherUserPostCount(userId);
-    });
-  }
-
   /// 投稿からユーザー情報を取得
   Future<Result<Users, Exception>> getUserFromPost(Posts post) async {
     return _handleDatabaseOperation(() async {
@@ -58,7 +50,23 @@ class UserRepository extends _$UserRepository {
     });
   }
 
-  /// 共通のエラーハンドリングラッパー
+  /// 全ユーザー情報を取得
+  Future<Result<List<Users>, Exception>> getAllUsers() async {
+    return _handleDatabaseOperation(() async {
+      final data = await ref.read(userServiceProvider.notifier).getAllUsers();
+      return data.map(Users.fromJson).toList();
+    });
+  }
+
+  /// ユーザー情報と投稿数を含むデータを取得
+  Future<Result<List<Map<String, dynamic>>, Exception>>
+      getUsersWithPostCount() async {
+    return _handleDatabaseOperation(() async {
+      return ref.read(userServiceProvider.notifier).getUsersWithPostCount();
+    });
+  }
+
+  /// エラーハンドリング用のヘルパーメソッド
   Future<Result<T, Exception>> _handleDatabaseOperation<T>(
     Future<T> Function() operation,
   ) async {
@@ -68,6 +76,20 @@ class UserRepository extends _$UserRepository {
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
       return Failure(e);
+    } on Exception catch (e) {
+      logger.e('Unexpected error: $e');
+      return Failure(e);
     }
   }
+}
+
+/// ユーザー検索用のプロバイダー
+@riverpod
+Future<List<Map<String, dynamic>>> usersWithPostCountProvider(Ref ref) async {
+  final result =
+      await ref.read(userRepositoryProvider.notifier).getUsersWithPostCount();
+  return result.when(
+    success: (data) => data,
+    failure: (error) => throw Exception(error.toString()),
+  );
 }

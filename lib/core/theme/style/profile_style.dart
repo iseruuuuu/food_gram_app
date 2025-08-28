@@ -13,7 +13,7 @@ class ProfileStyle {
   static TextStyle userName() {
     return const TextStyle(
       fontWeight: FontWeight.normal,
-      fontSize: 14,
+      fontSize: 18,
       color: Colors.grey,
     );
   }

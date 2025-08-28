@@ -534,6 +534,36 @@ abstract class L10n {
   /// **'レストランを探す'**
   String get searchRestaurantTitle;
 
+  /// No description provided for @searchUserTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'ユーザー検索'**
+  String get searchUserTitle;
+
+  /// No description provided for @searchUserHeader.
+  ///
+  /// In ja, this message translates to:
+  /// **'ユーザー検索（投稿数順）'**
+  String get searchUserHeader;
+
+  /// No description provided for @searchUserPostCount.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿数: {count}件'**
+  String searchUserPostCount(Object count);
+
+  /// No description provided for @searchUserLatestPosts.
+  ///
+  /// In ja, this message translates to:
+  /// **'最新の投稿'**
+  String get searchUserLatestPosts;
+
+  /// No description provided for @searchUserNoUsers.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿しているユーザーがいません'**
+  String get searchUserNoUsers;
+
   /// No description provided for @unknown.
   ///
   /// In ja, this message translates to:
