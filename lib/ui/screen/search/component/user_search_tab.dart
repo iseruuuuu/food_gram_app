@@ -48,8 +48,8 @@ class UserSearchTab extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final user = filteredUsers[index];
                     final userData = Users.fromJson(user);
-                    final postCount = user['post_count'] as int;
                     final latestPosts = user['latest_posts'] as List<dynamic>;
+                    final postCount = user['post_count'] as int;
                     return Card(
                       margin: const EdgeInsets.symmetric(vertical: 8),
                       color: Colors.white,

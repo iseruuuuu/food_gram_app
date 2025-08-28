@@ -115,7 +115,8 @@ class UserService extends _$UserService {
             .select('user_id, food_image, created_at')
             .eq('is_anonymous', false)
             .order('created_at', ascending: false)
-            .limit(3000);
+            .limit(2500);
+        if (postsResponse.isNotEmpty) {}
         final userIds = <String>{};
         final userPostCounts = <String, int>{};
         final userLatestPosts = <String, List<Map<String, dynamic>>>{};
@@ -129,7 +130,7 @@ class UserService extends _$UserService {
           }
           if (userLatestPosts[userId]!.length < 4) {
             userLatestPosts[userId]!.add({
-              'food_image': post['food_image'],
+              'food_image': post['food_image'] ?? '',
               'created_at': post['created_at'],
             });
           }
@@ -147,7 +148,7 @@ class UserService extends _$UserService {
           final userId = user['user_id'] as String;
           final postCount = userPostCounts[userId] ?? 0;
           final latestPosts = userLatestPosts[userId] ?? [];
-          if (postCount > 0 && latestPosts.isNotEmpty) {
+          if (postCount > 0) {
             usersWithCount.add({
               ...user,
               'post_count': postCount,

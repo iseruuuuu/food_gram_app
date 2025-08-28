@@ -314,6 +314,7 @@ class PostService extends _$PostService {
           .from('posts')
           .select()
           .eq('user_id', userId)
+          .eq('is_anonymous', false)
           .order('created_at', ascending: false),
       duration: const Duration(minutes: 5),
     );
@@ -472,7 +473,8 @@ class PostService extends _$PostService {
     _cacheManager
       ..invalidate('user_posts_$userId')
       ..invalidate('user_data_$userId')
-      ..invalidate('heart_amount_$userId');
+      ..invalidate('heart_amount_$userId')
+      ..invalidate('post_count_$userId');
   }
 
   void invalidateRestaurantCache(double lat, double lng) {
