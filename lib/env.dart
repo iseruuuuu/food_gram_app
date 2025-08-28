@@ -40,6 +40,8 @@ abstract class Env {
   static final String androidInterstitial = _Env.androidInterstitial;
   @EnviedField(varName: 'ANDROID_OPEN', obfuscate: true)
   static final String androidOpen = _Env.androidOpen;
+  @EnviedField(varName: 'POINT', obfuscate: true)
+  static final String point = _Env.point;
 }
 
 @Envied(path: '.env.dev')
