@@ -41,15 +41,6 @@ class UserRepository extends _$UserRepository {
     });
   }
 
-  /// 指定したユーザーの投稿数を取得
-  Future<Result<int, Exception>> getOtherUserPostCount(String userId) async {
-    return _handleDatabaseOperation(() async {
-      return ref
-          .read(userServiceProvider.notifier)
-          .getOtherUserPostCount(userId);
-    });
-  }
-
   /// 投稿からユーザー情報を取得
   Future<Result<Users, Exception>> getUserFromPost(Posts post) async {
     return _handleDatabaseOperation(() async {

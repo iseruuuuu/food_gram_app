@@ -33,13 +33,7 @@ class UserProfileScreen extends ConsumerWidget {
           surfaceTintColor: Colors.white,
           elevation: 0,
           centerTitle: false,
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(users.name, style: ProfileStyle.name()),
-              Text('@${users.userName}', style: ProfileStyle.userName()),
-            ],
-          ),
+          title: Text('@${users.userName}', style: ProfileStyle.userName()),
           leading: GestureDetector(
             onTap: context.pop,
             child: const Icon(Icons.close, size: 30),
@@ -59,7 +53,11 @@ class UserProfileScreen extends ConsumerWidget {
               SliverToBoxAdapter(
                 child: AppProfileHeader(
                   users: users,
-                  length: state.length,
+                  length: posts.when(
+                    data: (value) => value.length,
+                    error: (_, __) => 0,
+                    loading: () => 0,
+                  ),
                   heartAmount: state.heartAmount,
                 ),
               ),

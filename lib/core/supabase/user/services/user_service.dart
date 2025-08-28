@@ -59,21 +59,6 @@ class UserService extends _$UserService {
     );
   }
 
-  /// 指定したユーザーの投稿数を取得
-  Future<int> getOtherUserPostCount(String userId) async {
-    return _cacheManager.get<int>(
-      key: 'post_count_$userId',
-      fetcher: () async {
-        final response =
-            await supabase.from('posts').select().eq('user_id', userId);
-        return response.length;
-      },
-
-      /// 投稿数は頻繁に変わる可能性があるため、短めの期間を設定
-      duration: const Duration(minutes: 2),
-    );
-  }
-
   /// 投稿から指定したユーザー情報を取得
   Future<Map<String, dynamic>> getUserFromPost(Posts post) async {
     return supabase.from('users').select().eq('user_id', post.userId).single();

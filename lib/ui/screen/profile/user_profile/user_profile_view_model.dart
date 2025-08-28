@@ -17,22 +17,12 @@ class UserProfileViewModel extends _$UserProfileViewModel {
   }
 
   Future<void> getData(String userId) async {
-    final length = await ref
-        .read(userRepositoryProvider.notifier)
-        .getOtherUserPostCount(userId);
-    await length.whenOrNull(
-      success: (length) async {
-        final heartAmountResult = await ref
-            .read(postRepositoryProvider.notifier)
-            .getOtherHeartAmount(userId);
-        heartAmountResult.whenOrNull(
-          success: (heartAmount) {
-            state = state.copyWith(
-              length: length,
-              heartAmount: heartAmount,
-            );
-          },
-        );
+    final heartAmountResult = await ref
+        .read(postRepositoryProvider.notifier)
+        .getOtherHeartAmount(userId);
+    heartAmountResult.whenOrNull(
+      success: (heartAmount) {
+        state = state.copyWith(heartAmount: heartAmount);
       },
     );
   }
