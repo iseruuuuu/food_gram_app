@@ -82,7 +82,17 @@ class Preference {
 
   /// いいねカウントを増加
   Future<void> incrementHeartCount() async {
+    final today = DateTime.now().toIso8601String().split('T')[0];
+    final storedDate = await getString(PreferenceKey.heartDate);
     final currentCount = await getInt(PreferenceKey.heartCount);
-    await setInt(PreferenceKey.heartCount, currentCount + 1);
+
+    // 初回のいいねまたは日付が変わった場合は日付を設定
+    if (storedDate.isEmpty || storedDate != today) {
+      await setString(PreferenceKey.heartDate, today);
+      await setInt(PreferenceKey.heartCount, 1);
+    } else {
+      // 同じ日付の場合はカウントを増加
+      await setInt(PreferenceKey.heartCount, currentCount + 1);
+    }
   }
 }
