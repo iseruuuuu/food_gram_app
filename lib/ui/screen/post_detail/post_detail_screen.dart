@@ -87,6 +87,7 @@ class PostDetailScreen extends HookConsumerWidget {
       final postId = posts.id.toString();
       final currentHeart = initialHeart.value;
       if (isHeart.value) {
+        // いいねを外す場合は制限チェック不要
         await supabase.from('posts').update({
           'heart': currentHeart - 1,
         }).match({'id': posts.id});
@@ -95,6 +96,17 @@ class PostDetailScreen extends HookConsumerWidget {
         isAppearHeart.value = false;
         heartList.value = List.from(heartList.value)..remove(postId);
       } else {
+        // 10回以上いいねした場合は制限
+        final canLike = await preference.canLike();
+        if (!canLike) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(l10n.heartLimitMessage),
+              backgroundColor: Colors.red,
+            ),
+          );
+          return;
+        }
         await supabase.from('posts').update({
           'heart': currentHeart + 1,
         }).match({'id': posts.id});
@@ -102,6 +114,9 @@ class PostDetailScreen extends HookConsumerWidget {
         isHeart.value = true;
         isAppearHeart.value = true;
         heartList.value = List.from(heartList.value)..add(postId);
+
+        // いいねカウントを増加
+        await preference.incrementHeartCount();
       }
       await preference.setStringList(
         PreferenceKey.heartList,

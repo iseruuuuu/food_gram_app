@@ -308,6 +308,9 @@ class L10nJa extends L10n {
   String get dialogDeleteTitle => '投稿の削除';
 
   @override
+  String get heartLimitMessage => '今日は10回までです。明日までお待ちください。';
+
+  @override
   String get dialogDeleteDescription1 => 'この投稿を削除しますか？';
 
   @override

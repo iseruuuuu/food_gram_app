@@ -308,6 +308,9 @@ class L10nFr extends L10n {
   String get dialogDeleteTitle => 'Supprimer la publication';
 
   @override
+  String get heartLimitMessage => 'Vous avez atteint la limite de 10 j\'aime d\'aujourd\'hui. Veuillez réessayer demain.';
+
+  @override
   String get dialogDeleteDescription1 => 'Voulez-vous supprimer cette publication ?';
 
   @override

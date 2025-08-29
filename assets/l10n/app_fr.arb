@@ -98,6 +98,7 @@
   "dialogBlockDescription2": "Cela masquera les publications de l'utilisateur.",
   "dialogBlockDescription3": "Les utilisateurs bloqués seront sauvegardés localement.",
   "dialogDeleteTitle": "Supprimer la publication",
+  "heartLimitMessage": "Vous avez atteint la limite de 10 j'aime d'aujourd'hui. Veuillez réessayer demain.",
   "dialogDeleteDescription1": "Voulez-vous supprimer cette publication ?",
   "dialogDeleteDescription2": "Une fois supprimée, elle ne peut pas être restaurée.",
   "dialogDeleteError": "Échec de la suppression.",

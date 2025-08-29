@@ -98,6 +98,7 @@
   "dialogBlockDescription2": "Dies wird die Beiträge des Benutzers ausblenden.",
   "dialogBlockDescription3": "Blockierte Benutzer werden lokal gespeichert.",
   "dialogDeleteTitle": "Beitrag löschen",
+  "heartLimitMessage": "Sie haben das heutige Limit von 10 Likes erreicht. Bitte versuchen Sie es morgen erneut.",
   "dialogDeleteDescription1": "Möchten Sie diesen Beitrag löschen?",
   "dialogDeleteDescription2": "Einmal gelöscht, kann er nicht wiederhergestellt werden.",
   "dialogDeleteError": "Löschung fehlgeschlagen.",

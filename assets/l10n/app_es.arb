@@ -98,6 +98,7 @@
   "dialogBlockDescription2": "Esto ocultará las publicaciones del usuario.",
   "dialogBlockDescription3": "Los usuarios bloqueados se guardarán localmente.",
   "dialogDeleteTitle": "Eliminar Publicación",
+  "heartLimitMessage": "Has alcanzado el límite de 10 me gusta de hoy. Por favor, inténtalo de nuevo mañana.",
   "dialogDeleteDescription1": "¿Quiere eliminar esta publicación?",
   "dialogDeleteDescription2": "Una vez eliminada, no se puede restaurar.",
   "dialogDeleteError": "Error de eliminación.",

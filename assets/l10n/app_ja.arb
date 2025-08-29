@@ -98,6 +98,7 @@
   "dialogBlockDescription2": "このユーザーの投稿を非表示にします",
   "dialogBlockDescription3": "ブロックしたユーザーはローカルで保存します",
   "dialogDeleteTitle": "投稿の削除",
+  "heartLimitMessage": "今日は10回までです。明日までお待ちください。",
   "dialogDeleteDescription1": "この投稿を削除しますか？",
   "dialogDeleteDescription2": "一度削除してしまうと復元できません",
   "dialogDeleteError": "削除が失敗しました",
