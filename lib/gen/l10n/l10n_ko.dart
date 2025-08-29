@@ -308,6 +308,9 @@ class L10nKo extends L10n {
   String get dialogDeleteTitle => '게시물 삭제';
 
   @override
+  String get heartLimitMessage => '오늘의 좋아요 10개 한도에 도달했습니다. 내일 다시 시도해 주세요.';
+
+  @override
   String get dialogDeleteDescription1 => '이 게시물을 삭제하시겠습니까?';
 
   @override

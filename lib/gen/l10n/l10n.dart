@@ -702,6 +702,12 @@ abstract class L10n {
   /// **'投稿の削除'**
   String get dialogDeleteTitle;
 
+  /// No description provided for @heartLimitMessage.
+  ///
+  /// In ja, this message translates to:
+  /// **'今日は10回までです。明日までお待ちください。'**
+  String get heartLimitMessage;
+
   /// No description provided for @dialogDeleteDescription1.
   ///
   /// In ja, this message translates to:

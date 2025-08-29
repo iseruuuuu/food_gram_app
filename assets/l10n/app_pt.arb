@@ -98,6 +98,7 @@
   "dialogBlockDescription2": "Isso ocultará as publicações do usuário.",
   "dialogBlockDescription3": "Usuários bloqueados serão salvos localmente.",
   "dialogDeleteTitle": "Excluir Publicação",
+  "heartLimitMessage": "Você atingiu o limite de 10 curtidas de hoje. Por favor, tente novamente amanhã.",
   "dialogDeleteDescription1": "Você quer excluir esta publicação?",
   "dialogDeleteDescription2": "Uma vez excluída, não pode ser restaurada.",
   "dialogDeleteError": "Falha na exclusão.",

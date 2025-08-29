@@ -308,6 +308,9 @@ class L10nPt extends L10n {
   String get dialogDeleteTitle => 'Excluir Publicação';
 
   @override
+  String get heartLimitMessage => 'Você atingiu o limite de 10 curtidas de hoje. Por favor, tente novamente amanhã.';
+
+  @override
   String get dialogDeleteDescription1 => 'Você quer excluir esta publicação?';
 
   @override

@@ -308,6 +308,9 @@ class L10nEn extends L10n {
   String get dialogDeleteTitle => 'Delete Post';
 
   @override
+  String get heartLimitMessage => 'You\'ve reached today\'s limit of 10 likes. Please try again tomorrow.';
+
+  @override
   String get dialogDeleteDescription1 => 'Do you want to delete this post?';
 
   @override

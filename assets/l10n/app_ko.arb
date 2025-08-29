@@ -98,6 +98,7 @@
   "dialogBlockDescription2": "이 사용자의 게시물이 숨겨집니다.",
   "dialogBlockDescription3": "차단된 사용자는 로컬에 저장됩니다.",
   "dialogDeleteTitle": "게시물 삭제",
+  "heartLimitMessage": "오늘의 좋아요 10개 한도에 도달했습니다. 내일 다시 시도해 주세요.",
   "dialogDeleteDescription1": "이 게시물을 삭제하시겠습니까?",
   "dialogDeleteDescription2": "삭제하면 복원할 수 없습니다.",
   "dialogDeleteError": "삭제에 실패했습니다.",

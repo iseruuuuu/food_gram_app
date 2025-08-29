@@ -308,6 +308,9 @@ class L10nZh extends L10n {
   String get dialogDeleteTitle => '删除帖子';
 
   @override
+  String get heartLimitMessage => '您已达到今天10个赞的限制。请明天再试。';
+
+  @override
   String get dialogDeleteDescription1 => '您要删除此帖子吗？';
 
   @override

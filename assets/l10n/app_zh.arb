@@ -98,6 +98,7 @@
   "dialogBlockDescription2": "这将隐藏该用户的帖子。",
   "dialogBlockDescription3": "被屏蔽的用户将保存在本地。",
   "dialogDeleteTitle": "删除帖子",
+  "heartLimitMessage": "您已达到今天10个赞的限制。请明天再试。",
   "dialogDeleteDescription1": "您要删除此帖子吗？",
   "dialogDeleteDescription2": "删除后无法恢复。",
   "dialogDeleteError": "删除失败。",

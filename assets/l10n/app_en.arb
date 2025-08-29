@@ -98,6 +98,7 @@
   "dialogBlockDescription2": "This will hide the user's posts.",
   "dialogBlockDescription3": "Blocked users will be saved locally.",
   "dialogDeleteTitle": "Delete Post",
+  "heartLimitMessage": "You've reached today's limit of 10 likes. Please try again tomorrow.",
   "dialogDeleteDescription1": "Do you want to delete this post?",
   "dialogDeleteDescription2": "Once deleted, it cannot be restored.",
   "dialogDeleteError": "Deletion failed.",

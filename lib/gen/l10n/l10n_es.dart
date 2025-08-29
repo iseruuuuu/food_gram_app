@@ -308,6 +308,9 @@ class L10nEs extends L10n {
   String get dialogDeleteTitle => 'Eliminar Publicación';
 
   @override
+  String get heartLimitMessage => 'Has alcanzado el límite de 10 me gusta de hoy. Por favor, inténtalo de nuevo mañana.';
+
+  @override
   String get dialogDeleteDescription1 => '¿Quiere eliminar esta publicación?';
 
   @override
