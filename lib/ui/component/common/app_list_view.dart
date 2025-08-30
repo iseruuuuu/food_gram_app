@@ -102,7 +102,9 @@ class AppListView extends HookConsumerWidget {
                                   child: Card(
                                     elevation: isSubscribed ? 0 : 10,
                                     child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(
+                                        isSubscribed ? 0 : 10,
+                                      ),
                                       child: CachedNetworkImage(
                                         imageUrl: itemImageUrl,
                                         fit: BoxFit.cover,
