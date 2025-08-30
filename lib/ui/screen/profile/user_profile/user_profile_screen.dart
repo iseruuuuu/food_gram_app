@@ -100,5 +100,3 @@ class UserProfileScreen extends ConsumerWidget {
     );
   }
 }
-
-class AppLoading {}
