@@ -7,6 +7,7 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/profile/app_profile_header.dart';
 import 'package:food_gram_app/ui/screen/profile/user_profile/user_profile_view_model.dart';
 import 'package:go_router/go_router.dart';
@@ -84,11 +85,10 @@ class UserProfileScreen extends ConsumerWidget {
                       },
                     ),
                   ),
-                  loading: () => const SliverToBoxAdapter(
+                  loading: () => const SliverFillRemaining(
+                    hasScrollBody: false,
                     child: Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.black,
-                      ),
+                      child: AppContentLoading(),
                     ),
                   ),
                 ),

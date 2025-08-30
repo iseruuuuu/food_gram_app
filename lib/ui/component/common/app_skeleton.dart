@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:gap/gap.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-
 
 class AppProfileHeaderSkeleton extends StatelessWidget {
   const AppProfileHeaderSkeleton({super.key});
@@ -135,27 +135,28 @@ class AppListViewSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.sizeOf(context).width,
-      height: 100,
-      child: Skeletonizer(
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+    final screenWidth = MediaQuery.of(context).size.width / 3;
+    return Skeletonizer(
+      child: Column(
+        children: List.generate(5, (index) {
+          return Row(
+            children: List.generate(3, (gridIndex) {
+              return Expanded(
                 child: Container(
-                  width: 100,
-                  height: 100,
-                  color: Colors.grey.shade300,
+                  margin: const EdgeInsets.all(2),
+                  height: screenWidth,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Assets.image.food.image(width: 0, height: 0),
+                  ),
                 ),
-              ),
-            );
-          },
-        ),
+              );
+            }),
+          );
+        }),
       ),
     );
   }
