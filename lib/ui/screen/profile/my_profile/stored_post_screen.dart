@@ -35,7 +35,7 @@ class StoredPostScreen extends HookConsumerWidget {
         ),
       ),
       body: state.when(
-        loading: () => const AppContentLoading(),
+        loading: () => const Center(child: AppContentLoading()),
         data: (posts) {
           if (posts.isEmpty) {
             return const AppFavoritePostEmpty();
