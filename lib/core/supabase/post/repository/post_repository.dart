@@ -102,6 +102,23 @@ class PostRepository extends _$PostRepository {
     }
   }
 
+  /// 保存した投稿IDのリストから投稿を取得
+  Future<Result<List<Posts>, Exception>> getStoredPosts(
+    List<String> postIds,
+  ) async {
+    try {
+      if (postIds.isEmpty) {
+        return const Success(<Posts>[]);
+      }
+      final data =
+          await ref.read(postServiceProvider.notifier).getStoredPosts(postIds);
+      return Success(data.map(Posts.fromJson).toList());
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
+  }
+
   /// マップ表示用の全投稿を取得
   Future<Result<List<Posts>, Exception>> getRestaurantPosts({
     required double lat,
