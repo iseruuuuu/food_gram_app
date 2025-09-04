@@ -27,7 +27,10 @@ class StoredPostScreen extends HookConsumerWidget {
     final l10n = L10n.of(context);
     final state = ref.watch(storedPostViewModelProvider);
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         title: Text(l10n.savedPosts),
         leading: IconButton(
           icon: const Icon(Icons.close),
