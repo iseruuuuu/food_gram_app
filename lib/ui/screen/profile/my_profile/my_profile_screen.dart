@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
@@ -76,10 +77,52 @@ class MyProfileScreen extends HookConsumerWidget {
                   SliverToBoxAdapter(
                     child: users.when(
                       data: (users, length, heartAmount) {
-                        return AppProfileHeader(
-                          users: users,
-                          length: length,
-                          heartAmount: heartAmount,
+                        return Stack(
+                          children: [
+                            AppProfileHeader(
+                              users: users,
+                              length: length,
+                              heartAmount: heartAmount,
+                            ),
+                            Positioned(
+                              top: 10,
+                              right: 15,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  context.pushNamed(RouterPath.storedPost);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  foregroundColor: Colors.black,
+                                  elevation: 4,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(
+                                      Icons.bookmark,
+                                      size: 24,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      L10n.of(context).savedPosts,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         );
                       },
                       loading: () {
