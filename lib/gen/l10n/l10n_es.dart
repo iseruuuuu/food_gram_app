@@ -1440,4 +1440,10 @@ class L10nEs extends L10n {
 
   @override
   String get postErrorPickImage => 'Error al tomar foto';
+
+  @override
+  String get favoritePostEmptyTitle => '保存した投稿がありません';
+
+  @override
+  String get favoritePostEmptySubtitle => '気になった投稿を保存してみましょう!';
 }

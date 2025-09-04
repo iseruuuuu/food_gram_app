@@ -476,5 +476,7 @@
   "searchEmptyHintTitle": "検索のヒント",
   "searchEmptyHintLocation": "位置情報をオンにすると近い順で表示します",
   "searchEmptyHintSearch": "店舗名や料理ジャンルで検索できます",
-  "postErrorPickImage": "写真ができませんでした"
+  "postErrorPickImage": "写真ができませんでした",
+  "favoritePostEmptyTitle": "保存した投稿がありません",
+  "favoritePostEmptySubtitle": "気になった投稿を保存してみましょう!"
 }

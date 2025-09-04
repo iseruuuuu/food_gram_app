@@ -159,3 +159,27 @@ class AppSearchEmpty extends StatelessWidget {
     );
   }
 }
+
+class AppFavoritePostEmpty extends StatelessWidget {
+  const AppFavoritePostEmpty({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            L10n.of(context).favoritePostEmptyTitle,
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            L10n.of(context).favoritePostEmptySubtitle,
+            style: const TextStyle(fontSize: 14),
+          ),
+          Assets.gif.error.image(width: 180, height: 180),
+        ],
+      ),
+    );
+  }
+}

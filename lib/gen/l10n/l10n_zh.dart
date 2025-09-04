@@ -1440,4 +1440,10 @@ class L10nZh extends L10n {
 
   @override
   String get postErrorPickImage => '拍照失败';
+
+  @override
+  String get favoritePostEmptyTitle => '保存した投稿がありません';
+
+  @override
+  String get favoritePostEmptySubtitle => '気になった投稿を保存してみましょう!';
 }

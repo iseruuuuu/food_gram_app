@@ -1440,4 +1440,10 @@ class L10nEn extends L10n {
 
   @override
   String get postErrorPickImage => 'Failed to take photo';
+
+  @override
+  String get favoritePostEmptyTitle => 'No saved posts';
+
+  @override
+  String get favoritePostEmptySubtitle => 'Save posts that interest you!';
 }

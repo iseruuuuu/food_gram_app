@@ -2969,6 +2969,18 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'写真ができませんでした'**
   String get postErrorPickImage;
+
+  /// No description provided for @favoritePostEmptyTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'保存した投稿がありません'**
+  String get favoritePostEmptyTitle;
+
+  /// No description provided for @favoritePostEmptySubtitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'気になった投稿を保存してみましょう!'**
+  String get favoritePostEmptySubtitle;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
