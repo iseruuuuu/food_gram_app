@@ -188,6 +188,13 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
+      path: '${RouterPath.myProfile}/${RouterPath.storedPost}',
+      name: RouterPath.storedPost,
+      pageBuilder: (context, state) {
+        return whiteOut(const StoredPostScreen());
+      },
+    ),
+    GoRoute(
       path: '${RouterPath.myProfile}/${RouterPath.myProfilePost}',
       name: RouterPath.myProfilePost,
       pageBuilder: (context, state) {
@@ -428,4 +435,5 @@ final class RouterPath {
   static const String search = 'search';
   static const String searchRestaurantReview = 'search_restaurant_review';
   static const String searchDetail = 'search_detail';
+  static const String storedPost = 'stored_post';
 }
