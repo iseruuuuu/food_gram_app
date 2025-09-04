@@ -74,6 +74,15 @@ class PostDetailScreen extends HookConsumerWidget {
       },
       [adInterstitial],
     );
+    useEffect(
+      () {
+        ref
+            .read(postDetailViewModelProvider().notifier)
+            .initializeStoreState(posts.id);
+        return;
+      },
+      [posts.id],
+    );
     final deviceWidth = MediaQuery.of(context).size.width;
     final loading = ref.watch(loadingProvider);
     final menuLoading = useState(false);
