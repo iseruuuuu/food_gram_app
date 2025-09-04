@@ -478,5 +478,10 @@
   "searchEmptyHintSearch": "店舗名や料理ジャンルで検索できます",
   "postErrorPickImage": "写真ができませんでした",
   "favoritePostEmptyTitle": "保存した投稿がありません",
-  "favoritePostEmptySubtitle": "気になった投稿を保存してみましょう!"
+  "favoritePostEmptySubtitle": "気になった投稿を保存してみましょう!",
+  "userInfoFetchError": "ユーザー情報の取得に失敗しました",
+  "saved": "保存済み",
+  "savedPosts": "保存した投稿",
+  "postSaved": "投稿を保存しました",
+  "postSavedMessage": "マイページにて保存した投稿が確認できます"
 }

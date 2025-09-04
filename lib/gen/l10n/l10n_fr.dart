@@ -1442,8 +1442,23 @@ class L10nFr extends L10n {
   String get postErrorPickImage => 'Échec de la prise de photo';
 
   @override
-  String get favoritePostEmptyTitle => '保存した投稿がありません';
+  String get favoritePostEmptyTitle => 'Aucune publication sauvegardée';
 
   @override
-  String get favoritePostEmptySubtitle => '気になった投稿を保存してみましょう!';
+  String get favoritePostEmptySubtitle => 'Sauvegardez les publications qui vous intéressent !';
+
+  @override
+  String get userInfoFetchError => 'Échec de la récupération des informations utilisateur';
+
+  @override
+  String get saved => 'Sauvegardé';
+
+  @override
+  String get savedPosts => 'Publications sauvegardées';
+
+  @override
+  String get postSaved => 'Publication sauvegardée';
+
+  @override
+  String get postSavedMessage => 'Vous pouvez voir les publications sauvegardées dans Ma page';
 }

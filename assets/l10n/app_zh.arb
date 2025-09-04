@@ -476,5 +476,12 @@
   "searchEmptyHintTitle": "搜索提示",
   "searchEmptyHintLocation": "开启位置信息可优先显示附近结果",
   "searchEmptyHintSearch": "可通过餐厅名称或菜系类型搜索",
-  "postErrorPickImage": "拍照失败"
+  "postErrorPickImage": "拍照失败",
+  "favoritePostEmptyTitle": "没有保存的帖子",
+  "favoritePostEmptySubtitle": "保存您感兴趣的帖子吧！",
+  "userInfoFetchError": "获取用户信息失败",
+  "saved": "已保存",
+  "savedPosts": "保存的帖子",
+  "postSaved": "帖子已保存",
+  "postSavedMessage": "您可以在我的页面查看保存的帖子"
 }

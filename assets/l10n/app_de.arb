@@ -476,5 +476,12 @@
   "searchEmptyHintTitle": "Suchtipps",
   "searchEmptyHintLocation": "Aktivieren Sie den Standort, um zuerst nahegelegene Ergebnisse anzuzeigen",
   "searchEmptyHintSearch": "Suchen Sie nach Restaurantname oder Küchentyp",
-  "postErrorPickImage": "Fotoaufnahme fehlgeschlagen"
+  "postErrorPickImage": "Fotoaufnahme fehlgeschlagen",
+  "favoritePostEmptyTitle": "Keine gespeicherten Beiträge",
+  "favoritePostEmptySubtitle": "Speichern Sie Beiträge, die Sie interessieren!",
+  "userInfoFetchError": "Fehler beim Abrufen der Benutzerinformationen",
+  "saved": "Gespeichert",
+  "savedPosts": "Gespeicherte Beiträge",
+  "postSaved": "Beitrag gespeichert",
+  "postSavedMessage": "Sie können gespeicherte Beiträge auf der Meine Seite anzeigen"
 }

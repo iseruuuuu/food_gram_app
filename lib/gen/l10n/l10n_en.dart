@@ -1446,4 +1446,19 @@ class L10nEn extends L10n {
 
   @override
   String get favoritePostEmptySubtitle => 'Save posts that interest you!';
+
+  @override
+  String get userInfoFetchError => 'Failed to fetch user information';
+
+  @override
+  String get saved => 'Saved';
+
+  @override
+  String get savedPosts => 'Saved Posts';
+
+  @override
+  String get postSaved => 'Post saved';
+
+  @override
+  String get postSavedMessage => 'You can view saved posts in My Page';
 }

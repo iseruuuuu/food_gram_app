@@ -1442,8 +1442,23 @@ class L10nKo extends L10n {
   String get postErrorPickImage => '사진 촬영에 실패했습니다';
 
   @override
-  String get favoritePostEmptyTitle => '保存した投稿がありません';
+  String get favoritePostEmptyTitle => '저장된 게시물이 없습니다';
 
   @override
-  String get favoritePostEmptySubtitle => '気になった投稿を保存してみましょう!';
+  String get favoritePostEmptySubtitle => '관심 있는 게시물을 저장해보세요!';
+
+  @override
+  String get userInfoFetchError => '사용자 정보를 가져오는데 실패했습니다';
+
+  @override
+  String get saved => '저장됨';
+
+  @override
+  String get savedPosts => '저장된 게시물';
+
+  @override
+  String get postSaved => '게시물이 저장되었습니다';
+
+  @override
+  String get postSavedMessage => '마이페이지에서 저장된 게시물을 확인할 수 있습니다';
 }

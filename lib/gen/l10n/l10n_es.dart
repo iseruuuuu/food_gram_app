@@ -1442,8 +1442,23 @@ class L10nEs extends L10n {
   String get postErrorPickImage => 'Error al tomar foto';
 
   @override
-  String get favoritePostEmptyTitle => '保存した投稿がありません';
+  String get favoritePostEmptyTitle => 'No hay publicaciones guardadas';
 
   @override
-  String get favoritePostEmptySubtitle => '気になった投稿を保存してみましょう!';
+  String get favoritePostEmptySubtitle => '¡Guarda publicaciones que te interesen!';
+
+  @override
+  String get userInfoFetchError => 'Error al obtener información del usuario';
+
+  @override
+  String get saved => 'Guardado';
+
+  @override
+  String get savedPosts => 'Publicaciones guardadas';
+
+  @override
+  String get postSaved => 'Publicación guardada';
+
+  @override
+  String get postSavedMessage => 'Puedes ver las publicaciones guardadas en Mi página';
 }

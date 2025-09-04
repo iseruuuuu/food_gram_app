@@ -2981,6 +2981,36 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'気になった投稿を保存してみましょう!'**
   String get favoritePostEmptySubtitle;
+
+  /// No description provided for @userInfoFetchError.
+  ///
+  /// In ja, this message translates to:
+  /// **'ユーザー情報の取得に失敗しました'**
+  String get userInfoFetchError;
+
+  /// No description provided for @saved.
+  ///
+  /// In ja, this message translates to:
+  /// **'保存済み'**
+  String get saved;
+
+  /// No description provided for @savedPosts.
+  ///
+  /// In ja, this message translates to:
+  /// **'保存した投稿'**
+  String get savedPosts;
+
+  /// No description provided for @postSaved.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿を保存しました'**
+  String get postSaved;
+
+  /// No description provided for @postSavedMessage.
+  ///
+  /// In ja, this message translates to:
+  /// **'マイページにて保存した投稿が確認できます'**
+  String get postSavedMessage;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

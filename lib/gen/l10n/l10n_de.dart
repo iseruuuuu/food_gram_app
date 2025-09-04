@@ -1442,8 +1442,23 @@ class L10nDe extends L10n {
   String get postErrorPickImage => 'Fotoaufnahme fehlgeschlagen';
 
   @override
-  String get favoritePostEmptyTitle => '保存した投稿がありません';
+  String get favoritePostEmptyTitle => 'Keine gespeicherten Beiträge';
 
   @override
-  String get favoritePostEmptySubtitle => '気になった投稿を保存してみましょう!';
+  String get favoritePostEmptySubtitle => 'Speichern Sie Beiträge, die Sie interessieren!';
+
+  @override
+  String get userInfoFetchError => 'Fehler beim Abrufen der Benutzerinformationen';
+
+  @override
+  String get saved => 'Gespeichert';
+
+  @override
+  String get savedPosts => 'Gespeicherte Beiträge';
+
+  @override
+  String get postSaved => 'Beitrag gespeichert';
+
+  @override
+  String get postSavedMessage => 'Sie können gespeicherte Beiträge auf der Meine Seite anzeigen';
 }

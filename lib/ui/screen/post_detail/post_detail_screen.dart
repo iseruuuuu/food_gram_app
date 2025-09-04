@@ -368,9 +368,12 @@ class PostDetailScreen extends HookConsumerWidget {
                                       .store(
                                         postId: posts.id,
                                         openSnackBar: () {
-                                          const snackBar = SnackBar(
+                                          final l10n = L10n.of(context);
+                                          final snackBar = SnackBar(
                                             content: Column(
                                               children: [
+                                                Text(l10n.postSaved),
+                                                Text(l10n.postSavedMessage),
                                               ],
                                             ),
                                           );

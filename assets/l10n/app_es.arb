@@ -476,5 +476,12 @@
   "searchEmptyHintTitle": "Consejos de búsqueda",
   "searchEmptyHintLocation": "Active la ubicación para mostrar resultados cercanos primero",
   "searchEmptyHintSearch": "Busque por nombre de restaurante o tipo de cocina",
-  "postErrorPickImage": "Error al tomar foto"
+  "postErrorPickImage": "Error al tomar foto",
+  "favoritePostEmptyTitle": "No hay publicaciones guardadas",
+  "favoritePostEmptySubtitle": "¡Guarda publicaciones que te interesen!",
+  "userInfoFetchError": "Error al obtener información del usuario",
+  "saved": "Guardado",
+  "savedPosts": "Publicaciones guardadas",
+  "postSaved": "Publicación guardada",
+  "postSavedMessage": "Puedes ver las publicaciones guardadas en Mi página"
 }

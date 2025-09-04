@@ -478,5 +478,10 @@
   "searchEmptyHintSearch": "Search by restaurant name or cuisine type",
   "postErrorPickImage": "Failed to take photo",
   "favoritePostEmptyTitle": "No saved posts",
-  "favoritePostEmptySubtitle": "Save posts that interest you!"
+  "favoritePostEmptySubtitle": "Save posts that interest you!",
+  "userInfoFetchError": "Failed to fetch user information",
+  "saved": "Saved",
+  "savedPosts": "Saved Posts",
+  "postSaved": "Post saved",
+  "postSavedMessage": "You can view saved posts in My Page"
 }
