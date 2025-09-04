@@ -10,6 +10,7 @@ abstract class PostDetailState with _$PostDetailState {
     @Default(0) int heart,
     @Default(false) bool isSuccess,
     @Default(false) bool isLoading,
+    @Default(false) bool isStore,
   }) = _PostDetailState;
 }
 
