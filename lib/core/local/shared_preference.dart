@@ -8,6 +8,7 @@ enum PreferenceKey {
   heartList,
   heartCount,
   heartDate,
+  storeList,
 }
 
 class Preference {
