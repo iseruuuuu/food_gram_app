@@ -11,7 +11,6 @@ export 'package:food_gram_app/ui/screen/profile/my_profile/stored_post_screen.da
 export 'package:food_gram_app/ui/screen/profile/user_profile/user_profile_screen.dart';
 export 'package:food_gram_app/ui/screen/restaurant/restaurant_screen.dart';
 export 'package:food_gram_app/ui/screen/restaurant_review/restaurant_review_screen.dart';
-export 'package:food_gram_app/ui/screen/screen.dart';
 export 'package:food_gram_app/ui/screen/search/search_detail_screen.dart';
 export 'package:food_gram_app/ui/screen/search/search_screen.dart';
 export 'package:food_gram_app/ui/screen/setting/setting_screen.dart';
