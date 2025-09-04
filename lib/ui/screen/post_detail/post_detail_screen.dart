@@ -125,6 +125,7 @@ class PostDetailScreen extends HookConsumerWidget {
     }
 
     final state = ref.watch(postsViewModelProvider(posts.id));
+    final detailState = ref.watch(postDetailViewModelProvider());
 
     return PopScope(
       canPop: !loading,
@@ -348,6 +349,34 @@ class PostDetailScreen extends HookConsumerWidget {
                                   '${l10n.likeButton}',
                                   style: DetailPostStyle.like(),
                                 ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  ref
+                                      .read(
+                                        postDetailViewModelProvider().notifier,
+                                      )
+                                      .store(
+                                        postId: posts.id,
+                                        openSnackBar: () {
+                                          const snackBar = SnackBar(
+                                            content: Column(
+                                              children: [
+                                              ],
+                                            ),
+                                          );
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snackBar);
+                                        },
+                                      );
+                                },
+                                icon: Icon(
+                                  detailState.isStore
+                                      ? Icons.bookmark
+                                      : Icons.bookmark_border,
+                                ),
+                                iconSize: 36,
+                                color: Colors.black,
                               ),
                             ],
                           ),
