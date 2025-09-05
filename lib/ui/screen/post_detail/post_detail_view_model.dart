@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -6,9 +7,11 @@ import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.d
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/delete_service.dart';
+import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_state.dart';
 import 'package:logger/logger.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'post_detail_view_model.g.dart';
@@ -141,6 +144,27 @@ class PostDetailViewModel extends _$PostDetailViewModel {
       state = state.copyWith(isStore: true);
       openSnackBar();
     }
+  }
+
+  void openUrl(String restaurant) {
+    LaunchUrlHelper().open(URL.search(restaurant));
+  }
+
+  Future<void> openMap(
+    String restaurant,
+    double lat,
+    double lng,
+    VoidCallback? openSnackBar,
+  ) async {
+    final availableMaps = await MapLauncher.installedMaps;
+    if (availableMaps.isEmpty) {
+      openSnackBar?.call();
+      return;
+    }
+    await availableMaps.first.showMarker(
+      coords: Coords(lat, lng),
+      title: restaurant,
+    );
   }
 }
 

@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
-import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
@@ -12,7 +11,6 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/theme/style/detail_post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
-import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -32,7 +30,6 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:map_launcher/map_launcher.dart';
 import 'package:photo_viewer/photo_viewer.dart';
 
 class PostDetailScreen extends HookConsumerWidget {
@@ -430,18 +427,35 @@ class PostDetailScreen extends HookConsumerWidget {
                                     icon: Icons.restaurant,
                                   ),
                                   AppDetailElevatedButton(
-                                    onPressed: () => LaunchUrlHelper()
-                                        .open(URL.search(posts.restaurant)),
+                                    onPressed: () => ref
+                                        .read(
+                                          postDetailViewModelProvider()
+                                              .notifier,
+                                        )
+                                        .openUrl(posts.restaurant),
                                     title: l10n.detailMenuSearch,
                                     icon: Icons.search,
                                   ),
                                   AppDetailElevatedButton(
                                     onPressed: () async {
-                                      final availableMaps =
-                                          await MapLauncher.installedMaps;
-                                      await availableMaps.first.showMarker(
-                                        coords: Coords(posts.lat, posts.lng),
-                                        title: posts.restaurant,
+                                      await ref
+                                          .read(
+                                        postDetailViewModelProvider().notifier,
+                                      )
+                                          .openMap(
+                                        posts.restaurant,
+                                        posts.lat,
+                                        posts.lng,
+                                        () {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                l10n.noMapAppAvailable,
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       );
                                     },
                                     title: l10n.detailMenuVisit,
