@@ -59,9 +59,9 @@ class PostDetailScreen extends HookConsumerWidget {
       [posts.id],
     );
     final deviceWidth = MediaQuery.of(context).size.width;
-    final loading = ref.watch(loadingProvider);
-    final menuLoading = useState(false);
     final l10n = L10n.of(context);
+    final menuLoading = useState(false);
+    final loading = ref.watch(loadingProvider);
     final currentUser = ref.watch(currentUserProvider);
     final supabase = ref.watch(supabaseProvider);
     final state = ref.watch(postsViewModelProvider(posts.id));
