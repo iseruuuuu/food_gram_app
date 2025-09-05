@@ -476,5 +476,12 @@
   "searchEmptyHintTitle": "Dicas de pesquisa",
   "searchEmptyHintLocation": "Ative a localização para mostrar resultados próximos primeiro",
   "searchEmptyHintSearch": "Pesquise por nome do restaurante ou tipo de cozinha",
-  "postErrorPickImage": "Falha ao tirar foto"
+  "postErrorPickImage": "Falha ao tirar foto",
+  "favoritePostEmptyTitle": "Nenhuma postagem salva",
+  "favoritePostEmptySubtitle": "Salve postagens que te interessam!",
+  "userInfoFetchError": "Falha ao buscar informações do usuário",
+  "saved": "Salvo",
+  "savedPosts": "Postagens salvas",
+  "postSaved": "Postagem salva",
+  "postSavedMessage": "Você pode ver as postagens salvas na Minha página"
 }

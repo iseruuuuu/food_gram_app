@@ -1440,4 +1440,25 @@ class L10nEn extends L10n {
 
   @override
   String get postErrorPickImage => 'Failed to take photo';
+
+  @override
+  String get favoritePostEmptyTitle => 'No saved posts';
+
+  @override
+  String get favoritePostEmptySubtitle => 'Save posts that interest you!';
+
+  @override
+  String get userInfoFetchError => 'Failed to fetch user information';
+
+  @override
+  String get saved => 'Saved';
+
+  @override
+  String get savedPosts => 'Saved Posts';
+
+  @override
+  String get postSaved => 'Post saved';
+
+  @override
+  String get postSavedMessage => 'You can view saved posts in My Page';
 }

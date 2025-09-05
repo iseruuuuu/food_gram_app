@@ -74,6 +74,15 @@ class PostDetailScreen extends HookConsumerWidget {
       },
       [adInterstitial],
     );
+    useEffect(
+      () {
+        ref
+            .read(postDetailViewModelProvider().notifier)
+            .initializeStoreState(posts.id);
+        return;
+      },
+      [posts.id],
+    );
     final deviceWidth = MediaQuery.of(context).size.width;
     final loading = ref.watch(loadingProvider);
     final menuLoading = useState(false);
@@ -125,6 +134,7 @@ class PostDetailScreen extends HookConsumerWidget {
     }
 
     final state = ref.watch(postsViewModelProvider(posts.id));
+    final detailState = ref.watch(postDetailViewModelProvider());
 
     return PopScope(
       canPop: !loading,
@@ -348,6 +358,37 @@ class PostDetailScreen extends HookConsumerWidget {
                                   '${l10n.likeButton}',
                                   style: DetailPostStyle.like(),
                                 ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  ref
+                                      .read(
+                                        postDetailViewModelProvider().notifier,
+                                      )
+                                      .store(
+                                        postId: posts.id,
+                                        openSnackBar: () {
+                                          final l10n = L10n.of(context);
+                                          final snackBar = SnackBar(
+                                            content: Column(
+                                              children: [
+                                                Text(l10n.postSaved),
+                                                Text(l10n.postSavedMessage),
+                                              ],
+                                            ),
+                                          );
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snackBar);
+                                        },
+                                      );
+                                },
+                                icon: Icon(
+                                  detailState.isStore
+                                      ? Icons.bookmark
+                                      : Icons.bookmark_border,
+                                ),
+                                iconSize: 36,
+                                color: Colors.black,
                               ),
                             ],
                           ),

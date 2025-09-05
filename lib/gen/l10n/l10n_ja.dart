@@ -1440,4 +1440,25 @@ class L10nJa extends L10n {
 
   @override
   String get postErrorPickImage => '写真ができませんでした';
+
+  @override
+  String get favoritePostEmptyTitle => '保存した投稿がありません';
+
+  @override
+  String get favoritePostEmptySubtitle => '気になった投稿を保存してみましょう!';
+
+  @override
+  String get userInfoFetchError => 'ユーザー情報の取得に失敗しました';
+
+  @override
+  String get saved => '保存済み';
+
+  @override
+  String get savedPosts => '保存した投稿';
+
+  @override
+  String get postSaved => '投稿を保存しました';
+
+  @override
+  String get postSavedMessage => 'マイページにて保存した投稿が確認できます';
 }

@@ -1440,4 +1440,25 @@ class L10nPt extends L10n {
 
   @override
   String get postErrorPickImage => 'Falha ao tirar foto';
+
+  @override
+  String get favoritePostEmptyTitle => 'Nenhuma postagem salva';
+
+  @override
+  String get favoritePostEmptySubtitle => 'Salve postagens que te interessam!';
+
+  @override
+  String get userInfoFetchError => 'Falha ao buscar informações do usuário';
+
+  @override
+  String get saved => 'Salvo';
+
+  @override
+  String get savedPosts => 'Postagens salvas';
+
+  @override
+  String get postSaved => 'Postagem salva';
+
+  @override
+  String get postSavedMessage => 'Você pode ver as postagens salvas na Minha página';
 }

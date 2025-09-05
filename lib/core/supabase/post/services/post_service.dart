@@ -320,6 +320,24 @@ class PostService extends _$PostService {
     );
   }
 
+  /// 保存した投稿IDのリストから投稿を取得
+  Future<List<Map<String, dynamic>>> getStoredPosts(
+    List<String> postIds,
+  ) async {
+    if (postIds.isEmpty) {
+      return [];
+    }
+    return _cacheManager.get<List<Map<String, dynamic>>>(
+      key: 'saved_posts_${postIds.join('_')}',
+      fetcher: () => supabase
+          .from('posts')
+          .select()
+          .inFilter('id', postIds)
+          .order('created_at', ascending: false),
+      duration: const Duration(minutes: 5),
+    );
+  }
+
   /// マップ表示用の全投稿を取得
   Future<Result<List<Map<String, dynamic>>, Exception>> getRestaurantPosts({
     required double lat,

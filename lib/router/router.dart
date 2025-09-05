@@ -7,11 +7,7 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/auth/providers/auth_state_provider.dart';
 import 'package:food_gram_app/router/amination.dart';
-import 'package:food_gram_app/ui/screen/edit_post/edit_post_screen.dart';
-import 'package:food_gram_app/ui/screen/restaurant_review/restaurant_review_screen.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
-import 'package:food_gram_app/ui/screen/search/search_detail_screen.dart';
-import 'package:food_gram_app/ui/screen/search/search_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -189,6 +185,13 @@ final myProfileRouter = GoRoute(
       name: RouterPath.edit,
       pageBuilder: (context, state) {
         return slideIn(const EditScreen());
+      },
+    ),
+    GoRoute(
+      path: '${RouterPath.myProfile}/${RouterPath.storedPost}',
+      name: RouterPath.storedPost,
+      pageBuilder: (context, state) {
+        return whiteOut(const StoredPostScreen());
       },
     ),
     GoRoute(
@@ -432,4 +435,5 @@ final class RouterPath {
   static const String search = 'search';
   static const String searchRestaurantReview = 'search_restaurant_review';
   static const String searchDetail = 'search_detail';
+  static const String storedPost = 'stored_post';
 }

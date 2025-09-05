@@ -1440,4 +1440,25 @@ class L10nZh extends L10n {
 
   @override
   String get postErrorPickImage => '拍照失败';
+
+  @override
+  String get favoritePostEmptyTitle => '没有保存的帖子';
+
+  @override
+  String get favoritePostEmptySubtitle => '保存您感兴趣的帖子吧！';
+
+  @override
+  String get userInfoFetchError => '获取用户信息失败';
+
+  @override
+  String get saved => '已保存';
+
+  @override
+  String get savedPosts => '保存的帖子';
+
+  @override
+  String get postSaved => '帖子已保存';
+
+  @override
+  String get postSavedMessage => '您可以在我的页面查看保存的帖子';
 }

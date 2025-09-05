@@ -476,5 +476,12 @@
   "searchEmptyHintTitle": "Conseils de recherche",
   "searchEmptyHintLocation": "Activez l'emplacement pour afficher d'abord les résultats à proximité",
   "searchEmptyHintSearch": "Recherchez par nom de restaurant ou type de cuisine",
-  "postErrorPickImage": "Échec de la prise de photo"
+  "postErrorPickImage": "Échec de la prise de photo",
+  "favoritePostEmptyTitle": "Aucune publication sauvegardée",
+  "favoritePostEmptySubtitle": "Sauvegardez les publications qui vous intéressent !",
+  "userInfoFetchError": "Échec de la récupération des informations utilisateur",
+  "saved": "Sauvegardé",
+  "savedPosts": "Publications sauvegardées",
+  "postSaved": "Publication sauvegardée",
+  "postSavedMessage": "Vous pouvez voir les publications sauvegardées dans Ma page"
 }

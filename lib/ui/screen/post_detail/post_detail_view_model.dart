@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
@@ -22,6 +23,13 @@ class PostDetailViewModel extends _$PostDetailViewModel {
 
   Loading get loading => ref.read(loadingProvider.notifier);
   final preference = Preference();
+
+  /// 投稿の保存状態を初期化時にチェック
+  Future<void> initializeStoreState(int postId) async {
+    final storeList = await preference.getStringList(PreferenceKey.storeList);
+    final isAlreadyStored = storeList.contains(postId.toString());
+    state = state.copyWith(isStore: isAlreadyStored);
+  }
 
   Future<bool> delete(Posts posts) async {
     loading.state = true;
@@ -49,6 +57,26 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     await Future<void>.delayed(const Duration(seconds: 2));
     loading.state = false;
     return true;
+  }
+
+  Future<void> store({
+    required int postId,
+    required VoidCallback openSnackBar,
+  }) async {
+    if (state.isStore) {
+      final storeList = await preference.getStringList(PreferenceKey.storeList);
+      storeList.remove(postId.toString());
+      await preference.setStringList(PreferenceKey.storeList, storeList);
+      state = state.copyWith(isStore: false);
+    } else {
+      final storeList = await preference.getStringList(PreferenceKey.storeList);
+      if (!storeList.contains(postId.toString())) {
+        storeList.add(postId.toString());
+        await preference.setStringList(PreferenceKey.storeList, storeList);
+      }
+      state = state.copyWith(isStore: true);
+      openSnackBar();
+    }
   }
 }
 
