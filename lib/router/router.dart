@@ -213,9 +213,14 @@ final myProfileRouter = GoRoute(
     GoRoute(
       path: '${RouterPath.myProfile}/${RouterPath.myProfileDetail}',
       name: RouterPath.myProfileDetail,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final model = state.extra! as Model;
-        return PostDetailScreen(posts: model.posts, users: model.users);
+        return slideUpTransition(
+          PostDetailScreen(
+            posts: model.posts,
+            users: model.users,
+          ),
+        );
       },
     ),
     GoRoute(
