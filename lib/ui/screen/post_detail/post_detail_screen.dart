@@ -5,7 +5,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
-import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
@@ -48,24 +47,8 @@ class PostDetailScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final initialHeart = useState(posts.heart);
-    final heartList = useState<List<String>>([]);
-    final isHeart = useState(false);
-    final isAppearHeart = useState(false);
     final adInterstitial =
         useMemoized(() => ref.read(admobInterstitialNotifierProvider));
-    final preference = Preference();
-    // 既にいいねをしているかどうかuseEffect
-    useEffect(
-      () {
-        preference.getStringList(PreferenceKey.heartList).then((value) {
-          heartList.value = value;
-          isHeart.value = value.contains(posts.id.toString());
-        });
-        return;
-      },
-      [],
-    );
     // 広告のためのuseEffect
     useEffect(
       () {
@@ -79,6 +62,9 @@ class PostDetailScreen extends HookConsumerWidget {
         ref
             .read(postDetailViewModelProvider().notifier)
             .initializeStoreState(posts.id);
+        ref
+            .read(postDetailViewModelProvider().notifier)
+            .initializeHeartState(posts.id, posts.heart);
         return;
       },
       [posts.id],
@@ -89,50 +75,6 @@ class PostDetailScreen extends HookConsumerWidget {
     final l10n = L10n.of(context);
     final currentUser = ref.watch(currentUserProvider);
     final supabase = ref.watch(supabaseProvider);
-    Future<void> handleHeart() async {
-      if (users.userId == currentUser) {
-        return;
-      }
-      final postId = posts.id.toString();
-      final currentHeart = initialHeart.value;
-      if (isHeart.value) {
-        // いいねを外す場合は制限チェック不要
-        await supabase.from('posts').update({
-          'heart': currentHeart - 1,
-        }).match({'id': posts.id});
-        initialHeart.value--;
-        isHeart.value = false;
-        isAppearHeart.value = false;
-        heartList.value = List.from(heartList.value)..remove(postId);
-      } else {
-        // 10回以上いいねした場合は制限
-        final canLike = await preference.canLike();
-        if (!canLike) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.heartLimitMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
-          return;
-        }
-        await supabase.from('posts').update({
-          'heart': currentHeart + 1,
-        }).match({'id': posts.id});
-        initialHeart.value++;
-        isHeart.value = true;
-        isAppearHeart.value = true;
-        heartList.value = List.from(heartList.value)..add(postId);
-
-        // いいねカウントを増加
-        await preference.incrementHeartCount();
-      }
-      await preference.setStringList(
-        PreferenceKey.heartList,
-        heartList.value,
-      );
-    }
-
     final state = ref.watch(postsViewModelProvider(posts.id));
     final detailState = ref.watch(postDetailViewModelProvider());
 
@@ -300,7 +242,23 @@ class PostDetailScreen extends HookConsumerWidget {
                               ),
                             );
                           },
-                          onDoubleTap: handleHeart,
+                          onDoubleTap: () async {
+                            await ref
+                                .read(postDetailViewModelProvider().notifier)
+                                .handleHeart(
+                                  posts: posts,
+                                  currentUser: currentUser!,
+                                  userId: users.userId,
+                                  onHeartLimitReached: () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(l10n.heartLimitMessage),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  },
+                                );
+                          },
                           child: Heroine(
                             tag: 'image-${posts.id}',
                             child: Container(
@@ -348,13 +306,34 @@ class PostDetailScreen extends HookConsumerWidget {
                             children: [
                               const Gap(5),
                               IconButton(
-                                onPressed: handleHeart,
+                                onPressed: () async {
+                                  await ref
+                                      .read(
+                                        postDetailViewModelProvider().notifier,
+                                      )
+                                      .handleHeart(
+                                        posts: posts,
+                                        currentUser: currentUser!,
+                                        userId: users.userId,
+                                        onHeartLimitReached: () {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content:
+                                                  Text(l10n.heartLimitMessage),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        },
+                                      );
+                                },
                                 icon: Icon(
-                                  isHeart.value
+                                  detailState.isHeart
                                       ? CupertinoIcons.heart_fill
                                       : CupertinoIcons.heart,
-                                  color:
-                                      isHeart.value ? Colors.red : Colors.black,
+                                  color: detailState.isHeart
+                                      ? Colors.red
+                                      : Colors.black,
                                   size: 30,
                                 ),
                               ),
@@ -377,7 +356,7 @@ class PostDetailScreen extends HookConsumerWidget {
                               Padding(
                                 padding: const EdgeInsets.only(right: 12),
                                 child: Text(
-                                  '${initialHeart.value} '
+                                  '${detailState.heart} '
                                   '${l10n.likeButton}',
                                   style: DetailPostStyle.like(),
                                 ),
@@ -596,7 +575,7 @@ class PostDetailScreen extends HookConsumerWidget {
                     ],
                   ),
                 ),
-                AppHeart(isHeart: isAppearHeart.value),
+                AppHeart(isHeart: detailState.isAppearHeart),
                 AppProcessLoading(
                   loading: menuLoading.value || loading,
                   status: 'Loading...',
