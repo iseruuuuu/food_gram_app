@@ -69,17 +69,9 @@ class PostDetailScreen extends HookConsumerWidget {
     return PopScope(
       canPop: !loading,
       child: state.when(
-        loading: () => Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            automaticallyImplyLeading: false,
-            surfaceTintColor: Colors.transparent,
-          ),
-          body: const AppProcessLoading(
-            loading: true,
-            status: '',
-          ),
+        loading: () => const AppProcessLoading(
+          loading: true,
+          status: '',
         ),
         data: (state) => Scaffold(
           backgroundColor: Colors.white,
