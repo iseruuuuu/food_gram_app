@@ -224,11 +224,14 @@ class PostDetailScreen extends HookConsumerWidget {
                             );
                           },
                           onDoubleTap: () async {
+                            if (currentUser == null) {
+                              return;
+                            }
                             await ref
                                 .read(postDetailViewModelProvider().notifier)
                                 .handleHeart(
                                   posts: posts,
-                                  currentUser: currentUser!,
+                                  currentUser: currentUser,
                                   userId: users.userId,
                                   onHeartLimitReached: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -290,6 +293,9 @@ class PostDetailScreen extends HookConsumerWidget {
                                 const Gap(4),
                                 IconButton(
                                   onPressed: () async {
+                                    if (currentUser == null) {
+                                      return;
+                                    }
                                     await ref
                                         .read(
                                           postDetailViewModelProvider()
@@ -297,7 +303,7 @@ class PostDetailScreen extends HookConsumerWidget {
                                         )
                                         .handleHeart(
                                           posts: posts,
-                                          currentUser: currentUser!,
+                                          currentUser: currentUser,
                                           userId: users.userId,
                                           onHeartLimitReached: () {
                                             ScaffoldMessenger.of(context)
