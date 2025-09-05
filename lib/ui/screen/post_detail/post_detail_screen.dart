@@ -531,11 +531,7 @@ class PostDetailScreen extends HookConsumerWidget {
                                       ...state.foodTag.split(',').map(
                                             (tag) => Chip(
                                               backgroundColor: Colors.white,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 8,
-                                                vertical: 4,
-                                              ),
+                                              padding: const EdgeInsets.all(2),
                                               label: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
@@ -565,10 +561,7 @@ class PostDetailScreen extends HookConsumerWidget {
                                     if (state.restaurantTag.isNotEmpty)
                                       Chip(
                                         backgroundColor: Colors.white,
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 4,
-                                        ),
+                                        padding: const EdgeInsets.all(2),
                                         label: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
