@@ -304,14 +304,37 @@ class PostDetailScreen extends HookConsumerWidget {
                           child: Heroine(
                             tag: 'image-${posts.id}',
                             child: Container(
-                              width: deviceWidth,
-                              height: deviceWidth,
-                              color: Colors.white,
-                              child: CachedNetworkImage(
-                                imageUrl: supabase.storage
-                                    .from('food')
-                                    .getPublicUrl(state.foodImage),
-                                fit: BoxFit.cover,
+                              width: deviceWidth / 1.2,
+                              height: deviceWidth / 1.2,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.3),
+                                    blurRadius: 24,
+                                    offset: const Offset(0, 12),
+                                  ),
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.2),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 6),
+                                  ),
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.1),
+                                    blurRadius: 6,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: CachedNetworkImage(
+                                  imageUrl: supabase.storage
+                                      .from('food')
+                                      .getPublicUrl(state.foodImage),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
