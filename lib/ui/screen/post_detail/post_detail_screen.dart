@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
-import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
@@ -47,16 +46,6 @@ class PostDetailScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final adInterstitial =
-        useMemoized(() => ref.read(admobInterstitialNotifierProvider));
-    // 広告のためのuseEffect
-    useEffect(
-      () {
-        adInterstitial.createAd();
-        return;
-      },
-      [adInterstitial],
-    );
     useEffect(
       () {
         ref
@@ -77,7 +66,6 @@ class PostDetailScreen extends HookConsumerWidget {
     final supabase = ref.watch(supabaseProvider);
     final state = ref.watch(postsViewModelProvider(posts.id));
     final detailState = ref.watch(postDetailViewModelProvider());
-
     return PopScope(
       canPop: !loading,
       child: state.when(
@@ -404,17 +392,13 @@ class PostDetailScreen extends HookConsumerWidget {
                                 children: [
                                   AppDetailElevatedButton(
                                     onPressed: () async {
-                                      await adInterstitial.showAd(
-                                        onAdClosed: () async {
-                                          await ShareHelpers().openShareModal(
-                                            posts: posts,
-                                            ref: ref,
-                                            loading: menuLoading,
-                                            context: context,
-                                            shareText: '${posts.foodName} '
-                                                'in ${posts.restaurant}',
-                                          );
-                                        },
+                                      await ShareHelpers().openShareModal(
+                                        posts: posts,
+                                        ref: ref,
+                                        loading: menuLoading,
+                                        context: context,
+                                        shareText: '${posts.foodName} '
+                                            'in ${posts.restaurant}',
                                       );
                                     },
                                     title: l10n.detailMenuShare,
@@ -451,16 +435,11 @@ class PostDetailScreen extends HookConsumerWidget {
                                   ),
                                   AppDetailElevatedButton(
                                     onPressed: () async {
-                                      await adInterstitial.showAd(
-                                        onAdClosed: () async {
-                                          final availableMaps =
-                                              await MapLauncher.installedMaps;
-                                          await availableMaps.first.showMarker(
-                                            coords:
-                                                Coords(posts.lat, posts.lng),
-                                            title: posts.restaurant,
-                                          );
-                                        },
+                                      final availableMaps =
+                                          await MapLauncher.installedMaps;
+                                      await availableMaps.first.showMarker(
+                                        coords: Coords(posts.lat, posts.lng),
+                                        title: posts.restaurant,
                                       );
                                     },
                                     title: l10n.detailMenuVisit,
