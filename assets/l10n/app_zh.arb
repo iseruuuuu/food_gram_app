@@ -483,5 +483,6 @@
   "saved": "已保存",
   "savedPosts": "保存的帖子",
   "postSaved": "帖子已保存",
-  "postSavedMessage": "您可以在我的页面查看保存的帖子"
+  "postSavedMessage": "您可以在我的页面查看保存的帖子",
+  "noMapAppAvailable": "没有可用的地图应用"
 }

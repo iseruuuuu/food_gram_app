@@ -1461,4 +1461,7 @@ class L10nFr extends L10n {
 
   @override
   String get postSavedMessage => 'Vous pouvez voir les publications sauvegardées dans Ma page';
+
+  @override
+  String get noMapAppAvailable => 'Aucune application de carte disponible';
 }

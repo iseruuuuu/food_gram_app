@@ -483,5 +483,6 @@
   "saved": "Salvo",
   "savedPosts": "Postagens salvas",
   "postSaved": "Postagem salva",
-  "postSavedMessage": "Você pode ver as postagens salvas na Minha página"
+  "postSavedMessage": "Você pode ver as postagens salvas na Minha página",
+  "noMapAppAvailable": "Nenhum aplicativo de mapa disponível"
 }

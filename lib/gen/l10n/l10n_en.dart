@@ -1461,4 +1461,7 @@ class L10nEn extends L10n {
 
   @override
   String get postSavedMessage => 'You can view saved posts in My Page';
+
+  @override
+  String get noMapAppAvailable => 'No map app available';
 }

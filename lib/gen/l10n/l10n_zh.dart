@@ -1461,4 +1461,7 @@ class L10nZh extends L10n {
 
   @override
   String get postSavedMessage => '您可以在我的页面查看保存的帖子';
+
+  @override
+  String get noMapAppAvailable => '没有可用的地图应用';
 }
