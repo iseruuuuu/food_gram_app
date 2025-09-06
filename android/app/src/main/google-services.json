@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "505064710022-hl1t37u1akekl22v3jb3f0h57auc0iii.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.food_gram_app.com.com.com",
+            "certificate_hash": "fc35b436ccb06006e5f82b1b1cb460362b9b3ea6"
+          }
+        },
+        {
           "client_id": "505064710022-rqt7k1vm2o9htklicvn9e68pm0rl8m0d.apps.googleusercontent.com",
           "client_type": 3
         }

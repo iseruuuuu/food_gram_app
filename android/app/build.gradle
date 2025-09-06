@@ -78,7 +78,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "${dartDefines.appId ?: 'com.food_gram_app'}"
+        applicationId "${dartDefines.appId ?: 'com.food_gram_app.com.com.com'}"
         resValue "string", "app_name", "${dartDefines.appName}"
         minSdkVersion 28
         targetSdkVersion 35
