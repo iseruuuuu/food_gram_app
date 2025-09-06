@@ -587,7 +587,10 @@ class PostDetailScreen extends HookConsumerWidget {
             surfaceTintColor: Colors.transparent,
           ),
           body: AppErrorWidget(
-            onTap: () => ref.invalidate(postDetailViewModelProvider()),
+            onTap: () {
+              ref.invalidate(postsViewModelProvider(posts.id));
+              ref.invalidate(postDetailViewModelProvider());
+            },
           ),
         ),
       ),
