@@ -1461,4 +1461,7 @@ class L10nKo extends L10n {
 
   @override
   String get postSavedMessage => '마이페이지에서 저장된 게시물을 확인할 수 있습니다';
+
+  @override
+  String get noMapAppAvailable => '지도 앱을 사용할 수 없습니다';
 }

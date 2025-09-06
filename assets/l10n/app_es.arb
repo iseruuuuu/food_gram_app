@@ -483,5 +483,6 @@
   "saved": "Guardado",
   "savedPosts": "Publicaciones guardadas",
   "postSaved": "Publicación guardada",
-  "postSavedMessage": "Puedes ver las publicaciones guardadas en Mi página"
+  "postSavedMessage": "Puedes ver las publicaciones guardadas en Mi página",
+  "noMapAppAvailable": "No hay aplicación de mapas disponible"
 }

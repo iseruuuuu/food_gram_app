@@ -1,13 +1,17 @@
 import 'package:flutter/foundation.dart';
+import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/delete_service.dart';
+import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_state.dart';
 import 'package:logger/logger.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'post_detail_view_model.g.dart';
@@ -29,6 +33,69 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     final storeList = await preference.getStringList(PreferenceKey.storeList);
     final isAlreadyStored = storeList.contains(postId.toString());
     state = state.copyWith(isStore: isAlreadyStored);
+  }
+
+  /// いいね状態を初期化時にチェック
+  Future<void> initializeHeartState(int postId, int initialHeart) async {
+    final heartList = await preference.getStringList(PreferenceKey.heartList);
+    final isAlreadyHearted = heartList.contains(postId.toString());
+    state = state.copyWith(
+      heart: initialHeart,
+      heartList: heartList,
+      isHeart: isAlreadyHearted,
+    );
+  }
+
+  /// いいね処理
+  Future<void> handleHeart({
+    required Posts posts,
+    required String currentUser,
+    required String userId,
+    required VoidCallback? onHeartLimitReached,
+  }) async {
+    if (userId == currentUser) {
+      return;
+    }
+
+    final postId = posts.id.toString();
+    final currentHeart = state.heart;
+    final supabase = ref.read(supabaseProvider);
+
+    if (state.isHeart) {
+      // いいねを外す場合は制限チェック不要
+      await supabase.from('posts').update({
+        'heart': currentHeart - 1,
+      }).match({'id': posts.id});
+      state = state.copyWith(
+        heart: currentHeart - 1,
+        isHeart: false,
+        isAppearHeart: false,
+        heartList: List.from(state.heartList)..remove(postId),
+      );
+    } else {
+      // 10回以上いいねした場合は制限
+      final canLike = await preference.canLike();
+      if (!canLike) {
+        onHeartLimitReached?.call();
+        return;
+      }
+      await supabase.from('posts').update({
+        'heart': currentHeart + 1,
+      }).match({'id': posts.id});
+      state = state.copyWith(
+        heart: currentHeart + 1,
+        isHeart: true,
+        isAppearHeart: true,
+        heartList: List.from(state.heartList)..add(postId),
+      );
+      // いいねカウントを増加
+      await preference.incrementHeartCount();
+    }
+
+    await preference.setStringList(
+      PreferenceKey.heartList,
+      state.heartList,
+    );
   }
 
   Future<bool> delete(Posts posts) async {
@@ -77,6 +144,27 @@ class PostDetailViewModel extends _$PostDetailViewModel {
       state = state.copyWith(isStore: true);
       openSnackBar();
     }
+  }
+
+  void openUrl(String restaurant) {
+    LaunchUrlHelper().open(URL.search(restaurant));
+  }
+
+  Future<void> openMap(
+    String restaurant,
+    double lat,
+    double lng,
+    VoidCallback? openSnackBar,
+  ) async {
+    final availableMaps = await MapLauncher.installedMaps;
+    if (availableMaps.isEmpty) {
+      openSnackBar?.call();
+      return;
+    }
+    await availableMaps.first.showMarker(
+      coords: Coords(lat, lng),
+      title: restaurant,
+    );
   }
 }
 

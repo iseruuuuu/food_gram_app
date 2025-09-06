@@ -1461,4 +1461,7 @@ class L10nEs extends L10n {
 
   @override
   String get postSavedMessage => 'Puedes ver las publicaciones guardadas en Mi página';
+
+  @override
+  String get noMapAppAvailable => 'No hay aplicación de mapas disponible';
 }

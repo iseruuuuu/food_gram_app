@@ -1461,4 +1461,7 @@ class L10nDe extends L10n {
 
   @override
   String get postSavedMessage => 'Sie können gespeicherte Beiträge auf der Meine Seite anzeigen';
+
+  @override
+  String get noMapAppAvailable => 'Keine Karten-App verfügbar';
 }

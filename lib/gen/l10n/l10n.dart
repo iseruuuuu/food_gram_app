@@ -3011,6 +3011,12 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'マイページにて保存した投稿が確認できます'**
   String get postSavedMessage;
+
+  /// No description provided for @noMapAppAvailable.
+  ///
+  /// In ja, this message translates to:
+  /// **'マップアプリが利用できません'**
+  String get noMapAppAvailable;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

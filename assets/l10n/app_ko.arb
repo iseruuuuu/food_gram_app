@@ -483,5 +483,6 @@
   "saved": "저장됨",
   "savedPosts": "저장된 게시물",
   "postSaved": "게시물이 저장되었습니다",
-  "postSavedMessage": "마이페이지에서 저장된 게시물을 확인할 수 있습니다"
+  "postSavedMessage": "마이페이지에서 저장된 게시물을 확인할 수 있습니다",
+  "noMapAppAvailable": "지도 앱을 사용할 수 없습니다"
 }

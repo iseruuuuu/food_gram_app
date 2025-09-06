@@ -483,5 +483,6 @@
   "saved": "保存済み",
   "savedPosts": "保存した投稿",
   "postSaved": "投稿を保存しました",
-  "postSavedMessage": "マイページにて保存した投稿が確認できます"
+  "postSavedMessage": "マイページにて保存した投稿が確認できます",
+  "noMapAppAvailable": "マップアプリが利用できません"
 }

@@ -3,9 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
-import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
-import 'package:food_gram_app/core/config/constants/url.dart';
-import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
@@ -14,7 +11,6 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/theme/style/detail_post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
-import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -22,6 +18,7 @@ import 'package:food_gram_app/router/go_router_extension.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
+import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/dialog/app_share_dialog.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_master_modal_sheet.dart';
@@ -33,7 +30,6 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:map_launcher/map_launcher.dart';
 import 'package:photo_viewer/photo_viewer.dart';
 
 class PostDetailScreen extends HookConsumerWidget {
@@ -48,108 +44,32 @@ class PostDetailScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final initialHeart = useState(posts.heart);
-    final heartList = useState<List<String>>([]);
-    final isHeart = useState(false);
-    final isAppearHeart = useState(false);
-    final adInterstitial =
-        useMemoized(() => ref.read(admobInterstitialNotifierProvider));
-    final preference = Preference();
-    // 既にいいねをしているかどうかuseEffect
-    useEffect(
-      () {
-        preference.getStringList(PreferenceKey.heartList).then((value) {
-          heartList.value = value;
-          isHeart.value = value.contains(posts.id.toString());
-        });
-        return;
-      },
-      [],
-    );
-    // 広告のためのuseEffect
-    useEffect(
-      () {
-        adInterstitial.createAd();
-        return;
-      },
-      [adInterstitial],
-    );
     useEffect(
       () {
         ref
             .read(postDetailViewModelProvider().notifier)
             .initializeStoreState(posts.id);
+        ref
+            .read(postDetailViewModelProvider().notifier)
+            .initializeHeartState(posts.id, posts.heart);
         return;
       },
       [posts.id],
     );
     final deviceWidth = MediaQuery.of(context).size.width;
-    final loading = ref.watch(loadingProvider);
-    final menuLoading = useState(false);
     final l10n = L10n.of(context);
+    final menuLoading = useState(false);
+    final loading = ref.watch(loadingProvider);
     final currentUser = ref.watch(currentUserProvider);
     final supabase = ref.watch(supabaseProvider);
-    Future<void> handleHeart() async {
-      if (users.userId == currentUser) {
-        return;
-      }
-      final postId = posts.id.toString();
-      final currentHeart = initialHeart.value;
-      if (isHeart.value) {
-        // いいねを外す場合は制限チェック不要
-        await supabase.from('posts').update({
-          'heart': currentHeart - 1,
-        }).match({'id': posts.id});
-        initialHeart.value--;
-        isHeart.value = false;
-        isAppearHeart.value = false;
-        heartList.value = List.from(heartList.value)..remove(postId);
-      } else {
-        // 10回以上いいねした場合は制限
-        final canLike = await preference.canLike();
-        if (!canLike) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.heartLimitMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
-          return;
-        }
-        await supabase.from('posts').update({
-          'heart': currentHeart + 1,
-        }).match({'id': posts.id});
-        initialHeart.value++;
-        isHeart.value = true;
-        isAppearHeart.value = true;
-        heartList.value = List.from(heartList.value)..add(postId);
-
-        // いいねカウントを増加
-        await preference.incrementHeartCount();
-      }
-      await preference.setStringList(
-        PreferenceKey.heartList,
-        heartList.value,
-      );
-    }
-
     final state = ref.watch(postsViewModelProvider(posts.id));
     final detailState = ref.watch(postDetailViewModelProvider());
-
     return PopScope(
       canPop: !loading,
       child: state.when(
-        loading: () => Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            automaticallyImplyLeading: false,
-            surfaceTintColor: Colors.transparent,
-          ),
-          body: const AppProcessLoading(
-            loading: true,
-            status: '',
-          ),
+        loading: () => const AppProcessLoading(
+          loading: true,
+          status: '',
         ),
         data: (state) => Scaffold(
           backgroundColor: Colors.white,
@@ -300,7 +220,26 @@ class PostDetailScreen extends HookConsumerWidget {
                               ),
                             );
                           },
-                          onDoubleTap: handleHeart,
+                          onDoubleTap: () async {
+                            if (currentUser == null) {
+                              return;
+                            }
+                            await ref
+                                .read(postDetailViewModelProvider().notifier)
+                                .handleHeart(
+                                  posts: posts,
+                                  currentUser: currentUser,
+                                  userId: users.userId,
+                                  onHeartLimitReached: () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(l10n.heartLimitMessage),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  },
+                                );
+                          },
                           child: Heroine(
                             tag: 'image-${posts.id}',
                             child: Container(
@@ -344,80 +283,107 @@ class PostDetailScreen extends HookConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Gap(8),
-                          Row(
-                            children: [
-                              const Gap(5),
-                              IconButton(
-                                onPressed: handleHeart,
-                                icon: Icon(
-                                  isHeart.value
-                                      ? CupertinoIcons.heart_fill
-                                      : CupertinoIcons.heart,
-                                  color:
-                                      isHeart.value ? Colors.red : Colors.black,
-                                  size: 30,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 18),
+                            child: Row(
+                              children: [
+                                const Gap(4),
+                                IconButton(
+                                  onPressed: () async {
+                                    if (currentUser == null) {
+                                      return;
+                                    }
+                                    await ref
+                                        .read(
+                                          postDetailViewModelProvider()
+                                              .notifier,
+                                        )
+                                        .handleHeart(
+                                          posts: posts,
+                                          currentUser: currentUser,
+                                          userId: users.userId,
+                                          onHeartLimitReached: () {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  l10n.heartLimitMessage,
+                                                ),
+                                                backgroundColor: Colors.red,
+                                              ),
+                                            );
+                                          },
+                                        );
+                                  },
+                                  icon: Icon(
+                                    detailState.isHeart
+                                        ? CupertinoIcons.heart_fill
+                                        : CupertinoIcons.heart,
+                                    color: detailState.isHeart
+                                        ? Colors.red
+                                        : Colors.black,
+                                    size: 40,
+                                  ),
                                 ),
-                              ),
-                              const Gap(10),
-                              GestureDetector(
-                                onTap: () {
-                                  showGeneralDialog(
-                                    context: context,
-                                    pageBuilder: (_, __, ___) {
-                                      return AppShareDialog(
-                                        posts: posts,
-                                        users: users,
-                                      );
-                                    },
-                                  );
-                                },
-                                child: const Icon(Icons.send, size: 30),
-                              ),
-                              const Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 12),
-                                child: Text(
-                                  '${initialHeart.value} '
+                                const Gap(6),
+                                GestureDetector(
+                                  onTap: () {
+                                    showGeneralDialog(
+                                      context: context,
+                                      pageBuilder: (_, __, ___) {
+                                        return AppShareDialog(
+                                          posts: posts,
+                                          users: users,
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: const Icon(Icons.send, size: 40),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  '${detailState.heart} '
                                   '${l10n.likeButton}',
                                   style: DetailPostStyle.like(),
                                 ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  ref
-                                      .read(
-                                        postDetailViewModelProvider().notifier,
-                                      )
-                                      .store(
-                                        postId: posts.id,
-                                        openSnackBar: () {
-                                          final l10n = L10n.of(context);
-                                          final snackBar = SnackBar(
-                                            content: Column(
-                                              children: [
-                                                Text(l10n.postSaved),
-                                                Text(l10n.postSavedMessage),
-                                              ],
-                                            ),
-                                          );
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(snackBar);
-                                        },
-                                      );
-                                },
-                                icon: Icon(
-                                  detailState.isStore
-                                      ? Icons.bookmark
-                                      : Icons.bookmark_border,
+                                IconButton(
+                                  onPressed: () {
+                                    ref
+                                        .read(
+                                          postDetailViewModelProvider()
+                                              .notifier,
+                                        )
+                                        .store(
+                                          postId: posts.id,
+                                          openSnackBar: () {
+                                            final l10n = L10n.of(context);
+                                            final snackBar = SnackBar(
+                                              content: Column(
+                                                children: [
+                                                  Text(l10n.postSaved),
+                                                  Text(l10n.postSavedMessage),
+                                                ],
+                                              ),
+                                            );
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBar);
+                                          },
+                                        );
+                                  },
+                                  icon: Icon(
+                                    detailState.isStore
+                                        ? Icons.bookmark
+                                        : Icons.bookmark_border,
+                                  ),
+                                  iconSize: 40,
+                                  color: Colors.black,
                                 ),
-                                iconSize: 36,
-                                color: Colors.black,
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           const Gap(6),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: SizedBox(
                               height: 38,
                               child: ListView(
@@ -425,17 +391,13 @@ class PostDetailScreen extends HookConsumerWidget {
                                 children: [
                                   AppDetailElevatedButton(
                                     onPressed: () async {
-                                      await adInterstitial.showAd(
-                                        onAdClosed: () async {
-                                          await ShareHelpers().openShareModal(
-                                            posts: posts,
-                                            ref: ref,
-                                            loading: menuLoading,
-                                            context: context,
-                                            shareText: '${posts.foodName} '
-                                                'in ${posts.restaurant}',
-                                          );
-                                        },
+                                      await ShareHelpers().openShareModal(
+                                        posts: posts,
+                                        ref: ref,
+                                        loading: menuLoading,
+                                        context: context,
+                                        shareText: '${posts.foodName} '
+                                            'in ${posts.restaurant}',
                                       );
                                     },
                                     title: l10n.detailMenuShare,
@@ -465,21 +427,33 @@ class PostDetailScreen extends HookConsumerWidget {
                                     icon: Icons.restaurant,
                                   ),
                                   AppDetailElevatedButton(
-                                    onPressed: () => LaunchUrlHelper()
-                                        .open(URL.search(posts.restaurant)),
+                                    onPressed: () => ref
+                                        .read(
+                                          postDetailViewModelProvider()
+                                              .notifier,
+                                        )
+                                        .openUrl(posts.restaurant),
                                     title: l10n.detailMenuSearch,
                                     icon: Icons.search,
                                   ),
                                   AppDetailElevatedButton(
                                     onPressed: () async {
-                                      await adInterstitial.showAd(
-                                        onAdClosed: () async {
-                                          final availableMaps =
-                                              await MapLauncher.installedMaps;
-                                          await availableMaps.first.showMarker(
-                                            coords:
-                                                Coords(posts.lat, posts.lng),
-                                            title: posts.restaurant,
+                                      await ref
+                                          .read(
+                                        postDetailViewModelProvider().notifier,
+                                      )
+                                          .openMap(
+                                        posts.restaurant,
+                                        posts.lat,
+                                        posts.lng,
+                                        () {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                l10n.noMapAppAvailable,
+                                              ),
+                                            ),
                                           );
                                         },
                                       );
@@ -513,7 +487,7 @@ class PostDetailScreen extends HookConsumerWidget {
                                     style: DetailPostStyle.restaurant(),
                                   ),
                                 ),
-                                const Gap(12),
+                                const Gap(16),
                                 if (state.comment.isNotEmpty)
                                   Column(
                                     children: [
@@ -596,46 +570,12 @@ class PostDetailScreen extends HookConsumerWidget {
                     ],
                   ),
                 ),
-                AppHeart(isHeart: isAppearHeart.value),
+                AppHeart(isHeart: detailState.isAppearHeart),
                 AppProcessLoading(
                   loading: menuLoading.value || loading,
                   status: 'Loading...',
                 ),
               ],
-            ),
-          ),
-          floatingActionButton: SizedBox(
-            width: 70,
-            height: 70,
-            child: FloatingActionButton(
-              heroTag: null,
-              foregroundColor: Colors.black,
-              backgroundColor: Colors.black,
-              elevation: 10,
-              shape: const CircleBorder(side: BorderSide()),
-              onPressed: () async {
-                final currentPath = GoRouter.of(context).isCurrentLocation();
-                await context
-                    .pushNamed(
-                  currentPath,
-                  extra: Restaurant(
-                    name: posts.restaurant,
-                    lat: posts.lat,
-                    lng: posts.lng,
-                    address: '',
-                  ),
-                )
-                    .then((value) async {
-                  if (value != null) {
-                    ref.invalidate(postStreamProvider);
-                  }
-                });
-              },
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 35,
-              ),
             ),
           ),
         ),
@@ -646,8 +586,11 @@ class PostDetailScreen extends HookConsumerWidget {
             automaticallyImplyLeading: false,
             surfaceTintColor: Colors.transparent,
           ),
-          body: const Center(
-            child: Text('エラーが発生しました'),
+          body: AppErrorWidget(
+            onTap: () {
+              ref.invalidate(postsViewModelProvider(posts.id));
+              ref.invalidate(postDetailViewModelProvider());
+            },
           ),
         ),
       ),

@@ -11,6 +11,9 @@ abstract class PostDetailState with _$PostDetailState {
     @Default(false) bool isSuccess,
     @Default(false) bool isLoading,
     @Default(false) bool isStore,
+    @Default(false) bool isHeart,
+    @Default(false) bool isAppearHeart,
+    @Default([]) List<String> heartList,
   }) = _PostDetailState;
 }
 

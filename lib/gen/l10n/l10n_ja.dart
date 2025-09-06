@@ -1461,4 +1461,7 @@ class L10nJa extends L10n {
 
   @override
   String get postSavedMessage => 'マイページにて保存した投稿が確認できます';
+
+  @override
+  String get noMapAppAvailable => 'マップアプリが利用できません';
 }
