@@ -451,6 +451,143 @@ class PostService extends _$PostService {
     );
   }
 
+  /// 投稿詳細画面用：ID順で次の投稿を取得
+  Future<Result<List<Map<String, dynamic>>, Exception>> getSequentialPosts({
+    required int currentPostId,
+    int limit = 10,
+  }) async {
+    try {
+      return Success(
+        await _cacheManager.get<List<Map<String, dynamic>>>(
+          key: 'sequential_posts_${currentPostId}_$limit',
+          fetcher: () async {
+            // 現在の投稿より小さいID（前の投稿）を取得
+            final previousPosts = await supabase
+                .from('posts')
+                .select()
+                .lt('id', currentPostId)
+                .order('id', ascending: false)
+                .limit(limit);
+
+            // 現在の投稿より大きいID（次の投稿）を取得
+            final nextPosts = await supabase
+                .from('posts')
+                .select()
+                .gt('id', currentPostId)
+                .order('id', ascending: true)
+                .limit(limit);
+
+            // ブロックリストのフィルタリング
+            final filteredPreviousPosts = previousPosts
+                .where((post) => !blockList.contains(post['user_id']))
+                .toList();
+
+            final filteredNextPosts = nextPosts
+                .where((post) => !blockList.contains(post['user_id']))
+                .toList();
+
+            // 次の投稿を優先して、前の投稿を追加
+            final combinedPosts = <Map<String, dynamic>>[];
+
+            // 次の投稿を先に追加（ID昇順）
+            combinedPosts.addAll(filteredNextPosts);
+
+            // 足りない分を前の投稿から追加（ID降順）
+            final remainingSlots = limit - combinedPosts.length;
+            if (remainingSlots > 0) {
+              combinedPosts.addAll(
+                filteredPreviousPosts.take(remainingSlots),
+              );
+            }
+
+            return combinedPosts.take(limit).toList();
+          },
+          duration: const Duration(minutes: 5),
+        ),
+      );
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
+  }
+
+  /// 投稿詳細画面用：関連する投稿を取得（同じレストランや近くの投稿）
+  Future<Result<List<Map<String, dynamic>>, Exception>> getRelatedPosts({
+    required int currentPostId,
+    required double lat,
+    required double lng,
+    int limit = 10,
+  }) async {
+    try {
+      return Success(
+        await _cacheManager.get<List<Map<String, dynamic>>>(
+          key: 'related_posts_${currentPostId}_${lat}_${lng}_$limit',
+          fetcher: () async {
+            // 同じレストラン（位置）の投稿を取得
+            final sameLocationPosts = await supabase
+                .from('posts')
+                .select()
+                .gte('lat', lat - 0.00001)
+                .lte('lat', lat + 0.00001)
+                .gte('lng', lng - 0.00001)
+                .lte('lng', lng + 0.00001)
+                .neq('id', currentPostId)
+                .order('created_at', ascending: false);
+
+            // 近くの投稿も取得（同じレストランの投稿が少ない場合）
+            var nearbyPosts = <Map<String, dynamic>>[];
+            if (sameLocationPosts.length < limit) {
+              final remainingLimit = limit - sameLocationPosts.length;
+              final allPosts = await supabase
+                  .from('posts')
+                  .select()
+                  .neq('id', currentPostId)
+                  .order('created_at', ascending: false)
+                  .limit(50); // より多く取得して距離でフィルタ
+
+              // 距離計算して近い順にソート
+              final postsWithDistance = allPosts.where((post) {
+                final postLat = double.parse(post['lat'].toString());
+                final postLng = double.parse(post['lng'].toString());
+                final distance = _calculateDistance(lat, lng, postLat, postLng);
+                return distance <= 5.0 && // 5km以内
+                    !blockList.contains(post['user_id']) &&
+                    !sameLocationPosts
+                        .any((samePost) => samePost['id'] == post['id']);
+              }).map((post) {
+                final postLat = double.parse(post['lat'].toString());
+                final postLng = double.parse(post['lng'].toString());
+                final distance = _calculateDistance(lat, lng, postLat, postLng);
+                return {...post, 'distance': distance};
+              }).toList()
+                ..sort((a, b) => (a['distance'] as double)
+                    .compareTo(b['distance'] as double));
+
+              nearbyPosts = postsWithDistance.take(remainingLimit).map((post) {
+                final result = Map<String, dynamic>.from(post)
+                  ..remove('distance');
+                return result;
+              }).toList();
+            }
+
+            // 同じレストランの投稿を優先し、その後に近くの投稿を追加
+            final combinedPosts = [
+              ...sameLocationPosts
+                  .where((post) => !blockList.contains(post['user_id'])),
+              ...nearbyPosts,
+            ];
+
+            return combinedPosts.take(limit).toList();
+          },
+          duration: const Duration(minutes: 5),
+        ),
+      );
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
+  }
+
   /// 2点間の距離を計算（Haversine公式）
   double _calculateDistance(
     double lat1,

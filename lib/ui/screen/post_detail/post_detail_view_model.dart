@@ -10,6 +10,7 @@ import 'package:food_gram_app/core/supabase/post/services/delete_service.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_state.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -204,4 +205,25 @@ class PostsViewModel extends _$PostsViewModel {
       },
     );
   }
+}
+
+/// 投稿詳細画面のリスト用プロバイダー（ID順）
+@riverpod
+Future<List<Posts>> postDetailList(Ref ref, Posts initialPost) async {
+  final result =
+      await ref.read(postRepositoryProvider.notifier).getSequentialPosts(
+            currentPostId: initialPost.id,
+            limit: 20,
+          );
+
+  return result.when(
+    success: (models) {
+      // 初期投稿を先頭に配置し、ID順の投稿を追加
+      return [initialPost, ...models.map((model) => model.posts)];
+    },
+    failure: (error) {
+      // エラーの場合は初期投稿のみ返す
+      return [initialPost];
+    },
+  );
 }

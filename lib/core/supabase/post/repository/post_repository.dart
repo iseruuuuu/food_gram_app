@@ -65,6 +65,101 @@ class PostRepository extends _$PostRepository {
     }
   }
 
+  /// 複数の投稿とそのユーザー情報を取得（投稿詳細画面のリスト用）
+  Future<Result<List<Model>, Exception>> getPostsWithUsers(
+    List<int> postIds,
+  ) async {
+    try {
+      final models = <Model>[];
+      for (final postId in postIds) {
+        final result =
+            await ref.read(postServiceProvider.notifier).getPost(postId);
+        await result.when(
+          success: (data) async {
+            final posts = Posts.fromJson(data['post'] as Map<String, dynamic>);
+            final users = Users.fromJson(data['user'] as Map<String, dynamic>);
+            models.add(Model(users, posts));
+          },
+          failure: (error) {
+            logger.e('Failed to get post $postId: $error');
+          },
+        );
+      }
+      return Success(models);
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
+  }
+
+  /// 投稿詳細画面用：ID順で次の投稿のリストを取得
+  Future<Result<List<Model>, Exception>> getSequentialPosts({
+    required int currentPostId,
+    int limit = 10,
+  }) async {
+    try {
+      final result =
+          await ref.read(postServiceProvider.notifier).getSequentialPosts(
+                currentPostId: currentPostId,
+                limit: limit,
+              );
+      return result.when(
+        success: (data) async {
+          final models = <Model>[];
+          for (final postData in data) {
+            final userData = await ref
+                .read(postServiceProvider.notifier)
+                .getUserData(postData['user_id'] as String);
+            final user = Users.fromJson(userData);
+            final posts = Posts.fromJson(postData);
+            models.add(Model(user, posts));
+          }
+          return Success(models);
+        },
+        failure: Failure.new,
+      );
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
+  }
+
+  /// 投稿詳細画面用：関連する投稿のリストを取得（同じレストランの投稿など）
+  Future<Result<List<Model>, Exception>> getRelatedPosts({
+    required int currentPostId,
+    required double lat,
+    required double lng,
+    int limit = 10,
+  }) async {
+    try {
+      final result =
+          await ref.read(postServiceProvider.notifier).getRelatedPosts(
+                currentPostId: currentPostId,
+                lat: lat,
+                lng: lng,
+                limit: limit,
+              );
+      return result.when(
+        success: (data) async {
+          final models = <Model>[];
+          for (final postData in data) {
+            final userData = await ref
+                .read(postServiceProvider.notifier)
+                .getUserData(postData['user_id'] as String);
+            final user = Users.fromJson(userData);
+            final posts = Posts.fromJson(postData);
+            models.add(Model(user, posts));
+          }
+          return Success(models);
+        },
+        failure: Failure.new,
+      );
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
+  }
+
   /// 自分の全投稿に対するいいね数の合計を取得
   Future<Result<int, Exception>> getHeartAmount() async {
     try {
