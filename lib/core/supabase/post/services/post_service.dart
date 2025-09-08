@@ -454,7 +454,7 @@ class PostService extends _$PostService {
   /// 投稿詳細画面用：ID順で次の投稿を取得
   Future<Result<List<Map<String, dynamic>>, Exception>> getSequentialPosts({
     required int currentPostId,
-    int limit = 10,
+    int limit = 15,
   }) async {
     try {
       return Success(
