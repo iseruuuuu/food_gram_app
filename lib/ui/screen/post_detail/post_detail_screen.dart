@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -9,12 +8,13 @@ import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_master_modal_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_my_info_modal_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_other_info_modal_sheet.dart';
-import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
 import 'package:food_gram_app/ui/screen/post_detail/component/post_detail_list_item.dart';
 import 'package:food_gram_app/ui/screen/post_detail/component/post_detail_user_provider.dart';
+import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -107,7 +107,11 @@ class PostDetailScreen extends HookConsumerWidget {
                                 .delete(posts);
                           },
                           setUser: (posts) {
-                            // リストの更新処理は必要に応じて実装
+                            ref
+                                .read(
+                                  postsViewModelProvider(posts.id).notifier,
+                                )
+                                .setUser(posts);
                           },
                         );
                       }
@@ -125,19 +129,13 @@ class PostDetailScreen extends HookConsumerWidget {
           child: Stack(
             children: [
               listState.when(
-                loading: () => const AppProcessLoading(
-                  loading: true,
-                  status: 'Loading...',
-                ),
+                loading: () => const AppPostDetailSkeleton(),
                 error: (error, stack) => const Center(
                   child: Text('エラーが発生しました'),
                 ),
                 data: (posts) => ListView.builder(
-                  itemCount: posts.length + 1, // +1 for AdMob banner
+                  itemCount: posts.length,
                   itemBuilder: (context, index) {
-                    if (index == posts.length) {
-                      return const AdmobBanner(id: 'detail');
-                    }
                     final post = posts[index];
                     return FutureBuilder<Users>(
                       future:

@@ -14,6 +14,7 @@ abstract class PostDetailState with _$PostDetailState {
     @Default(false) bool isHeart,
     @Default(false) bool isAppearHeart,
     @Default([]) List<String> heartList,
+    @Default([]) List<Posts> posts,
   }) = _PostDetailState;
 }
 

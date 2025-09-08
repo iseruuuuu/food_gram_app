@@ -28,6 +28,7 @@ class PostDetailViewModel extends _$PostDetailViewModel {
 
   Loading get loading => ref.read(loadingProvider.notifier);
   final preference = Preference();
+  final logger = Logger();
 
   /// 投稿の保存状態を初期化時にチェック
   Future<void> initializeStoreState(int postId) async {
@@ -165,6 +166,32 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     await availableMaps.first.showMarker(
       coords: Coords(lat, lng),
       title: restaurant,
+    );
+  }
+
+  /// スクロール時に新しい投稿を取得
+  Future<void> fetchMorePosts() async {
+    // 現在の投稿リストを取得
+    final currentPosts = state.posts;
+    if (currentPosts.isEmpty) return;
+
+    // 新しい投稿を取得
+    final result =
+        await ref.read(postRepositoryProvider.notifier).getSequentialPosts(
+              currentPostId: currentPosts.last.id,
+            );
+
+    result.when(
+      success: (newPosts) {
+        // 新しい投稿をリストに追加
+        state = state.copyWith(
+          posts: [...currentPosts, ...newPosts.map((model) => model.posts)],
+        );
+      },
+      failure: (error) {
+        // エラーハンドリング
+        logger.e('Failed to fetch more posts: $error');
+      },
     );
   }
 }
