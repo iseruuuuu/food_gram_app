@@ -6,6 +6,7 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/theme/style/detail_post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -21,7 +22,6 @@ import 'package:heroine/heroine.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:photo_viewer/photo_viewer.dart';
 
-/// 投稿詳細画面のリストアイテム
 class PostDetailListItem extends HookConsumerWidget {
   const PostDetailListItem({
     required this.posts,
@@ -43,13 +43,11 @@ class PostDetailListItem extends HookConsumerWidget {
     final currentUser = ref.watch(currentUserProvider);
     final supabase = ref.watch(supabaseProvider);
     final detailState = ref.watch(postDetailViewModelProvider());
-
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ユーザー情報
           GestureDetector(
             onTap: () async {
               if (users.userId != currentUser && !posts.isAnonymous) {
@@ -67,7 +65,7 @@ class PostDetailListItem extends HookConsumerWidget {
                     imagePath: posts.isAnonymous
                         ? 'assets/icon/icon1.png'
                         : users.image,
-                    radius: 30,
+                    radius: 26,
                   ),
                 ),
                 SizedBox(
@@ -97,8 +95,6 @@ class PostDetailListItem extends HookConsumerWidget {
               ],
             ),
           ),
-
-          // 投稿画像
           Center(
             child: GestureDetector(
               onTap: () {
@@ -170,8 +166,6 @@ class PostDetailListItem extends HookConsumerWidget {
               ),
             ),
           ),
-
-          // アクションボタン
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -200,7 +194,7 @@ class PostDetailListItem extends HookConsumerWidget {
                             ? CupertinoIcons.heart_fill
                             : CupertinoIcons.heart,
                         color: detailState.isHeart ? Colors.red : Colors.black,
-                        size: 40,
+                        size: 36,
                       ),
                     ),
                     const Gap(6),
@@ -216,7 +210,7 @@ class PostDetailListItem extends HookConsumerWidget {
                           },
                         );
                       },
-                      child: const Icon(Icons.send, size: 40),
+                      child: const Icon(Icons.send, size: 36),
                     ),
                     const Spacer(),
                     Text(
@@ -247,15 +241,13 @@ class PostDetailListItem extends HookConsumerWidget {
                             ? Icons.bookmark
                             : Icons.bookmark_border,
                       ),
-                      iconSize: 40,
+                      iconSize: 36,
                       color: Colors.black,
                     ),
                   ],
                 ),
               ),
               const Gap(6),
-
-              // 詳細メニュー
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: SizedBox(
@@ -293,8 +285,7 @@ class PostDetailListItem extends HookConsumerWidget {
                           )
                               .then((value) async {
                             if (value != null) {
-                              // 投稿ストリームを無効化
-                              // ref.invalidate(postStreamProvider);
+                              ref.invalidate(postStreamProvider);
                             }
                           });
                         },
@@ -332,10 +323,9 @@ class PostDetailListItem extends HookConsumerWidget {
                   ),
                 ),
               ),
-
-              // 投稿詳細情報
               Padding(
-                padding: const EdgeInsets.all(15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -356,7 +346,7 @@ class PostDetailListItem extends HookConsumerWidget {
                         style: DetailPostStyle.restaurant(),
                       ),
                     ),
-                    const Gap(16),
+                    const Gap(8),
                     if (posts.comment.isNotEmpty)
                       Column(
                         children: [
