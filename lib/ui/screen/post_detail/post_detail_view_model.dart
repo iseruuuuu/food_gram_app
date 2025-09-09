@@ -173,7 +173,9 @@ class PostDetailViewModel extends _$PostDetailViewModel {
   Future<void> fetchMorePosts() async {
     // 現在の投稿リストを取得
     final currentPosts = state.posts;
-    if (currentPosts.isEmpty) return;
+    if (currentPosts.isEmpty) {
+      return;
+    }
 
     // 新しい投稿を取得
     final result =

@@ -70,25 +70,30 @@ class PostRepository extends _$PostRepository {
     List<int> postIds,
   ) async {
     try {
-      final models = <Model>[];
-      for (final postId in postIds) {
-        final result =
-            await ref.read(postServiceProvider.notifier).getPost(postId);
-        await result.when(
+      if (postIds.isEmpty) {
+        return const Success(<Model>[]);
+      }
+      final service = ref.read(postServiceProvider.notifier);
+      final futures = postIds.map((postId) async {
+        final result = await service.getPost(postId);
+        return result.when(
           success: (data) async {
             final posts = Posts.fromJson(data['post'] as Map<String, dynamic>);
             final users = Users.fromJson(data['user'] as Map<String, dynamic>);
-            models.add(Model(users, posts));
+            return Model(users, posts);
           },
-          failure: (error) {
+          failure: (error) async {
             logger.e('Failed to get post $postId: $error');
+            return null;
           },
         );
-      }
-      return Success(models);
+      }).toList();
+      final models =
+          (await Future.wait<Model?>(futures)).whereType<Model>().toList();
+      return Success<List<Model>, Exception>(models);
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
-      return Failure(e);
+      return Failure<List<Model>, Exception>(e);
     }
   }
 
@@ -114,14 +119,14 @@ class PostRepository extends _$PostRepository {
             return Model(Users.fromJson(userData), Posts.fromJson(postData));
           }).toList();
           final models =
-              (await Future.wait(futures)).whereType<Model>().toList();
-          return Success(models);
+              (await Future.wait<Model?>(futures)).whereType<Model>().toList();
+          return Success<List<Model>, Exception>(models);
         },
-        failure: (e) async => Failure(e),
+        failure: (e) async => Failure<List<Model>, Exception>(e),
       );
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
-      return Failure(e);
+      return Failure<List<Model>, Exception>(e);
     }
   }
 
@@ -144,19 +149,21 @@ class PostRepository extends _$PostRepository {
         success: (data) async {
           final futures = data.map((postData) async {
             final userId = postData['user_id'] as String?;
-            if (userId == null) return null;
+            if (userId == null) {
+              return null;
+            }
             final userData = await service.getUserData(userId);
             return Model(Users.fromJson(userData), Posts.fromJson(postData));
           }).toList();
           final models =
-              (await Future.wait(futures)).whereType<Model>().toList();
-          return Success(models);
+              (await Future.wait<Model?>(futures)).whereType<Model>().toList();
+          return Success<List<Model>, Exception>(models);
         },
-        failure: (e) async => Failure(e),
+        failure: (e) async => Failure<List<Model>, Exception>(e),
       );
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
-      return Failure(e);
+      return Failure<List<Model>, Exception>(e);
     }
   }
 
@@ -296,18 +303,22 @@ Future<Result<List<Model>, Exception>> restaurantReviews(
 
   return result.when(
     success: (data) async {
-      final models = <Model>[];
-      for (var index = 0; index < data.length; index++) {
-        final userData = await ref
-            .read(postServiceProvider.notifier)
-            .getUserData(data[index]['user_id'] as String);
+      final service = ref.read(postServiceProvider.notifier);
+      final futures = data.map((postData) async {
+        final userId = postData['user_id'] as String?;
+        if (userId == null) {
+          return null;
+        }
+        final userData = await service.getUserData(userId);
         final user = Users.fromJson(userData);
-        final posts = Posts.fromJson(data[index]);
-        models.add(Model(user, posts));
-      }
-      return Success(models);
+        final posts = Posts.fromJson(postData);
+        return Model(user, posts);
+      }).toList();
+      final models =
+          (await Future.wait<Model?>(futures)).whereType<Model>().toList();
+      return Success<List<Model>, Exception>(models);
     },
-    failure: Failure.new,
+    failure: Failure<List<Model>, Exception>.new,
   );
 }
 

@@ -401,56 +401,6 @@ class PostService extends _$PostService {
     );
   }
 
-  /// 現在地から近い投稿を10件取得
-  Future<List<Map<String, dynamic>>> getNearbyPosts() async {
-    final currentLocation = await ref.read(locationProvider.future);
-    if (currentLocation == const maplibre.LatLng(0, 0)) {
-      return [];
-    }
-    final lat = currentLocation.latitude;
-    final lng = currentLocation.longitude;
-
-    return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'nearby_posts_${lat}_$lng',
-      fetcher: () async {
-        final posts = await supabase
-            .from('posts')
-            .select()
-            .order('created_at', ascending: false);
-        final filteredPosts = posts
-            .where((post) => !blockList.contains(post['user_id']))
-            .toList();
-        final uniqueLocationPosts = <String, Map<String, dynamic>>{};
-        for (final post in filteredPosts) {
-          final locationKey = '${post['lat']}_${post['lng']}';
-          if (!uniqueLocationPosts.containsKey(locationKey)) {
-            uniqueLocationPosts[locationKey] = post;
-          }
-        }
-
-        final postsWithDistance = uniqueLocationPosts.values.map((post) {
-          final distance = _calculateDistance(
-            lat,
-            lng,
-            double.parse(post['lat'].toString()),
-            double.parse(post['lng'].toString()),
-          );
-          return {...post, 'distance': distance};
-        }).toList()
-          ..sort(
-            (a, b) =>
-                (a['distance'] as double).compareTo(b['distance'] as double),
-          );
-
-        return postsWithDistance.take(10).map((post) {
-          final result = Map<String, dynamic>.from(post)..remove('distance');
-          return result;
-        }).toList();
-      },
-      duration: const Duration(minutes: 5),
-    );
-  }
-
   /// 投稿詳細画面用：ID順で次の投稿を取得
   Future<Result<List<Map<String, dynamic>>, Exception>> getSequentialPosts({
     required int currentPostId,
@@ -511,7 +461,7 @@ class PostService extends _$PostService {
     }
   }
 
-  /// 投稿詳細画面用：関連する投稿を取得（同じレストランや近くの投稿）
+  /// 投稿詳細画面用：関連する投稿のリストを取得（同じレストランの投稿など）
   Future<Result<List<Map<String, dynamic>>, Exception>> getRelatedPosts({
     required int currentPostId,
     required double lat,
@@ -523,61 +473,24 @@ class PostService extends _$PostService {
         await _cacheManager.get<List<Map<String, dynamic>>>(
           key: 'related_posts_${currentPostId}_${lat}_${lng}_$limit',
           fetcher: () async {
-            // 同じレストラン（位置）の投稿を取得
-            final sameLocationPosts = await supabase
+            // 同じレストラン周辺の投稿を取得
+            final posts = await supabase
                 .from('posts')
                 .select()
+                .neq('id', currentPostId)
                 .gte('lat', lat - 0.00001)
                 .lte('lat', lat + 0.00001)
                 .gte('lng', lng - 0.00001)
                 .lte('lng', lng + 0.00001)
-                .neq('id', currentPostId)
-                .order('created_at', ascending: false);
+                .order('created_at', ascending: false)
+                .limit(limit);
 
-            // 近くの投稿も取得（同じレストランの投稿が少ない場合）
-            var nearbyPosts = <Map<String, dynamic>>[];
-            if (sameLocationPosts.length < limit) {
-              final remainingLimit = limit - sameLocationPosts.length;
-              final allPosts = await supabase
-                  .from('posts')
-                  .select()
-                  .neq('id', currentPostId)
-                  .order('created_at', ascending: false)
-                  .limit(50); // より多く取得して距離でフィルタ
+            // ブロックリストのフィルタリング
+            final filteredPosts = posts
+                .where((post) => !blockList.contains(post['user_id']))
+                .toList();
 
-              // 距離計算して近い順にソート
-              final postsWithDistance = allPosts.where((post) {
-                final postLat = double.parse(post['lat'].toString());
-                final postLng = double.parse(post['lng'].toString());
-                final distance = _calculateDistance(lat, lng, postLat, postLng);
-                return distance <= 5.0 && // 5km以内
-                    !blockList.contains(post['user_id']) &&
-                    !sameLocationPosts
-                        .any((samePost) => samePost['id'] == post['id']);
-              }).map((post) {
-                final postLat = double.parse(post['lat'].toString());
-                final postLng = double.parse(post['lng'].toString());
-                final distance = _calculateDistance(lat, lng, postLat, postLng);
-                return {...post, 'distance': distance};
-              }).toList()
-                ..sort((a, b) => (a['distance'] as double)
-                    .compareTo(b['distance'] as double));
-
-              nearbyPosts = postsWithDistance.take(remainingLimit).map((post) {
-                final result = Map<String, dynamic>.from(post)
-                  ..remove('distance');
-                return result;
-              }).toList();
-            }
-
-            // 同じレストランの投稿を優先し、その後に近くの投稿を追加
-            final combinedPosts = [
-              ...sameLocationPosts
-                  .where((post) => !blockList.contains(post['user_id'])),
-              ...nearbyPosts,
-            ];
-
-            return combinedPosts.take(limit).toList();
+            return filteredPosts;
           },
           duration: const Duration(minutes: 5),
         ),
@@ -586,6 +499,56 @@ class PostService extends _$PostService {
       logger.e('Database error: ${e.message}');
       return Failure(e);
     }
+  }
+
+  /// 現在地から近い投稿を10件取得
+  Future<List<Map<String, dynamic>>> getNearbyPosts() async {
+    final currentLocation = await ref.read(locationProvider.future);
+    if (currentLocation == const maplibre.LatLng(0, 0)) {
+      return [];
+    }
+    final lat = currentLocation.latitude;
+    final lng = currentLocation.longitude;
+
+    return _cacheManager.get<List<Map<String, dynamic>>>(
+      key: 'nearby_posts_${lat}_$lng',
+      fetcher: () async {
+        final posts = await supabase
+            .from('posts')
+            .select()
+            .order('created_at', ascending: false);
+        final filteredPosts = posts
+            .where((post) => !blockList.contains(post['user_id']))
+            .toList();
+        final uniqueLocationPosts = <String, Map<String, dynamic>>{};
+        for (final post in filteredPosts) {
+          final locationKey = '${post['lat']}_${post['lng']}';
+          if (!uniqueLocationPosts.containsKey(locationKey)) {
+            uniqueLocationPosts[locationKey] = post;
+          }
+        }
+
+        final postsWithDistance = uniqueLocationPosts.values.map((post) {
+          final distance = _calculateDistance(
+            lat,
+            lng,
+            double.parse(post['lat'].toString()),
+            double.parse(post['lng'].toString()),
+          );
+          return {...post, 'distance': distance};
+        }).toList()
+          ..sort(
+            (a, b) =>
+                (a['distance'] as double).compareTo(b['distance'] as double),
+          );
+
+        return postsWithDistance.take(10).map((post) {
+          final result = Map<String, dynamic>.from(post)..remove('distance');
+          return result;
+        }).toList();
+      },
+      duration: const Duration(minutes: 5),
+    );
   }
 
   /// 2点間の距離を計算（Haversine公式）
