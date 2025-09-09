@@ -30,7 +30,9 @@ class AppProfileHeader extends ConsumerWidget {
     final l10n = L10n.of(context);
     final currentUser = ref.watch(currentUserProvider);
     final conversion = double.parse(Env.point);
-    final point = (heartAmount - users.exchangedPoint) * conversion;
+    final postlengthPoint = length * double.parse(Env.postLengthPoint);
+    final point =
+        (heartAmount - users.exchangedPoint) * conversion + postlengthPoint;
     final trophyAsset = _getTrophyAsset(length);
 
     return Stack(
