@@ -30,6 +30,8 @@ class PostDetailScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final scrollController = useScrollController();
+    final memoizedPosts = useMemoized(() => posts, [posts.id]);
     useEffect(
       () {
         ref
@@ -42,14 +44,12 @@ class PostDetailScreen extends HookConsumerWidget {
       },
       [posts.id],
     );
-
     final l10n = L10n.of(context);
     final menuLoading = useState(false);
     final loading = ref.watch(loadingProvider);
     final currentUser = ref.watch(currentUserProvider);
     final detailState = ref.watch(postDetailViewModelProvider());
-    final listState = ref.watch(postDetailListProvider(posts));
-
+    final listState = ref.watch(postDetailListProvider(memoizedPosts));
     return PopScope(
       canPop: !loading,
       child: Scaffold(
@@ -134,16 +134,20 @@ class PostDetailScreen extends HookConsumerWidget {
                   child: Text('エラーが発生しました'),
                 ),
                 data: (posts) => ListView.builder(
+                  controller: scrollController,
+                  key: PageStorageKey('post_detail_list_${posts.first.id}'),
+                  cacheExtent: 2000,
+                  physics: const BouncingScrollPhysics(),
                   itemCount: posts.length,
                   itemBuilder: (context, index) {
                     final post = posts[index];
-                    return FutureBuilder<Users>(
-                      future:
-                          ref.read(postDetailUserProvider(post.userId).future),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          final user = snapshot.data!;
-                          return PostDetailListItem(
+                    return Consumer(
+                      builder: (context, ref, child) {
+                        final userAsync =
+                            ref.watch(postDetailUserProvider(post.userId));
+                        return userAsync.when(
+                          data: (user) => PostDetailListItem(
+                            key: ValueKey('post_${post.id}'),
                             posts: post,
                             users: user,
                             menuLoading: menuLoading,
@@ -155,22 +159,15 @@ class PostDetailScreen extends HookConsumerWidget {
                                 ),
                               );
                             },
-                          );
-                        } else if (snapshot.hasError) {
-                          return const SizedBox(
+                          ),
+                          loading: SizedBox.shrink,
+                          error: (error, stack) => const SizedBox(
                             height: 100,
                             child: Center(
                               child: Text('エラーが発生しました'),
                             ),
-                          );
-                        } else {
-                          return const SizedBox(
-                            height: 100,
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        }
+                          ),
+                        );
                       },
                     );
                   },
