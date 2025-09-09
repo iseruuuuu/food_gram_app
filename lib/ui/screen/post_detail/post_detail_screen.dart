@@ -13,7 +13,6 @@ import 'package:food_gram_app/ui/component/modal_sheet/app_detail_master_modal_s
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_my_info_modal_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_detail_other_info_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/post_detail/component/post_detail_list_item.dart';
-import 'package:food_gram_app/ui/screen/post_detail/component/post_detail_user_provider.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -141,31 +140,15 @@ class PostDetailScreen extends HookConsumerWidget {
                   itemCount: posts.length,
                   itemBuilder: (context, index) {
                     final post = posts[index];
-                    return Consumer(
-                      builder: (context, ref, child) {
-                        final userAsync =
-                            ref.watch(postDetailUserProvider(post.userId));
-                        return userAsync.when(
-                          data: (user) => PostDetailListItem(
-                            key: ValueKey('post_${post.id}'),
-                            posts: post,
-                            users: user,
-                            menuLoading: menuLoading,
-                            onHeartLimitReached: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(l10n.heartLimitMessage),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            },
-                          ),
-                          loading: SizedBox.shrink,
-                          error: (error, stack) => const SizedBox(
-                            height: 100,
-                            child: Center(
-                              child: Text('エラーが発生しました'),
-                            ),
+                    return PostDetailListItem(
+                      key: ValueKey('post_${post.id}'),
+                      posts: post,
+                      menuLoading: menuLoading,
+                      onHeartLimitReached: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.heartLimitMessage),
+                            backgroundColor: Colors.red,
                           ),
                         );
                       },

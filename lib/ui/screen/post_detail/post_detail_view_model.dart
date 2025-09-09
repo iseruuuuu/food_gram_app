@@ -7,6 +7,7 @@ import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.d
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/delete_service.dart';
+import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_state.dart';
@@ -195,6 +196,11 @@ class PostDetailViewModel extends _$PostDetailViewModel {
         logger.e('Failed to fetch more posts: $error');
       },
     );
+  }
+
+  /// ユーザーデータを取得
+  Future<Map<String, dynamic>> getUserData(String userId) async {
+    return ref.read(postServiceProvider.notifier).getUserData(userId);
   }
 }
 
