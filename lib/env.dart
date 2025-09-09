@@ -42,6 +42,8 @@ abstract class Env {
   static final String androidOpen = _Env.androidOpen;
   @EnviedField(varName: 'POINT', obfuscate: true)
   static final String point = _Env.point;
+  @EnviedField(varName: 'POST_LENGTH_POINT', obfuscate: true)
+  static final String postLengthPoint = _Env.postLengthPoint;
 }
 
 @Envied(path: '.env.dev')
