@@ -133,27 +133,26 @@ class PostRepository extends _$PostRepository {
     int limit = 10,
   }) async {
     try {
-      final result =
-          await ref.read(postServiceProvider.notifier).getRelatedPosts(
-                currentPostId: currentPostId,
-                lat: lat,
-                lng: lng,
-                limit: limit,
-              );
-      return result.when(
+      final service = ref.read(postServiceProvider.notifier);
+      final result = await service.getRelatedPosts(
+        currentPostId: currentPostId,
+        lat: lat,
+        lng: lng,
+        limit: limit,
+      );
+      return await result.when(
         success: (data) async {
-          final models = <Model>[];
-          for (final postData in data) {
-            final userData = await ref
-                .read(postServiceProvider.notifier)
-                .getUserData(postData['user_id'] as String);
-            final user = Users.fromJson(userData);
-            final posts = Posts.fromJson(postData);
-            models.add(Model(user, posts));
-          }
+          final futures = data.map((postData) async {
+            final userId = postData['user_id'] as String?;
+            if (userId == null) return null;
+            final userData = await service.getUserData(userId);
+            return Model(Users.fromJson(userData), Posts.fromJson(postData));
+          }).toList();
+          final models =
+              (await Future.wait(futures)).whereType<Model>().toList();
           return Success(models);
         },
-        failure: Failure.new,
+        failure: (e) async => Failure(e),
       );
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
