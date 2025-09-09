@@ -5,7 +5,7 @@ class DetailPostStyle {
 
   static TextStyle name() {
     return const TextStyle(
-      fontSize: 16,
+      fontSize: 15,
       fontWeight: FontWeight.bold,
       color: Colors.black,
     );
@@ -13,7 +13,7 @@ class DetailPostStyle {
 
   static TextStyle userName() {
     return const TextStyle(
-      fontSize: 14,
+      fontSize: 12,
       fontWeight: FontWeight.normal,
       color: Colors.black,
     );

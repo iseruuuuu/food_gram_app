@@ -161,3 +161,83 @@ class AppListViewSkeleton extends StatelessWidget {
     );
   }
 }
+
+class AppPostDetailSkeleton extends StatelessWidget {
+  const AppPostDetailSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.sizeOf(context).width / 1.2;
+    return Skeletonizer(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: CircleAvatar(
+                  radius: 26,
+                  backgroundColor: Colors.grey.shade300,
+                ),
+              ),
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('usernameeeeee', style: TextStyle(color: Colors.grey)),
+                  Text('@username'),
+                ],
+              ),
+            ],
+          ),
+          Container(
+            height: screenWidth,
+            width: screenWidth,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          const Gap(16),
+          Wrap(
+            spacing: 10,
+            children: [
+              ElevatedButton(onPressed: () {}, child: const Text('Like')),
+              ElevatedButton(onPressed: () {}, child: const Text('Like')),
+              ElevatedButton(onPressed: () {}, child: const Text('Like')),
+              ElevatedButton(onPressed: () {}, child: const Text('Like')),
+            ],
+          ),
+          SizedBox(
+            width: screenWidth,
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'foodName',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 20,
+                  ),
+                ),
+                Text(
+                  'In レストラン',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  'すごく美味しかったよぉぉぉぉ',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 15,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

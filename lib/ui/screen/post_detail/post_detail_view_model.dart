@@ -7,9 +7,11 @@ import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.d
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/delete_service.dart';
+import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_state.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -27,6 +29,7 @@ class PostDetailViewModel extends _$PostDetailViewModel {
 
   Loading get loading => ref.read(loadingProvider.notifier);
   final preference = Preference();
+  final logger = Logger();
 
   /// 投稿の保存状態を初期化時にチェック
   Future<void> initializeStoreState(int postId) async {
@@ -166,6 +169,39 @@ class PostDetailViewModel extends _$PostDetailViewModel {
       title: restaurant,
     );
   }
+
+  /// スクロール時に新しい投稿を取得
+  Future<void> fetchMorePosts() async {
+    // 現在の投稿リストを取得
+    final currentPosts = state.posts;
+    if (currentPosts.isEmpty) {
+      return;
+    }
+
+    // 新しい投稿を取得
+    final result =
+        await ref.read(postRepositoryProvider.notifier).getSequentialPosts(
+              currentPostId: currentPosts.last.id,
+            );
+
+    result.when(
+      success: (newPosts) {
+        // 新しい投稿をリストに追加
+        state = state.copyWith(
+          posts: [...currentPosts, ...newPosts.map((model) => model.posts)],
+        );
+      },
+      failure: (error) {
+        // エラーハンドリング
+        logger.e('Failed to fetch more posts: $error');
+      },
+    );
+  }
+
+  /// ユーザーデータを取得
+  Future<Map<String, dynamic>> getUserData(String userId) async {
+    return ref.read(postServiceProvider.notifier).getUserData(userId);
+  }
 }
 
 @riverpod
@@ -204,4 +240,25 @@ class PostsViewModel extends _$PostsViewModel {
       },
     );
   }
+}
+
+/// 投稿詳細画面のリスト用プロバイダー（ID順）
+@riverpod
+Future<List<Posts>> postDetailList(Ref ref, Posts initialPost) async {
+  final result =
+      await ref.read(postRepositoryProvider.notifier).getSequentialPosts(
+            currentPostId: initialPost.id,
+            limit: 20,
+          );
+
+  return result.when(
+    success: (models) {
+      // 初期投稿を先頭に配置し、ID順の投稿を追加
+      return [initialPost, ...models.map((model) => model.posts)];
+    },
+    failure: (error) {
+      // エラーの場合は初期投稿のみ返す
+      return [initialPost];
+    },
+  );
 }

@@ -65,6 +65,108 @@ class PostRepository extends _$PostRepository {
     }
   }
 
+  /// 複数の投稿とそのユーザー情報を取得（投稿詳細画面のリスト用）
+  Future<Result<List<Model>, Exception>> getPostsWithUsers(
+    List<int> postIds,
+  ) async {
+    try {
+      if (postIds.isEmpty) {
+        return const Success(<Model>[]);
+      }
+      final service = ref.read(postServiceProvider.notifier);
+      final futures = postIds.map((postId) async {
+        final result = await service.getPost(postId);
+        return result.when(
+          success: (data) async {
+            final posts = Posts.fromJson(data['post'] as Map<String, dynamic>);
+            final users = Users.fromJson(data['user'] as Map<String, dynamic>);
+            return Model(users, posts);
+          },
+          failure: (error) async {
+            logger.e('Failed to get post $postId: $error');
+            return null;
+          },
+        );
+      }).toList();
+      final models =
+          (await Future.wait<Model?>(futures)).whereType<Model>().toList();
+      return Success<List<Model>, Exception>(models);
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure<List<Model>, Exception>(e);
+    }
+  }
+
+  /// 投稿詳細画面用：ID順で次の投稿のリストを取得
+  Future<Result<List<Model>, Exception>> getSequentialPosts({
+    required int currentPostId,
+    int limit = 10,
+  }) async {
+    try {
+      final service = ref.read(postServiceProvider.notifier);
+      final result = await service.getSequentialPosts(
+        currentPostId: currentPostId,
+        limit: limit,
+      );
+      return await result.when(
+        success: (data) async {
+          final futures = data.map((postData) async {
+            final userId = postData['user_id'] as String?;
+            if (userId == null) {
+              return null;
+            }
+            final userData = await service.getUserData(userId);
+            return Model(Users.fromJson(userData), Posts.fromJson(postData));
+          }).toList();
+          final models =
+              (await Future.wait<Model?>(futures)).whereType<Model>().toList();
+          return Success<List<Model>, Exception>(models);
+        },
+        failure: (e) async => Failure<List<Model>, Exception>(e),
+      );
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure<List<Model>, Exception>(e);
+    }
+  }
+
+  /// 投稿詳細画面用：関連する投稿のリストを取得（同じレストランの投稿など）
+  Future<Result<List<Model>, Exception>> getRelatedPosts({
+    required int currentPostId,
+    required double lat,
+    required double lng,
+    int limit = 10,
+  }) async {
+    try {
+      final service = ref.read(postServiceProvider.notifier);
+      final result = await service.getRelatedPosts(
+        currentPostId: currentPostId,
+        lat: lat,
+        lng: lng,
+        limit: limit,
+      );
+      return await result.when(
+        success: (data) async {
+          final futures = data.map((postData) async {
+            final userId = postData['user_id'] as String?;
+            if (userId == null) {
+              return null;
+            }
+            final userData = await service.getUserData(userId);
+            return Model(Users.fromJson(userData), Posts.fromJson(postData));
+          }).toList();
+          final models =
+              (await Future.wait<Model?>(futures)).whereType<Model>().toList();
+          return Success<List<Model>, Exception>(models);
+        },
+        failure: (e) async => Failure<List<Model>, Exception>(e),
+      );
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure<List<Model>, Exception>(e);
+    }
+  }
+
   /// 自分の全投稿に対するいいね数の合計を取得
   Future<Result<int, Exception>> getHeartAmount() async {
     try {
@@ -201,18 +303,22 @@ Future<Result<List<Model>, Exception>> restaurantReviews(
 
   return result.when(
     success: (data) async {
-      final models = <Model>[];
-      for (var index = 0; index < data.length; index++) {
-        final userData = await ref
-            .read(postServiceProvider.notifier)
-            .getUserData(data[index]['user_id'] as String);
+      final service = ref.read(postServiceProvider.notifier);
+      final futures = data.map((postData) async {
+        final userId = postData['user_id'] as String?;
+        if (userId == null) {
+          return null;
+        }
+        final userData = await service.getUserData(userId);
         final user = Users.fromJson(userData);
-        final posts = Posts.fromJson(data[index]);
-        models.add(Model(user, posts));
-      }
-      return Success(models);
+        final posts = Posts.fromJson(postData);
+        return Model(user, posts);
+      }).toList();
+      final models =
+          (await Future.wait<Model?>(futures)).whereType<Model>().toList();
+      return Success<List<Model>, Exception>(models);
     },
-    failure: Failure.new,
+    failure: Failure<List<Model>, Exception>.new,
   );
 }
 

@@ -28,9 +28,9 @@ class AppHeart extends HookWidget {
     );
 
     return showHeart.value
-        ? Center(
+        ? SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Lottie.asset(
                   Assets.lottie.heart,
@@ -38,7 +38,6 @@ class AppHeart extends HookWidget {
                   width: 600,
                   height: 600,
                 ),
-                const SizedBox(height: 100),
               ],
             ),
           )
