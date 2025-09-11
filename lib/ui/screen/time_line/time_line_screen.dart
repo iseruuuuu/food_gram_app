@@ -23,11 +23,11 @@ class TimeLineScreen extends HookConsumerWidget {
     final tabController =
         useTabController(initialLength: categoriesData.length);
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(0),
         child: AppBar(backgroundColor: Colors.white),
       ),
-      backgroundColor: Colors.white,
       body: RefreshIndicator(
         color: Colors.black,
         onRefresh: () async {
