@@ -162,7 +162,7 @@ class AppProfileHeader extends ConsumerWidget {
                       ),
                       if (currentUser == users.userId)
                         BuildStatColumn(
-                          count: point.toString(),
+                          count: point.toStringAsFixed(2),
                           label: l10n.profilePointCount,
                         ),
                     ],
