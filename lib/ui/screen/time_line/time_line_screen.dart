@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -7,8 +8,6 @@ import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
-import 'package:food_gram_app/ui/screen/time_line/components/category_tab.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -20,6 +19,9 @@ class TimeLineScreen extends HookConsumerWidget {
     final selectedCategoryName = useState('');
     final postState =
         ref.watch(postStreamByCategoryProvider(selectedCategoryName.value));
+    final categoriesData = ref.watch<List<CategoryData>>(categoriesProvider);
+    final tabController =
+        useTabController(initialLength: categoriesData.length);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(0),
@@ -45,9 +47,33 @@ class TimeLineScreen extends HookConsumerWidget {
             SliverToBoxAdapter(
               child: Column(
                 children: [
-                  const Gap(8),
-                  CategoryTab(selectedCategoryName: selectedCategoryName),
-                  const Gap(4),
+                  TabBar(
+                    tabAlignment: TabAlignment.start,
+                    controller: tabController,
+                    indicatorWeight: 3,
+                    isScrollable: true,
+                    automaticIndicatorColorAdjustment: false,
+                    unselectedLabelColor: Colors.grey,
+                    labelColor: Colors.black,
+                    indicatorColor: Colors.black,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    splashFactory: NoSplash.splashFactory,
+                    overlayColor: WidgetStateProperty.all(Colors.transparent),
+                    padding: EdgeInsets.zero,
+                    tabs: categoriesData.map((category) {
+                      return Tab(
+                        icon: Text(
+                          category.displayIcon,
+                          style: const TextStyle(fontSize: 30),
+                        ),
+                      );
+                    }).toList(),
+                    onTap: (index) {
+                      final category = categoriesData[index];
+                      selectedCategoryName.value =
+                          category.isAllCategory ? '' : category.name;
+                    },
+                  ),
                 ],
               ),
             ),
