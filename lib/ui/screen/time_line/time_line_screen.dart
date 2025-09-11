@@ -25,10 +25,7 @@ class TimeLineScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(0),
-        child: AppBar(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-        ),
+        child: AppBar(backgroundColor: Colors.white),
       ),
       backgroundColor: Colors.white,
       body: RefreshIndicator(
