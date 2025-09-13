@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/admob/services/admob_rectangle_banner.dart';
+import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/subscribed_users_provider.dart';
@@ -17,12 +19,14 @@ class AppListView extends HookConsumerWidget {
     required this.posts,
     required this.routerPath,
     required this.refresh,
+    required this.type,
     super.key,
   });
 
   final List<Posts> posts;
   final String routerPath;
   final VoidCallback refresh;
+  final AppListViewType type;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

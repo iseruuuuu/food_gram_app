@@ -135,8 +135,9 @@ class MyProfileScreen extends HookConsumerWidget {
                     SliverPadding(
                       padding: const EdgeInsets.only(top: 8),
                       sliver: AppListView(
-                        data: value,
+                        posts: value,
                         routerPath: RouterPath.myProfileDetail,
+                        type: AppListViewType.myprofile,
                         refresh: () => ref.refresh(myPostStreamProvider),
                       ),
                     )

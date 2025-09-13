@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
@@ -68,8 +69,9 @@ class UserProfileScreen extends ConsumerWidget {
                   data: (value) {
                     return value.isNotEmpty
                         ? AppListView(
-                            data: value,
+                            posts: value.map(Posts.fromJson).toList(),
                             routerPath: RouterPath.myProfileDetail,
+                            type: AppListViewType.profile,
                             refresh: () => ref.refresh(myPostStreamProvider),
                           )
                         : const SliverToBoxAdapter(

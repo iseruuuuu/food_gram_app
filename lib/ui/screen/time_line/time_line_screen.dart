@@ -77,6 +77,7 @@ class TimeLineScreen extends HookConsumerWidget {
                   ? AppListView(
                       posts: posts,
                       routerPath: RouterPath.timeLineDetail,
+                      type: AppListViewType.timeline,
                       refresh: () {
                         ref
                           ..invalidate(
