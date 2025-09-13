@@ -17,9 +17,8 @@ class TimeLineScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedCategoryName = useState('');
-    final postState =
-        ref.watch(postStreamByCategoryProvider(selectedCategoryName.value));
     final categoriesData = ref.watch<List<CategoryData>>(categoriesProvider);
+    final state = ref.watch(postsStreamProvider(selectedCategoryName.value));
     final tabController =
         useTabController(initialLength: categoriesData.length);
     return Scaffold(
@@ -30,11 +29,10 @@ class TimeLineScreen extends HookConsumerWidget {
       ),
       body: RefreshIndicator(
         color: Colors.black,
+        backgroundColor: Colors.white,
         onRefresh: () async {
           await Future<void>.delayed(const Duration(seconds: 1));
-          ref.invalidate(
-            postStreamByCategoryProvider(selectedCategoryName.value),
-          );
+          ref.invalidate(postsStreamProvider(selectedCategoryName.value));
         },
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(
@@ -74,28 +72,29 @@ class TimeLineScreen extends HookConsumerWidget {
                 ],
               ),
             ),
-            if (postState.hasValue)
-              postState.value!.isNotEmpty
+            state.when(
+              data: (posts) => posts.isNotEmpty
                   ? AppListView(
-                      data: postState.value!,
+                      posts: posts,
                       routerPath: RouterPath.timeLineDetail,
                       refresh: () {
                         ref
-                          ..invalidate(postStreamProvider)
+                          ..invalidate(
+                            postsStreamProvider(selectedCategoryName.value),
+                          )
                           ..invalidate(blockListProvider);
                       },
                     )
                   : const SliverToBoxAdapter(child: AppEmpty()),
-            if (postState.isLoading)
-              const SliverToBoxAdapter(
-                child: AppListViewSkeleton(),
-              ),
-            if (postState.hasError)
-              SliverToBoxAdapter(
+              loading: () =>
+                  const SliverToBoxAdapter(child: AppListViewSkeleton()),
+              error: (_, __) => SliverToBoxAdapter(
                 child: AppErrorWidget(
-                  onTap: () => ref.refresh(postStreamProvider),
+                  onTap: () => ref
+                      .refresh(postsStreamProvider(selectedCategoryName.value)),
                 ),
               ),
+            ),
           ],
         ),
       ),
@@ -114,7 +113,7 @@ class TimeLineScreen extends HookConsumerWidget {
                 .then((value) async {
               if (value != null) {
                 ref
-                  ..invalidate(postStreamProvider)
+                  ..invalidate(postsStreamProvider(selectedCategoryName.value))
                   ..invalidate(blockListProvider);
               }
             });
