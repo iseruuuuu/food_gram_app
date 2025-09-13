@@ -32,7 +32,7 @@ class TimeLineScreen extends HookConsumerWidget {
         backgroundColor: Colors.white,
         onRefresh: () async {
           await Future<void>.delayed(const Duration(seconds: 1));
-          ref.invalidate(postsStreamProvider(selectedCategoryName.value));
+          ref.invalidate(postsStreamProvider);
         },
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(
@@ -81,7 +81,7 @@ class TimeLineScreen extends HookConsumerWidget {
                       refresh: () {
                         ref
                           ..invalidate(
-                            postsStreamProvider(selectedCategoryName.value),
+                            postsStreamProvider,
                           )
                           ..invalidate(blockListProvider);
                       },
@@ -114,7 +114,7 @@ class TimeLineScreen extends HookConsumerWidget {
                 .then((value) async {
               if (value != null) {
                 ref
-                  ..invalidate(postsStreamProvider(selectedCategoryName.value))
+                  ..invalidate(postsStreamProvider)
                   ..invalidate(blockListProvider);
               }
             });
