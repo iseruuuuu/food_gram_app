@@ -148,3 +148,11 @@ class AppListView extends HookConsumerWidget {
     );
   }
 }
+
+/// Viewごとに詳細画面の取得方法が異なるため設定する
+enum AppListViewType {
+  timeline,
+  myprofile,
+  profile,
+  stored,
+}
