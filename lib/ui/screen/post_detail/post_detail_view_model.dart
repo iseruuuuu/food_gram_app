@@ -108,7 +108,7 @@ class PostDetailViewModel extends _$PostDetailViewModel {
       success: (_) async {
         state = state.copyWith(isSuccess: true);
         ref
-          ..invalidate(postStreamProvider)
+          ..invalidate(postsStreamProvider)
           ..invalidate(blockListProvider);
       },
       failure: (_) {

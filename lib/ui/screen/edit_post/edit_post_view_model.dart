@@ -147,7 +147,7 @@ class EditPostViewModel extends _$EditPostViewModel {
               status: EditStatus.success.name,
               isSuccess: true,
             );
-            ref.invalidate(postStreamProvider);
+            ref.invalidate(postsStreamProvider);
             ref.invalidate(postsViewModelProvider(_posts.id));
           },
           failure: (error) {
