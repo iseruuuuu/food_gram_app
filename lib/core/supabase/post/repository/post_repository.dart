@@ -34,15 +34,15 @@ class PostRepository extends _$PostRepository {
 
   /// 特定の投稿とそのユーザー情報を取得
   Future<Result<Model, Exception>> getPostData(
-    List<Map<String, dynamic>> data,
+    List<Posts> posts,
     int index,
   ) async {
     try {
-      final result =
-          await ref.read(postServiceProvider.notifier).getPostData(data, index);
-      final posts = Posts.fromJson(result['post'] as Map<String, dynamic>);
-      final users = Users.fromJson(result['user'] as Map<String, dynamic>);
-      return Success(Model(users, posts));
+      final post = posts[index];
+      final userData =
+          await ref.read(postServiceProvider.notifier).getUserData(post.userId);
+      final user = Users.fromJson(userData);
+      return Success(Model(user, post));
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
       return Failure(e);
@@ -259,7 +259,7 @@ Future<List<Map<String, dynamic>>> profileRepository(
 @riverpod
 Future<List<Posts>> getNearByPosts(Ref ref) async {
   /// 投稿データの取得
-  final posts = await ref.watch(postStreamProvider.future);
+  final posts = await ref.watch(postsStreamProvider('').future);
   final currentLocation = await ref.read(locationProvider.future);
   if (currentLocation == const maplibre.LatLng(0, 0)) {
     return [];
@@ -267,7 +267,7 @@ Future<List<Posts>> getNearByPosts(Ref ref) async {
 
   /// 同じ位置の投稿をフィルタリング（最新のもののみ残す）
   final uniqueLocationPosts = <String, Posts>{};
-  for (final post in posts.map(Posts.fromJson)) {
+  for (final post in posts) {
     final locationKey = '${post.lat}_${post.lng}';
     if (!uniqueLocationPosts.containsKey(locationKey)) {
       uniqueLocationPosts[locationKey] = post;
@@ -286,6 +286,30 @@ Future<List<Posts>> getNearByPosts(Ref ref) async {
   }).toList()
     ..sort((a, b) => a.distance.compareTo(b.distance));
   return postsWithDistance.take(10).map((item) => item.post).toList();
+}
+
+/// 2点間の距離を計算（Haversine公式）
+double _calculateDistance(
+  double lat1,
+  double lon1,
+  double lat2,
+  double lon2,
+) {
+  const double earthRadius = 6371;
+  final dLat = _toRadians(lat2 - lat1);
+  final dLon = _toRadians(lon2 - lon1);
+
+  final a = sin(dLat / 2) * sin(dLat / 2) +
+      cos(_toRadians(lat1)) *
+          cos(_toRadians(lat2)) *
+          sin(dLon / 2) *
+          sin(dLon / 2);
+  final c = 2 * atan2(sqrt(a), sqrt(1 - a));
+  return earthRadius * c;
+}
+
+double _toRadians(double degree) {
+  return degree * pi / 180;
 }
 
 /// 特定のレストランの投稿一覧を取得するプロバイダー
@@ -320,28 +344,4 @@ Future<Result<List<Model>, Exception>> restaurantReviews(
     },
     failure: Failure<List<Model>, Exception>.new,
   );
-}
-
-/// 2点間の距離を計算（Haversine公式）
-double _calculateDistance(
-  double lat1,
-  double lon1,
-  double lat2,
-  double lon2,
-) {
-  const double earthRadius = 6371;
-  final dLat = _toRadians(lat2 - lat1);
-  final dLon = _toRadians(lon2 - lon1);
-
-  final a = sin(dLat / 2) * sin(dLat / 2) +
-      cos(_toRadians(lat1)) *
-          cos(_toRadians(lat2)) *
-          sin(dLon / 2) *
-          sin(dLon / 2);
-  final c = 2 * atan2(sqrt(a), sqrt(1 - a));
-  return earthRadius * c;
-}
-
-double _toRadians(double degree) {
-  return degree * pi / 180;
 }
