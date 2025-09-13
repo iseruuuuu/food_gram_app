@@ -52,15 +52,16 @@ class PostDetailScreen extends HookConsumerWidget {
     final currentUser = ref.watch(currentUserProvider);
     final detailState = ref.watch(postDetailViewModelProvider());
     final listState = ref.watch(postDetailListProvider(memoizedPosts));
+    final isInitialLoading = listState.isLoading;
     return PopScope(
-      canPop: !loading,
+      canPop: !(loading || isInitialLoading),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
-          automaticallyImplyLeading: !loading,
+          automaticallyImplyLeading: !(loading || isInitialLoading),
           surfaceTintColor: Colors.transparent,
-          leading: loading || menuLoading.value
+          leading: loading || menuLoading.value || isInitialLoading
               ? const SizedBox.shrink()
               : GestureDetector(
                   onTap: () => context.pop(),
@@ -70,7 +71,7 @@ class PostDetailScreen extends HookConsumerWidget {
                   ),
                 ),
           actions: [
-            if (!loading && !menuLoading.value)
+            if (!loading && !menuLoading.value && !isInitialLoading)
               IconButton(
                 onPressed: () async {
                   await showModalBottomSheet<void>(
@@ -167,12 +168,14 @@ class PostDetailScreen extends HookConsumerWidget {
             ],
           ),
         ),
-        bottomNavigationBar: const SafeArea(
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 8, top: 4),
-            child: AdmobBanner(id: 'detail_footer'),
-          ),
-        ),
+        bottomNavigationBar: isInitialLoading
+            ? null
+            : const SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 8, top: 4),
+                  child: AdmobBanner(id: 'detail_footer'),
+                ),
+              ),
       ),
     );
   }
