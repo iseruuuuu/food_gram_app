@@ -92,41 +92,38 @@ class PostRepository extends _$PostRepository {
     }
   }
 
-  /// 投稿詳細画面用：ID順で次の投稿のリストを取得
+  /// 投稿詳細画面【タイムライン】：ID順で次の投稿のリストを取得
   Future<Result<List<Model>, Exception>> getSequentialPosts({
     required int currentPostId,
     int limit = 10,
   }) async {
     try {
       final service = ref.read(postServiceProvider.notifier);
-      // サービスから前後データを取得し、"id が小さいもの" のみを抽出して降順で並べる
       final result = await service.getSequentialPosts(
         currentPostId: currentPostId,
         limit: limit,
       );
       return await result.when(
         success: (data) async {
-          final previousOnly = data
-              .where((m) => (m['id'] as num).toInt() < currentPostId)
-              .toList()
-            ..sort(
+          final sorted = [...data]..sort(
               (a, b) => ((b['id'] as num).toInt())
                   .compareTo((a['id'] as num).toInt()),
             );
-          // Map段階で重複排除（currentPostId は除外）
-          final seenMapIds = <int>{};
-          final uniquePrevious = <Map<String, dynamic>>[];
-          for (final m in previousOnly) {
+          final seen = <int>{};
+          final picked = <Map<String, dynamic>>[];
+          for (final m in sorted) {
             final id = (m['id'] as num).toInt();
-            if (id == currentPostId) {
+            if (id >= currentPostId) {
               continue;
             }
-            if (seenMapIds.add(id)) {
-              uniquePrevious.add(m);
+            if (seen.add(id)) {
+              picked.add(m);
+              if (picked.length >= limit) {
+                break;
+              }
             }
           }
-          final capped = uniquePrevious.take(limit).toList();
-          final futures = capped.map((postData) async {
+          final futures = picked.map((postData) async {
             final userId = postData['user_id'] as String?;
             if (userId == null) {
               return null;
@@ -134,16 +131,9 @@ class PostRepository extends _$PostRepository {
             final userData = await service.getUserData(userId);
             return Model(Users.fromJson(userData), Posts.fromJson(postData));
           }).toList();
-          final prevModels =
+          final models =
               (await Future.wait<Model?>(futures)).whereType<Model>().toList();
-          final list = <Model>[];
-          final seenIds = <int>{};
-          for (final m in prevModels) {
-            if (seenIds.add(m.posts.id)) {
-              list.add(m);
-            }
-          }
-          return Success<List<Model>, Exception>(list);
+          return Success<List<Model>, Exception>(models);
         },
         failure: (e) async => Failure<List<Model>, Exception>(e),
       );
