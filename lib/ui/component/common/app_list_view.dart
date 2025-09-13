@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/admob/services/admob_rectangle_banner.dart';
+import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/subscribed_users_provider.dart';
@@ -13,13 +14,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AppListView extends HookConsumerWidget {
   const AppListView({
-    required this.data,
+    required this.posts,
     required this.routerPath,
     required this.refresh,
     super.key,
   });
 
-  final List<Map<String, dynamic>> data;
+  final List<Posts> posts;
   final String routerPath;
   final VoidCallback refresh;
 
@@ -28,10 +29,10 @@ class AppListView extends HookConsumerWidget {
     final screenWidth = MediaQuery.of(context).size.width / 3;
     final supabase = ref.watch(supabaseProvider);
     final subscribedUsersAsync = ref.watch(subscribedUsersProvider);
-    if (data.isEmpty) {
+    if (posts.isEmpty) {
       return const AppEmpty();
     }
-    final rowCount = (data.length / 3).ceil();
+    final rowCount = (posts.length / 3).ceil();
     const adEvery = 30;
     final adRowInterval = (adEvery / 3).floor();
     return SliverList(
@@ -51,12 +52,12 @@ class AppListView extends HookConsumerWidget {
           return Row(
             children: List.generate(3, (gridIndex) {
               final itemIndex = startIndex + gridIndex;
-              if (itemIndex >= data.length) {
+              if (itemIndex >= posts.length) {
                 return const Expanded(child: SizedBox());
               }
               final itemImageUrl = supabase.storage
                   .from('food')
-                  .getPublicUrl(data[itemIndex]['food_image'] as String);
+                  .getPublicUrl(posts[itemIndex].foodImage);
               return Expanded(
                 child: GestureDetector(
                   onTap: () {
@@ -66,7 +67,7 @@ class AppListView extends HookConsumerWidget {
                       () async {
                         final postResult = await ref
                             .read(postRepositoryProvider.notifier)
-                            .getPostData(data, itemIndex);
+                            .getPostData(posts, itemIndex);
                         await postResult.whenOrNull(
                           success: (model) async {
                             final result = await context.pushNamed(
@@ -82,7 +83,7 @@ class AppListView extends HookConsumerWidget {
                     );
                   },
                   child: Heroine(
-                    tag: 'image-${data[itemIndex]['id']}',
+                    tag: 'image-${posts[itemIndex].id}',
                     flightShuttleBuilder: const FlipShuttleBuilder().call,
                     spring: SimpleSpring.bouncy,
                     child: SizedBox(
@@ -93,7 +94,7 @@ class AppListView extends HookConsumerWidget {
                         child: subscribedUsersAsync.when(
                           data: (subscribedUsers) {
                             final postUserId =
-                                data[itemIndex]['user_id'] as String?;
+                                posts[itemIndex].userId as String?;
                             final isSubscribed = postUserId != null &&
                                 subscribedUsers.contains(postUserId);
                             return Stack(
