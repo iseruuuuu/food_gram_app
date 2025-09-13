@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
@@ -44,22 +43,10 @@ class StoredPostScreen extends HookConsumerWidget {
           if (posts.isEmpty) {
             return const AppFavoritePostEmpty();
           }
-          final data = posts
-              .map(
-                (post) => {
-                  'id': post.id,
-                  'food_image': post.foodImage,
-                  'user_id': post.userId,
-                  'food_name': post.foodName,
-                  'comment': post.comment,
-                  'heart': post.heart,
-                },
-              )
-              .toList();
           return CustomScrollView(
             slivers: [
               AppListView(
-                data: data,
+                posts: posts,
                 routerPath: RouterPath.myProfileDetail,
                 type: AppListViewType.stored,
                 refresh: () => ref
