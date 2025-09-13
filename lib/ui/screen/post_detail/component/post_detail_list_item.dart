@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/model/users.dart';
+import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/theme/style/detail_post_style.dart';
@@ -40,6 +42,20 @@ class PostDetailListItem extends HookConsumerWidget {
     final currentUser = ref.watch(currentUserProvider);
     final supabase = ref.watch(supabaseProvider);
     final detailState = ref.watch(postDetailViewModelProvider());
+    final isHearted = useState<bool>(
+      detailState.heartList.contains(posts.id.toString()),
+    );
+    final heartCount = useState<int>(posts.heart);
+    final isStored = useState<bool?>(null);
+    useEffect(
+      () {
+        Preference().getStringList(PreferenceKey.storeList).then((storeList) {
+          isStored.value = storeList.contains(posts.id.toString());
+        });
+        return null;
+      },
+      [posts.id],
+    );
     // ViewModelから直接ユーザーデータを取得
     return FutureBuilder<Users>(
       future: ref
@@ -144,6 +160,14 @@ class PostDetailListItem extends HookConsumerWidget {
                           userId: users.userId,
                           onHeartLimitReached: onHeartLimitReached,
                         );
+                    if (isHearted.value) {
+                      isHearted.value = false;
+                      heartCount.value =
+                          heartCount.value > 0 ? heartCount.value - 1 : 0;
+                    } else {
+                      isHearted.value = true;
+                      heartCount.value = heartCount.value + 1;
+                    }
                   },
                   child: Container(
                     width: deviceWidth / 1.2,
@@ -206,13 +230,21 @@ class PostDetailListItem extends HookConsumerWidget {
                                   userId: users.userId,
                                   onHeartLimitReached: onHeartLimitReached,
                                 );
+                            if (isHearted.value) {
+                              isHearted.value = false;
+                              heartCount.value = heartCount.value > 0
+                                  ? heartCount.value - 1
+                                  : 0;
+                            } else {
+                              isHearted.value = true;
+                              heartCount.value = heartCount.value + 1;
+                            }
                           },
                           icon: Icon(
-                            detailState.isHeart
+                            isHearted.value
                                 ? CupertinoIcons.heart_fill
                                 : CupertinoIcons.heart,
-                            color:
-                                detailState.isHeart ? Colors.red : Colors.black,
+                            color: isHearted.value ? Colors.red : Colors.black,
                             size: 36,
                           ),
                         ),
@@ -233,7 +265,7 @@ class PostDetailListItem extends HookConsumerWidget {
                         ),
                         const Spacer(),
                         Text(
-                          '${detailState.heart} ${l10n.likeButton}',
+                          '${heartCount.value} ${l10n.likeButton}',
                           style: DetailPostStyle.like(),
                         ),
                         IconButton(
@@ -256,9 +288,11 @@ class PostDetailListItem extends HookConsumerWidget {
                                         .showSnackBar(snackBar);
                                   },
                                 );
+                            final now = isStored.value ?? false;
+                            isStored.value = !now;
                           },
                           icon: Icon(
-                            detailState.isStore
+                            (isStored.value ?? false)
                                 ? Icons.bookmark
                                 : Icons.bookmark_border,
                           ),
