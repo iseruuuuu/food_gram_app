@@ -48,7 +48,7 @@ class PostDetailListItem extends HookConsumerWidget {
           .then(Users.fromJson),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const SizedBox.shrink();
         }
         if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
@@ -124,9 +124,8 @@ class PostDetailListItem extends HookConsumerWidget {
                               .from('food')
                               .getPublicUrl(posts.foodImage),
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => const Center(
-                            child: CircularProgressIndicator(),
-                          ),
+                          placeholder: (context, url) =>
+                              const SizedBox.shrink(),
                           errorWidget: (context, url, error) =>
                               const Icon(Icons.error),
                         ),
@@ -177,9 +176,7 @@ class PostDetailListItem extends HookConsumerWidget {
                             .from('food')
                             .getPublicUrl(posts.foodImage),
                         fit: BoxFit.cover,
-                        placeholder: (context, url) => const Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                        placeholder: (context, url) => const SizedBox.shrink(),
                         errorWidget: (context, url, error) =>
                             const Icon(Icons.error),
                       ),
