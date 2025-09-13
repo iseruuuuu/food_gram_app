@@ -166,7 +166,7 @@ class RestaurantSearchTab extends HookConsumerWidget {
                                 onTap: () {
                                   context.pushNamed(
                                     RouterPath.searchRestaurantReview,
-                                    extra: posts,
+                                    extra: posts[index],
                                   );
                                 },
                                 child: Padding(
