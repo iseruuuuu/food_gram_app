@@ -22,11 +22,13 @@ class PostDetailScreen extends HookConsumerWidget {
   const PostDetailScreen({
     required this.posts,
     required this.users,
+    required this.type,
     super.key,
   });
 
   final Posts posts;
   final Users users;
+  final PostDetailScreenType type;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -174,4 +176,13 @@ class PostDetailScreen extends HookConsumerWidget {
       ),
     );
   }
+}
+
+enum PostDetailScreenType {
+  timeline,
+  myprofile,
+  profile,
+  stored,
+  map,
+  search,
 }

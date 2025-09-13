@@ -113,6 +113,7 @@ final timeLineRouter = GoRoute(
           PostDetailScreen(
             posts: model.posts,
             users: model.users,
+            type: PostDetailScreenType.timeline,
           ),
         );
       },
@@ -217,6 +218,7 @@ final myProfileRouter = GoRoute(
           PostDetailScreen(
             posts: model.posts,
             users: model.users,
+            type: PostDetailScreenType.myprofile,
           ),
         );
       },
@@ -311,6 +313,7 @@ final mapRouter = GoRoute(
           PostDetailScreen(
             posts: model.posts,
             users: model.users,
+            type: PostDetailScreenType.map,
           ),
         );
       },
@@ -398,6 +401,21 @@ final searchRouter = GoRoute(
         );
       },
     ),
+    GoRoute(
+      path:
+          '${RouterPath.search}/${RouterPath.searchDetail}/${RouterPath.searchDetailPost}',
+      name: RouterPath.searchDetailPost,
+      pageBuilder: (context, state) {
+        final model = state.extra! as Model;
+        return slideUpTransition(
+          PostDetailScreen(
+            posts: model.posts,
+            users: model.users,
+            type: PostDetailScreenType.search,
+          ),
+        );
+      },
+    ),
   ],
 );
 
@@ -439,4 +457,5 @@ final class RouterPath {
   static const String searchRestaurantReview = 'search_restaurant_review';
   static const String searchDetail = 'search_detail';
   static const String storedPost = 'stored_post';
+  static const String searchDetailPost = 'search_detail_post';
 }

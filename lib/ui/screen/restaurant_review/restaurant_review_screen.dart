@@ -211,7 +211,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                     child: ElevatedButton(
                                       onPressed: () {
                                         context.pushNamed(
-                                          RouterPath.timeLineDetail,
+                                          RouterPath.searchDetailPost,
                                           extra: data.first,
                                         );
                                       },
