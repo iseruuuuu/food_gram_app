@@ -177,7 +177,6 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     if (currentPosts.isEmpty) {
       return;
     }
-
     // 新しい投稿を取得
     final result =
         await ref.read(postRepositoryProvider.notifier).getSequentialPosts(
@@ -245,11 +244,9 @@ class PostsViewModel extends _$PostsViewModel {
 /// 投稿詳細画面のリスト用プロバイダー（ID順）
 @riverpod
 Future<List<Posts>> postDetailList(Ref ref, Posts initialPost) async {
-  final result =
-      await ref.read(postRepositoryProvider.notifier).getSequentialPosts(
-            currentPostId: initialPost.id,
-            limit: 20,
-          );
+  final result = await ref
+      .read(postRepositoryProvider.notifier)
+      .getSequentialPosts(currentPostId: initialPost.id);
 
   return result.when(
     success: (models) {

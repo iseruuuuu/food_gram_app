@@ -84,13 +84,11 @@ class PostRepository extends _$PostRepository {
   /// 投稿詳細画面【タイムライン】：ID順で次の投稿のリストを取得
   Future<Result<List<Model>, Exception>> getSequentialPosts({
     required int currentPostId,
-    int limit = 10,
   }) async {
     try {
       final service = ref.read(postServiceProvider.notifier);
       final result = await service.getSequentialPosts(
         currentPostId: currentPostId,
-        limit: limit,
       );
       return await result.when(
         success: (data) async {
@@ -107,7 +105,7 @@ class PostRepository extends _$PostRepository {
             }
             if (seen.add(id)) {
               picked.add(m);
-              if (picked.length >= limit) {
+              if (picked.length >= 15) {
                 break;
               }
             }
