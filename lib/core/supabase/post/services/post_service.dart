@@ -378,10 +378,12 @@ class PostService extends _$PostService {
       key: 'map_posts',
       fetcher: () async {
         final blockListState = ref.watch(blockListProvider);
-        final currentBlockList = switch (blockListState) {
-          AsyncData(:final value) => value,
-          _ => <String>[],
-        };
+        List<String> currentBlockList;
+        if (blockListState is AsyncData<List<String>>) {
+          currentBlockList = blockListState.value;
+        } else {
+          currentBlockList = <String>[];
+        }
         final posts = await supabase.from('posts').select().order('created_at');
         return posts
             .where((post) => !currentBlockList.contains(post['user_id']))

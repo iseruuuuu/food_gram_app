@@ -44,13 +44,15 @@ class RestaurantSearchTab extends HookConsumerWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
-                      final posts = nearbyPosts.value!;
-                      context.pushNamed(
-                        RouterPath.searchDetail,
-                        extra: posts,
-                      );
-                    },
+                    onPressed: nearbyPosts.hasValue
+                        ? () {
+                            final posts = nearbyPosts.value!;
+                            context.pushNamed(
+                              RouterPath.searchDetail,
+                              extra: posts,
+                            );
+                          }
+                        : null,
                     child: Text(
                       l10n.seeMore,
                       style: const TextStyle(
@@ -111,9 +113,8 @@ class RestaurantSearchTab extends HookConsumerWidget {
             ...categoriesData.where((category) => !category.isAllCategory).map(
               (category) {
                 final selectedCategoryName = useState(category.name);
-                final postState = ref.watch(
-                  postStreamByCategoryProvider(selectedCategoryName.value),
-                );
+                final state =
+                    ref.watch(postsStreamProvider(selectedCategoryName.value));
                 return Column(
                   children: [
                     Row(
@@ -128,11 +129,9 @@ class RestaurantSearchTab extends HookConsumerWidget {
                           ),
                         ),
                         TextButton(
-                          onPressed: postState.hasValue
+                          onPressed: state.hasValue
                               ? () {
-                                  final posts = postState.value!
-                                      .map(Posts.fromJson)
-                                      .toList();
+                                  final posts = state.value!.toList();
                                   context.pushNamed(
                                     RouterPath.searchDetail,
                                     extra: posts,
@@ -150,7 +149,7 @@ class RestaurantSearchTab extends HookConsumerWidget {
                         ),
                       ],
                     ),
-                    postState.when(
+                    state.when(
                       data: (posts) {
                         return SizedBox(
                           width: MediaQuery.sizeOf(context).width,
@@ -162,19 +161,17 @@ class RestaurantSearchTab extends HookConsumerWidget {
                               final post = posts[index];
                               final imageUrl = supabase.storage
                                   .from('food')
-                                  .getPublicUrl(post['food_image'] as String);
+                                  .getPublicUrl(post.foodImage);
                               return GestureDetector(
                                 onTap: () {
-                                  final posts = Posts.fromJson(post);
                                   context.pushNamed(
                                     RouterPath.searchRestaurantReview,
                                     extra: posts,
                                   );
                                 },
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 4,
-                                  ),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 4),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: CachedNetworkImage(
