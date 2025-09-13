@@ -413,46 +413,34 @@ class PostService extends _$PostService {
         await _cacheManager.get<List<Map<String, dynamic>>>(
           key: 'sequential_posts_${currentPostId}_$limit',
           fetcher: () async {
-            // 現在の投稿より小さいID（前の投稿）を取得
-            final previousPosts = await supabase
-                .from('posts')
-                .select()
-                .lt('id', currentPostId)
-                .order('id', ascending: false)
-                .limit(limit);
-
-            // 現在の投稿より大きいID（次の投稿）を取得
+            // 現在IDより新しい投稿（昇順）を優先取得
             final nextPosts = await supabase
                 .from('posts')
                 .select()
                 .gt('id', currentPostId)
                 .order('id', ascending: true)
                 .limit(limit);
+            // 残り枠があれば、古い投稿（降順）で補完
+            final prevPosts = await supabase
+                .from('posts')
+                .select()
+                .lt('id', currentPostId)
+                .order('id', ascending: false)
+                .limit(limit);
 
-            // ブロックリストのフィルタリング
-            final filteredPreviousPosts = previousPosts
-                .where((post) => !blockList.contains(post['user_id']))
-                .toList();
+            final filteredNext = nextPosts.where(
+              (post) => !blockList.contains(post['user_id']),
+            );
+            final filteredPrev = prevPosts.where(
+              (post) => !blockList.contains(post['user_id']),
+            );
 
-            final filteredNextPosts = nextPosts
-                .where((post) => !blockList.contains(post['user_id']))
-                .toList();
-
-            // 次の投稿を優先して、前の投稿を追加
-            final combinedPosts = <Map<String, dynamic>>[];
-
-            // 次の投稿を先に追加（ID昇順）
-            combinedPosts.addAll(filteredNextPosts);
-
-            // 足りない分を前の投稿から追加（ID降順）
-            final remainingSlots = limit - combinedPosts.length;
-            if (remainingSlots > 0) {
-              combinedPosts.addAll(
-                filteredPreviousPosts.take(remainingSlots),
-              );
+            final result = <Map<String, dynamic>>[];
+            result.addAll(filteredNext);
+            if (result.length < limit) {
+              result.addAll(filteredPrev.take(limit - result.length));
             }
-
-            return combinedPosts.take(limit).toList();
+            return result.take(limit).toList();
           },
           duration: const Duration(minutes: 5),
         ),
