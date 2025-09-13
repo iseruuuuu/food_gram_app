@@ -316,7 +316,9 @@ class PostDetailListItem extends HookConsumerWidget {
                                 )
                                     .then((value) async {
                                   if (value != null) {
-                                    ref.invalidate(postStreamProvider);
+                                    ref.invalidate(
+                                      postsStreamProvider(posts.foodTag),
+                                    );
                                   }
                                 });
                               },

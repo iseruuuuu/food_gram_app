@@ -110,10 +110,11 @@ final timeLineRouter = GoRoute(
       path: '${RouterPath.timeLine}/${RouterPath.timeLineDetail}',
       name: RouterPath.timeLineDetail,
       pageBuilder: (context, state) {
-        final models = state.extra! as List<Model>;
+        final model = state.extra! as Model;
         return slideUpTransition(
           PostDetailScreen(
-            models: models,
+            posts: model.posts,
+            users: model.users,
           ),
         );
       },
@@ -213,10 +214,11 @@ final myProfileRouter = GoRoute(
       path: '${RouterPath.myProfile}/${RouterPath.myProfileDetail}',
       name: RouterPath.myProfileDetail,
       pageBuilder: (context, state) {
-        final models = state.extra! as List<Model>;
+        final model = state.extra! as Model;
         return slideUpTransition(
           PostDetailScreen(
-            models: models,
+            posts: model.posts,
+            users: model.users,
           ),
         );
       },
@@ -306,10 +308,11 @@ final mapRouter = GoRoute(
       path: '${RouterPath.map}/${RouterPath.mapDetail}',
       name: RouterPath.mapDetail,
       pageBuilder: (context, state) {
-        final models = state.extra! as List<Model>;
+        final model = state.extra! as Model;
         return slideUpTransition(
           PostDetailScreen(
-            models: models,
+            posts: model.posts,
+            users: model.users,
           ),
         );
       },
