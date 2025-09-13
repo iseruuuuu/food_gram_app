@@ -28,19 +28,16 @@ class AppHeart extends HookWidget {
     );
 
     return showHeart.value
-        ? SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Lottie.asset(
-                  Assets.lottie.heart,
-                  repeat: false,
-                  width: 600,
-                  height: 600,
-                ),
-              ],
+        ? IgnorePointer(
+            child: Center(
+              child: Lottie.asset(
+                Assets.lottie.heart,
+                repeat: false,
+                width: 600,
+                height: 600,
+              ),
             ),
           )
-        : const SizedBox();
+        : const SizedBox.shrink();
   }
 }
