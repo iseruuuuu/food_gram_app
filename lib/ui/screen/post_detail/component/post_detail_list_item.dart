@@ -41,7 +41,6 @@ class PostDetailListItem extends HookConsumerWidget {
     final currentUser = ref.watch(currentUserProvider);
     final supabase = ref.watch(supabaseProvider);
     final detailState = ref.watch(postDetailViewModelProvider());
-
     // ViewModelから直接ユーザーデータを取得
     return FutureBuilder<Users>(
       future: ref
@@ -452,7 +451,6 @@ class PostDetailListItem extends HookConsumerWidget {
                       ],
                     ),
                   ),
-                  AdmobBanner(id: 'detail ${posts.id}'),
                 ],
               ),
             ],

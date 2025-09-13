@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -162,6 +163,12 @@ class PostDetailScreen extends HookConsumerWidget {
                 status: 'Loading...',
               ),
             ],
+          ),
+        ),
+        bottomNavigationBar: const SafeArea(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 8, top: 4),
+            child: AdmobBanner(id: 'detail_footer'),
           ),
         ),
       ),
