@@ -9,7 +9,6 @@ import 'package:food_gram_app/core/supabase/user/providers/subscribed_users_prov
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:go_router/go_router.dart';
-import 'package:heroine/heroine.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AppListView extends HookConsumerWidget {
@@ -84,59 +83,52 @@ class AppListView extends HookConsumerWidget {
                       },
                     );
                   },
-                  child: Heroine(
-                    tag: 'image-${posts[itemIndex].id}',
-                    flightShuttleBuilder: const FlipShuttleBuilder().call,
-                    spring: SimpleSpring.bouncy,
-                    child: SizedBox(
-                      width: screenWidth,
-                      height: screenWidth,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: subscribedUsersAsync.when(
-                          data: (subscribedUsers) {
-                            final postUserId =
-                                posts[itemIndex].userId as String?;
-                            final isSubscribed = postUserId != null &&
-                                subscribedUsers.contains(postUserId);
-                            return Stack(
-                              children: [
-                                Positioned.fill(
-                                  child: Card(
-                                    elevation: isSubscribed ? 0 : 10,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                        isSubscribed ? 0 : 10,
-                                      ),
-                                      child: CachedNetworkImage(
-                                        imageUrl: itemImageUrl,
-                                        fit: BoxFit.cover,
-                                        width: screenWidth,
-                                        height: screenWidth,
-                                        placeholder: (context, url) =>
-                                            Container(
-                                          color: Colors.white,
-                                        ),
+                  child: SizedBox(
+                    width: screenWidth,
+                    height: screenWidth,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: subscribedUsersAsync.when(
+                        data: (subscribedUsers) {
+                          final postUserId = posts[itemIndex].userId as String?;
+                          final isSubscribed = postUserId != null &&
+                              subscribedUsers.contains(postUserId);
+                          return Stack(
+                            children: [
+                              Positioned.fill(
+                                child: Card(
+                                  elevation: isSubscribed ? 0 : 10,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                      isSubscribed ? 0 : 10,
+                                    ),
+                                    child: CachedNetworkImage(
+                                      imageUrl: itemImageUrl,
+                                      fit: BoxFit.cover,
+                                      width: screenWidth,
+                                      height: screenWidth,
+                                      placeholder: (context, url) => Container(
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ),
                                 ),
-                                if (isSubscribed)
-                                  Positioned.fill(
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image.asset(
-                                        Assets.image.frame.path,
-                                        fit: BoxFit.fill,
-                                      ),
+                              ),
+                              if (isSubscribed)
+                                Positioned.fill(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.asset(
+                                      Assets.image.frame.path,
+                                      fit: BoxFit.fill,
                                     ),
                                   ),
-                              ],
-                            );
-                          },
-                          loading: () => const SizedBox.shrink(),
-                          error: (_, __) => const SizedBox.shrink(),
-                        ),
+                                ),
+                            ],
+                          );
+                        },
+                        loading: () => const SizedBox.shrink(),
+                        error: (_, __) => const SizedBox.shrink(),
                       ),
                     ),
                   ),

@@ -9,7 +9,6 @@ import 'package:food_gram_app/core/supabase/auth/providers/auth_state_provider.d
 import 'package:food_gram_app/router/amination.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
 import 'package:go_router/go_router.dart';
-import 'package:heroine/heroine.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'router.g.dart';
@@ -18,7 +17,6 @@ part 'router.g.dart';
 GoRouter router(Ref ref) {
   final authState = ref.watch(authStateProvider);
   return GoRouter(
-    observers: [HeroineController()],
     initialLocation: '/${RouterPath.splash}',
     redirect: (context, state) async {
       final preference = Preference();
