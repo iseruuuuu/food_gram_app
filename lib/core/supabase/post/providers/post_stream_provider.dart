@@ -63,17 +63,17 @@ Stream<List<Posts>> postsStream(
   );
 }
 
-/// 自分の投稿のストリームを提供
 @riverpod
-Stream<List<Map<String, dynamic>>> myPostStream(Ref ref) {
+Stream<List<Posts>> myPostStream(Ref ref) {
   final supabase = ref.read(supabaseProvider);
   final user = ref.watch(currentUserProvider);
   if (user == null) {
-    return const Stream.empty();
+    return const Stream<List<Posts>>.empty();
   }
   return supabase
       .from('posts')
       .stream(primaryKey: ['id'])
       .eq('user_id', user)
-      .order('created_at');
+      .order('created_at')
+      .map((events) => events.map(Posts.fromJson).toList());
 }
