@@ -16,17 +16,6 @@ class PostRepository extends _$PostRepository {
   Future<void> build() async {}
   final logger = Logger();
 
-  /// 全ての投稿を取得
-  Future<Result<List<Posts>, Exception>> getPosts() async {
-    try {
-      final data = await ref.read(postServiceProvider.notifier).getPosts();
-      return Success(data.map(Posts.fromJson).toList());
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
-  }
-
   /// 特定の投稿とそのユーザー情報を取得
   Future<Result<Model, Exception>> getPostData(
     List<Posts> posts,
