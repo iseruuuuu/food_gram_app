@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_state.dart';
@@ -134,10 +135,10 @@ class EditPostViewModel extends _$EditPostViewModel {
       success: (_) async {
         // キャッシュを無効化
         ref.read(postServiceProvider.notifier).invalidatePostCache(_posts.id);
-
         // 更新した投稿を取得
-        final updatedPostResult =
-            await ref.read(postServiceProvider.notifier).getPost(_posts.id);
+        final updatedPostResult = await ref
+            .read(detailPostServiceProvider.notifier)
+            .getPost(_posts.id);
         updatedPostResult.when(
           success: (data) {
             final updatedPost =

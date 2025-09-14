@@ -5,8 +5,10 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/delete_service.dart';
+import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
@@ -177,10 +179,11 @@ class PostDetailViewModel extends _$PostDetailViewModel {
       return;
     }
     // 新しい投稿を取得
-    final result =
-        await ref.read(postRepositoryProvider.notifier).getSequentialPosts(
-              currentPostId: currentPosts.last.id,
-            );
+    final result = await ref
+        .read(detailPostRepositoryProvider.notifier)
+        .getSequentialPosts(
+          currentPostId: currentPosts.last.id,
+        );
 
     result.when(
       success: (newPosts) {
@@ -197,8 +200,9 @@ class PostDetailViewModel extends _$PostDetailViewModel {
   }
 
   /// ユーザーデータを取得
+  //TODO できればここもRepositoryに移行したい
   Future<Map<String, dynamic>> getUserData(String userId) async {
-    return ref.read(postServiceProvider.notifier).getUserData(userId);
+    return ref.read(detailPostServiceProvider.notifier).getUserData(userId);
   }
 }
 
@@ -216,7 +220,7 @@ class PostsViewModel extends _$PostsViewModel {
     state = const PostState.loading();
     try {
       final result =
-          await ref.read(postRepositoryProvider.notifier).getPost(postId);
+          await ref.read(detailPostRepositoryProvider.notifier).getPost(postId);
       result.when(
         success: (posts) {
           state = PostState.data(posts: posts);
@@ -276,12 +280,13 @@ class PostDetailListArgs {
 
 final postDetailListFutureProvider =
     FutureProvider.family<List<Posts>, PostDetailListArgs>((ref, args) async {
-  final repo = ref.read(postRepositoryProvider.notifier);
+  final detailRepo = ref.read(detailPostRepositoryProvider.notifier);
+  final postRepo = ref.read(postRepositoryProvider.notifier);
   switch (args.mode) {
     case 'timeline':
       {
-        final r =
-            await repo.getSequentialPosts(currentPostId: args.initialPost.id);
+        final r = await detailRepo.getSequentialPosts(
+            currentPostId: args.initialPost.id);
         return r.when(
           success: (models) => [
             args.initialPost,
@@ -296,7 +301,7 @@ final postDetailListFutureProvider =
         if (currentUser == null) {
           return [args.initialPost];
         }
-        final r = await repo.getPostsFromUser(currentUser);
+        final r = await postRepo.getPostsFromUser(currentUser);
         return r.when(
           success: (posts) {
             final sorted = [...posts]
@@ -315,7 +320,7 @@ final postDetailListFutureProvider =
         if (userId == null || userId.isEmpty) {
           return [args.initialPost];
         }
-        final r = await repo.getPostsFromUser(userId);
+        final r = await postRepo.getPostsFromUser(userId);
         return r.when(
           success: (posts) {
             final sorted = [...posts]
@@ -330,7 +335,7 @@ final postDetailListFutureProvider =
       }
     case 'nearby':
       {
-        final r = await repo.getRelatedPosts(
+        final r = await detailRepo.getRelatedPosts(
           currentPostId: args.initialPost.id,
           lat: args.initialPost.lat,
           lng: args.initialPost.lng,
@@ -347,7 +352,7 @@ final postDetailListFutureProvider =
     case 'search':
       {
         final restaurant = args.restaurant ?? args.initialPost.restaurant;
-        final r = await repo.getByRestaurantName(restaurant: restaurant);
+        final r = await postRepo.getByRestaurantName(restaurant: restaurant);
         return r.when(
           success: (posts) {
             final others = posts
