@@ -4,8 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/api/restaurant/services/google_restaurant_service.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
-import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/core/utils/geo_distance.dart';
+import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'restaurant_repository.g.dart';

@@ -9,7 +9,6 @@ import 'package:food_gram_app/core/supabase/post/repository/detail_post_reposito
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/delete_service.dart';
 import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
-import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_state.dart';
@@ -286,7 +285,8 @@ final postDetailListFutureProvider =
     case 'timeline':
       {
         final r = await detailRepo.getSequentialPosts(
-            currentPostId: args.initialPost.id);
+          currentPostId: args.initialPost.id,
+        );
         return r.when(
           success: (models) => [
             args.initialPost,
