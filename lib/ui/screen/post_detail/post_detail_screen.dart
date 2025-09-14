@@ -51,7 +51,25 @@ class PostDetailScreen extends HookConsumerWidget {
     final loading = ref.watch(loadingProvider);
     final currentUser = ref.watch(currentUserProvider);
     final detailState = ref.watch(postDetailViewModelProvider());
-    final listState = ref.watch(postDetailListProvider(memoizedPosts));
+    final listState = ref.watch(
+      postDetailListFutureProvider(
+        PostDetailListArgs(
+          initialPost: memoizedPosts,
+          mode: switch (type) {
+            PostDetailScreenType.timeline => 'timeline',
+            PostDetailScreenType.myprofile => 'myprofile',
+            PostDetailScreenType.profile => 'profile',
+            PostDetailScreenType.map => 'nearby',
+            PostDetailScreenType.search => 'search',
+            PostDetailScreenType.stored => 'timeline',
+          },
+          profileUserId:
+              type == PostDetailScreenType.profile ? users.userId : null,
+          restaurant:
+              type == PostDetailScreenType.search ? posts.restaurant : null,
+        ),
+      ),
+    );
     final isInitialLoading = listState.isLoading;
     return PopScope(
       canPop: !(loading || isInitialLoading),

@@ -11,7 +11,6 @@ import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_state.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -241,21 +240,125 @@ class PostsViewModel extends _$PostsViewModel {
   }
 }
 
-/// 投稿詳細画面のリスト用プロバイダー（ID順）
-@riverpod
-Future<List<Posts>> postDetailList(Ref ref, Posts initialPost) async {
-  final result = await ref
-      .read(postRepositoryProvider.notifier)
-      .getSequentialPosts(currentPostId: initialPost.id);
+/// 投稿詳細のリストを type に応じて出し分け
+/// mode: 'timeline' | 'myprofile' | 'profile' | 'nearby' | 'search'
+@immutable
+class PostDetailListArgs {
+  const PostDetailListArgs({
+    required this.initialPost,
+    required this.mode,
+    this.profileUserId,
+    this.restaurant,
+  });
+  final Posts initialPost;
+  final String mode;
+  final String? profileUserId; // profile 用
+  final String? restaurant; // search 用
 
-  return result.when(
-    success: (models) {
-      // 初期投稿を先頭に配置し、ID順の投稿を追加
-      return [initialPost, ...models.map((model) => model.posts)];
-    },
-    failure: (error) {
-      // エラーの場合は初期投稿のみ返す
-      return [initialPost];
-    },
-  );
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is PostDetailListArgs &&
+            other.mode == mode &&
+            other.profileUserId == profileUserId &&
+            other.restaurant == restaurant &&
+            other.initialPost.id == initialPost.id;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        mode,
+        profileUserId,
+        restaurant,
+        initialPost.id,
+      );
 }
+
+final postDetailListFutureProvider =
+    FutureProvider.family<List<Posts>, PostDetailListArgs>((ref, args) async {
+  final repo = ref.read(postRepositoryProvider.notifier);
+  switch (args.mode) {
+    case 'timeline':
+      {
+        final r =
+            await repo.getSequentialPosts(currentPostId: args.initialPost.id);
+        return r.when(
+          success: (models) => [
+            args.initialPost,
+            ...models.map((m) => m.posts),
+          ],
+          failure: (_) => [args.initialPost],
+        );
+      }
+    case 'myprofile':
+      {
+        final currentUser = ref.watch(currentUserProvider);
+        if (currentUser == null) {
+          return [args.initialPost];
+        }
+        final r = await repo.getPostsFromUser(currentUser);
+        return r.when(
+          success: (posts) {
+            final sorted = [...posts]
+              ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+            final others = sorted
+                .where((p) => p.id != args.initialPost.id)
+                .toList(growable: false);
+            return [args.initialPost, ...others];
+          },
+          failure: (_) => [args.initialPost],
+        );
+      }
+    case 'profile':
+      {
+        final userId = args.profileUserId;
+        if (userId == null || userId.isEmpty) {
+          return [args.initialPost];
+        }
+        final r = await repo.getPostsFromUser(userId);
+        return r.when(
+          success: (posts) {
+            final sorted = [...posts]
+              ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+            final others = sorted
+                .where((p) => p.id != args.initialPost.id)
+                .toList(growable: false);
+            return [args.initialPost, ...others];
+          },
+          failure: (_) => [args.initialPost],
+        );
+      }
+    case 'nearby':
+      {
+        final r = await repo.getRelatedPosts(
+          currentPostId: args.initialPost.id,
+          lat: args.initialPost.lat,
+          lng: args.initialPost.lng,
+          limit: 20,
+        );
+        return r.when(
+          success: (models) => [
+            args.initialPost,
+            ...models.map((m) => m.posts),
+          ],
+          failure: (_) => [args.initialPost],
+        );
+      }
+    case 'search':
+      {
+        final restaurant = args.restaurant ?? args.initialPost.restaurant;
+        final r = await repo.getByRestaurantName(restaurant: restaurant);
+        return r.when(
+          success: (posts) {
+            final others = posts
+                .where((p) => p.id != args.initialPost.id)
+                .toList(growable: false);
+            return [args.initialPost, ...others];
+          },
+          failure: (_) => [args.initialPost],
+        );
+      }
+    default:
+      return [args.initialPost];
+  }
+});

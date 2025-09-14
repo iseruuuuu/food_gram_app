@@ -138,7 +138,25 @@ final timeLineRouter = GoRoute(
       pageBuilder: (context, state) {
         final users = state.extra! as Users;
         return slideUpTransition(
-          UserProfileScreen(users: users),
+          UserProfileScreen(
+            users: users,
+            routerPathForDetail: RouterPath.timeLineProfileDetail,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path:
+          '${RouterPath.timeLine}/${RouterPath.timeLineDetail}/${RouterPath.timeLineProfile}/${RouterPath.timeLineProfileDetail}',
+      name: RouterPath.timeLineProfileDetail,
+      pageBuilder: (context, state) {
+        final model = state.extra! as Model;
+        return slideUpTransition(
+          PostDetailScreen(
+            posts: model.posts,
+            users: model.users,
+            type: PostDetailScreenType.profile,
+          ),
         );
       },
     ),
@@ -338,7 +356,25 @@ final mapRouter = GoRoute(
       pageBuilder: (context, state) {
         final users = state.extra! as Users;
         return slideUpTransition(
-          UserProfileScreen(users: users),
+          UserProfileScreen(
+            users: users,
+            routerPathForDetail: RouterPath.mapProfileDetail,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path:
+          '${RouterPath.map}/${RouterPath.mapDetail}/${RouterPath.mapProfile}/${RouterPath.mapProfileDetail}',
+      name: RouterPath.mapProfileDetail,
+      pageBuilder: (context, state) {
+        final model = state.extra! as Model;
+        return slideUpTransition(
+          PostDetailScreen(
+            posts: model.posts,
+            users: model.users,
+            type: PostDetailScreenType.profile,
+          ),
         );
       },
     ),
@@ -445,7 +481,9 @@ final class RouterPath {
   static const String myProfileDetailPost = 'my_profile_detail_post';
   static const String mapDetailPost = 'map_detail_post';
   static const String mapProfile = 'map_profile';
+  static const String mapProfileDetail = 'map_profile_detail';
   static const String timeLineProfile = 'time_line_profile';
+  static const String timeLineProfileDetail = 'time_line_profile_detail';
   static const String timeLineRestaurantReview = 'time_line_restaurant_review';
   static const String mapRestaurantReview = 'map_restaurant_review';
   static const String myProfileRestaurantReview =

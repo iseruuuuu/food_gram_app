@@ -4,7 +4,6 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/theme/style/profile_style.dart';
-import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
@@ -17,10 +16,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class UserProfileScreen extends ConsumerWidget {
   const UserProfileScreen({
     required this.users,
+    required this.routerPathForDetail,
     super.key,
   });
 
   final Users users;
+  final String routerPathForDetail;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -70,7 +71,7 @@ class UserProfileScreen extends ConsumerWidget {
                     return value.isNotEmpty
                         ? AppListView(
                             posts: value.map(Posts.fromJson).toList(),
-                            routerPath: RouterPath.myProfileDetail,
+                            routerPath: routerPathForDetail,
                             type: AppListViewType.profile,
                             refresh: () => ref.refresh(myPostStreamProvider),
                           )
