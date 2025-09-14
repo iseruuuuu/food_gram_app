@@ -4,6 +4,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
+import 'package:food_gram_app/core/utils/geo_distance.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -197,6 +198,18 @@ class PostRepository extends _$PostRepository {
     try {
       final data =
           await ref.read(postServiceProvider.notifier).getPostsFromUser(userId);
+        final da = geoKilometers(
+          lat1: initialPost.lat,
+          lon1: initialPost.lng,
+          lat2: a.lat,
+          lon2: a.lng,
+        );
+        final db = geoKilometers(
+          lat1: initialPost.lat,
+          lon1: initialPost.lng,
+          lat2: b.lat,
+          lon2: b.lng,
+        );
       return Success(data.map(Posts.fromJson).toList());
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');

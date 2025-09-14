@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:food_gram_app/core/cache/cache_manager.dart';
@@ -6,6 +5,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
+import 'package:food_gram_app/core/utils/geo_distance.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:logger/logger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart' as maplibre;
@@ -519,11 +519,11 @@ class PostService extends _$PostService {
         }
 
         final postsWithDistance = uniqueLocationPosts.values.map((post) {
-          final distance = _calculateDistance(
-            lat,
-            lng,
-            double.parse(post['lat'].toString()),
-            double.parse(post['lng'].toString()),
+          final distance = geoKilometers(
+            lat1: lat,
+            lon1: lng,
+            lat2: double.parse(post['lat'].toString()),
+            lon2: double.parse(post['lng'].toString()),
           );
           return {...post, 'distance': distance};
         }).toList()
@@ -541,30 +541,7 @@ class PostService extends _$PostService {
     );
   }
 
-  /// 2点間の距離を計算（Haversine公式）
-  double _calculateDistance(
-    double lat1,
-    double lon1,
-    double lat2,
-    double lon2,
-  ) {
-    const double earthRadius = 6371;
-    final dLat = _toRadians(lat2 - lat1);
-    final dLon = _toRadians(lon2 - lon1);
-
-    final a = sin(dLat / 2) * sin(dLat / 2) +
-        cos(_toRadians(lat1)) *
-            cos(_toRadians(lat2)) *
-            sin(dLon / 2) *
-            sin(dLon / 2);
-    final c = 2 * atan2(sqrt(a), sqrt(1 - a));
-    return earthRadius * c;
-  }
-
-  /// 度からラジアンに変換
-  double _toRadians(double degree) {
-    return degree * pi / 180;
-  }
+  /// 角度→ラジアン変換のローカル実装は不要になったため削除
 
   /// キャッシュを無効化するメソッド
   void invalidatePostsCache() {
