@@ -150,7 +150,7 @@ class PostDetailListItem extends HookConsumerWidget {
                 );
               },
               onDoubleTap: () async {
-                if (currentUser == null) {
+                if (currentUser == null || currentUser == users.userId) {
                   return;
                 }
                 await ref
@@ -220,7 +220,8 @@ class PostDetailListItem extends HookConsumerWidget {
                     const Gap(4),
                     IconButton(
                       onPressed: () async {
-                        if (currentUser == null) {
+                        if (currentUser == null ||
+                            currentUser == users.userId) {
                           return;
                         }
                         await ref
