@@ -335,9 +335,6 @@ Future<List<Posts>> getNearByPosts(Ref ref) async {
   }
 }
 
-/// 2点間の距離を計算（Haversine公式）
-// 距離計算は未使用のため削除
-
 /// 特定のレストランの投稿一覧を取得するプロバイダー
 @riverpod
 Future<Result<List<Model>, Exception>> restaurantReviews(
