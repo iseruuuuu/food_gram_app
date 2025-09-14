@@ -31,7 +31,13 @@ class StoredPostScreen extends HookConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
-        title: Text(l10n.savedPosts),
+        title: Text(
+          l10n.savedPosts,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () => context.pop(),
@@ -47,7 +53,7 @@ class StoredPostScreen extends HookConsumerWidget {
             slivers: [
               AppListView(
                 posts: posts,
-                routerPath: RouterPath.myProfileDetail,
+                routerPath: RouterPath.storedPostDetail,
                 type: AppListViewType.stored,
                 refresh: () => ref
                     .read(storedPostViewModelProvider.notifier)

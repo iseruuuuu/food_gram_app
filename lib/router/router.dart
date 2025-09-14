@@ -212,6 +212,21 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
+      path:
+          '${RouterPath.myProfile}/${RouterPath.storedPost}/${RouterPath.storedPostDetail}',
+      name: RouterPath.storedPostDetail,
+      pageBuilder: (context, state) {
+        final model = state.extra! as Model;
+        return slideUpTransition(
+          PostDetailScreen(
+            posts: model.posts,
+            users: model.users,
+            type: PostDetailScreenType.stored,
+          ),
+        );
+      },
+    ),
+    GoRoute(
       path: '${RouterPath.myProfile}/${RouterPath.myProfilePost}',
       name: RouterPath.myProfilePost,
       pageBuilder: (context, state) {
@@ -496,4 +511,5 @@ final class RouterPath {
   static const String searchDetail = 'search_detail';
   static const String storedPost = 'stored_post';
   static const String searchDetailPost = 'search_detail_post';
+  static const String storedPostDetail = 'stored_post_detail';
 }

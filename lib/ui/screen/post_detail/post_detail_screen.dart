@@ -61,7 +61,7 @@ class PostDetailScreen extends HookConsumerWidget {
             PostDetailScreenType.profile => 'profile',
             PostDetailScreenType.map => 'nearby',
             PostDetailScreenType.search => 'search',
-            PostDetailScreenType.stored => 'timeline',
+            PostDetailScreenType.stored => 'stored',
           },
           profileUserId:
               type == PostDetailScreenType.profile ? users.userId : null,

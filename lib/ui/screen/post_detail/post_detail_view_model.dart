@@ -244,7 +244,7 @@ class PostsViewModel extends _$PostsViewModel {
 }
 
 /// 投稿詳細のリストを type に応じて出し分け
-/// mode: 'timeline' | 'myprofile' | 'profile' | 'nearby' | 'search'
+/// mode: 'timeline' | 'myprofile' | 'profile' | 'nearby' | 'search' | 'stored'
 @immutable
 class PostDetailListArgs {
   const PostDetailListArgs({
@@ -361,6 +361,33 @@ final postDetailListFutureProvider =
             return [args.initialPost, ...others];
           },
           failure: (_) => [args.initialPost],
+        );
+      }
+    case 'stored':
+      {
+        final storeList =
+            await Preference().getStringList(PreferenceKey.storeList);
+        if (storeList.isEmpty) {
+          return <Posts>[];
+        }
+        // 数値IDに変換して降順に並べ替え
+        final idOrder = storeList.map(int.tryParse).whereType<int>().toList()
+          ..sort((a, b) => b.compareTo(a));
+        if (idOrder.isEmpty) {
+          return <Posts>[];
+        }
+        final r = await postRepo.getStoredPosts(storeList);
+        return r.when(
+          success: (posts) {
+            // 取得結果をID降順の順序に揃える（欠損は除外）
+            final mapById = {for (final p in posts) p.id: p};
+            final ordered = idOrder
+                .map((id) => mapById[id])
+                .whereType<Posts>()
+                .toList(growable: false);
+            return ordered;
+          },
+          failure: (_) => <Posts>[],
         );
       }
     default:

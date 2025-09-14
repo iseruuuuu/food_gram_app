@@ -308,12 +308,20 @@ class PostService extends _$PostService {
     if (postIds.isEmpty) {
       return [];
     }
+    // 数値IDへ変換（無効なIDは除外）
+    final intIds = postIds
+        .map((e) => int.tryParse(e))
+        .whereType<int>()
+        .toList(growable: false);
+    if (intIds.isEmpty) {
+      return [];
+    }
     return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'saved_posts_${postIds.join('_')}',
+      key: 'saved_posts_${intIds.join('_')}',
       fetcher: () => supabase
           .from('posts')
           .select()
-          .inFilter('id', postIds)
+          .inFilter('id', intIds)
           .order('created_at', ascending: false),
       duration: const Duration(minutes: 5),
     );
