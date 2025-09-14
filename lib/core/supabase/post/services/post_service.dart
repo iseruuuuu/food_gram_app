@@ -320,6 +320,32 @@ class PostService extends _$PostService {
     );
   }
 
+  /// 特定ユーザーの投稿を取得（ページング対応・新しい順）
+  Future<List<Map<String, dynamic>>> getPostsFromUserPaged(
+    String userId, {
+    int limit = 30,
+    int? beforeId,
+  }) async {
+    return _cacheManager.get<List<Map<String, dynamic>>>(
+      key: 'user_posts_paged_${userId}_${beforeId ?? 'null'}_$limit',
+      fetcher: () async {
+        var query = supabase
+            .from('posts')
+            .select()
+            .eq('user_id', userId)
+            .eq('is_anonymous', false);
+        if (beforeId != null) {
+          query = query.lt('id', beforeId);
+        }
+        final posts = await query.order('id', ascending: false).limit(limit);
+        return posts
+            .where((post) => !blockList.contains(post['user_id']))
+            .toList();
+      },
+      duration: const Duration(minutes: 2),
+    );
+  }
+
   /// 保存した投稿IDのリストから投稿を取得
   Future<List<Map<String, dynamic>>> getStoredPosts(
     List<String> postIds,
@@ -334,6 +360,26 @@ class PostService extends _$PostService {
           .select()
           .inFilter('id', postIds)
           .order('created_at', ascending: false),
+      duration: const Duration(minutes: 5),
+    );
+  }
+
+  /// レストラン名で投稿を取得（新しい順）
+  Future<List<Map<String, dynamic>>> getPostsByRestaurantName(
+    String restaurant,
+  ) async {
+    return _cacheManager.get<List<Map<String, dynamic>>>(
+      key: 'restaurant_name_posts_$restaurant',
+      fetcher: () async {
+        final posts = await supabase
+            .from('posts')
+            .select()
+            .eq('restaurant', restaurant)
+            .order('created_at', ascending: false);
+        return posts
+            .where((post) => !blockList.contains(post['user_id']))
+            .toList();
+      },
       duration: const Duration(minutes: 5),
     );
   }

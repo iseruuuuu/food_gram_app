@@ -196,8 +196,44 @@ class PostRepository extends _$PostRepository {
   /// 特定ユーザーの投稿を取得
   Future<Result<List<Posts>, Exception>> getPostsFromUser(String userId) async {
     try {
+      final data = await ref
+          .read(postServiceProvider.notifier)
+          .getPostsFromUserPaged(userId, limit: 60);
+      return Success(data.map(Posts.fromJson).toList());
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
+  }
+
+  /// 特定ユーザーの投稿を追加取得（ページング）
+  Future<Result<List<Posts>, Exception>> getPostsFromUserMore(
+    String userId, {
+    required int beforeId,
+    int limit = 60,
+  }) async {
+    try {
+      final data = await ref
+          .read(postServiceProvider.notifier)
+          .getPostsFromUserPaged(userId, limit: limit, beforeId: beforeId);
+      return Success(data.map(Posts.fromJson).toList());
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
+  }
+
+  /// 近い順（初期投稿の緯度経度から距離昇順）
+  Future<Result<List<Posts>, Exception>> getNearbyFromInitial({
+    required Posts initialPost,
+    int limit = 20,
+  }) async {
+    try {
       final data =
-          await ref.read(postServiceProvider.notifier).getPostsFromUser(userId);
+          await ref.read(postServiceProvider.notifier).getNearbyPosts();
+      final posts = data.map(Posts.fromJson).toList();
+      // 初期投稿と同一座標を起点に距離昇順
+      posts.sort((a, b) {
         final da = geoKilometers(
           lat1: initialPost.lat,
           lon1: initialPost.lng,
@@ -210,6 +246,25 @@ class PostRepository extends _$PostRepository {
           lat2: b.lat,
           lon2: b.lng,
         );
+        return da.compareTo(db);
+      });
+      final result =
+          posts.where((p) => p.id != initialPost.id).take(limit).toList();
+      return Success(result);
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
+  }
+
+  /// レストラン名で取得（新しい順）
+  Future<Result<List<Posts>, Exception>> getByRestaurantName({
+    required String restaurant,
+  }) async {
+    try {
+      final data = await ref
+          .read(postServiceProvider.notifier)
+          .getPostsByRestaurantName(restaurant);
       return Success(data.map(Posts.fromJson).toList());
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
