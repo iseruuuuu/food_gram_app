@@ -112,9 +112,7 @@ class PostRepository extends _$PostRepository {
     int limit = 20,
   }) async {
     try {
-      final data =
-          await ref.read(postServiceProvider.notifier).getNearbyPosts();
-      final posts = data.map(Posts.fromJson).toList();
+      final posts = await ref.read(getNearByPostsProvider.future);
       // 初期投稿と同一座標を起点に距離昇順
       posts.sort((a, b) {
         final da = geoKilometers(
