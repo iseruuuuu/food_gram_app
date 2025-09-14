@@ -5,10 +5,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
-import 'package:food_gram_app/core/utils/geo_distance.dart';
-import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:logger/logger.dart';
-import 'package:maplibre_gl/maplibre_gl.dart' as maplibre;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -384,61 +381,6 @@ class PostService extends _$PostService {
     );
   }
 
-  /// マップ表示用の全投稿を取得
-  Future<Result<List<Map<String, dynamic>>, Exception>> getRestaurantPosts({
-    required double lat,
-    required double lng,
-  }) async {
-    try {
-      return Success(
-        await _cacheManager.get<List<Map<String, dynamic>>>(
-          key: 'restaurant_posts_${lat}_$lng',
-          fetcher: () async {
-            final posts = await supabase
-                .from('posts')
-                .select()
-                .gte('lat', lat - 0.00001)
-                .lte('lat', lat + 0.00001)
-                .gte('lng', lng - 0.00001)
-                .lte('lng', lng + 0.00001)
-                .order('created_at');
-            final filteredPosts = posts
-                .where(
-                  (post) => !blockList.contains(post['user_id']),
-                )
-                .toList();
-            return filteredPosts;
-          },
-          duration: const Duration(minutes: 5),
-        ),
-      );
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
-  }
-
-  /// マップ表示用の全投稿を取得🗾
-  Future<List<Map<String, dynamic>>> getMapPosts() async {
-    return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'map_posts',
-      fetcher: () async {
-        final blockListState = ref.watch(blockListProvider);
-        List<String> currentBlockList;
-        if (blockListState is AsyncData<List<String>>) {
-          currentBlockList = blockListState.value;
-        } else {
-          currentBlockList = <String>[];
-        }
-        final posts = await supabase.from('posts').select().order('created_at');
-        return posts
-            .where((post) => !currentBlockList.contains(post['user_id']))
-            .toList();
-      },
-      duration: const Duration(minutes: 5),
-    );
-  }
-
   /// ユーザーIDからユーザーデータを取得
   Future<Map<String, dynamic>> getUserData(String userId) async {
     return _cacheManager.get<Map<String, dynamic>>(
@@ -535,56 +477,6 @@ class PostService extends _$PostService {
       logger.e('Database error: ${e.message}');
       return Failure(e);
     }
-  }
-
-  /// 現在地から近い投稿を10件取得
-  Future<List<Map<String, dynamic>>> getNearbyPosts() async {
-    final currentLocation = await ref.read(locationProvider.future);
-    if (currentLocation == const maplibre.LatLng(0, 0)) {
-      return [];
-    }
-    final lat = currentLocation.latitude;
-    final lng = currentLocation.longitude;
-
-    return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'nearby_posts_${lat}_$lng',
-      fetcher: () async {
-        final posts = await supabase
-            .from('posts')
-            .select()
-            .order('created_at', ascending: false);
-        final filteredPosts = posts
-            .where((post) => !blockList.contains(post['user_id']))
-            .toList();
-        final uniqueLocationPosts = <String, Map<String, dynamic>>{};
-        for (final post in filteredPosts) {
-          final locationKey = '${post['lat']}_${post['lng']}';
-          if (!uniqueLocationPosts.containsKey(locationKey)) {
-            uniqueLocationPosts[locationKey] = post;
-          }
-        }
-
-        final postsWithDistance = uniqueLocationPosts.values.map((post) {
-          final distance = geoKilometers(
-            lat1: lat,
-            lon1: lng,
-            lat2: double.parse(post['lat'].toString()),
-            lon2: double.parse(post['lng'].toString()),
-          );
-          return {...post, 'distance': distance};
-        }).toList()
-          ..sort(
-            (a, b) =>
-                (a['distance'] as double).compareTo(b['distance'] as double),
-          );
-
-        return postsWithDistance.take(10).map((post) {
-          final result = Map<String, dynamic>.from(post)..remove('distance');
-          return result;
-        }).toList();
-      },
-      duration: const Duration(minutes: 5),
-    );
   }
 
   /// 角度→ラジアン変換のローカル実装は不要になったため削除

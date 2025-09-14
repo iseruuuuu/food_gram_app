@@ -288,30 +288,6 @@ class PostRepository extends _$PostRepository {
       return Failure(e);
     }
   }
-
-  /// マップ表示用の全投稿を取得
-  Future<Result<List<Posts>, Exception>> getRestaurantPosts({
-    required double lat,
-    required double lng,
-  }) async {
-    final result =
-        await ref.read(postServiceProvider.notifier).getRestaurantPosts(
-              lat: lat,
-              lng: lng,
-            );
-
-    return result.when(
-      success: (data) => Success(data.map(Posts.fromJson).toList()),
-      failure: Failure.new,
-    );
-  }
-}
-
-/// マップ表示用の全投稿を取得🗾
-@riverpod
-Future<List<Posts>> mapRepository(Ref ref) async {
-  final response = await ref.read(postServiceProvider.notifier).getMapPosts();
-  return response.map(Posts.fromJson).toList();
 }
 
 /// 特定ユーザーの投稿を取得
@@ -321,50 +297,4 @@ Future<List<Map<String, dynamic>>> profileRepository(
   required String userId,
 }) async {
   return ref.read(postServiceProvider.notifier).getPostsFromUser(userId);
-}
-
-/// 現在地から近い投稿を10件取得
-@riverpod
-Future<List<Posts>> getNearByPosts(Ref ref) async {
-  try {
-    final data = await ref.read(postServiceProvider.notifier).getNearbyPosts();
-    final posts = data.map(Posts.fromJson).toList();
-    return posts;
-  } on PostgrestException catch (_) {
-    return [];
-  }
-}
-
-/// 特定のレストランの投稿一覧を取得するプロバイダー
-@riverpod
-Future<Result<List<Model>, Exception>> restaurantReviews(
-  Ref ref, {
-  required double lat,
-  required double lng,
-}) async {
-  final result =
-      await ref.read(postServiceProvider.notifier).getRestaurantPosts(
-            lat: lat,
-            lng: lng,
-          );
-
-  return result.when(
-    success: (data) async {
-      final service = ref.read(postServiceProvider.notifier);
-      final futures = data.map((postData) async {
-        final userId = postData['user_id'] as String?;
-        if (userId == null) {
-          return null;
-        }
-        final userData = await service.getUserData(userId);
-        final user = Users.fromJson(userData);
-        final posts = Posts.fromJson(postData);
-        return Model(user, posts);
-      }).toList();
-      final models =
-          (await Future.wait<Model?>(futures)).whereType<Model>().toList();
-      return Success<List<Model>, Exception>(models);
-    },
-    failure: Failure<List<Model>, Exception>.new,
-  );
 }

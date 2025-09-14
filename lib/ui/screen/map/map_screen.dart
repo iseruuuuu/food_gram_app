@@ -8,7 +8,7 @@ import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
 import 'package:food_gram_app/core/local/force_update_checker.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
-import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
+import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/env.dart';
@@ -66,7 +66,7 @@ class MapScreen extends HookConsumerWidget {
             onErrorTap: () {
               ref
                 ..invalidate(locationProvider)
-                ..invalidate(postRepositoryProvider);
+                ..invalidate(mapPostRepositoryProvider);
             },
             onData: (value) {
               final isLocationEnabled =
