@@ -133,17 +133,17 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     required int postId,
     required VoidCallback openSnackBar,
   }) async {
-    if (state.isStore) {
-      final storeList = await preference.getStringList(PreferenceKey.storeList);
-      storeList.remove(postId.toString());
+    final storeList = await preference.getStringList(PreferenceKey.storeList);
+    final parsePostId = postId.toString();
+    final isCurrentlyStored = storeList.contains(parsePostId);
+
+    if (isCurrentlyStored) {
+      storeList.remove(parsePostId);
       await preference.setStringList(PreferenceKey.storeList, storeList);
       state = state.copyWith(isStore: false);
     } else {
-      final storeList = await preference.getStringList(PreferenceKey.storeList);
-      if (!storeList.contains(postId.toString())) {
-        storeList.add(postId.toString());
-        await preference.setStringList(PreferenceKey.storeList, storeList);
-      }
+      storeList.add(parsePostId);
+      await preference.setStringList(PreferenceKey.storeList, storeList);
       state = state.copyWith(isStore: true);
       openSnackBar();
     }
