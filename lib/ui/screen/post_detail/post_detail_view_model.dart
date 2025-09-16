@@ -355,7 +355,6 @@ final postDetailListFutureProvider =
           currentPostId: args.initialPost.id,
           lat: args.initialPost.lat,
           lng: args.initialPost.lng,
-          limit: 20,
         );
         return r.when(
           success: (models) => [
