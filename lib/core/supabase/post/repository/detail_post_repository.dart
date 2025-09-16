@@ -3,6 +3,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
+import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -56,6 +57,8 @@ class DetailPostRepository extends _$DetailPostRepository {
       );
       return await result.when(
         success: (data) async {
+          final blockList =
+              ref.read(blockListProvider).asData?.value ?? const <String>[];
           final sorted = [...data]..sort(
               (a, b) => ((b['id'] as num).toInt())
                   .compareTo((a['id'] as num).toInt()),
@@ -74,7 +77,10 @@ class DetailPostRepository extends _$DetailPostRepository {
               }
             }
           }
-          final futures = picked.map((postData) async {
+          final filtered = picked
+              .where((m) => !blockList.contains(m['user_id'] as String? ?? ''))
+              .toList(growable: false);
+          final futures = filtered.map((postData) async {
             final userId = postData['user_id'] as String?;
             if (userId == null) {
               return null;
@@ -110,7 +116,12 @@ class DetailPostRepository extends _$DetailPostRepository {
       );
       return await result.when(
         success: (data) async {
-          final futures = data.map((postData) async {
+          final blockList =
+              ref.read(blockListProvider).asData?.value ?? const <String>[];
+          final filtered = data
+              .where((m) => !blockList.contains(m['user_id'] as String? ?? ''))
+              .toList(growable: false);
+          final futures = filtered.map((postData) async {
             final userId = postData['user_id'] as String?;
             if (userId == null) {
               return null;

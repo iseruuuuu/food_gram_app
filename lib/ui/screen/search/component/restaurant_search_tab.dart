@@ -112,9 +112,7 @@ class RestaurantSearchTab extends HookConsumerWidget {
               ),
             ...categoriesData.where((category) => !category.isAllCategory).map(
               (category) {
-                final selectedCategoryName = useState(category.name);
-                final state =
-                    ref.watch(postsStreamProvider(selectedCategoryName.value));
+                final state = ref.watch(postsStreamProvider(category.name));
                 return Column(
                   children: [
                     Row(
