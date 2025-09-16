@@ -310,7 +310,7 @@ class PostService extends _$PostService {
     }
     // 数値IDへ変換（無効なIDは除外）
     final intIds = postIds
-        .map((e) => int.tryParse(e))
+        .map(int.tryParse)
         .whereType<int>()
         .toList(growable: false);
     if (intIds.isEmpty) {
