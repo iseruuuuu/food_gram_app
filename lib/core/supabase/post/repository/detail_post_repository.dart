@@ -17,8 +17,8 @@ class DetailPostRepository extends _$DetailPostRepository {
   /// 特定の投稿を取得
   Future<Result<Posts, Exception>> getPost(int postId) async {
     try {
-      final result =
-          await ref.read(detailPostServiceProvider.notifier).getPost(postId);
+      final service = ref.read(detailPostServiceProvider.notifier);
+      final result = await service.getPost(postId);
       return result.when(
         success: (data) =>
             Success(Posts.fromJson(data['post'] as Map<String, dynamic>)),
@@ -35,19 +35,18 @@ class DetailPostRepository extends _$DetailPostRepository {
     int index,
   ) async {
     try {
+      final service = ref.read(detailPostServiceProvider.notifier);
       if (index < 0 || index >= posts.length) {
         return Failure(Exception('index out of range: $index'));
       }
-      final post = posts[index];
-      final userId = post.userId;
+      final selectedPost = posts[index];
+      final userId = selectedPost.userId;
       if (userId.isEmpty) {
-        return Failure(Exception('post.userId is empty (index=$index)'));
+        return Failure(Exception('empty userId (index=$index)'));
       }
-      final userData = await ref
-          .read(detailPostServiceProvider.notifier)
-          .getUserData(userId);
+      final userData = await service.getUserData(userId);
       final user = Users.fromJson(userData);
-      return Success(Model(user, post));
+      return Success(Model(user, selectedPost));
     } on PostgrestException catch (e) {
       return Failure(e);
     }
@@ -59,9 +58,8 @@ class DetailPostRepository extends _$DetailPostRepository {
   }) async {
     try {
       final service = ref.read(detailPostServiceProvider.notifier);
-      final result = await service.getSequentialPosts(
-        currentPostId: currentPostId,
-      );
+      final result =
+          await service.getSequentialPosts(currentPostId: currentPostId);
       return await result.when(
         success: (data) async {
           final blockList =
