@@ -331,12 +331,20 @@ final postDetailListFutureProvider =
         final r = await postRepo.getPostsFromUser(userId);
         return r.when(
           success: (posts) {
+            final initial = args.initialPost;
             final sorted = [...posts]
               ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-            final others = sorted
-                .where((p) => p.id != args.initialPost.id)
-                .toList(growable: false);
-            return [args.initialPost, ...others];
+            final others = sorted.where((p) {
+              if (p.id == initial.id) {
+                return false;
+              }
+              final isBefore = p.createdAt.isBefore(initial.createdAt);
+              final isSameAndLowerId =
+                  p.createdAt.isAtSameMomentAs(initial.createdAt) &&
+                      p.id < initial.id;
+              return isBefore || isSameAndLowerId;
+            }).toList(growable: false);
+            return [initial, ...others];
           },
           failure: (_) => [args.initialPost],
         );
