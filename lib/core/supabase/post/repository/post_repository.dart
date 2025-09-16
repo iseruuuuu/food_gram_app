@@ -1,15 +1,13 @@
-import 'dart:math';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
-import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
+import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
-import 'package:food_gram_app/core/utils/provider/location.dart';
+import 'package:food_gram_app/core/utils/geo_distance.dart';
 import 'package:logger/logger.dart';
-import 'package:maplibre_gl/maplibre_gl.dart' as maplibre;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -21,50 +19,6 @@ class PostRepository extends _$PostRepository {
   Future<void> build() async {}
   final logger = Logger();
 
-  /// 全ての投稿を取得
-  Future<Result<List<Posts>, Exception>> getPosts() async {
-    try {
-      final data = await ref.read(postServiceProvider.notifier).getPosts();
-      return Success(data.map(Posts.fromJson).toList());
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
-  }
-
-  /// 特定の投稿とそのユーザー情報を取得
-  Future<Result<Model, Exception>> getPostData(
-    List<Map<String, dynamic>> data,
-    int index,
-  ) async {
-    try {
-      final result =
-          await ref.read(postServiceProvider.notifier).getPostData(data, index);
-      final posts = Posts.fromJson(result['post'] as Map<String, dynamic>);
-      final users = Users.fromJson(result['user'] as Map<String, dynamic>);
-      return Success(Model(users, posts));
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
-  }
-
-  /// 特定の投稿を取得
-  Future<Result<Posts, Exception>> getPost(int postId) async {
-    try {
-      final result =
-          await ref.read(postServiceProvider.notifier).getPost(postId);
-      return result.when(
-        success: (data) =>
-            Success(Posts.fromJson(data['post'] as Map<String, dynamic>)),
-        failure: Failure.new,
-      );
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
-  }
-
   /// 複数の投稿とそのユーザー情報を取得（投稿詳細画面のリスト用）
   Future<Result<List<Model>, Exception>> getPostsWithUsers(
     List<int> postIds,
@@ -73,7 +27,7 @@ class PostRepository extends _$PostRepository {
       if (postIds.isEmpty) {
         return const Success(<Model>[]);
       }
-      final service = ref.read(postServiceProvider.notifier);
+      final service = ref.read(detailPostServiceProvider.notifier);
       final futures = postIds.map((postId) async {
         final result = await service.getPost(postId);
         return result.when(
@@ -91,76 +45,6 @@ class PostRepository extends _$PostRepository {
       final models =
           (await Future.wait<Model?>(futures)).whereType<Model>().toList();
       return Success<List<Model>, Exception>(models);
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure<List<Model>, Exception>(e);
-    }
-  }
-
-  /// 投稿詳細画面用：ID順で次の投稿のリストを取得
-  Future<Result<List<Model>, Exception>> getSequentialPosts({
-    required int currentPostId,
-    int limit = 10,
-  }) async {
-    try {
-      final service = ref.read(postServiceProvider.notifier);
-      final result = await service.getSequentialPosts(
-        currentPostId: currentPostId,
-        limit: limit,
-      );
-      return await result.when(
-        success: (data) async {
-          final futures = data.map((postData) async {
-            final userId = postData['user_id'] as String?;
-            if (userId == null) {
-              return null;
-            }
-            final userData = await service.getUserData(userId);
-            return Model(Users.fromJson(userData), Posts.fromJson(postData));
-          }).toList();
-          final models =
-              (await Future.wait<Model?>(futures)).whereType<Model>().toList();
-          return Success<List<Model>, Exception>(models);
-        },
-        failure: (e) async => Failure<List<Model>, Exception>(e),
-      );
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure<List<Model>, Exception>(e);
-    }
-  }
-
-  /// 投稿詳細画面用：関連する投稿のリストを取得（同じレストランの投稿など）
-  Future<Result<List<Model>, Exception>> getRelatedPosts({
-    required int currentPostId,
-    required double lat,
-    required double lng,
-    int limit = 10,
-  }) async {
-    try {
-      final service = ref.read(postServiceProvider.notifier);
-      final result = await service.getRelatedPosts(
-        currentPostId: currentPostId,
-        lat: lat,
-        lng: lng,
-        limit: limit,
-      );
-      return await result.when(
-        success: (data) async {
-          final futures = data.map((postData) async {
-            final userId = postData['user_id'] as String?;
-            if (userId == null) {
-              return null;
-            }
-            final userData = await service.getUserData(userId);
-            return Model(Users.fromJson(userData), Posts.fromJson(postData));
-          }).toList();
-          final models =
-              (await Future.wait<Model?>(futures)).whereType<Model>().toList();
-          return Success<List<Model>, Exception>(models);
-        },
-        failure: (e) async => Failure<List<Model>, Exception>(e),
-      );
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
       return Failure<List<Model>, Exception>(e);
@@ -195,8 +79,72 @@ class PostRepository extends _$PostRepository {
   /// 特定ユーザーの投稿を取得
   Future<Result<List<Posts>, Exception>> getPostsFromUser(String userId) async {
     try {
-      final data =
-          await ref.read(postServiceProvider.notifier).getPostsFromUser(userId);
+      final data = await ref
+          .read(postServiceProvider.notifier)
+          .getPostsFromUserPaged(userId, limit: 60);
+      return Success(data.map(Posts.fromJson).toList());
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
+  }
+
+  /// 特定ユーザーの投稿を追加取得（ページング）
+  Future<Result<List<Posts>, Exception>> getPostsFromUserMore(
+    String userId, {
+    required int beforeId,
+    int limit = 60,
+  }) async {
+    try {
+      final data = await ref
+          .read(postServiceProvider.notifier)
+          .getPostsFromUserPaged(userId, limit: limit, beforeId: beforeId);
+      return Success(data.map(Posts.fromJson).toList());
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
+  }
+
+  /// 近い順（初期投稿の緯度経度から距離昇順）
+  Future<Result<List<Posts>, Exception>> getNearbyFromInitial({
+    required Posts initialPost,
+  }) async {
+    try {
+      final posts = await ref.read(getNearByPostsProvider.future);
+      // 初期投稿と同一座標を起点に距離昇順
+      posts.sort((a, b) {
+        final da = geoKilometers(
+          lat1: initialPost.lat,
+          lon1: initialPost.lng,
+          lat2: a.lat,
+          lon2: a.lng,
+        );
+        final db = geoKilometers(
+          lat1: initialPost.lat,
+          lon1: initialPost.lng,
+          lat2: b.lat,
+          lon2: b.lng,
+        );
+        return da.compareTo(db);
+      });
+      final result =
+          posts.where((p) => p.id != initialPost.id).take(15).toList();
+      return Success(result);
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
+      return Failure(e);
+    }
+  }
+
+  /// レストラン名で取得（新しい順）
+  Future<Result<List<Posts>, Exception>> getByRestaurantName({
+    required String restaurant,
+  }) async {
+    try {
+      final data = await ref
+          .read(postServiceProvider.notifier)
+          .getPostsByRestaurantName(restaurant);
       return Success(data.map(Posts.fromJson).toList());
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
@@ -220,30 +168,6 @@ class PostRepository extends _$PostRepository {
       return Failure(e);
     }
   }
-
-  /// マップ表示用の全投稿を取得
-  Future<Result<List<Posts>, Exception>> getRestaurantPosts({
-    required double lat,
-    required double lng,
-  }) async {
-    final result =
-        await ref.read(postServiceProvider.notifier).getRestaurantPosts(
-              lat: lat,
-              lng: lng,
-            );
-
-    return result.when(
-      success: (data) => Success(data.map(Posts.fromJson).toList()),
-      failure: Failure.new,
-    );
-  }
-}
-
-/// マップ表示用の全投稿を取得🗾
-@riverpod
-Future<List<Posts>> mapRepository(Ref ref) async {
-  final response = await ref.read(postServiceProvider.notifier).getMapPosts();
-  return response.map(Posts.fromJson).toList();
 }
 
 /// 特定ユーザーの投稿を取得
@@ -253,95 +177,4 @@ Future<List<Map<String, dynamic>>> profileRepository(
   required String userId,
 }) async {
   return ref.read(postServiceProvider.notifier).getPostsFromUser(userId);
-}
-
-/// 現在地から近い投稿を10件取得
-@riverpod
-Future<List<Posts>> getNearByPosts(Ref ref) async {
-  /// 投稿データの取得
-  final posts = await ref.watch(postStreamProvider.future);
-  final currentLocation = await ref.read(locationProvider.future);
-  if (currentLocation == const maplibre.LatLng(0, 0)) {
-    return [];
-  }
-
-  /// 同じ位置の投稿をフィルタリング（最新のもののみ残す）
-  final uniqueLocationPosts = <String, Posts>{};
-  for (final post in posts.map(Posts.fromJson)) {
-    final locationKey = '${post.lat}_${post.lng}';
-    if (!uniqueLocationPosts.containsKey(locationKey)) {
-      uniqueLocationPosts[locationKey] = post;
-    }
-  }
-
-  /// 距離計算と並び替え
-  final postsWithDistance = uniqueLocationPosts.values.map((post) {
-    final distance = _calculateDistance(
-      currentLocation.latitude,
-      currentLocation.longitude,
-      post.lat,
-      post.lng,
-    );
-    return (post: post, distance: distance);
-  }).toList()
-    ..sort((a, b) => a.distance.compareTo(b.distance));
-  return postsWithDistance.take(10).map((item) => item.post).toList();
-}
-
-/// 特定のレストランの投稿一覧を取得するプロバイダー
-@riverpod
-Future<Result<List<Model>, Exception>> restaurantReviews(
-  Ref ref, {
-  required double lat,
-  required double lng,
-}) async {
-  final result =
-      await ref.read(postServiceProvider.notifier).getRestaurantPosts(
-            lat: lat,
-            lng: lng,
-          );
-
-  return result.when(
-    success: (data) async {
-      final service = ref.read(postServiceProvider.notifier);
-      final futures = data.map((postData) async {
-        final userId = postData['user_id'] as String?;
-        if (userId == null) {
-          return null;
-        }
-        final userData = await service.getUserData(userId);
-        final user = Users.fromJson(userData);
-        final posts = Posts.fromJson(postData);
-        return Model(user, posts);
-      }).toList();
-      final models =
-          (await Future.wait<Model?>(futures)).whereType<Model>().toList();
-      return Success<List<Model>, Exception>(models);
-    },
-    failure: Failure<List<Model>, Exception>.new,
-  );
-}
-
-/// 2点間の距離を計算（Haversine公式）
-double _calculateDistance(
-  double lat1,
-  double lon1,
-  double lat2,
-  double lon2,
-) {
-  const double earthRadius = 6371;
-  final dLat = _toRadians(lat2 - lat1);
-  final dLon = _toRadians(lon2 - lon1);
-
-  final a = sin(dLat / 2) * sin(dLat / 2) +
-      cos(_toRadians(lat1)) *
-          cos(_toRadians(lat2)) *
-          sin(dLon / 2) *
-          sin(dLon / 2);
-  final c = 2 * atan2(sqrt(a), sqrt(1 - a));
-  return earthRadius * c;
-}
-
-double _toRadians(double degree) {
-  return degree * pi / 180;
 }

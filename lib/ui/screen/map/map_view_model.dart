@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
+import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/ui/component/app_pin_widget.dart';
 import 'package:food_gram_app/ui/screen/map/map_state.dart';
@@ -96,7 +96,7 @@ class MapViewModel extends _$MapViewModel {
           state = state.copyWith(isLoading: true);
           final latLng = symbol.options.geometry;
           final restaurant = await ref
-              .read(postRepositoryProvider.notifier)
+              .read(mapPostRepositoryProvider.notifier)
               .getRestaurantPosts(lat: latLng!.latitude, lng: latLng.longitude);
           restaurant.whenOrNull(success: (posts) => onPinTap(posts));
           await state.mapController?.animateCamera(

@@ -9,7 +9,6 @@ import 'package:food_gram_app/core/supabase/auth/providers/auth_state_provider.d
 import 'package:food_gram_app/router/amination.dart';
 import 'package:food_gram_app/ui/screen/screen.dart';
 import 'package:go_router/go_router.dart';
-import 'package:heroine/heroine.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'router.g.dart';
@@ -18,7 +17,6 @@ part 'router.g.dart';
 GoRouter router(Ref ref) {
   final authState = ref.watch(authStateProvider);
   return GoRouter(
-    observers: [HeroineController()],
     initialLocation: '/${RouterPath.splash}',
     redirect: (context, state) async {
       final preference = Preference();
@@ -115,6 +113,7 @@ final timeLineRouter = GoRoute(
           PostDetailScreen(
             posts: model.posts,
             users: model.users,
+            type: PostDetailScreenType.timeline,
           ),
         );
       },
@@ -139,7 +138,25 @@ final timeLineRouter = GoRoute(
       pageBuilder: (context, state) {
         final users = state.extra! as Users;
         return slideUpTransition(
-          UserProfileScreen(users: users),
+          UserProfileScreen(
+            users: users,
+            routerPathForDetail: RouterPath.timeLineProfileDetail,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path:
+          '${RouterPath.timeLine}/${RouterPath.timeLineDetail}/${RouterPath.timeLineProfile}/${RouterPath.timeLineProfileDetail}',
+      name: RouterPath.timeLineProfileDetail,
+      pageBuilder: (context, state) {
+        final model = state.extra! as Model;
+        return slideUpTransition(
+          PostDetailScreen(
+            posts: model.posts,
+            users: model.users,
+            type: PostDetailScreenType.profile,
+          ),
         );
       },
     ),
@@ -195,6 +212,21 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
+      path:
+          '${RouterPath.myProfile}/${RouterPath.storedPost}/${RouterPath.storedPostDetail}',
+      name: RouterPath.storedPostDetail,
+      pageBuilder: (context, state) {
+        final model = state.extra! as Model;
+        return slideUpTransition(
+          PostDetailScreen(
+            posts: model.posts,
+            users: model.users,
+            type: PostDetailScreenType.stored,
+          ),
+        );
+      },
+    ),
+    GoRoute(
       path: '${RouterPath.myProfile}/${RouterPath.myProfilePost}',
       name: RouterPath.myProfilePost,
       pageBuilder: (context, state) {
@@ -219,6 +251,7 @@ final myProfileRouter = GoRoute(
           PostDetailScreen(
             posts: model.posts,
             users: model.users,
+            type: PostDetailScreenType.myprofile,
           ),
         );
       },
@@ -313,6 +346,7 @@ final mapRouter = GoRoute(
           PostDetailScreen(
             posts: model.posts,
             users: model.users,
+            type: PostDetailScreenType.map,
           ),
         );
       },
@@ -337,7 +371,25 @@ final mapRouter = GoRoute(
       pageBuilder: (context, state) {
         final users = state.extra! as Users;
         return slideUpTransition(
-          UserProfileScreen(users: users),
+          UserProfileScreen(
+            users: users,
+            routerPathForDetail: RouterPath.mapProfileDetail,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path:
+          '${RouterPath.map}/${RouterPath.mapDetail}/${RouterPath.mapProfile}/${RouterPath.mapProfileDetail}',
+      name: RouterPath.mapProfileDetail,
+      pageBuilder: (context, state) {
+        final model = state.extra! as Model;
+        return slideUpTransition(
+          PostDetailScreen(
+            posts: model.posts,
+            users: model.users,
+            type: PostDetailScreenType.profile,
+          ),
         );
       },
     ),
@@ -400,6 +452,21 @@ final searchRouter = GoRoute(
         );
       },
     ),
+    GoRoute(
+      path:
+          '${RouterPath.search}/${RouterPath.searchDetail}/${RouterPath.searchDetailPost}',
+      name: RouterPath.searchDetailPost,
+      pageBuilder: (context, state) {
+        final model = state.extra! as Model;
+        return slideUpTransition(
+          PostDetailScreen(
+            posts: model.posts,
+            users: model.users,
+            type: PostDetailScreenType.search,
+          ),
+        );
+      },
+    ),
   ],
 );
 
@@ -429,7 +496,9 @@ final class RouterPath {
   static const String myProfileDetailPost = 'my_profile_detail_post';
   static const String mapDetailPost = 'map_detail_post';
   static const String mapProfile = 'map_profile';
+  static const String mapProfileDetail = 'map_profile_detail';
   static const String timeLineProfile = 'time_line_profile';
+  static const String timeLineProfileDetail = 'time_line_profile_detail';
   static const String timeLineRestaurantReview = 'time_line_restaurant_review';
   static const String mapRestaurantReview = 'map_restaurant_review';
   static const String myProfileRestaurantReview =
@@ -441,4 +510,6 @@ final class RouterPath {
   static const String searchRestaurantReview = 'search_restaurant_review';
   static const String searchDetail = 'search_detail';
   static const String storedPost = 'stored_post';
+  static const String searchDetailPost = 'search_detail_post';
+  static const String storedPostDetail = 'stored_post_detail';
 }

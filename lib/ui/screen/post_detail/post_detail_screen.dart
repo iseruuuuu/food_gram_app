@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -21,11 +22,13 @@ class PostDetailScreen extends HookConsumerWidget {
   const PostDetailScreen({
     required this.posts,
     required this.users,
+    required this.type,
     super.key,
   });
 
   final Posts posts;
   final Users users;
+  final PostDetailScreenType type;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -48,16 +51,35 @@ class PostDetailScreen extends HookConsumerWidget {
     final loading = ref.watch(loadingProvider);
     final currentUser = ref.watch(currentUserProvider);
     final detailState = ref.watch(postDetailViewModelProvider());
-    final listState = ref.watch(postDetailListProvider(memoizedPosts));
+    final listState = ref.watch(
+      postDetailListFutureProvider(
+        PostDetailListArgs(
+          initialPost: memoizedPosts,
+          mode: switch (type) {
+            PostDetailScreenType.timeline => 'timeline',
+            PostDetailScreenType.myprofile => 'myprofile',
+            PostDetailScreenType.profile => 'profile',
+            PostDetailScreenType.map => 'nearby',
+            PostDetailScreenType.search => 'search',
+            PostDetailScreenType.stored => 'stored',
+          },
+          profileUserId:
+              type == PostDetailScreenType.profile ? users.userId : null,
+          restaurant:
+              type == PostDetailScreenType.search ? posts.restaurant : null,
+        ),
+      ),
+    );
+    final isInitialLoading = listState.isLoading;
     return PopScope(
-      canPop: !loading,
+      canPop: !(loading || isInitialLoading),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
-          automaticallyImplyLeading: !loading,
+          automaticallyImplyLeading: !(loading || isInitialLoading),
           surfaceTintColor: Colors.transparent,
-          leading: loading || menuLoading.value
+          leading: loading || menuLoading.value || isInitialLoading
               ? const SizedBox.shrink()
               : GestureDetector(
                   onTap: () => context.pop(),
@@ -67,7 +89,7 @@ class PostDetailScreen extends HookConsumerWidget {
                   ),
                 ),
           actions: [
-            if (!loading && !menuLoading.value)
+            if (!loading && !menuLoading.value && !isInitialLoading)
               IconButton(
                 onPressed: () async {
                   await showModalBottomSheet<void>(
@@ -164,7 +186,24 @@ class PostDetailScreen extends HookConsumerWidget {
             ],
           ),
         ),
+        bottomNavigationBar: isInitialLoading
+            ? null
+            : const SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 8, top: 4),
+                  child: AdmobBanner(id: 'detail_footer'),
+                ),
+              ),
       ),
     );
   }
+}
+
+enum PostDetailScreenType {
+  timeline,
+  myprofile,
+  profile,
+  stored,
+  map,
+  search,
 }

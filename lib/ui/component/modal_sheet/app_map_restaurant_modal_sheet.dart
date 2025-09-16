@@ -53,7 +53,7 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
                             .then((value) {
                           if (value != null) {
                             ref
-                              ..invalidate(postStreamProvider)
+                              ..invalidate(postsStreamProvider)
                               ..invalidate(blockListProvider);
                           }
                         });

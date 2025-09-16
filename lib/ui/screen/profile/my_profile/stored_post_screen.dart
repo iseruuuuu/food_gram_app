@@ -31,7 +31,13 @@ class StoredPostScreen extends HookConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
-        title: Text(l10n.savedPosts),
+        title: Text(
+          l10n.savedPosts,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () => context.pop(),
@@ -43,23 +49,12 @@ class StoredPostScreen extends HookConsumerWidget {
           if (posts.isEmpty) {
             return const AppFavoritePostEmpty();
           }
-          final data = posts
-              .map(
-                (post) => {
-                  'id': post.id,
-                  'food_image': post.foodImage,
-                  'user_id': post.userId,
-                  'food_name': post.foodName,
-                  'comment': post.comment,
-                  'heart': post.heart,
-                },
-              )
-              .toList();
           return CustomScrollView(
             slivers: [
               AppListView(
-                data: data,
-                routerPath: RouterPath.myProfileDetail,
+                posts: posts,
+                routerPath: RouterPath.storedPostDetail,
+                type: AppListViewType.stored,
                 refresh: () => ref
                     .read(storedPostViewModelProvider.notifier)
                     .loadStoredPosts(),

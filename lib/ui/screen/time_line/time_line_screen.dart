@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -7,8 +8,6 @@ import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
-import 'package:food_gram_app/ui/screen/time_line/components/category_tab.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -18,24 +17,22 @@ class TimeLineScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedCategoryName = useState('');
-    final postState =
-        ref.watch(postStreamByCategoryProvider(selectedCategoryName.value));
+    final categoriesData = ref.watch<List<CategoryData>>(categoriesProvider);
+    final state = ref.watch(postsStreamProvider(selectedCategoryName.value));
+    final tabController =
+        useTabController(initialLength: categoriesData.length);
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(0),
-        child: AppBar(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-        ),
+        child: AppBar(backgroundColor: Colors.white),
       ),
-      backgroundColor: Colors.white,
       body: RefreshIndicator(
         color: Colors.black,
+        backgroundColor: Colors.white,
         onRefresh: () async {
           await Future<void>.delayed(const Duration(seconds: 1));
-          ref.invalidate(
-            postStreamByCategoryProvider(selectedCategoryName.value),
-          );
+          ref.invalidate(postsStreamProvider);
         },
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(
@@ -45,34 +42,60 @@ class TimeLineScreen extends HookConsumerWidget {
             SliverToBoxAdapter(
               child: Column(
                 children: [
-                  const Gap(8),
-                  CategoryTab(selectedCategoryName: selectedCategoryName),
-                  const Gap(4),
+                  TabBar(
+                    tabAlignment: TabAlignment.start,
+                    controller: tabController,
+                    indicatorWeight: 3,
+                    isScrollable: true,
+                    automaticIndicatorColorAdjustment: false,
+                    unselectedLabelColor: Colors.grey,
+                    labelColor: Colors.black,
+                    indicatorColor: Colors.black,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    splashFactory: NoSplash.splashFactory,
+                    overlayColor: WidgetStateProperty.all(Colors.transparent),
+                    padding: EdgeInsets.zero,
+                    tabs: categoriesData.map((category) {
+                      return Tab(
+                        icon: Text(
+                          category.displayIcon,
+                          style: const TextStyle(fontSize: 30),
+                        ),
+                      );
+                    }).toList(),
+                    onTap: (index) {
+                      final category = categoriesData[index];
+                      selectedCategoryName.value =
+                          category.isAllCategory ? '' : category.name;
+                    },
+                  ),
                 ],
               ),
             ),
-            if (postState.hasValue)
-              postState.value!.isNotEmpty
+            state.when(
+              data: (posts) => posts.isNotEmpty
                   ? AppListView(
-                      data: postState.value!,
+                      posts: posts,
                       routerPath: RouterPath.timeLineDetail,
+                      type: AppListViewType.timeline,
                       refresh: () {
                         ref
-                          ..invalidate(postStreamProvider)
+                          ..invalidate(
+                            postsStreamProvider,
+                          )
                           ..invalidate(blockListProvider);
                       },
                     )
                   : const SliverToBoxAdapter(child: AppEmpty()),
-            if (postState.isLoading)
-              const SliverToBoxAdapter(
-                child: AppListViewSkeleton(),
-              ),
-            if (postState.hasError)
-              SliverToBoxAdapter(
+              loading: () =>
+                  const SliverToBoxAdapter(child: AppListViewSkeleton()),
+              error: (_, __) => SliverToBoxAdapter(
                 child: AppErrorWidget(
-                  onTap: () => ref.refresh(postStreamProvider),
+                  onTap: () => ref
+                      .refresh(postsStreamProvider(selectedCategoryName.value)),
                 ),
               ),
+            ),
           ],
         ),
       ),
@@ -91,7 +114,7 @@ class TimeLineScreen extends HookConsumerWidget {
                 .then((value) async {
               if (value != null) {
                 ref
-                  ..invalidate(postStreamProvider)
+                  ..invalidate(postsStreamProvider)
                   ..invalidate(blockListProvider);
               }
             });
