@@ -39,7 +39,6 @@ Future<PaginationList<Restaurant>> restaurantRepository(
 
     addUniqueRestaurants(google);
 
-    /// 現在地からの距離でソート
     restaurants.sort((a, b) {
       final lat1 = currentLocation.latitude;
       final lon1 = currentLocation.longitude;
@@ -63,6 +62,3 @@ Future<PaginationList<Restaurant>> restaurantRepository(
     return [];
   }
 }
-
-/// ハバーサインの公式で2つの緯度・経度の距離を計算
-// 距離計算はユーティリティに移行
