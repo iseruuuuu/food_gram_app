@@ -42,18 +42,10 @@ Future<PaginationList<Restaurant>> restaurantRepository(
     restaurants.sort((a, b) {
       final lat1 = currentLocation.latitude;
       final lon1 = currentLocation.longitude;
-      final distanceA = geoKilometers(
-        lat1: lat1,
-        lon1: lon1,
-        lat2: a.lat,
-        lon2: a.lng,
-      );
-      final distanceB = geoKilometers(
-        lat1: lat1,
-        lon1: lon1,
-        lat2: b.lat,
-        lon2: b.lng,
-      );
+      final distanceA =
+          geoKilometers(lat1: lat1, lon1: lon1, lat2: a.lat, lon2: a.lng);
+      final distanceB =
+          geoKilometers(lat1: lat1, lon1: lon1, lat2: b.lat, lon2: b.lng);
       return distanceA.compareTo(distanceB);
     });
 
