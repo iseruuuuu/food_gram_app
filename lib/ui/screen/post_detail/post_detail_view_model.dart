@@ -396,14 +396,20 @@ final postDetailListFutureProvider =
         return r.when(
           success: (posts) {
             // 取得結果をID降順の順序に揃える（欠損は除外）
+            final initial = args.initialPost;
             final mapById = {for (final p in posts) p.id: p};
             final ordered = idOrder
                 .map((id) => mapById[id])
                 .whereType<Posts>()
                 .toList(growable: false);
-            return ordered;
+            // 選択した投稿より下（古い側）のみを取得
+            final index = ordered.indexWhere((p) => p.id == initial.id);
+            final tail = index >= 0 && index + 1 < ordered.length
+                ? ordered.sublist(index + 1)
+                : <Posts>[];
+            return [initial, ...tail];
           },
-          failure: (_) => <Posts>[],
+          failure: (_) => [args.initialPost],
         );
       }
     default:
