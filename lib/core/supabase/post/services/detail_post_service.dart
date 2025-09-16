@@ -85,7 +85,6 @@ class DetailPostService extends _$DetailPostService {
     required int currentPostId,
     required double lat,
     required double lng,
-    int limit = 10,
   }) async {
     try {
       final posts = await supabase
@@ -97,7 +96,7 @@ class DetailPostService extends _$DetailPostService {
           .gte('lng', lng - 0.00001)
           .lte('lng', lng + 0.00001)
           .order('created_at', ascending: false)
-          .limit(limit);
+          .limit(15);
       return Success(posts);
     } on PostgrestException catch (e) {
       return Failure(e);

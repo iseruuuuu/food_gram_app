@@ -109,7 +109,6 @@ class DetailPostRepository extends _$DetailPostRepository {
     required int currentPostId,
     required double lat,
     required double lng,
-    int limit = 10,
   }) async {
     try {
       final service = ref.read(detailPostServiceProvider.notifier);
@@ -117,7 +116,6 @@ class DetailPostRepository extends _$DetailPostRepository {
         currentPostId: currentPostId,
         lat: lat,
         lng: lng,
-        limit: limit,
       );
       return await result.when(
         success: (data) async {
