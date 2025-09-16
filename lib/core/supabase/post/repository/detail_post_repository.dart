@@ -35,10 +35,17 @@ class DetailPostRepository extends _$DetailPostRepository {
     int index,
   ) async {
     try {
+      if (index < 0 || index >= posts.length) {
+        return Failure(Exception('index out of range: $index'));
+      }
       final post = posts[index];
+      final userId = post.userId;
+      if (userId.isEmpty) {
+        return Failure(Exception('post.userId is empty (index=$index)'));
+      }
       final userData = await ref
           .read(detailPostServiceProvider.notifier)
-          .getUserData(post.userId);
+          .getUserData(userId);
       final user = Users.fromJson(userData);
       return Success(Model(user, post));
     } on PostgrestException catch (e) {
