@@ -31,7 +31,7 @@ class AppListView extends HookConsumerWidget {
     final supabase = ref.watch(supabaseProvider);
     final subscribedUsersAsync = ref.watch(subscribedUsersProvider);
     if (posts.isEmpty) {
-      return const AppEmpty();
+      return const SliverToBoxAdapter(child: AppEmpty());
     }
     final rowCount = (posts.length / 3).ceil();
     const adEvery = 30;
