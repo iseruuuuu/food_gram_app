@@ -109,7 +109,6 @@ class PostRepository extends _$PostRepository {
   /// 近い順（初期投稿の緯度経度から距離昇順）
   Future<Result<List<Posts>, Exception>> getNearbyFromInitial({
     required Posts initialPost,
-    int limit = 20,
   }) async {
     try {
       final posts = await ref.read(getNearByPostsProvider.future);
@@ -130,7 +129,7 @@ class PostRepository extends _$PostRepository {
         return da.compareTo(db);
       });
       final result =
-          posts.where((p) => p.id != initialPost.id).take(limit).toList();
+          posts.where((p) => p.id != initialPost.id).take(15).toList();
       return Success(result);
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
