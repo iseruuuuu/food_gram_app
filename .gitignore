@@ -77,5 +77,8 @@ android/app/google-services.json
 android/key.properties
 android/secret.properties
 
+# iOS機密情報
+ios/Runner/GoogleService-Info.plist
+
 # env file
 dart_defines/
