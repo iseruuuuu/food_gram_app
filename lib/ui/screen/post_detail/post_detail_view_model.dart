@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
+import 'package:food_gram_app/core/model/post_deail_list_mode.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
-import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/delete_service.dart';
-import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_state.dart';
@@ -199,9 +199,8 @@ class PostDetailViewModel extends _$PostDetailViewModel {
   }
 
   /// ユーザーデータを取得
-  //TODO できればここもRepositoryに移行したい
   Future<Map<String, dynamic>> getUserData(String userId) async {
-    return ref.read(detailPostServiceProvider.notifier).getUserData(userId);
+    return ref.read(detailPostRepositoryProvider.notifier).getUserData(userId);
   }
 }
 
@@ -243,25 +242,24 @@ class PostsViewModel extends _$PostsViewModel {
   }
 }
 
-/// 投稿詳細のリストを type に応じて出し分け
-/// mode: 'timeline' | 'myprofile' | 'profile' | 'nearby' | 'search' | 'stored'
+/// 投稿詳細のリストを mode に応じて出し分け
 @immutable
-class PostDetailListArgs {
-  const PostDetailListArgs({
+class PostDetailListInput {
+  const PostDetailListInput({
     required this.initialPost,
     required this.mode,
     this.profileUserId,
     this.restaurant,
   });
   final Posts initialPost;
-  final String mode;
-  final String? profileUserId; // profile 用
-  final String? restaurant; // search 用
+  final PostDetailListMode mode;
+  final String? profileUserId;
+  final String? restaurant;
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        other is PostDetailListArgs &&
+        other is PostDetailListInput &&
             other.mode == mode &&
             other.profileUserId == profileUserId &&
             other.restaurant == restaurant &&
@@ -277,141 +275,16 @@ class PostDetailListArgs {
       );
 }
 
-final postDetailListFutureProvider =
-    FutureProvider.family<List<Posts>, PostDetailListArgs>((ref, args) async {
-  final detailRepo = ref.read(detailPostRepositoryProvider.notifier);
-  final postRepo = ref.read(postRepositoryProvider.notifier);
-  switch (args.mode) {
-    case 'timeline':
-      {
-        final r = await detailRepo.getSequentialPosts(
-          currentPostId: args.initialPost.id,
-        );
-        return r.when(
-          success: (models) => [
-            args.initialPost,
-            ...models.map((m) => m.posts),
-          ],
-          failure: (_) => [args.initialPost],
-        );
-      }
-    case 'myprofile':
-      {
-        final currentUser = ref.watch(currentUserProvider);
-        if (currentUser == null) {
-          return [args.initialPost];
-        }
-        final r = await postRepo.getPostsFromUser(currentUser);
-        return r.when(
-          success: (posts) {
-            final initial = args.initialPost;
-            final sorted = [...posts]
-              ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-            final others = sorted.where((p) {
-              if (p.id == initial.id) {
-                return false;
-              }
-              final isBefore = p.createdAt.isBefore(initial.createdAt);
-              final isSameAndLowerId =
-                  p.createdAt.isAtSameMomentAs(initial.createdAt) &&
-                      p.id < initial.id;
-              return isBefore || isSameAndLowerId;
-            }).toList(growable: false);
-            return [initial, ...others];
-          },
-          failure: (_) => [args.initialPost],
-        );
-      }
-    case 'profile':
-      {
-        final userId = args.profileUserId;
-        if (userId == null || userId.isEmpty) {
-          return [args.initialPost];
-        }
-        final r = await postRepo.getPostsFromUser(userId);
-        return r.when(
-          success: (posts) {
-            final initial = args.initialPost;
-            final sorted = [...posts]
-              ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-            final others = sorted.where((p) {
-              if (p.id == initial.id) {
-                return false;
-              }
-              final isBefore = p.createdAt.isBefore(initial.createdAt);
-              final isSameAndLowerId =
-                  p.createdAt.isAtSameMomentAs(initial.createdAt) &&
-                      p.id < initial.id;
-              return isBefore || isSameAndLowerId;
-            }).toList(growable: false);
-            return [initial, ...others];
-          },
-          failure: (_) => [args.initialPost],
-        );
-      }
-    case 'nearby':
-      {
-        final r = await detailRepo.getRelatedPosts(
-          currentPostId: args.initialPost.id,
-          lat: args.initialPost.lat,
-          lng: args.initialPost.lng,
-        );
-        return r.when(
-          success: (models) => [
-            args.initialPost,
-            ...models.map((m) => m.posts),
-          ],
-          failure: (_) => [args.initialPost],
-        );
-      }
-    case 'search':
-      {
-        final restaurant = args.restaurant ?? args.initialPost.restaurant;
-        final r = await postRepo.getByRestaurantName(restaurant: restaurant);
-        return r.when(
-          success: (posts) {
-            final others = posts
-                .where((p) => p.id != args.initialPost.id)
-                .toList(growable: false);
-            return [args.initialPost, ...others];
-          },
-          failure: (_) => [args.initialPost],
-        );
-      }
-    case 'stored':
-      {
-        final storeList =
-            await Preference().getStringList(PreferenceKey.storeList);
-        if (storeList.isEmpty) {
-          return <Posts>[];
-        }
-        // 数値IDに変換して降順に並べ替え
-        final idOrder = storeList.map(int.tryParse).whereType<int>().toList()
-          ..sort((a, b) => b.compareTo(a));
-        if (idOrder.isEmpty) {
-          return <Posts>[];
-        }
-        final r = await postRepo.getStoredPosts(storeList);
-        return r.when(
-          success: (posts) {
-            // 取得結果をID降順の順序に揃える（欠損は除外）
-            final initial = args.initialPost;
-            final mapById = {for (final p in posts) p.id: p};
-            final ordered = idOrder
-                .map((id) => mapById[id])
-                .whereType<Posts>()
-                .toList(growable: false);
-            // 選択した投稿より下（古い側）のみを取得
-            final index = ordered.indexWhere((p) => p.id == initial.id);
-            final tail = index >= 0 && index + 1 < ordered.length
-                ? ordered.sublist(index + 1)
-                : <Posts>[];
-            return [initial, ...tail];
-          },
-          failure: (_) => [args.initialPost],
-        );
-      }
-    default:
-      return [args.initialPost];
-  }
-});
+@riverpod
+Future<List<Posts>> postDetailList(
+  Ref ref,
+  PostDetailListInput listInput,
+) async {
+  final repository = ref.read(detailPostRepositoryProvider.notifier);
+  return repository.getPostDetailList(
+    initialPost: listInput.initialPost,
+    mode: listInput.mode,
+    profileUserId: listInput.profileUserId,
+    restaurant: listInput.restaurant,
+  );
+}

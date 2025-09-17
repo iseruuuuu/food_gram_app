@@ -102,7 +102,7 @@ class RestaurantSearchTab extends HookConsumerWidget {
                       },
                     );
                   },
-                  loading: AppListViewSkeleton.new,
+                  loading: AppSearchListViewSkeleton.new,
                   error: (error, stack) => Container(
                     color: Colors.grey[300],
                     child: const Icon(Icons.error, color: Colors.grey),
@@ -184,7 +184,10 @@ class RestaurantSearchTab extends HookConsumerWidget {
                           ),
                         );
                       },
-                      loading: AppListViewSkeleton.new,
+                      loading: () => const SizedBox(
+                        height: 100,
+                        child: AppSearchListViewSkeleton(),
+                      ),
                       error: (error, stack) => Container(
                         color: Colors.grey[300],
                         child: const Icon(Icons.error, color: Colors.grey),

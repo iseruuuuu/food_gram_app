@@ -162,6 +162,33 @@ class AppListViewSkeleton extends StatelessWidget {
   }
 }
 
+class AppSearchListViewSkeleton extends StatelessWidget {
+  const AppSearchListViewSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Skeletonizer(
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Assets.image.food.image(
+                width: 100,
+                height: 100,
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
 class AppPostDetailSkeleton extends StatelessWidget {
   const AppPostDetailSkeleton({super.key});
 
