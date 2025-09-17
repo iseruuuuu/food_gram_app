@@ -72,3 +72,6 @@ lib/constants/api_key.dart
 
 # Firebase configuration file
 android/app/google-services.json
+
+# env file
+dart_defines/
