@@ -80,5 +80,8 @@ android/secret.properties
 # iOS機密情報
 ios/Runner/GoogleService-Info.plist
 
+# Firebase設定ファイル（機密情報を含む）
+lib/firebase_options.dart
+
 # env file
 dart_defines/
