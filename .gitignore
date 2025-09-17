@@ -73,5 +73,9 @@ lib/constants/api_key.dart
 # Firebase configuration file
 android/app/google-services.json
 
+# Android機密情報
+android/key.properties
+android/secret.properties
+
 # env file
 dart_defines/
