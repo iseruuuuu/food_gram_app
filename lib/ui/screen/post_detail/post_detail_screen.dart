@@ -54,7 +54,7 @@ class PostDetailScreen extends HookConsumerWidget {
     final detailState = ref.watch(postDetailViewModelProvider());
     final listState = ref.watch(
       postDetailListProvider(
-        PostDetailListArgs(
+        PostDetailListInput(
           initialPost: memoizedPosts,
           mode: switch (type) {
             PostDetailScreenType.timeline => PostDetailListMode.timeline,

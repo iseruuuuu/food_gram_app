@@ -244,8 +244,8 @@ class PostsViewModel extends _$PostsViewModel {
 
 /// 投稿詳細のリストを mode に応じて出し分け
 @immutable
-class PostDetailListArgs {
-  const PostDetailListArgs({
+class PostDetailListInput {
+  const PostDetailListInput({
     required this.initialPost,
     required this.mode,
     this.profileUserId,
@@ -259,7 +259,7 @@ class PostDetailListArgs {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        other is PostDetailListArgs &&
+        other is PostDetailListInput &&
             other.mode == mode &&
             other.profileUserId == profileUserId &&
             other.restaurant == restaurant &&
@@ -278,13 +278,13 @@ class PostDetailListArgs {
 @riverpod
 Future<List<Posts>> postDetailList(
   Ref ref,
-  PostDetailListArgs args,
+  PostDetailListInput listInput,
 ) async {
-  final repo = ref.read(detailPostRepositoryProvider.notifier);
-  return repo.getPostDetailList(
-    initialPost: args.initialPost,
-    mode: args.mode,
-    profileUserId: args.profileUserId,
-    restaurant: args.restaurant,
+  final repository = ref.read(detailPostRepositoryProvider.notifier);
+  return repository.getPostDetailList(
+    initialPost: listInput.initialPost,
+    mode: listInput.mode,
+    profileUserId: listInput.profileUserId,
+    restaurant: listInput.restaurant,
   );
 }
