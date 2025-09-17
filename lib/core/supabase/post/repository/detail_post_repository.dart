@@ -34,6 +34,12 @@ class DetailPostRepository extends _$DetailPostRepository {
   }
 
   /// ユーザーデータを取得
+  Future<Map<String, dynamic>> getUserData(String userId) async {
+    final service = ref.read(detailPostServiceProvider.notifier);
+    return service.getUserData(userId);
+  }
+
+  /// ユーザーデータを取得
   Future<Result<Model, Exception>> getPostData(
     List<Posts> posts,
     int index,
