@@ -162,8 +162,8 @@ class AppListViewSkeleton extends StatelessWidget {
   }
 }
 
-class AppSerachListViewSkeleton extends StatelessWidget {
-  const AppSerachListViewSkeleton({super.key});
+class AppSearchListViewSkeleton extends StatelessWidget {
+  const AppSearchListViewSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {
