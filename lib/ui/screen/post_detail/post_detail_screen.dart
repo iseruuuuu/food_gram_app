@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
+import 'package:food_gram_app/core/model/post_deail_list_mode.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -52,16 +53,16 @@ class PostDetailScreen extends HookConsumerWidget {
     final currentUser = ref.watch(currentUserProvider);
     final detailState = ref.watch(postDetailViewModelProvider());
     final listState = ref.watch(
-      postDetailListFutureProvider(
+      postDetailListProvider(
         PostDetailListArgs(
           initialPost: memoizedPosts,
           mode: switch (type) {
-            PostDetailScreenType.timeline => 'timeline',
-            PostDetailScreenType.myprofile => 'myprofile',
-            PostDetailScreenType.profile => 'profile',
-            PostDetailScreenType.map => 'nearby',
-            PostDetailScreenType.search => 'search',
-            PostDetailScreenType.stored => 'stored',
+            PostDetailScreenType.timeline => PostDetailListMode.timeline,
+            PostDetailScreenType.myprofile => PostDetailListMode.myprofile,
+            PostDetailScreenType.profile => PostDetailListMode.profile,
+            PostDetailScreenType.map => PostDetailListMode.nearby,
+            PostDetailScreenType.search => PostDetailListMode.search,
+            PostDetailScreenType.stored => PostDetailListMode.stored,
           },
           profileUserId:
               type == PostDetailScreenType.profile ? users.userId : null,

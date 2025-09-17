@@ -1,8 +1,12 @@
+import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/model.dart';
+import 'package:food_gram_app/core/model/post_deail_list_mode.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
+import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -140,6 +144,143 @@ class DetailPostRepository extends _$DetailPostRepository {
       );
     } on PostgrestException catch (e) {
       return Failure<List<Model>, Exception>(e);
+    }
+  }
+
+  /// 投稿詳細画面のリスト（Posts のみ）を mode ごとに返す
+  Future<List<Posts>> getPostDetailList({
+    required Posts initialPost,
+    required PostDetailListMode mode,
+    String? profileUserId,
+    String? restaurant,
+  }) async {
+    switch (mode) {
+      case PostDetailListMode.timeline:
+        {
+          final r = await getSequentialPosts(currentPostId: initialPost.id);
+          return r.when(
+            success: (models) => [
+              initialPost,
+              ...models.map((m) => m.posts),
+            ],
+            failure: (_) => [initialPost],
+          );
+        }
+      case PostDetailListMode.myprofile:
+        {
+          final currentUser = ref.watch(currentUserProvider);
+          if (currentUser == null) {
+            return [initialPost];
+          }
+          final postRepo = ref.read(postRepositoryProvider.notifier);
+          final r = await postRepo.getPostsFromUser(currentUser);
+          return r.when(
+            success: (posts) {
+              final sorted = [...posts]
+                ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+              final others = sorted.where((p) {
+                if (p.id == initialPost.id) {
+                  return false;
+                }
+                final isBefore = p.createdAt.isBefore(initialPost.createdAt);
+                final isSameAndLowerId =
+                    p.createdAt.isAtSameMomentAs(initialPost.createdAt) &&
+                        p.id < initialPost.id;
+                return isBefore || isSameAndLowerId;
+              }).toList(growable: false);
+              return [initialPost, ...others];
+            },
+            failure: (_) => [initialPost],
+          );
+        }
+      case PostDetailListMode.profile:
+        {
+          final userId = profileUserId;
+          if (userId == null || userId.isEmpty) {
+            return [initialPost];
+          }
+          final postRepo = ref.read(postRepositoryProvider.notifier);
+          final r = await postRepo.getPostsFromUser(userId);
+          return r.when(
+            success: (posts) {
+              final sorted = [...posts]
+                ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+              final others = sorted.where((p) {
+                if (p.id == initialPost.id) {
+                  return false;
+                }
+                final isBefore = p.createdAt.isBefore(initialPost.createdAt);
+                final isSameAndLowerId =
+                    p.createdAt.isAtSameMomentAs(initialPost.createdAt) &&
+                        p.id < initialPost.id;
+                return isBefore || isSameAndLowerId;
+              }).toList(growable: false);
+              return [initialPost, ...others];
+            },
+            failure: (_) => [initialPost],
+          );
+        }
+      case PostDetailListMode.nearby:
+        {
+          final r = await getRelatedPosts(
+            currentPostId: initialPost.id,
+            lat: initialPost.lat,
+            lng: initialPost.lng,
+          );
+          return r.when(
+            success: (models) => [
+              initialPost,
+              ...models.map((m) => m.posts),
+            ],
+            failure: (_) => [initialPost],
+          );
+        }
+      case PostDetailListMode.search:
+        {
+          final name = restaurant ?? initialPost.restaurant;
+          final postRepo = ref.read(postRepositoryProvider.notifier);
+          final r = await postRepo.getByRestaurantName(restaurant: name);
+          return r.when(
+            success: (posts) {
+              final others = posts
+                  .where((p) => p.id != initialPost.id)
+                  .toList(growable: false);
+              return [initialPost, ...others];
+            },
+            failure: (_) => [initialPost],
+          );
+        }
+      case PostDetailListMode.stored:
+        {
+          final storeList =
+              await Preference().getStringList(PreferenceKey.storeList);
+          if (storeList.isEmpty) {
+            return <Posts>[];
+          }
+          final idOrder = storeList.map(int.tryParse).whereType<int>().toList()
+            ..sort((a, b) => b.compareTo(a));
+          if (idOrder.isEmpty) {
+            return <Posts>[];
+          }
+          final postRepo = ref.read(postRepositoryProvider.notifier);
+          final r = await postRepo.getStoredPosts(storeList);
+          return r.when(
+            success: (posts) {
+              final mapById = {for (final p in posts) p.id: p};
+              final ordered = idOrder
+                  .map((id) => mapById[id])
+                  .whereType<Posts>()
+                  .toList(growable: false);
+              final index = ordered.indexWhere((p) => p.id == initialPost.id);
+              final tail = index >= 0 && index + 1 < ordered.length
+                  ? ordered.sublist(index + 1)
+                  : <Posts>[];
+              return [initialPost, ...tail];
+            },
+            failure: (_) => [initialPost],
+          );
+        }
+      // no default; all enum cases are covered above
     }
   }
 }
