@@ -6,12 +6,6 @@ part 'env.g.dart';
 abstract class Env {
   const Env._();
 
-  @EnviedField(varName: 'MAP_LIBRE', obfuscate: true)
-  static final String mapLibre = _Env.mapLibre;
-  @EnviedField(varName: 'HOT_PEPPER', obfuscate: true)
-  static final String hotPepper = _Env.hotPepper;
-  @EnviedField(varName: 'MAPBOX', obfuscate: true)
-  static final String mapbox = _Env.mapbox;
   @EnviedField(varName: 'IOS_AUTH_KEY', obfuscate: true)
   static final String iOSAuthKey = _Env.iOSAuthKey;
   @EnviedField(varName: 'ANDROID_AUTH_KEY', obfuscate: true)
