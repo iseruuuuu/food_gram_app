@@ -33,25 +33,22 @@ jobs:
 
       - name: Create environment files
         env:
-          ENV_CONFIG: ${{ secrets.ENV_CONFIG }}
+          APP_ENV: ${{ secrets.APP_ENV }}
+          DEV_ENV: ${{ secrets.DEV_ENV }}
+          PROD_ENV: ${{ secrets.PROD_ENV }}
           ANDROID_CONFIG: ${{ secrets.ANDROID_CONFIG }}
           FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
         run: |
           set +x
-          if [ -z "$ENV_CONFIG" ]; then
-            echo "Error: ENV_CONFIG is empty"
+          if [ -z "$APP_ENV" ] || [ -z "$DEV_ENV" ] || [ -z "$PROD_ENV" ]; then
+            echo "Error: One or more environment secrets are empty"
             exit 1
           fi
 
-          # 環境ファイルの作成（JSON形式から）
-          echo $ENV_CONFIG | base64 --decode > env_config.json
-          
-          # 各環境ファイルを生成
-          echo "$(jq -r '.app' env_config.json)" > .env
-          echo "$(jq -r '.dev' env_config.json)" > .env.dev
-          echo "$(jq -r '.prod' env_config.json)" > .env.prod
-          
-          rm env_config.json
+          # 環境ファイルの作成（Base64デコードして直接使用）
+          echo $APP_ENV | base64 --decode > .env
+          echo $DEV_ENV | base64 --decode > .env.dev
+          echo $PROD_ENV | base64 --decode > .env.prod
           
           # Android設定ファイルの作成（JSON形式から）
           if [ -n "$ANDROID_CONFIG" ]; then
