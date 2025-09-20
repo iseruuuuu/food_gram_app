@@ -38,6 +38,8 @@ abstract class Env {
   static final String point = _Env.point;
   @EnviedField(varName: 'POST_LENGTH_POINT', obfuscate: true)
   static final String postLengthPoint = _Env.postLengthPoint;
+  @EnviedField(varName: 'KAKAO_REST_API_KEY', obfuscate: true, defaultValue: '')
+  static final String kakaoRestApiKey = _Env.kakaoRestApiKey;
 }
 
 @Envied(path: '.env.dev')
