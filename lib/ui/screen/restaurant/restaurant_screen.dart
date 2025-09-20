@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/api/restaurant/repository/kakao_restaurant_repository.dart';
 import 'package:food_gram_app/core/api/restaurant/repository/restaurant_repository.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/theme/style/restaurant_style.dart';
@@ -17,11 +18,26 @@ class RestaurantScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final keyword = useState('');
+    final isKakao = useState(false);
     final restaurant = ref.watch(restaurantRepositoryProvider(keyword.value));
+    final kakaoRestaurant =
+        ref.watch(kakaoRestaurantRepositoryProvider(keyword.value));
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
+        actions: [
+          TextButton(
+            onPressed: () {
+              isKakao.value = !isKakao.value;
+            },
+            child: Text(
+              'Kakao検索：${isKakao.value ? 'ON' : 'OFF'}',
+              style:
+                  TextStyle(color: isKakao.value ? Colors.blue : Colors.grey),
+            ),
+          ),
+        ],
         leading: IconButton(
           onPressed: context.pop,
           icon: const Icon(
@@ -67,10 +83,13 @@ class RestaurantScreen extends HookConsumerWidget {
               child: keyword.value.isEmpty
                   ? const AppSearchEmpty()
                   : AsyncValueSwitcher(
-                      asyncValue: restaurant,
+                      asyncValue: isKakao.value ? kakaoRestaurant : restaurant,
                       onErrorTap: () {
                         ref.invalidate(
                           restaurantRepositoryProvider(keyword.value),
+                        );
+                        ref.invalidate(
+                          kakaoRestaurantRepositoryProvider(keyword.value),
                         );
                       },
                       onData: (value) {

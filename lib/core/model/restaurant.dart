@@ -21,4 +21,13 @@ class Restaurant with _$Restaurant {
       lng: location['lng'] as double,
     );
   }
+
+  factory Restaurant.fromKakaoJson(Map<String, dynamic> json) {
+    return Restaurant(
+      name: json['place_name'] as String,
+      address: json['address_name'] as String,
+      lat: double.parse(json['y'] as String),
+      lng: double.parse(json['x'] as String),
+    );
+  }
 }
