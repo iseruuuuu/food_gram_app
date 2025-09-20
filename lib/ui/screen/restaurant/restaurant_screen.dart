@@ -32,9 +32,10 @@ class RestaurantScreen extends HookConsumerWidget {
               isKakao.value = !isKakao.value;
             },
             child: Text(
-              'Kakao検索：${isKakao.value ? 'ON' : 'OFF'}',
-              style:
-                  TextStyle(color: isKakao.value ? Colors.blue : Colors.grey),
+              'Kakao検索:${isKakao.value ? 'ON' : 'OFF'}',
+              style: TextStyle(
+                color: isKakao.value ? Colors.blue : Colors.grey,
+              ),
             ),
           ),
         ],
