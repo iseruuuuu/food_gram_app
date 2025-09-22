@@ -19,38 +19,6 @@ class PostRepository extends _$PostRepository {
   Future<void> build() async {}
   final logger = Logger();
 
-  /// 複数の投稿とそのユーザー情報を取得（投稿詳細画面のリスト用）
-  Future<Result<List<Model>, Exception>> getPostsWithUsers(
-    List<int> postIds,
-  ) async {
-    try {
-      if (postIds.isEmpty) {
-        return const Success(<Model>[]);
-      }
-      final service = ref.read(detailPostServiceProvider.notifier);
-      final futures = postIds.map((postId) async {
-        final result = await service.getPost(postId);
-        return result.when(
-          success: (data) async {
-            final posts = Posts.fromJson(data['post'] as Map<String, dynamic>);
-            final users = Users.fromJson(data['user'] as Map<String, dynamic>);
-            return Model(users, posts);
-          },
-          failure: (error) async {
-            logger.e('Failed to get post $postId: $error');
-            return null;
-          },
-        );
-      }).toList();
-      final models =
-          (await Future.wait<Model?>(futures)).whereType<Model>().toList();
-      return Success<List<Model>, Exception>(models);
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure<List<Model>, Exception>(e);
-    }
-  }
-
   /// 自分の全投稿に対するいいね数の合計を取得
   Future<Result<int, Exception>> getHeartAmount() async {
     try {
