@@ -1,6 +1,5 @@
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/supabase/post/repository/fetch_post_repository.dart';
-import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/stored_post_state.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
