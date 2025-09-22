@@ -1,10 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
-import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
-import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/geo_distance.dart';
 import 'package:logger/logger.dart';
@@ -38,36 +35,6 @@ class PostRepository extends _$PostRepository {
           .read(postServiceProvider.notifier)
           .getOtherHeartAmount(userId);
       return Success(amount);
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
-  }
-
-  /// 特定ユーザーの投稿を取得
-  Future<Result<List<Posts>, Exception>> getPostsFromUser(String userId) async {
-    try {
-      final data = await ref
-          .read(postServiceProvider.notifier)
-          .getPostsFromUserPaged(userId, limit: 60);
-      return Success(data.map(Posts.fromJson).toList());
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
-  }
-
-  /// 特定ユーザーの投稿を追加取得（ページング）
-  Future<Result<List<Posts>, Exception>> getPostsFromUserMore(
-    String userId, {
-    required int beforeId,
-    int limit = 60,
-  }) async {
-    try {
-      final data = await ref
-          .read(postServiceProvider.notifier)
-          .getPostsFromUserPaged(userId, limit: limit, beforeId: beforeId);
-      return Success(data.map(Posts.fromJson).toList());
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
       return Failure(e);

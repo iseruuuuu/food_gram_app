@@ -8,6 +8,7 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -17,6 +18,7 @@ part 'detail_post_repository.g.dart';
 class DetailPostRepository extends _$DetailPostRepository {
   @override
   Future<void> build() async {}
+  final logger = Logger();
 
   /// 特定の投稿を取得
   Future<Result<Posts, Exception>> getPost(int postId) async {
@@ -29,6 +31,18 @@ class DetailPostRepository extends _$DetailPostRepository {
         failure: Failure.new,
       );
     } on PostgrestException catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<List<Posts>, Exception>> getPostsFromUser(String userId) async {
+    try {
+      final data = await ref
+          .read(detailPostServiceProvider.notifier)
+          .getPostsFromUserPaged(userId, limit: 60);
+      return Success(data.map(Posts.fromJson).toList());
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
       return Failure(e);
     }
   }
@@ -178,9 +192,8 @@ class DetailPostRepository extends _$DetailPostRepository {
           if (currentUser == null) {
             return [initialPost];
           }
-          final postRepo = ref.read(postRepositoryProvider.notifier);
-          final r = await postRepo.getPostsFromUser(currentUser);
-          return r.when(
+          final userPostsResult = await getPostsFromUser(currentUser);
+          return userPostsResult.when(
             success: (posts) {
               final sorted = [...posts]
                 ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
@@ -205,8 +218,7 @@ class DetailPostRepository extends _$DetailPostRepository {
           if (userId == null || userId.isEmpty) {
             return [initialPost];
           }
-          final postRepo = ref.read(postRepositoryProvider.notifier);
-          final r = await postRepo.getPostsFromUser(userId);
+          final r = await getPostsFromUser(userId);
           return r.when(
             success: (posts) {
               final sorted = [...posts]
