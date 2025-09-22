@@ -26,11 +26,6 @@ class PostService extends _$PostService {
   @override
   Future<void> build() async {}
 
-  /// 特定の投稿のキャッシュを無効化
-  void invalidatePostCache(int postId) {
-    _cacheManager.invalidate('post_data_$postId');
-  }
-
   /// 新規投稿を作成
   Future<Result<void, Exception>> post({
     required String foodName,
@@ -58,15 +53,53 @@ class PostService extends _$PostService {
         isAnonymous: isAnonymous,
       );
       // 新規投稿後は関連するキャッシュを無効化
-      invalidatePostsCache();
+      _cacheManager.invalidatePostsCache();
       if (_currentUserId != null) {
-        invalidateUserCache(_currentUserId!);
+        _cacheManager.invalidateUserCache(_currentUserId!);
       }
       return const Success(null);
     } on PostgrestException catch (e) {
       logger.e('Failed to create post: ${e.message}');
       return Failure(e);
     }
+  }
+
+  /// 投稿データの作成処理
+  Future<void> _createPost({
+    required String foodName,
+    required String comment,
+    required String uploadImage,
+    required String restaurant,
+    required double lat,
+    required double lng,
+    required String restaurantTag,
+    required String foodTag,
+    required bool isAnonymous,
+  }) async {
+    final post = {
+      'user_id': _currentUserId,
+      'food_name': foodName,
+      'comment': comment,
+      'created_at': DateTime.now().toIso8601String(),
+      'heart': 0,
+      'restaurant': restaurant,
+      'food_image': '/$_currentUserId/$uploadImage',
+      'lat': lat,
+      'lng': lng,
+      'restaurant_tag': restaurantTag,
+      'food_tag': foodTag,
+      'is_anonymous': isAnonymous,
+    };
+
+    await supabase.from('posts').insert(post);
+  }
+
+  /// 画像のアップロード処理
+  Future<void> _uploadImage(String uploadImage, Uint8List imageBytes) async {
+    await supabase.storage.from('food').uploadBinary(
+          '/$_currentUserId/$uploadImage',
+          imageBytes,
+        );
   }
 
   /// 投稿を編集
@@ -127,56 +160,18 @@ class PostService extends _$PostService {
       await supabase.from('posts').update(updates).eq('id', posts.id);
 
       // キャッシュの無効化
-      invalidatePostsCache();
+      _cacheManager.invalidatePostsCache();
       if (_currentUserId != null) {
-        invalidateUserCache(_currentUserId!);
+        _cacheManager.invalidateUserCache(_currentUserId!);
       }
-      invalidateRestaurantCache(posts.lat, posts.lng);
-      invalidateNearbyCache(posts.lat, posts.lng);
+      _cacheManager.invalidateRestaurantCache(posts.lat, posts.lng);
+      _cacheManager.invalidateNearbyCache(posts.lat, posts.lng);
 
       return const Success(null);
     } on PostgrestException catch (e) {
       logger.e('Failed to update post: ${e.message}');
       return Failure(e);
     }
-  }
-
-  /// 画像のアップロード処理
-  Future<void> _uploadImage(String uploadImage, Uint8List imageBytes) async {
-    await supabase.storage.from('food').uploadBinary(
-          '/$_currentUserId/$uploadImage',
-          imageBytes,
-        );
-  }
-
-  /// 投稿データの作成処理
-  Future<void> _createPost({
-    required String foodName,
-    required String comment,
-    required String uploadImage,
-    required String restaurant,
-    required double lat,
-    required double lng,
-    required String restaurantTag,
-    required String foodTag,
-    required bool isAnonymous,
-  }) async {
-    final post = {
-      'user_id': _currentUserId,
-      'food_name': foodName,
-      'comment': comment,
-      'created_at': DateTime.now().toIso8601String(),
-      'heart': 0,
-      'restaurant': restaurant,
-      'food_image': '/$_currentUserId/$uploadImage',
-      'lat': lat,
-      'lng': lng,
-      'restaurant_tag': restaurantTag,
-      'food_tag': foodTag,
-      'is_anonymous': isAnonymous,
-    };
-
-    await supabase.from('posts').insert(post);
   }
 
   /// 全ての投稿を取得
@@ -186,44 +181,6 @@ class PostService extends _$PostService {
       fetcher: () =>
           supabase.from('posts').select().order('created_at', ascending: false),
       duration: const Duration(minutes: 2),
-    );
-  }
-
-  /// 特定の投稿とそのユーザー情報を取得
-  Future<Map<String, dynamic>> getPostData(
-    List<Map<String, dynamic>> data,
-    int index,
-  ) async {
-    final postId = data[index]['id'].toString();
-    return _cacheManager.get<Map<String, dynamic>>(
-      key: 'post_data_$postId',
-      fetcher: () async {
-        final postData = {
-          'id': int.parse(postId),
-          'user_id': data[index]['user_id'],
-          'food_image': data[index]['food_image'],
-          'food_name': data[index]['food_name'],
-          'restaurant': data[index]['restaurant'],
-          'comment': data[index]['comment'],
-          'created_at': data[index]['created_at'],
-          'lat': double.parse(data[index]['lat'].toString()),
-          'lng': double.parse(data[index]['lng'].toString()),
-          'heart': int.parse(data[index]['heart'].toString()),
-          'restaurant_tag': data[index]['restaurant_tag'],
-          'food_tag': data[index]['food_tag'],
-          'is_anonymous': data[index]['is_anonymous'],
-        };
-        final userData = await supabase
-            .from('users')
-            .select()
-            .eq('user_id', data[index]['user_id'] as String)
-            .single();
-        return {
-          'post': postData,
-          'user': userData,
-        };
-      },
-      duration: const Duration(minutes: 5),
     );
   }
 
@@ -317,35 +274,5 @@ class PostService extends _$PostService {
       },
       duration: const Duration(minutes: 5),
     );
-  }
-
-  /// キャッシュを無効化するメソッド
-  void invalidatePostsCache() {
-    _cacheManager
-      ..invalidate('all_posts')
-      ..invalidate('map_posts')
-      ..invalidate('ramen_posts');
-    if (_currentUserId != null) {
-      _cacheManager.invalidate('heart_amount_${_currentUserId!}');
-    }
-  }
-
-  void invalidateUserCache(String userId) {
-    _cacheManager
-      ..invalidate('user_posts_$userId')
-      ..invalidate('user_data_$userId')
-      ..invalidate('heart_amount_$userId')
-      ..invalidate('post_count_$userId');
-  }
-
-  void invalidateRestaurantCache(double lat, double lng) {
-    _cacheManager
-      ..invalidate('restaurant_posts_${lat}_$lng')
-      ..invalidate('restaurant_reviews_${lat}_$lng')
-      ..invalidate('story_posts_${lat}_$lng');
-  }
-
-  void invalidateNearbyCache(double lat, double lng) {
-    _cacheManager.invalidate('nearby_posts_${lat}_$lng');
   }
 }

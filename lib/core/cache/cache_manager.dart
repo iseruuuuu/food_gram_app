@@ -60,4 +60,43 @@ class CacheManager {
   void clearExpired() {
     _cache.removeWhere((_, entry) => entry.isExpired);
   }
+
+  /// 特定の投稿のキャッシュを無効化
+  void invalidatePostCache(int postId) {
+    invalidate('post_data_$postId');
+  }
+
+  /// 全投稿のキャッシュを無効化
+  void invalidatePostsCache() {
+    invalidate('all_posts');
+    invalidate('map_posts');
+    invalidate('ramen_posts');
+  }
+
+  /// ユーザー関連のキャッシュを無効化
+  void invalidateUserCache(String userId) {
+    invalidate('user_posts_$userId');
+    invalidate('user_data_$userId');
+    invalidate('heart_amount_$userId');
+    invalidate('post_count_$userId');
+  }
+
+  /// レストラン関連のキャッシュを無効化
+  void invalidateRestaurantCache(double lat, double lng) {
+    invalidate('restaurant_posts_${lat}_$lng');
+    invalidate('restaurant_reviews_${lat}_$lng');
+    invalidate('story_posts_${lat}_$lng');
+  }
+
+  /// 近くの投稿キャッシュを無効化
+  void invalidateNearbyCache(double lat, double lng) {
+    invalidate('nearby_posts_${lat}_$lng');
+  }
+
+  /// 現在のユーザーのハート数キャッシュを無効化
+  void invalidateCurrentUserHeartCache(String? currentUserId) {
+    if (currentUserId != null) {
+      invalidate('heart_amount_$currentUserId');
+    }
+  }
 }
