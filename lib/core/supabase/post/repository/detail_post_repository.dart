@@ -6,7 +6,7 @@ import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
-import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
+import 'package:food_gram_app/core/supabase/post/repository/fetch_post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -256,7 +256,7 @@ class DetailPostRepository extends _$DetailPostRepository {
       case PostDetailListMode.search:
         {
           final name = restaurant ?? initialPost.restaurant;
-          final postRepo = ref.read(postRepositoryProvider.notifier);
+          final postRepo = ref.read(fetchPostRepositoryProvider.notifier);
           final r = await postRepo.getByRestaurantName(restaurant: name);
           return r.when(
             success: (posts) {
@@ -280,7 +280,7 @@ class DetailPostRepository extends _$DetailPostRepository {
           if (idOrder.isEmpty) {
             return <Posts>[];
           }
-          final postRepo = ref.read(postRepositoryProvider.notifier);
+          final postRepo = ref.read(fetchPostRepositoryProvider.notifier);
           final r = await postRepo.getStoredPosts(storeList);
           return r.when(
             success: (posts) {

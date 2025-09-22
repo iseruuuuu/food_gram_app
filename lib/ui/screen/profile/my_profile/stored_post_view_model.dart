@@ -1,4 +1,5 @@
 import 'package:food_gram_app/core/local/shared_preference.dart';
+import 'package:food_gram_app/core/supabase/post/repository/fetch_post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/stored_post_state.dart';
 import 'package:logger/logger.dart';
@@ -28,7 +29,7 @@ class StoredPostViewModel extends _$StoredPostViewModel {
         return;
       }
       final result = await ref
-          .read(postRepositoryProvider.notifier)
+          .read(fetchPostRepositoryProvider.notifier)
           .getStoredPosts(storedPostIds);
       result.when(
         success: (posts) {
