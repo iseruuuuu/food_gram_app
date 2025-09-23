@@ -177,8 +177,9 @@ class DetailPostRepository extends _$DetailPostRepository {
     switch (mode) {
       case PostDetailListMode.timeline:
         {
-          final r = await getSequentialPosts(currentPostId: initialPost.id);
-          return r.when(
+          final sequentialPostsResult =
+              await getSequentialPosts(currentPostId: initialPost.id);
+          return sequentialPostsResult.when(
             success: (models) => [
               initialPost,
               ...models.map((m) => m.posts),
@@ -218,8 +219,8 @@ class DetailPostRepository extends _$DetailPostRepository {
           if (userId == null || userId.isEmpty) {
             return [initialPost];
           }
-          final r = await getPostsFromUser(userId);
-          return r.when(
+          final userPostsResult = await getPostsFromUser(userId);
+          return userPostsResult.when(
             success: (posts) {
               final sorted = [...posts]
                 ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
@@ -240,12 +241,12 @@ class DetailPostRepository extends _$DetailPostRepository {
         }
       case PostDetailListMode.nearby:
         {
-          final r = await getRelatedPosts(
+          final relatedPostsResult = await getRelatedPosts(
             currentPostId: initialPost.id,
             lat: initialPost.lat,
             lng: initialPost.lng,
           );
-          return r.when(
+          return relatedPostsResult.when(
             success: (models) => [
               initialPost,
               ...models.map((m) => m.posts),
@@ -257,8 +258,9 @@ class DetailPostRepository extends _$DetailPostRepository {
         {
           final name = restaurant ?? initialPost.restaurant;
           final postRepo = ref.read(fetchPostRepositoryProvider.notifier);
-          final r = await postRepo.getByRestaurantName(restaurant: name);
-          return r.when(
+          final restaurantPostsResult =
+              await postRepo.getByRestaurantName(restaurant: name);
+          return restaurantPostsResult.when(
             success: (posts) {
               final others = posts
                   .where((p) => p.id != initialPost.id)
@@ -281,8 +283,8 @@ class DetailPostRepository extends _$DetailPostRepository {
             return <Posts>[];
           }
           final postRepo = ref.read(fetchPostRepositoryProvider.notifier);
-          final r = await postRepo.getStoredPosts(storeList);
-          return r.when(
+          final storedPostsResult = await postRepo.getStoredPosts(storeList);
+          return storedPostsResult.when(
             success: (posts) {
               final mapById = {for (final p in posts) p.id: p};
               final ordered = idOrder
