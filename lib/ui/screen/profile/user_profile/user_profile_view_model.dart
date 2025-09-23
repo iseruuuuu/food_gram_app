@@ -1,4 +1,4 @@
-import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
+import 'package:food_gram_app/core/supabase/post/repository/fetch_post_repository.dart';
 import 'package:food_gram_app/ui/screen/profile/user_profile/user_profile_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -17,7 +17,7 @@ class UserProfileViewModel extends _$UserProfileViewModel {
 
   Future<void> getData(String userId) async {
     final heartAmountResult = await ref
-        .read(postRepositoryProvider.notifier)
+        .read(fetchPostRepositoryProvider.notifier)
         .getOtherHeartAmount(userId);
     heartAmountResult.whenOrNull(
       success: (heartAmount) {

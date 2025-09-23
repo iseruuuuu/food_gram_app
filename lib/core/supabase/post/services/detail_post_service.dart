@@ -1,6 +1,7 @@
 import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -11,6 +12,9 @@ class DetailPostService extends _$DetailPostService {
   final _cacheManager = CacheManager();
 
   SupabaseClient get supabase => ref.read(supabaseProvider);
+
+  List<String> get blockList =>
+      ref.watch(blockListProvider).asData?.value ?? [];
 
   @override
   Future<void> build() async {}
@@ -40,6 +44,32 @@ class DetailPostService extends _$DetailPostService {
     } on PostgrestException catch (e) {
       return Failure(e);
     }
+  }
+
+  /// 特定ユーザーの投稿を取得（ページング対応・新しい順）
+  Future<List<Map<String, dynamic>>> getPostsFromUserPaged(
+    String userId, {
+    int limit = 30,
+    int? beforeId,
+  }) async {
+    return _cacheManager.get<List<Map<String, dynamic>>>(
+      key: 'user_posts_paged_${userId}_${beforeId ?? 'null'}_$limit',
+      fetcher: () async {
+        var query = supabase
+            .from('posts')
+            .select()
+            .eq('user_id', userId)
+            .eq('is_anonymous', false);
+        if (beforeId != null) {
+          query = query.lt('id', beforeId);
+        }
+        final posts = await query.order('id', ascending: false).limit(limit);
+        return posts
+            .where((post) => !blockList.contains(post['user_id']))
+            .toList();
+      },
+      duration: const Duration(minutes: 2),
+    );
   }
 
   /// ユーザーデータを取得

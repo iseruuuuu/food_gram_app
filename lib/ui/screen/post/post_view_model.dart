@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
-import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
+import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/screen/post/post_state.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -93,7 +93,7 @@ class PostViewModel extends _$PostViewModel {
   }
 
   Future<void> _submitPost(String restaurantTag, String foodTag) async {
-    final result = await ref.read(postServiceProvider.notifier).post(
+    final result = await ref.read(postRepositoryProvider.notifier).createPost(
           foodName: foodController.text,
           comment: commentController.text,
           uploadImage: _uploadImage,

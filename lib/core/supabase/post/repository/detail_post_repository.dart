@@ -6,8 +6,9 @@ import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
-import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
+import 'package:food_gram_app/core/supabase/post/repository/fetch_post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -17,6 +18,7 @@ part 'detail_post_repository.g.dart';
 class DetailPostRepository extends _$DetailPostRepository {
   @override
   Future<void> build() async {}
+  final logger = Logger();
 
   /// 特定の投稿を取得
   Future<Result<Posts, Exception>> getPost(int postId) async {
@@ -29,6 +31,18 @@ class DetailPostRepository extends _$DetailPostRepository {
         failure: Failure.new,
       );
     } on PostgrestException catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Future<Result<List<Posts>, Exception>> getPostsFromUser(String userId) async {
+    try {
+      final data = await ref
+          .read(detailPostServiceProvider.notifier)
+          .getPostsFromUserPaged(userId, limit: 60);
+      return Success(data.map(Posts.fromJson).toList());
+    } on PostgrestException catch (e) {
+      logger.e('Database error: ${e.message}');
       return Failure(e);
     }
   }
@@ -163,8 +177,9 @@ class DetailPostRepository extends _$DetailPostRepository {
     switch (mode) {
       case PostDetailListMode.timeline:
         {
-          final r = await getSequentialPosts(currentPostId: initialPost.id);
-          return r.when(
+          final sequentialPostsResult =
+              await getSequentialPosts(currentPostId: initialPost.id);
+          return sequentialPostsResult.when(
             success: (models) => [
               initialPost,
               ...models.map((m) => m.posts),
@@ -178,9 +193,8 @@ class DetailPostRepository extends _$DetailPostRepository {
           if (currentUser == null) {
             return [initialPost];
           }
-          final postRepo = ref.read(postRepositoryProvider.notifier);
-          final r = await postRepo.getPostsFromUser(currentUser);
-          return r.when(
+          final userPostsResult = await getPostsFromUser(currentUser);
+          return userPostsResult.when(
             success: (posts) {
               final sorted = [...posts]
                 ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
@@ -205,9 +219,8 @@ class DetailPostRepository extends _$DetailPostRepository {
           if (userId == null || userId.isEmpty) {
             return [initialPost];
           }
-          final postRepo = ref.read(postRepositoryProvider.notifier);
-          final r = await postRepo.getPostsFromUser(userId);
-          return r.when(
+          final userPostsResult = await getPostsFromUser(userId);
+          return userPostsResult.when(
             success: (posts) {
               final sorted = [...posts]
                 ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
@@ -228,12 +241,12 @@ class DetailPostRepository extends _$DetailPostRepository {
         }
       case PostDetailListMode.nearby:
         {
-          final r = await getRelatedPosts(
+          final relatedPostsResult = await getRelatedPosts(
             currentPostId: initialPost.id,
             lat: initialPost.lat,
             lng: initialPost.lng,
           );
-          return r.when(
+          return relatedPostsResult.when(
             success: (models) => [
               initialPost,
               ...models.map((m) => m.posts),
@@ -244,9 +257,10 @@ class DetailPostRepository extends _$DetailPostRepository {
       case PostDetailListMode.search:
         {
           final name = restaurant ?? initialPost.restaurant;
-          final postRepo = ref.read(postRepositoryProvider.notifier);
-          final r = await postRepo.getByRestaurantName(restaurant: name);
-          return r.when(
+          final postRepo = ref.read(fetchPostRepositoryProvider.notifier);
+          final restaurantPostsResult =
+              await postRepo.getByRestaurantName(restaurant: name);
+          return restaurantPostsResult.when(
             success: (posts) {
               final others = posts
                   .where((p) => p.id != initialPost.id)
@@ -268,9 +282,9 @@ class DetailPostRepository extends _$DetailPostRepository {
           if (idOrder.isEmpty) {
             return <Posts>[];
           }
-          final postRepo = ref.read(postRepositoryProvider.notifier);
-          final r = await postRepo.getStoredPosts(storeList);
-          return r.when(
+          final postRepo = ref.read(fetchPostRepositoryProvider.notifier);
+          final storedPostsResult = await postRepo.getStoredPosts(storeList);
+          return storedPostsResult.when(
             success: (posts) {
               final mapById = {for (final p in posts) p.id: p};
               final ordered = idOrder

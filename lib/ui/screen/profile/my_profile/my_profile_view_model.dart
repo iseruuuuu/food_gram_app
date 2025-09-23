@@ -1,6 +1,6 @@
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
-import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
+import 'package:food_gram_app/core/supabase/post/repository/fetch_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_state.dart';
 import 'package:logger/logger.dart';
@@ -26,7 +26,7 @@ class MyProfileViewModel extends _$MyProfileViewModel {
       final results = await Future.wait([
         ref.read(userRepositoryProvider.notifier).getCurrentUser(),
         ref.read(userRepositoryProvider.notifier).getCurrentUserPostCount(),
-        ref.read(postRepositoryProvider.notifier).getHeartAmount(),
+        ref.read(fetchPostRepositoryProvider.notifier).getHeartAmount(),
       ]);
 
       final userResult = results[0] as Result<Users, Exception>;
