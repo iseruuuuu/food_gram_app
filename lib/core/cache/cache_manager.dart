@@ -99,4 +99,18 @@ class CacheManager {
       invalidate('heart_amount_$currentUserId');
     }
   }
+
+  /// 投稿関連のキャッシュを無効化（投稿作成・編集後）
+  void invalidatePostRelatedCache(String? currentUserId) {
+    invalidatePostsCache();
+    if (currentUserId != null) {
+      invalidateUserCache(currentUserId);
+    }
+  }
+
+  /// 位置情報関連のキャッシュを無効化（投稿編集後）
+  void invalidateLocationRelatedCache(double lat, double lng) {
+    invalidateRestaurantCache(lat, lng);
+    invalidateNearbyCache(lat, lng);
+  }
 }

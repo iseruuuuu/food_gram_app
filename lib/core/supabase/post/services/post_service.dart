@@ -19,7 +19,7 @@ class PostService extends _$PostService {
   @override
   Future<void> build() async {}
 
-  /// 投稿データを作成
+  /// 画像をストレージにアップロードし、投稿データをデータベースに挿入する
   Future<Result<void, Exception>> createPost({
     required String foodName,
     required String comment,
@@ -59,7 +59,7 @@ class PostService extends _$PostService {
     }
   }
 
-  /// 投稿データを更新（データ処理）
+  /// 投稿データを更新
   Future<Result<void, Exception>> updatePost({
     required Posts posts,
     required String foodName,

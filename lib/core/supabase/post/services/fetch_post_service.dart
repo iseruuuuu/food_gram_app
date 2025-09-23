@@ -34,6 +34,9 @@ class FetchPostService extends _$FetchPostService {
 
   /// 自分の全投稿に対するいいね数の合計を取得
   Future<int> getHeartAmount() async {
+    if (_currentUserId == null) {
+      return 0;
+    }
     return _cacheManager.get<int>(
       key: 'heart_amount_${_currentUserId!}',
       fetcher: () async {
@@ -43,7 +46,7 @@ class FetchPostService extends _$FetchPostService {
             .eq('user_id', _currentUserId!);
         return response.fold<int>(
           0,
-          (sum, post) => sum + (post['heart'] as int),
+          (sum, post) => sum + ((post['heart'] as int?) ?? 0),
         );
       },
       duration: const Duration(minutes: 2),
@@ -59,7 +62,7 @@ class FetchPostService extends _$FetchPostService {
             await supabase.from('posts').select('heart').eq('user_id', userId);
         return response.fold<int>(
           0,
-          (sum, post) => sum + (post['heart'] as int),
+          (sum, post) => sum + ((post['heart'] as int?) ?? 0),
         );
       },
       duration: const Duration(minutes: 2),
