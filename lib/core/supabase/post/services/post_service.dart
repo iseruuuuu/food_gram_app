@@ -85,22 +85,42 @@ class PostService extends _$PostService {
         'lng': lng,
         'is_anonymous': isAnonymous,
       };
-
-      // 新しい画像がある場合、古い画像を削除してから新しい画像をアップロード
+      // 新しい画像がある場合、先に新しい画像をアップロードしてから DB 更新 → 旧画像削除
       if (newImagePath != null && imageBytes != null) {
-        final oldImagePath = posts.foodImage.substring(1).replaceAll('//', '/');
-        final newImagePathFull = '/$_currentUserId/$newImagePath';
-        // 古い画像を削除
-        await supabase.storage.from('food').remove([oldImagePath]);
-        // 新しい画像をアップロード
-        await supabase.storage
-            .from('food')
-            .uploadBinary(newImagePathFull, imageBytes);
-        updates['food_image'] = newImagePathFull;
+        final oldStoragePath =
+            posts.foodImage.substring(1).replaceAll('//', '/');
+        final newFileName = newImagePath.split('/').last;
+        final newStoragePath = '$_currentUserId/$newFileName';
+        try {
+          await supabase.storage.from('food').uploadBinary(
+                newStoragePath,
+                imageBytes,
+                fileOptions:
+                    const FileOptions(upsert: true, contentType: 'image/jpeg'),
+              );
+          updates['food_image'] = '/$newStoragePath';
+          // 投稿データを更新
+          await supabase.from('posts').update(updates).eq('id', posts.id);
+          // 旧画像を削除（後始末）
+          await supabase.storage.from('food').remove([oldStoragePath]);
+          return const Success(null);
+        } on StorageException catch (e) {
+          logger.e('Storage error: ${e.message}');
+          return Failure(e);
+        } on PostgrestException catch (e) {
+          // DB 更新に失敗したら新規アップロード分を削除してロールバック
+          try {
+            await supabase.storage.from('food').remove([newStoragePath]);
+          } on Exception {
+            logger.e('Failed to rollback: ${e.message}');
+          }
+          logger.e('Failed to update post: ${e.message}');
+          return Failure(e);
+        }
       } else {
         updates['food_image'] = posts.foodImage;
       }
-      // 投稿データを更新
+      // 画像変更なしの通常更新
       await supabase.from('posts').update(updates).eq('id', posts.id);
       return const Success(null);
     } on PostgrestException catch (e) {
