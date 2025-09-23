@@ -113,4 +113,27 @@ class CacheManager {
     invalidateRestaurantCache(lat, lng);
     invalidateNearbyCache(lat, lng);
   }
+
+  /// 投稿削除時に関連する全てのキャッシュを無効化
+  void invalidateDeleteRelatedCaches({
+    required int postId,
+    required String userId,
+    required double lat,
+    required double lng,
+    String? currentUserId,
+    String? masterAccount,
+  }) {
+    // 全体の投稿リストに関連するキャッシュを無効化
+    invalidatePostsCache();
+    // 特定の投稿に関連するキャッシュを無効化
+    invalidatePostCache(postId);
+    // 投稿者のユーザー関連キャッシュを無効化
+    invalidateUserCache(userId);
+    // 位置情報に関連するキャッシュを無効化
+    invalidateLocationRelatedCache(lat, lng);
+    // マスターアカウントによる削除の場合、追加のキャッシュクリアが必要かもしれない
+    if (currentUserId == masterAccount) {
+      clearAll();
+    }
+  }
 }
