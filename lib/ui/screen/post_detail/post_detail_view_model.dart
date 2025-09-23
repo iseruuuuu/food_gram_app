@@ -7,6 +7,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/supabase/post/repository/delete_repository.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/delete_service.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
@@ -103,7 +104,8 @@ class PostDetailViewModel extends _$PostDetailViewModel {
 
   Future<bool> delete(Posts posts) async {
     loading.state = true;
-    final result = await ref.read(deleteServiceProvider.notifier).delete(posts);
+    final result =
+        await ref.read(deleteRepositoryProvider.notifier).deletePost(posts);
     await result.when(
       success: (_) async {
         state = state.copyWith(isSuccess: true);
