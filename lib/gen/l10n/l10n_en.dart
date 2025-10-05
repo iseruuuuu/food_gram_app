@@ -45,7 +45,7 @@ class L10nEn extends L10n {
   String get settingAppBar => 'Settings';
 
   @override
-  String get settingCheckVersion => 'Check for latest version';
+  String get settingCheckVersion => 'Check version';
 
   @override
   String get settingCheckVersionDialogTitle => 'Update Information';
@@ -63,13 +63,13 @@ class L10nEn extends L10n {
   String get settingGithub => 'Github';
 
   @override
-  String get settingReview => 'Support with a Review';
+  String get settingReview => 'Review';
 
   @override
   String get settingLicense => 'License';
 
   @override
-  String get settingShareApp => 'Share this app';
+  String get settingShareApp => 'Share';
 
   @override
   String get settingFaq => 'FAQ';
@@ -114,7 +114,7 @@ class L10nEn extends L10n {
   String get settingLogoutButton => 'Logout';
 
   @override
-  String get settingDeleteAccountButton => 'Request Account Deletion';
+  String get settingDeleteAccountButton => 'Request Deletion';
 
   @override
   String get settingQuestion => 'Question Box';
@@ -135,7 +135,7 @@ class L10nEn extends L10n {
   String get settingRestoreFailureSubtitle => 'No purchase history? Contact support';
 
   @override
-  String get settingRestore => 'Restore purchase';
+  String get settingRestore => 'Restore';
 
   @override
   String get shareButton => 'Share';
@@ -386,7 +386,7 @@ class L10nEn extends L10n {
   String get appTitle => 'FoodGram';
 
   @override
-  String get appSubtitle => 'Share your delicious moments';
+  String get appSubtitle => 'Eat × Snap × Share';
 
   @override
   String get agreeToTheTermsOfUse => 'Please agree to the Terms of Use';

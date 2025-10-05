@@ -109,9 +109,9 @@ class AuthenticationScreen extends HookConsumerWidget {
                       ),
                     ],
                   ),
-                  const Gap(28),
+                  const Gap(14),
                   const Divider(),
-                  const Gap(28),
+                  const Gap(14),
                   AppleAuthButton(
                     style: AuthenticationStyle.authButtonStyle(buttonWidth),
                     onPressed: () {

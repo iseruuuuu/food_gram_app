@@ -108,7 +108,7 @@ class AuthService {
       final authResponse = await supabase.auth.signInWithOAuth(
         OAuthProvider.twitter,
         redirectTo: 'com.foodgram.scheme://auth/callback',
-        authScreenLaunchMode: LaunchMode.externalApplication,
+        authScreenLaunchMode: LaunchMode.inAppBrowserView,
       );
       return Success(authResponse);
     } on AuthException catch (authError) {
