@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.19.0</string>
+	<string>1.19.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -37,7 +37,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.19.0</string>
+	<string>1.19.1</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-9259628471292536~9760884100</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -75,15 +75,15 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>写真の投稿のために許可が必要になります</string>
+	<string>This app needs camera access to post photos</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>レストランの取得のために許可が必要になります</string>
+	<string>This app needs location access to find nearby restaurants</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>レストランの取得のために許可が必要になります</string>
+	<string>This app needs location access to find nearby restaurants</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>写真の投稿のために許可が必要になります</string>
+	<string>This app needs photo library access to post photos</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>「許可」するとお客様に最適化された広告が表示されます</string>
+	<string>Allow tracking to show you personalized ads</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
