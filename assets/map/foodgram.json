@@ -282,27 +282,9 @@
                         ]
                     ]
                 },
-                "fill-color": "#6a4",
+                "fill-color": "#E5F7B0",
                 "fill-opacity": 0.1,
                 "fill-outline-color": "hsla(0, 0%, 0%, 0.03)"
-            }
-        },
-        {
-            "id": "landcover-grass",
-            "type": "fill",
-            "metadata": {
-                "mapbox:group": "1444849388993.3071"
-            },
-            "source": "openmaptiles",
-            "source-layer": "landcover",
-            "filter": [
-                "==",
-                "class",
-                "grass"
-            ],
-            "paint": {
-                "fill-color": "#c8d4b8",
-                "fill-opacity": 0.45
             }
         },
         {
@@ -321,6 +303,24 @@
             "paint": {
                 "fill-color": "#c8d4b8",
                 "fill-opacity": 0.8
+            }
+        },
+        {
+            "id": "landcover-grass",
+            "type": "fill",
+            "metadata": {
+                "mapbox:group": "1444849388993.3071"
+            },
+            "source": "openmaptiles",
+            "source-layer": "landcover",
+            "filter": [
+                "==",
+                "class",
+                "grass"
+            ],
+            "paint": {
+                "fill-color": "#c8d4b8",
+                "fill-opacity": 0.45
             }
         },
         {
@@ -720,7 +720,7 @@
                 "visibility": "visible"
             },
             "paint": {
-                "fill-color": "hsl(210, 85%, 60%)"
+                "fill-color": "#ACDFEC"
             }
         },
         {
@@ -743,7 +743,7 @@
                 "visibility": "visible"
             },
             "paint": {
-                "fill-color": "hsl(210, 85%, 60%)",
+                "fill-color": "#ACDFEC",
                 "fill-opacity": 0.7
             }
         },
@@ -1482,32 +1482,6 @@
                         ]
                     ]
                 }
-            }
-        },
-        {
-            "id": "ferry",
-            "type": "line",
-            "source": "openmaptiles",
-            "source-layer": "transportation",
-            "filter": [
-                "all",
-                [
-                    "in",
-                    "class",
-                    "ferry"
-                ]
-            ],
-            "layout": {
-                "line-join": "round",
-                "visibility": "visible"
-            },
-            "paint": {
-                "line-color": "rgba(108, 159, 182, 1)",
-                "line-dasharray": [
-                    2,
-                    2
-                ],
-                "line-width": 1.1
             }
         },
         {
@@ -2267,57 +2241,6 @@
                         [
                             20,
                             22
-                        ]
-                    ]
-                }
-            }
-        },
-        {
-            "id": "highway-path",
-            "type": "line",
-            "metadata": {
-                "mapbox:group": "1444849345966.4436"
-            },
-            "source": "openmaptiles",
-            "source-layer": "transportation",
-            "filter": [
-                "all",
-                [
-                    "==",
-                    "$type",
-                    "LineString"
-                ],
-                [
-                    "all",
-                    [
-                        "!in",
-                        "brunnel",
-                        "bridge",
-                        "tunnel"
-                    ],
-                    [
-                        "==",
-                        "class",
-                        "path"
-                    ]
-                ]
-            ],
-            "paint": {
-                "line-color": "#cba",
-                "line-dasharray": [
-                    1.5,
-                    0.75
-                ],
-                "line-width": {
-                    "base": 1.2,
-                    "stops": [
-                        [
-                            15,
-                            1.2
-                        ],
-                        [
-                            20,
-                            4
                         ]
                     ]
                 }
@@ -3268,52 +3191,6 @@
             }
         },
         {
-            "id": "bridge-path-casing",
-            "type": "line",
-            "metadata": {
-                "mapbox:group": "1444849334699.1902"
-            },
-            "source": "openmaptiles",
-            "source-layer": "transportation",
-            "filter": [
-                "all",
-                [
-                    "==",
-                    "$type",
-                    "LineString"
-                ],
-                [
-                    "all",
-                    [
-                        "==",
-                        "brunnel",
-                        "bridge"
-                    ],
-                    [
-                        "==",
-                        "class",
-                        "path"
-                    ]
-                ]
-            ],
-            "paint": {
-                "line-color": "#f8f4f0",
-                "line-width": {
-                    "base": 1.2,
-                    "stops": [
-                        [
-                            15,
-                            1.2
-                        ],
-                        [
-                            20,
-                            18
-                        ]
-                    ]
-                }
-            }
-        },
-        {
             "id": "bridge-path",
             "type": "line",
             "metadata": {
@@ -3758,59 +3635,6 @@
             }
         },
         {
-            "id": "boundary-land-level-4",
-            "type": "line",
-            "source": "openmaptiles",
-            "source-layer": "boundary",
-            "filter": [
-                "all",
-                [
-                    ">=",
-                    "admin_level",
-                    4
-                ],
-                [
-                    "<=",
-                    "admin_level",
-                    8
-                ],
-                [
-                    "!=",
-                    "maritime",
-                    1
-                ]
-            ],
-            "layout": {
-                "line-join": "round"
-            },
-            "paint": {
-                "line-color": "#9e9cab",
-                "line-dasharray": [
-                    3,
-                    1,
-                    1,
-                    1
-                ],
-                "line-width": {
-                    "base": 1.4,
-                    "stops": [
-                        [
-                            4,
-                            0.4
-                        ],
-                        [
-                            5,
-                            1
-                        ],
-                        [
-                            12,
-                            3
-                        ]
-                    ]
-                }
-            }
-        },
-        {
             "id": "boundary-land-level-2",
             "type": "line",
             "source": "openmaptiles",
@@ -4022,7 +3846,7 @@
                 "LineString"
             ],
             "layout": {
-                "visibility": "none",
+                "visibility": "visible",
                 "symbol-placement": "line",
                 "symbol-spacing": 350,
                 "text-field": "{name:latin}\n{name:nonlatin}",
@@ -4059,7 +3883,7 @@
                 ]
             ],
             "layout": {
-                "visibility": "none",
+                "visibility": "visible",
                 "symbol-placement": "point",
                 "symbol-spacing": 350,
                 "text-field": "{name:latin}",
@@ -4096,7 +3920,7 @@
                 ]
             ],
             "layout": {
-                "visibility": "none",
+                "visibility": "visible",
                 "symbol-placement": "point",
                 "symbol-spacing": 350,
                 "text-field": "{name:latin}\n{name:nonlatin}",
@@ -4120,63 +3944,9 @@
                 }
             },
             "paint": {
-                "text-color": "#ffffff",
+                "text-color": "#74aee9",
                 "text-halo-color": "rgba(255,255,255,0.7)",
                 "text-halo-width": 1.5
-            }
-        },
-        {
-            "id": "poi-level-3",
-            "type": "symbol",
-            "source": "openmaptiles",
-            "source-layer": "poi",
-            "minzoom": 16,
-            "filter": [
-                "all",
-                [
-                    "==",
-                    "$type",
-                    "Point"
-                ],
-                [
-                    ">=",
-                    "rank",
-                    25
-                ],
-                [
-                    "any",
-                    [
-                        "!has",
-                        "level"
-                    ],
-                    [
-                        "==",
-                        "level",
-                        0
-                    ]
-                ]
-            ],
-            "layout": {
-                "icon-image": "{class}_11",
-                "text-anchor": "top",
-                "text-field": "{name:latin}\n{name:nonlatin}",
-                "text-font": [
-                    "M PLUS Rounded 1c"
-                ],
-                "text-max-width": 9,
-                "text-offset": [
-                    0,
-                    0.6
-                ],
-                "text-padding": 2,
-                "text-size": 12,
-                "visibility": "none"
-            },
-            "paint": {
-                "text-color": "#666",
-                "text-halo-blur": 0.5,
-                "text-halo-color": "#ffffff",
-                "text-halo-width": 1
             }
         },
         {
@@ -4356,7 +4126,7 @@
                 ],
                 "text-padding": 3,
                 "text-size": 14,
-                "visibility": "none"
+                "visibility": "visible"
             },
             "paint": {
                 "text-color": "#666",
@@ -4531,7 +4301,7 @@
                 "path"
             ],
             "layout": {
-                "visibility": "none",
+                "visibility": "visible",
                 "symbol-placement": "line",
                 "text-field": "{name:latin} {name:nonlatin}",
                 "text-font": [
@@ -4580,7 +4350,7 @@
                 ]
             ],
             "layout": {
-                "visibility": "none",
+                "visibility": "visible",
                 "symbol-placement": "line",
                 "text-field": "{name:latin} {name:nonlatin}",
                 "text-font": [
@@ -4845,7 +4615,7 @@
                 "text-optional": true,
                 "text-padding": 2,
                 "text-size": 12,
-                "visibility": "none"
+                "visibility": "visible"
             },
             "paint": {
                 "text-color": "#666",
@@ -4992,7 +4762,7 @@
                         ]
                     ]
                 },
-                "visibility": "none"
+                "visibility": "visible"
             },
             "paint": {
                 "text-color": "#333",
@@ -5040,7 +4810,7 @@
                         ]
                     ]
                 },
-                "visibility": "none"
+                "visibility": "visible"
             },
             "paint": {
                 "text-color": "#333",
