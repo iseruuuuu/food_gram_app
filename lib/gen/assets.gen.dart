@@ -189,8 +189,14 @@ class $AssetsMapGen {
   /// File path: assets/map/foodgram.json
   String get foodgram => 'assets/map/foodgram.json';
 
+  /// File path: assets/map/foodgram_en.json
+  String get foodgramEn => 'assets/map/foodgram_en.json';
+
+  /// File path: assets/map/foodgram_ja.json
+  String get foodgramJa => 'assets/map/foodgram_ja.json';
+
   /// List of all assets
-  List<String> get values => [foodgram];
+  List<String> get values => [foodgram, foodgramEn, foodgramJa];
 }
 
 class $AssetsSplashGen {

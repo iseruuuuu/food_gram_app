@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
@@ -54,6 +55,8 @@ class MapScreen extends HookConsumerWidget {
       },
       [],
     );
+
+    final styleString = _localizedStyleAsset(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -92,7 +95,7 @@ class MapScreen extends HookConsumerWidget {
                     ),
                     trackCameraPosition: true,
                     tiltGesturesEnabled: false,
-                    styleString: 'assets/map/foodgram.json',
+                    styleString: styleString,
                   ),
                   Visibility(
                     visible: isTapPin.value,
@@ -160,5 +163,15 @@ double _calculateIconSize(BuildContext context) {
     return 0.6;
   } else {
     return 0.8;
+  }
+}
+
+String _localizedStyleAsset(BuildContext context) {
+  final lang = Localizations.localeOf(context).languageCode;
+  switch (lang) {
+    case 'ja':
+      return Assets.map.foodgramJa;
+    default:
+      return Assets.map.foodgramEn;
   }
 }
