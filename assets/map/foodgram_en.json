@@ -104,40 +104,6 @@
             }
         },
         {
-            "id": "landuse-residential",
-            "type": "fill",
-            "metadata": {
-                "mapbox:group": "1444849388993.3071"
-            },
-            "source": "openmaptiles",
-            "source-layer": "landuse",
-            "filter": [
-                "all",
-                [
-                    "in",
-                    "class",
-                    "residential",
-                    "suburb",
-                    "neighbourhood"
-                ]
-            ],
-            "paint": {
-                "fill-color": {
-                    "base": 1,
-                    "stops": [
-                        [
-                            12,
-                            "hsla(30, 19%, 90%, 0.4)"
-                        ],
-                        [
-                            16,
-                            "hsla(30, 19%, 90%, 0.2)"
-                        ]
-                    ]
-                }
-            }
-        },
-        {
             "id": "landuse-residential-label",
             "type": "symbol",
             "source": "openmaptiles",
@@ -777,7 +743,7 @@
                 "visibility": "visible"
             },
             "paint": {
-                "fill-color": "hsl(210, 85%, 60%)"
+                "fill-color": "#ACDFEC"
             }
         },
         {
@@ -800,7 +766,7 @@
                 "visibility": "visible"
             },
             "paint": {
-                "fill-color": "hsl(210, 85%, 60%)",
+                "fill-color": "#ACDFEC",
                 "fill-opacity": 0.7
             }
         },
@@ -1539,32 +1505,6 @@
                         ]
                     ]
                 }
-            }
-        },
-        {
-            "id": "ferry",
-            "type": "line",
-            "source": "openmaptiles",
-            "source-layer": "transportation",
-            "filter": [
-                "all",
-                [
-                    "in",
-                    "class",
-                    "ferry"
-                ]
-            ],
-            "layout": {
-                "line-join": "round",
-                "visibility": "visible"
-            },
-            "paint": {
-                "line-color": "rgba(108, 159, 182, 1)",
-                "line-dasharray": [
-                    2,
-                    2
-                ],
-                "line-width": 1.1
             }
         },
         {

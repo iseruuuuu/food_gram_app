@@ -104,37 +104,68 @@
             }
         },
         {
-            "id": "landuse-residential",
-            "type": "fill",
-            "metadata": {
-                "mapbox:group": "1444849388993.3071"
-            },
+            "id": "landuse-residential-label",
+            "type": "symbol",
             "source": "openmaptiles",
             "source-layer": "landuse",
+            "minzoom": 12,
             "filter": [
                 "all",
+                [
+                    "==",
+                    "$type",
+                    "Polygon"
+                ],
                 [
                     "in",
                     "class",
                     "residential",
                     "suburb",
                     "neighbourhood"
+                ],
+                [
+                    "has",
+                    "name"
                 ]
             ],
-            "paint": {
-                "fill-color": {
-                    "base": 1,
-                    "stops": [
-                        [
-                            12,
-                            "hsla(30, 19%, 90%, 0.4)"
-                        ],
-                        [
-                            16,
-                            "hsla(30, 19%, 90%, 0.2)"
-                        ]
+            "layout": {
+                "visibility": "visible",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
-                }
+                ],
+                "text-font": [
+                    "M PLUS Rounded 1c"
+                ],
+                "text-size": 12
+            },
+            "paint": {
+                "text-color": "#666",
+                "text-halo-color": "#ffffff",
+                "text-halo-width": 1
             }
         },
         {
@@ -720,7 +751,7 @@
                 "visibility": "visible"
             },
             "paint": {
-                "fill-color": "hsl(210, 85%, 60%)"
+                "fill-color": "#ACDFEC"
             }
         },
         {
@@ -743,7 +774,7 @@
                 "visibility": "visible"
             },
             "paint": {
-                "fill-color": "hsl(210, 85%, 60%)",
+                "fill-color": "#ACDFEC",
                 "fill-opacity": 0.7
             }
         },
@@ -1485,32 +1516,6 @@
             }
         },
         {
-            "id": "ferry",
-            "type": "line",
-            "source": "openmaptiles",
-            "source-layer": "transportation",
-            "filter": [
-                "all",
-                [
-                    "in",
-                    "class",
-                    "ferry"
-                ]
-            ],
-            "layout": {
-                "line-join": "round",
-                "visibility": "visible"
-            },
-            "paint": {
-                "line-color": "rgba(108, 159, 182, 1)",
-                "line-dasharray": [
-                    2,
-                    2
-                ],
-                "line-width": 1.1
-            }
-        },
-        {
             "id": "aeroway-taxiway-casing",
             "type": "line",
             "metadata": {
@@ -1745,6 +1750,67 @@
                         ]
                     ]
                 }
+            }
+        },
+        {
+            "id": "aeroway-taxiway-label",
+            "type": "symbol",
+            "source": "openmaptiles",
+            "source-layer": "aeroway",
+            "minzoom": 12,
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "LineString"
+                ],
+                [
+                    "in",
+                    "class",
+                    "taxiway"
+                ]
+            ],
+            "layout": {
+                "visibility": "visible",
+                "symbol-placement": "line",
+                "symbol-spacing": 350,
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
+                "text-font": [
+                    "M PLUS Rounded 1c"
+                ],
+                "text-size": 12
+            },
+            "paint": {
+                "text-color": "#666",
+                "text-halo-color": "#ffffff",
+                "text-halo-width": 1
             }
         },
         {
@@ -4008,11 +4074,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -4055,11 +4129,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -4110,11 +4192,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -4165,11 +4255,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -4235,6 +4333,18 @@
                     "coalesce",
                     [
                         "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
                         "name:en"
                     ],
                     [
@@ -4244,10 +4354,6 @@
                     [
                         "get",
                         "name:latin"
-                    ],
-                    [
-                        "get",
-                        "name"
                     ]
                 ],
                 "text-font": [
@@ -4330,11 +4436,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -4416,11 +4530,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -4483,11 +4605,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -4556,11 +4686,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -4707,11 +4845,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -4774,11 +4920,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -4834,11 +4988,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -5061,11 +5223,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -5138,11 +5308,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -5198,11 +5376,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -5256,11 +5442,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -5322,11 +5516,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -5391,11 +5593,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -5465,11 +5675,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -5536,11 +5754,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -5607,11 +5833,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -5678,11 +5912,19 @@
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name"
                     ],
                     [
                         "get",
-                        "name"
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
                 ],
                 "text-font": [
@@ -5730,15 +5972,15 @@
                     "coalesce",
                     [
                         "get",
-                        "name:ja"
+                        "name:en"
                     ],
                     [
                         "get",
-                        "name_ja"
+                        "name_en"
                     ],
                     [
                         "get",
-                        "name:local"
+                        "name:latin"
                     ],
                     [
                         "get",
@@ -5783,7 +6025,25 @@
             "source": "hoppo",
             "source-layer": "island",
             "layout": {
-                "text-field": "{name}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ]
+                ],
                 "text-size": {
                     "stops": [
                         [
@@ -5826,7 +6086,25 @@
             "source": "takeshima",
             "source-layer": "island",
             "layout": {
-                "text-field": "{name}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ]
+                ],
                 "text-size": {
                     "stops": [
                         [
@@ -5852,7 +6130,25 @@
             "source": "takeshima",
             "source-layer": "island_poi",
             "layout": {
-                "text-field": "{name}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
