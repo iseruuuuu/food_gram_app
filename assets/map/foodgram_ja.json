@@ -104,37 +104,68 @@
             }
         },
         {
-            "id": "landuse-residential",
-            "type": "fill",
-            "metadata": {
-                "mapbox:group": "1444849388993.3071"
-            },
+            "id": "landuse-residential-label",
+            "type": "symbol",
             "source": "openmaptiles",
             "source-layer": "landuse",
+            "minzoom": 12,
             "filter": [
                 "all",
+                [
+                    "==",
+                    "$type",
+                    "Polygon"
+                ],
                 [
                     "in",
                     "class",
                     "residential",
                     "suburb",
                     "neighbourhood"
+                ],
+                [
+                    "has",
+                    "name"
                 ]
             ],
-            "paint": {
-                "fill-color": {
-                    "base": 1,
-                    "stops": [
-                        [
-                            12,
-                            "hsla(30, 19%, 90%, 0.4)"
-                        ],
-                        [
-                            16,
-                            "hsla(30, 19%, 90%, 0.2)"
-                        ]
+            "layout": {
+                "visibility": "visible",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
                     ]
-                }
+                ],
+                "text-font": [
+                    "M PLUS Rounded 1c"
+                ],
+                "text-size": 12
+            },
+            "paint": {
+                "text-color": "#666",
+                "text-halo-color": "#ffffff",
+                "text-halo-width": 1
             }
         },
         {
@@ -282,27 +313,9 @@
                         ]
                     ]
                 },
-                "fill-color": "#E5F7B0",
+                "fill-color": "#6a4",
                 "fill-opacity": 0.1,
                 "fill-outline-color": "hsla(0, 0%, 0%, 0.03)"
-            }
-        },
-        {
-            "id": "landcover-grass-park",
-            "type": "fill",
-            "metadata": {
-                "mapbox:group": "1444849388993.3071"
-            },
-            "source": "openmaptiles",
-            "source-layer": "park",
-            "filter": [
-                "==",
-                "class",
-                "public_park"
-            ],
-            "paint": {
-                "fill-color": "#c8d4b8",
-                "fill-opacity": 0.8
             }
         },
         {
@@ -321,6 +334,24 @@
             "paint": {
                 "fill-color": "#c8d4b8",
                 "fill-opacity": 0.45
+            }
+        },
+        {
+            "id": "landcover-grass-park",
+            "type": "fill",
+            "metadata": {
+                "mapbox:group": "1444849388993.3071"
+            },
+            "source": "openmaptiles",
+            "source-layer": "park",
+            "filter": [
+                "==",
+                "class",
+                "public_park"
+            ],
+            "paint": {
+                "fill-color": "#c8d4b8",
+                "fill-opacity": 0.8
             }
         },
         {
@@ -1722,6 +1753,67 @@
             }
         },
         {
+            "id": "aeroway-taxiway-label",
+            "type": "symbol",
+            "source": "openmaptiles",
+            "source-layer": "aeroway",
+            "minzoom": 12,
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "LineString"
+                ],
+                [
+                    "in",
+                    "class",
+                    "taxiway"
+                ]
+            ],
+            "layout": {
+                "visibility": "visible",
+                "symbol-placement": "line",
+                "symbol-spacing": 350,
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
+                "text-font": [
+                    "M PLUS Rounded 1c"
+                ],
+                "text-size": 12
+            },
+            "paint": {
+                "text-color": "#666",
+                "text-halo-color": "#ffffff",
+                "text-halo-width": 1
+            }
+        },
+        {
             "id": "road_area_pier",
             "type": "fill",
             "metadata": {},
@@ -2241,6 +2333,57 @@
                         [
                             20,
                             22
+                        ]
+                    ]
+                }
+            }
+        },
+        {
+            "id": "highway-path",
+            "type": "line",
+            "metadata": {
+                "mapbox:group": "1444849345966.4436"
+            },
+            "source": "openmaptiles",
+            "source-layer": "transportation",
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "LineString"
+                ],
+                [
+                    "all",
+                    [
+                        "!in",
+                        "brunnel",
+                        "bridge",
+                        "tunnel"
+                    ],
+                    [
+                        "==",
+                        "class",
+                        "path"
+                    ]
+                ]
+            ],
+            "paint": {
+                "line-color": "#cba",
+                "line-dasharray": [
+                    1.5,
+                    0.75
+                ],
+                "line-width": {
+                    "base": 1.2,
+                    "stops": [
+                        [
+                            15,
+                            1.2
+                        ],
+                        [
+                            20,
+                            4
                         ]
                     ]
                 }
@@ -3191,6 +3334,52 @@
             }
         },
         {
+            "id": "bridge-path-casing",
+            "type": "line",
+            "metadata": {
+                "mapbox:group": "1444849334699.1902"
+            },
+            "source": "openmaptiles",
+            "source-layer": "transportation",
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "LineString"
+                ],
+                [
+                    "all",
+                    [
+                        "==",
+                        "brunnel",
+                        "bridge"
+                    ],
+                    [
+                        "==",
+                        "class",
+                        "path"
+                    ]
+                ]
+            ],
+            "paint": {
+                "line-color": "#f8f4f0",
+                "line-width": {
+                    "base": 1.2,
+                    "stops": [
+                        [
+                            15,
+                            1.2
+                        ],
+                        [
+                            20,
+                            18
+                        ]
+                    ]
+                }
+            }
+        },
+        {
             "id": "bridge-path",
             "type": "line",
             "metadata": {
@@ -3635,6 +3824,59 @@
             }
         },
         {
+            "id": "boundary-land-level-4",
+            "type": "line",
+            "source": "openmaptiles",
+            "source-layer": "boundary",
+            "filter": [
+                "all",
+                [
+                    ">=",
+                    "admin_level",
+                    4
+                ],
+                [
+                    "<=",
+                    "admin_level",
+                    8
+                ],
+                [
+                    "!=",
+                    "maritime",
+                    1
+                ]
+            ],
+            "layout": {
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": "#9e9cab",
+                "line-dasharray": [
+                    3,
+                    1,
+                    1,
+                    1
+                ],
+                "line-width": {
+                    "base": 1.4,
+                    "stops": [
+                        [
+                            4,
+                            0.4
+                        ],
+                        [
+                            5,
+                            1
+                        ],
+                        [
+                            12,
+                            3
+                        ]
+                    ]
+                }
+            }
+        },
+        {
             "id": "boundary-land-level-2",
             "type": "line",
             "source": "openmaptiles",
@@ -3820,7 +4062,33 @@
                 "visibility": "none",
                 "symbol-placement": "line",
                 "symbol-spacing": 350,
-                "text-field": "{name:latin} {name:nonlatin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -3846,10 +4114,36 @@
                 "LineString"
             ],
             "layout": {
-                "visibility": "visible",
+                "visibility": "none",
                 "symbol-placement": "line",
                 "symbol-spacing": 350,
-                "text-field": "{name:latin}\n{name:nonlatin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -3883,10 +4177,36 @@
                 ]
             ],
             "layout": {
-                "visibility": "visible",
+                "visibility": "none",
                 "symbol-placement": "point",
                 "symbol-spacing": 350,
-                "text-field": "{name:latin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -3920,10 +4240,36 @@
                 ]
             ],
             "layout": {
-                "visibility": "visible",
+                "visibility": "none",
                 "symbol-placement": "point",
                 "symbol-spacing": 350,
-                "text-field": "{name:latin}\n{name:nonlatin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -3944,9 +4290,89 @@
                 }
             },
             "paint": {
-                "text-color": "#74aee9",
+                "text-color": "#ffffff",
                 "text-halo-color": "rgba(255,255,255,0.7)",
                 "text-halo-width": 1.5
+            }
+        },
+        {
+            "id": "poi-level-3",
+            "type": "symbol",
+            "source": "openmaptiles",
+            "source-layer": "poi",
+            "minzoom": 16,
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "Point"
+                ],
+                [
+                    ">=",
+                    "rank",
+                    25
+                ],
+                [
+                    "any",
+                    [
+                        "!has",
+                        "level"
+                    ],
+                    [
+                        "==",
+                        "level",
+                        0
+                    ]
+                ]
+            ],
+            "layout": {
+                "icon-image": "{class}_11",
+                "text-anchor": "top",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
+                "text-font": [
+                    "M PLUS Rounded 1c"
+                ],
+                "text-max-width": 9,
+                "text-offset": [
+                    0,
+                    0.6
+                ],
+                "text-padding": 2,
+                "text-size": 12,
+                "visibility": "visible"
+            },
+            "paint": {
+                "text-color": "#666",
+                "text-halo-blur": 0.5,
+                "text-halo-color": "#ffffff",
+                "text-halo-width": 1
             }
         },
         {
@@ -3998,7 +4424,33 @@
             "layout": {
                 "icon-image": "{class}_11",
                 "text-anchor": "top",
-                "text-field": "{name:local}\n{name:latin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4066,7 +4518,33 @@
             "layout": {
                 "icon-image": "{class}_11",
                 "text-anchor": "top",
-                "text-field": "{name:local}\n{name:latin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4115,7 +4593,33 @@
             "layout": {
                 "icon-image": "{class}_11",
                 "text-anchor": "top",
-                "text-field": "{name:latin}\n{name:nonlatin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c Bold"
                 ],
@@ -4126,7 +4630,7 @@
                 ],
                 "text-padding": 3,
                 "text-size": 14,
-                "visibility": "visible"
+                "visibility": "none"
             },
             "paint": {
                 "text-color": "#666",
@@ -4170,7 +4674,33 @@
                 "icon-optional": false,
                 "text-allow-overlap": false,
                 "text-anchor": "top",
-                "text-field": "{name:local}\n{name:latin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4301,9 +4831,35 @@
                 "path"
             ],
             "layout": {
-                "visibility": "visible",
+                "visibility": "none",
                 "symbol-placement": "line",
-                "text-field": "{name:latin} {name:nonlatin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4350,9 +4906,35 @@
                 ]
             ],
             "layout": {
-                "visibility": "visible",
+                "visibility": "none",
                 "symbol-placement": "line",
-                "text-field": "{name:latin} {name:nonlatin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4394,7 +4976,33 @@
             "layout": {
                 "visibility": "none",
                 "symbol-placement": "line",
-                "text-field": "{name:latin} {name:nonlatin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4603,7 +5211,33 @@
                 "icon-image": "airport_11",
                 "icon-size": 1,
                 "text-anchor": "top",
-                "text-field": "{name:latin}\n{name:nonlatin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4615,7 +5249,7 @@
                 "text-optional": true,
                 "text-padding": 2,
                 "text-size": 12,
-                "visibility": "visible"
+                "visibility": "none"
             },
             "paint": {
                 "text-color": "#666",
@@ -4662,7 +5296,33 @@
                 ]
             ],
             "layout": {
-                "text-field": "{name:nonlatin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "migu2m-bold"
                 ],
@@ -4704,7 +5364,33 @@
                 "village"
             ],
             "layout": {
-                "text-field": "{name:local}\n{name:latin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4744,7 +5430,33 @@
                 "town"
             ],
             "layout": {
-                "text-field": "{name:local}\n{name:latin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4762,7 +5474,7 @@
                         ]
                     ]
                 },
-                "visibility": "visible"
+                "visibility": "none"
             },
             "paint": {
                 "text-color": "#333",
@@ -4792,7 +5504,33 @@
                 ]
             ],
             "layout": {
-                "text-field": "{name:local}\n{name:latin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4810,7 +5548,7 @@
                         ]
                     ]
                 },
-                "visibility": "visible"
+                "visibility": "none"
             },
             "paint": {
                 "text-color": "#333",
@@ -4843,7 +5581,33 @@
                 "icon-image": "star_11",
                 "icon-size": 0.8,
                 "text-anchor": "left",
-                "text-field": "{name:local}\n{name:latin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4899,7 +5663,33 @@
                 ]
             ],
             "layout": {
-                "text-field": "{name:latin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
@@ -4952,7 +5742,33 @@
                 ]
             ],
             "layout": {
-                "text-field": "{name:latin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "migu2m-bold"
                 ],
@@ -5005,7 +5821,33 @@
                 ]
             ],
             "layout": {
-                "text-field": "{name:latin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "migu2m-bold"
                 ],
@@ -5058,7 +5900,33 @@
                 ]
             ],
             "layout": {
-                "text-field": "{name:latin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:ja"
+                    ],
+                    [
+                        "get",
+                        "name_ja"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ],
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ]
+                ],
                 "text-font": [
                     "migu2m-bold"
                 ],
@@ -5100,7 +5968,25 @@
                 "continent"
             ],
             "layout": {
-                "text-field": "{name:latin}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ]
+                ],
                 "text-font": [
                     "migu2m-bold"
                 ],
@@ -5139,7 +6025,25 @@
             "source": "hoppo",
             "source-layer": "island",
             "layout": {
-                "text-field": "{name}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ]
+                ],
                 "text-size": {
                     "stops": [
                         [
@@ -5182,7 +6086,25 @@
             "source": "takeshima",
             "source-layer": "island",
             "layout": {
-                "text-field": "{name}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ]
+                ],
                 "text-size": {
                     "stops": [
                         [
@@ -5208,7 +6130,25 @@
             "source": "takeshima",
             "source-layer": "island_poi",
             "layout": {
-                "text-field": "{name}",
+                "text-field": [
+                    "coalesce",
+                    [
+                        "get",
+                        "name:en"
+                    ],
+                    [
+                        "get",
+                        "name_en"
+                    ],
+                    [
+                        "get",
+                        "name:latin"
+                    ],
+                    [
+                        "get",
+                        "name"
+                    ]
+                ],
                 "text-font": [
                     "M PLUS Rounded 1c"
                 ],
