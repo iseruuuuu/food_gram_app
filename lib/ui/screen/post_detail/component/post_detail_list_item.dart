@@ -417,6 +417,12 @@ class PostDetailListItem extends HookConsumerWidget {
                           const Gap(12),
                         ],
                       ),
+                    const Gap(4),
+                    Text(
+                      '${posts.createdAt}${l10n.posted}',
+                      style: DetailPostStyle.comment(),
+                    ),
+                    const Gap(4),
                     Wrap(
                       spacing: 10,
                       children: [
