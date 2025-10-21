@@ -1464,4 +1464,7 @@ class L10nJa extends L10n {
 
   @override
   String get noMapAppAvailable => 'マップアプリが利用できません';
+
+  @override
+  String get posted => 'に投稿';
 }

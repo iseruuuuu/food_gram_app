@@ -1464,4 +1464,7 @@ class L10nPt extends L10n {
 
   @override
   String get noMapAppAvailable => 'Nenhum aplicativo de mapa disponível';
+
+  @override
+  String get posted => 'postado';
 }

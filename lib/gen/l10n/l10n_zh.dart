@@ -1464,4 +1464,7 @@ class L10nZh extends L10n {
 
   @override
   String get noMapAppAvailable => '没有可用的地图应用';
+
+  @override
+  String get posted => '发布';
 }

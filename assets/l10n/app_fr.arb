@@ -484,5 +484,6 @@
   "savedPosts": "Publications sauvegardées",
   "postSaved": "Publication sauvegardée",
   "postSavedMessage": "Vous pouvez voir les publications sauvegardées dans Ma page",
-  "noMapAppAvailable": "Aucune application de carte disponible"
+  "noMapAppAvailable": "Aucune application de carte disponible",
+  "posted": "publié"
 }
