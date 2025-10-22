@@ -97,6 +97,7 @@ flutter_native_splash:
 
 flutter:
   uses-material-design: true
+  generate: true
   assets:
     - assets/icon/
     - assets/image/

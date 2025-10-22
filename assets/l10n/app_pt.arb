@@ -484,5 +484,9 @@
   "savedPosts": "Postagens salvas",
   "postSaved": "Postagem salva",
   "postSavedMessage": "Você pode ver as postagens salvas na Minha página",
-  "noMapAppAvailable": "Nenhum aplicativo de mapa disponível"
+  "noMapAppAvailable": "Nenhum aplicativo de mapa disponível",
+  "notificationLunchTitle": "#Já postou a refeição de hoje? 🍜",
+  "notificationLunchBody": "Que tal registrar o almoço de hoje enquanto ainda se lembra?",
+  "notificationDinnerTitle": "#Já postou a refeição de hoje? 🍛",
+  "notificationDinnerBody": "Poste a refeição de hoje e termine o dia suavemente 📷"
 }

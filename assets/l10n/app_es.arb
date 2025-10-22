@@ -484,5 +484,9 @@
   "savedPosts": "Publicaciones guardadas",
   "postSaved": "Publicación guardada",
   "postSavedMessage": "Puedes ver las publicaciones guardadas en Mi página",
-  "noMapAppAvailable": "No hay aplicación de mapas disponible"
+  "noMapAppAvailable": "No hay aplicación de mapas disponible",
+  "notificationLunchTitle": "#¿Ya publicaste la comida de hoy? 🍜",
+  "notificationLunchBody": "¿Por qué no registras el almuerzo de hoy mientras lo recuerdas?",
+  "notificationDinnerTitle": "#¿Ya publicaste la comida de hoy? 🍛",
+  "notificationDinnerBody": "Publica la comida de hoy y termina el día suavemente 📷"
 }

@@ -484,5 +484,9 @@
   "savedPosts": "Publications sauvegardées",
   "postSaved": "Publication sauvegardée",
   "postSavedMessage": "Vous pouvez voir les publications sauvegardées dans Ma page",
-  "noMapAppAvailable": "Aucune application de carte disponible"
+  "noMapAppAvailable": "Aucune application de carte disponible",
+  "notificationLunchTitle": "#Avez-vous déjà posté le repas d'aujourd'hui ? 🍜",
+  "notificationLunchBody": "Pourquoi ne pas enregistrer le déjeuner d'aujourd'hui tant que vous vous en souvenez ?",
+  "notificationDinnerTitle": "#Avez-vous déjà posté le repas d'aujourd'hui ? 🍛",
+  "notificationDinnerBody": "Postez le repas d'aujourd'hui et terminez la journée en douceur 📷"
 }

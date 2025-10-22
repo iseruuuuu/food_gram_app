@@ -1,5 +1,7 @@
 // ignore_for_file
 
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'l10n.dart';
 
 // ignore_for_file: type=lint
@@ -51,10 +53,12 @@ class L10nFr extends L10n {
   String get settingCheckVersionDialogTitle => 'Informations de mise à jour';
 
   @override
-  String get settingCheckVersionDialogText1 => 'Une nouvelle version est disponible.';
+  String get settingCheckVersionDialogText1 =>
+      'Une nouvelle version est disponible.';
 
   @override
-  String get settingCheckVersionDialogText2 => 'Veuillez mettre à jour vers la dernière version.';
+  String get settingCheckVersionDialogText2 =>
+      'Veuillez mettre à jour vers la dernière version.';
 
   @override
   String get settingDeveloper => 'Twitter';
@@ -126,13 +130,15 @@ class L10nFr extends L10n {
   String get settingRestoreSuccessTitle => 'Restauration réussie';
 
   @override
-  String get settingRestoreSuccessSubtitle => 'Fonctionnalités premium activées !';
+  String get settingRestoreSuccessSubtitle =>
+      'Fonctionnalités premium activées !';
 
   @override
   String get settingRestoreFailureTitle => 'Échec de la restauration';
 
   @override
-  String get settingRestoreFailureSubtitle => 'Aucun historique d\'achat ? Contactez le support';
+  String get settingRestoreFailureSubtitle =>
+      'Aucun historique d\'achat ? Contactez le support';
 
   @override
   String get settingRestore => 'Restaurer l\'achat';
@@ -159,7 +165,8 @@ class L10nFr extends L10n {
   String get postError => 'Échec de soumission';
 
   @override
-  String get postCategoryTitle => 'Sélectionner l\'étiquette pays/cuisine (optionnel)';
+  String get postCategoryTitle =>
+      'Sélectionner l\'étiquette pays/cuisine (optionnel)';
 
   @override
   String get postCountryCategory => 'Pays';
@@ -225,7 +232,8 @@ class L10nFr extends L10n {
   String get searchUserTitle => 'Recherche d\'utilisateurs';
 
   @override
-  String get searchUserHeader => 'Recherche d\'utilisateurs (par nombre de publications)';
+  String get searchUserHeader =>
+      'Recherche d\'utilisateurs (par nombre de publications)';
 
   @override
   String searchUserPostCount(Object count) {
@@ -236,7 +244,8 @@ class L10nFr extends L10n {
   String get searchUserLatestPosts => 'Dernières publications';
 
   @override
-  String get searchUserNoUsers => 'Aucun utilisateur avec des publications trouvé';
+  String get searchUserNoUsers =>
+      'Aucun utilisateur avec des publications trouvé';
 
   @override
   String get unknown => 'Inconnu・Aucun résultat';
@@ -260,7 +269,8 @@ class L10nFr extends L10n {
   String get likeButton => 'J\'aime';
 
   @override
-  String get shareReviewPrefix => 'Je viens de partager mon avis sur ce que j\'ai mangé !';
+  String get shareReviewPrefix =>
+      'Je viens de partager mon avis sur ce que j\'ai mangé !';
 
   @override
   String get shareReviewSuffix => 'Pour plus, jetez un œil à foodGram !';
@@ -290,7 +300,8 @@ class L10nFr extends L10n {
   String get dialogReportDescription1 => 'Vous signalerez cette publication.';
 
   @override
-  String get dialogReportDescription2 => 'Vous serez dirigé vers un formulaire Google.';
+  String get dialogReportDescription2 =>
+      'Vous serez dirigé vers un formulaire Google.';
 
   @override
   String get dialogBlockTitle => 'Confirmation de blocage';
@@ -299,22 +310,27 @@ class L10nFr extends L10n {
   String get dialogBlockDescription1 => 'Voulez-vous bloquer cet utilisateur ?';
 
   @override
-  String get dialogBlockDescription2 => 'Cela masquera les publications de l\'utilisateur.';
+  String get dialogBlockDescription2 =>
+      'Cela masquera les publications de l\'utilisateur.';
 
   @override
-  String get dialogBlockDescription3 => 'Les utilisateurs bloqués seront sauvegardés localement.';
+  String get dialogBlockDescription3 =>
+      'Les utilisateurs bloqués seront sauvegardés localement.';
 
   @override
   String get dialogDeleteTitle => 'Supprimer la publication';
 
   @override
-  String get heartLimitMessage => 'Vous avez atteint la limite de 10 j\'aime d\'aujourd\'hui. Veuillez réessayer demain.';
+  String get heartLimitMessage =>
+      'Vous avez atteint la limite de 10 j\'aime d\'aujourd\'hui. Veuillez réessayer demain.';
 
   @override
-  String get dialogDeleteDescription1 => 'Voulez-vous supprimer cette publication ?';
+  String get dialogDeleteDescription1 =>
+      'Voulez-vous supprimer cette publication ?';
 
   @override
-  String get dialogDeleteDescription2 => 'Une fois supprimée, elle ne peut pas être restaurée.';
+  String get dialogDeleteDescription2 =>
+      'Une fois supprimée, elle ne peut pas être restaurée.';
 
   @override
   String get dialogDeleteError => 'Échec de la suppression.';
@@ -326,7 +342,8 @@ class L10nFr extends L10n {
   String get dialogLogoutDescription1 => 'Voulez-vous vous déconnecter ?';
 
   @override
-  String get dialogLogoutDescription2 => 'L\'état du compte est stocké sur le serveur.';
+  String get dialogLogoutDescription2 =>
+      'L\'état du compte est stocké sur le serveur.';
 
   @override
   String get dialogLogoutButton => 'Se déconnecter';
@@ -338,7 +355,8 @@ class L10nFr extends L10n {
   String get errorDescription1 => 'Une erreur de connexion s\'est produite.';
 
   @override
-  String get errorDescription2 => 'Vérifiez votre connexion réseau et réessayez.';
+  String get errorDescription2 =>
+      'Vérifiez votre connexion réseau et réessayez.';
 
   @override
   String get errorRefreshButton => 'Recharger';
@@ -350,7 +368,8 @@ class L10nFr extends L10n {
   String get mapLoadingError => 'Une erreur s\'est produite';
 
   @override
-  String get mapLoadingRestaurant => 'Obtention des informations du restaurant...';
+  String get mapLoadingRestaurant =>
+      'Obtention des informations du restaurant...';
 
   @override
   String get appShareTitle => 'Partager';
@@ -374,10 +393,12 @@ class L10nFr extends L10n {
   String get appRequestTitle => '🙇 Activez l\'emplacement actuel 🙇';
 
   @override
-  String get appRequestReason => 'Les données d\'emplacement actuelles sont nécessaires pour la sélection de restaurants';
+  String get appRequestReason =>
+      'Les données d\'emplacement actuelles sont nécessaires pour la sélection de restaurants';
 
   @override
-  String get appRequestInduction => 'Les boutons suivants vous mèneront à l\'écran des paramètres';
+  String get appRequestInduction =>
+      'Les boutons suivants vous mèneront à l\'écran des paramètres';
 
   @override
   String get appRequestOpenSetting => 'Ouvrir l\'écran des paramètres';
@@ -389,7 +410,8 @@ class L10nFr extends L10n {
   String get appSubtitle => 'Partagez vos moments délicieux';
 
   @override
-  String get agreeToTheTermsOfUse => 'Veuillez accepter les conditions d\'utilisation';
+  String get agreeToTheTermsOfUse =>
+      'Veuillez accepter les conditions d\'utilisation';
 
   @override
   String get restaurantCategoryList => 'Sélectionner une cuisine par pays';
@@ -455,7 +477,8 @@ class L10nFr extends L10n {
   String get appleLoginFailure => 'Connexion Apple non disponible';
 
   @override
-  String get emailAuthenticationFailure => 'Échec de l\'authentification par e-mail';
+  String get emailAuthenticationFailure =>
+      'Échec de l\'authentification par e-mail';
 
   @override
   String get loginError => 'Erreur de connexion';
@@ -464,7 +487,8 @@ class L10nFr extends L10n {
   String get loginSuccessful => 'Connexion réussie';
 
   @override
-  String get emailAuthentication => 'Authentifiez-vous avec votre application e-mail';
+  String get emailAuthentication =>
+      'Authentifiez-vous avec votre application e-mail';
 
   @override
   String get emailEmpty => 'Aucune adresse e-mail n\'a été saisie';
@@ -476,10 +500,12 @@ class L10nFr extends L10n {
   String get enterTheCorrectFormat => 'Veuillez entrer le format correct';
 
   @override
-  String get authInvalidFormat => 'Le format de l\'adresse e-mail est incorrect.';
+  String get authInvalidFormat =>
+      'Le format de l\'adresse e-mail est incorrect.';
 
   @override
-  String get authSocketException => 'Il y a un problème avec le réseau. Veuillez vérifier la connexion.';
+  String get authSocketException =>
+      'Il y a un problème avec le réseau. Veuillez vérifier la connexion.';
 
   @override
   String get camera => 'Caméra';
@@ -494,22 +520,27 @@ class L10nFr extends L10n {
   String get tutorialFirstPageTitle => 'Partagez vos moments délicieux';
 
   @override
-  String get tutorialFirstPageSubTitle => 'Avec FoodGram, rendez chaque repas plus spécial.\nProfitez de découvrir de nouvelles saveurs !';
+  String get tutorialFirstPageSubTitle =>
+      'Avec FoodGram, rendez chaque repas plus spécial.\nProfitez de découvrir de nouvelles saveurs !';
 
   @override
-  String get tutorialSecondPageTitle => 'Une carte de nourriture unique pour cette application';
+  String get tutorialSecondPageTitle =>
+      'Une carte de nourriture unique pour cette application';
 
   @override
-  String get tutorialSecondPageSubTitle => 'Créons une carte unique pour cette application.\nVos publications aideront à faire évoluer la carte.';
+  String get tutorialSecondPageSubTitle =>
+      'Créons une carte unique pour cette application.\nVos publications aideront à faire évoluer la carte.';
 
   @override
   String get tutorialThirdPageTitle => 'Conditions d\'utilisation';
 
   @override
-  String get tutorialThirdPageSubTitle => '・Soyez prudent lors du partage d\'informations personnelles telles que nom, adresse, numéro de téléphone ou emplacement.\n\n・Évitez de publier du contenu offensant, inapproprié ou nuisible, et n\'utilisez pas les œuvres d\'autrui sans permission.\n\n・Les publications non liées à la nourriture peuvent être supprimées.\n\n・Les utilisateurs qui violent répétitivement les règles ou publient du contenu répréhensible peuvent être supprimés par l\'équipe de gestion.\n\n・Nous attendons avec impatience d\'améliorer cette application avec tout le monde. par les développeurs';
+  String get tutorialThirdPageSubTitle =>
+      '・Soyez prudent lors du partage d\'informations personnelles telles que nom, adresse, numéro de téléphone ou emplacement.\n\n・Évitez de publier du contenu offensant, inapproprié ou nuisible, et n\'utilisez pas les œuvres d\'autrui sans permission.\n\n・Les publications non liées à la nourriture peuvent être supprimées.\n\n・Les utilisateurs qui violent répétitivement les règles ou publient du contenu répréhensible peuvent être supprimés par l\'équipe de gestion.\n\n・Nous attendons avec impatience d\'améliorer cette application avec tout le monde. par les développeurs';
 
   @override
-  String get tutorialThirdPageButton => 'Accepter les conditions d\'utilisation';
+  String get tutorialThirdPageButton =>
+      'Accepter les conditions d\'utilisation';
 
   @override
   String get tutorialThirdPageClose => 'Fermer';
@@ -530,7 +561,8 @@ class L10nFr extends L10n {
   String get forceUpdateTitle => 'Notification de mise à jour';
 
   @override
-  String get forceUpdateText => 'Une nouvelle version de cette application a été publiée. Veuillez mettre à jour l\'application pour assurer les dernières fonctionnalités et un environnement sécurisé.';
+  String get forceUpdateText =>
+      'Une nouvelle version de cette application a été publiée. Veuillez mettre à jour l\'application pour assurer les dernières fonctionnalités et un environnement sécurisé.';
 
   @override
   String get forceUpdateButtonTitle => 'Mettre à jour';
@@ -539,7 +571,8 @@ class L10nFr extends L10n {
   String get newAccountImportantTitle => 'Note importante';
 
   @override
-  String get newAccountImportant => 'Lors de la création d\'un compte, veuillez ne pas inclure d\'informations personnelles telles que l\'adresse e-mail ou le numéro de téléphone dans votre nom d\'utilisateur ou ID utilisateur. Pour assurer une expérience en ligne sûre, choisissez un nom qui ne révèle pas vos détails personnels.';
+  String get newAccountImportant =>
+      'Lors de la création d\'un compte, veuillez ne pas inclure d\'informations personnelles telles que l\'adresse e-mail ou le numéro de téléphone dans votre nom d\'utilisateur ou ID utilisateur. Pour assurer une expérience en ligne sûre, choisissez un nom qui ne révèle pas vos détails personnels.';
 
   @override
   String get accountRegistrationSuccess => 'Inscription du compte terminée';
@@ -617,19 +650,22 @@ class L10nFr extends L10n {
   String get promoteDialogTrophyTitle => 'Fonction trophée';
 
   @override
-  String get promoteDialogTrophyDesc => 'Affiche les trophées basés sur vos activités.';
+  String get promoteDialogTrophyDesc =>
+      'Affiche les trophées basés sur vos activités.';
 
   @override
   String get promoteDialogTagTitle => 'Étiquettes personnalisées';
 
   @override
-  String get promoteDialogTagDesc => 'Définissez des étiquettes personnalisées pour vos aliments préférés.';
+  String get promoteDialogTagDesc =>
+      'Définissez des étiquettes personnalisées pour vos aliments préférés.';
 
   @override
   String get promoteDialogIconTitle => 'Icône personnalisée';
 
   @override
-  String get promoteDialogIconDesc => 'Définissez votre icône de profil sur n\'importe quelle image que vous aimez !!';
+  String get promoteDialogIconDesc =>
+      'Définissez votre icône de profil sur n\'importe quelle image que vous aimez !!';
 
   @override
   String get promoteDialogAdTitle => 'Sans publicité';
@@ -653,13 +689,15 @@ class L10nFr extends L10n {
   String get paywallTrophyTitle => 'Fonction trophée';
 
   @override
-  String get paywallTrophyDesc => 'Affiche les trophées basés sur les activités';
+  String get paywallTrophyDesc =>
+      'Affiche les trophées basés sur les activités';
 
   @override
   String get paywallTagTitle => 'Étiquettes personnalisées';
 
   @override
-  String get paywallTagDesc => 'Créez des étiquettes uniques pour les aliments préférés';
+  String get paywallTagDesc =>
+      'Créez des étiquettes uniques pour les aliments préférés';
 
   @override
   String get paywallIconTitle => 'Icône personnalisée';
@@ -677,7 +715,8 @@ class L10nFr extends L10n {
   String get paywallComingSoon => 'Bientôt disponible...';
 
   @override
-  String get paywallNewFeatures => 'Nouvelles fonctionnalités exclusives premium\nbientôt disponibles !';
+  String get paywallNewFeatures =>
+      'Nouvelles fonctionnalités exclusives premium\nbientôt disponibles !';
 
   @override
   String get paywallSubscribeButton => 'Devenir membre premium';
@@ -1433,10 +1472,12 @@ class L10nFr extends L10n {
   String get searchEmptyHintTitle => 'Conseils de recherche';
 
   @override
-  String get searchEmptyHintLocation => 'Activez l\'emplacement pour afficher d\'abord les résultats à proximité';
+  String get searchEmptyHintLocation =>
+      'Activez l\'emplacement pour afficher d\'abord les résultats à proximité';
 
   @override
-  String get searchEmptyHintSearch => 'Recherchez par nom de restaurant ou type de cuisine';
+  String get searchEmptyHintSearch =>
+      'Recherchez par nom de restaurant ou type de cuisine';
 
   @override
   String get postErrorPickImage => 'Échec de la prise de photo';
@@ -1445,10 +1486,12 @@ class L10nFr extends L10n {
   String get favoritePostEmptyTitle => 'Aucune publication sauvegardée';
 
   @override
-  String get favoritePostEmptySubtitle => 'Sauvegardez les publications qui vous intéressent !';
+  String get favoritePostEmptySubtitle =>
+      'Sauvegardez les publications qui vous intéressent !';
 
   @override
-  String get userInfoFetchError => 'Échec de la récupération des informations utilisateur';
+  String get userInfoFetchError =>
+      'Échec de la récupération des informations utilisateur';
 
   @override
   String get saved => 'Sauvegardé';
@@ -1460,8 +1503,25 @@ class L10nFr extends L10n {
   String get postSaved => 'Publication sauvegardée';
 
   @override
-  String get postSavedMessage => 'Vous pouvez voir les publications sauvegardées dans Ma page';
+  String get postSavedMessage =>
+      'Vous pouvez voir les publications sauvegardées dans Ma page';
 
   @override
   String get noMapAppAvailable => 'Aucune application de carte disponible';
+
+  @override
+  String get notificationLunchTitle =>
+      '#Avez-vous déjà posté le repas d\'aujourd\'hui ? 🍜';
+
+  @override
+  String get notificationLunchBody =>
+      'Pourquoi ne pas enregistrer le déjeuner d\'aujourd\'hui tant que vous vous en souvenez ?';
+
+  @override
+  String get notificationDinnerTitle =>
+      '#Avez-vous déjà posté le repas d\'aujourd\'hui ? 🍛';
+
+  @override
+  String get notificationDinnerBody =>
+      'Postez le repas d\'aujourd\'hui et terminez la journée en douceur 📷';
 }

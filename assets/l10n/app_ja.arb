@@ -484,5 +484,9 @@
   "savedPosts": "保存した投稿",
   "postSaved": "投稿を保存しました",
   "postSavedMessage": "マイページにて保存した投稿が確認できます",
-  "noMapAppAvailable": "マップアプリが利用できません"
+  "noMapAppAvailable": "マップアプリが利用できません",
+  "notificationLunchTitle": "#今日のごはん、もう投稿した？🍜",
+  "notificationLunchBody": "今日のランチ、思い出せるうちに記録しませんか？",
+  "notificationDinnerTitle": "#今日のごはん、もう投稿した？🍛",
+  "notificationDinnerBody": "今日のごはん、投稿して1日をゆるっと締めくくろう📷"
 }
