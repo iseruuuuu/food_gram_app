@@ -144,6 +144,8 @@ class MapScreen extends HookConsumerWidget {
                                   onPressed: isSubscribed.value == true
                                       ? controller.toggleMapStyle
                                       : () {
+                                          //TODO ちゃんと遷移できるか確認する
+                                          //TODO サブスク登録後に正しく動くか確認する
                                           context.pushNamed(
                                             RouterPath.paywallPage,
                                           );
