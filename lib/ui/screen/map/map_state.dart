@@ -9,5 +9,6 @@ class MapState with _$MapState {
     MapLibreMapController? mapController,
     @Default(false) bool isLoading,
     @Default(false) bool hasError,
+    @Default(false) bool isEarthStyle,
   }) = _MapState;
 }

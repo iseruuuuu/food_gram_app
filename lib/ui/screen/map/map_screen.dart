@@ -9,13 +9,16 @@ import 'package:food_gram_app/core/local/force_update_checker.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
+import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -31,9 +34,11 @@ class MapScreen extends HookConsumerWidget {
     final controller = ref.watch(mapViewModelProvider.notifier);
     final location = ref.watch(locationProvider);
     final mapService = ref.watch(mapRepositoryProvider);
+    final userRepository = ref.watch(userRepositoryProvider.notifier);
     final isTapPin = useState(false);
     final post = useState<List<Posts?>>([]);
     final appOpenAd = ref.watch(admobOpenNotifierProvider);
+    final isSubscribed = useState<bool?>(null);
     useEffect(
       () {
         AdTrackingPermission().requestTracking();
@@ -51,12 +56,19 @@ class MapScreen extends HookConsumerWidget {
             DialogHelper().forceUpdateDialog(context);
           },
         );
+        // ユーザーのサブスクリプション状態を取得
+        userRepository.getCurrentUser().then((result) {
+          result.when(
+            success: (user) => isSubscribed.value = user.isSubscribe,
+            failure: (_) => isSubscribed.value = false,
+          );
+        });
+
         return null;
       },
       [],
     );
-
-    final styleString = _localizedStyleAsset(context);
+    final styleString = _getMapStyle(context, state.isEarthStyle);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -107,6 +119,47 @@ class MapScreen extends HookConsumerWidget {
                       right: 10,
                       child: Column(
                         children: [
+                          // マップスタイル切り替えボタン
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: SizedBox(
+                              width: 62,
+                              height: 62,
+                              child: Theme(
+                                data: Theme.of(context)
+                                    .copyWith(highlightColor: Colors.white),
+                                child: FloatingActionButton(
+                                  heroTag: 'style_toggle',
+                                  shape: const RoundedRectangleBorder(
+                                    side: BorderSide(color: Colors.white),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                  ),
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: Colors.white,
+                                  focusColor: Colors.white,
+                                  splashColor: Colors.white,
+                                  hoverColor: Colors.white,
+                                  elevation: 10,
+                                  onPressed: isSubscribed.value == true
+                                      ? controller.toggleMapStyle
+                                      : () {
+                                          context.pushNamed(
+                                            RouterPath.paywallPage,
+                                          );
+                                        },
+                                  child: Icon(
+                                    state.isEarthStyle
+                                        ? CupertinoIcons.globe
+                                        : CupertinoIcons.map,
+                                    color: const Color(0xFF1A73E8),
+                                    size: 26,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          // 現在地ボタン
                           Padding(
                             padding: const EdgeInsets.only(top: 8, left: 8),
                             child: SizedBox(
@@ -116,7 +169,7 @@ class MapScreen extends HookConsumerWidget {
                                 data: Theme.of(context)
                                     .copyWith(highlightColor: Colors.white),
                                 child: FloatingActionButton(
-                                  heroTag: null,
+                                  heroTag: 'location',
                                   shape: const RoundedRectangleBorder(
                                     side: BorderSide(color: Colors.white),
                                     borderRadius:
@@ -166,12 +219,22 @@ double _calculateIconSize(BuildContext context) {
   }
 }
 
-String _localizedStyleAsset(BuildContext context) {
+String _getMapStyle(BuildContext context, bool isEarthStyle) {
   final lang = Localizations.localeOf(context).languageCode;
-  switch (lang) {
-    case 'ja':
-      return Assets.map.foodgramJa;
-    default:
-      return Assets.map.foodgramEn;
+
+  if (isEarthStyle) {
+    switch (lang) {
+      case 'ja':
+        return Assets.map.earthJa;
+      default:
+        return Assets.map.earthEn;
+    }
+  } else {
+    switch (lang) {
+      case 'ja':
+        return Assets.map.localJa;
+      default:
+        return Assets.map.localEn;
+    }
   }
 }

@@ -178,4 +178,9 @@ class MapViewModel extends _$MapViewModel {
       },
     );
   }
+
+  /// マップスタイルを切り替える
+  void toggleMapStyle() {
+    state = state.copyWith(isEarthStyle: !state.isEarthStyle);
+  }
 }
