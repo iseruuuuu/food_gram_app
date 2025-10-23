@@ -1466,5 +1466,17 @@ class L10nDe extends L10n {
   String get noMapAppAvailable => 'Keine Karten-App verfügbar';
 
   @override
+  String get notificationLunchTitle => '#Hast du heute schon dein Essen gepostet? 🍜';
+
+  @override
+  String get notificationLunchBody => 'Warum nicht das heutige Mittagessen aufzeichnen, solange du dich daran erinnerst?';
+
+  @override
+  String get notificationDinnerTitle => '#Hast du heute schon dein Essen gepostet? 🍛';
+
+  @override
+  String get notificationDinnerBody => 'Poste das heutige Essen und beende den Tag sanft 📷';
+
+  @override
   String get posted => 'veröffentlicht';
 }

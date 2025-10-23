@@ -485,5 +485,9 @@
   "postSaved": "帖子已保存",
   "postSavedMessage": "您可以在我的页面查看保存的帖子",
   "noMapAppAvailable": "没有可用的地图应用",
+  "notificationLunchTitle": "#今天的饭菜，已经发了吗？🍜",
+  "notificationLunchBody": "今天的午餐，趁还记得的时候记录一下吧？",
+  "notificationDinnerTitle": "#今天的饭菜，已经发了吗？🍛",
+  "notificationDinnerBody": "发布今天的饭菜，轻松结束这一天吧📷",
   "posted": "发布"
 }

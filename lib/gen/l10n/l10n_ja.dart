@@ -1466,5 +1466,17 @@ class L10nJa extends L10n {
   String get noMapAppAvailable => 'マップアプリが利用できません';
 
   @override
+  String get notificationLunchTitle => '#今日のごはん、もう投稿した？🍜';
+
+  @override
+  String get notificationLunchBody => '今日のランチ、思い出せるうちに記録しませんか？';
+
+  @override
+  String get notificationDinnerTitle => '#今日のごはん、もう投稿した？🍛';
+
+  @override
+  String get notificationDinnerBody => '今日のごはん、投稿して1日をゆるっと締めくくろう📷';
+
+  @override
   String get posted => 'に投稿';
 }

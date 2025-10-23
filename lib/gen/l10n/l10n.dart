@@ -3018,6 +3018,30 @@ abstract class L10n {
   /// **'マップアプリが利用できません'**
   String get noMapAppAvailable;
 
+  /// No description provided for @notificationLunchTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'#今日のごはん、もう投稿した？🍜'**
+  String get notificationLunchTitle;
+
+  /// No description provided for @notificationLunchBody.
+  ///
+  /// In ja, this message translates to:
+  /// **'今日のランチ、思い出せるうちに記録しませんか？'**
+  String get notificationLunchBody;
+
+  /// No description provided for @notificationDinnerTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'#今日のごはん、もう投稿した？🍛'**
+  String get notificationDinnerTitle;
+
+  /// No description provided for @notificationDinnerBody.
+  ///
+  /// In ja, this message translates to:
+  /// **'今日のごはん、投稿して1日をゆるっと締めくくろう📷'**
+  String get notificationDinnerBody;
+
   /// No description provided for @posted.
   ///
   /// In ja, this message translates to:

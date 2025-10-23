@@ -1466,5 +1466,17 @@ class L10nFr extends L10n {
   String get noMapAppAvailable => 'Aucune application de carte disponible';
 
   @override
+  String get notificationLunchTitle => '#Avez-vous déjà posté le repas d\'aujourd\'hui ? 🍜';
+
+  @override
+  String get notificationLunchBody => 'Pourquoi ne pas enregistrer le déjeuner d\'aujourd\'hui tant que vous vous en souvenez ?';
+
+  @override
+  String get notificationDinnerTitle => '#Avez-vous déjà posté le repas d\'aujourd\'hui ? 🍛';
+
+  @override
+  String get notificationDinnerBody => 'Postez le repas d\'aujourd\'hui et terminez la journée en douceur 📷';
+
+  @override
   String get posted => 'publié';
 }

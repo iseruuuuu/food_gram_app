@@ -1466,5 +1466,17 @@ class L10nZh extends L10n {
   String get noMapAppAvailable => '没有可用的地图应用';
 
   @override
+  String get notificationLunchTitle => '#今天的饭菜，已经发了吗？🍜';
+
+  @override
+  String get notificationLunchBody => '今天的午餐，趁还记得的时候记录一下吧？';
+
+  @override
+  String get notificationDinnerTitle => '#今天的饭菜，已经发了吗？🍛';
+
+  @override
+  String get notificationDinnerBody => '发布今天的饭菜，轻松结束这一天吧📷';
+
+  @override
   String get posted => '发布';
 }

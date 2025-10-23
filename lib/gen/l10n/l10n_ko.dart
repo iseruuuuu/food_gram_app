@@ -1466,5 +1466,17 @@ class L10nKo extends L10n {
   String get noMapAppAvailable => '지도 앱을 사용할 수 없습니다';
 
   @override
+  String get notificationLunchTitle => '#오늘의 식사, 이미 올렸나요? 🍜';
+
+  @override
+  String get notificationLunchBody => '오늘의 점심, 맛을 까먹기 전에 기록해볼까요?';
+
+  @override
+  String get notificationDinnerTitle => '#오늘의 식사, 이미 올렸나요? 🍛';
+
+  @override
+  String get notificationDinnerBody => '오늘의 식사를 올리고 하루를 편안하게 마무리해보세요 📷';
+
+  @override
   String get posted => '에 게시';
 }

@@ -1466,5 +1466,17 @@ class L10nEs extends L10n {
   String get noMapAppAvailable => 'No hay aplicación de mapas disponible';
 
   @override
+  String get notificationLunchTitle => '#¿Ya publicaste la comida de hoy? 🍜';
+
+  @override
+  String get notificationLunchBody => '¿Por qué no registras el almuerzo de hoy mientras lo recuerdas?';
+
+  @override
+  String get notificationDinnerTitle => '#¿Ya publicaste la comida de hoy? 🍛';
+
+  @override
+  String get notificationDinnerBody => 'Publica la comida de hoy y termina el día suavemente 📷';
+
+  @override
   String get posted => 'publicado';
 }

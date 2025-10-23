@@ -3,6 +3,15 @@ import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/l10n/l10n_de.dart';
+import 'package:food_gram_app/gen/l10n/l10n_en.dart';
+import 'package:food_gram_app/gen/l10n/l10n_es.dart';
+import 'package:food_gram_app/gen/l10n/l10n_fr.dart';
+import 'package:food_gram_app/gen/l10n/l10n_ja.dart';
+import 'package:food_gram_app/gen/l10n/l10n_ko.dart';
+import 'package:food_gram_app/gen/l10n/l10n_pt.dart';
+import 'package:food_gram_app/gen/l10n/l10n_zh.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -18,6 +27,33 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   final Logger _logger = Logger();
+
+  /// ロケールに基づいて適切なL10nインスタンスを取得
+  L10n _getL10n() {
+    final locale = Platform.localeName;
+    final languageCode = locale.split('_')[0];
+
+    switch (languageCode) {
+      case 'ja':
+        return L10nJa();
+      case 'en':
+        return L10nEn();
+      case 'ko':
+        return L10nKo();
+      case 'zh':
+        return L10nZh();
+      case 'es':
+        return L10nEs();
+      case 'fr':
+        return L10nFr();
+      case 'de':
+        return L10nDe();
+      case 'pt':
+        return L10nPt();
+      default:
+        return L10nJa(); // デフォルトは日本語
+    }
+  }
 
   /// 通知サービスを初期化
   Future<void> initialize() async {
@@ -230,8 +266,9 @@ class NotificationService {
 
   /// 食事リマインダーを設定（昼12時）
   Future<void> scheduleLunchReminder() async {
-    const title = '#今日のごはん、もう投稿した？🍜';
-    const body = '今日のランチ、思い出せるうちに記録しませんか？';
+    final l10n = _getL10n();
+    final title = l10n.notificationLunchTitle;
+    final body = l10n.notificationLunchBody;
     final payload = json.encode({
       'type': 'meal_reminder',
       'mealType': 'lunch',
@@ -256,8 +293,9 @@ class NotificationService {
 
   /// 食事リマインダーを設定（夜7時）
   Future<void> scheduleDinnerReminder() async {
-    const title = '#今日のごはん、もう投稿した？🍛';
-    const body = '今日のごはん、投稿して1日をゆるっと締めくくろう📷';
+    final l10n = _getL10n();
+    final title = l10n.notificationDinnerTitle;
+    final body = l10n.notificationDinnerBody;
     final payload = json.encode({
       'type': 'meal_reminder',
       'mealType': 'dinner',
