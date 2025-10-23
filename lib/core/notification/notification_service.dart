@@ -3,19 +3,18 @@ import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/l10n/l10n_de.dart';
+import 'package:food_gram_app/gen/l10n/l10n_en.dart';
+import 'package:food_gram_app/gen/l10n/l10n_es.dart';
+import 'package:food_gram_app/gen/l10n/l10n_fr.dart';
+import 'package:food_gram_app/gen/l10n/l10n_ja.dart';
+import 'package:food_gram_app/gen/l10n/l10n_ko.dart';
+import 'package:food_gram_app/gen/l10n/l10n_pt.dart';
+import 'package:food_gram_app/gen/l10n/l10n_zh.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:timezone/timezone.dart' as tz;
-
-import '../../gen/l10n/l10n.dart';
-import '../../gen/l10n/l10n_de.dart';
-import '../../gen/l10n/l10n_en.dart';
-import '../../gen/l10n/l10n_es.dart';
-import '../../gen/l10n/l10n_fr.dart';
-import '../../gen/l10n/l10n_ja.dart';
-import '../../gen/l10n/l10n_ko.dart';
-import '../../gen/l10n/l10n_pt.dart';
-import '../../gen/l10n/l10n_zh.dart';
 
 part 'notification_service.g.dart';
 
