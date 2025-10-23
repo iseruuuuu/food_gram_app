@@ -1464,4 +1464,7 @@ class L10nEs extends L10n {
 
   @override
   String get noMapAppAvailable => 'No hay aplicación de mapas disponible';
+
+  @override
+  String get posted => 'publicado';
 }

@@ -484,5 +484,6 @@
   "savedPosts": "Gespeicherte Beiträge",
   "postSaved": "Beitrag gespeichert",
   "postSavedMessage": "Sie können gespeicherte Beiträge auf der Meine Seite anzeigen",
-  "noMapAppAvailable": "Keine Karten-App verfügbar"
+  "noMapAppAvailable": "Keine Karten-App verfügbar",
+  "posted": "veröffentlicht"
 }

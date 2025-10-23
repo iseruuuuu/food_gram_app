@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:intl/intl.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
@@ -417,6 +418,12 @@ class PostDetailListItem extends HookConsumerWidget {
                           const Gap(12),
                         ],
                       ),
+                    const Gap(4),
+                    Text(
+                      '${_formatDateTime(posts.createdAt)} ${l10n.posted}',
+                      style: DetailPostStyle.comment(),
+                    ),
+                    const Gap(12),
                     Wrap(
                       spacing: 10,
                       children: [
@@ -484,5 +491,10 @@ class PostDetailListItem extends HookConsumerWidget {
         ],
       ),
     );
+  }
+
+  String _formatDateTime(DateTime dateTime) {
+    final formatter = DateFormat('yyyy/MM/dd');
+    return formatter.format(dateTime);
   }
 }

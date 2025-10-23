@@ -1464,4 +1464,7 @@ class L10nKo extends L10n {
 
   @override
   String get noMapAppAvailable => '지도 앱을 사용할 수 없습니다';
+
+  @override
+  String get posted => '에 게시';
 }

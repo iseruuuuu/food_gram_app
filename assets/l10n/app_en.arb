@@ -484,5 +484,6 @@
   "savedPosts": "Saved Posts",
   "postSaved": "Post saved",
   "postSavedMessage": "You can view saved posts in My Page",
-  "noMapAppAvailable": "No map app available"
+  "noMapAppAvailable": "No map app available",
+  "posted": "posted"
 }

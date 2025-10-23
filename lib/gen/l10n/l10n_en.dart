@@ -1464,4 +1464,7 @@ class L10nEn extends L10n {
 
   @override
   String get noMapAppAvailable => 'No map app available';
+
+  @override
+  String get posted => 'posted';
 }
