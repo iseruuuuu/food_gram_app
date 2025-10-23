@@ -1,7 +1,5 @@
 // ignore_for_file
 
-// ignore: unused_import
-import 'package:intl/intl.dart' as intl;
 import 'l10n.dart';
 
 // ignore_for_file: type=lint
@@ -496,22 +494,19 @@ class L10nJa extends L10n {
   String get tutorialFirstPageTitle => '美味しい瞬間、シェアしよう';
 
   @override
-  String get tutorialFirstPageSubTitle =>
-      'FoodGramで、毎日の食事がもっと特別に\n新しい味との出会いを楽しもう';
+  String get tutorialFirstPageSubTitle => 'FoodGramで、毎日の食事がもっと特別に\n新しい味との出会いを楽しもう';
 
   @override
   String get tutorialSecondPageTitle => 'このアプリだけのフードマップ';
 
   @override
-  String get tutorialSecondPageSubTitle =>
-      'このアプリだけのマップ作りをしよう\nあなたの投稿でマップが進化していく';
+  String get tutorialSecondPageSubTitle => 'このアプリだけのマップ作りをしよう\nあなたの投稿でマップが進化していく';
 
   @override
   String get tutorialThirdPageTitle => '利用規約';
 
   @override
-  String get tutorialThirdPageSubTitle =>
-      '・氏名、住所、電話番号などの個人情報や位置情報の公開には注意しましょう。\n\n・攻撃的、不適切、または有害なコンテンツの投稿を避け、他人の作品を無断で使用しないようにしましょう。\n\n・食べ物以外の投稿は削除させていただく場合があります。\n\n・違反が繰り返されるユーザーや不快なコンテンツは運営側で削除します。\n\n・みなさんと一緒にこのアプリをより良くしていけることを楽しみにしています by 開発者';
+  String get tutorialThirdPageSubTitle => '・氏名、住所、電話番号などの個人情報や位置情報の公開には注意しましょう。\n\n・攻撃的、不適切、または有害なコンテンツの投稿を避け、他人の作品を無断で使用しないようにしましょう。\n\n・食べ物以外の投稿は削除させていただく場合があります。\n\n・違反が繰り返されるユーザーや不快なコンテンツは運営側で削除します。\n\n・みなさんと一緒にこのアプリをより良くしていけることを楽しみにしています by 開発者';
 
   @override
   String get tutorialThirdPageButton => '利用規約に同意する';
@@ -535,8 +530,7 @@ class L10nJa extends L10n {
   String get forceUpdateTitle => 'アップデートのお知らせ';
 
   @override
-  String get forceUpdateText =>
-      'このアプリの新しいバージョンがリリースされました。最新の機能や安全な環境でご利用いただくために、アプリをアップデートしてください。';
+  String get forceUpdateText => 'このアプリの新しいバージョンがリリースされました。最新の機能や安全な環境でご利用いただくために、アプリをアップデートしてください。';
 
   @override
   String get forceUpdateButtonTitle => 'アップデート';
@@ -545,8 +539,7 @@ class L10nJa extends L10n {
   String get newAccountImportantTitle => '重要な注意事項';
 
   @override
-  String get newAccountImportant =>
-      'アカウントを作成する際、ユーザー名やユーザーIDには、メールアドレスや電話番号などの個人情報を含めないようにしてください。安全なオンライン体験のため、個人情報が特定されない名前を設定してください。';
+  String get newAccountImportant => 'アカウントを作成する際、ユーザー名やユーザーIDには、メールアドレスや電話番号などの個人情報を含めないようにしてください。安全なオンライン体験のため、個人情報が特定されない名前を設定してください。';
 
   @override
   String get accountRegistrationSuccess => 'アカウントの登録が完了しました';

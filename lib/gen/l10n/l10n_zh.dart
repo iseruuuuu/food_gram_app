@@ -1,7 +1,5 @@
 // ignore_for_file
 
-// ignore: unused_import
-import 'package:intl/intl.dart' as intl;
 import 'l10n.dart';
 
 // ignore_for_file: type=lint
@@ -508,8 +506,7 @@ class L10nZh extends L10n {
   String get tutorialThirdPageTitle => '使用条款';
 
   @override
-  String get tutorialThirdPageSubTitle =>
-      '・请注意分享个人信息，如姓名、地址、电话号码或位置。\n\n・避免发布攻击性、不当或有害内容，不要未经许可使用他人作品。\n\n・与食物无关的帖子可能会被删除。\n\n・反复违反规则或发布令人反感内容的用户可能会被管理团队删除。\n\n・我们期待与大家一起改进这个应用。开发者';
+  String get tutorialThirdPageSubTitle => '・请注意分享个人信息，如姓名、地址、电话号码或位置。\n\n・避免发布攻击性、不当或有害内容，不要未经许可使用他人作品。\n\n・与食物无关的帖子可能会被删除。\n\n・反复违反规则或发布令人反感内容的用户可能会被管理团队删除。\n\n・我们期待与大家一起改进这个应用。开发者';
 
   @override
   String get tutorialThirdPageButton => '同意使用条款';
@@ -542,8 +539,7 @@ class L10nZh extends L10n {
   String get newAccountImportantTitle => '重要提示';
 
   @override
-  String get newAccountImportant =>
-      '创建账户时，请不要在用户名或用户ID中包含邮箱地址或电话号码等个人信息。为确保安全的在线体验，请选择不会泄露个人信息的名称。';
+  String get newAccountImportant => '创建账户时，请不要在用户名或用户ID中包含邮箱地址或电话号码等个人信息。为确保安全的在线体验，请选择不会泄露个人信息的名称。';
 
   @override
   String get accountRegistrationSuccess => '账户注册完成';

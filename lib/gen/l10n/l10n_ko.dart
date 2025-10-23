@@ -1,7 +1,5 @@
 // ignore_for_file
 
-// ignore: unused_import
-import 'package:intl/intl.dart' as intl;
 import 'l10n.dart';
 
 // ignore_for_file: type=lint
@@ -496,22 +494,19 @@ class L10nKo extends L10n {
   String get tutorialFirstPageTitle => '맛있는 순간을 공유하세요';
 
   @override
-  String get tutorialFirstPageSubTitle =>
-      'FoodGram으로 매 식사가 더욱 특별해집니다.\n새로운 맛을 발견하는 즐거움을 경험하세요!';
+  String get tutorialFirstPageSubTitle => 'FoodGram으로 매 식사가 더욱 특별해집니다.\n새로운 맛을 발견하는 즐거움을 경험하세요!';
 
   @override
   String get tutorialSecondPageTitle => '이 앱만의 독특한 음식 지도';
 
   @override
-  String get tutorialSecondPageSubTitle =>
-      '이 앱만의 독특한 지도를 만들어보세요.\n여러분의 게시물이 지도를 발전시킵니다.';
+  String get tutorialSecondPageSubTitle => '이 앱만의 독특한 지도를 만들어보세요.\n여러분의 게시물이 지도를 발전시킵니다.';
 
   @override
   String get tutorialThirdPageTitle => '이용약관';
 
   @override
-  String get tutorialThirdPageSubTitle =>
-      '・이름, 주소, 전화번호, 위치 등 개인정보 공유에 주의하세요.\n\n・공격적이거나 부적절하거나 유해한 콘텐츠 게시를 피하고, 허가 없이 타인의 작품을 사용하지 마세요.\n\n・음식과 관련 없는 게시물은 삭제될 수 있습니다.\n\n・규칙을 반복적으로 위반하거나 불쾌한 콘텐츠를 게시하는 사용자는 관리팀에 의해 제거될 수 있습니다.\n\n・모든 분과 함께 이 앱을 개선해 나갈 수 있기를 기대합니다. 개발자';
+  String get tutorialThirdPageSubTitle => '・이름, 주소, 전화번호, 위치 등 개인정보 공유에 주의하세요.\n\n・공격적이거나 부적절하거나 유해한 콘텐츠 게시를 피하고, 허가 없이 타인의 작품을 사용하지 마세요.\n\n・음식과 관련 없는 게시물은 삭제될 수 있습니다.\n\n・규칙을 반복적으로 위반하거나 불쾌한 콘텐츠를 게시하는 사용자는 관리팀에 의해 제거될 수 있습니다.\n\n・모든 분과 함께 이 앱을 개선해 나갈 수 있기를 기대합니다. 개발자';
 
   @override
   String get tutorialThirdPageButton => '이용약관에 동의';
@@ -535,8 +530,7 @@ class L10nKo extends L10n {
   String get forceUpdateTitle => '업데이트 알림';
 
   @override
-  String get forceUpdateText =>
-      '이 앱의 새 버전이 출시되었습니다. 최신 기능과 안전한 환경을 위해 앱을 업데이트해 주세요.';
+  String get forceUpdateText => '이 앱의 새 버전이 출시되었습니다. 최신 기능과 안전한 환경을 위해 앱을 업데이트해 주세요.';
 
   @override
   String get forceUpdateButtonTitle => '업데이트';
@@ -545,8 +539,7 @@ class L10nKo extends L10n {
   String get newAccountImportantTitle => '중요한 참고사항';
 
   @override
-  String get newAccountImportant =>
-      '계정을 만들 때 사용자명이나 사용자 ID에 이메일 주소나 전화번호와 같은 개인정보를 포함하지 마세요. 안전한 온라인 경험을 위해 개인정보가 드러나지 않는 이름을 선택하세요.';
+  String get newAccountImportant => '계정을 만들 때 사용자명이나 사용자 ID에 이메일 주소나 전화번호와 같은 개인정보를 포함하지 마세요. 안전한 온라인 경험을 위해 개인정보가 드러나지 않는 이름을 선택하세요.';
 
   @override
   String get accountRegistrationSuccess => '계정 등록이 완료되었습니다';
@@ -1476,7 +1469,7 @@ class L10nKo extends L10n {
   String get notificationLunchTitle => '#오늘의 식사, 이미 올렸나요? 🍜';
 
   @override
-  String get notificationLunchBody => '오늘의 점심, 기억할 수 있을 때 기록해보시겠어요?';
+  String get notificationLunchBody => '오늘의 점심, 맛을 까먹기 전에 기록해볼까요?';
 
   @override
   String get notificationDinnerTitle => '#오늘의 식사, 이미 올렸나요? 🍛';
