@@ -45,29 +45,30 @@ class MapScreen extends HookConsumerWidget {
         ref
             .read(revenueCatServiceProvider.notifier)
             .initInAppPurchase()
-            .then((isSubscribed) {
+            .then((subscriptionStatus) {
           final value = math.Random().nextInt(10);
           if (value == 0) {
             appOpenAd.loadAd();
           }
+          isSubscribed.value = subscriptionStatus;
         });
         ref.read(forceUpdateCheckerProvider.notifier).checkForceUpdate(
           openDialog: () {
             DialogHelper().forceUpdateDialog(context);
           },
         );
-        // ユーザーのサブスクリプション状態を取得
-        userRepository.getCurrentUser().then((result) {
-          result.when(
-            success: (user) => isSubscribed.value = user.isSubscribe,
-            failure: (_) => isSubscribed.value = false,
-          );
-        });
-
         return null;
       },
       [],
     );
+    useEffect(
+      () {
+        _updateSubscriptionStatus(userRepository, isSubscribed);
+        return null;
+      },
+      [],
+    );
+
     final styleString = _getMapStyle(context, state.isEarthStyle);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -141,11 +142,9 @@ class MapScreen extends HookConsumerWidget {
                                   splashColor: Colors.white,
                                   hoverColor: Colors.white,
                                   elevation: 10,
-                                  onPressed: isSubscribed.value == true
+                                  onPressed: (isSubscribed.value ?? false)
                                       ? controller.toggleMapStyle
                                       : () {
-                                          //TODO ちゃんと遷移できるか確認する
-                                          //TODO サブスク登録後に正しく動くか確認する
                                           context.pushNamed(
                                             RouterPath.paywallPage,
                                           );
@@ -207,6 +206,18 @@ class MapScreen extends HookConsumerWidget {
         ],
       ),
     );
+  }
+
+  void _updateSubscriptionStatus(
+    UserRepository userRepository,
+    ValueNotifier<bool?> isSubscribed,
+  ) {
+    userRepository.getCurrentUser().then((result) {
+      result.when(
+        success: (user) => isSubscribed.value = user.isSubscribe,
+        failure: (_) => isSubscribed.value = false,
+      );
+    });
   }
 }
 
