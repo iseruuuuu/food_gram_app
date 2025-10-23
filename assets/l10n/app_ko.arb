@@ -488,5 +488,6 @@
   "notificationLunchTitle": "#오늘의 식사, 이미 올렸나요? 🍜",
   "notificationLunchBody": "오늘의 점심, 기억할 수 있을 때 기록해보시겠어요?",
   "notificationDinnerTitle": "#오늘의 식사, 이미 올렸나요? 🍛",
-  "notificationDinnerBody": "오늘의 식사를 올리고 하루를 편안하게 마무리해보세요 📷"
+  "notificationDinnerBody": "오늘의 식사를 올리고 하루를 편안하게 마무리해보세요 📷",
+  "posted": "에 게시"
 }

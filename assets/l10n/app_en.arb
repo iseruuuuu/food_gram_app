@@ -488,5 +488,6 @@
   "notificationLunchTitle": "#Did you post today's meal? 🍜",
   "notificationLunchBody": "Why not record today's lunch while you still remember it?",
   "notificationDinnerTitle": "#Did you post today's meal? 🍛",
-  "notificationDinnerBody": "Post today's meal and wrap up your day gently 📷"
+  "notificationDinnerBody": "Post today's meal and wrap up your day gently 📷",
+  "posted": "posted"
 }

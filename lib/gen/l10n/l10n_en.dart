@@ -1498,4 +1498,7 @@ class L10nEn extends L10n {
   @override
   String get notificationDinnerBody =>
       'Post today\'s meal and wrap up your day gently 📷';
+
+  @override
+  String get posted => 'posted';
 }

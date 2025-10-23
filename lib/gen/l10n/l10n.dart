@@ -3043,6 +3043,12 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'今日のごはん、投稿して1日をゆるっと締めくくろう📷'**
   String get notificationDinnerBody;
+
+  /// No description provided for @posted.
+  ///
+  /// In ja, this message translates to:
+  /// **'に投稿'**
+  String get posted;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

@@ -488,5 +488,6 @@
   "notificationLunchTitle": "#Já postou a refeição de hoje? 🍜",
   "notificationLunchBody": "Que tal registrar o almoço de hoje enquanto ainda se lembra?",
   "notificationDinnerTitle": "#Já postou a refeição de hoje? 🍛",
-  "notificationDinnerBody": "Poste a refeição de hoje e termine o dia suavemente 📷"
+  "notificationDinnerBody": "Poste a refeição de hoje e termine o dia suavemente 📷",
+  "posted": "postado"
 }

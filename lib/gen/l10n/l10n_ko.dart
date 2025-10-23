@@ -1483,4 +1483,7 @@ class L10nKo extends L10n {
 
   @override
   String get notificationDinnerBody => '오늘의 식사를 올리고 하루를 편안하게 마무리해보세요 📷';
+
+  @override
+  String get posted => '에 게시';
 }

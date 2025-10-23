@@ -488,5 +488,6 @@
   "notificationLunchTitle": "#Hast du heute schon dein Essen gepostet? 🍜",
   "notificationLunchBody": "Warum nicht das heutige Mittagessen aufzeichnen, solange du dich daran erinnerst?",
   "notificationDinnerTitle": "#Hast du heute schon dein Essen gepostet? 🍛",
-  "notificationDinnerBody": "Poste das heutige Essen und beende den Tag sanft 📷"
+  "notificationDinnerBody": "Poste das heutige Essen und beende den Tag sanft 📷",
+  "posted": "veröffentlicht"
 }

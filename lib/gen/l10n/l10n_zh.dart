@@ -1480,4 +1480,7 @@ class L10nZh extends L10n {
 
   @override
   String get notificationDinnerBody => '发布今天的饭菜，轻松结束这一天吧📷';
+
+  @override
+  String get posted => '发布';
 }

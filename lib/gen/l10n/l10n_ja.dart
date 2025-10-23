@@ -1483,4 +1483,7 @@ class L10nJa extends L10n {
 
   @override
   String get notificationDinnerBody => '今日のごはん、投稿して1日をゆるっと締めくくろう📷';
+
+  @override
+  String get posted => 'に投稿';
 }
