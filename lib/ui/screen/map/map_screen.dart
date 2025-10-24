@@ -12,10 +12,13 @@ import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
+import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -35,6 +38,8 @@ class MapScreen extends HookConsumerWidget {
     final post = useState<List<Posts?>>([]);
     final appOpenAd = ref.watch(admobOpenNotifierProvider);
     final isEarthStyle = useState(true);
+    final users = ref.watch(myProfileViewModelProvider());
+    final isSubscribe = useState(false);
     useEffect(
       () {
         AdTrackingPermission().requestTracking();
@@ -56,6 +61,18 @@ class MapScreen extends HookConsumerWidget {
       },
       [],
     );
+
+    useEffect(() {
+      users.whenOrNull(
+        data: (users, __, ___) {
+          if (users.isSubscribe) {
+            isSubscribe.value = true;
+          }
+          return null;
+        },
+      );
+      return null;
+    });
 
     final styleString = _localizedStyleAsset(context, isEarthStyle.value);
     return Scaffold(
@@ -130,9 +147,15 @@ class MapScreen extends HookConsumerWidget {
                                   hoverColor: Colors.white,
                                   elevation: 10,
                                   onPressed: () {
-                                    isEarthStyle.value = !isEarthStyle.value;
-                                    // スタイル切り替え時にピンを再表示
-                                    controller.handleStyleChange();
+                                    if (!isSubscribe.value) {
+                                      context.pushNamed(
+                                        RouterPath.paywallPage,
+                                      );
+                                    } else {
+                                      isEarthStyle.value = !isEarthStyle.value;
+                                      // スタイル切り替え時にピンを再表示
+                                      controller.handleStyleChange();
+                                    }
                                   },
                                   child: const Icon(
                                     CupertinoIcons.map,
