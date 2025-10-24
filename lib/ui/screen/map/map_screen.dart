@@ -34,6 +34,7 @@ class MapScreen extends HookConsumerWidget {
     final isTapPin = useState(false);
     final post = useState<List<Posts?>>([]);
     final appOpenAd = ref.watch(admobOpenNotifierProvider);
+    final isEarthStyle = useState(true);
     useEffect(
       () {
         AdTrackingPermission().requestTracking();
@@ -56,7 +57,7 @@ class MapScreen extends HookConsumerWidget {
       [],
     );
 
-    final styleString = _localizedStyleAsset(context);
+    final styleString = _localizedStyleAsset(context, isEarthStyle.value);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -107,6 +108,41 @@ class MapScreen extends HookConsumerWidget {
                       right: 10,
                       child: Column(
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: SizedBox(
+                              width: 62,
+                              height: 62,
+                              child: Theme(
+                                data: Theme.of(context)
+                                    .copyWith(highlightColor: Colors.white),
+                                child: FloatingActionButton(
+                                  heroTag: 'style_toggle',
+                                  shape: const RoundedRectangleBorder(
+                                    side: BorderSide(color: Colors.white),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                  ),
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: Colors.white,
+                                  focusColor: Colors.white,
+                                  splashColor: Colors.white,
+                                  hoverColor: Colors.white,
+                                  elevation: 10,
+                                  onPressed: () {
+                                    isEarthStyle.value = !isEarthStyle.value;
+                                    // スタイル切り替え時にピンを再表示
+                                    controller.handleStyleChange();
+                                  },
+                                  child: const Icon(
+                                    CupertinoIcons.map,
+                                    color: Color(0xFF1A73E8),
+                                    size: 26,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.only(top: 8, left: 8),
                             child: SizedBox(
@@ -166,12 +202,22 @@ double _calculateIconSize(BuildContext context) {
   }
 }
 
-String _localizedStyleAsset(BuildContext context) {
+String _localizedStyleAsset(BuildContext context, bool isEarthStyle) {
   final lang = Localizations.localeOf(context).languageCode;
-  switch (lang) {
-    case 'ja':
-      return Assets.map.foodgramJa;
-    default:
-      return Assets.map.foodgramEn;
+
+  if (isEarthStyle) {
+    switch (lang) {
+      case 'ja':
+        return Assets.map.localJa;
+      default:
+        return Assets.map.localEn;
+    }
+  } else {
+    switch (lang) {
+      case 'ja':
+        return Assets.map.earthJa;
+      default:
+        return Assets.map.earthEn;
+    }
   }
 }

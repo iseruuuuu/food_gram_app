@@ -24,6 +24,11 @@ class MapViewModel extends _$MapViewModel {
   final Set<String> _registeredImageKeys = {};
   bool _symbolTapHandlerRegistered = false;
 
+  // ピン情報をキャッシュ
+  List<Posts>? _cachedPosts;
+  Map<String, String>? _cachedImageKeys;
+  double? _cachedIconSize;
+
   /// デフォルト画像を事前生成
   Future<void> _preloadDefaultImages() async {
     if (!_imageCache.containsKey('default')) {
@@ -62,6 +67,11 @@ class MapViewModel extends _$MapViewModel {
       if (posts == null || posts.isEmpty) {
         return;
       }
+
+      // ピン情報をキャッシュ
+      _cachedPosts = posts;
+      _cachedIconSize = iconSize;
+
       // ピン画像の種類を収集
       final imageTypes = <String>{};
       for (final post in posts) {
@@ -72,6 +82,8 @@ class MapViewModel extends _$MapViewModel {
       }
       // 画像を並列で生成してマップに追加
       final imageKeys = await _generatePinImages(imageTypes, posts);
+      _cachedImageKeys = imageKeys;
+
       // シンボルを作成して追加
       final symbols = posts.map((post) {
         final imageType = post.foodTag.isEmpty
@@ -177,5 +189,102 @@ class MapViewModel extends _$MapViewModel {
         );
       },
     );
+  }
+
+  /// スタイル切り替え時の処理
+  void handleStyleChange() {
+    if (state.mapController == null) {
+      return;
+    }
+
+    // スタイル変更時に画像登録情報をクリア
+    _registeredImageKeys.clear();
+    // スタイル変更後にキャッシュされたピン情報を再表示
+    Future.delayed(const Duration(milliseconds: 800), () {
+      if (state.mapController != null && _cachedPosts != null) {
+        _restorePinsFromCache();
+      } else {
+        _addPinsToMap();
+      }
+    });
+  }
+
+  /// キャッシュされたピン情報からマップにピンを復元
+  Future<void> _restorePinsFromCache() async {
+    if (state.mapController == null ||
+        _cachedPosts == null ||
+        _cachedImageKeys == null) {
+      return;
+    }
+    // 既存のピンをクリア
+    await state.mapController!.clearSymbols();
+
+    // スタイル変更後は画像を再登録する必要がある
+    for (final imageKey in _cachedImageKeys!.values) {
+      final imageType = _cachedImageKeys!.entries
+          .firstWhere((entry) => entry.value == imageKey)
+          .key;
+      if (_imageCache.containsKey(imageType)) {
+        await state.mapController!.addImage(imageKey, _imageCache[imageType]!);
+        _registeredImageKeys.add(imageKey);
+      }
+    }
+
+    // シンボルを作成して追加
+    final symbols = _cachedPosts!.map((post) {
+      final imageType = post.foodTag.isEmpty
+          ? 'default'
+          : post.foodTag.split(',').first.trim();
+      return SymbolOptions(
+        geometry: LatLng(post.lat, post.lng),
+        iconImage: _cachedImageKeys![imageType],
+        iconSize: _cachedIconSize ?? 0.6,
+      );
+    }).toList();
+
+    if (symbols.isNotEmpty && state.mapController != null) {
+      await state.mapController!.addSymbols(symbols);
+      await state.mapController!.setSymbolIconIgnorePlacement(true);
+      await state.mapController!.setSymbolIconAllowOverlap(true);
+    }
+  }
+
+  void _addPinsToMap() {
+    if (state.mapController == null) {
+      return;
+    }
+    // 投稿データを取得
+    final posts =
+        ref.read(mapRepositoryProvider).whenOrNull(data: (value) => value);
+    if (posts == null || posts.isEmpty) {
+      return;
+    }
+    // ピン画像の種類を収集
+    final imageTypes = <String>{};
+    for (final post in posts) {
+      final type = post.foodTag.isEmpty
+          ? 'default'
+          : post.foodTag.split(',').first.trim();
+      imageTypes.add(type);
+    }
+    // 画像を並列で生成してマップに追加
+    _generatePinImages(imageTypes, posts).then((imageKeys) {
+      // シンボルを作成して追加
+      final symbols = posts.map((post) {
+        final imageType = post.foodTag.isEmpty
+            ? 'default'
+            : post.foodTag.split(',').first.trim();
+        return SymbolOptions(
+          geometry: LatLng(post.lat, post.lng),
+          iconImage: imageKeys[imageType],
+          iconSize: 0.6,
+        );
+      }).toList();
+      if (symbols.isNotEmpty && state.mapController != null) {
+        state.mapController!.addSymbols(symbols);
+        state.mapController!.setSymbolIconIgnorePlacement(true);
+        state.mapController!.setSymbolIconAllowOverlap(true);
+      }
+    });
   }
 }
