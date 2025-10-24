@@ -199,7 +199,6 @@ class MapViewModel extends _$MapViewModel {
 
     // スタイル変更時に画像登録情報をクリア
     _registeredImageKeys.clear();
-    // スタイル変更後にキャッシュされたピン情報を再表示
     Future.delayed(const Duration(milliseconds: 800), () {
       if (state.mapController != null && _cachedPosts != null) {
         _restorePinsFromCache();
@@ -216,10 +215,7 @@ class MapViewModel extends _$MapViewModel {
         _cachedImageKeys == null) {
       return;
     }
-    // 既存のピンをクリア
     await state.mapController!.clearSymbols();
-
-    // スタイル変更後は画像を再登録する必要がある
     for (final imageKey in _cachedImageKeys!.values) {
       final imageType = _cachedImageKeys!.entries
           .firstWhere((entry) => entry.value == imageKey)
@@ -229,8 +225,6 @@ class MapViewModel extends _$MapViewModel {
         _registeredImageKeys.add(imageKey);
       }
     }
-
-    // シンボルを作成して追加
     final symbols = _cachedPosts!.map((post) {
       final imageType = post.foodTag.isEmpty
           ? 'default'
@@ -267,9 +261,7 @@ class MapViewModel extends _$MapViewModel {
           : post.foodTag.split(',').first.trim();
       imageTypes.add(type);
     }
-    // 画像を並列で生成してマップに追加
     _generatePinImages(imageTypes, posts).then((imageKeys) {
-      // シンボルを作成して追加
       final symbols = posts.map((post) {
         final imageType = post.foodTag.isEmpty
             ? 'default'
