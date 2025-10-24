@@ -37,7 +37,7 @@ class MapScreen extends HookConsumerWidget {
     final isTapPin = useState(false);
     final post = useState<List<Posts?>>([]);
     final appOpenAd = ref.watch(admobOpenNotifierProvider);
-    final isEarthStyle = useState(true);
+    final isEarthStyle = useState(false);
     final users = ref.watch(myProfileViewModelProvider());
     final isSubscribe = useState(false);
     useEffect(
@@ -148,9 +148,15 @@ class MapScreen extends HookConsumerWidget {
                                   elevation: 10,
                                   onPressed: () {
                                     if (!isSubscribe.value) {
-                                      context.pushNamed(
+                                      context
+                                          .pushNamed(
                                         RouterPath.paywallPage,
-                                      );
+                                      )
+                                          .then((_) {
+                                        ref.invalidate(
+                                          myProfileViewModelProvider(),
+                                        );
+                                      });
                                     } else {
                                       isEarthStyle.value = !isEarthStyle.value;
                                       // スタイル切り替え時にピンを再表示
@@ -231,16 +237,16 @@ String _localizedStyleAsset(BuildContext context, bool isEarthStyle) {
   if (isEarthStyle) {
     switch (lang) {
       case 'ja':
-        return Assets.map.localJa;
+        return Assets.map.earthJa;
       default:
-        return Assets.map.localEn;
+        return Assets.map.earthEn;
     }
   } else {
     switch (lang) {
       case 'ja':
-        return Assets.map.earthJa;
+        return Assets.map.localJa;
       default:
-        return Assets.map.earthEn;
+        return Assets.map.localEn;
     }
   }
 }
