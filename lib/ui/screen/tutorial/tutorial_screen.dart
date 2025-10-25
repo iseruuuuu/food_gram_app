@@ -1,17 +1,23 @@
 import 'dart:async';
+import 'dart:ui';
+
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sliding_tutorial/flutter_sliding_tutorial.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
+import 'package:food_gram_app/core/notification/notification_service.dart';
 import 'package:food_gram_app/core/theme/style/tutorial_style.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/paywall_widget.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
 import 'package:gap/gap.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class TutorialScreen extends ConsumerStatefulWidget {
   const TutorialScreen({super.key});
@@ -59,50 +65,148 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
           SlidingTutorial(
             controller: pageController,
             notifier: notifier,
-            pageCount: 4,
+            pageCount: totalPages,
             pages: [
-              /// 1ページ目
+              // 1ページ目
               Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Spacer(),
+                  Lottie.asset(
+                    Assets.lottie.tutorial1,
+                    width: 250,
+                    height: 250,
+                  ),
+                  const Gap(24),
                   Text(
                     l10n.tutorialFirstPageTitle,
                     style: TutorialStyle.title(),
                   ),
-                  const Gap(52),
-                  Assets.image.tutorial1.image(height: imageHeight),
-                  const Gap(52),
+                  const Gap(12),
                   Text(
                     l10n.tutorialFirstPageSubTitle,
                     style: TutorialStyle.subTitle(),
                     textAlign: TextAlign.center,
                   ),
-                  const Spacer(),
+                  const Gap(120),
                 ],
               ),
-
-              /// 2ページ目
+              // 2ページ目
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Spacer(),
+                  Lottie.asset(
+                    Assets.lottie.tutorial2,
+                    width: 250,
+                    height: 250,
+                  ),
+                  const Gap(24),
+                  Text(
+                    l10n.tutorialDiscoverTitle,
+                    style: TutorialStyle.title(),
+                  ),
+                  const Gap(12),
+                  Text(
+                    l10n.tutorialDiscoverSubTitle,
+                    style: TutorialStyle.subTitle(),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Gap(120),
+                ],
+              ),
+              // 3ページ目
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                    Assets.lottie.tutorial3,
+                    width: 400,
+                    height: 150,
+                  ),
+                  const Gap(24),
                   Text(
                     l10n.tutorialSecondPageTitle,
                     style: TutorialStyle.title(),
                   ),
-                  const Gap(52),
-                  Assets.image.tutorial2.image(height: imageHeight),
-                  const Gap(52),
+                  const Gap(12),
                   Text(
                     l10n.tutorialSecondPageSubTitle,
-                    textAlign: TextAlign.center,
                     style: TutorialStyle.subTitle(),
+                    textAlign: TextAlign.center,
                   ),
-                  const Spacer(),
+                  const Gap(24),
                 ],
               ),
-
-              /// 3ページ目
+              // 4ページ目
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                    Assets.lottie.permission,
+                    width: 400,
+                    height: 180,
+                  ),
+                  const Gap(56),
+                  Text(
+                    l10n.appRequestTitle,
+                    style: TutorialStyle.title(),
+                  ),
+                  const Gap(12),
+                  Text(
+                    l10n.appRequestReason,
+                    style: TutorialStyle.subTitle(),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Gap(36),
+                  AppElevatedButton(
+                    onPressed: () async {
+                      final permission = await Geolocator.checkPermission();
+                      if (permission == LocationPermission.denied) {
+                        await Geolocator.requestPermission();
+                      }
+                      _goToNextPage();
+                    },
+                    title: l10n.appRequestOpenSetting,
+                  ),
+                ],
+              ),
+              // 5ページ目
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                    Assets.lottie.notification,
+                    width: 400,
+                    height: 180,
+                  ),
+                  const Gap(48),
+                  Text(
+                    l10n.tutorialDiscoverTitle,
+                    style: TutorialStyle.title(),
+                  ),
+                  const Gap(12),
+                  Text(
+                    l10n.tutorialDiscoverSubTitle,
+                    style: TutorialStyle.subTitle(),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Gap(36),
+                  AppElevatedButton(
+                    onPressed: () async {
+                      final notificationService = NotificationService();
+                      await notificationService.initialize();
+                      final hasPermission =
+                          await notificationService.checkPermissions();
+                      if (!hasPermission) {
+                        await openAppSettings();
+                      } else {
+                        _goToNextPage();
+                      }
+                    },
+                    title: l10n.tutorialNotificationButton,
+                  ),
+                ],
+              ),
+              // 6ページ目
               PaywallBackground(
                 child: SafeArea(
                   child: Padding(
@@ -125,8 +229,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                   ),
                 ),
               ),
-
-              /// 4ページ目
+              // 7ページ目
               SingleChildScrollView(
                 child: Center(
                   child: Column(
