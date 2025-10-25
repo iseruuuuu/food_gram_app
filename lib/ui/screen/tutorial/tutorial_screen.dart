@@ -57,7 +57,6 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final imageHeight = MediaQuery.sizeOf(context).width;
     final l10n = L10n.of(context);
     return Scaffold(
       body: Stack(
