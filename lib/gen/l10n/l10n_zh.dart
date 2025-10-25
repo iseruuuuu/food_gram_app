@@ -1487,20 +1487,20 @@ class L10nZh extends L10n {
   String get posted => '发布';
 
   @override
-  String get tutorialLocationTitle => '位置情報をオンにしよう！';
+  String get tutorialLocationTitle => '开启位置！';
 
   @override
-  String get tutorialLocationSubTitle => '近くのおいしいお店を見つけるために、\n美味しいレストランを探しやすくするために';
+  String get tutorialLocationSubTitle => '为了找到附近的好地方，\n让餐厅发现更轻松';
 
   @override
-  String get tutorialLocationButton => '位置情報をオンにする';
+  String get tutorialLocationButton => '开启位置';
 
   @override
-  String get tutorialNotificationTitle => '通知をオンにしよう！';
+  String get tutorialNotificationTitle => '开启通知！';
 
   @override
-  String get tutorialNotificationSubTitle => 'ランチとディナーのときに\n通知をお送りします';
+  String get tutorialNotificationSubTitle => '我们将在午餐和晚餐时间发送提醒';
 
   @override
-  String get tutorialNotificationButton => '通知をオンにする';
+  String get tutorialNotificationButton => '开启通知';
 }

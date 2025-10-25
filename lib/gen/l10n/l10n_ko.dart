@@ -1487,20 +1487,20 @@ class L10nKo extends L10n {
   String get posted => '에 게시';
 
   @override
-  String get tutorialLocationTitle => '位置情報をオンにしよう！';
+  String get tutorialLocationTitle => '위치를 켜세요!';
 
   @override
-  String get tutorialLocationSubTitle => '近くのおいしいお店を見つけるために、\n美味しいレストランを探しやすくするために';
+  String get tutorialLocationSubTitle => '주변의 멋진 장소를 찾기 위해,\n레스토랑 탐색을 더 쉽게';
 
   @override
-  String get tutorialLocationButton => '位置情報をオンにする';
+  String get tutorialLocationButton => '위치 활성화';
 
   @override
-  String get tutorialNotificationTitle => '通知をオンにしよう！';
+  String get tutorialNotificationTitle => '알림을 켜세요!';
 
   @override
-  String get tutorialNotificationSubTitle => 'ランチとディナーのときに\n通知をお送りします';
+  String get tutorialNotificationSubTitle => '점심/저녁 시간에 알림을 보냅니다';
 
   @override
-  String get tutorialNotificationButton => '通知をオンにする';
+  String get tutorialNotificationButton => '알림 활성화';
 }

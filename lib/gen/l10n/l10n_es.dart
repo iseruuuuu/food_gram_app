@@ -1487,20 +1487,20 @@ class L10nEs extends L10n {
   String get posted => 'publicado';
 
   @override
-  String get tutorialLocationTitle => '位置情報をオンにしよう！';
+  String get tutorialLocationTitle => '¡Activa la ubicación!';
 
   @override
-  String get tutorialLocationSubTitle => '近くのおいしいお店を見つけるために、\n美味しいレストランを探しやすくするために';
+  String get tutorialLocationSubTitle => 'Para encontrar buenos lugares cercanos,\nfacilita el descubrimiento de restaurantes';
 
   @override
-  String get tutorialLocationButton => '位置情報をオンにする';
+  String get tutorialLocationButton => 'Activar ubicación';
 
   @override
-  String get tutorialNotificationTitle => '通知をオンにしよう！';
+  String get tutorialNotificationTitle => '¡Activa las notificaciones!';
 
   @override
-  String get tutorialNotificationSubTitle => 'ランチとディナーのときに\n通知をお送りします';
+  String get tutorialNotificationSubTitle => 'Enviaremos recordatorios al almuerzo y la cena';
 
   @override
-  String get tutorialNotificationButton => '通知をオンにする';
+  String get tutorialNotificationButton => 'Activar notificaciones';
 }

@@ -491,5 +491,11 @@
   "notificationLunchBody": "Pourquoi ne pas enregistrer le déjeuner d'aujourd'hui tant que vous vous en souvenez ?",
   "notificationDinnerTitle": "#Avez-vous déjà posté le repas d'aujourd'hui ? 🍛",
   "notificationDinnerBody": "Postez le repas d'aujourd'hui et terminez la journée en douceur 📷",
-  "posted": "publié"
+  "posted": "publié",
+  "tutorialLocationTitle": "Activer la localisation !",
+  "tutorialLocationSubTitle": "Pour trouver de bons endroits à proximité,\nfacilitez la recherche de restaurants",
+  "tutorialLocationButton": "Activer la localisation",
+  "tutorialNotificationTitle": "Activer les notifications !",
+  "tutorialNotificationSubTitle": "Nous enverrons des rappels au déjeuner et au dîner",
+  "tutorialNotificationButton": "Activer les notifications"
 }

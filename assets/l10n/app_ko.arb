@@ -491,5 +491,11 @@
   "notificationLunchBody": "오늘의 점심, 맛을 까먹기 전에 기록해볼까요?",
   "notificationDinnerTitle": "#오늘의 식사, 이미 올렸나요? 🍛",
   "notificationDinnerBody": "오늘의 식사를 올리고 하루를 편안하게 마무리해보세요 📷",
-  "posted": "에 게시"
+  "posted": "에 게시",
+  "tutorialLocationTitle": "위치를 켜세요!",
+  "tutorialLocationSubTitle": "주변의 멋진 장소를 찾기 위해,\n레스토랑 탐색을 더 쉽게",
+  "tutorialLocationButton": "위치 활성화",
+  "tutorialNotificationTitle": "알림을 켜세요!",
+  "tutorialNotificationSubTitle": "점심/저녁 시간에 알림을 보냅니다",
+  "tutorialNotificationButton": "알림 활성화"
 }

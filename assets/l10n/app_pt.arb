@@ -491,5 +491,11 @@
   "notificationLunchBody": "Que tal registrar o almoço de hoje enquanto ainda se lembra?",
   "notificationDinnerTitle": "#Já postou a refeição de hoje? 🍛",
   "notificationDinnerBody": "Poste a refeição de hoje e termine o dia suavemente 📷",
-  "posted": "postado"
+  "posted": "postado",
+  "tutorialLocationTitle": "Ative a Localização!",
+  "tutorialLocationSubTitle": "Para encontrar ótimos lugares por perto,\nfacilite a descoberta de restaurantes",
+  "tutorialLocationButton": "Ativar Localização",
+  "tutorialNotificationTitle": "Ative as Notificações!",
+  "tutorialNotificationSubTitle": "Enviaremos lembretes no almoço e no jantar",
+  "tutorialNotificationButton": "Ativar Notificações"
 }

@@ -491,5 +491,11 @@
   "notificationLunchBody": "今天的午餐，趁还记得的时候记录一下吧？",
   "notificationDinnerTitle": "#今天的饭菜，已经发了吗？🍛",
   "notificationDinnerBody": "发布今天的饭菜，轻松结束这一天吧📷",
-  "posted": "发布"
+  "posted": "发布",
+  "tutorialLocationTitle": "开启位置！",
+  "tutorialLocationSubTitle": "为了找到附近的好地方，\n让餐厅发现更轻松",
+  "tutorialLocationButton": "开启位置",
+  "tutorialNotificationTitle": "开启通知！",
+  "tutorialNotificationSubTitle": "我们将在午餐和晚餐时间发送提醒",
+  "tutorialNotificationButton": "开启通知"
 }
