@@ -196,16 +196,20 @@ class MapViewModel extends _$MapViewModel {
     if (state.mapController == null) {
       return;
     }
-
-    // スタイル変更時に画像登録情報をクリア
+    // スタイル変更時に画像登録情報をクリア（復元はスタイルロード完了後に実行）
     _registeredImageKeys.clear();
-    Future.delayed(const Duration(milliseconds: 800), () {
-      if (state.mapController != null && _cachedPosts != null) {
-        _restorePinsFromCache();
-      } else {
-        _addPinsToMap();
-      }
-    });
+  }
+
+  /// マップスタイルのロード完了時に呼ばれる
+  void onStyleLoaded() {
+    if (state.mapController == null) {
+      return;
+    }
+    if (_cachedPosts != null) {
+      _restorePinsFromCache();
+    } else {
+      _addPinsToMap();
+    }
   }
 
   /// キャッシュされたピン情報からマップにピンを復元

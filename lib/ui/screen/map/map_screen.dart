@@ -91,6 +91,7 @@ class MapScreen extends HookConsumerWidget {
                       );
                     },
                     onMapClick: (_, __) => isTapPin.value = false,
+                    onStyleLoadedCallback: controller.onStyleLoaded,
                     annotationOrder: const [AnnotationType.symbol],
                     key: const ValueKey('mapWidget'),
                     myLocationEnabled: isLocationEnabled,
