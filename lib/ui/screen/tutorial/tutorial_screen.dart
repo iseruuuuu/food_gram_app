@@ -58,6 +58,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
+    const totalPages = 7;
     return Scaffold(
       body: Stack(
         children: [
@@ -309,13 +310,14 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              const SizedBox(height: 16),
               Align(
                 alignment: Alignment.centerRight,
                 child: IconButton(
                   icon: const Icon(Icons.arrow_forward_ios),
                   onPressed: () {
                     final currentPage = pageController.page?.toInt() ?? 0;
-                    if (currentPage == 3 && !isAccept) {
+                    if (currentPage == totalPages - 1 && !isAccept) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
@@ -323,7 +325,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                           ),
                         ),
                       );
-                    } else if (currentPage < 3) {
+                    } else if (currentPage < totalPages - 1) {
                       pageController.nextPage(
                         duration: const Duration(milliseconds: 500),
                         curve: Curves.easeInOut,
@@ -392,13 +394,117 @@ class SlidingTutorial extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBackgroundColor(
-      pageController: controller,
-      pageCount: pageCount,
-      colors: const [Color(0xFFFFF3B0)],
-      child: PageView(
-        controller: controller,
-        children: pages,
+    return Stack(
+      children: [
+        // Base soft white gradient
+        const Positioned.fill(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFFEBF4FF), // lighter blue
+                  Color(0xFFF2E9FF), // lighter purple
+                  Color(0xFFFFF3DA), // lighter yellow
+                  Color(0xFFECFFF3), // lighter mint
+                  Color(0xFFFFEAF2), // lighter pink
+                ],
+                stops: [0.0, 0.3, 0.55, 0.8, 1.0],
+              ),
+            ),
+          ),
+        ),
+        // Translucent pastel blobs (blurred)
+        const Positioned(
+          top: -80,
+          left: -60,
+          child: _PastelBlob(
+            size: 280,
+            color: Color(0xFFCBE7FF), // softer blue
+          ),
+        ),
+        const Positioned(
+          top: -40,
+          right: -40,
+          child: _PastelBlob(
+            size: 240,
+            color: Color(0xFFEBDFFF), // softer purple
+          ),
+        ),
+        const Positioned(
+          bottom: -60,
+          left: -40,
+          child: _PastelBlob(
+            size: 260,
+            color: Color(0xFFD6F7E5), // softer mint
+          ),
+        ),
+        const Positioned(
+          bottom: -120,
+          right: -60,
+          child: _PastelBlob(
+            size: 320,
+            color: Color(0xFFFFE8BC), // softer yellow
+          ),
+        ),
+        const Positioned(
+          top: -70,
+          left: 120,
+          child: _PastelBlob(
+            size: 220,
+            color: Color(0xFFFFE0EA), // softer pink
+          ),
+        ),
+        const Positioned(
+          bottom: -100,
+          left: 80,
+          child: _PastelBlob(
+            size: 240,
+            color: Color(0xFFEDFFCC), // softer green-yellow
+          ),
+        ),
+        // Content
+        Positioned.fill(
+          child: PageView(
+            controller: controller,
+            children: pages,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _PastelBlob extends StatelessWidget {
+  const _PastelBlob({
+    required this.size,
+    required this.color,
+  });
+
+  final double size;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: ImageFiltered(
+        imageFilter: ImageFilter.blur(sigmaX: 80, sigmaY: 80),
+        child: Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: RadialGradient(
+              colors: [
+                color.withOpacity(0.40),
+                color.withOpacity(0.10),
+                Colors.transparent,
+              ],
+              stops: const [0.0, 0.55, 1.0],
+            ),
+          ),
+        ),
       ),
     );
   }
