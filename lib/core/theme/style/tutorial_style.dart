@@ -5,15 +5,15 @@ class TutorialStyle {
 
   static TextStyle title() {
     return const TextStyle(
-      fontSize: 24,
+      fontSize: 22,
       fontWeight: FontWeight.bold,
     );
   }
 
   static TextStyle subTitle() {
     return const TextStyle(
-      fontSize: 18,
-      fontWeight: FontWeight.w600,
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
       color: Colors.black,
     );
   }
