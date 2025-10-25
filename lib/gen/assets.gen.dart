@@ -179,8 +179,31 @@ class $AssetsLottieGen {
   /// File path: assets/lottie/loading.json
   String get loading => 'assets/lottie/loading.json';
 
+  /// File path: assets/lottie/notification.json
+  String get notification => 'assets/lottie/notification.json';
+
+  /// File path: assets/lottie/permission.json
+  String get permission => 'assets/lottie/permission.json';
+
+  /// File path: assets/lottie/tutorial1.json
+  String get tutorial1 => 'assets/lottie/tutorial1.json';
+
+  /// File path: assets/lottie/tutorial2.json
+  String get tutorial2 => 'assets/lottie/tutorial2.json';
+
+  /// File path: assets/lottie/tutorial3.json
+  String get tutorial3 => 'assets/lottie/tutorial3.json';
+
   /// List of all assets
-  List<String> get values => [heart, loading];
+  List<String> get values => [
+        heart,
+        loading,
+        notification,
+        permission,
+        tutorial1,
+        tutorial2,
+        tutorial3
+      ];
 }
 
 class $AssetsMapGen {

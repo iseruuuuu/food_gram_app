@@ -497,6 +497,12 @@ class L10nKo extends L10n {
   String get tutorialFirstPageSubTitle => 'FoodGram으로 매 식사가 더욱 특별해집니다.\n새로운 맛을 발견하는 즐거움을 경험하세요!';
 
   @override
+  String get tutorialDiscoverTitle => '다음 최애 한 접시를 찾아보세요!';
+
+  @override
+  String get tutorialDiscoverSubTitle => '스크롤할 때마다 새로운 맛 발견.\n지금 맛있는 음식을 탐험해요.';
+
+  @override
   String get tutorialSecondPageTitle => '이 앱만의 독특한 음식 지도';
 
   @override
@@ -1479,4 +1485,22 @@ class L10nKo extends L10n {
 
   @override
   String get posted => '에 게시';
+
+  @override
+  String get tutorialLocationTitle => '位置情報をオンにしよう！';
+
+  @override
+  String get tutorialLocationSubTitle => '近くのおいしいお店を見つけるために、\n美味しいレストランを探しやすくするために';
+
+  @override
+  String get tutorialLocationButton => '位置情報をオンにする';
+
+  @override
+  String get tutorialNotificationTitle => '通知をオンにしよう！';
+
+  @override
+  String get tutorialNotificationSubTitle => 'ランチとディナーのときに\n通知をお送りします';
+
+  @override
+  String get tutorialNotificationButton => '通知をオンにする';
 }

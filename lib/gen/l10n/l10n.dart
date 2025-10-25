@@ -831,13 +831,13 @@ abstract class L10n {
   /// No description provided for @appRequestTitle.
   ///
   /// In ja, this message translates to:
-  /// **'🙇現在地をオンにしてください🙇'**
+  /// **'位置情報をオンにしよう！'**
   String get appRequestTitle;
 
   /// No description provided for @appRequestReason.
   ///
   /// In ja, this message translates to:
-  /// **'レストランの選択には現在地のデータが必要になります'**
+  /// **'近くのおいしいお店を見つけるために、\n美味しいレストランを探しやすくするために'**
   String get appRequestReason;
 
   /// No description provided for @appRequestInduction.
@@ -849,7 +849,7 @@ abstract class L10n {
   /// No description provided for @appRequestOpenSetting.
   ///
   /// In ja, this message translates to:
-  /// **'設定画面を開く'**
+  /// **'位置情報をオンにする'**
   String get appRequestOpenSetting;
 
   /// No description provided for @appTitle.
@@ -1079,6 +1079,18 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'FoodGramで、毎日の食事がもっと特別に\n新しい味との出会いを楽しもう'**
   String get tutorialFirstPageSubTitle;
+
+  /// No description provided for @tutorialDiscoverTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'最高の一皿、見つけに行こう！'**
+  String get tutorialDiscoverTitle;
+
+  /// No description provided for @tutorialDiscoverSubTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'スクロールするたび、おいしい発見\n美味しいフードを探求しよう'**
+  String get tutorialDiscoverSubTitle;
 
   /// No description provided for @tutorialSecondPageTitle.
   ///
@@ -3047,6 +3059,42 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'に投稿'**
   String get posted;
+
+  /// No description provided for @tutorialLocationTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'位置情報をオンにしよう！'**
+  String get tutorialLocationTitle;
+
+  /// No description provided for @tutorialLocationSubTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'近くのおいしいお店を見つけるために、\n美味しいレストランを探しやすくするために'**
+  String get tutorialLocationSubTitle;
+
+  /// No description provided for @tutorialLocationButton.
+  ///
+  /// In ja, this message translates to:
+  /// **'位置情報をオンにする'**
+  String get tutorialLocationButton;
+
+  /// No description provided for @tutorialNotificationTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'通知をオンにしよう！'**
+  String get tutorialNotificationTitle;
+
+  /// No description provided for @tutorialNotificationSubTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'ランチとディナーのときに\n通知をお送りします'**
+  String get tutorialNotificationSubTitle;
+
+  /// No description provided for @tutorialNotificationButton.
+  ///
+  /// In ja, this message translates to:
+  /// **'通知をオンにする'**
+  String get tutorialNotificationButton;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
