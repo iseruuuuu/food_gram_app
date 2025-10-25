@@ -285,13 +285,15 @@ class MapViewModel extends _$MapViewModel {
   }
 
   /// シンボルをチャンクに分けて追加し、UI スレッド負荷を軽減
-  Future<void> _addSymbolsInChunks(List<SymbolOptions> symbols,
-      {int chunkSize = 250}) async {
+  Future<void> _addSymbolsInChunks(
+    List<SymbolOptions> symbols, {
+    int chunkSize = 250,
+  }) async {
     if (state.mapController == null || symbols.isEmpty) {
       return;
     }
     final total = symbols.length;
-    for (int start = 0; start < total; start += chunkSize) {
+    for (var start = 0; start < total; start += chunkSize) {
       if (state.mapController == null) {
         break;
       }

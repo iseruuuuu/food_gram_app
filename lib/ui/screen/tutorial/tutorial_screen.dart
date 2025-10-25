@@ -497,8 +497,8 @@ class _PastelBlob extends StatelessWidget {
             shape: BoxShape.circle,
             gradient: RadialGradient(
               colors: [
-                color.withOpacity(0.40),
-                color.withOpacity(0.10),
+                color.withValues(alpha: 0.40),
+                color.withValues(alpha: 0.10),
                 Colors.transparent,
               ],
               stops: const [0.0, 0.55, 1.0],
