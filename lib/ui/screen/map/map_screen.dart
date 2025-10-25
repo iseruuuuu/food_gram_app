@@ -50,18 +50,21 @@ class MapScreen extends HookConsumerWidget {
       [],
     );
 
-    useEffect(() {
-      // サブスクリプション状態を取得
-      users.whenOrNull(
-        data: (users, __, ___) {
-          if (users.isSubscribe) {
-            isSubscribe.value = true;
-          }
-          return null;
-        },
-      );
-      return null;
-    });
+    useEffect(
+      () {
+        // サブスクリプション状態を取得
+        users.whenOrNull(
+          data: (users, __, ___) {
+            if (users.isSubscribe) {
+              isSubscribe.value = true;
+            }
+            return null;
+          },
+        );
+        return null;
+      },
+      [users],
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
