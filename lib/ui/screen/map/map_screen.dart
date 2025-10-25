@@ -1,21 +1,20 @@
-import 'dart:math' as math;
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
 import 'package:food_gram_app/core/local/force_update_checker.dart';
 import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
+import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -33,19 +32,14 @@ class MapScreen extends HookConsumerWidget {
     final mapService = ref.watch(mapRepositoryProvider);
     final isTapPin = useState(false);
     final post = useState<List<Posts?>>([]);
-    final appOpenAd = ref.watch(admobOpenNotifierProvider);
+    final isEarthStyle = useState(false);
+    final users = ref.watch(myProfileViewModelProvider());
+    final isSubscribe = useState(false);
     useEffect(
       () {
+        // トラッキング許可を取得
         AdTrackingPermission().requestTracking();
-        ref
-            .read(revenueCatServiceProvider.notifier)
-            .initInAppPurchase()
-            .then((isSubscribed) {
-          final value = math.Random().nextInt(10);
-          if (value == 0) {
-            appOpenAd.loadAd();
-          }
-        });
+        // 強制更新チェック
         ref.read(forceUpdateCheckerProvider.notifier).checkForceUpdate(
           openDialog: () {
             DialogHelper().forceUpdateDialog(context);
@@ -56,7 +50,21 @@ class MapScreen extends HookConsumerWidget {
       [],
     );
 
-    final styleString = _localizedStyleAsset(context);
+    useEffect(
+      () {
+        // サブスクリプション状態を取得
+        users.whenOrNull(
+          data: (users, __, ___) {
+            if (users.isSubscribe) {
+              isSubscribe.value = true;
+            }
+            return null;
+          },
+        );
+        return null;
+      },
+      [users],
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -86,6 +94,7 @@ class MapScreen extends HookConsumerWidget {
                       );
                     },
                     onMapClick: (_, __) => isTapPin.value = false,
+                    onStyleLoadedCallback: controller.onStyleLoaded,
                     annotationOrder: const [AnnotationType.symbol],
                     key: const ValueKey('mapWidget'),
                     myLocationEnabled: isLocationEnabled,
@@ -95,23 +104,73 @@ class MapScreen extends HookConsumerWidget {
                     ),
                     trackCameraPosition: true,
                     tiltGesturesEnabled: false,
-                    styleString: styleString,
+                    styleString:
+                        _localizedStyleAsset(context, isEarthStyle.value),
                   ),
                   Visibility(
                     visible: isTapPin.value,
                     child: AppMapRestaurantModalSheet(post: post.value),
                   ),
-                  if (isLocationEnabled)
-                    Positioned(
-                      top: 40,
-                      right: 10,
-                      child: Column(
-                        children: [
+                  Positioned(
+                    top: 30,
+                    right: 10,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: SizedBox(
+                            width: 60,
+                            height: 60,
+                            child: Theme(
+                              data: Theme.of(context)
+                                  .copyWith(highlightColor: Colors.white),
+                              child: FloatingActionButton(
+                                heroTag: 'style_toggle',
+                                shape: const RoundedRectangleBorder(
+                                  side: BorderSide(color: Colors.white),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                ),
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.white,
+                                focusColor: Colors.white,
+                                splashColor: Colors.white,
+                                hoverColor: Colors.white,
+                                elevation: 10,
+                                onPressed: () {
+                                  if (!isSubscribe.value) {
+                                    context
+                                        .pushNamed(
+                                      RouterPath.paywallPage,
+                                    )
+                                        .then((_) {
+                                      ref.invalidate(
+                                        myProfileViewModelProvider(),
+                                      );
+                                    });
+                                  } else {
+                                    isEarthStyle.value = !isEarthStyle.value;
+                                    // スタイル切り替え時にピンを再表示
+                                    controller.handleStyleChange();
+                                  }
+                                },
+                                child: Icon(
+                                  isEarthStyle.value
+                                      ? CupertinoIcons.globe
+                                      : CupertinoIcons.map,
+                                  color: const Color(0xFF1A73E8),
+                                  size: 26,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        if (isLocationEnabled)
                           Padding(
-                            padding: const EdgeInsets.only(top: 8, left: 8),
+                            padding: const EdgeInsets.only(top: 2, left: 8),
                             child: SizedBox(
-                              width: 62,
-                              height: 62,
+                              width: 60,
+                              height: 60,
                               child: Theme(
                                 data: Theme.of(context)
                                     .copyWith(highlightColor: Colors.white),
@@ -138,9 +197,9 @@ class MapScreen extends HookConsumerWidget {
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                      ],
                     ),
+                  ),
                 ],
               );
             },
@@ -166,12 +225,22 @@ double _calculateIconSize(BuildContext context) {
   }
 }
 
-String _localizedStyleAsset(BuildContext context) {
+String _localizedStyleAsset(BuildContext context, bool isEarthStyle) {
   final lang = Localizations.localeOf(context).languageCode;
-  switch (lang) {
-    case 'ja':
-      return Assets.map.foodgramJa;
-    default:
-      return Assets.map.foodgramEn;
+
+  if (isEarthStyle) {
+    switch (lang) {
+      case 'ja':
+        return Assets.map.earthJa;
+      default:
+        return Assets.map.earthEn;
+    }
+  } else {
+    switch (lang) {
+      case 'ja':
+        return Assets.map.localJa;
+      default:
+        return Assets.map.localEn;
+    }
   }
 }

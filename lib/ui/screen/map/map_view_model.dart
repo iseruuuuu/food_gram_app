@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
@@ -23,6 +24,11 @@ class MapViewModel extends _$MapViewModel {
   final Map<String, Uint8List> _imageCache = {};
   final Set<String> _registeredImageKeys = {};
   bool _symbolTapHandlerRegistered = false;
+
+  // ピン情報をキャッシュ
+  List<Posts>? _cachedPosts;
+  Map<String, String>? _cachedImageKeys;
+  double? _cachedIconSize;
 
   /// デフォルト画像を事前生成
   Future<void> _preloadDefaultImages() async {
@@ -62,6 +68,11 @@ class MapViewModel extends _$MapViewModel {
       if (posts == null || posts.isEmpty) {
         return;
       }
+
+      // ピン情報をキャッシュ
+      _cachedPosts = posts;
+      _cachedIconSize = iconSize;
+
       // ピン画像の種類を収集
       final imageTypes = <String>{};
       for (final post in posts) {
@@ -72,6 +83,8 @@ class MapViewModel extends _$MapViewModel {
       }
       // 画像を並列で生成してマップに追加
       final imageKeys = await _generatePinImages(imageTypes, posts);
+      _cachedImageKeys = imageKeys;
+
       // シンボルを作成して追加
       final symbols = posts.map((post) {
         final imageType = post.foodTag.isEmpty
@@ -84,7 +97,7 @@ class MapViewModel extends _$MapViewModel {
         );
       }).toList();
       if (symbols.isNotEmpty) {
-        await state.mapController?.addSymbols(symbols);
+        await _addSymbolsInChunks(symbols);
         await state.mapController?.setSymbolIconIgnorePlacement(true);
         await state.mapController?.setSymbolIconAllowOverlap(true);
       }
@@ -177,5 +190,114 @@ class MapViewModel extends _$MapViewModel {
         );
       },
     );
+  }
+
+  /// スタイル切り替え時の処理
+  void handleStyleChange() {
+    if (state.mapController == null) {
+      return;
+    }
+    // スタイル変更時に画像登録情報をクリア（復元はスタイルロード完了後に実行）
+    _registeredImageKeys.clear();
+  }
+
+  /// マップスタイルのロード完了時に呼ばれる
+  void onStyleLoaded() {
+    if (state.mapController == null) {
+      return;
+    }
+    if (_cachedPosts != null) {
+      _restorePinsFromCache();
+    } else {
+      _addPinsToMap();
+    }
+  }
+
+  /// キャッシュされたピン情報からマップにピンを復元
+  Future<void> _restorePinsFromCache() async {
+    if (state.mapController == null ||
+        _cachedPosts == null ||
+        _cachedImageKeys == null) {
+      return;
+    }
+    await state.mapController!.clearSymbols();
+    for (final imageKey in _cachedImageKeys!.values) {
+      final imageType = _cachedImageKeys!.entries
+          .firstWhere((entry) => entry.value == imageKey)
+          .key;
+      if (_imageCache.containsKey(imageType)) {
+        await state.mapController!.addImage(imageKey, _imageCache[imageType]!);
+        _registeredImageKeys.add(imageKey);
+      }
+    }
+    final symbols = _cachedPosts!.map((post) {
+      final imageType = post.foodTag.isEmpty
+          ? 'default'
+          : post.foodTag.split(',').first.trim();
+      return SymbolOptions(
+        geometry: LatLng(post.lat, post.lng),
+        iconImage: _cachedImageKeys![imageType],
+        iconSize: _cachedIconSize ?? 0.6,
+      );
+    }).toList();
+
+    if (symbols.isNotEmpty && state.mapController != null) {
+      await _addSymbolsInChunks(symbols);
+      await state.mapController!.setSymbolIconIgnorePlacement(true);
+      await state.mapController!.setSymbolIconAllowOverlap(true);
+    }
+  }
+
+  Future<void> _addPinsToMap() async {
+    if (state.mapController == null) {
+      return;
+    }
+    // 投稿データを取得
+    final posts =
+        ref.read(mapRepositoryProvider).whenOrNull(data: (value) => value);
+    if (posts == null || posts.isEmpty) {
+      return;
+    }
+    // ピン画像の種類を収集
+    final imageTypes = <String>{};
+    for (final post in posts) {
+      final type = post.foodTag.isEmpty
+          ? 'default'
+          : post.foodTag.split(',').first.trim();
+      imageTypes.add(type);
+    }
+    final imageKeys = await _generatePinImages(imageTypes, posts);
+    final symbols = posts.map((post) {
+      final imageType = post.foodTag.isEmpty
+          ? 'default'
+          : post.foodTag.split(',').first.trim();
+      return SymbolOptions(
+        geometry: LatLng(post.lat, post.lng),
+        iconImage: imageKeys[imageType],
+        iconSize: 0.6,
+      );
+    }).toList();
+    if (symbols.isNotEmpty && state.mapController != null) {
+      await _addSymbolsInChunks(symbols);
+      await state.mapController!.setSymbolIconIgnorePlacement(true);
+      await state.mapController!.setSymbolIconAllowOverlap(true);
+    }
+  }
+
+  /// シンボルをチャンクに分けて追加し、UI スレッド負荷を軽減
+  Future<void> _addSymbolsInChunks(List<SymbolOptions> symbols,
+      {int chunkSize = 250}) async {
+    if (state.mapController == null || symbols.isEmpty) {
+      return;
+    }
+    final total = symbols.length;
+    for (int start = 0; start < total; start += chunkSize) {
+      if (state.mapController == null) {
+        break;
+      }
+      final end = math.min(start + chunkSize, total);
+      final chunk = symbols.sublist(start, end);
+      await state.mapController!.addSymbols(chunk);
+    }
   }
 }

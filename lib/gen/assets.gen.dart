@@ -186,17 +186,23 @@ class $AssetsLottieGen {
 class $AssetsMapGen {
   const $AssetsMapGen();
 
+  /// File path: assets/map/earth_en.json
+  String get earthEn => 'assets/map/earth_en.json';
+
+  /// File path: assets/map/earth_ja.json
+  String get earthJa => 'assets/map/earth_ja.json';
+
   /// File path: assets/map/foodgram.json
   String get foodgram => 'assets/map/foodgram.json';
 
-  /// File path: assets/map/foodgram_en.json
-  String get foodgramEn => 'assets/map/foodgram_en.json';
+  /// File path: assets/map/local_en.json
+  String get localEn => 'assets/map/local_en.json';
 
-  /// File path: assets/map/foodgram_ja.json
-  String get foodgramJa => 'assets/map/foodgram_ja.json';
+  /// File path: assets/map/local_ja.json
+  String get localJa => 'assets/map/local_ja.json';
 
   /// List of all assets
-  List<String> get values => [foodgram, foodgramEn, foodgramJa];
+  List<String> get values => [earthEn, earthJa, foodgram, localEn, localJa];
 }
 
 class $AssetsSplashGen {
