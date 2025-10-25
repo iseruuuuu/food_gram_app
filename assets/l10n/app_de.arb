@@ -161,6 +161,8 @@
   "snsLogin": "SNS-Anmeldung",
   "tutorialFirstPageTitle": "Teilen Sie Ihre köstlichen Momente",
   "tutorialFirstPageSubTitle": "Mit FoodGram wird jede Mahlzeit besonderer.\nGenießen Sie es, neue Geschmäcker zu entdecken!",
+  "tutorialDiscoverTitle": "Finden Sie Ihr nächstes Lieblingsgericht!",
+  "tutorialDiscoverSubTitle": "Mit jedem Scrollen neue leckere Entdeckungen.\nEntdecken Sie jetzt köstliches Essen.",
   "tutorialSecondPageTitle": "Eine einzigartige Essenskarte für diese App",
   "tutorialSecondPageSubTitle": "Lassen Sie uns eine einzigartige Karte für diese App erstellen.\nIhre Beiträge werden helfen, die Karte zu entwickeln.",
   "tutorialThirdPageTitle": "Nutzungsbedingungen",
@@ -489,5 +491,11 @@
   "notificationLunchBody": "Warum nicht das heutige Mittagessen aufzeichnen, solange du dich daran erinnerst?",
   "notificationDinnerTitle": "#Hast du heute schon dein Essen gepostet? 🍛",
   "notificationDinnerBody": "Poste das heutige Essen und beende den Tag sanft 📷",
-  "posted": "veröffentlicht"
+  "posted": "veröffentlicht",
+  "tutorialLocationTitle": "Standort aktivieren!",
+  "tutorialLocationSubTitle": "Um großartige Orte in der Nähe zu finden,\nvereinfache die Restaurantsuche",
+  "tutorialLocationButton": "Standort aktivieren",
+  "tutorialNotificationTitle": "Benachrichtigungen aktivieren!",
+  "tutorialNotificationSubTitle": "Wir senden Erinnerungen zum Mittag- und Abendessen",
+  "tutorialNotificationButton": "Benachrichtigungen aktivieren"
 }

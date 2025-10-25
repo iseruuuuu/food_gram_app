@@ -497,6 +497,12 @@ class L10nZh extends L10n {
   String get tutorialFirstPageSubTitle => '通过FoodGram，让每顿饭都更加特别。\n享受发现新口味的乐趣！';
 
   @override
+  String get tutorialDiscoverTitle => '去发现下一道心仪美食！';
+
+  @override
+  String get tutorialDiscoverSubTitle => '每次滑动都有新发现。\n现在就去探索美味吧。';
+
+  @override
   String get tutorialSecondPageTitle => '此应用独有的美食地图';
 
   @override
@@ -1479,4 +1485,22 @@ class L10nZh extends L10n {
 
   @override
   String get posted => '发布';
+
+  @override
+  String get tutorialLocationTitle => '开启位置！';
+
+  @override
+  String get tutorialLocationSubTitle => '为了找到附近的好地方，\n让餐厅发现更轻松';
+
+  @override
+  String get tutorialLocationButton => '开启位置';
+
+  @override
+  String get tutorialNotificationTitle => '开启通知！';
+
+  @override
+  String get tutorialNotificationSubTitle => '我们将在午餐和晚餐时间发送提醒';
+
+  @override
+  String get tutorialNotificationButton => '开启通知';
 }

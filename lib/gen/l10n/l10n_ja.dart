@@ -371,16 +371,16 @@ class L10nJa extends L10n {
   String get appRestaurantLabel => 'レストランを検索';
 
   @override
-  String get appRequestTitle => '🙇現在地をオンにしてください🙇';
+  String get appRequestTitle => '位置情報をオンにしよう！';
 
   @override
-  String get appRequestReason => 'レストランの選択には現在地のデータが必要になります';
+  String get appRequestReason => '近くのおいしいお店を見つけるために、\n美味しいレストランを探しやすくするために';
 
   @override
   String get appRequestInduction => '以下のボタンから設定画面に遷移します';
 
   @override
-  String get appRequestOpenSetting => '設定画面を開く';
+  String get appRequestOpenSetting => '位置情報をオンにする';
 
   @override
   String get appTitle => 'FoodGram';
@@ -495,6 +495,12 @@ class L10nJa extends L10n {
 
   @override
   String get tutorialFirstPageSubTitle => 'FoodGramで、毎日の食事がもっと特別に\n新しい味との出会いを楽しもう';
+
+  @override
+  String get tutorialDiscoverTitle => '最高の一皿、見つけに行こう！';
+
+  @override
+  String get tutorialDiscoverSubTitle => 'スクロールするたび、おいしい発見\n美味しいフードを探求しよう';
 
   @override
   String get tutorialSecondPageTitle => 'このアプリだけのフードマップ';
@@ -1479,4 +1485,22 @@ class L10nJa extends L10n {
 
   @override
   String get posted => 'に投稿';
+
+  @override
+  String get tutorialLocationTitle => '位置情報をオンにしよう！';
+
+  @override
+  String get tutorialLocationSubTitle => '近くのおいしいお店を見つけるために、\n美味しいレストランを探しやすくするために';
+
+  @override
+  String get tutorialLocationButton => '位置情報をオンにする';
+
+  @override
+  String get tutorialNotificationTitle => '通知をオンにしよう！';
+
+  @override
+  String get tutorialNotificationSubTitle => 'ランチとディナーのときに\n通知をお送りします';
+
+  @override
+  String get tutorialNotificationButton => '通知をオンにする';
 }

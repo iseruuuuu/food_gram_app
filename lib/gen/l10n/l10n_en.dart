@@ -371,16 +371,16 @@ class L10nEn extends L10n {
   String get appRestaurantLabel => 'Search Restaurant';
 
   @override
-  String get appRequestTitle => '🙇 Turn on the current location 🙇';
+  String get appRequestTitle => 'Turn on Location!';
 
   @override
-  String get appRequestReason => 'Current location data is required for restaurant selection';
+  String get appRequestReason => 'To find great places nearby,\nmake restaurant discovery easier';
 
   @override
   String get appRequestInduction => 'The following buttons take you to the settings screen';
 
   @override
-  String get appRequestOpenSetting => 'Open the settings screen';
+  String get appRequestOpenSetting => 'Enable Location';
 
   @override
   String get appTitle => 'FoodGram';
@@ -495,6 +495,12 @@ class L10nEn extends L10n {
 
   @override
   String get tutorialFirstPageSubTitle => 'With FoodGram, make every meal more special.\nEnjoy discovering new flavors!';
+
+  @override
+  String get tutorialDiscoverTitle => 'Find your next favorite dish!';
+
+  @override
+  String get tutorialDiscoverSubTitle => 'With every scroll, new tasty finds.\nExplore delicious food now.';
 
   @override
   String get tutorialSecondPageTitle => 'A unique food map for this app';
@@ -1479,4 +1485,22 @@ class L10nEn extends L10n {
 
   @override
   String get posted => 'posted';
+
+  @override
+  String get tutorialLocationTitle => 'Turn on Location!';
+
+  @override
+  String get tutorialLocationSubTitle => 'To find great places nearby,\nmake restaurant discovery easier';
+
+  @override
+  String get tutorialLocationButton => 'Enable Location';
+
+  @override
+  String get tutorialNotificationTitle => 'Turn on Notifications!';
+
+  @override
+  String get tutorialNotificationSubTitle => 'We\'ll send reminders at lunch and dinner';
+
+  @override
+  String get tutorialNotificationButton => 'Enable Notifications';
 }

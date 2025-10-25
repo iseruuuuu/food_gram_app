@@ -497,6 +497,12 @@ class L10nEs extends L10n {
   String get tutorialFirstPageSubTitle => 'Con FoodGram, haz que cada comida sea más especial.\n¡Disfruta descubriendo nuevos sabores!';
 
   @override
+  String get tutorialDiscoverTitle => '¡Encuentra tu próximo plato favorito!';
+
+  @override
+  String get tutorialDiscoverSubTitle => 'Con cada desplazamiento, nuevos hallazgos deliciosos.\nExplora comida deliciosa ahora.';
+
+  @override
   String get tutorialSecondPageTitle => 'Un mapa de comida único para esta aplicación';
 
   @override
@@ -1479,4 +1485,22 @@ class L10nEs extends L10n {
 
   @override
   String get posted => 'publicado';
+
+  @override
+  String get tutorialLocationTitle => '¡Activa la ubicación!';
+
+  @override
+  String get tutorialLocationSubTitle => 'Para encontrar buenos lugares cercanos,\nfacilita el descubrimiento de restaurantes';
+
+  @override
+  String get tutorialLocationButton => 'Activar ubicación';
+
+  @override
+  String get tutorialNotificationTitle => '¡Activa las notificaciones!';
+
+  @override
+  String get tutorialNotificationSubTitle => 'Enviaremos recordatorios al almuerzo y la cena';
+
+  @override
+  String get tutorialNotificationButton => 'Activar notificaciones';
 }
