@@ -151,8 +151,7 @@ class PaywallContent extends StatelessWidget {
     this.onSkip,
     this.showComingSoon = false,
     this.showSkipButton = false,
-    this.horizontalPadding = 20,
-    this.verticalPadding = 20,
+    this.padding = 20,
     super.key,
   });
 
@@ -160,17 +159,13 @@ class PaywallContent extends StatelessWidget {
   final VoidCallback? onSkip;
   final bool showComingSoon;
   final bool showSkipButton;
-  final double horizontalPadding;
-  final double verticalPadding;
+  final double padding;
 
   @override
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: horizontalPadding,
-        vertical: verticalPadding,
-      ),
+      padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(20),

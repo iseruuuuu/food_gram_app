@@ -247,8 +247,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                                 );
                               },
                               showSkipButton: true,
-                              horizontalPadding: 16,
-                              verticalPadding: 16,
+                              padding: 16,
                             ),
                             const SizedBox(height: 24),
                           ],
