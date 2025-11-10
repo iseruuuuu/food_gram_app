@@ -656,22 +656,22 @@ class L10nKo extends L10n {
   String get paywallPremiumTitle => '✨ 프리미엄 혜택 ✨';
 
   @override
-  String get paywallTrophyTitle => '트로피 기능';
+  String get paywallTrophyTitle => '게시물이 늘수록 칭호 획득';
 
   @override
-  String get paywallTrophyDesc => '활동에 따라 트로피 표시';
+  String get paywallTrophyDesc => '게시물 수에 따라 칭호가 업그레이드';
 
   @override
-  String get paywallTagTitle => '커스텀 태그';
+  String get paywallTagTitle => '좋아하는 장르 설정';
 
   @override
-  String get paywallTagDesc => '즐겨찾기 음식에 독특한 태그 생성';
+  String get paywallTagDesc => '프로필을 더 세련되게 꾸미기';
 
   @override
-  String get paywallIconTitle => '커스텀 아이콘';
+  String get paywallIconTitle => '원하는 이미지를 아이콘으로';
 
   @override
-  String get paywallIconDesc => '자신만의 프로필 아이콘 설정';
+  String get paywallIconDesc => '다른 게시자보다 눈에 띄어요';
 
   @override
   String get paywallAdTitle => '광고 없음';
@@ -702,6 +702,33 @@ class L10nKo extends L10n {
 
   @override
   String get purchaseError => '구매 중 오류가 발생했습니다';
+
+  @override
+  String get paywallTagline => '✨ 음식 경험을 업그레이드 ✨';
+
+  @override
+  String get paywallMapTitle => '지도로 찾기';
+
+  @override
+  String get paywallMapDesc => '식당을 더 빠르고 쉽게 찾기';
+
+  @override
+  String get paywallRankTitle => '게시물이 늘수록 칭호 획득';
+
+  @override
+  String get paywallRankDesc => '게시물 수에 따라 칭호가 업그레이드';
+
+  @override
+  String get paywallGenreTitle => '좋아하는 장르 설정';
+
+  @override
+  String get paywallGenreDesc => '프로필을 더 세련되게 꾸미기';
+
+  @override
+  String get paywallCustomIconTitle => '원하는 이미지를 아이콘으로';
+
+  @override
+  String get paywallCustomIconDesc => '다른 게시자보다 눈에 띄어요';
 
   @override
   String get anonymousPost => '익명으로 게시';

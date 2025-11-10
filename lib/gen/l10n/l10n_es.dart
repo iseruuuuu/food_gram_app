@@ -656,22 +656,22 @@ class L10nEs extends L10n {
   String get paywallPremiumTitle => '✨ Beneficios Premium ✨';
 
   @override
-  String get paywallTrophyTitle => 'Función de Trofeos';
+  String get paywallTrophyTitle => 'Consigue títulos al publicar más';
 
   @override
-  String get paywallTrophyDesc => 'Muestra trofeos basados en actividades';
+  String get paywallTrophyDesc => 'Los títulos suben según tus publicaciones';
 
   @override
-  String get paywallTagTitle => 'Etiquetas Personalizadas';
+  String get paywallTagTitle => 'Configura tus géneros favoritos';
 
   @override
-  String get paywallTagDesc => 'Crea etiquetas únicas para comidas favoritas';
+  String get paywallTagDesc => 'Personaliza más tu perfil';
 
   @override
-  String get paywallIconTitle => 'Icono Personalizado';
+  String get paywallIconTitle => 'Usa cualquier imagen como icono';
 
   @override
-  String get paywallIconDesc => 'Establece tu propio icono de perfil';
+  String get paywallIconDesc => 'Destaca entre otros creadores';
 
   @override
   String get paywallAdTitle => 'Sin Anuncios';
@@ -702,6 +702,33 @@ class L10nEs extends L10n {
 
   @override
   String get purchaseError => 'Ha ocurrido un error durante la compra';
+
+  @override
+  String get paywallTagline => '✨ Mejora tu experiencia culinaria ✨';
+
+  @override
+  String get paywallMapTitle => 'Buscar con mapa';
+
+  @override
+  String get paywallMapDesc => 'Encuentra restaurantes más fácil y rápido';
+
+  @override
+  String get paywallRankTitle => 'Consigue títulos al publicar más';
+
+  @override
+  String get paywallRankDesc => 'Los títulos suben según tus publicaciones';
+
+  @override
+  String get paywallGenreTitle => 'Configura tus géneros favoritos';
+
+  @override
+  String get paywallGenreDesc => 'Personaliza más tu perfil';
+
+  @override
+  String get paywallCustomIconTitle => 'Usa cualquier imagen como icono';
+
+  @override
+  String get paywallCustomIconDesc => 'Destaca entre otros creadores';
 
   @override
   String get anonymousPost => 'Publicar Anónimamente';

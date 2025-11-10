@@ -656,22 +656,22 @@ class L10nPt extends L10n {
   String get paywallPremiumTitle => '✨ Benefícios Premium ✨';
 
   @override
-  String get paywallTrophyTitle => 'Função Troféu';
+  String get paywallTrophyTitle => 'Ganhe títulos ao publicar mais';
 
   @override
-  String get paywallTrophyDesc => 'Exibe troféus baseados em atividades';
+  String get paywallTrophyDesc => 'Os títulos evoluem com a sua contagem de posts';
 
   @override
-  String get paywallTagTitle => 'Tags Personalizadas';
+  String get paywallTagTitle => 'Defina seus gêneros favoritos';
 
   @override
-  String get paywallTagDesc => 'Crie tags únicas para comidas favoritas';
+  String get paywallTagDesc => 'Deixe o perfil mais estiloso';
 
   @override
-  String get paywallIconTitle => 'Ícone Personalizado';
+  String get paywallIconTitle => 'Use qualquer imagem como ícone';
 
   @override
-  String get paywallIconDesc => 'Defina seu próprio ícone de perfil';
+  String get paywallIconDesc => 'Destaque-se de outros criadores';
 
   @override
   String get paywallAdTitle => 'Sem Anúncios';
@@ -702,6 +702,33 @@ class L10nPt extends L10n {
 
   @override
   String get purchaseError => 'Ocorreu um erro durante a compra';
+
+  @override
+  String get paywallTagline => '✨ Melhore sua experiência gastronômica ✨';
+
+  @override
+  String get paywallMapTitle => 'Buscar no mapa';
+
+  @override
+  String get paywallMapDesc => 'Encontre restaurantes de forma rápida e fácil';
+
+  @override
+  String get paywallRankTitle => 'Ganhe títulos ao publicar mais';
+
+  @override
+  String get paywallRankDesc => 'Os títulos evoluem com sua contagem de posts';
+
+  @override
+  String get paywallGenreTitle => 'Defina seus gêneros favoritos';
+
+  @override
+  String get paywallGenreDesc => 'Deixe o perfil mais estiloso';
+
+  @override
+  String get paywallCustomIconTitle => 'Use qualquer imagem como ícone';
+
+  @override
+  String get paywallCustomIconDesc => 'Destaque-se de outros criadores';
 
   @override
   String get anonymousPost => 'Publicar Anonimamente';

@@ -656,22 +656,22 @@ class L10nFr extends L10n {
   String get paywallPremiumTitle => '✨ Avantages Premium ✨';
 
   @override
-  String get paywallTrophyTitle => 'Fonction trophée';
+  String get paywallTrophyTitle => 'Gagne des titres en publiant plus';
 
   @override
-  String get paywallTrophyDesc => 'Affiche les trophées basés sur les activités';
+  String get paywallTrophyDesc => 'Les titres évoluent avec ton nombre de posts';
 
   @override
-  String get paywallTagTitle => 'Étiquettes personnalisées';
+  String get paywallTagTitle => 'Définis tes genres favoris';
 
   @override
-  String get paywallTagDesc => 'Créez des étiquettes uniques pour les aliments préférés';
+  String get paywallTagDesc => 'Personnalise davantage ton profil';
 
   @override
-  String get paywallIconTitle => 'Icône personnalisée';
+  String get paywallIconTitle => 'Utilise une image comme icône';
 
   @override
-  String get paywallIconDesc => 'Définissez votre propre icône de profil';
+  String get paywallIconDesc => 'Démarque-toi des autres auteurs';
 
   @override
   String get paywallAdTitle => 'Sans publicité';
@@ -702,6 +702,33 @@ class L10nFr extends L10n {
 
   @override
   String get purchaseError => 'Une erreur s\'est produite lors de l\'achat';
+
+  @override
+  String get paywallTagline => '✨ Améliore ton expérience culinaire ✨';
+
+  @override
+  String get paywallMapTitle => 'Chercher avec la carte';
+
+  @override
+  String get paywallMapDesc => 'Trouve des restaurants plus vite et plus facilement';
+
+  @override
+  String get paywallRankTitle => 'Gagne des titres en publiant plus';
+
+  @override
+  String get paywallRankDesc => 'Les titres évoluent avec ton nombre de posts';
+
+  @override
+  String get paywallGenreTitle => 'Définis tes genres favoris';
+
+  @override
+  String get paywallGenreDesc => 'Personnalise davantage ton profil';
+
+  @override
+  String get paywallCustomIconTitle => 'Utilise une image comme icône';
+
+  @override
+  String get paywallCustomIconDesc => 'Démarque-toi des autres auteurs';
 
   @override
   String get anonymousPost => 'Publier anonymement';

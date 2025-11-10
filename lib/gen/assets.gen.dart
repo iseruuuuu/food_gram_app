@@ -88,6 +88,9 @@ class $AssetsIconGen {
 class $AssetsImageGen {
   const $AssetsImageGen();
 
+  /// File path: assets/image/app_icon.png
+  AssetGenImage get appIcon => const AssetGenImage('assets/image/app_icon.png');
+
   /// File path: assets/image/auth_image.png
   AssetGenImage get authImage =>
       const AssetGenImage('assets/image/auth_image.png');
@@ -100,6 +103,10 @@ class $AssetsImageGen {
 
   /// File path: assets/image/food.png
   AssetGenImage get food => const AssetGenImage('assets/image/food.png');
+
+  /// File path: assets/image/foodgramer.png
+  AssetGenImage get foodgramer =>
+      const AssetGenImage('assets/image/foodgramer.png');
 
   /// File path: assets/image/frame.png
   AssetGenImage get frame => const AssetGenImage('assets/image/frame.png');
@@ -150,10 +157,12 @@ class $AssetsImageGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+        appIcon,
         authImage,
         empty,
         error,
         food,
+        foodgramer,
         frame,
         loading,
         logoGoogle,
