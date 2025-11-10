@@ -656,22 +656,22 @@ class L10nEn extends L10n {
   String get paywallPremiumTitle => '✨ Premium Benefits ✨';
 
   @override
-  String get paywallTrophyTitle => 'Trophy Feature';
+  String get paywallTrophyTitle => 'Earn titles as you post more';
 
   @override
-  String get paywallTrophyDesc => 'Display trophies based on activities';
+  String get paywallTrophyDesc => 'Titles upgrade with your post count';
 
   @override
-  String get paywallTagTitle => 'Custom Tags';
+  String get paywallTagTitle => 'Set your favorite genres';
 
   @override
-  String get paywallTagDesc => 'Create unique tags for favorite foods';
+  String get paywallTagDesc => 'Personalize your profile style';
 
   @override
-  String get paywallIconTitle => 'Custom Icon';
+  String get paywallIconTitle => 'Use any image as your icon';
 
   @override
-  String get paywallIconDesc => 'Set your own profile icon';
+  String get paywallIconDesc => 'Stand out from other posters';
 
   @override
   String get paywallAdTitle => 'Ad-Free';
@@ -702,6 +702,33 @@ class L10nEn extends L10n {
 
   @override
   String get purchaseError => 'An error occurred during purchase';
+
+  @override
+  String get paywallTagline => '✨ Upgrade your food experience ✨';
+
+  @override
+  String get paywallMapTitle => 'Find with map';
+
+  @override
+  String get paywallMapDesc => 'Find restaurants faster and easier';
+
+  @override
+  String get paywallRankTitle => 'Earn titles as you post more';
+
+  @override
+  String get paywallRankDesc => 'Titles upgrade with your post count';
+
+  @override
+  String get paywallGenreTitle => 'Set your favorite genres';
+
+  @override
+  String get paywallGenreDesc => 'Personalize your profile style';
+
+  @override
+  String get paywallCustomIconTitle => 'Use any image as your icon';
+
+  @override
+  String get paywallCustomIconDesc => 'Stand out from other posters';
 
   @override
   String get anonymousPost => 'Post Anonymously';

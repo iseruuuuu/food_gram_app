@@ -1389,7 +1389,7 @@ abstract class L10n {
   /// No description provided for @paywallTitle.
   ///
   /// In ja, this message translates to:
-  /// **'FoodGram プレミアム'**
+  /// **'FoodGram Premium'**
   String get paywallTitle;
 
   /// No description provided for @paywallPremiumTitle.
@@ -1401,49 +1401,49 @@ abstract class L10n {
   /// No description provided for @paywallTrophyTitle.
   ///
   /// In ja, this message translates to:
-  /// **'トロフィー機能'**
+  /// **'投稿数に応じて称号がもらえる'**
   String get paywallTrophyTitle;
 
   /// No description provided for @paywallTrophyDesc.
   ///
   /// In ja, this message translates to:
-  /// **'活動に応じてトロフィーを表示'**
+  /// **'投稿数が増えると称号が変わる'**
   String get paywallTrophyDesc;
 
   /// No description provided for @paywallTagTitle.
   ///
   /// In ja, this message translates to:
-  /// **'カスタムタグ'**
+  /// **'好きなジャンルを設定可能に'**
   String get paywallTagTitle;
 
   /// No description provided for @paywallTagDesc.
   ///
   /// In ja, this message translates to:
-  /// **'お気に入りフードに独自タグ'**
+  /// **'設定してよりおしゃれなプロフィールに'**
   String get paywallTagDesc;
 
   /// No description provided for @paywallIconTitle.
   ///
   /// In ja, this message translates to:
-  /// **'カスタムアイコン'**
+  /// **'アイコンを好きな画像に変更可能'**
   String get paywallIconTitle;
 
   /// No description provided for @paywallIconDesc.
   ///
   /// In ja, this message translates to:
-  /// **'プロフィールアイコンを自由に'**
+  /// **'他の投稿者よりも目立つようになる'**
   String get paywallIconDesc;
 
   /// No description provided for @paywallAdTitle.
   ///
   /// In ja, this message translates to:
-  /// **'広告フリー'**
+  /// **'広告が一切表示されなくなる'**
   String get paywallAdTitle;
 
   /// No description provided for @paywallAdDesc.
   ///
   /// In ja, this message translates to:
-  /// **'すべての広告を非表示'**
+  /// **'中断されずにFoodGramを楽しめる'**
   String get paywallAdDesc;
 
   /// No description provided for @paywallComingSoon.
@@ -1493,6 +1493,60 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'購入処理中にエラーが発生しました'**
   String get purchaseError;
+
+  /// No description provided for @paywallTagline.
+  ///
+  /// In ja, this message translates to:
+  /// **'✨️ あなたの食事体験をもっと豪華に ✨️'**
+  String get paywallTagline;
+
+  /// No description provided for @paywallMapTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'衛生地図でレストランを探せる'**
+  String get paywallMapTitle;
+
+  /// No description provided for @paywallMapDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'より快適に楽しく見つけることができる'**
+  String get paywallMapDesc;
+
+  /// No description provided for @paywallRankTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿数に応じて称号がもらえる'**
+  String get paywallRankTitle;
+
+  /// No description provided for @paywallRankDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿数が増えると称号が変わる'**
+  String get paywallRankDesc;
+
+  /// No description provided for @paywallGenreTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'好きなジャンルを設定可能に'**
+  String get paywallGenreTitle;
+
+  /// No description provided for @paywallGenreDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'設定してよりおしゃれなプロフィールに'**
+  String get paywallGenreDesc;
+
+  /// No description provided for @paywallCustomIconTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'アイコンを好きな画像に変更可能'**
+  String get paywallCustomIconTitle;
+
+  /// No description provided for @paywallCustomIconDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'他の投稿者よりも目立つようになる'**
+  String get paywallCustomIconDesc;
 
   /// No description provided for @anonymousPost.
   ///

@@ -5,17 +5,17 @@ class PaywallStyle {
 
   static TextStyle title() {
     return const TextStyle(
-      fontSize: 20,
+      fontSize: 24,
       fontWeight: FontWeight.bold,
       color: Colors.white,
     );
   }
 
   static TextStyle premiumTitle() {
-    return TextStyle(
-      fontSize: 20,
+    return const TextStyle(
+      fontSize: 22,
       fontWeight: FontWeight.bold,
-      color: Colors.amber[700],
+      color: Colors.black,
     );
   }
 
@@ -39,7 +39,7 @@ class PaywallStyle {
       elevation: 10,
       backgroundColor: Colors.amber[700],
       foregroundColor: Colors.white,
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 14),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -62,23 +62,24 @@ class PaywallStyle {
   }
 
   static TextStyle price() {
-    return TextStyle(
-      fontSize: 14,
-      color: Colors.white.withValues(alpha: 0.8),
+    return const TextStyle(
+      fontSize: 16,
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
     );
   }
 
   static TextStyle contentsTitle() {
-    return TextStyle(
-      fontSize: 17,
+    return const TextStyle(
+      fontSize: 16,
       fontWeight: FontWeight.bold,
-      color: Colors.amber[700],
+      color: Colors.black,
     );
   }
 
   static TextStyle contentsDescription() {
     return const TextStyle(
-      fontSize: 14,
+      fontSize: 13,
       color: Colors.black,
     );
   }

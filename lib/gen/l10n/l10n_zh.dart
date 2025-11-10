@@ -656,22 +656,22 @@ class L10nZh extends L10n {
   String get paywallPremiumTitle => '✨ 高级特权 ✨';
 
   @override
-  String get paywallTrophyTitle => '奖杯功能';
+  String get paywallTrophyTitle => '发帖越多获得称号';
 
   @override
-  String get paywallTrophyDesc => '根据活动显示奖杯';
+  String get paywallTrophyDesc => '称号会随帖子数量升级';
 
   @override
-  String get paywallTagTitle => '自定义标签';
+  String get paywallTagTitle => '设置喜爱类别';
 
   @override
-  String get paywallTagDesc => '为喜爱的食物创建独特标签';
+  String get paywallTagDesc => '让个人资料更有风格';
 
   @override
-  String get paywallIconTitle => '自定义图标';
+  String get paywallIconTitle => '用任意图片做头像';
 
   @override
-  String get paywallIconDesc => '设置您自己的个人资料图标';
+  String get paywallIconDesc => '更显眼，脱颖而出';
 
   @override
   String get paywallAdTitle => '无广告';
@@ -702,6 +702,33 @@ class L10nZh extends L10n {
 
   @override
   String get purchaseError => '购买过程中发生错误';
+
+  @override
+  String get paywallTagline => '✨ 升级你的美食体验 ✨';
+
+  @override
+  String get paywallMapTitle => '地图查找';
+
+  @override
+  String get paywallMapDesc => '更快更容易找到餐厅';
+
+  @override
+  String get paywallRankTitle => '发帖越多获得称号';
+
+  @override
+  String get paywallRankDesc => '称号会随帖子数量升级';
+
+  @override
+  String get paywallGenreTitle => '设置喜爱类别';
+
+  @override
+  String get paywallGenreDesc => '让个人资料更有风格';
+
+  @override
+  String get paywallCustomIconTitle => '用任意图片做头像';
+
+  @override
+  String get paywallCustomIconDesc => '更显眼，脱颖而出';
 
   @override
   String get anonymousPost => '匿名发布';

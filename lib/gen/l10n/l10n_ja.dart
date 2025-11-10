@@ -650,34 +650,34 @@ class L10nJa extends L10n {
   String get promoteDialogLater => '後で考える';
 
   @override
-  String get paywallTitle => 'FoodGram プレミアム';
+  String get paywallTitle => 'FoodGram Premium';
 
   @override
   String get paywallPremiumTitle => '✨ プレミアム特典 ✨';
 
   @override
-  String get paywallTrophyTitle => 'トロフィー機能';
+  String get paywallTrophyTitle => '投稿数に応じて称号がもらえる';
 
   @override
-  String get paywallTrophyDesc => '活動に応じてトロフィーを表示';
+  String get paywallTrophyDesc => '投稿数が増えると称号が変わる';
 
   @override
-  String get paywallTagTitle => 'カスタムタグ';
+  String get paywallTagTitle => '好きなジャンルを設定可能に';
 
   @override
-  String get paywallTagDesc => 'お気に入りフードに独自タグ';
+  String get paywallTagDesc => '設定してよりおしゃれなプロフィールに';
 
   @override
-  String get paywallIconTitle => 'カスタムアイコン';
+  String get paywallIconTitle => 'アイコンを好きな画像に変更可能';
 
   @override
-  String get paywallIconDesc => 'プロフィールアイコンを自由に';
+  String get paywallIconDesc => '他の投稿者よりも目立つようになる';
 
   @override
-  String get paywallAdTitle => '広告フリー';
+  String get paywallAdTitle => '広告が一切表示されなくなる';
 
   @override
-  String get paywallAdDesc => 'すべての広告を非表示';
+  String get paywallAdDesc => '中断されずにFoodGramを楽しめる';
 
   @override
   String get paywallComingSoon => 'Coming Soon...';
@@ -702,6 +702,33 @@ class L10nJa extends L10n {
 
   @override
   String get purchaseError => '購入処理中にエラーが発生しました';
+
+  @override
+  String get paywallTagline => '✨️ あなたの食事体験をもっと豪華に ✨️';
+
+  @override
+  String get paywallMapTitle => '衛生地図でレストランを探せる';
+
+  @override
+  String get paywallMapDesc => 'より快適に楽しく見つけることができる';
+
+  @override
+  String get paywallRankTitle => '投稿数に応じて称号がもらえる';
+
+  @override
+  String get paywallRankDesc => '投稿数が増えると称号が変わる';
+
+  @override
+  String get paywallGenreTitle => '好きなジャンルを設定可能に';
+
+  @override
+  String get paywallGenreDesc => '設定してよりおしゃれなプロフィールに';
+
+  @override
+  String get paywallCustomIconTitle => 'アイコンを好きな画像に変更可能';
+
+  @override
+  String get paywallCustomIconDesc => '他の投稿者よりも目立つようになる';
 
   @override
   String get anonymousPost => '匿名で投稿';

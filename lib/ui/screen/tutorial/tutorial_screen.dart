@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/notification/notification_service.dart';
+import 'package:food_gram_app/core/theme/style/paywall_style.dart';
 import 'package:food_gram_app/core/theme/style/tutorial_style.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -208,23 +209,50 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
               ),
               // 6ページ目
               PaywallBackground(
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
+                child: Scaffold(
+                  backgroundColor: Colors.transparent,
+                  appBar: AppBar(
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    centerTitle: true,
+                    automaticallyImplyLeading: false,
+                    title: Row(
+                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        PaywallContent(
-                          onPurchase: _handlePurchase,
-                          onSkip: () async {
-                            await pageController.nextPage(
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeInOut,
-                            );
-                          },
-                          showSkipButton: true,
+                        Text('✨️ ', style: PaywallStyle.title()),
+                        Text(
+                          L10n.of(context).paywallTitle,
+                          style: PaywallStyle.title(),
                         ),
+                        Text(' ✨️', style: PaywallStyle.title()),
                       ],
+                    ),
+                  ),
+                  body: SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        padding: const EdgeInsets.only(bottom: 24),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 8),
+                            PaywallContent(
+                              onPurchase: _handlePurchase,
+                              onSkip: () async {
+                                await pageController.nextPage(
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeInOut,
+                                );
+                              },
+                              showSkipButton: true,
+                              padding: 16,
+                            ),
+                            const SizedBox(height: 24),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),

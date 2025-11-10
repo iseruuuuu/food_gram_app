@@ -44,29 +44,20 @@ class PaywallFeatureItem extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.description,
-    this.padding = const EdgeInsets.all(8),
     super.key,
   });
 
   final IconData icon;
   final String title;
   final String description;
-  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.only(bottom: 24),
       child: Row(
         children: [
-          Container(
-            padding: padding,
-            decoration: BoxDecoration(
-              color: Colors.amber[100],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(icon, color: Colors.amber[700], size: 30),
-          ),
+          Icon(icon, color: Colors.amber[700], size: 30),
           const Gap(12),
           Expanded(
             child: Column(
@@ -160,6 +151,7 @@ class PaywallContent extends StatelessWidget {
     this.onSkip,
     this.showComingSoon = false,
     this.showSkipButton = false,
+    this.padding = 20,
     super.key,
   });
 
@@ -167,12 +159,13 @@ class PaywallContent extends StatelessWidget {
   final VoidCallback? onSkip;
   final bool showComingSoon;
   final bool showSkipButton;
+  final double padding;
 
   @override
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(20),
@@ -186,10 +179,17 @@ class PaywallContent extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(
-            l10n.paywallPremiumTitle,
-            style: PaywallStyle.premiumTitle(),
-          ),
+          if (onSkip == null)
+            Assets.image.foodgramer.image(
+              width: 140,
+              height: 140,
+              fit: BoxFit.cover,
+            )
+          else
+            Text(
+              l10n.paywallPremiumTitle,
+              style: PaywallStyle.premiumTitle(),
+            ),
           const Gap(16),
           PaywallFeatureItem(
             icon: Icons.emoji_events,
@@ -211,7 +211,17 @@ class PaywallContent extends StatelessWidget {
             title: l10n.paywallAdTitle,
             description: l10n.paywallAdDesc,
           ),
-          PaywallCardBase(isPaywall: showComingSoon),
+          PaywallFeatureItem(
+            icon: Icons.map,
+            title: l10n.paywallMapTitle,
+            description: l10n.paywallMapDesc,
+          ),
+          const Gap(8),
+          Text(
+            l10n.paywallTagline,
+            style: PaywallStyle.contentsTitle(),
+          ),
+          const Gap(8),
           if (showSkipButton)
             Column(
               children: [
@@ -244,7 +254,9 @@ class PaywallContent extends StatelessWidget {
                     ),
                   ),
               ],
-            ),
+            )
+          else
+            const SizedBox.shrink(),
         ],
       ),
     );

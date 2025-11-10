@@ -656,22 +656,22 @@ class L10nDe extends L10n {
   String get paywallPremiumTitle => '✨ Premium-Vorteile ✨';
 
   @override
-  String get paywallTrophyTitle => 'Trophäen-Funktion';
+  String get paywallTrophyTitle => 'Verdiene Titel mit mehr Beiträgen';
 
   @override
-  String get paywallTrophyDesc => 'Zeigt Trophäen basierend auf Aktivitäten an';
+  String get paywallTrophyDesc => 'Titel steigen mit deiner Beitragszahl';
 
   @override
-  String get paywallTagTitle => 'Benutzerdefinierte Tags';
+  String get paywallTagTitle => 'Lieblingsgenres festlegen';
 
   @override
-  String get paywallTagDesc => 'Erstellen Sie einzigartige Tags für Lieblingsspeisen';
+  String get paywallTagDesc => 'Profil stilvoll personalisieren';
 
   @override
-  String get paywallIconTitle => 'Benutzerdefiniertes Symbol';
+  String get paywallIconTitle => 'Beliebiges Bild als Icon nutzen';
 
   @override
-  String get paywallIconDesc => 'Legen Sie Ihr eigenes Profilsymbol fest';
+  String get paywallIconDesc => 'Hebe dich von anderen ab';
 
   @override
   String get paywallAdTitle => 'Werbefrei';
@@ -702,6 +702,33 @@ class L10nDe extends L10n {
 
   @override
   String get purchaseError => 'Beim Kauf ist ein Fehler aufgetreten';
+
+  @override
+  String get paywallTagline => '✨ Dein Food-Erlebnis upgraden ✨';
+
+  @override
+  String get paywallMapTitle => 'Mit Karte suchen';
+
+  @override
+  String get paywallMapDesc => 'Finde Restaurants schneller und einfacher';
+
+  @override
+  String get paywallRankTitle => 'Verdiene Titel mit mehr Beiträgen';
+
+  @override
+  String get paywallRankDesc => 'Titel steigen mit deiner Beitragszahl';
+
+  @override
+  String get paywallGenreTitle => 'Lieblingsgenres festlegen';
+
+  @override
+  String get paywallGenreDesc => 'Profil stilvoll personalisieren';
+
+  @override
+  String get paywallCustomIconTitle => 'Beliebiges Bild als Icon nutzen';
+
+  @override
+  String get paywallCustomIconDesc => 'Hebe dich von anderen ab';
 
   @override
   String get anonymousPost => 'Anonym veröffentlichen';
