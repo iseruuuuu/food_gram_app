@@ -118,6 +118,7 @@
   "appShareInstagramButton": "Instagram에서 공유",
   "appShareGoButton": "이 가게로 가기",
   "appShareCloseButton": "닫기",
+  "shareInviteMessage": "맛있는 음식을 FoodGram에서 공유해요!",
   "appRestaurantLabel": "레스토랑 검색",
   "appRequestTitle": "🙇 현재 위치를 켜주세요 🙇",
   "appRequestReason": "레스토랑 선택에는 현재 위치 데이터가 필요합니다",

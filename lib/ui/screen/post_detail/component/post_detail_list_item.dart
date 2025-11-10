@@ -317,8 +317,10 @@ class PostDetailListItem extends HookConsumerWidget {
                             ref: ref,
                             loading: menuLoading,
                             context: context,
-                            shareText: '${posts.foodName} in '
-                                '${posts.restaurant}',
+                            shareText: '${posts.foodName} '
+                                'in ${posts.restaurant}\n\n '
+                                '${l10n.shareInviteMessage}\n'
+                                '#FoodGram',
                           );
                         },
                         title: l10n.detailMenuShare,

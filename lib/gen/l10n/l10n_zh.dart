@@ -368,6 +368,9 @@ class L10nZh extends L10n {
   String get appShareCloseButton => '关闭';
 
   @override
+  String get shareInviteMessage => '在 FoodGram 分享美味吧！';
+
+  @override
   String get appRestaurantLabel => '搜索餐厅';
 
   @override

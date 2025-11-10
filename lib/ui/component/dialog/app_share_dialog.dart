@@ -7,6 +7,7 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_share_widget.dart';
+import 'package:food_gram_app/gen/l10n/l10n_share_extension.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -85,7 +86,9 @@ class AppShareDialog extends HookConsumerWidget {
                                     ref: ref,
                                   ),
                                   shareText: '${posts.foodName} '
-                                      'in ${posts.restaurant}',
+                                      'in ${posts.restaurant}\n\n '
+                                      '${l10n.shareInviteMessage}\n'
+                                      '#FoodGram',
                                   loading: loading,
                                   hasText: true,
                                 );

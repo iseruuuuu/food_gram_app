@@ -368,6 +368,9 @@ class L10nJa extends L10n {
   String get appShareCloseButton => '閉じる';
 
   @override
+  String get shareInviteMessage => '美味しいフードをFoodGramでシェアしよう!';
+
+  @override
   String get appRestaurantLabel => 'レストランを検索';
 
   @override

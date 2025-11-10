@@ -127,7 +127,9 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                       loading: loading,
                       context: context,
                       shareText: '${posts.foodName} '
-                          'in ${posts.restaurant}',
+                          'in ${posts.restaurant}\n\n '
+                          '${l10n.shareInviteMessage}\n'
+                          '#FoodGram',
                     );
                     context.pop();
                   },
