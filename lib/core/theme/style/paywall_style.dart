@@ -13,7 +13,7 @@ class PaywallStyle {
 
   static TextStyle premiumTitle() {
     return const TextStyle(
-      fontSize: 24,
+      fontSize: 22,
       fontWeight: FontWeight.bold,
       color: Colors.black,
     );
@@ -79,7 +79,7 @@ class PaywallStyle {
 
   static TextStyle contentsDescription() {
     return const TextStyle(
-      fontSize: 14,
+      fontSize: 13,
       color: Colors.black,
     );
   }
