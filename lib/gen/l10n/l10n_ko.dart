@@ -368,6 +368,9 @@ class L10nKo extends L10n {
   String get appShareCloseButton => '닫기';
 
   @override
+  String get shareInviteMessage => '맛있는 음식을 FoodGram에서 공유해요!';
+
+  @override
   String get appRestaurantLabel => '레스토랑 검색';
 
   @override

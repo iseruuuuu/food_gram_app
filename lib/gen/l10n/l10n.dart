@@ -822,6 +822,12 @@ abstract class L10n {
   /// **'閉じる'**
   String get appShareCloseButton;
 
+  /// No description provided for @shareInviteMessage.
+  ///
+  /// In ja, this message translates to:
+  /// **'美味しいフードをFoodGramでシェアしよう!'**
+  String get shareInviteMessage;
+
   /// No description provided for @appRestaurantLabel.
   ///
   /// In ja, this message translates to:
