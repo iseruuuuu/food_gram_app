@@ -9,7 +9,6 @@ import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/paywall_widget.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class PaywallScreen extends ConsumerWidget {
@@ -35,20 +34,34 @@ class PaywallScreen extends ConsumerWidget {
                     iconSize: 28,
                     icon: const Icon(Icons.close, color: Colors.white),
                   ),
-                  title: Text(l10n.paywallTitle, style: PaywallStyle.title()),
+                  centerTitle: true,
+                  title: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('✨️ ', style: PaywallStyle.title()),
+                      Text(l10n.paywallTitle, style: PaywallStyle.title()),
+                      Text(' ✨️', style: PaywallStyle.title()),
+                    ],
+                  ),
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        PaywallContent(
-                          onPurchase: () =>
-                              _handlePurchase(context, ref, controller),
-                          showComingSoon: true,
-                        ),
-                      ],
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      padding: const EdgeInsets.only(bottom: 24),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 8),
+                          PaywallContent(
+                            onPurchase: () =>
+                                _handlePurchase(context, ref, controller),
+                            showComingSoon: true,
+                          ),
+                          const SizedBox(height: 24),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -76,20 +89,9 @@ class PaywallScreen extends ConsumerWidget {
         child: ElevatedButton(
           style: PaywallStyle.button(),
           onPressed: () => _handlePurchase(context, ref, controller),
-          child: FittedBox(
-            child: Column(
-              children: [
-                Text(
-                  l10n.paywallSubscribeButton,
-                  style: PaywallStyle.subscribeButton(),
-                ),
-                const Gap(2),
-                Text(
-                  '${l10n.paywallPrice} (${l10n.paywallCancelNote})',
-                  style: PaywallStyle.price(),
-                ),
-              ],
-            ),
+          child: Text(
+            l10n.paywallPrice,
+            style: PaywallStyle.price(),
           ),
         ),
       ),
