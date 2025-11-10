@@ -45,8 +45,7 @@ class ShareHelpers {
                 posts: posts,
                 ref: ref,
               ),
-              shareText: '${posts.foodName} '
-                  'in ${posts.restaurant}',
+              shareText: shareText,
               loading: loading,
               hasText: true,
             );

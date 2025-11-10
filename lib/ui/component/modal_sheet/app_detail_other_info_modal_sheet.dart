@@ -74,7 +74,9 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
                       loading: loading,
                       context: context,
                       shareText: '${posts.foodName} '
-                          'in ${posts.restaurant}',
+                          'in ${posts.restaurant}\n\n '
+                          '美味しいフードをFoodGramでシェアしよう!\n'
+                          '#FoodGram',
                     );
                     context.pop();
                   },

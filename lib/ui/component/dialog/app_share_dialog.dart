@@ -85,7 +85,9 @@ class AppShareDialog extends HookConsumerWidget {
                                     ref: ref,
                                   ),
                                   shareText: '${posts.foodName} '
-                                      'in ${posts.restaurant}',
+                                      'in ${posts.restaurant}\n\n '
+                                      '美味しいフードをFoodGramでシェアしよう!\n'
+                                      '#FoodGram',
                                   loading: loading,
                                   hasText: true,
                                 );
