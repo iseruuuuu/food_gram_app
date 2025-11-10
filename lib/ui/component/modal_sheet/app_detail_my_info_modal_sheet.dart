@@ -128,7 +128,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                       context: context,
                       shareText: '${posts.foodName} '
                           'in ${posts.restaurant}\n\n '
-                          '美味しいフードをFoodGramでシェアしよう!\n'
+                          '${l10n.shareInviteMessage}\n'
                           '#FoodGram',
                     );
                     context.pop();
