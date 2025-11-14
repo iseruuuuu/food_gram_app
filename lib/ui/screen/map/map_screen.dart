@@ -125,7 +125,7 @@ class MapScreen extends HookConsumerWidget {
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
+                          padding: const EdgeInsets.only(left: 8, bottom: 8),
                           child: SizedBox(
                             width: 60,
                             height: 60,
