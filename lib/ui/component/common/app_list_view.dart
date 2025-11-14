@@ -1,3 +1,4 @@
+import 'package:auto_animated/auto_animated.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class AppListView extends HookConsumerWidget {
     required this.routerPath,
     required this.refresh,
     required this.type,
+    this.controller,
     super.key,
   });
 
@@ -24,6 +26,7 @@ class AppListView extends HookConsumerWidget {
   final String routerPath;
   final VoidCallback refresh;
   final AppListViewType type;
+  final ScrollController? controller;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,21 +39,29 @@ class AppListView extends HookConsumerWidget {
     final rowCount = (posts.length / 3).ceil();
     const adEvery = 30;
     final adRowInterval = (adEvery / 3).floor();
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          final isAdRow = (index + 1) % (adRowInterval + 1) == 0;
-          if (isAdRow) {
-            return SizedBox(
-              width: double.infinity,
-              child: Center(
-                child: RectangleBanner(id: 'row_$index'),
-              ),
-            );
-          }
+    const options = LiveOptions(
+      showItemInterval: Duration(milliseconds: 200),
+      showItemDuration: Duration(milliseconds: 300),
+      visibleFraction: 0.01,
+    );
+    return LiveSliverList.options(
+      options: options,
+      controller: controller ?? ScrollController(),
+      itemCount: rowCount + (rowCount ~/ adRowInterval),
+      itemBuilder: (context, index, animation) {
+        final isAdRow = (index + 1) % (adRowInterval + 1) == 0;
+        Widget rowWidget;
+        if (isAdRow) {
+          rowWidget = SizedBox(
+            width: double.infinity,
+            child: Center(
+              child: RectangleBanner(id: 'row_$index'),
+            ),
+          );
+        } else {
           final actualRowIndex = index - (index ~/ (adRowInterval + 1));
           final startIndex = actualRowIndex * 3;
-          return Row(
+          rowWidget = Row(
             children: List.generate(3, (gridIndex) {
               final itemIndex = startIndex + gridIndex;
               if (itemIndex >= posts.length) {
@@ -136,9 +147,21 @@ class AppListView extends HookConsumerWidget {
               );
             }),
           );
-        },
-        childCount: rowCount + (rowCount ~/ adRowInterval),
-      ),
+        }
+        return FadeTransition(
+          opacity: Tween<double>(
+            begin: 0,
+            end: 1,
+          ).animate(animation),
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, 0.1),
+              end: Offset.zero,
+            ).animate(animation),
+            child: rowWidget,
+          ),
+        );
+      },
     );
   }
 }

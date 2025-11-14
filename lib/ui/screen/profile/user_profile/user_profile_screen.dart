@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
@@ -13,7 +14,7 @@ import 'package:food_gram_app/ui/screen/profile/user_profile/user_profile_view_m
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class UserProfileScreen extends ConsumerWidget {
+class UserProfileScreen extends HookConsumerWidget {
   const UserProfileScreen({
     required this.users,
     required this.routerPathForDetail,
@@ -27,6 +28,7 @@ class UserProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(userProfileViewModelProvider(users.userId));
     final posts = ref.watch(profileRepositoryProvider(userId: users.userId));
+    final scrollController = useScrollController();
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -49,6 +51,7 @@ class UserProfileScreen extends ConsumerWidget {
             ref.invalidate(profileRepositoryProvider(userId: users.userId));
           },
           child: CustomScrollView(
+            controller: scrollController,
             physics: const AlwaysScrollableScrollPhysics(
               parent: BouncingScrollPhysics(),
             ),
@@ -73,6 +76,7 @@ class UserProfileScreen extends ConsumerWidget {
                             posts: value.map(Posts.fromJson).toList(),
                             routerPath: routerPathForDetail,
                             type: AppListViewType.profile,
+                            controller: scrollController,
                             refresh: () => ref.refresh(myPostStreamProvider),
                           )
                         : const SliverToBoxAdapter(
