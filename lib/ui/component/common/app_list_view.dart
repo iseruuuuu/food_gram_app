@@ -11,7 +11,6 @@ import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppListView extends HookConsumerWidget {
   const AppListView({
@@ -50,162 +49,119 @@ class AppListView extends HookConsumerWidget {
       controller: controller ?? ScrollController(),
       itemCount: rowCount + (rowCount ~/ adRowInterval),
       itemBuilder: (context, index, animation) {
-        return buildAnimatedItem(
-          context,
-          index,
-          animation,
-          screenWidth,
-          supabase,
-          subscribedUsersAsync,
-          ref,
-          rowCount,
-          adRowInterval,
-        );
-      },
-    );
-  }
-
-  Widget buildAnimatedItem(
-    BuildContext context,
-    int index,
-    Animation<double> animation,
-    double screenWidth,
-    SupabaseClient supabase,
-    AsyncValue<List<String>> subscribedUsersAsync,
-    WidgetRef ref,
-    int rowCount,
-    int adRowInterval,
-  ) {
-    return FadeTransition(
-      opacity: Tween<double>(
-        begin: 0,
-        end: 1,
-      ).animate(animation),
-      child: SlideTransition(
-        position: Tween<Offset>(
-          begin: const Offset(0, 0.1),
-          end: Offset.zero,
-        ).animate(animation),
-        child: _buildRowItem(
-          context,
-          index,
-          screenWidth,
-          supabase,
-          subscribedUsersAsync,
-          ref,
-          rowCount,
-          adRowInterval,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRowItem(
-    BuildContext context,
-    int index,
-    double screenWidth,
-    SupabaseClient supabase,
-    AsyncValue<List<String>> subscribedUsersAsync,
-    WidgetRef ref,
-    int rowCount,
-    int adRowInterval,
-  ) {
-    final isAdRow = (index + 1) % (adRowInterval + 1) == 0;
-    if (isAdRow) {
-      return SizedBox(
-        width: double.infinity,
-        child: Center(
-          child: RectangleBanner(id: 'row_$index'),
-        ),
-      );
-    }
-    final actualRowIndex = index - (index ~/ (adRowInterval + 1));
-    final startIndex = actualRowIndex * 3;
-    return Row(
-      children: List.generate(3, (gridIndex) {
-        final itemIndex = startIndex + gridIndex;
-        if (itemIndex >= posts.length) {
-          return const Expanded(child: SizedBox());
-        }
-        final itemImageUrl = supabase.storage
-            .from('food')
-            .getPublicUrl(posts[itemIndex].foodImage);
-        return Expanded(
-          child: GestureDetector(
-            onTap: () {
-              EasyDebounce.debounce(
-                'click_detail',
-                const Duration(milliseconds: 200),
-                () async {
-                  final postResult = await ref
-                      .read(detailPostRepositoryProvider.notifier)
-                      .getPostData(posts, itemIndex);
-                  await postResult.whenOrNull(
-                    success: (model) async {
-                      final result = await context.pushNamed(
-                        routerPath,
-                        extra: model,
-                      );
-                      if (result != null) {
-                        refresh();
-                      }
-                    },
-                  );
-                },
-              );
-            },
-            child: SizedBox(
-              width: screenWidth,
-              height: screenWidth,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: subscribedUsersAsync.when(
-                  data: (subscribedUsers) {
-                    final postUserId = posts[itemIndex].userId as String?;
-                    final isSubscribed = postUserId != null &&
-                        subscribedUsers.contains(postUserId);
-                    return Stack(
-                      children: [
-                        Positioned.fill(
-                          child: Card(
-                            elevation: isSubscribed ? 0 : 10,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(
-                                isSubscribed ? 0 : 10,
-                              ),
-                              child: CachedNetworkImage(
-                                imageUrl: itemImageUrl,
-                                fit: BoxFit.cover,
-                                width: screenWidth,
-                                height: screenWidth,
-                                placeholder: (context, url) => Container(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        if (isSubscribed)
-                          Positioned.fill(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.asset(
-                                Assets.image.frame.path,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                      ],
+        final isAdRow = (index + 1) % (adRowInterval + 1) == 0;
+        Widget rowWidget;
+        if (isAdRow) {
+          rowWidget = SizedBox(
+            width: double.infinity,
+            child: Center(
+              child: RectangleBanner(id: 'row_$index'),
+            ),
+          );
+        } else {
+          final actualRowIndex = index - (index ~/ (adRowInterval + 1));
+          final startIndex = actualRowIndex * 3;
+          rowWidget = Row(
+            children: List.generate(3, (gridIndex) {
+              final itemIndex = startIndex + gridIndex;
+              if (itemIndex >= posts.length) {
+                return const Expanded(child: SizedBox());
+              }
+              final itemImageUrl = supabase.storage
+                  .from('food')
+                  .getPublicUrl(posts[itemIndex].foodImage);
+              return Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    EasyDebounce.debounce(
+                      'click_detail',
+                      const Duration(milliseconds: 200),
+                      () async {
+                        final postResult = await ref
+                            .read(detailPostRepositoryProvider.notifier)
+                            .getPostData(posts, itemIndex);
+                        await postResult.whenOrNull(
+                          success: (model) async {
+                            final result = await context.pushNamed(
+                              routerPath,
+                              extra: model,
+                            );
+                            if (result != null) {
+                              refresh();
+                            }
+                          },
+                        );
+                      },
                     );
                   },
-                  loading: () => const SizedBox.shrink(),
-                  error: (_, __) => const SizedBox.shrink(),
+                  child: SizedBox(
+                    width: screenWidth,
+                    height: screenWidth,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: subscribedUsersAsync.when(
+                        data: (subscribedUsers) {
+                          final postUserId = posts[itemIndex].userId as String?;
+                          final isSubscribed = postUserId != null &&
+                              subscribedUsers.contains(postUserId);
+                          return Stack(
+                            children: [
+                              Positioned.fill(
+                                child: Card(
+                                  elevation: isSubscribed ? 0 : 10,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                      isSubscribed ? 0 : 10,
+                                    ),
+                                    child: CachedNetworkImage(
+                                      imageUrl: itemImageUrl,
+                                      fit: BoxFit.cover,
+                                      width: screenWidth,
+                                      height: screenWidth,
+                                      placeholder: (context, url) => Container(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              if (isSubscribed)
+                                Positioned.fill(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.asset(
+                                      Assets.image.frame.path,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          );
+                        },
+                        loading: () => const SizedBox.shrink(),
+                        error: (_, __) => const SizedBox.shrink(),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
+          );
+        }
+        return FadeTransition(
+          opacity: Tween<double>(
+            begin: 0,
+            end: 1,
+          ).animate(animation),
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, 0.1),
+              end: Offset.zero,
+            ).animate(animation),
+            child: rowWidget,
           ),
         );
-      }),
+      },
     );
   }
 }
