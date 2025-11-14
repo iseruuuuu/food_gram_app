@@ -88,14 +88,15 @@ class MyProfileScreen extends HookConsumerWidget {
                               length: length,
                               heartAmount: heartAmount,
                             ),
-                            const Positioned(
-                              top: 5,
-                              left: 0,
-                              right: 0,
-                              child: AppPremiumMembershipCard(),
-                            ),
+                            if (!users.isSubscribe)
+                              const Positioned(
+                                top: 5,
+                                left: 0,
+                                right: 0,
+                                child: AppPremiumMembershipCard(),
+                              ),
                             Positioned(
-                              top: 60,
+                              top: users.isSubscribe ? 10 : 60,
                               right: 15,
                               child: ElevatedButton(
                                 onPressed: () {

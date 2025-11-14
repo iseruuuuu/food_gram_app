@@ -112,14 +112,15 @@ class MapScreen extends HookConsumerWidget {
                     visible: isTapPin.value,
                     child: AppMapRestaurantModalSheet(post: post.value),
                   ),
-                  const Positioned(
-                    top: 15,
-                    left: 0,
-                    right: 0,
-                    child: AppPremiumMembershipCard(),
-                  ),
+                  if (!isSubscribe.value)
+                    const Positioned(
+                      top: 15,
+                      left: 0,
+                      right: 0,
+                      child: AppPremiumMembershipCard(),
+                    ),
                   Positioned(
-                    top: 80,
+                    top: isSubscribe.value ? 30 : 80,
                     right: 10,
                     child: Column(
                       children: [
