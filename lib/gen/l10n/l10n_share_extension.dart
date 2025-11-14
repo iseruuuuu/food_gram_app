@@ -1,4 +1,4 @@
-import 'l10n.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 
 extension L10nShareExtension on L10n {
   String get shareInviteMessage {
@@ -23,4 +23,3 @@ extension L10nShareExtension on L10n {
     }
   }
 }
-
