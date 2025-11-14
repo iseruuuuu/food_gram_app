@@ -23,6 +23,7 @@ class MyProfileScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(myPostStreamProvider);
     final users = ref.watch(myProfileViewModelProvider());
+    final scrollController = useScrollController();
     useEffect(() {
       users.whenOrNull(
         data: (users, __, ___) {
@@ -70,6 +71,7 @@ class MyProfileScreen extends HookConsumerWidget {
                 ref.invalidate(myPostStreamProvider);
               },
               child: CustomScrollView(
+                controller: scrollController,
                 physics: const AlwaysScrollableScrollPhysics(
                   parent: BouncingScrollPhysics(),
                 ),
@@ -138,6 +140,7 @@ class MyProfileScreen extends HookConsumerWidget {
                         posts: value,
                         routerPath: RouterPath.myProfileDetail,
                         type: AppListViewType.myprofile,
+                        controller: scrollController,
                         refresh: () => ref.refresh(myPostStreamProvider),
                       ),
                     )

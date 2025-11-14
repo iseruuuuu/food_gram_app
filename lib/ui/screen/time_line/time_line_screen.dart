@@ -21,6 +21,7 @@ class TimeLineScreen extends HookConsumerWidget {
     final state = ref.watch(postsStreamProvider(selectedCategoryName.value));
     final tabController =
         useTabController(initialLength: categoriesData.length);
+    final scrollController = useScrollController();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -35,6 +36,7 @@ class TimeLineScreen extends HookConsumerWidget {
           ref.invalidate(postsStreamProvider);
         },
         child: CustomScrollView(
+          controller: scrollController,
           physics: const AlwaysScrollableScrollPhysics(
             parent: BouncingScrollPhysics(),
           ),
@@ -78,6 +80,7 @@ class TimeLineScreen extends HookConsumerWidget {
                       posts: posts,
                       routerPath: RouterPath.timeLineDetail,
                       type: AppListViewType.timeline,
+                      controller: scrollController,
                       refresh: () {
                         ref
                           ..invalidate(

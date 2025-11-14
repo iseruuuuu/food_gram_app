@@ -26,6 +26,7 @@ class StoredPostScreen extends HookConsumerWidget {
     );
     final l10n = L10n.of(context);
     final state = ref.watch(storedPostViewModelProvider);
+    final scrollController = useScrollController();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -50,11 +51,13 @@ class StoredPostScreen extends HookConsumerWidget {
             return const AppFavoritePostEmpty();
           }
           return CustomScrollView(
+            controller: scrollController,
             slivers: [
               AppListView(
                 posts: posts,
                 routerPath: RouterPath.storedPostDetail,
                 type: AppListViewType.stored,
+                controller: scrollController,
                 refresh: () => ref
                     .read(storedPostViewModelProvider.notifier)
                     .loadStoredPosts(),
