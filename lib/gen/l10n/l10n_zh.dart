@@ -138,6 +138,9 @@ class L10nZh extends L10n {
   String get settingRestore => '恢复购买';
 
   @override
+  String get settingPremiumMembership => '成为高级会员，享受特别体验';
+
+  @override
   String get shareButton => '分享';
 
   @override

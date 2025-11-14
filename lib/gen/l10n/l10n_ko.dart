@@ -138,6 +138,9 @@ class L10nKo extends L10n {
   String get settingRestore => '구매 복원';
 
   @override
+  String get settingPremiumMembership => '프리미엄 회원이 되어 특별한 경험을';
+
+  @override
   String get shareButton => '공유';
 
   @override

@@ -366,6 +366,12 @@ abstract class L10n {
   /// **'購入を復元'**
   String get settingRestore;
 
+  /// No description provided for @settingPremiumMembership.
+  ///
+  /// In ja, this message translates to:
+  /// **'プレミアム会員になって特別な体験を'**
+  String get settingPremiumMembership;
+
   /// No description provided for @shareButton.
   ///
   /// In ja, this message translates to:

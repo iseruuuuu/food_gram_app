@@ -138,6 +138,9 @@ class L10nJa extends L10n {
   String get settingRestore => '購入を復元';
 
   @override
+  String get settingPremiumMembership => 'プレミアム会員になって特別な体験を';
+
+  @override
   String get shareButton => 'シェア';
 
   @override
