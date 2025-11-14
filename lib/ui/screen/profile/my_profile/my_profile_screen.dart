@@ -6,6 +6,7 @@ import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/app_premium_membership_card.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
@@ -80,14 +81,21 @@ class MyProfileScreen extends HookConsumerWidget {
                     child: users.when(
                       data: (users, length, heartAmount) {
                         return Stack(
+                          clipBehavior: Clip.none,
                           children: [
                             AppProfileHeader(
                               users: users,
                               length: length,
                               heartAmount: heartAmount,
                             ),
+                            const Positioned(
+                              top: 5,
+                              left: 0,
+                              right: 0,
+                              child: AppPremiumMembershipCard(),
+                            ),
                             Positioned(
-                              top: 10,
+                              top: 60,
                               right: 15,
                               child: ElevatedButton(
                                 onPressed: () {
