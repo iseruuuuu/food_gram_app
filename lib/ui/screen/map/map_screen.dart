@@ -9,6 +9,7 @@ import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/app_premium_membership_card.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
@@ -111,8 +112,15 @@ class MapScreen extends HookConsumerWidget {
                     visible: isTapPin.value,
                     child: AppMapRestaurantModalSheet(post: post.value),
                   ),
+                  if (!isSubscribe.value)
+                    const Positioned(
+                      top: 15,
+                      left: 0,
+                      right: 0,
+                      child: AppPremiumMembershipCard(),
+                    ),
                   Positioned(
-                    top: 30,
+                    top: isSubscribe.value ? 30 : 80,
                     right: 10,
                     child: Column(
                       children: [
