@@ -1,10 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/ui/component/app_share_widget.dart';
-import 'package:food_gram_app/ui/component/modal_sheet/app_share_modal_sheet.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
@@ -26,43 +22,6 @@ class ShareHelpers {
 
   Future<void> shareOnlyPost(List<XFile> files) async {
     await Share.shareXFiles(files);
-  }
-
-  Future<void> openShareModal({
-    required Posts posts,
-    required WidgetRef ref,
-    required ValueNotifier<bool> loading,
-    required BuildContext context,
-    String? shareText,
-  }) async {
-    await showModalBottomSheet<void>(
-      context: context,
-      builder: (context) {
-        return AppShareModalSheet(
-          sharePost: () async {
-            await captureAndShare(
-              widget: AppShareWidget(
-                posts: posts,
-                ref: ref,
-              ),
-              shareText: shareText,
-              loading: loading,
-              hasText: true,
-            );
-          },
-          shareOnlyPost: () async {
-            await captureAndShare(
-              widget: AppShareWidget(
-                posts: posts,
-                ref: ref,
-              ),
-              loading: loading,
-              hasText: false,
-            );
-          },
-        );
-      },
-    );
   }
 
   Future<void> captureAndShare({

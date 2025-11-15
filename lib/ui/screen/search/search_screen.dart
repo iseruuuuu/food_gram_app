@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
@@ -55,6 +56,12 @@ class SearchScreen extends HookConsumerWidget {
             ),
             const UserSearchTab(),
           ],
+        ),
+        bottomNavigationBar: const SafeArea(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 8, top: 4),
+            child: AdmobBanner(id: 'search_footer'),
+          ),
         ),
       ),
     );
