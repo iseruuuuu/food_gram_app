@@ -28,43 +28,6 @@ class ShareHelpers {
     await Share.shareXFiles(files);
   }
 
-  Future<void> openShareModal({
-    required Posts posts,
-    required WidgetRef ref,
-    required ValueNotifier<bool> loading,
-    required BuildContext context,
-    String? shareText,
-  }) async {
-    await showModalBottomSheet<void>(
-      context: context,
-      builder: (context) {
-        return AppShareModalSheet(
-          sharePost: () async {
-            await captureAndShare(
-              widget: AppShareWidget(
-                posts: posts,
-                ref: ref,
-              ),
-              shareText: shareText,
-              loading: loading,
-              hasText: true,
-            );
-          },
-          shareOnlyPost: () async {
-            await captureAndShare(
-              widget: AppShareWidget(
-                posts: posts,
-                ref: ref,
-              ),
-              loading: loading,
-              hasText: false,
-            );
-          },
-        );
-      },
-    );
-  }
-
   Future<void> captureAndShare({
     required Widget widget,
     required ValueNotifier<bool> loading,

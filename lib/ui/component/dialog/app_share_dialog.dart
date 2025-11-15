@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
@@ -11,7 +10,6 @@ import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:map_launcher/map_launcher.dart';
 
 class AppShareDialog extends HookConsumerWidget {
   const AppShareDialog({
@@ -103,7 +101,7 @@ class AppShareDialog extends HookConsumerWidget {
                               ),
                               const Gap(15),
                               Text(
-                                l10n.appShareStoreButton,
+                                l10n.shareTextAndImage,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.black,
@@ -139,13 +137,13 @@ class AppShareDialog extends HookConsumerWidget {
                           child: Row(
                             children: [
                               const Icon(
-                                FontAwesomeIcons.instagram,
+                                Icons.photo_outlined,
                                 size: 25,
                                 color: Colors.black,
                               ),
                               const Gap(15),
                               Text(
-                                l10n.appShareInstagramButton,
+                                l10n.shareImageOnly,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.black,
@@ -157,75 +155,6 @@ class AppShareDialog extends HookConsumerWidget {
                         ),
                       ),
                       const Gap(20),
-                      SizedBox(
-                        height: 48,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.white,
-                          ),
-                          onPressed: () async {
-                            await adInterstitial.showAd(
-                              onAdClosed: () async {
-                                final availableMaps =
-                                    await MapLauncher.installedMaps;
-                                await availableMaps.first.showMarker(
-                                  coords: Coords(posts.lat, posts.lng),
-                                  title: posts.restaurant,
-                                );
-                              },
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.directions_walk,
-                                size: 25,
-                                color: Colors.black,
-                              ),
-                              const Gap(15),
-                              Text(
-                                l10n.appShareGoButton,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w300,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const Gap(20),
-                      SizedBox(
-                        height: 48,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.white,
-                          ),
-                          onPressed: context.pop,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.close,
-                                size: 25,
-                                color: Colors.black,
-                              ),
-                              const Gap(15),
-                              Text(
-                                l10n.appShareCloseButton,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w300,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const Gap(30),
                     ],
                   ),
                 ),

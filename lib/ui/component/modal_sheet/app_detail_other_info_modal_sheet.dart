@@ -28,7 +28,7 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
     return Container(
-      height: MediaQuery.sizeOf(context).width - 20,
+      height: MediaQuery.sizeOf(context).width / 1.5,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -65,106 +65,6 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
                       ),
-                    ),
-                  ),
-                  onPressed: () async {
-                    await ShareHelpers().openShareModal(
-                      posts: posts,
-                      ref: ref,
-                      loading: loading,
-                      context: context,
-                      shareText: '${posts.foodName} '
-                          'in ${posts.restaurant}\n\n '
-                          '${l10n.shareInviteMessage}\n'
-                          '#FoodGram',
-                    );
-                    context.pop();
-                  },
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.share,
-                        color: Colors.black,
-                        size: 25,
-                      ),
-                      const SizedBox(width: 20),
-                      Text(
-                        l10n.postDetailSheetShareButton,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Center(
-              child: Container(
-                width: MediaQuery.sizeOf(context).width,
-                height: 50,
-                decoration: const BoxDecoration(
-                  border: Border(
-                    top: BorderSide(color: Colors.grey),
-                  ),
-                ),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: const Color(0xFFEFEFEF),
-                    foregroundColor: const Color(0xFFEFEFEF),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                  ),
-                  onPressed: () async {
-                    context.pop();
-                    if (posts.restaurant != '不明' && posts.restaurant != '自炊') {
-                      await LaunchUrlHelper().open(URL.go(posts.restaurant));
-                    } else {
-                      SnackBarHelper()
-                          .openErrorSnackBar(context, l10n.postSearchError, '');
-                    }
-                  },
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.place,
-                        color: Colors.black,
-                        size: 25,
-                      ),
-                      const SizedBox(width: 20),
-                      Text(
-                        l10n.appShareGoButton,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Center(
-              child: Container(
-                width: MediaQuery.sizeOf(context).width,
-                height: 50,
-                decoration: const BoxDecoration(
-                  border: Border(
-                    top: BorderSide(color: Colors.grey),
-                  ),
-                ),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: const Color(0xFFEFEFEF),
-                    foregroundColor: const Color(0xFFEFEFEF),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0),
                     ),
                   ),
                   onPressed: () {

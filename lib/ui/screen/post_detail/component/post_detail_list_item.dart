@@ -311,16 +311,15 @@ class PostDetailListItem extends HookConsumerWidget {
                     scrollDirection: Axis.horizontal,
                     children: [
                       AppDetailElevatedButton(
-                        onPressed: () async {
-                          await ShareHelpers().openShareModal(
-                            posts: posts,
-                            ref: ref,
-                            loading: menuLoading,
+                        onPressed: () {
+                          showGeneralDialog(
                             context: context,
-                            shareText: '${posts.foodName} '
-                                'in ${posts.restaurant}\n\n '
-                                '${l10n.shareInviteMessage}\n'
-                                '#FoodGram',
+                            pageBuilder: (_, __, ___) {
+                              return AppShareDialog(
+                                posts: posts,
+                                users: users,
+                              );
+                            },
                           );
                         },
                         title: l10n.detailMenuShare,
