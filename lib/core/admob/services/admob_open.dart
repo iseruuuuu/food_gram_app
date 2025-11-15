@@ -47,22 +47,27 @@ class AdmobOpen {
     try {
       _isAdShowing = true;
       await _appOpenAd?.show();
+      logger.d('App open ad show() called');
     } on Exception catch (e) {
       logger.e('Error showing app open ad: $e');
-    } finally {
       _isAdShowing = false;
+      _onAdClosed();
     }
   }
 
   void _onAdLoaded(AppOpenAd ad) {
+    logger.d('App open ad loaded successfully');
     _appOpenAd = ad;
     _setupFullScreenCallback();
+    // 広告が読み込まれたら即座に表示を試みる
     showAdIfAvailable();
   }
 
   void _setupFullScreenCallback() {
     _appOpenAd?.fullScreenContentCallback = FullScreenContentCallback(
-      onAdShowedFullScreenContent: (ad) => logger.i('App open ad showed'),
+      onAdShowedFullScreenContent: (ad) {
+        logger.i('App open ad showed');
+      },
       onAdDismissedFullScreenContent: (ad) {
         logger.i('App open ad dismissed');
         _onAdClosed();
@@ -77,11 +82,13 @@ class AdmobOpen {
   void _onAdClosed() {
     _appOpenAd?.dispose();
     _appOpenAd = null;
+    _isAdShowing = false;
   }
 
   void dispose() {
     _appOpenAd?.dispose();
     _appOpenAd = null;
+    _isAdShowing = false;
   }
 }
 

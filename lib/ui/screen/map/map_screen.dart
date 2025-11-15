@@ -1,9 +1,13 @@
+import 'dart:math' as math;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
 import 'package:food_gram_app/core/local/force_update_checker.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
@@ -36,6 +40,9 @@ class MapScreen extends HookConsumerWidget {
     final isEarthStyle = useState(false);
     final users = ref.watch(myProfileViewModelProvider());
     final isSubscribe = useState(false);
+    final subscriptionState = ref.watch(subscriptionProvider);
+    final adLoadAttempted = useRef(false);
+
     useEffect(
       () {
         // トラッキング許可を取得
@@ -49,6 +56,28 @@ class MapScreen extends HookConsumerWidget {
         return null;
       },
       [],
+    );
+    // サブスクリプション状態が確定したら広告を読み込む（一度だけ）
+    useEffect(
+      () {
+        if (adLoadAttempted.value) {
+          return null;
+        }
+        subscriptionState.whenOrNull(
+          data: (isSubscribed) {
+            if (!isSubscribed && !adLoadAttempted.value) {
+              adLoadAttempted.value = true;
+              final value = math.Random().nextInt(3);
+              if (value == 0) {
+                ref.read(admobOpenNotifierProvider).loadAd();
+              }
+            }
+            return null;
+          },
+        );
+        return null;
+      },
+      [subscriptionState],
     );
 
     useEffect(
