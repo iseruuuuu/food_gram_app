@@ -1,10 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/ui/component/app_share_widget.dart';
-import 'package:food_gram_app/ui/component/modal_sheet/app_share_modal_sheet.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';

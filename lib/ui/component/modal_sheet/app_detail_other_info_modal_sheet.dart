@@ -3,8 +3,7 @@ import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
-import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
-import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
+
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
