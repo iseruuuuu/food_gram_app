@@ -1536,4 +1536,25 @@ class L10nZh extends L10n {
 
   @override
   String get tutorialNotificationButton => '开启通知';
+
+  @override
+  String get selectMapApp => '选择地图应用';
+
+  @override
+  String get mapAppGoogle => '谷歌地图';
+
+  @override
+  String get mapAppApple => '苹果地图';
+
+  @override
+  String get mapAppBaidu => '百度地图';
+
+  @override
+  String get mapAppMapsMe => 'Maps.me';
+
+  @override
+  String get mapAppKakao => 'KakaoMap';
+
+  @override
+  String get mapAppNaver => 'Naver地图';
 }

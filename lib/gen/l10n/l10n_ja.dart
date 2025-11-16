@@ -1536,4 +1536,25 @@ class L10nJa extends L10n {
 
   @override
   String get tutorialNotificationButton => '通知をオンにする';
+
+  @override
+  String get selectMapApp => '地図アプリを選択';
+
+  @override
+  String get mapAppGoogle => 'Google Map';
+
+  @override
+  String get mapAppApple => 'Apple Map';
+
+  @override
+  String get mapAppBaidu => 'Baidu Map';
+
+  @override
+  String get mapAppMapsMe => 'Maps.me';
+
+  @override
+  String get mapAppKakao => 'KakaoMap';
+
+  @override
+  String get mapAppNaver => 'Naver Map';
 }

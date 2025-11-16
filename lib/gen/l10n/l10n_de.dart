@@ -1536,4 +1536,25 @@ class L10nDe extends L10n {
 
   @override
   String get tutorialNotificationButton => 'Benachrichtigungen aktivieren';
+
+  @override
+  String get selectMapApp => 'Karten-App auswählen';
+
+  @override
+  String get mapAppGoogle => 'Google Maps';
+
+  @override
+  String get mapAppApple => 'Apple Maps';
+
+  @override
+  String get mapAppBaidu => 'Baidu Maps';
+
+  @override
+  String get mapAppMapsMe => 'Maps.me';
+
+  @override
+  String get mapAppKakao => 'KakaoMap';
+
+  @override
+  String get mapAppNaver => 'Naver Map';
 }

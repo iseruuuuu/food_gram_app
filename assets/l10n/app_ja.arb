@@ -508,5 +508,12 @@
   "tutorialLocationButton": "位置情報をオンにする",
   "tutorialNotificationTitle": "通知をオンにしよう！",
   "tutorialNotificationSubTitle": "ランチとディナーのときに\n通知をお送りします",
-  "tutorialNotificationButton": "通知をオンにする"
+  "tutorialNotificationButton": "通知をオンにする",
+  "selectMapApp": "地図アプリを選択",
+  "mapAppGoogle": "Google Map",
+  "mapAppApple": "Apple Map",
+  "mapAppBaidu": "Baidu Map",
+  "mapAppMapsMe": "Maps.me",
+  "mapAppKakao": "KakaoMap",
+  "mapAppNaver": "Naver Map"
 }

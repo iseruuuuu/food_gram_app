@@ -508,5 +508,12 @@
   "tutorialLocationButton": "Activar ubicación",
   "tutorialNotificationTitle": "¡Activa las notificaciones!",
   "tutorialNotificationSubTitle": "Enviaremos recordatorios al almuerzo y la cena",
-  "tutorialNotificationButton": "Activar notificaciones"
+  "tutorialNotificationButton": "Activar notificaciones",
+  "selectMapApp": "Seleccionar aplicación de mapas",
+  "mapAppGoogle": "Google Maps",
+  "mapAppApple": "Apple Maps",
+  "mapAppBaidu": "Baidu Maps",
+  "mapAppMapsMe": "Maps.me",
+  "mapAppKakao": "KakaoMap",
+  "mapAppNaver": "Naver Map"
 }

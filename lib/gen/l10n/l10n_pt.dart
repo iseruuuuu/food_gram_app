@@ -1536,4 +1536,25 @@ class L10nPt extends L10n {
 
   @override
   String get tutorialNotificationButton => 'Ativar Notificações';
+
+  @override
+  String get selectMapApp => 'Selecionar aplicativo de mapa';
+
+  @override
+  String get mapAppGoogle => 'Google Maps';
+
+  @override
+  String get mapAppApple => 'Apple Maps';
+
+  @override
+  String get mapAppBaidu => 'Baidu Maps';
+
+  @override
+  String get mapAppMapsMe => 'Maps.me';
+
+  @override
+  String get mapAppKakao => 'KakaoMap';
+
+  @override
+  String get mapAppNaver => 'Naver Map';
 }

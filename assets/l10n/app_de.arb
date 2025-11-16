@@ -508,5 +508,12 @@
   "tutorialLocationButton": "Standort aktivieren",
   "tutorialNotificationTitle": "Benachrichtigungen aktivieren!",
   "tutorialNotificationSubTitle": "Wir senden Erinnerungen zum Mittag- und Abendessen",
-  "tutorialNotificationButton": "Benachrichtigungen aktivieren"
+  "tutorialNotificationButton": "Benachrichtigungen aktivieren",
+  "selectMapApp": "Karten-App auswählen",
+  "mapAppGoogle": "Google Maps",
+  "mapAppApple": "Apple Maps",
+  "mapAppBaidu": "Baidu Maps",
+  "mapAppMapsMe": "Maps.me",
+  "mapAppKakao": "KakaoMap",
+  "mapAppNaver": "Naver Map"
 }

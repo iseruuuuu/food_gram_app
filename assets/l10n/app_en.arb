@@ -508,5 +508,12 @@
   "tutorialLocationButton": "Enable Location",
   "tutorialNotificationTitle": "Turn on Notifications!",
   "tutorialNotificationSubTitle": "We'll send reminders at lunch and dinner",
-  "tutorialNotificationButton": "Enable Notifications"
+  "tutorialNotificationButton": "Enable Notifications",
+  "selectMapApp": "Select Map App",
+  "mapAppGoogle": "Google Maps",
+  "mapAppApple": "Apple Maps",
+  "mapAppBaidu": "Baidu Maps",
+  "mapAppMapsMe": "Maps.me",
+  "mapAppKakao": "KakaoMap",
+  "mapAppNaver": "Naver Map"
 }
