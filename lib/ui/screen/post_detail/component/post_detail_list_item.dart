@@ -357,12 +357,13 @@ class PostDetailListItem extends HookConsumerWidget {
                         icon: Icons.search,
                       ),
                       AppDetailElevatedButton(
-                        onPressed: () async {
-                          await ref
+                        onPressed: () {
+                          ref
                               .read(
                             postDetailViewModelProvider().notifier,
                           )
-                              .openMap(
+                              .openSelectedMap(
+                            context,
                             posts.restaurant,
                             posts.lat,
                             posts.lng,

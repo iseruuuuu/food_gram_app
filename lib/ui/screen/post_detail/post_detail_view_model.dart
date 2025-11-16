@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
@@ -11,6 +12,7 @@ import 'package:food_gram_app/core/supabase/post/repository/delete_repository.da
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/app_map_select_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_state.dart';
 import 'package:logger/logger.dart';
 import 'package:map_launcher/map_launcher.dart';
@@ -154,18 +156,45 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     LaunchUrlHelper().open(URL.search(restaurant));
   }
 
-  Future<void> openMap(
+  void openSelectedMap(
+    BuildContext context,
     String restaurant,
     double lat,
     double lng,
     VoidCallback? openSnackBar,
-  ) async {
-    final availableMaps = await MapLauncher.installedMaps;
-    if (availableMaps.isEmpty) {
+  ) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (context) {
+        return AppMapSelectModalSheet(
+          onMapSelected: (mapType) {
+            openMap(
+              restaurant: restaurant,
+              lat: lat,
+              lng: lng,
+              mapType: mapType,
+              openSnackBar: openSnackBar,
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> openMap({
+    required String restaurant,
+    required double lat,
+    required double lng,
+    required MapType mapType,
+    VoidCallback? openSnackBar,
+  }) async {
+    final isAvailable = await MapLauncher.isMapAvailable(mapType);
+    if (isAvailable != true) {
       openSnackBar?.call();
       return;
     }
-    await availableMaps.first.showMarker(
+    await MapLauncher.showMarker(
+      mapType: mapType,
       coords: Coords(lat, lng),
       title: restaurant,
     );
