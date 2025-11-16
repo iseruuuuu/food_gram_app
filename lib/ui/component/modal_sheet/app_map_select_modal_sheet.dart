@@ -26,7 +26,6 @@ class AppMapSelectModalSheet extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // ドラッグハンドル
             Padding(
               padding: const EdgeInsets.only(top: 2, bottom: 8),
               child: Container(
@@ -38,7 +37,6 @@ class AppMapSelectModalSheet extends StatelessWidget {
                 ),
               ),
             ),
-            // タイトル
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
               child: Row(
