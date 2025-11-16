@@ -1536,4 +1536,25 @@ class L10nKo extends L10n {
 
   @override
   String get tutorialNotificationButton => '알림 활성화';
+
+  @override
+  String get selectMapApp => '지도 앱 선택';
+
+  @override
+  String get mapAppGoogle => '구글 맵';
+
+  @override
+  String get mapAppApple => '애플 맵';
+
+  @override
+  String get mapAppBaidu => '바이두 맵';
+
+  @override
+  String get mapAppMapsMe => 'Maps.me';
+
+  @override
+  String get mapAppKakao => '카카오맵';
+
+  @override
+  String get mapAppNaver => '네이버 지도';
 }

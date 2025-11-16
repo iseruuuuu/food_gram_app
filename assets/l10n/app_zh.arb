@@ -508,5 +508,12 @@
   "tutorialLocationButton": "开启位置",
   "tutorialNotificationTitle": "开启通知！",
   "tutorialNotificationSubTitle": "我们将在午餐和晚餐时间发送提醒",
-  "tutorialNotificationButton": "开启通知"
+  "tutorialNotificationButton": "开启通知",
+  "selectMapApp": "选择地图应用",
+  "mapAppGoogle": "谷歌地图",
+  "mapAppApple": "苹果地图",
+  "mapAppBaidu": "百度地图",
+  "mapAppMapsMe": "Maps.me",
+  "mapAppKakao": "KakaoMap",
+  "mapAppNaver": "Naver地图"
 }

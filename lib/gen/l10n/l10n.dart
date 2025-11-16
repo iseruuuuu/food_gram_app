@@ -3161,6 +3161,48 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'通知をオンにする'**
   String get tutorialNotificationButton;
+
+  /// No description provided for @selectMapApp.
+  ///
+  /// In ja, this message translates to:
+  /// **'地図アプリを選択'**
+  String get selectMapApp;
+
+  /// No description provided for @mapAppGoogle.
+  ///
+  /// In ja, this message translates to:
+  /// **'Google Map'**
+  String get mapAppGoogle;
+
+  /// No description provided for @mapAppApple.
+  ///
+  /// In ja, this message translates to:
+  /// **'Apple Map'**
+  String get mapAppApple;
+
+  /// No description provided for @mapAppBaidu.
+  ///
+  /// In ja, this message translates to:
+  /// **'Baidu Map'**
+  String get mapAppBaidu;
+
+  /// No description provided for @mapAppMapsMe.
+  ///
+  /// In ja, this message translates to:
+  /// **'Maps.me'**
+  String get mapAppMapsMe;
+
+  /// No description provided for @mapAppKakao.
+  ///
+  /// In ja, this message translates to:
+  /// **'KakaoMap'**
+  String get mapAppKakao;
+
+  /// No description provided for @mapAppNaver.
+  ///
+  /// In ja, this message translates to:
+  /// **'Naver Map'**
+  String get mapAppNaver;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

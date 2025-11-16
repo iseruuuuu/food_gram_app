@@ -508,5 +508,12 @@
   "tutorialLocationButton": "위치 활성화",
   "tutorialNotificationTitle": "알림을 켜세요!",
   "tutorialNotificationSubTitle": "점심/저녁 시간에 알림을 보냅니다",
-  "tutorialNotificationButton": "알림 활성화"
+  "tutorialNotificationButton": "알림 활성화",
+  "selectMapApp": "지도 앱 선택",
+  "mapAppGoogle": "구글 맵",
+  "mapAppApple": "애플 맵",
+  "mapAppBaidu": "바이두 맵",
+  "mapAppMapsMe": "Maps.me",
+  "mapAppKakao": "카카오맵",
+  "mapAppNaver": "네이버 지도"
 }
