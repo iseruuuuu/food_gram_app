@@ -1,7 +1,13 @@
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:food_gram_app/core/model/model.dart';
+import 'package:food_gram_app/core/model/users.dart';
+import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart' as detail_repo;
+import 'package:food_gram_app/router/router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -23,9 +29,15 @@ class FirebaseMessagingService {
       FlutterLocalNotificationsPlugin();
 
   String? _fcmToken;
+  WidgetRef? _ref;
 
   /// FCMトークンを取得
   String? get fcmToken => _fcmToken;
+
+  /// Refを設定（ナビゲーション用）
+  void setRef(WidgetRef ref) {
+    _ref = ref;
+  }
 
   /// Firebase Messagingを初期化
   Future<void> initialize() async {
@@ -58,7 +70,9 @@ class FirebaseMessagingService {
       // アプリが終了状態から通知をタップして起動された場合の処理
       final initialMessage = await _firebaseMessaging.getInitialMessage();
       if (initialMessage != null) {
-        _handleMessageOpenedApp(initialMessage);
+        // 少し待ってから処理（アプリが完全に起動してから）
+        await Future<void>.delayed(const Duration(milliseconds: 500));
+        await _handleMessageOpenedApp(initialMessage);
       }
 
       _logger.i('Firebase Messagingが正常に初期化されました');
@@ -294,20 +308,77 @@ class FirebaseMessagingService {
   }
 
   /// メッセージがタップされたときの処理
-  void _handleMessageOpenedApp(RemoteMessage message) {
+  Future<void> _handleMessageOpenedApp(RemoteMessage message) async {
     _logger.i('通知がタップされました: ${message.messageId}');
 
     final messageType = message.data['type'] as String?;
     if (messageType == 'heart') {
       // いいね通知がタップされた場合
-      final postId = message.data['postId'] as String?;
+      final postIdStr = message.data['postId'] as String?;
+      if (postIdStr == null) {
+        _logger.w('投稿IDが取得できませんでした');
+        return;
+      }
+
+      final postId = int.tryParse(postIdStr);
+      if (postId == null) {
+        _logger.w('投稿IDが無効です: $postIdStr');
+        return;
+      }
+
       _logger.i('いいね通知がタップされました。投稿ID: $postId');
-      // ここで投稿詳細画面への遷移を追加できます
-      // 例: GoRouter.of(context).push('/post/$postId');
+
+      // 投稿詳細画面への遷移
+      await _navigateToPostDetail(postId);
     } else {
       // その他の通知がタップされた場合
-      // ここで画面遷移などの処理を追加できます
-      // 例: GoRouter.of(context).push('/post/${message.data['postId']}');
+      final postIdStr = message.data['postId'] as String?;
+      if (postIdStr != null) {
+        final postId = int.tryParse(postIdStr);
+        if (postId != null) {
+          await _navigateToPostDetail(postId);
+        }
+      }
+    }
+  }
+
+  /// 投稿詳細画面に遷移
+  Future<void> _navigateToPostDetail(int postId) async {
+    if (_ref == null) {
+      _logger.w('Refが設定されていないため、ナビゲーションできません');
+      return;
+    }
+
+    try {
+      // 投稿データを取得
+      final repository = _ref!.read(detail_repo.detailPostRepositoryProvider.notifier);
+      final postResult = await repository.getPost(postId);
+
+      await postResult.when(
+        success: (posts) async {
+          // ユーザーデータを取得
+          final userData = await repository.getUserData(posts.userId);
+          final users = Users.fromJson(userData);
+          final model = Model(users, posts);
+
+          // GoRouterで遷移
+          final router = _ref!.read(routerProvider);
+          
+          // 次のフレームでナビゲーションを実行（アプリが完全に起動してから）
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            router.pushNamed(
+              RouterPath.timeLineDetail,
+              extra: model,
+            );
+            _logger.i('投稿詳細画面に遷移しました: 投稿ID=$postId');
+          });
+        },
+        failure: (error) {
+          _logger.e('投稿データの取得に失敗しました: $error');
+        },
+      );
+    } on Exception catch (e) {
+      _logger.e('投稿詳細画面への遷移に失敗しました: $e');
     }
   }
 
