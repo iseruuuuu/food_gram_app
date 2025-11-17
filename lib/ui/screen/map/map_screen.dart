@@ -67,7 +67,7 @@ class MapScreen extends HookConsumerWidget {
           data: (isSubscribed) {
             if (!isSubscribed && !adLoadAttempted.value) {
               adLoadAttempted.value = true;
-              final value = math.Random().nextInt(3);
+              final value = math.Random().nextInt(8);
               if (value == 0) {
                 ref.read(admobOpenNotifierProvider).loadAd();
               }
