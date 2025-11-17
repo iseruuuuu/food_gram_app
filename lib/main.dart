@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/app.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:food_gram_app/core/notification/firebase_messaging_service.dart';
 import 'package:food_gram_app/core/notification/notification_service.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -34,6 +36,9 @@ Future<void> initializeThirdPartyServices() async {
     await Firebase.initializeApp();
   }
 
+  // バックグラウンドメッセージハンドラーを設定
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
   /// Supabaseの初期化
   await Supabase.initialize(
     anonKey: kReleaseMode ? Prod.supabaseAnonKey : Dev.supabaseAnonKey,
@@ -47,10 +52,16 @@ Future<void> initializeNotifications() async {
   final logger = Logger();
   try {
     tz.initializeTimeZones();
+
+    // ローカル通知サービスを初期化
     final notificationService = NotificationService();
-    // 通知サービスを初期化
     await notificationService.initialize();
-    // 通知権限をリクエスト
+
+    // Firebase Messagingサービスを初期化
+    final firebaseMessagingService = FirebaseMessagingService();
+    await firebaseMessagingService.initialize();
+
+    // ローカル通知の権限をリクエスト
     final hasPermission = await notificationService.requestPermissions();
     if (hasPermission) {
       await notificationService.scheduleLunchReminder();
@@ -58,5 +69,25 @@ Future<void> initializeNotifications() async {
     }
   } on Exception catch (e) {
     logger.e('通知の初期化に失敗しました: $e');
+  }
+}
+
+/// バックグラウンドメッセージハンドラー
+/// トップレベル関数として定義する必要があります
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // Firebaseを初期化（バックグラウンドでは明示的に初期化が必要）
+  await Firebase.initializeApp();
+  final logger = Logger();
+
+  final messageType = message.data['type'] as String?;
+  if (messageType == 'heart') {
+    final userName = message.data['userName'] as String? ?? '誰か';
+    logger.i(
+      'バックグラウンドでいいね通知を受信しました: ${message.messageId}, '
+      'ユーザー: $userName',
+    );
+  } else {
+    logger.i('バックグラウンドでメッセージを受信しました: ${message.messageId}');
   }
 }
