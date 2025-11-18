@@ -1,5 +1,7 @@
 // ignore_for_file
 
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'l10n.dart';
 
 // ignore_for_file: type=lint
@@ -51,10 +53,12 @@ class L10nPt extends L10n {
   String get settingCheckVersionDialogTitle => 'Informações de Atualização';
 
   @override
-  String get settingCheckVersionDialogText1 => 'Uma nova versão está disponível.';
+  String get settingCheckVersionDialogText1 =>
+      'Uma nova versão está disponível.';
 
   @override
-  String get settingCheckVersionDialogText2 => 'Por favor, atualize para a versão mais recente.';
+  String get settingCheckVersionDialogText2 =>
+      'Por favor, atualize para a versão mais recente.';
 
   @override
   String get settingDeveloper => 'Twitter';
@@ -132,13 +136,15 @@ class L10nPt extends L10n {
   String get settingRestoreFailureTitle => 'Falha na restauração';
 
   @override
-  String get settingRestoreFailureSubtitle => 'Sem histórico de compras? Entre em contato com o suporte';
+  String get settingRestoreFailureSubtitle =>
+      'Sem histórico de compras? Entre em contato com o suporte';
 
   @override
   String get settingRestore => 'Restaurar compra';
 
   @override
-  String get settingPremiumMembership => 'Torne-se Premium para uma experiência especial';
+  String get settingPremiumMembership =>
+      'Torne-se Premium para uma experiência especial';
 
   @override
   String get shareButton => 'Compartilhar';
@@ -150,7 +156,8 @@ class L10nPt extends L10n {
   String get postFoodNameInputField => 'Digite o nome da comida (Obrigatório)';
 
   @override
-  String get postRestaurantNameInputField => 'Adicionar restaurante (Obrigatório)';
+  String get postRestaurantNameInputField =>
+      'Adicionar restaurante (Obrigatório)';
 
   @override
   String get postComment => 'Digite comentário (Opcional)';
@@ -162,7 +169,8 @@ class L10nPt extends L10n {
   String get postError => 'Falha no envio';
 
   @override
-  String get postCategoryTitle => 'Selecionar etiqueta de país/cozinha (opcional)';
+  String get postCategoryTitle =>
+      'Selecionar etiqueta de país/cozinha (opcional)';
 
   @override
   String get postCountryCategory => 'País';
@@ -174,7 +182,8 @@ class L10nPt extends L10n {
   String get postTitle => 'Publicar';
 
   @override
-  String get postMissingInfo => 'Por favor, preencha todos os campos obrigatórios';
+  String get postMissingInfo =>
+      'Por favor, preencha todos os campos obrigatórios';
 
   @override
   String get postMissingPhoto => 'Por favor, adicione uma foto';
@@ -183,7 +192,8 @@ class L10nPt extends L10n {
   String get postMissingFoodName => 'Por favor, digite o que você comeu';
 
   @override
-  String get postMissingRestaurant => 'Por favor, adicione o nome do restaurante';
+  String get postMissingRestaurant =>
+      'Por favor, adicione o nome do restaurante';
 
   @override
   String get postPhotoSuccess => 'Foto adicionada com sucesso';
@@ -192,7 +202,8 @@ class L10nPt extends L10n {
   String get postCameraPermission => 'Permissão de câmera necessária';
 
   @override
-  String get postAlbumPermission => 'Permissão de biblioteca de fotos necessária';
+  String get postAlbumPermission =>
+      'Permissão de biblioteca de fotos necessária';
 
   @override
   String get postSuccess => 'Publicação bem-sucedida';
@@ -216,7 +227,8 @@ class L10nPt extends L10n {
   String get emptyPosts => 'Não há publicações';
 
   @override
-  String get searchEmptyResult => 'Nenhum resultado encontrado para sua pesquisa.';
+  String get searchEmptyResult =>
+      'Nenhum resultado encontrado para sua pesquisa.';
 
   @override
   String get searchButton => 'Pesquisar';
@@ -228,7 +240,8 @@ class L10nPt extends L10n {
   String get searchUserTitle => 'Pesquisa de Usuários';
 
   @override
-  String get searchUserHeader => 'Pesquisa de Usuários (por Número de Publicações)';
+  String get searchUserHeader =>
+      'Pesquisa de Usuários (por Número de Publicações)';
 
   @override
   String searchUserPostCount(Object count) {
@@ -263,7 +276,8 @@ class L10nPt extends L10n {
   String get likeButton => 'Curtir';
 
   @override
-  String get shareReviewPrefix => 'Acabei de compartilhar minha avaliação do que comi!';
+  String get shareReviewPrefix =>
+      'Acabei de compartilhar minha avaliação do que comi!';
 
   @override
   String get shareReviewSuffix => 'Para mais, dê uma olhada no foodGram!';
@@ -293,7 +307,8 @@ class L10nPt extends L10n {
   String get dialogReportDescription1 => 'Você denunciará esta publicação.';
 
   @override
-  String get dialogReportDescription2 => 'Você será direcionado para um Formulário do Google.';
+  String get dialogReportDescription2 =>
+      'Você será direcionado para um Formulário do Google.';
 
   @override
   String get dialogBlockTitle => 'Confirmar Bloqueio';
@@ -302,22 +317,26 @@ class L10nPt extends L10n {
   String get dialogBlockDescription1 => 'Você quer bloquear este usuário?';
 
   @override
-  String get dialogBlockDescription2 => 'Isso ocultará as publicações do usuário.';
+  String get dialogBlockDescription2 =>
+      'Isso ocultará as publicações do usuário.';
 
   @override
-  String get dialogBlockDescription3 => 'Usuários bloqueados serão salvos localmente.';
+  String get dialogBlockDescription3 =>
+      'Usuários bloqueados serão salvos localmente.';
 
   @override
   String get dialogDeleteTitle => 'Excluir Publicação';
 
   @override
-  String get heartLimitMessage => 'Você atingiu o limite de 10 curtidas de hoje. Por favor, tente novamente amanhã.';
+  String get heartLimitMessage =>
+      'Você atingiu o limite de 10 curtidas de hoje. Por favor, tente novamente amanhã.';
 
   @override
   String get dialogDeleteDescription1 => 'Você quer excluir esta publicação?';
 
   @override
-  String get dialogDeleteDescription2 => 'Uma vez excluída, não pode ser restaurada.';
+  String get dialogDeleteDescription2 =>
+      'Uma vez excluída, não pode ser restaurada.';
 
   @override
   String get dialogDeleteError => 'Falha na exclusão.';
@@ -329,7 +348,8 @@ class L10nPt extends L10n {
   String get dialogLogoutDescription1 => 'Você quer sair?';
 
   @override
-  String get dialogLogoutDescription2 => 'O status da conta é armazenado no servidor.';
+  String get dialogLogoutDescription2 =>
+      'O status da conta é armazenado no servidor.';
 
   @override
   String get dialogLogoutButton => 'Sair';
@@ -341,7 +361,8 @@ class L10nPt extends L10n {
   String get errorDescription1 => 'Ocorreu um erro de conexão.';
 
   @override
-  String get errorDescription2 => 'Verifique sua conexão de rede e tente novamente.';
+  String get errorDescription2 =>
+      'Verifique sua conexão de rede e tente novamente.';
 
   @override
   String get errorRefreshButton => 'Recarregar';
@@ -380,10 +401,12 @@ class L10nPt extends L10n {
   String get appRequestTitle => '🙇 Ative a localização atual 🙇';
 
   @override
-  String get appRequestReason => 'Dados de localização atual são necessários para seleção de restaurantes';
+  String get appRequestReason =>
+      'Dados de localização atual são necessários para seleção de restaurantes';
 
   @override
-  String get appRequestInduction => 'Os seguintes botões o levarão à tela de configurações';
+  String get appRequestInduction =>
+      'Os seguintes botões o levarão à tela de configurações';
 
   @override
   String get appRequestOpenSetting => 'Abrir tela de configurações';
@@ -470,7 +493,8 @@ class L10nPt extends L10n {
   String get loginSuccessful => 'Login bem-sucedido';
 
   @override
-  String get emailAuthentication => 'Autentique-se com seu aplicativo de e-mail';
+  String get emailAuthentication =>
+      'Autentique-se com seu aplicativo de e-mail';
 
   @override
   String get emailEmpty => 'Nenhum endereço de e-mail foi inserido';
@@ -482,10 +506,12 @@ class L10nPt extends L10n {
   String get enterTheCorrectFormat => 'Por favor, digite o formato correto';
 
   @override
-  String get authInvalidFormat => 'O formato do endereço de e-mail está incorreto.';
+  String get authInvalidFormat =>
+      'O formato do endereço de e-mail está incorreto.';
 
   @override
-  String get authSocketException => 'Há um problema com a rede. Por favor, verifique a conexão.';
+  String get authSocketException =>
+      'Há um problema com a rede. Por favor, verifique a conexão.';
 
   @override
   String get camera => 'Câmera';
@@ -500,25 +526,30 @@ class L10nPt extends L10n {
   String get tutorialFirstPageTitle => 'Compartilhe seus momentos deliciosos';
 
   @override
-  String get tutorialFirstPageSubTitle => 'Com FoodGram, torne cada refeição mais especial.\nAproveite descobrir novos sabores!';
+  String get tutorialFirstPageSubTitle =>
+      'Com FoodGram, torne cada refeição mais especial.\nAproveite descobrir novos sabores!';
 
   @override
   String get tutorialDiscoverTitle => 'Encontre seu próximo prato favorito!';
 
   @override
-  String get tutorialDiscoverSubTitle => 'A cada rolagem, novas descobertas saborosas.\nExplore comidas deliciosas agora.';
+  String get tutorialDiscoverSubTitle =>
+      'A cada rolagem, novas descobertas saborosas.\nExplore comidas deliciosas agora.';
 
   @override
-  String get tutorialSecondPageTitle => 'Um mapa de comida único para este aplicativo';
+  String get tutorialSecondPageTitle =>
+      'Um mapa de comida único para este aplicativo';
 
   @override
-  String get tutorialSecondPageSubTitle => 'Vamos criar um mapa único para este aplicativo.\nSuas publicações ajudarão a evoluir o mapa.';
+  String get tutorialSecondPageSubTitle =>
+      'Vamos criar um mapa único para este aplicativo.\nSuas publicações ajudarão a evoluir o mapa.';
 
   @override
   String get tutorialThirdPageTitle => 'Termos de Uso';
 
   @override
-  String get tutorialThirdPageSubTitle => '・Tenha cuidado ao compartilhar informações pessoais como nome, endereço, número de telefone ou localização.\n\n・Evite publicar conteúdo ofensivo, inadequado ou prejudicial, e não use obras de outros sem permissão.\n\n・Publicações não relacionadas à comida podem ser removidas.\n\n・Usuários que violam repetidamente as regras ou publicam conteúdo objetável podem ser removidos pela equipe de gerenciamento.\n\n・Esperamos melhorar este aplicativo junto com todos. pelos desenvolvedores';
+  String get tutorialThirdPageSubTitle =>
+      '・Tenha cuidado ao compartilhar informações pessoais como nome, endereço, número de telefone ou localização.\n\n・Evite publicar conteúdo ofensivo, inadequado ou prejudicial, e não use obras de outros sem permissão.\n\n・Publicações não relacionadas à comida podem ser removidas.\n\n・Usuários que violam repetidamente as regras ou publicam conteúdo objetável podem ser removidos pela equipe de gerenciamento.\n\n・Esperamos melhorar este aplicativo junto com todos. pelos desenvolvedores';
 
   @override
   String get tutorialThirdPageButton => 'Concordar com os termos de uso';
@@ -542,7 +573,8 @@ class L10nPt extends L10n {
   String get forceUpdateTitle => 'Notificação de Atualização';
 
   @override
-  String get forceUpdateText => 'Uma nova versão deste aplicativo foi lançada. Por favor, atualize o aplicativo para garantir os recursos mais recentes e um ambiente seguro.';
+  String get forceUpdateText =>
+      'Uma nova versão deste aplicativo foi lançada. Por favor, atualize o aplicativo para garantir os recursos mais recentes e um ambiente seguro.';
 
   @override
   String get forceUpdateButtonTitle => 'Atualizar';
@@ -551,7 +583,8 @@ class L10nPt extends L10n {
   String get newAccountImportantTitle => 'Nota Importante';
 
   @override
-  String get newAccountImportant => 'Ao criar uma conta, por favor não inclua informações pessoais como endereço de e-mail ou número de telefone em seu nome de usuário ou ID de usuário. Para garantir uma experiência online segura, escolha um nome que não revele seus detalhes pessoais.';
+  String get newAccountImportant =>
+      'Ao criar uma conta, por favor não inclua informações pessoais como endereço de e-mail ou número de telefone em seu nome de usuário ou ID de usuário. Para garantir uma experiência online segura, escolha um nome que não revele seus detalhes pessoais.';
 
   @override
   String get accountRegistrationSuccess => 'Registro de conta concluído';
@@ -629,19 +662,22 @@ class L10nPt extends L10n {
   String get promoteDialogTrophyTitle => 'Função Troféu';
 
   @override
-  String get promoteDialogTrophyDesc => 'Exibe troféus baseados em suas atividades.';
+  String get promoteDialogTrophyDesc =>
+      'Exibe troféus baseados em suas atividades.';
 
   @override
   String get promoteDialogTagTitle => 'Tags Personalizadas';
 
   @override
-  String get promoteDialogTagDesc => 'Defina tags personalizadas para suas comidas favoritas.';
+  String get promoteDialogTagDesc =>
+      'Defina tags personalizadas para suas comidas favoritas.';
 
   @override
   String get promoteDialogIconTitle => 'Ícone Personalizado';
 
   @override
-  String get promoteDialogIconDesc => 'Defina seu ícone de perfil para qualquer imagem que você goste !!';
+  String get promoteDialogIconDesc =>
+      'Defina seu ícone de perfil para qualquer imagem que você goste !!';
 
   @override
   String get promoteDialogAdTitle => 'Sem Anúncios';
@@ -665,7 +701,8 @@ class L10nPt extends L10n {
   String get paywallTrophyTitle => 'Ganhe títulos ao publicar mais';
 
   @override
-  String get paywallTrophyDesc => 'Os títulos evoluem com a sua contagem de posts';
+  String get paywallTrophyDesc =>
+      'Os títulos evoluem com a sua contagem de posts';
 
   @override
   String get paywallTagTitle => 'Defina seus gêneros favoritos';
@@ -689,7 +726,8 @@ class L10nPt extends L10n {
   String get paywallComingSoon => 'Em breve...';
 
   @override
-  String get paywallNewFeatures => 'Novos recursos exclusivos premium\nchegando em breve!';
+  String get paywallNewFeatures =>
+      'Novos recursos exclusivos premium\nchegando em breve!';
 
   @override
   String get paywallSubscribeButton => 'Tornar-se Membro Premium';
@@ -1472,10 +1510,12 @@ class L10nPt extends L10n {
   String get searchEmptyHintTitle => 'Dicas de pesquisa';
 
   @override
-  String get searchEmptyHintLocation => 'Ative a localização para mostrar resultados próximos primeiro';
+  String get searchEmptyHintLocation =>
+      'Ative a localização para mostrar resultados próximos primeiro';
 
   @override
-  String get searchEmptyHintSearch => 'Pesquise por nome do restaurante ou tipo de cozinha';
+  String get searchEmptyHintSearch =>
+      'Pesquise por nome do restaurante ou tipo de cozinha';
 
   @override
   String get postErrorPickImage => 'Falha ao tirar foto';
@@ -1499,7 +1539,8 @@ class L10nPt extends L10n {
   String get postSaved => 'Postagem salva';
 
   @override
-  String get postSavedMessage => 'Você pode ver as postagens salvas na Minha página';
+  String get postSavedMessage =>
+      'Você pode ver as postagens salvas na Minha página';
 
   @override
   String get noMapAppAvailable => 'Nenhum aplicativo de mapa disponível';
@@ -1508,13 +1549,15 @@ class L10nPt extends L10n {
   String get notificationLunchTitle => '#Já postou a refeição de hoje? 🍜';
 
   @override
-  String get notificationLunchBody => 'Que tal registrar o almoço de hoje enquanto ainda se lembra?';
+  String get notificationLunchBody =>
+      'Que tal registrar o almoço de hoje enquanto ainda se lembra?';
 
   @override
   String get notificationDinnerTitle => '#Já postou a refeição de hoje? 🍛';
 
   @override
-  String get notificationDinnerBody => 'Poste a refeição de hoje e termine o dia suavemente 📷';
+  String get notificationDinnerBody =>
+      'Poste a refeição de hoje e termine o dia suavemente 📷';
 
   @override
   String get posted => 'postado';
@@ -1523,7 +1566,8 @@ class L10nPt extends L10n {
   String get tutorialLocationTitle => 'Ative a Localização!';
 
   @override
-  String get tutorialLocationSubTitle => 'Para encontrar ótimos lugares por perto,\nfacilite a descoberta de restaurantes';
+  String get tutorialLocationSubTitle =>
+      'Para encontrar ótimos lugares por perto,\nfacilite a descoberta de restaurantes';
 
   @override
   String get tutorialLocationButton => 'Ativar Localização';
@@ -1532,7 +1576,8 @@ class L10nPt extends L10n {
   String get tutorialNotificationTitle => 'Ative as Notificações!';
 
   @override
-  String get tutorialNotificationSubTitle => 'Enviaremos lembretes no almoço e no jantar';
+  String get tutorialNotificationSubTitle =>
+      'Enviaremos lembretes no almoço e no jantar';
 
   @override
   String get tutorialNotificationButton => 'Ativar Notificações';

@@ -11,6 +11,8 @@ import 'package:food_gram_app/gen/l10n/l10n_fr.dart';
 import 'package:food_gram_app/gen/l10n/l10n_ja.dart';
 import 'package:food_gram_app/gen/l10n/l10n_ko.dart';
 import 'package:food_gram_app/gen/l10n/l10n_pt.dart';
+import 'package:food_gram_app/gen/l10n/l10n_th.dart';
+import 'package:food_gram_app/gen/l10n/l10n_vi.dart';
 import 'package:food_gram_app/gen/l10n/l10n_zh.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -50,6 +52,10 @@ class NotificationService {
         return L10nDe();
       case 'pt':
         return L10nPt();
+      case 'vi':
+        return L10nVi();
+      case 'th':
+        return L10nTh();
       default:
         return L10nJa(); // デフォルトは日本語
     }
