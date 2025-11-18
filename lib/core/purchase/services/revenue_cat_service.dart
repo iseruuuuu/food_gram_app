@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:logger/logger.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -90,6 +91,8 @@ class RevenueCatService extends _$RevenueCatService {
         final customerInfo = await Purchases.purchasePackage(package);
         await getPurchaserInfo(customerInfo);
         await ref.read(accountServiceProvider).updateIsSubscribe();
+        // サブスクリプション状態を更新
+        await ref.read(isSubscribeProvider.notifier).refresh();
         return true;
       }
       return false;
@@ -113,6 +116,8 @@ class RevenueCatService extends _$RevenueCatService {
       } else {
         await getPurchaserInfo(customerInfo);
         await ref.read(accountServiceProvider).updateIsSubscribe();
+        // サブスクリプション状態を更新
+        await ref.read(isSubscribeProvider.notifier).refresh();
         logger.i('$entitlement 購入情報あり　復元可能');
         return true;
       }

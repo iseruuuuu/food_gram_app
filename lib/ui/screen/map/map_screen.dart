@@ -7,8 +7,8 @@ import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
 import 'package:food_gram_app/core/local/force_update_checker.dart';
 import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
@@ -18,7 +18,6 @@ import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
-import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -38,9 +37,7 @@ class MapScreen extends HookConsumerWidget {
     final isTapPin = useState(false);
     final post = useState<List<Posts?>>([]);
     final isEarthStyle = useState(false);
-    final users = ref.watch(myProfileViewModelProvider());
-    final isSubscribe = useState(false);
-    final subscriptionState = ref.watch(subscriptionProvider);
+    final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final adLoadAttempted = useRef(false);
 
     useEffect(
@@ -57,44 +54,21 @@ class MapScreen extends HookConsumerWidget {
       },
       [],
     );
-    // サブスクリプション状態が確定したら広告を読み込む（一度だけ）
     useEffect(
       () {
         if (adLoadAttempted.value) {
           return null;
         }
-        subscriptionState.whenOrNull(
-          data: (isSubscribed) {
-            if (!isSubscribed && !adLoadAttempted.value) {
-              adLoadAttempted.value = true;
-              final value = math.Random().nextInt(8);
-              if (value == 0) {
-                ref.read(admobOpenNotifierProvider).loadAd();
-              }
-            }
-            return null;
-          },
-        );
+        adLoadAttempted.value = true;
+        final value = math.Random().nextInt(8);
+        if (value == 0) {
+          ref.read(admobOpenNotifierProvider).loadAd();
+        }
         return null;
       },
-      [subscriptionState],
+      [],
     );
 
-    useEffect(
-      () {
-        // サブスクリプション状態を取得
-        users.whenOrNull(
-          data: (users, __, ___) {
-            if (users.isSubscribe) {
-              isSubscribe.value = true;
-            }
-            return null;
-          },
-        );
-        return null;
-      },
-      [users],
-    );
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -109,6 +83,7 @@ class MapScreen extends HookConsumerWidget {
             onData: (value) {
               final isLocationEnabled =
                   value.$1.latitude != 0 && value.$1.longitude != 0;
+              final isSubscribe = isSubscribeAsync.valueOrNull ?? false;
               return Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
@@ -141,7 +116,7 @@ class MapScreen extends HookConsumerWidget {
                     visible: isTapPin.value,
                     child: AppMapRestaurantModalSheet(post: post.value),
                   ),
-                  if (!isSubscribe.value)
+                  if (!isSubscribe)
                     const Positioned(
                       top: 15,
                       left: 0,
@@ -149,7 +124,7 @@ class MapScreen extends HookConsumerWidget {
                       child: AppPremiumMembershipCard(),
                     ),
                   Positioned(
-                    top: isSubscribe.value ? 30 : 80,
+                    top: isSubscribe ? 30 : 80,
                     right: 10,
                     child: Column(
                       children: [
@@ -175,14 +150,14 @@ class MapScreen extends HookConsumerWidget {
                                 hoverColor: Colors.white,
                                 elevation: 10,
                                 onPressed: () {
-                                  if (!isSubscribe.value) {
+                                  if (!isSubscribe) {
                                     context
                                         .pushNamed(
                                       RouterPath.paywallPage,
                                     )
                                         .then((_) {
                                       ref.invalidate(
-                                        myProfileViewModelProvider(),
+                                        isSubscribeProvider,
                                       );
                                     });
                                   } else {
