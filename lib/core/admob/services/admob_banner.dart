@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/admob/config/admob_config.dart';
-import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 /// バナー広告の状態を管理するプロバイダー
@@ -13,11 +13,26 @@ final bannerAdProvider =
 /// バナー広告の状態を管理するNotifier
 class BannerAdNotifier extends StateNotifier<BannerAd?> {
   BannerAdNotifier(this.ref, this.id) : super(null) {
-    _loadAd();
+    _checkSubscriptionAndLoadAd();
   }
 
   final Ref ref;
   final String id;
+
+  void _checkSubscriptionAndLoadAd() {
+    final subscriptionState = ref.read(isSubscribeProvider);
+    subscriptionState.whenData((isSubscribed) {
+      if (!isSubscribed) {
+        _loadAd();
+      }
+    });
+  }
+
+  /// 広告を破棄する（サブスクリプション時に使用）
+  void disposeAd() {
+    state?.dispose();
+    state = null;
+  }
 
   void _loadAd() {
     if (state != null) {
@@ -34,7 +49,16 @@ class BannerAdNotifier extends StateNotifier<BannerAd?> {
           state = null;
         },
         onAdLoaded: (ad) {
-          state = ad as BannerAd;
+          // 読み込み後にサブスクリプション状態を再確認
+          final subscriptionState = ref.read(isSubscribeProvider);
+          subscriptionState.whenData((isSubscribed) {
+            if (isSubscribed) {
+              ad.dispose();
+              state = null;
+            } else {
+              state = ad as BannerAd;
+            }
+          });
         },
       ),
     ).load();
@@ -59,10 +83,18 @@ class AdmobBanner extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bannerAd = ref.watch(bannerAdProvider(id));
-    final subscriptionState = ref.watch(subscriptionProvider);
+    final subscriptionState = ref.watch(isSubscribeProvider);
 
     return subscriptionState.when(
-      data: (isSubscribed) => _buildBannerContainer(bannerAd, isSubscribed),
+      data: (isSubscribed) {
+        // サブスクリプション状態が変更されたときに広告を破棄
+        if (isSubscribed && bannerAd != null) {
+          Future.microtask(() {
+            ref.read(bannerAdProvider(id).notifier).disposeAd();
+          });
+        }
+        return _buildBannerContainer(bannerAd, isSubscribed);
+      },
       error: (_, __) => const SizedBox.shrink(),
       loading: () => _buildLoadingContainer(bannerAd),
     );

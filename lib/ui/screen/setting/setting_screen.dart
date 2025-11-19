@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/style/setting_style.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
@@ -28,6 +29,7 @@ class SettingScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final loading = ref.watch(loadingProvider);
     final state = ref.watch(settingViewModelProvider());
+    final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final l10n = L10n.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -127,7 +129,13 @@ class SettingScreen extends HookConsumerWidget {
                         ],
                       ),
                       const Gap(8),
-                      const AppPremiumMembershipCard(),
+                      isSubscribeAsync.when(
+                        data: (isSubscribed) => isSubscribed
+                            ? const SizedBox.shrink()
+                            : const AppPremiumMembershipCard(),
+                        loading: () => const SizedBox.shrink(),
+                        error: (_, __) => const AppPremiumMembershipCard(),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16,

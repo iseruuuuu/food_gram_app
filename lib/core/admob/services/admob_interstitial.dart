@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:food_gram_app/core/admob/config/admob_config.dart';
-import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -141,7 +141,7 @@ class AdmobInterstitialNotifier extends _$AdmobInterstitialNotifier {
 
   @override
   AdmobInterstitial build() {
-    final subscriptionState = ref.watch(subscriptionProvider);
+    final subscriptionState = ref.watch(isSubscribeProvider);
 
     ref.onDispose(() => _admobInterstitial?.dispose());
 
