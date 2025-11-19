@@ -39,9 +39,11 @@ class SettingViewModel extends _$SettingViewModel {
     loading.state = true;
     final inAppReview = InAppReview.instance;
     if (await inAppReview.isAvailable()) {
-      loading.state = false;
-      await inAppReview.requestReview();
+      await inAppReview.openStoreListing(
+        appStoreId: '6474065183',
+      );
     }
+    loading.state = false;
   }
 
   Future<void> checkNewVersion(BuildContext context) async {
