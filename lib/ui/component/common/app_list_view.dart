@@ -106,6 +106,8 @@ class AppListView extends HookConsumerWidget {
                           final postUserId = posts[itemIndex].userId as String?;
                           final isSubscribed = postUserId != null &&
                               subscribedUsers.contains(postUserId);
+                          final hasMultipleImages =
+                              posts[itemIndex].foodImageList.length > 1;
                           return Stack(
                             children: [
                               Positioned.fill(
@@ -134,6 +136,24 @@ class AppListView extends HookConsumerWidget {
                                     child: Image.asset(
                                       Assets.image.frame.path,
                                       fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ),
+                              // 複数画像がある場合のアイコン
+                              if (hasMultipleImages)
+                                Positioned(
+                                  top: 4,
+                                  right: 4,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withValues(alpha: 0.6),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.collections,
+                                      color: Colors.white,
+                                      size: 16,
                                     ),
                                   ),
                                 ),
