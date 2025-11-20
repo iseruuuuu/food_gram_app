@@ -67,6 +67,9 @@ class PostDetailListItem extends HookConsumerWidget {
       [posts.userId],
     );
     final snapshot = useFuture(userFuture);
+    // 画像リストとPageControllerをメモ化
+    final imageList = posts.foodImageList;
+    final pageController = useMemoized(() => PageController());
     if (snapshot.connectionState == ConnectionState.waiting) {
       return const SizedBox.shrink();
     }
@@ -97,7 +100,7 @@ class PostDetailListItem extends HookConsumerWidget {
                     imagePath: posts.isAnonymous
                         ? 'assets/icon/icon1.png'
                         : users.image,
-                    radius: 26,
+                    radius: 24,
                   ),
                 ),
                 SizedBox(
@@ -128,86 +131,136 @@ class PostDetailListItem extends HookConsumerWidget {
             ),
           ),
           Center(
-            child: GestureDetector(
-              onTap: () {
-                showPhotoViewer(
-                  context: context,
-                  heroTagBuilder: (context) => 'image-${posts.id}',
-                  builder: (context) => Container(
+            child: imageList.isEmpty
+                ? const SizedBox.shrink()
+                : SizedBox(
                     width: deviceWidth,
                     height: deviceWidth,
-                    color: Colors.white,
-                    child: CachedNetworkImage(
-                      imageUrl: supabase.storage
-                          .from('food')
-                          .getPublicUrl(posts.foodImage),
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => const SizedBox.shrink(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+                    child: PageView.builder(
+                      controller: pageController,
+                      itemCount: imageList.length,
+                      itemBuilder: (context, index) {
+                        final imagePath = imageList[index];
+                        final imageUrl = supabase.storage
+                            .from('food')
+                            .getPublicUrl(imagePath);
+
+                        return GestureDetector(
+                          onTap: () {
+                            showPhotoViewer(
+                              context: context,
+                              heroTagBuilder: (context) =>
+                                  'image-${posts.id}-$index',
+                              builder: (context) => Container(
+                                width: deviceWidth,
+                                height: deviceWidth,
+                                color: Colors.white,
+                                child: CachedNetworkImage(
+                                  imageUrl: imageUrl,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) =>
+                                      const SizedBox.shrink(),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                ),
+                              ),
+                            );
+                          },
+                          onDoubleTap: () async {
+                            if (currentUser == null ||
+                                currentUser == users.userId) {
+                              return;
+                            }
+                            await ref
+                                .read(postDetailViewModelProvider().notifier)
+                                .handleHeart(
+                                  posts: posts,
+                                  currentUser: currentUser,
+                                  userId: users.userId,
+                                  onHeartLimitReached: onHeartLimitReached,
+                                );
+                            if (isHearted.value) {
+                              isHearted.value = false;
+                              heartCount.value = heartCount.value > 0
+                                  ? heartCount.value - 1
+                                  : 0;
+                            } else {
+                              isHearted.value = true;
+                              heartCount.value = heartCount.value + 1;
+                            }
+                          },
+                          child: Container(
+                            width: deviceWidth,
+                            height: deviceWidth,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.zero,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.3),
+                                  blurRadius: 24,
+                                  offset: const Offset(0, 12),
+                                ),
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.2),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 6),
+                                ),
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.1),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.zero,
+                              child: Stack(
+                                children: [
+                                  CachedNetworkImage(
+                                    imageUrl: imageUrl,
+                                    fit: BoxFit.cover,
+                                    width: deviceWidth,
+                                    height: deviceWidth,
+                                    placeholder: (context, url) =>
+                                        const SizedBox.shrink(),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ),
+                                  // 画像インデックス表示（複数画像の場合のみ）
+                                  if (imageList.length > 1)
+                                    Positioned(
+                                      top: 12,
+                                      right: 12,
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 6,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black
+                                              .withValues(alpha: 0.6),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        child: Text(
+                                          '${index + 1} / ${imageList.length}',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
-                );
-              },
-              onDoubleTap: () async {
-                if (currentUser == null || currentUser == users.userId) {
-                  return;
-                }
-                await ref
-                    .read(postDetailViewModelProvider().notifier)
-                    .handleHeart(
-                      posts: posts,
-                      currentUser: currentUser,
-                      userId: users.userId,
-                      onHeartLimitReached: onHeartLimitReached,
-                    );
-                if (isHearted.value) {
-                  isHearted.value = false;
-                  heartCount.value =
-                      heartCount.value > 0 ? heartCount.value - 1 : 0;
-                } else {
-                  isHearted.value = true;
-                  heartCount.value = heartCount.value + 1;
-                }
-              },
-              child: Container(
-                width: deviceWidth / 1.2,
-                height: deviceWidth / 1.2,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.3),
-                      blurRadius: 24,
-                      offset: const Offset(0, 12),
-                    ),
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.2),
-                      blurRadius: 12,
-                      offset: const Offset(0, 6),
-                    ),
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
-                      blurRadius: 6,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: CachedNetworkImage(
-                    imageUrl: supabase.storage
-                        .from('food')
-                        .getPublicUrl(posts.foodImage),
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => const SizedBox.shrink(),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  ),
-                ),
-              ),
-            ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -23,8 +23,8 @@ class PostService extends _$PostService {
   Future<Result<void, Exception>> createPost({
     required String foodName,
     required String comment,
-    required String uploadImage,
-    required Uint8List imageBytes,
+    required List<String> uploadImages,
+    required Map<String, Uint8List> imageBytesMap,
     required String restaurant,
     required double lat,
     required double lng,
@@ -33,9 +33,26 @@ class PostService extends _$PostService {
     required bool isAnonymous,
   }) async {
     try {
-      // 画像をアップロード
-      final imagePath = '/$_currentUserId/$uploadImage';
-      await supabase.storage.from('food').uploadBinary(imagePath, imageBytes);
+      // 複数画像をアップロード
+      final List<String> imagePaths = [];
+      for (final uploadImage in uploadImages) {
+        final fileName = uploadImage.split('/').last;
+        final imagePath = '/$_currentUserId/$fileName';
+        final imageBytes = imageBytesMap[uploadImage];
+        if (imageBytes != null) {
+          await supabase.storage.from('food').uploadBinary(
+                imagePath,
+                imageBytes,
+                fileOptions: const FileOptions(
+                  upsert: true,
+                  contentType: 'image/jpeg',
+                ),
+              );
+          imagePaths.add(imagePath);
+        }
+      }
+      // カンマ区切りで保存
+      final foodImage = imagePaths.join(',');
       // 投稿データを作成
       final post = {
         'user_id': _currentUserId,
@@ -44,7 +61,7 @@ class PostService extends _$PostService {
         'created_at': DateTime.now().toIso8601String(),
         'heart': 0,
         'restaurant': restaurant,
-        'food_image': imagePath,
+        'food_image': foodImage,
         'lat': lat,
         'lng': lng,
         'restaurant_tag': restaurantTag,
@@ -55,6 +72,9 @@ class PostService extends _$PostService {
       return const Success(null);
     } on PostgrestException catch (e) {
       logger.e('Failed to create post: ${e.message}');
+      return Failure(e);
+    } on StorageException catch (e) {
+      logger.e('Failed to upload images: ${e.message}');
       return Failure(e);
     }
   }
@@ -70,8 +90,9 @@ class PostService extends _$PostService {
     required double lat,
     required double lng,
     required bool isAnonymous,
-    String? newImagePath,
-    Uint8List? imageBytes,
+    required List<String> newImagePaths,
+    required Map<String, Uint8List> imageBytesMap,
+    required List<String> existingImagePaths,
   }) async {
     try {
       // 変更がある場合は更新用のマップを作成
@@ -85,42 +106,56 @@ class PostService extends _$PostService {
         'lng': lng,
         'is_anonymous': isAnonymous,
       };
-      // 新しい画像がある場合、先に新しい画像をアップロードしてから DB 更新 → 旧画像削除
-      if (newImagePath != null && imageBytes != null) {
-        final oldStoragePath =
-            posts.foodImage.substring(1).replaceAll('//', '/');
-        final newFileName = newImagePath.split('/').last;
-        final newStoragePath = '$_currentUserId/$newFileName';
-        try {
-          await supabase.storage.from('food').uploadBinary(
-                newStoragePath,
-                imageBytes,
-                fileOptions:
-                    const FileOptions(upsert: true, contentType: 'image/jpeg'),
-              );
-          updates['food_image'] = '/$newStoragePath';
-          // 投稿データを更新
-          await supabase.from('posts').update(updates).eq('id', posts.id);
-          // 旧画像を削除（後始末）
-          await supabase.storage.from('food').remove([oldStoragePath]);
-          return const Success(null);
-        } on StorageException catch (e) {
-          logger.e('Storage error: ${e.message}');
-          return Failure(e);
-        } on PostgrestException catch (e) {
-          // DB 更新に失敗したら新規アップロード分を削除してロールバック
+      
+      // 新しい画像をアップロード
+      final List<String> newUploadedPaths = [];
+      for (final imagePath in newImagePaths) {
+        final fileName = imagePath.split('/').last;
+        final storagePath = '/$_currentUserId/$fileName';
+        final imageBytes = imageBytesMap[imagePath];
+        if (imageBytes != null) {
           try {
-            await supabase.storage.from('food').remove([newStoragePath]);
-          } on Exception {
-            logger.e('Failed to rollback: ${e.message}');
+            await supabase.storage.from('food').uploadBinary(
+                  storagePath,
+                  imageBytes,
+                  fileOptions: const FileOptions(
+                    upsert: true,
+                    contentType: 'image/jpeg',
+                  ),
+                );
+            newUploadedPaths.add(storagePath);
+          } on StorageException catch (e) {
+            logger.e('Failed to upload image $imagePath: ${e.message}');
+            // アップロードに失敗した画像はスキップ
           }
-          logger.e('Failed to update post: ${e.message}');
-          return Failure(e);
         }
-      } else {
-        updates['food_image'] = posts.foodImage;
       }
-      // 画像変更なしの通常更新
+      
+      // 既存の画像パスと新しい画像パスを結合
+      final allImagePaths = [...existingImagePaths, ...newUploadedPaths];
+      final foodImage = allImagePaths.join(',');
+      updates['food_image'] = foodImage;
+      
+      // 旧画像を削除（既存画像から削除されたもの）
+      final oldImagePaths = posts.foodImage.isNotEmpty
+          ? posts.foodImage.split(',').where((path) => path.isNotEmpty).toList()
+          : <String>[];
+      final imagesToDelete = oldImagePaths
+          .where((oldPath) => !existingImagePaths.contains(oldPath))
+          .map((path) => path.startsWith('/') ? path.substring(1) : path)
+          .where((path) => path.isNotEmpty)
+          .toList();
+      
+      if (imagesToDelete.isNotEmpty) {
+        try {
+          await supabase.storage.from('food').remove(imagesToDelete);
+        } on StorageException catch (e) {
+          logger.e('Failed to delete old images: ${e.message}');
+          // 削除に失敗しても続行
+        }
+      }
+      
+      // 投稿データを更新
       await supabase.from('posts').update(updates).eq('id', posts.id);
       return const Success(null);
     } on PostgrestException catch (e) {

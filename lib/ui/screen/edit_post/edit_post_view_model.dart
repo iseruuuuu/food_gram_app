@@ -48,8 +48,7 @@ class EditPostViewModel extends _$EditPostViewModel {
   final _foodController = TextEditingController();
   final _commentController = TextEditingController();
   final _picker = ImagePicker();
-  String _uploadImage = '';
-  Uint8List? _imageBytes;
+  final Map<String, Uint8List> _imageBytesMap = {};
   late Posts _posts;
 
   TextEditingController get foodController => _foodController;
@@ -58,9 +57,7 @@ class EditPostViewModel extends _$EditPostViewModel {
 
   Loading get loading => ref.read(loadingProvider.notifier);
 
-  String get uploadImage => _uploadImage;
-
-  Uint8List? get imageBytes => _imageBytes;
+  Map<String, Uint8List> get imageBytesMap => _imageBytesMap;
 
   @override
   EditPostState build({EditPostState? initState}) {
@@ -75,11 +72,16 @@ class EditPostViewModel extends _$EditPostViewModel {
     _posts = posts;
     _foodController.text = posts.foodName;
     _commentController.text = posts.comment;
+    // 既存の画像パスをカンマ区切りからリストに変換
+    final existingImages = posts.foodImage.isNotEmpty
+        ? posts.foodImage.split(',').where((path) => path.isNotEmpty).toList()
+        : <String>[];
     state = state.copyWith(
       restaurant: posts.restaurant,
       lat: posts.lat,
       lng: posts.lng,
       isAnonymous: posts.isAnonymous,
+      existingImagePaths: existingImages,
     );
   }
 
@@ -111,10 +113,7 @@ class EditPostViewModel extends _$EditPostViewModel {
   }
 
   Future<bool> album() async {
-    return _pickImage(
-      ImageSource.gallery,
-      EditStatus.albumPermission.name,
-    );
+    return _pickMultiImage(EditStatus.albumPermission.name);
   }
 
   Future<void> _updatePost(String restaurantTag, String foodTag) async {
@@ -128,8 +127,9 @@ class EditPostViewModel extends _$EditPostViewModel {
           lat: state.lat,
           lng: state.lng,
           isAnonymous: state.isAnonymous,
-          newImagePath: state.foodImage.isNotEmpty ? _uploadImage : null,
-          imageBytes: state.foodImage.isNotEmpty ? _imageBytes : null,
+          newImagePaths: state.foodImages,
+          imageBytesMap: _imageBytesMap,
+          existingImagePaths: state.existingImagePaths,
         );
 
     await result.when(
@@ -182,6 +182,9 @@ class EditPostViewModel extends _$EditPostViewModel {
         return false;
       }
       final cropImage = await _cropImage(image);
+      if (cropImage == null) {
+        return false;
+      }
       await _processImage(cropImage);
       return true;
     } on PlatformException catch (error) {
@@ -191,21 +194,72 @@ class EditPostViewModel extends _$EditPostViewModel {
     }
   }
 
+  Future<bool> _pickMultiImage(String errorMessage) async {
+    try {
+      final images = await _picker.pickMultiImage(
+        maxHeight: _imageConfig.maxSize,
+        maxWidth: _imageConfig.maxSize,
+        imageQuality: _imageConfig.quality,
+      );
+      if (images.isEmpty) {
+        return false;
+      }
+      
+      // 選択した画像を順番にトリミング
+      final List<File> croppedImages = [];
+      for (final image in images) {
+        final cropImage = await _cropImage(image);
+        if (cropImage != null) {
+          croppedImages.add(cropImage);
+        }
+      }
+      
+      // すべてのトリミングが完了したら、すべての画像を追加
+      if (croppedImages.isNotEmpty) {
+        for (final cropImage in croppedImages) {
+          await _processImage(cropImage);
+        }
+        return true;
+      }
+      return false;
+    } on PlatformException catch (error) {
+      logger.e('Failed to pick images: ${error.message}');
+      state = state.copyWith(status: errorMessage);
+      return false;
+    }
+  }
+
   Future<void> _processImage(File cropImage) async {
-    _imageBytes = await cropImage.readAsBytes();
-    _uploadImage = cropImage.path;
+    final imageBytes = await cropImage.readAsBytes();
+    final imagePath = cropImage.path;
+    _imageBytesMap[imagePath] = imageBytes;
+    final updatedImages = [...state.foodImages, imagePath];
     state = state.copyWith(
-      foodImage: cropImage.path,
+      foodImages: updatedImages,
       status: EditStatus.photoSuccess.name,
     );
   }
 
-  Future<File> _cropImage(XFile image) async {
+  void removeImage(String imagePath) {
+    _imageBytesMap.remove(imagePath);
+    final updatedImages = state.foodImages.where((path) => path != imagePath).toList();
+    state = state.copyWith(foodImages: updatedImages);
+  }
+
+  void removeExistingImage(String imagePath) {
+    final updatedExisting = state.existingImagePaths.where((path) => path != imagePath).toList();
+    state = state.copyWith(existingImagePaths: updatedExisting);
+  }
+
+  Future<File?> _cropImage(XFile image) async {
     final croppedFile = await ImageCropper().cropImage(
       sourcePath: image.path,
       uiSettings: [_androidSettings, _iosSettings],
     );
-    return File(croppedFile!.path);
+    if (croppedFile == null) {
+      return null;
+    }
+    return File(croppedFile.path);
   }
 
   void getPlace(Restaurant restaurant) {

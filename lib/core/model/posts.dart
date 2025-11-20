@@ -23,3 +23,19 @@ abstract class Posts with _$Posts {
 
   factory Posts.fromJson(Map<String, dynamic> json) => _$PostsFromJson(json);
 }
+
+extension PostsExtension on Posts {
+  /// カンマ区切りのfoodImageから画像パスのリストを取得
+  List<String> get foodImageList {
+    if (foodImage.isEmpty) {
+      return [];
+    }
+    return foodImage.split(',').where((path) => path.isNotEmpty).toList();
+  }
+
+  /// 最初の画像パスを取得
+  String get firstFoodImage {
+    final images = foodImageList;
+    return images.isNotEmpty ? images.first : '';
+  }
+}

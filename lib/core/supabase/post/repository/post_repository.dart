@@ -26,8 +26,8 @@ class PostRepository extends _$PostRepository {
   Future<Result<void, Exception>> createPost({
     required String foodName,
     required String comment,
-    required String uploadImage,
-    required Uint8List imageBytes,
+    required List<String> uploadImages,
+    required Map<String, Uint8List> imageBytesMap,
     required String restaurant,
     required double lat,
     required double lng,
@@ -39,8 +39,8 @@ class PostRepository extends _$PostRepository {
       final result = await _postService.createPost(
         foodName: foodName,
         comment: comment,
-        uploadImage: uploadImage,
-        imageBytes: imageBytes,
+        uploadImages: uploadImages,
+        imageBytesMap: imageBytesMap,
         restaurant: restaurant,
         lat: lat,
         lng: lng,
@@ -73,8 +73,9 @@ class PostRepository extends _$PostRepository {
     required double lat,
     required double lng,
     required bool isAnonymous,
-    String? newImagePath,
-    Uint8List? imageBytes,
+    required List<String> newImagePaths,
+    required Map<String, Uint8List> imageBytesMap,
+    required List<String> existingImagePaths,
   }) async {
     try {
       final result = await _postService.updatePost(
@@ -87,8 +88,9 @@ class PostRepository extends _$PostRepository {
         lat: lat,
         lng: lng,
         isAnonymous: isAnonymous,
-        newImagePath: newImagePath,
-        imageBytes: imageBytes,
+        newImagePaths: newImagePaths,
+        imageBytesMap: imageBytesMap,
+        existingImagePaths: existingImagePaths,
       );
       if (result is Success) {
         // キャッシュの無効化
