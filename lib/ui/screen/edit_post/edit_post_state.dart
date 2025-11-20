@@ -8,7 +8,8 @@ class EditPostState with _$EditPostState {
   const factory EditPostState({
     @Default('') String status,
     @Default(false) bool isSuccess,
-    @Default('') String foodImage,
+    @Default([]) List<String> foodImages,
+    @Default([]) List<String> existingImagePaths,
     @Default('') String restaurant,
     @Default(0.0) double lat,
     @Default(0.0) double lng,

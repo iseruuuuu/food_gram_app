@@ -67,8 +67,12 @@ class EditPostScreen extends HookConsumerWidget {
       [posts],
     );
     final supabase = ref.watch(supabaseProvider);
-    final foodImageUrl =
-        supabase.storage.from('food').getPublicUrl(posts.foodImage);
+    // 最初の画像のURLを取得（既存の表示用）
+    final firstImagePath =
+        posts.foodImage.isNotEmpty ? posts.foodImage.split(',').first : '';
+    final foodImageUrl = firstImagePath.isNotEmpty
+        ? supabase.storage.from('food').getPublicUrl(firstImagePath)
+        : '';
     return GestureDetector(
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
@@ -107,57 +111,199 @@ class EditPostScreen extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Gap(12),
-                    Center(
-                      child: GestureDetector(
-                        onTap: () async {
-                          primaryFocus?.unfocus();
-                          await showModalBottomSheet<void>(
-                            context: context,
-                            builder: (context) {
-                              return AppPostImageModalSheet(
-                                camera: () async {
-                                  await ref
-                                      .read(
-                                        editPostViewModelProvider().notifier,
-                                      )
-                                      .camera();
-                                },
-                                album: () async {
-                                  await ref
-                                      .read(
-                                        editPostViewModelProvider().notifier,
-                                      )
-                                      .album();
+                    Column(
+                      children: [
+                        // 既存の画像（サーバーから読み込んだもの）
+                        if (state.existingImagePaths.isNotEmpty)
+                          SizedBox(
+                            height: deviceWidth / 1.7,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: state.existingImagePaths.length,
+                              itemBuilder: (context, index) {
+                                final imagePath =
+                                    state.existingImagePaths[index];
+                                final existingImageUrl = supabase.storage
+                                    .from('food')
+                                    .getPublicUrl(imagePath);
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                    right: index <
+                                            state.existingImagePaths.length - 1
+                                        ? 12
+                                        : 0,
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border:
+                                              Border.all(color: Colors.black87),
+                                        ),
+                                        width: deviceWidth * 0.85,
+                                        height: deviceWidth / 1.7,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: CachedNetworkImage(
+                                            imageUrl: existingImageUrl,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 8,
+                                        right: 8,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            ref
+                                                .read(
+                                                    editPostViewModelProvider()
+                                                        .notifier)
+                                                .removeExistingImage(imagePath);
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.all(4),
+                                            decoration: const BoxDecoration(
+                                              color: Colors.red,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: const Icon(
+                                              Icons.close,
+                                              size: 20,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        // 新しく追加した画像
+                        if (state.foodImages.isNotEmpty)
+                          SizedBox(
+                            height: deviceWidth / 1.7,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: state.foodImages.length,
+                              itemBuilder: (context, index) {
+                                final imagePath = state.foodImages[index];
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                    right: index < state.foodImages.length - 1
+                                        ? 12
+                                        : 0,
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border:
+                                              Border.all(color: Colors.black87),
+                                        ),
+                                        width: deviceWidth * 0.85,
+                                        height: deviceWidth / 1.7,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Image.file(
+                                            File(imagePath),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 8,
+                                        right: 8,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            ref
+                                                .read(
+                                                    editPostViewModelProvider()
+                                                        .notifier)
+                                                .removeImage(imagePath);
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.all(4),
+                                            decoration: const BoxDecoration(
+                                              color: Colors.red,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: const Icon(
+                                              Icons.close,
+                                              size: 20,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        // 画像追加ボタン（画像がない場合のみ表示）
+                        if (state.existingImagePaths.isEmpty &&
+                            state.foodImages.isEmpty)
+                          GestureDetector(
+                            onTap: () async {
+                              primaryFocus?.unfocus();
+                              await showModalBottomSheet<void>(
+                                context: context,
+                                builder: (context) {
+                                  return AppPostImageModalSheet(
+                                    camera: () async {
+                                      await ref
+                                          .read(
+                                            editPostViewModelProvider().notifier,
+                                          )
+                                          .camera();
+                                    },
+                                    album: () async {
+                                      await ref
+                                          .read(
+                                            editPostViewModelProvider().notifier,
+                                          )
+                                          .album();
+                                    },
+                                  );
                                 },
                               );
                             },
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.black87),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.black87),
+                              ),
+                              width: deviceWidth,
+                              height: deviceWidth / 1.7,
+                              child: foodImageUrl.isNotEmpty
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: CachedNetworkImage(
+                                        imageUrl: foodImageUrl,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                  : const Icon(
+                                      Icons.add,
+                                      size: 40,
+                                      color: Colors.black,
+                                    ),
+                            ),
                           ),
-                          width: deviceWidth,
-                          height: deviceWidth / 1.7,
-                          child: state.foodImage.isNotEmpty
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.file(
-                                    File(state.foodImage),
-                                    fit: BoxFit.cover,
-                                  ),
-                                )
-                              : ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: CachedNetworkImage(
-                                    imageUrl: foodImageUrl,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                        ),
-                      ),
+                      ],
                     ),
                     const Gap(20),
                     AppFoodTextField(controller: viewModel.foodController),
