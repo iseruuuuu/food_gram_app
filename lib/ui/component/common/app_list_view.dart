@@ -67,9 +67,11 @@ class AppListView extends HookConsumerWidget {
               if (itemIndex >= posts.length) {
                 return const Expanded(child: SizedBox());
               }
+              // 複数画像がある場合は最初の画像のみ表示
+              final firstImage = posts[itemIndex].firstFoodImage;
               final itemImageUrl = supabase.storage
                   .from('food')
-                  .getPublicUrl(posts[itemIndex].foodImage);
+                  .getPublicUrl(firstImage);
               return Expanded(
                 child: GestureDetector(
                   onTap: () {
