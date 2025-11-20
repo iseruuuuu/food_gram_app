@@ -95,51 +95,115 @@ class PostScreen extends HookConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(
-                      child: GestureDetector(
-                        onTap: () async {
-                          primaryFocus?.unfocus();
-                          await showModalBottomSheet<void>(
-                            context: context,
-                            builder: (context) {
-                              return AppPostImageModalSheet(
-                                camera: () async {
-                                  await ref
-                                      .read(postViewModelProvider().notifier)
-                                      .camera();
-                                },
-                                album: () async {
-                                  await ref
-                                      .read(postViewModelProvider().notifier)
-                                      .album();
+                    Column(
+                      children: [
+                        if (state.foodImages.isNotEmpty)
+                          SizedBox(
+                            height: deviceWidth / 1.7,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: state.foodImages.length,
+                              itemBuilder: (context, index) {
+                                final imagePath = state.foodImages[index];
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                    right: index < state.foodImages.length - 1
+                                        ? 12
+                                        : 0,
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border:
+                                              Border.all(color: Colors.black87),
+                                        ),
+                                        width: deviceWidth * 0.85,
+                                        height: deviceWidth / 1.7,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Image.file(
+                                            File(imagePath),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 8,
+                                        right: 8,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            ref
+                                                .read(postViewModelProvider()
+                                                    .notifier)
+                                                .removeImage(imagePath);
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.all(4),
+                                            decoration: const BoxDecoration(
+                                              color: Colors.red,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: const Icon(
+                                              Icons.close,
+                                              size: 20,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                        else
+                          GestureDetector(
+                            onTap: () async {
+                              primaryFocus?.unfocus();
+                              await showModalBottomSheet<void>(
+                                context: context,
+                                builder: (context) {
+                                  return AppPostImageModalSheet(
+                                    camera: () async {
+                                      await ref
+                                          .read(
+                                            postViewModelProvider().notifier,
+                                          )
+                                          .camera();
+                                    },
+                                    album: () async {
+                                      await ref
+                                          .read(
+                                            postViewModelProvider().notifier,
+                                          )
+                                          .album();
+                                    },
+                                  );
                                 },
                               );
                             },
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.black87),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.black87),
+                              ),
+                              width: deviceWidth,
+                              height: deviceWidth / 1.7,
+                              child: const Icon(
+                                Icons.add,
+                                size: 40,
+                                color: Colors.black,
+                              ),
+                            ),
                           ),
-                          width: deviceWidth,
-                          height: deviceWidth / 1.7,
-                          child: state.foodImage.isNotEmpty
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.file(
-                                    File(state.foodImage),
-                                    fit: BoxFit.cover,
-                                  ),
-                                )
-                              : const Icon(
-                                  Icons.add,
-                                  size: 40,
-                                  color: Colors.black,
-                                ),
-                        ),
-                      ),
+                      ],
                     ),
                     const Gap(20),
                     AppFoodTextField(

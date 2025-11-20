@@ -21,8 +21,7 @@ class PostViewModel extends _$PostViewModel {
   late final TextEditingController _foodController;
   late final TextEditingController _commentController;
   final _picker = ImagePicker();
-  String _uploadImage = '';
-  late Uint8List _imageBytes;
+  final Map<String, Uint8List> _imageBytesMap = {};
   final logger = Logger();
 
   TextEditingController get foodController => _foodController;
@@ -31,9 +30,7 @@ class PostViewModel extends _$PostViewModel {
 
   Loading get loading => ref.read(loadingProvider.notifier);
 
-  String get uploadImage => _uploadImage;
-
-  Uint8List get imageBytes => _imageBytes;
+  Map<String, Uint8List> get imageBytesMap => _imageBytesMap;
 
   @override
   PostState build({PostState initState = const PostState()}) {
@@ -75,10 +72,7 @@ class PostViewModel extends _$PostViewModel {
   }
 
   Future<bool> album() async {
-    return _pickImage(
-      ImageSource.gallery,
-      PostStatus.albumPermission.name,
-    );
+    return _pickMultiImage(PostStatus.albumPermission.name);
   }
 
   void loadRestaurant(Restaurant? restaurant) {
@@ -96,8 +90,8 @@ class PostViewModel extends _$PostViewModel {
     final result = await ref.read(postRepositoryProvider.notifier).createPost(
           foodName: foodController.text,
           comment: commentController.text,
-          uploadImage: _uploadImage,
-          imageBytes: _imageBytes,
+          uploadImages: state.foodImages,
+          imageBytesMap: _imageBytesMap,
           restaurant: state.restaurant,
           lng: state.lng,
           lat: state.lat,
@@ -122,7 +116,7 @@ class PostViewModel extends _$PostViewModel {
   }
 
   bool _isPostMissing() {
-    if (_uploadImage.isEmpty) {
+    if (state.foodImages.isEmpty) {
       state = state.copyWith(status: PostStatus.missingPhoto.name);
       return true;
     }
@@ -150,6 +144,9 @@ class PostViewModel extends _$PostViewModel {
         return false;
       }
       final cropImage = await _cropImage(image);
+      if (cropImage == null) {
+        return false;
+      }
       await _processImage(cropImage);
       return true;
     } on PlatformException catch (error) {
@@ -159,21 +156,67 @@ class PostViewModel extends _$PostViewModel {
     }
   }
 
+  Future<bool> _pickMultiImage(String errorPickerImage) async {
+    try {
+      final images = await _picker.pickMultiImage(
+        maxHeight: _imageConfig.maxSize,
+        maxWidth: _imageConfig.maxSize,
+        imageQuality: _imageConfig.quality,
+      );
+      if (images.isEmpty) {
+        return false;
+      }
+      
+      // 選択した画像を順番にトリミング
+      final List<File> croppedImages = [];
+      for (final image in images) {
+        final cropImage = await _cropImage(image);
+        if (cropImage != null) {
+          croppedImages.add(cropImage);
+        }
+      }
+      
+      // すべてのトリミングが完了したら、すべての画像を追加
+      if (croppedImages.isNotEmpty) {
+        for (final cropImage in croppedImages) {
+          await _processImage(cropImage);
+        }
+        return true;
+      }
+      return false;
+    } on PlatformException catch (error) {
+      logger.e(error.message);
+      state = state.copyWith(status: errorPickerImage);
+      return false;
+    }
+  }
+
   Future<void> _processImage(File cropImage) async {
-    _imageBytes = await cropImage.readAsBytes();
-    _uploadImage = cropImage.path;
+    final imageBytes = await cropImage.readAsBytes();
+    final imagePath = cropImage.path;
+    _imageBytesMap[imagePath] = imageBytes;
+    final updatedImages = [...state.foodImages, imagePath];
     state = state.copyWith(
-      foodImage: cropImage.path,
+      foodImages: updatedImages,
       status: PostStatus.photoSuccess.name,
     );
   }
 
-  Future<File> _cropImage(XFile image) async {
+  void removeImage(String imagePath) {
+    _imageBytesMap.remove(imagePath);
+    final updatedImages = state.foodImages.where((path) => path != imagePath).toList();
+    state = state.copyWith(foodImages: updatedImages);
+  }
+
+  Future<File?> _cropImage(XFile image) async {
     final croppedFile = await ImageCropper().cropImage(
       sourcePath: image.path,
       uiSettings: _getCropperSettings(),
     );
-    return File(croppedFile!.path);
+    if (croppedFile == null) {
+      return null;
+    }
+    return File(croppedFile.path);
   }
 
   void _updateRestaurantState(Restaurant restaurant) {
