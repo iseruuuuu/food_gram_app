@@ -1,4 +1,3 @@
-import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:logger/logger.dart';
@@ -32,13 +31,13 @@ class IsSubscribe extends _$IsSubscribe {
       final result =
           await ref.read(userRepositoryProvider.notifier).getCurrentUser();
       return result.when(
-        success: (Users user) => user.isSubscribe,
-        failure: (Exception error) {
+        success: (user) => user.isSubscribe,
+        failure: (error) {
           logger.e('Failed to fetch current user data: $error');
           return false;
         },
       );
-    } catch (e) {
+    } on Exception catch (e) {
       logger.e('Unexpected error fetching user data: $e');
       return false;
     }
@@ -47,7 +46,7 @@ class IsSubscribe extends _$IsSubscribe {
   /// サブスクリプション状態を再取得（更新時などに使用）
   Future<void> refresh() async {
     state = const AsyncValue<bool>.loading();
-    state = await AsyncValue.guard(() => _fetchSubscriptionStatus());
+    state = await AsyncValue.guard(_fetchSubscriptionStatus);
   }
 
   /// サブスクリプション状態をクリア（ログアウト時などに使用）

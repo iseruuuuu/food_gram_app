@@ -69,9 +69,8 @@ class AppListView extends HookConsumerWidget {
               }
               // 複数画像がある場合は最初の画像のみ表示
               final firstImage = posts[itemIndex].firstFoodImage;
-              final itemImageUrl = supabase.storage
-                  .from('food')
-                  .getPublicUrl(firstImage);
+              final itemImageUrl =
+                  supabase.storage.from('food').getPublicUrl(firstImage);
               return Expanded(
                 child: GestureDetector(
                   onTap: () {
@@ -147,7 +146,8 @@ class AppListView extends HookConsumerWidget {
                                   child: Container(
                                     padding: const EdgeInsets.all(4),
                                     decoration: BoxDecoration(
-                                      color: Colors.black.withValues(alpha: 0.6),
+                                      color:
+                                          Colors.black.withValues(alpha: 0.6),
                                       shape: BoxShape.circle,
                                     ),
                                     child: const Icon(

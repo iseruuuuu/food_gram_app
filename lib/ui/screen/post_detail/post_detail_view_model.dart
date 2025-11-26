@@ -114,7 +114,7 @@ class PostDetailViewModel extends _$PostDetailViewModel {
           'いいね通知を送信しました: '
           '投稿者ID=$userId, 投稿ID=${posts.id}, いいねした人=$likerName',
         );
-      } catch (e) {
+      } on Exception catch (e) {
         logger.e('いいね通知の送信に失敗しました: $e');
         // 通知の送信に失敗してもいいね処理は続行
       }

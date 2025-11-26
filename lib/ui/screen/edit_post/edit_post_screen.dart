@@ -161,8 +161,9 @@ class EditPostScreen extends HookConsumerWidget {
                                           onTap: () {
                                             ref
                                                 .read(
-                                                    editPostViewModelProvider()
-                                                        .notifier)
+                                                  editPostViewModelProvider()
+                                                      .notifier,
+                                                )
                                                 .removeExistingImage(imagePath);
                                           },
                                           child: Container(
@@ -228,8 +229,9 @@ class EditPostScreen extends HookConsumerWidget {
                                           onTap: () {
                                             ref
                                                 .read(
-                                                    editPostViewModelProvider()
-                                                        .notifier)
+                                                  editPostViewModelProvider()
+                                                      .notifier,
+                                                )
                                                 .removeImage(imagePath);
                                           },
                                           child: Container(
@@ -265,14 +267,16 @@ class EditPostScreen extends HookConsumerWidget {
                                     camera: () async {
                                       await ref
                                           .read(
-                                            editPostViewModelProvider().notifier,
+                                            editPostViewModelProvider()
+                                                .notifier,
                                           )
                                           .camera();
                                     },
                                     album: () async {
                                       await ref
                                           .read(
-                                            editPostViewModelProvider().notifier,
+                                            editPostViewModelProvider()
+                                                .notifier,
                                           )
                                           .album();
                                     },
@@ -410,7 +414,7 @@ class EditPostScreen extends HookConsumerWidget {
                       ),
                       trailing: Switch(
                         value: state.isAnonymous,
-                        activeColor: Colors.blue[600],
+                        activeThumbColor: Colors.blue[600],
                         activeTrackColor: Colors.blue[100],
                         inactiveTrackColor: Colors.grey[300],
                         inactiveThumbColor: Colors.white,
