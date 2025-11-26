@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/users.dart';
-import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart' as detail_repo;
+import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart'
+    as detail_repo;
 import 'package:food_gram_app/router/router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -179,12 +180,28 @@ class FirebaseMessagingService {
   /// FCMトークンを取得
   Future<String?> getFCMToken() async {
     try {
+      // iOSの場合、APNsトークンの登録を確実にする
+      if (Platform.isIOS) {
+        // APNsトークンを取得（これによりFCMトークンも確実に取得できる）
+        await _firebaseMessaging.requestPermission(
+          alert: true,
+          badge: true,
+          sound: true,
+          provisional: false,
+        );
+
+        // APNsトークンの登録を待つ
+        await Future<void>.delayed(const Duration(milliseconds: 500));
+      }
+
       _fcmToken = await _firebaseMessaging.getToken();
       _logger.i('FCMトークンを取得しました: $_fcmToken');
 
       // Supabaseにトークンを保存
       if (_fcmToken != null) {
         await _saveFCMTokenToSupabase(_fcmToken!);
+      } else {
+        _logger.w('FCMトークンがnullです。APNsの設定を確認してください。');
       }
 
       return _fcmToken;
@@ -205,13 +222,49 @@ class FirebaseMessagingService {
         return;
       }
 
-      await supabase.from('user_fcm_tokens').upsert({
-        'user_id': currentUser.id,
-        'fcm_token': token,
-        'updated_at': DateTime.now().toIso8601String(),
-      }, onConflict: 'fcm_token');
+      _logger.i(
+        'FCMトークンをSupabaseに保存します: '
+        'ユーザーID=${currentUser.id}, '
+        'トークン=${token.substring(0, 20)}...',
+      );
 
-      _logger.i('FCMトークンをSupabaseに保存しました');
+      // upsertを使用してトークンを保存（user_idとfcm_tokenの組み合わせでユニーク）
+      // データベースのスキーマに応じてonConflictを調整する必要がある
+      try {
+        await supabase.from('user_fcm_tokens').upsert({
+          'user_id': currentUser.id,
+          'fcm_token': token,
+          'updated_at': DateTime.now().toIso8601String(),
+        }, onConflict: 'user_id,fcm_token');
+        _logger.i('FCMトークンをSupabaseに保存しました（upsert成功）');
+      } catch (e) {
+        // onConflictがサポートされていない場合、手動でチェック
+        _logger.w('upsertに失敗しました。手動でチェックします: $e');
+
+        final existingTokens = await supabase
+            .from('user_fcm_tokens')
+            .select()
+            .eq('user_id', currentUser.id)
+            .eq('fcm_token', token);
+
+        if (existingTokens.isEmpty || (existingTokens as List).isEmpty) {
+          await supabase.from('user_fcm_tokens').insert({
+            'user_id': currentUser.id,
+            'fcm_token': token,
+            'updated_at': DateTime.now().toIso8601String(),
+          });
+          _logger.i('FCMトークンをSupabaseに新規保存しました');
+        } else {
+          await supabase
+              .from('user_fcm_tokens')
+              .update({
+                'updated_at': DateTime.now().toIso8601String(),
+              })
+              .eq('user_id', currentUser.id)
+              .eq('fcm_token', token);
+          _logger.i('FCMトークンをSupabaseで更新しました');
+        }
+      }
     } on Exception catch (e) {
       _logger.e('FCMトークンのSupabase保存に失敗しました: $e');
       // エラーが発生してもアプリの動作は続行
@@ -253,42 +306,76 @@ class FirebaseMessagingService {
     try {
       final supabase = Supabase.instance.client;
 
+      final requestBody = {
+        'type': 'heart',
+        'postOwnerId': postOwnerId,
+        'postId': postId,
+        'likerName': likerName,
+      };
+
+      _logger.i(
+        'いいね通知の送信を開始: '
+        '投稿者ID=$postOwnerId, 投稿ID=$postId, いいねした人=$likerName, '
+        'リクエストボディ=$requestBody',
+      );
+
       // Supabase Functionsを呼び出して通知を送信
       final res = await supabase.functions.invoke(
         'FirebaseMessaging',
-        body: {
-          'type': 'heart',
-          'postOwnerId': postOwnerId,
-          'postId': postId,
-          'likerName': likerName,
-        },
+        body: requestBody,
+      );
+
+      _logger.i(
+        'Supabase Functions呼び出し完了: '
+        'ステータスコード=${res.status}, '
+        'レスポンスデータ=${res.data}',
       );
 
       final data = res.data;
-      
+
       // エラーレスポンスのチェック
-      if (data is Map<String, dynamic> && data.containsKey('error')) {
-        final errorMessage = data['error'] as String? ?? 'Unknown error';
-        final errorDetails = data['details'] as String?;
-        final errorHint = data['hint'] as String?;
-        final errorCode = data['code'] as String?;
-        
-        _logger.e(
-          'いいね通知の送信に失敗しました: '
-          'エラー=$errorMessage, '
-          '詳細=$errorDetails, '
-          'ヒント=$errorHint, '
-          'コード=$errorCode',
-        );
+      if (data is Map<String, dynamic>) {
+        if (data.containsKey('error')) {
+          final errorMessage = data['error'] as String? ?? 'Unknown error';
+          final errorDetails = data['details'] as String?;
+          final errorHint = data['hint'] as String?;
+          final errorCode = data['code'] as String?;
+
+          _logger.e(
+            'いいね通知の送信に失敗しました: '
+            'エラー=$errorMessage, '
+            '詳細=$errorDetails, '
+            'ヒント=$errorHint, '
+            'コード=$errorCode, '
+            'ステータスコード=${res.status}',
+          );
+        } else if (data.containsKey('success') || data.containsKey('message')) {
+          _logger.i(
+            'いいね通知の送信が成功しました: '
+            'レスポンス=$data, '
+            'ステータスコード=${res.status}',
+          );
+        } else {
+          _logger.w(
+            'いいね通知の送信レスポンスが不明な形式です: '
+            'レスポンス=$data, '
+            'ステータスコード=${res.status}',
+          );
+        }
       } else {
         _logger.i(
           'いいね通知の送信リクエストを送信しました: '
           '投稿者ID=$postOwnerId, 投稿ID=$postId, いいねした人=$likerName, '
-          'レスポンス=$data',
+          'レスポンス=$data, '
+          'ステータスコード=${res.status}',
         );
       }
-    } on Exception catch (e) {
-      _logger.e('いいね通知の送信に失敗しました: $e');
+    } catch (e, stackTrace) {
+      _logger.e(
+        'いいね通知の送信に失敗しました: $e',
+        error: e,
+        stackTrace: stackTrace,
+      );
       // エラーが発生してもアプリの動作は続行
     }
   }
@@ -351,7 +438,8 @@ class FirebaseMessagingService {
 
     try {
       // 投稿データを取得
-      final repository = _ref!.read(detail_repo.detailPostRepositoryProvider.notifier);
+      final repository =
+          _ref!.read(detail_repo.detailPostRepositoryProvider.notifier);
       final postResult = await repository.getPost(postId);
 
       await postResult.when(
@@ -363,7 +451,7 @@ class FirebaseMessagingService {
 
           // GoRouterで遷移
           final router = _ref!.read(routerProvider);
-          
+
           // 次のフレームでナビゲーションを実行（アプリが完全に起動してから）
           WidgetsBinding.instance.addPostFrameCallback((_) {
             router.pushNamed(

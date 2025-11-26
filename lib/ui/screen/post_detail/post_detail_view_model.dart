@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/post_deail_list_mode.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/notification/firebase_messaging_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
@@ -95,6 +96,28 @@ class PostDetailViewModel extends _$PostDetailViewModel {
       );
       // いいねカウントを増加
       await preference.incrementHeartCount();
+
+      // 通知を送信（投稿者に通知）
+      try {
+        // 現在のユーザー名を取得
+        final currentUserData = await getUserData(currentUser);
+        final likerName = currentUserData['name'] as String? ?? '誰か';
+
+        // 通知を送信
+        final firebaseMessagingService = FirebaseMessagingService();
+        await firebaseMessagingService.sendHeartNotification(
+          postOwnerId: userId,
+          postId: posts.id,
+          likerName: likerName,
+        );
+        logger.i(
+          'いいね通知を送信しました: '
+          '投稿者ID=$userId, 投稿ID=${posts.id}, いいねした人=$likerName',
+        );
+      } catch (e) {
+        logger.e('いいね通知の送信に失敗しました: $e');
+        // 通知の送信に失敗してもいいね処理は続行
+      }
     }
 
     await preference.setStringList(
