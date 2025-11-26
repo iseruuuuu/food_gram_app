@@ -123,9 +123,7 @@ class MapScreen extends HookConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        // サブスクリプションバナー
                         if (!isSubscribe) const AppPremiumMembershipCard(),
-                        // FloatingButton
                         Padding(
                           padding: const EdgeInsets.only(right: 10),
                           child: Column(
