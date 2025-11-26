@@ -54,10 +54,7 @@ import UserNotifications
                             didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                             fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
     // Firebase Messagingに通知を渡す
-    if Messaging.messaging().appDidReceiveMessage(userInfo) {
-      completionHandler(.newData)
-    } else {
-      completionHandler(.noData)
-    }
+    Messaging.messaging().appDidReceiveMessage(userInfo)
+    completionHandler(.newData)
   }
 }

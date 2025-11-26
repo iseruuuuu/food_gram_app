@@ -116,99 +116,109 @@ class MapScreen extends HookConsumerWidget {
                     visible: isTapPin.value,
                     child: AppMapRestaurantModalSheet(post: post.value),
                   ),
-                  if (!isSubscribe)
-                    const Positioned(
-                      top: 15,
-                      left: 0,
-                      right: 0,
-                      child: AppPremiumMembershipCard(),
-                    ),
                   Positioned(
-                    top: isSubscribe ? 30 : 80,
-                    right: 10,
+                    top: _calculateTopPosition(context),
+                    left: 0,
+                    right: 0,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
+                        if (!isSubscribe) const AppPremiumMembershipCard(),
                         Padding(
-                          padding: const EdgeInsets.only(left: 8, bottom: 8),
-                          child: SizedBox(
-                            width: 60,
-                            height: 60,
-                            child: Theme(
-                              data: Theme.of(context)
-                                  .copyWith(highlightColor: Colors.white),
-                              child: FloatingActionButton(
-                                heroTag: 'style_toggle',
-                                shape: const RoundedRectangleBorder(
-                                  side: BorderSide(color: Colors.white),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                ),
-                                foregroundColor: Colors.white,
-                                backgroundColor: Colors.white,
-                                focusColor: Colors.white,
-                                splashColor: Colors.white,
-                                hoverColor: Colors.white,
-                                elevation: 10,
-                                onPressed: () {
-                                  if (!isSubscribe) {
-                                    context
-                                        .pushNamed(
-                                      RouterPath.paywallPage,
-                                    )
-                                        .then((_) {
-                                      ref.invalidate(
-                                        isSubscribeProvider,
-                                      );
-                                    });
-                                  } else {
-                                    isEarthStyle.value = !isEarthStyle.value;
-                                    // スタイル切り替え時にピンを再表示
-                                    controller.handleStyleChange();
-                                  }
-                                },
-                                child: Icon(
-                                  isEarthStyle.value
-                                      ? CupertinoIcons.globe
-                                      : CupertinoIcons.map,
-                                  color: const Color(0xFF1A73E8),
-                                  size: 26,
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 8, bottom: 8),
+                                child: SizedBox(
+                                  width: 60,
+                                  height: 60,
+                                  child: Theme(
+                                    data: Theme.of(context)
+                                        .copyWith(highlightColor: Colors.white),
+                                    child: FloatingActionButton(
+                                      heroTag: 'style_toggle',
+                                      shape: const RoundedRectangleBorder(
+                                        side: BorderSide(color: Colors.white),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: Colors.white,
+                                      focusColor: Colors.white,
+                                      splashColor: Colors.white,
+                                      hoverColor: Colors.white,
+                                      elevation: 10,
+                                      onPressed: () {
+                                        if (!isSubscribe) {
+                                          context
+                                              .pushNamed(
+                                            RouterPath.paywallPage,
+                                          )
+                                              .then((_) {
+                                            ref.invalidate(
+                                              isSubscribeProvider,
+                                            );
+                                          });
+                                        } else {
+                                          isEarthStyle.value =
+                                              !isEarthStyle.value;
+                                          // スタイル切り替え時にピンを再表示
+                                          controller.handleStyleChange();
+                                        }
+                                      },
+                                      child: Icon(
+                                        isEarthStyle.value
+                                            ? CupertinoIcons.globe
+                                            : CupertinoIcons.map,
+                                        color: const Color(0xFF1A73E8),
+                                        size: 26,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                              if (isLocationEnabled)
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 2, left: 8),
+                                  child: SizedBox(
+                                    width: 60,
+                                    height: 60,
+                                    child: Theme(
+                                      data: Theme.of(context).copyWith(
+                                        highlightColor: Colors.white,
+                                      ),
+                                      child: FloatingActionButton(
+                                        heroTag: null,
+                                        shape: const RoundedRectangleBorder(
+                                          side: BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20),
+                                          ),
+                                        ),
+                                        foregroundColor: Colors.white,
+                                        backgroundColor: Colors.white,
+                                        focusColor: Colors.white,
+                                        splashColor: Colors.white,
+                                        hoverColor: Colors.white,
+                                        elevation: 10,
+                                        onPressed:
+                                            controller.moveToCurrentLocation,
+                                        child: const Icon(
+                                          CupertinoIcons.location_fill,
+                                          color: Color(0xFF1A73E8),
+                                          size: 26,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
-                        if (isLocationEnabled)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2, left: 8),
-                            child: SizedBox(
-                              width: 60,
-                              height: 60,
-                              child: Theme(
-                                data: Theme.of(context)
-                                    .copyWith(highlightColor: Colors.white),
-                                child: FloatingActionButton(
-                                  heroTag: null,
-                                  shape: const RoundedRectangleBorder(
-                                    side: BorderSide(color: Colors.white),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
-                                  ),
-                                  foregroundColor: Colors.white,
-                                  backgroundColor: Colors.white,
-                                  focusColor: Colors.white,
-                                  splashColor: Colors.white,
-                                  hoverColor: Colors.white,
-                                  elevation: 10,
-                                  onPressed: controller.moveToCurrentLocation,
-                                  child: const Icon(
-                                    CupertinoIcons.location_fill,
-                                    color: Color(0xFF1A73E8),
-                                    size: 26,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
                       ],
                     ),
                   ),
@@ -234,6 +244,17 @@ double _calculateIconSize(BuildContext context) {
     return 0.6;
   } else {
     return 0.8;
+  }
+}
+
+double _calculateTopPosition(BuildContext context) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  if (screenWidth <= 375) {
+    return 25;
+  } else if (screenWidth < 720) {
+    return 50;
+  } else {
+    return 30;
   }
 }
 
