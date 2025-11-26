@@ -6,7 +6,7 @@ version: 1.24.0+56
 
 environment:
   sdk: '>=3.1.5 <4.0.0'
-  flutter: ^3.27.1
+  flutter: ^3.38.3
 dependencies:
   app_tracking_transparency: ^2.0.6
   auth_buttons: ^3.0.0
@@ -44,7 +44,7 @@ dependencies:
   image_cropper: ^8.1.0
   image_picker: ^1.0.4
   in_app_review: ^2.0.8
-  intl: ^0.19.0
+  intl: ^0.20.2
   json_annotation: ^4.9.0
   loading_animation_widget: ^1.2.0+4
   logger: ^2.0.2+1
@@ -63,13 +63,13 @@ dependencies:
   share_plus: ^7.2.1
   shared_preferences: ^2.2.2
   sign_in_with_apple: ^5.0.0
-  skeletonizer: ^1.4.2
+  skeletonizer: ^2.1.0
   supabase_flutter: ^2.3.3
   timezone: ^0.10.1
   url_launcher: ^6.2.1
 
 dev_dependencies:
-  analyzer: ^6.7.0
+  analyzer: ^7.6.0
   build_runner: ^2.4.13
   custom_lint: ^0.7.0
   envied_generator: ^1.0.0
