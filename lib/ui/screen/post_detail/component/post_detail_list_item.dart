@@ -265,93 +265,89 @@ class PostDetailListItem extends HookConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Gap(8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18),
-                child: Row(
-                  children: [
-                    const Gap(4),
-                    IconButton(
-                      onPressed: () async {
-                        if (currentUser == null ||
-                            currentUser == users.userId) {
-                          return;
-                        }
-                        await ref
-                            .read(postDetailViewModelProvider().notifier)
-                            .handleHeart(
-                              posts: posts,
-                              currentUser: currentUser,
-                              userId: users.userId,
-                              onHeartLimitReached: onHeartLimitReached,
-                            );
-                        if (isHearted.value) {
-                          isHearted.value = false;
-                          heartCount.value =
-                              heartCount.value > 0 ? heartCount.value - 1 : 0;
-                        } else {
-                          isHearted.value = true;
-                          heartCount.value = heartCount.value + 1;
-                        }
-                      },
-                      icon: Icon(
-                        isHearted.value
-                            ? CupertinoIcons.heart_fill
-                            : CupertinoIcons.heart,
-                        color: isHearted.value ? Colors.red : Colors.black,
-                        size: 36,
-                      ),
+              Row(
+                children: [
+                  const Gap(4),
+                  IconButton(
+                    onPressed: () async {
+                      if (currentUser == null || currentUser == users.userId) {
+                        return;
+                      }
+                      await ref
+                          .read(postDetailViewModelProvider().notifier)
+                          .handleHeart(
+                            posts: posts,
+                            currentUser: currentUser,
+                            userId: users.userId,
+                            onHeartLimitReached: onHeartLimitReached,
+                          );
+                      if (isHearted.value) {
+                        isHearted.value = false;
+                        heartCount.value =
+                            heartCount.value > 0 ? heartCount.value - 1 : 0;
+                      } else {
+                        isHearted.value = true;
+                        heartCount.value = heartCount.value + 1;
+                      }
+                    },
+                    icon: Icon(
+                      isHearted.value
+                          ? CupertinoIcons.heart_fill
+                          : CupertinoIcons.heart,
+                      color: isHearted.value ? Colors.red : Colors.black,
+                      size: 36,
                     ),
-                    const Gap(6),
-                    GestureDetector(
-                      onTap: () {
-                        showGeneralDialog(
-                          context: context,
-                          pageBuilder: (_, __, ___) {
-                            return AppShareDialog(
-                              posts: posts,
-                              users: users,
-                            );
-                          },
-                        );
-                      },
-                      child: const Icon(Icons.send, size: 36),
+                  ),
+                  const Gap(6),
+                  GestureDetector(
+                    onTap: () {
+                      showGeneralDialog(
+                        context: context,
+                        pageBuilder: (_, __, ___) {
+                          return AppShareDialog(
+                            posts: posts,
+                            users: users,
+                          );
+                        },
+                      );
+                    },
+                    child: const Icon(Icons.send, size: 36),
+                  ),
+                  const Spacer(),
+                  Text(
+                    '${heartCount.value} ${l10n.likeButton}',
+                    style: DetailPostStyle.like(),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      ref.read(postDetailViewModelProvider().notifier).store(
+                            postId: posts.id,
+                            openSnackBar: () {
+                              final l10n = L10n.of(context);
+                              final snackBar = SnackBar(
+                                content: Column(
+                                  children: [
+                                    Text(l10n.postSaved),
+                                    Text(l10n.postSavedMessage),
+                                  ],
+                                ),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            },
+                          );
+                      final now = isStored.value ?? false;
+                      isStored.value = !now;
+                    },
+                    icon: Icon(
+                      (isStored.value ?? false)
+                          ? Icons.bookmark
+                          : Icons.bookmark_border,
                     ),
-                    const Spacer(),
-                    Text(
-                      '${heartCount.value} ${l10n.likeButton}',
-                      style: DetailPostStyle.like(),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        ref.read(postDetailViewModelProvider().notifier).store(
-                              postId: posts.id,
-                              openSnackBar: () {
-                                final l10n = L10n.of(context);
-                                final snackBar = SnackBar(
-                                  content: Column(
-                                    children: [
-                                      Text(l10n.postSaved),
-                                      Text(l10n.postSavedMessage),
-                                    ],
-                                  ),
-                                );
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
-                              },
-                            );
-                        final now = isStored.value ?? false;
-                        isStored.value = !now;
-                      },
-                      icon: Icon(
-                        (isStored.value ?? false)
-                            ? Icons.bookmark
-                            : Icons.bookmark_border,
-                      ),
-                      iconSize: 36,
-                      color: Colors.black,
-                    ),
-                  ],
-                ),
+                    iconSize: 36,
+                    color: Colors.black,
+                  ),
+                ],
               ),
               const Gap(6),
               Padding(
