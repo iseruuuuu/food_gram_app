@@ -192,6 +192,23 @@ class MapViewModel extends _$MapViewModel {
     );
   }
 
+  /// 方位をリセット（北を上にする）
+  Future<void> resetBearing() async {
+    if (state.mapController == null) {
+      return;
+    }
+    final currentPosition = state.mapController!.cameraPosition;
+    await state.mapController!.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: currentPosition?.target ?? const LatLng(0, 0),
+          zoom: currentPosition?.zoom ?? 0,
+          tilt: currentPosition?.tilt ?? 0,
+        ),
+      ),
+    );
+  }
+
   /// スタイル切り替え時の処理
   void handleStyleChange() {
     if (state.mapController == null) {

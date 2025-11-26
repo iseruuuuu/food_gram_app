@@ -174,7 +174,7 @@ class MapScreen extends HookConsumerWidget {
                                             ? CupertinoIcons.globe
                                             : CupertinoIcons.map,
                                         color: const Color(0xFF1A73E8),
-                                        size: 26,
+                                        size: 28,
                                       ),
                                     ),
                                   ),
@@ -208,14 +208,49 @@ class MapScreen extends HookConsumerWidget {
                                         onPressed:
                                             controller.moveToCurrentLocation,
                                         child: const Icon(
-                                          CupertinoIcons.location_fill,
+                                          CupertinoIcons.location,
                                           color: Color(0xFF1A73E8),
-                                          size: 26,
+                                          size: 28,
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
+                              // 方位調整ボタン
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 12, left: 8),
+                                child: SizedBox(
+                                  width: 60,
+                                  height: 60,
+                                  child: Theme(
+                                    data: Theme.of(context).copyWith(
+                                      highlightColor: Colors.white,
+                                    ),
+                                    child: FloatingActionButton(
+                                      heroTag: 'compass',
+                                      shape: const RoundedRectangleBorder(
+                                        side: BorderSide(color: Colors.white),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: Colors.white,
+                                      focusColor: Colors.white,
+                                      splashColor: Colors.white,
+                                      hoverColor: Colors.white,
+                                      elevation: 10,
+                                      onPressed: controller.resetBearing,
+                                      child: const Icon(
+                                        CupertinoIcons.compass,
+                                        color: Color.fromRGBO(26, 115, 232, 1),
+                                        size: 30,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
