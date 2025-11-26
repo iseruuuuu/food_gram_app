@@ -117,14 +117,15 @@ class MapScreen extends HookConsumerWidget {
                     child: AppMapRestaurantModalSheet(post: post.value),
                   ),
                   if (!isSubscribe)
-                    const Positioned(
-                      top: 15,
+                    Positioned(
+                      top: _calculateTopPosition(context),
                       left: 0,
                       right: 0,
-                      child: AppPremiumMembershipCard(),
+                      child: const AppPremiumMembershipCard(),
                     ),
                   Positioned(
-                    top: isSubscribe ? 30 : 80,
+                    top:
+                        isSubscribe ? 30 : _calculateButtonTopPosition(context),
                     right: 10,
                     child: Column(
                       children: [
@@ -235,6 +236,22 @@ double _calculateIconSize(BuildContext context) {
   } else {
     return 0.8;
   }
+}
+
+double _calculateTopPosition(BuildContext context) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  if (screenWidth <= 375) {
+    return 15;
+  } else if (screenWidth < 720) {
+    return 50;
+  } else {
+    return 30;
+  }
+}
+
+double _calculateButtonTopPosition(BuildContext context) {
+  // サブスクリプションバナーの位置 + バナーの高さ（約70px）+ 余白（10px）
+  return _calculateTopPosition(context) + 80;
 }
 
 String _localizedStyleAsset(BuildContext context, bool isEarthStyle) {
