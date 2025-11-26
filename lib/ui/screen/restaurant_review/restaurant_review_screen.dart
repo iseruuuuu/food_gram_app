@@ -108,7 +108,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                   color: Colors.white,
                                   child: CachedNetworkImage(
                                     imageUrl: getImageUrl(
-                                      data.first.posts.foodImage,
+                                      data.first.posts.firstFoodImage,
                                     ),
                                     fit: BoxFit.cover,
                                   ),
@@ -118,8 +118,9 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: CachedNetworkImage(
-                                imageUrl:
-                                    getImageUrl(data.first.posts.foodImage),
+                                imageUrl: getImageUrl(
+                                  data.first.posts.firstFoodImage,
+                                ),
                                 fit: BoxFit.cover,
                                 width: double.infinity,
                                 height: double.infinity,
@@ -132,6 +133,24 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                               ),
                             ),
                           ),
+                          // 複数画像がある場合のアイコン
+                          if (data.first.posts.foodImageList.length > 1)
+                            Positioned(
+                              top: 12,
+                              right: 12,
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withValues(alpha: 0.6),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.collections,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
                           Positioned(
                             top: 12,
                             left: 12,
@@ -319,27 +338,54 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                   children: [
                                     Expanded(
                                       flex: 3,
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(12),
-                                          topRight: Radius.circular(12),
-                                        ),
-                                        child: CachedNetworkImage(
-                                          imageUrl: getImageUrl(
-                                            model.posts.foodImage,
-                                          ),
-                                          fit: BoxFit.cover,
-                                          width: double.infinity,
-                                          placeholder: (context, url) =>
-                                              Container(
-                                            color: Colors.grey[300],
-                                            child: const Center(
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 1,
+                                      child: Stack(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topLeft: Radius.circular(12),
+                                              topRight: Radius.circular(12),
+                                            ),
+                                            child: CachedNetworkImage(
+                                              imageUrl: getImageUrl(
+                                                model.posts.firstFoodImage,
+                                              ),
+                                              fit: BoxFit.cover,
+                                              width: double.infinity,
+                                              placeholder: (context, url) =>
+                                                  Container(
+                                                color: Colors.grey[300],
+                                                child: const Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    strokeWidth: 1,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
+                                          // 複数画像がある場合のアイコン
+                                          if (model.posts.foodImageList.length >
+                                              1)
+                                            Positioned(
+                                              top: 4,
+                                              right: 4,
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(4),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black
+                                                      .withValues(alpha: 0.6),
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: const Icon(
+                                                  Icons.collections,
+                                                  color: Colors.white,
+                                                  size: 16,
+                                                ),
+                                              ),
+                                            ),
+                                        ],
                                       ),
                                     ),
                                     Padding(

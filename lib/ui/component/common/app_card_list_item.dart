@@ -18,12 +18,15 @@ class AppCardListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // 複数画像がある場合は最初の画像のみ表示
+    final firstImage = post.firstFoodImage;
     final itemImageUrl = ref
         .read(supabaseProvider)
         .storage
         .from('food')
-        .getPublicUrl(post.foodImage);
+        .getPublicUrl(firstImage);
     final restaurantName = post.restaurant;
+    final hasMultipleImages = post.foodImageList.length > 1;
     return GestureDetector(
       onTap: onTap,
       child: Stack(
@@ -43,6 +46,24 @@ class AppCardListItem extends ConsumerWidget {
               ),
             ),
           ),
+          // 複数画像がある場合のアイコン
+          if (hasMultipleImages)
+            Positioned(
+              top: 4,
+              right: 4,
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.6),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.collections,
+                  color: Colors.white,
+                  size: 16,
+                ),
+              ),
+            ),
           Positioned(
             bottom: 10,
             right: 10,
