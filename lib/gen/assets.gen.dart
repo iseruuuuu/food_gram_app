@@ -44,16 +44,16 @@ class $AssetsGifGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-        empty,
-        error,
-        login1,
-        login2,
-        login3,
-        login4,
-        myProfile,
-        profileDetail,
-        tutorial1
-      ];
+    empty,
+    error,
+    login1,
+    login2,
+    login3,
+    login4,
+    myProfile,
+    profileDetail,
+    tutorial1,
+  ];
 }
 
 class $AssetsIconGen {
@@ -81,8 +81,15 @@ class $AssetsIconGen {
   AssetGenImage get icon6 => const AssetGenImage('assets/icon/icon6.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [icon0, icon1, icon2, icon3, icon4, icon5, icon6];
+  List<AssetGenImage> get values => [
+    icon0,
+    icon1,
+    icon2,
+    icon3,
+    icon4,
+    icon5,
+    icon6,
+  ];
 }
 
 class $AssetsImageGen {
@@ -157,26 +164,26 @@ class $AssetsImageGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-        appIcon,
-        authImage,
-        empty,
-        error,
-        food,
-        foodgramer,
-        frame,
-        loading,
-        logoGoogle,
-        paywall2,
-        paywallBackground,
-        pin,
-        pinIcon,
-        pinRamen,
-        present,
-        profileHeader,
-        profileIcon,
-        tutorial1,
-        tutorial2
-      ];
+    appIcon,
+    authImage,
+    empty,
+    error,
+    food,
+    foodgramer,
+    frame,
+    loading,
+    logoGoogle,
+    paywall2,
+    paywallBackground,
+    pin,
+    pinIcon,
+    pinRamen,
+    present,
+    profileHeader,
+    profileIcon,
+    tutorial1,
+    tutorial2,
+  ];
 }
 
 class $AssetsLottieGen {
@@ -205,14 +212,14 @@ class $AssetsLottieGen {
 
   /// List of all assets
   List<String> get values => [
-        heart,
-        loading,
-        notification,
-        permission,
-        tutorial1,
-        tutorial2,
-        tutorial3
-      ];
+    heart,
+    loading,
+    notification,
+    permission,
+    tutorial1,
+    tutorial2,
+    tutorial3,
+  ];
 }
 
 class $AssetsMapGen {
@@ -276,8 +283,13 @@ class $AssetsTrophyGen {
       const AssetGenImage('assets/trophy/trophy_silver.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [trophyBronze, trophyDiamond, trophyEmerald, trophyGold, trophySilver];
+  List<AssetGenImage> get values => [
+    trophyBronze,
+    trophyDiamond,
+    trophyEmerald,
+    trophyGold,
+    trophySilver,
+  ];
 }
 
 class Assets {
@@ -293,11 +305,7 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  });
+  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
 
   final String _assetName;
 
@@ -357,15 +365,8 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({
-    AssetBundle? bundle,
-    String? package,
-  }) {
-    return AssetImage(
-      _assetName,
-      bundle: bundle,
-      package: package,
-    );
+  ImageProvider provider({AssetBundle? bundle, String? package}) {
+    return AssetImage(_assetName, bundle: bundle, package: package);
   }
 
   String get path => _assetName;
