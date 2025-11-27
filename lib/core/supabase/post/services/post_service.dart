@@ -34,7 +34,7 @@ class PostService extends _$PostService {
   }) async {
     try {
       // 複数画像をアップロード
-      final List<String> imagePaths = [];
+      final imagePaths = <String>[];
       for (final uploadImage in uploadImages) {
         final fileName = uploadImage.split('/').last;
         final imagePath = '/$_currentUserId/$fileName';
@@ -108,7 +108,7 @@ class PostService extends _$PostService {
       };
       
       // 新しい画像をアップロード
-      final List<String> newUploadedPaths = [];
+      final newUploadedPaths = <String>[];
       for (final imagePath in newImagePaths) {
         final fileName = imagePath.split('/').last;
         final storagePath = '/$_currentUserId/$fileName';

@@ -138,8 +138,10 @@ class PostScreen extends HookConsumerWidget {
                                         child: GestureDetector(
                                           onTap: () {
                                             ref
-                                                .read(postViewModelProvider()
-                                                    .notifier)
+                                                .read(
+                                                  postViewModelProvider()
+                                                      .notifier,
+                                                )
                                                 .removeImage(imagePath);
                                           },
                                           child: Container(
@@ -332,7 +334,7 @@ class PostScreen extends HookConsumerWidget {
                       ),
                       trailing: Switch(
                         value: state.isAnonymous,
-                        activeColor: Colors.blue[600],
+                        activeThumbColor: Colors.blue[600],
                         activeTrackColor: Colors.blue[100],
                         inactiveTrackColor: Colors.grey[300],
                         inactiveThumbColor: Colors.white,

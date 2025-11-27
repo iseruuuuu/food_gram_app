@@ -74,9 +74,13 @@ class RestaurantSearchTab extends HookConsumerWidget {
                       itemCount: posts.length,
                       itemBuilder: (context, index) {
                         final post = posts[index];
+                        // 複数画像がある場合は最初の画像のみ表示
+                        final firstImage = post.firstFoodImage;
                         final imageUrl = supabase.storage
                             .from('food')
-                            .getPublicUrl(post.foodImage);
+                            .getPublicUrl(firstImage);
+                        final hasMultipleImages =
+                            post.foodImageList.length > 1;
                         return GestureDetector(
                           onTap: () {
                             context.pushNamed(
@@ -88,14 +92,37 @@ class RestaurantSearchTab extends HookConsumerWidget {
                             padding: const EdgeInsets.symmetric(
                               horizontal: 4,
                             ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: CachedNetworkImage(
-                                imageUrl: imageUrl,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
+                            child: Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CachedNetworkImage(
+                                    imageUrl: imageUrl,
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                // 複数画像がある場合のアイコン
+                                if (hasMultipleImages)
+                                  Positioned(
+                                    top: 4,
+                                    right: 4,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black
+                                            .withValues(alpha: 0.6),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: const Icon(
+                                        Icons.collections,
+                                        color: Colors.white,
+                                        size: 16,
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
                           ),
                         );
@@ -156,9 +183,13 @@ class RestaurantSearchTab extends HookConsumerWidget {
                             itemCount: posts.length >= 10 ? 10 : posts.length,
                             itemBuilder: (context, index) {
                               final post = posts[index];
+                              // 複数画像がある場合は最初の画像のみ表示
+                              final firstImage = post.firstFoodImage;
                               final imageUrl = supabase.storage
                                   .from('food')
-                                  .getPublicUrl(post.foodImage);
+                                  .getPublicUrl(firstImage);
+                              final hasMultipleImages =
+                                  post.foodImageList.length > 1;
                               return GestureDetector(
                                 onTap: () {
                                   context.pushNamed(
@@ -169,14 +200,37 @@ class RestaurantSearchTab extends HookConsumerWidget {
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 4),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: CachedNetworkImage(
-                                      imageUrl: imageUrl,
-                                      width: 100,
-                                      height: 100,
-                                      fit: BoxFit.cover,
-                                    ),
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: CachedNetworkImage(
+                                          imageUrl: imageUrl,
+                                          width: 100,
+                                          height: 100,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      // 複数画像がある場合のアイコン
+                                      if (hasMultipleImages)
+                                        Positioned(
+                                          top: 4,
+                                          right: 4,
+                                          child: Container(
+                                            padding: const EdgeInsets.all(4),
+                                            decoration: BoxDecoration(
+                                              color: Colors.black
+                                                  .withValues(alpha: 0.6),
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: const Icon(
+                                              Icons.collections,
+                                              color: Colors.white,
+                                              size: 16,
+                                            ),
+                                          ),
+                                        ),
+                                    ],
                                   ),
                                 ),
                               );

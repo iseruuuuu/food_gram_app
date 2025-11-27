@@ -204,16 +204,16 @@ class EditPostViewModel extends _$EditPostViewModel {
       if (images.isEmpty) {
         return false;
       }
-      
+
       // 選択した画像を順番にトリミング
-      final List<File> croppedImages = [];
+      final croppedImages = <File>[];
       for (final image in images) {
         final cropImage = await _cropImage(image);
         if (cropImage != null) {
           croppedImages.add(cropImage);
         }
       }
-      
+
       // すべてのトリミングが完了したら、すべての画像を追加
       if (croppedImages.isNotEmpty) {
         for (final cropImage in croppedImages) {
@@ -242,12 +242,14 @@ class EditPostViewModel extends _$EditPostViewModel {
 
   void removeImage(String imagePath) {
     _imageBytesMap.remove(imagePath);
-    final updatedImages = state.foodImages.where((path) => path != imagePath).toList();
+    final updatedImages =
+        state.foodImages.where((path) => path != imagePath).toList();
     state = state.copyWith(foodImages: updatedImages);
   }
 
   void removeExistingImage(String imagePath) {
-    final updatedExisting = state.existingImagePaths.where((path) => path != imagePath).toList();
+    final updatedExisting =
+        state.existingImagePaths.where((path) => path != imagePath).toList();
     state = state.copyWith(existingImagePaths: updatedExisting);
   }
 

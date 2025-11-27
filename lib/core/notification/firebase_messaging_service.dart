@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart'
     as detail_repo;
 import 'package:food_gram_app/router/router.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -109,12 +109,7 @@ class FirebaseMessagingService {
     try {
       if (Platform.isIOS) {
         // iOSの場合
-        final settings = await _firebaseMessaging.requestPermission(
-          alert: true,
-          badge: true,
-          sound: true,
-          provisional: false,
-        );
+        final settings = await _firebaseMessaging.requestPermission();
 
         final isAuthorized =
             settings.authorizationStatus == AuthorizationStatus.authorized ||
@@ -183,12 +178,7 @@ class FirebaseMessagingService {
       // iOSの場合、APNsトークンの登録を確実にする
       if (Platform.isIOS) {
         // APNsトークンを取得（これによりFCMトークンも確実に取得できる）
-        await _firebaseMessaging.requestPermission(
-          alert: true,
-          badge: true,
-          sound: true,
-          provisional: false,
-        );
+        await _firebaseMessaging.requestPermission();
 
         // APNsトークンの登録を待つ
         await Future<void>.delayed(const Duration(milliseconds: 500));
@@ -231,13 +221,16 @@ class FirebaseMessagingService {
       // upsertを使用してトークンを保存（user_idとfcm_tokenの組み合わせでユニーク）
       // データベースのスキーマに応じてonConflictを調整する必要がある
       try {
-        await supabase.from('user_fcm_tokens').upsert({
-          'user_id': currentUser.id,
-          'fcm_token': token,
-          'updated_at': DateTime.now().toIso8601String(),
-        }, onConflict: 'user_id,fcm_token');
+        await supabase.from('user_fcm_tokens').upsert(
+          {
+            'user_id': currentUser.id,
+            'fcm_token': token,
+            'updated_at': DateTime.now().toIso8601String(),
+          },
+          onConflict: 'user_id,fcm_token',
+        );
         _logger.i('FCMトークンをSupabaseに保存しました（upsert成功）');
-      } catch (e) {
+      } on Exception catch (e) {
         // onConflictがサポートされていない場合、手動でチェック
         _logger.w('upsertに失敗しました。手動でチェックします: $e');
 
@@ -370,7 +363,7 @@ class FirebaseMessagingService {
           'ステータスコード=${res.status}',
         );
       }
-    } catch (e, stackTrace) {
+    } on Exception catch (e, stackTrace) {
       _logger.e(
         'いいね通知の送信に失敗しました: $e',
         error: e,
@@ -489,7 +482,6 @@ class FirebaseMessagingService {
         importance: Importance.max,
         priority: Priority.high,
         enableLights: true,
-        showWhen: true,
         styleInformation: BigTextStyleInformation(subtitle),
       );
 
@@ -523,7 +515,9 @@ class FirebaseMessagingService {
   Future<void> _showLocalNotification(RemoteMessage message) async {
     try {
       final notification = message.notification;
-      if (notification == null) return;
+      if (notification == null) {
+        return;
+      }
 
       const androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'food_gram_fcm_channel',
@@ -532,7 +526,6 @@ class FirebaseMessagingService {
         importance: Importance.max,
         priority: Priority.high,
         enableLights: true,
-        showWhen: true,
       );
 
       const iOSPlatformChannelSpecifics = DarwinNotificationDetails(
@@ -567,5 +560,5 @@ FirebaseMessagingService firebaseMessagingService(Ref ref) {
 @Riverpod(keepAlive: true)
 Future<String?> fcmToken(Ref ref) async {
   final service = ref.read(firebaseMessagingServiceProvider);
-  return await service.getFCMToken();
+  return service.getFCMToken();
 }

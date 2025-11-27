@@ -123,7 +123,6 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       importance: Importance.max,
       priority: Priority.high,
       enableLights: true,
-      showWhen: true,
     );
 
     final iOSPlatformChannelSpecifics = DarwinNotificationDetails(
@@ -158,7 +157,6 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         importance: Importance.max,
         priority: Priority.high,
         enableLights: true,
-        showWhen: true,
       );
 
       const iOSPlatformChannelSpecifics = DarwinNotificationDetails(
