@@ -256,7 +256,7 @@ final myProfileRouter = GoRoute(
       routes: <RouteBase>[
         GoRoute(
           path: RouterPath.restaurantMap,
-          name: '${RouterPath.restaurantMap}_myProfile',
+          name: RouterPath.restaurantMapMyProfile,
           pageBuilder: (context, state) {
             final restaurant = state.extra! as Restaurant;
             return slideIn(
@@ -537,4 +537,5 @@ final class RouterPath {
   static const String searchDetailPost = 'search_detail_post';
   static const String storedPostDetail = 'stored_post_detail';
   static const String restaurantMap = 'restaurant_map';
+  static const String restaurantMapMyProfile = 'restaurant_map_myProfile';
 }
