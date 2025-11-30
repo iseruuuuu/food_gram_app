@@ -46,6 +46,9 @@ class _RestaurantMapScreenState extends State<RestaurantMapScreen> {
       ),
     );
 
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _isPinAdded = true;
     });
