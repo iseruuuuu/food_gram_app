@@ -178,13 +178,8 @@ class _RestaurantMapScreenState extends State<RestaurantMapScreen> {
                 height: 52,
                 child: ElevatedButton(
                   onPressed: () {
-                    // 2つ戻る: RestaurantMapScreen → RestaurantScreen → PostScreen
-                    if (context.canPop()) {
-                      context.pop();
-                    }
-                    if (context.canPop()) {
-                      context.pop(widget.restaurant);
-                    }
+                    // RestaurantScreenに戻る際にrestaurantを渡す
+                    context.pop(widget.restaurant);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,

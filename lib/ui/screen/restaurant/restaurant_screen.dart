@@ -106,7 +106,7 @@ class RestaurantScreen extends HookConsumerWidget {
                                     lng: value[index].lng,
                                   );
                                   return ListTile(
-                                    onTap: () {
+                                    onTap: () async {
                                       primaryFocus?.unfocus();
                                       // 現在のルートパスに基づいて適切なルート名を決定
                                       final currentPath =
@@ -115,10 +115,16 @@ class RestaurantScreen extends HookConsumerWidget {
                                               .contains(RouterPath.timeLine)
                                           ? RouterPath.restaurantMap
                                           : RouterPath.restaurantMapMyProfile;
-                                      context.pushNamed(
+                                      // pushNamed の結果を待つ
+                                      final result =
+                                          await context.pushNamed<Restaurant>(
                                         routeName,
                                         extra: restaurant,
                                       );
+                                      // restaurantが返ってきたら、さらにPostScreenに戻す
+                                      if (result != null && context.mounted) {
+                                        context.pop(result);
+                                      }
                                     },
                                     trailing: const Icon(
                                       Icons.arrow_forward_ios,
