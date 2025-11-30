@@ -9,6 +9,7 @@ export 'package:food_gram_app/ui/screen/post_detail/post_detail_screen.dart';
 export 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_screen.dart';
 export 'package:food_gram_app/ui/screen/profile/my_profile/stored_post_screen.dart';
 export 'package:food_gram_app/ui/screen/profile/user_profile/user_profile_screen.dart';
+export 'package:food_gram_app/ui/screen/restaurant/restaurant_map_screen.dart';
 export 'package:food_gram_app/ui/screen/restaurant/restaurant_screen.dart';
 export 'package:food_gram_app/ui/screen/restaurant_review/restaurant_review_screen.dart';
 export 'package:food_gram_app/ui/screen/search/search_detail_screen.dart';

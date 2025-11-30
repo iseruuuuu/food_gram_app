@@ -103,6 +103,25 @@ final timeLineRouter = GoRoute(
       pageBuilder: (context, state) {
         return slideIn(const RestaurantScreen());
       },
+      routes: <RouteBase>[
+        GoRoute(
+          path: RouterPath.restaurantMap,
+          name: RouterPath.restaurantMap,
+          pageBuilder: (context, state) {
+            final restaurant = state.extra as Restaurant?;
+            if (restaurant == null) {
+              return slideIn(
+                const Scaffold(
+                  body: Center(child: Text('Error: No restaurant data')),
+                ),
+              );
+            }
+            return slideIn(
+              RestaurantMapScreen(restaurant: restaurant),
+            );
+          },
+        ),
+      ],
     ),
     GoRoute(
       path: '${RouterPath.timeLine}/${RouterPath.timeLineDetail}',
@@ -241,6 +260,18 @@ final myProfileRouter = GoRoute(
       builder: (context, state) {
         return const RestaurantScreen();
       },
+      routes: <RouteBase>[
+        GoRoute(
+          path: RouterPath.restaurantMap,
+          name: RouterPath.restaurantMapMyProfile,
+          pageBuilder: (context, state) {
+            final restaurant = state.extra! as Restaurant;
+            return slideIn(
+              RestaurantMapScreen(restaurant: restaurant),
+            );
+          },
+        ),
+      ],
     ),
     GoRoute(
       path: '${RouterPath.myProfile}/${RouterPath.myProfileDetail}',
@@ -512,4 +543,6 @@ final class RouterPath {
   static const String storedPost = 'stored_post';
   static const String searchDetailPost = 'search_detail_post';
   static const String storedPostDetail = 'stored_post_detail';
+  static const String restaurantMap = 'restaurant_map';
+  static const String restaurantMapMyProfile = 'restaurant_map_myProfile';
 }

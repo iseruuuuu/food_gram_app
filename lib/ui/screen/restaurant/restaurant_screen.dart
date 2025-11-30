@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/api/restaurant/repository/restaurant_reposito
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/theme/style/restaurant_style.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
@@ -98,16 +99,32 @@ class RestaurantScreen extends HookConsumerWidget {
                             ? ListView.builder(
                                 itemCount: value.length,
                                 itemBuilder: (context, index) {
+                                  final restaurant = Restaurant(
+                                    name: value[index].name,
+                                    address: value[index].address,
+                                    lat: value[index].lat,
+                                    lng: value[index].lng,
+                                  );
                                   return ListTile(
-                                    onTap: () {
-                                      final restaurant = Restaurant(
-                                        name: value[index].name,
-                                        address: value[index].address,
-                                        lat: value[index].lat,
-                                        lng: value[index].lng,
-                                      );
+                                    onTap: () async {
                                       primaryFocus?.unfocus();
-                                      context.pop(restaurant);
+                                      // 現在のルートパスに基づいて適切なルート名を決定
+                                      final currentPath =
+                                          GoRouterState.of(context).uri.path;
+                                      final routeName = currentPath
+                                              .contains(RouterPath.timeLine)
+                                          ? RouterPath.restaurantMap
+                                          : RouterPath.restaurantMapMyProfile;
+                                      // pushNamed の結果を待つ
+                                      final result =
+                                          await context.pushNamed<Restaurant>(
+                                        routeName,
+                                        extra: restaurant,
+                                      );
+                                      // restaurantが返ってきたら、さらにPostScreenに戻す
+                                      if (result != null && context.mounted) {
+                                        context.pop(result);
+                                      }
                                     },
                                     trailing: const Icon(
                                       Icons.arrow_forward_ios,
