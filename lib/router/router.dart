@@ -108,7 +108,14 @@ final timeLineRouter = GoRoute(
           path: RouterPath.restaurantMap,
           name: RouterPath.restaurantMap,
           pageBuilder: (context, state) {
-            final restaurant = state.extra! as Restaurant;
+            final restaurant = state.extra as Restaurant?;
+            if (restaurant == null) {
+              return slideIn(
+                const Scaffold(
+                  body: Center(child: Text('Error: No restaurant data')),
+                ),
+              );
+            }
             return slideIn(
               RestaurantMapScreen(restaurant: restaurant),
             );
