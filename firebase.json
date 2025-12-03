@@ -1,1 +1,56 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"food-gram-407205","appId":"1:505064710022:android:870959193ff3c5e3145607","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"food-gram-407205","appId":"1:505064710022:ios:759e728c10469001145607","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"food-gram-407205","configurations":{"android":"1:505064710022:android:870959193ff3c5e3145607","ios":"1:505064710022:ios:759e728c10469001145607"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "food-gram-407205",
+          "appId": "1:505064710022:android:870959193ff3c5e3145607",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "food-gram-407205",
+          "appId": "1:505064710022:ios:759e728c10469001145607",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "food-gram-407205",
+          "configurations": {
+            "android": "1:505064710022:android:870959193ff3c5e3145607",
+            "ios": "1:505064710022:ios:759e728c10469001145607"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "redirects": [
+      {
+        "source": "/",
+        "destination": "https://apps.apple.com/jp/app/foodgram-%E9%A3%9F%E3%81%B9%E3%82%8B-%E6%92%AE%E3%82%8B-%E3%82%B7%E3%82%A7%E3%82%A2%E3%81%99%E3%82%8B/id6474065183",
+        "type": 301
+      }
+    ],
+    "headers": [
+      {
+        "source": "/app-ads.txt",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "text/plain; charset=utf-8"
+          }
+        ]
+      }
+    ]
+  }
+}
