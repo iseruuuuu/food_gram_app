@@ -111,7 +111,8 @@ abstract class L10n {
     Locale('pt'),
     Locale('th'),
     Locale('vi'),
-    Locale('zh')
+    Locale('zh'),
+    Locale('zh', 'TW')
   ];
 
   /// No description provided for @close.
@@ -3238,6 +3239,18 @@ class _L10nDelegate extends LocalizationsDelegate<L10n> {
 }
 
 L10n lookupL10n(Locale locale) {
+  // Lookup logic when language+country codes are specified.
+  switch (locale.languageCode) {
+    case 'zh':
+      {
+        switch (locale.countryCode) {
+          case 'TW':
+            return L10nZhTw();
+        }
+        break;
+      }
+  }
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
     case 'de':
