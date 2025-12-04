@@ -85,4 +85,58 @@ class SnackBarHelper {
   void hideSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
+
+  /// シンプルなテキストメッセージを表示
+  void openSimpleSnackBar(
+    BuildContext context,
+    String message, {
+    Color? backgroundColor,
+    Duration? duration,
+  }) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: backgroundColor,
+          duration: duration ?? const Duration(seconds: 3),
+        ),
+      );
+  }
+
+  /// 情報メッセージを表示（複数行対応）
+  void openInfoSnackBar(
+    BuildContext context,
+    Widget content, {
+    Color? backgroundColor,
+    Duration? duration,
+  }) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: content,
+          backgroundColor: backgroundColor,
+          duration: duration ?? const Duration(seconds: 3),
+        ),
+      );
+  }
+
+  /// 警告メッセージを表示（赤背景など）
+  void openWarningSnackBar(
+    BuildContext context,
+    String message, {
+    Color? backgroundColor,
+    Duration? duration,
+  }) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: backgroundColor ?? Colors.red,
+          duration: duration ?? const Duration(seconds: 3),
+        ),
+      );
+  }
 }

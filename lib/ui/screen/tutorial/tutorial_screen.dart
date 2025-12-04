@@ -8,6 +8,7 @@ import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/notification/notification_service.dart';
 import 'package:food_gram_app/core/theme/style/paywall_style.dart';
 import 'package:food_gram_app/core/theme/style/tutorial_style.dart';
+import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -346,12 +347,9 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                   onPressed: () {
                     final currentPage = pageController.page?.toInt() ?? 0;
                     if (currentPage == totalPages - 1 && !isAccept) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            L10n.of(context).agreeToTheTermsOfUse,
-                          ),
-                        ),
+                      SnackBarHelper().openSimpleSnackBar(
+                        context,
+                        L10n.of(context).agreeToTheTermsOfUse,
                       );
                     } else if (currentPage < totalPages - 1) {
                       pageController.nextPage(
@@ -388,10 +386,10 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
       }
     } on Exception catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${l10n.purchaseError}: $e'),
-          ),
+        SnackBarHelper().openErrorSnackBar(
+          context,
+          l10n.purchaseError,
+          e.toString(),
         );
         _goToNextPage();
       }
