@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -14,14 +15,22 @@ class ShareHelpers {
     List<XFile> files,
     String text,
   ) async {
-    await Share.shareXFiles(
-      files,
-      text: text,
-    );
+    try {
+      await Share.shareXFiles(
+        files,
+        text: text,
+      ).timeout(const Duration(seconds: 5));
+    } on TimeoutException {
+      return;
+    }
   }
 
   Future<void> shareOnlyPost(List<XFile> files) async {
-    await Share.shareXFiles(files);
+    try {
+      await Share.shareXFiles(files).timeout(const Duration(seconds: 5));
+    } on TimeoutException {
+      return;
+    }
   }
 
   Future<void> captureAndShare({
@@ -41,11 +50,14 @@ class ShareHelpers {
       final filePath = '${tempDir.path}/shared_image.png';
       final file = File(filePath);
       await file.writeAsBytes(screenshotBytes);
+      // シェア処理を実行（タイムアウト付き）
       if (hasText) {
         await sharePosts([XFile(file.path)], shareText!);
       } else {
         await shareOnlyPost([XFile(file.path)]);
       }
+    } on Exception {
+      return;
     } finally {
       loading.value = false;
     }
