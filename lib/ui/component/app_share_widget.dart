@@ -37,7 +37,7 @@ class AppShareWidget extends StatelessWidget {
                   child: CachedNetworkImage(
                     imageUrl: supabase.storage
                         .from('food')
-                        .getPublicUrl(posts.foodImage),
+                        .getPublicUrl(posts.firstFoodImage),
                     fit: BoxFit.cover,
                   ),
                 ),
