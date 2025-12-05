@@ -33,7 +33,9 @@ class NotificationService {
   /// ロケールに基づいて適切なL10nインスタンスを取得
   L10n _getL10n() {
     final locale = Platform.localeName;
-    final languageCode = locale.split('_')[0];
+    final parts = locale.split('_');
+    final languageCode = parts[0];
+    final countryCode = parts.length > 1 ? parts[1] : null;
 
     switch (languageCode) {
       case 'ja':
@@ -43,6 +45,10 @@ class NotificationService {
       case 'ko':
         return L10nKo();
       case 'zh':
+        // 繁体字中国語（台湾）の場合は L10nZhTw を返す
+        if (countryCode == 'TW') {
+          return L10nZhTw();
+        }
         return L10nZh();
       case 'es':
         return L10nEs();
