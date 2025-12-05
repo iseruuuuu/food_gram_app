@@ -10,6 +10,7 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/theme/style/detail_post_style.dart';
+import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/go_router_extension.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -324,16 +325,15 @@ class PostDetailListItem extends HookConsumerWidget {
                             postId: posts.id,
                             openSnackBar: () {
                               final l10n = L10n.of(context);
-                              final snackBar = SnackBar(
-                                content: Column(
+                              SnackBarHelper().openInfoSnackBar(
+                                context,
+                                Column(
                                   children: [
                                     Text(l10n.postSaved),
                                     Text(l10n.postSavedMessage),
                                   ],
                                 ),
                               );
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
                             },
                           );
                       final now = isStored.value ?? false;
@@ -416,10 +416,9 @@ class PostDetailListItem extends HookConsumerWidget {
                             posts.lat,
                             posts.lng,
                             () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(l10n.noMapAppAvailable),
-                                ),
+                              SnackBarHelper().openSimpleSnackBar(
+                                context,
+                                l10n.noMapAppAvailable,
                               );
                             },
                           );

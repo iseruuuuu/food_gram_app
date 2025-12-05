@@ -11,7 +11,6 @@ dependencies:
   app_tracking_transparency: ^2.0.6
   auth_buttons: ^3.0.0
   auto_animated: ^3.2.0
-  awesome_snackbar_content: ^0.1.2
   cached_network_image: ^3.3.0
   confetti: ^0.8.0
   crypto: ^3.0.3
@@ -66,6 +65,7 @@ dependencies:
   skeletonizer: ^2.1.0
   supabase_flutter: ^2.3.3
   timezone: ^0.10.1
+  toastification: ^3.0.3
   url_launcher: ^6.2.1
 
 dev_dependencies:

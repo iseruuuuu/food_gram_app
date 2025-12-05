@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/model/post_deail_list_mode.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
@@ -168,11 +169,9 @@ class PostDetailScreen extends HookConsumerWidget {
                       posts: post,
                       menuLoading: menuLoading,
                       onHeartLimitReached: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.heartLimitMessage),
-                            backgroundColor: Colors.red,
-                          ),
+                        SnackBarHelper().openWarningSnackBar(
+                          context,
+                          l10n.heartLimitMessage,
                         );
                       },
                     );
