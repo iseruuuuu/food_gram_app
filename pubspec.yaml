@@ -40,7 +40,7 @@ dependencies:
   google_mobile_ads: ^5.2.0
   google_sign_in: ^6.1.4
   hooks_riverpod: ^2.4.9
-  image_cropper: ^8.1.0
+  image_cropper: ^11.0.0
   image_picker: ^1.0.4
   in_app_review: ^2.0.8
   intl: ^0.20.2
