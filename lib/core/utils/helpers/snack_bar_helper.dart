@@ -34,40 +34,6 @@ class SnackBarHelper {
     );
   }
 
-  void openComingSoonSnackBar(BuildContext? context) {
-    toastification.show(
-      context: context,
-      type: ToastificationType.info,
-      style: ToastificationStyle.fillColored,
-      title: const Text(
-        '🙇　Coming Soon　🙇',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-        ),
-      ),
-      autoCloseDuration: const Duration(seconds: 3),
-      alignment: Alignment.topRight,
-    );
-  }
-
-  void openThanksSnackBar(BuildContext? context) {
-    toastification.show(
-      context: context,
-      type: ToastificationType.success,
-      style: ToastificationStyle.fillColored,
-      title: const Text(
-        'Thanks＼(^o^)／',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-        ),
-      ),
-      autoCloseDuration: const Duration(seconds: 3),
-      alignment: Alignment.topRight,
-    );
-  }
-
   void hideSnackBar(BuildContext? context) {
     toastification.dismissAll();
   }
