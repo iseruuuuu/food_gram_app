@@ -12,7 +12,6 @@ dependencies:
   auth_buttons: ^3.0.0
   auto_animated: ^3.2.0
   cached_network_image: ^3.3.0
-  toastification: ^3.0.3
   confetti: ^0.8.0
   crypto: ^3.0.3
   cupertino_icons: ^1.0.2
@@ -66,6 +65,7 @@ dependencies:
   skeletonizer: ^2.1.0
   supabase_flutter: ^2.3.3
   timezone: ^0.10.1
+  toastification: ^3.0.3
   url_launcher: ^6.2.1
 
 dev_dependencies:
