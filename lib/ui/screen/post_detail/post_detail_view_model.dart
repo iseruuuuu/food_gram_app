@@ -81,7 +81,7 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     } else {
       // 10回以上いいねした場合は制限
       final canLike = await preference.canLike();
-      if (canLike) {
+      if (!canLike) {
         onHeartLimitReached?.call();
         return;
       }
