@@ -21,7 +21,6 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     redirect(context, ref);
-    // 1フレーム後に 0→1 へ更新して文字を順次表示
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) {
         return;
@@ -69,7 +68,6 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: <Widget>[
-                    // アイコンは左に固定
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -78,9 +76,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
                             Assets.image.appIcon.image(width: 90, height: 90),
                       ),
                     ),
-                    // テキストのみアニメーションし、アイコンの右隣に並べる
                     SingleMotionBuilder(
-                      // 少しゆっくり文字を出す（約1.8秒）
                       motion: const Motion.curved(
                         Duration(milliseconds: 1800),
                         Curves.easeOutCubic,
@@ -95,8 +91,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
                         final letterSpacing = -10.0 + 10.0 * t;
                         const fullText = 'FoodGram';
                         const len = fullText.length;
-                        final count =
-                            (len * t).ceil().clamp(1, len); // F → 徐々に増える
+                        final count = (len * t).ceil().clamp(1, len);
                         final display = fullText.substring(0, count);
                         final style = TextStyle(
                           fontSize: 46,
