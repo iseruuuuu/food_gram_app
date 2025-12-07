@@ -50,6 +50,7 @@ dependencies:
   lottie: ^3.3.1
   map_launcher: ^3.0.0
   maplibre_gl: ^0.20.0
+  motor: ^1.1.0
   new_version_plus: ^0.0.11
   package_info_plus: ^4.0.1
   path_provider: ^2.1.5
@@ -92,13 +93,11 @@ flutter_launcher_icons:
   ios: true
 
 flutter_native_splash:
-  color: '#ffffff'
-  image: 'assets/splash/splash.png'
-  android: true
-  ios: true
-  fullscreen: true
-  android_12:
-    image: 'assets/splash/splash.png'
+    color: '#ffffff'
+    android: true
+    ios: true
+    android_12:
+      color: '#ffffff'
 
 flutter:
   uses-material-design: true
