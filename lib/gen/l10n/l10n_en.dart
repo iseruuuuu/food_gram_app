@@ -142,8 +142,7 @@ class L10nEn extends L10n {
   String get settingRestore => 'Restore';
 
   @override
-  String get settingPremiumMembership =>
-      'Become Premium for a Special Experience';
+  String get settingPremiumMembership => 'Become Premium Member Ship';
 
   @override
   String get shareButton => 'Share';
