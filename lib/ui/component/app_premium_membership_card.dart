@@ -7,6 +7,7 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 
 class AppPremiumMembershipCard extends ConsumerWidget {
   const AppPremiumMembershipCard({super.key});
@@ -66,10 +67,15 @@ class AppPremiumMembershipCard extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    onTap: () {
-                      context.pushNamed(RouterPath.paywallPage).then((_) {
-                        ref.invalidate(subscriptionProvider);
-                      });
+                    onTap: () async {
+                      try {
+                        await RevenueCatUI.presentPaywall();
+                        ref.invalidate(
+                          subscriptionProvider,
+                        );
+                      } on Exception catch (_) {
+                        return;
+                      }
                     },
                   ),
                 ),
