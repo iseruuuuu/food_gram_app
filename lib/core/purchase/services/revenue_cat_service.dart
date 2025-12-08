@@ -16,6 +16,7 @@ class RevenueCatService extends _$RevenueCatService {
   final logger = Logger();
   bool isSubscribed = false;
   late Offerings offerings;
+  bool _isInitialized = false;
 
   String? get user => ref.read(currentUserProvider);
 
@@ -26,23 +27,26 @@ class RevenueCatService extends _$RevenueCatService {
 
   Future<bool> initInAppPurchase() async {
     try {
+      if (_isInitialized) {
+        offerings = await Purchases.getOfferings();
+        final customerInfo = await Purchases.getCustomerInfo();
+        await getPurchaserInfo(customerInfo);
+        final isSubscription = customerInfo.entitlements.active;
+        return isSubscription.isNotEmpty;
+      }
       late PurchasesConfiguration configuration;
       if (Platform.isAndroid) {
         configuration = PurchasesConfiguration(Env.androidPurchaseKey);
       } else if (Platform.isIOS) {
         configuration = PurchasesConfiguration(Env.iOSPurchaseKey);
       }
-
       await Purchases.configure(configuration);
-
-      /// Offerings を取得
+      // Offerings を取得
       offerings = await Purchases.getOfferings();
-
-      /// Supabase の UID を使用してログイン
+      // Supabase の UID を使用してログイン
       final result = await Purchases.logIn(user!);
       await getPurchaserInfo(result.customerInfo);
-
-      /// アクティブなアイテムをログ出力
+      _isInitialized = true;
       final isSubscription = result.customerInfo.entitlements.active;
       if (isSubscription.isEmpty) {
         return false;
@@ -82,20 +86,33 @@ class RevenueCatService extends _$RevenueCatService {
   /// 購入処理
   /// makePurchase()を呼び出して実際に課金処理を行う
   Future<bool> makePurchase(String offeringsName) async {
-    await initInAppPurchase();
     try {
+      offerings = await Purchases.getOfferings();
       Package? package;
-      package = offerings.all[offeringsName]?.monthly;
-      if (package != null) {
-        await Purchases.logIn(user!);
-        final customerInfo = await Purchases.purchasePackage(package);
-        await getPurchaserInfo(customerInfo);
-        await ref.read(accountServiceProvider).updateIsSubscribe();
-        // サブスクリプション状態を更新
-        await ref.read(isSubscribeProvider.notifier).refresh();
-        return true;
+      final offering = offerings.all[offeringsName];
+      if (offering != null && offering.monthly != null) {
+        package = offering.monthly;
+        logger.i('Found package in offering: $offeringsName');
+      } else {
+        final currentOffering = offerings.current;
+        if (currentOffering != null) {
+          // monthlyパッケージを探す
+          package = currentOffering.monthly;
+          if (package == null && currentOffering.availablePackages.isNotEmpty) {
+            package = currentOffering.availablePackages.first;
+          }
+        }
       }
-      return false;
+      if (package == null) {
+        return false;
+      }
+      final purchaseResult =
+          await Purchases.purchase(PurchaseParams.package(package));
+      await getPurchaserInfo(purchaseResult.customerInfo);
+      await ref.read(accountServiceProvider).updateIsSubscribe();
+      // サブスクリプション状態を更新
+      await ref.read(isSubscribeProvider.notifier).refresh();
+      return true;
     } on PlatformException catch (e) {
       logger.e('makePurchase error $e');
       return false;
@@ -118,7 +135,6 @@ class RevenueCatService extends _$RevenueCatService {
         await ref.read(accountServiceProvider).updateIsSubscribe();
         // サブスクリプション状態を更新
         await ref.read(isSubscribeProvider.notifier).refresh();
-        logger.i('$entitlement 購入情報あり　復元可能');
         return true;
       }
     } on PlatformException catch (e) {
