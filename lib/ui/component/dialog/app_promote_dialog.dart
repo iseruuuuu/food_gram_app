@@ -5,6 +5,7 @@ import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 
 class AppPromoteDialog extends ConsumerWidget {
   const AppPromoteDialog({super.key});
@@ -52,13 +53,12 @@ class AppPromoteDialog extends ConsumerWidget {
             ),
             const Gap(20),
             ElevatedButton(
-              onPressed: () {
-                /// ダイアログを閉じ、PayWall画面に遷移する
-                context
-                  ..pop()
-                  ..pushNamed(RouterPath.paywallPage).then((_) {
-                    ref.invalidate(subscriptionProvider);
-                  });
+              onPressed: () async {
+                context.pop();
+                await RevenueCatUI.presentPaywall();
+                ref.invalidate(
+                  subscriptionProvider,
+                );
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
