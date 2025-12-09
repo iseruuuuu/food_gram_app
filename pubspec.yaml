@@ -6,7 +6,7 @@ version: 1.24.0+56
 
 environment:
   sdk: '>=3.1.5 <4.0.0'
-  flutter: ^3.38.3
+  flutter: ^3.38.2
 dependencies:
   app_tracking_transparency: ^2.0.6
   auth_buttons: ^3.0.0
@@ -49,7 +49,7 @@ dependencies:
   logger: ^2.0.2+1
   lottie: ^3.3.1
   map_launcher: ^3.0.0
-  maplibre_gl: ^0.20.0
+  maplibre_gl: ^0.24.1
   motor: ^1.1.0
   new_version_plus: ^0.0.11
   package_info_plus: ^4.0.1
@@ -62,7 +62,7 @@ dependencies:
   screenshot: ^3.0.0
   share_plus: ^7.2.1
   shared_preferences: ^2.2.2
-  sign_in_with_apple: ^5.0.0
+  sign_in_with_apple: ^7.0.1
   skeletonizer: ^2.1.0
   supabase_flutter: ^2.3.3
   timezone: ^0.10.1

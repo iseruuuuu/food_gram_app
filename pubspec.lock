@@ -1129,10 +1129,10 @@ packages:
     dependency: transitive
     description:
       name: js
-      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
+      sha256: "53385261521cc4a0c4658fd0ad07a7d14591cf8fc33abbceae306ddb974888dc"
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.7"
+    version: "0.7.2"
   json_annotation:
     dependency: "direct main"
     description:
@@ -1233,26 +1233,26 @@ packages:
     dependency: "direct main"
     description:
       name: maplibre_gl
-      sha256: ea2fa443e7d5dc18db7f37a0f6f5af40642888c56b81a14441aeddea077adaea
+      sha256: a66be9a877081b3316cf540e80355e823353e29f736a1f7d62317bf3150fef4f
       url: "https://pub.dev"
     source: hosted
-    version: "0.20.0"
+    version: "0.24.1"
   maplibre_gl_platform_interface:
     dependency: transitive
     description:
       name: maplibre_gl_platform_interface
-      sha256: "718c3503f36936fbf35c34d6ddf8bf770474c5ba1e6cb1d8caece44efae424af"
+      sha256: f423e6c4b0add1ddc423bc36096e29b5d09e8fc720beeac76a21b23259e5a421
       url: "https://pub.dev"
     source: hosted
-    version: "0.20.0"
+    version: "0.24.1"
   maplibre_gl_web:
     dependency: transitive
     description:
       name: maplibre_gl_web
-      sha256: e7d71b08f24dca70e9c9cf841b096704a677e6239447d87220ec071355768149
+      sha256: "969f3a61e51f404e5500e5085405496e1f2ecf4d1e63b2105402dd9a088a4f8b"
       url: "https://pub.dev"
     source: hosted
-    version: "0.20.0"
+    version: "0.24.1"
   matcher:
     dependency: transitive
     description:
@@ -1713,26 +1713,26 @@ packages:
     dependency: "direct main"
     description:
       name: sign_in_with_apple
-      sha256: "0975c23b9f8b30a80e27d5659a75993a093d4cb5f4eb7d23a9ccc586fea634e0"
+      sha256: "8bd875c8e8748272749eb6d25b896f768e7e9d60988446d543fe85a37a2392b8"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.0"
+    version: "7.0.1"
   sign_in_with_apple_platform_interface:
     dependency: transitive
     description:
       name: sign_in_with_apple_platform_interface
-      sha256: c2ef2ce6273fce0c61acd7e9ff5be7181e33d7aa2b66508b39418b786cca2119
+      sha256: "981bca52cf3bb9c3ad7ef44aace2d543e5c468bb713fd8dda4275ff76dfa6659"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "2.0.0"
   sign_in_with_apple_web:
     dependency: transitive
     description:
       name: sign_in_with_apple_web
-      sha256: "44b66528f576e77847c14999d5e881e17e7223b7b0625a185417829e5306f47a"
+      sha256: f316400827f52cafcf50d00e1a2e8a0abc534ca1264e856a81c5f06bd5b10fed
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "3.0.0"
   skeletonizer:
     dependency: "direct main"
     description:
@@ -2196,4 +2196,4 @@ packages:
     version: "3.1.0"
 sdks:
   dart: ">=3.8.0-0 <4.0.0"
-  flutter: ">=3.38.3"
+  flutter: ">=3.38.2"

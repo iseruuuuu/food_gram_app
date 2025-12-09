@@ -117,10 +117,10 @@ PODS:
     - Flutter
   - map_launcher (0.0.1):
     - Flutter
-  - MapLibre (6.5.0)
-  - maplibre_gl (0.0.1):
+  - MapLibre (6.19.1)
+  - maplibre_gl (0.24.1):
     - Flutter
-    - MapLibre (= 6.5.0)
+    - MapLibre (= 6.19.1)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
@@ -296,8 +296,8 @@ SPEC CHECKSUMS:
   image_picker_ios: 7fe1ff8e34c1790d6fff70a32484959f563a928a
   in_app_review: 5596fe56fab799e8edb3561c03d053363ab13457
   map_launcher: fe43bda6720bb73c12fcc1bdd86123ff49a4d4d6
-  MapLibre: 0ebfa9329d313cec8bf0a5ba5a336a1dc903785e
-  maplibre_gl: 7fc8dd5a5f356891c38f227fe1647d33b9af0400
+  MapLibre: 7f24faba45439f80ccb0f83393c29fa32cb81952
+  maplibre_gl: d83126f1b19adee5e1071c453b421efd5fc99883
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   package_info_plus: 566e1b7a2f3900e4b0020914ad3fc051dcc95596
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564

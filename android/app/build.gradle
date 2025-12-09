@@ -1,10 +1,8 @@
 plugins {
     id "com.android.application"
-    // START: FlutterFire Configuration
-    id 'com.google.gms.google-services'
-    // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+    id 'com.google.gms.google-services'
 }
 
 def dartDefines = [:];
@@ -59,8 +57,12 @@ tasks.whenTaskAdded { task ->
 
 android {
     namespace "com.food_gram_app"
-    compileSdkVersion 35
-    ndkVersion flutter.ndkVersion
+    compileSdkVersion 36
+    ndkVersion "28.1.13356709"
+
+    buildFeatures {
+        viewBinding true
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -80,7 +82,7 @@ android {
     defaultConfig {
         applicationId "${dartDefines.appId ?: 'com.food_gram_app.com.com.com'}"
         resValue "string", "app_name", "${dartDefines.appName}"
-        minSdkVersion 28
+        minSdkVersion 30
         targetSdkVersion 35
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
