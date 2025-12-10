@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -11,6 +13,7 @@ import 'package:food_gram_app/core/notification/notification_service.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -19,6 +22,7 @@ void main() async {
   await initializeSystemSettings();
   await initializeThirdPartyServices();
   await initializeNotifications();
+  await initializePurchases();
   await MobileAds.instance.initialize();
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -45,6 +49,16 @@ Future<void> initializeThirdPartyServices() async {
     anonKey: kReleaseMode ? Prod.supabaseAnonKey : Dev.supabaseAnonKey,
     url: kReleaseMode ? Prod.supabaseUrl : Dev.supabaseUrl,
     debug: kDebugMode,
+  );
+}
+
+/// RevenueCatの初期化処理
+Future<void> initializePurchases() async {
+  await Purchases.setLogLevel(LogLevel.debug);
+  await Purchases.configure(
+    PurchasesConfiguration(
+      Platform.isAndroid ? Env.androidPurchaseKey : Env.iOSPurchaseKey,
+    ),
   );
 }
 
