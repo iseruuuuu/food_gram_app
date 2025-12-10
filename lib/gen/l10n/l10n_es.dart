@@ -143,8 +143,7 @@ class L10nEs extends L10n {
   String get settingRestore => 'Restaurar compra';
 
   @override
-  String get settingPremiumMembership =>
-      'Conviértete en Premium para una experiencia especial';
+  String get settingPremiumMembership => 'Hazte miembro Premium';
 
   @override
   String get shareButton => 'Compartir';

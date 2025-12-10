@@ -351,13 +351,6 @@ final settingRouter = GoRoute(
         return const TutorialScreen();
       },
     ),
-    GoRoute(
-      path: '${RouterPath.setting}/${RouterPath.paywallPage}',
-      name: RouterPath.paywallPage,
-      pageBuilder: (context, state) {
-        return slideIn(const PaywallScreen());
-      },
-    ),
   ],
 );
 
@@ -522,7 +515,6 @@ final class RouterPath {
   static const String map = 'map';
   static const String mapDetail = 'map_detail';
   static const String storyPage = 'story';
-  static const String paywallPage = 'paywall';
   static const String timeLineDetailPost = 'time_line_detail_post';
   static const String myProfileDetailPost = 'my_profile_detail_post';
   static const String mapDetailPost = 'map_detail_post';

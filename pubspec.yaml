@@ -56,7 +56,8 @@ dependencies:
   path_provider: ^2.1.5
   permission_handler: ^11.3.1
   photo_viewer: ^0.0.3
-  purchases_flutter: ^8.4.0
+  purchases_flutter: ^9.9.10
+  purchases_ui_flutter: ^9.9.10
   quickalert: ^1.1.0
   riverpod_annotation: ^2.0.0
   screenshot: ^3.0.0

@@ -12,15 +12,14 @@ import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_premium_membership_card.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
+import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 
 // 日本の中心付近の座標
 const defaultLocation = LatLng(36.2048, 137.9777);
@@ -151,17 +150,16 @@ class MapScreen extends HookConsumerWidget {
                                       splashColor: Colors.white,
                                       hoverColor: Colors.white,
                                       elevation: 10,
-                                      onPressed: () {
+                                      onPressed: () async {
                                         if (!isSubscribe) {
-                                          context
-                                              .pushNamed(
-                                            RouterPath.paywallPage,
-                                          )
-                                              .then((_) {
+                                          try {
+                                            await RevenueCatUI.presentPaywall();
                                             ref.invalidate(
                                               isSubscribeProvider,
                                             );
-                                          });
+                                          } on Exception catch (_) {
+                                            return;
+                                          }
                                         } else {
                                           isEarthStyle.value =
                                               !isEarthStyle.value;
