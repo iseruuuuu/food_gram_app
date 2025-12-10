@@ -3,9 +3,10 @@ import 'dart:ui';
 
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/notification/notification_service.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/style/tutorial_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
@@ -16,48 +17,66 @@ import 'package:food_gram_app/ui/component/tutorial_paywall.dart';
 import 'package:gap/gap.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class TutorialScreen extends ConsumerStatefulWidget {
+class TutorialScreen extends HookConsumerWidget {
   const TutorialScreen({super.key});
 
   @override
-  ConsumerState<TutorialScreen> createState() => _TutorialScreenState();
-}
-
-class _TutorialScreenState extends ConsumerState<TutorialScreen> {
-  bool isAccept = false;
-  bool isFinishedTutorial = false;
-  final ValueNotifier<double> notifier = ValueNotifier(0);
-  final PageController pageController = PageController();
-  final preference = Preference();
-  final controller = ConfettiController(duration: const Duration(seconds: 2));
-
-  @override
-  void initState() {
-    loadPreference();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    pageController.dispose();
-    super.dispose();
-  }
-
-  Future<void> loadPreference() async {
-    isAccept = await preference.getBool(PreferenceKey.isAccept);
-    isFinishedTutorial = await preference.getBool(
-      PreferenceKey.isFinishedTutorial,
-    );
-    setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
+    final isAccept = useState(false);
+    final isFinishedTutorial = useState(false);
+    final notifier = useValueNotifier<double>(0);
+    final pageController = usePageController();
+    final preference = useMemoized(Preference.new);
+    final controller = useMemoized(
+      () => ConfettiController(duration: const Duration(seconds: 2)),
+    );
+    final isSubscribeAsync = ref.watch(isSubscribeProvider);
+    final isSubscribeState = useState<bool?>(null);
+    useEffect(
+      () {
+        return controller.dispose;
+      },
+      [controller],
+    );
+    useEffect(
+      () {
+        Future<void> loadPreference() async {
+          isAccept.value = await preference.getBool(PreferenceKey.isAccept);
+          isFinishedTutorial.value = await preference.getBool(
+            PreferenceKey.isFinishedTutorial,
+          );
+        }
+
+        loadPreference();
+        return null;
+      },
+      [],
+    );
+
+    // isSubscribeの更新
+    useEffect(
+      () {
+        isSubscribeAsync.whenData((value) {
+          isSubscribeState.value = value;
+        });
+        return null;
+      },
+      [isSubscribeAsync],
+    );
+
+    void goToNextPage() {
+      pageController.nextPage(
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+
+    final isSubscribe = isSubscribeState.value ?? false;
     const totalPages = 7;
     return Scaffold(
       body: Stack(
@@ -163,7 +182,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                       if (permission == LocationPermission.denied) {
                         await Geolocator.requestPermission();
                       }
-                      _goToNextPage();
+                      goToNextPage();
                     },
                     title: l10n.tutorialLocationButton,
                   ),
@@ -199,7 +218,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                       if (!hasPermission) {
                         await openAppSettings();
                       } else {
-                        _goToNextPage();
+                        goToNextPage();
                       }
                     },
                     title: l10n.tutorialNotificationButton,
@@ -207,11 +226,12 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                 ],
               ),
               // 6ページ目
-              TutorialPaywall(
-                onNextPage: _goToNextPage,
-                confettiController: controller,
-              ),
-              // 7ページ目
+              if (!isSubscribe)
+                TutorialPaywall(
+                  onNextPage: goToNextPage,
+                  confettiController: controller,
+                ),
+              // 7ページ目　利用規約
               SingleChildScrollView(
                 child: Center(
                   child: Column(
@@ -251,11 +271,9 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                           Checkbox(
                             checkColor: Colors.white,
                             activeColor: Colors.black,
-                            value: isAccept,
+                            value: isAccept.value,
                             onChanged: (value) {
-                              setState(() {
-                                isAccept = value ?? false;
-                              });
+                              isAccept.value = value ?? false;
                             },
                           ),
                         ],
@@ -265,9 +283,9 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                         width: 200,
                         child: ElevatedButton(
                           style: TutorialStyle.button(),
-                          onPressed: isAccept
+                          onPressed: isAccept.value
                               ? () async {
-                                  if (!isFinishedTutorial) {
+                                  if (!isFinishedTutorial.value) {
                                     await preference.setBool(
                                       PreferenceKey.isFinishedTutorial,
                                     );
@@ -299,7 +317,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                   icon: const Icon(Icons.arrow_forward_ios),
                   onPressed: () {
                     final currentPage = pageController.page?.toInt() ?? 0;
-                    if (currentPage == totalPages - 1 && !isAccept) {
+                    if (currentPage == totalPages - 1 && !isAccept.value) {
                       SnackBarHelper().openSimpleSnackBar(
                         context,
                         L10n.of(context).agreeToTheTermsOfUse,
@@ -318,13 +336,6 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  void _goToNextPage() {
-    pageController.nextPage(
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
     );
   }
 }
