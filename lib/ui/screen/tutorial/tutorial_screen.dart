@@ -147,7 +147,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                   ),
                   const Gap(56),
                   Text(
-                    l10n.appRequestTitle,
+                    l10n.tutorialLocationTitle,
                     style: TutorialStyle.title(),
                   ),
                   const Gap(12),
@@ -165,7 +165,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                       }
                       _goToNextPage();
                     },
-                    title: l10n.appRequestOpenSetting,
+                    title: l10n.tutorialLocationButton,
                   ),
                 ],
               ),
@@ -222,12 +222,12 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Gap(10),
-                          Assets.gif.tutorial1.image(width: 60),
+                          Assets.gif.tutorial1.image(width: 50),
                           Text(
                             l10n.tutorialThirdPageTitle,
                             style: TutorialStyle.thirdTitle(),
                           ),
-                          Assets.gif.tutorial1.image(width: 60),
+                          Assets.gif.tutorial1.image(width: 50),
                           const Gap(10),
                         ],
                       ),
