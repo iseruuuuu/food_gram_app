@@ -47,7 +47,7 @@ class L10nFr extends L10n {
   String get settingAppBar => 'Paramètres';
 
   @override
-  String get settingCheckVersion => 'Vérifier la dernière version';
+  String get settingCheckVersion => 'MàJ';
 
   @override
   String get settingCheckVersionDialogTitle => 'Informations de mise à jour';
@@ -67,22 +67,22 @@ class L10nFr extends L10n {
   String get settingGithub => 'Github';
 
   @override
-  String get settingReview => 'Soutenir avec un avis';
+  String get settingReview => 'Noter';
 
   @override
   String get settingLicense => 'Licence';
 
   @override
-  String get settingShareApp => 'Partager cette application';
+  String get settingShareApp => 'Partager';
 
   @override
   String get settingFaq => 'FAQ';
 
   @override
-  String get settingPrivacyPolicy => 'Politique de confidentialité';
+  String get settingPrivacyPolicy => 'Confidentialité';
 
   @override
-  String get settingTermsOfUse => 'Conditions d\'utilisation';
+  String get settingTermsOfUse => 'Conditions';
 
   @override
   String get settingContact => 'Contact';
@@ -118,10 +118,10 @@ class L10nFr extends L10n {
   String get settingLogoutButton => 'Se déconnecter';
 
   @override
-  String get settingDeleteAccountButton => 'Demander la suppression du compte';
+  String get settingDeleteAccountButton => 'Supprimer compte';
 
   @override
-  String get settingQuestion => 'Boîte à questions';
+  String get settingQuestion => 'Questions';
 
   @override
   String get settingAccountManagement => 'Gestion du compte';
@@ -141,7 +141,7 @@ class L10nFr extends L10n {
       'Aucun historique d\'achat ? Contactez le support';
 
   @override
-  String get settingRestore => 'Restaurer l\'achat';
+  String get settingRestore => 'Restaurer';
 
   @override
   String get settingPremiumMembership => 'Devenez membre Premium';
@@ -168,8 +168,7 @@ class L10nFr extends L10n {
   String get postError => 'Échec de soumission';
 
   @override
-  String get postCategoryTitle =>
-      'Sélectionner l\'étiquette pays/cuisine (optionnel)';
+  String get postCategoryTitle => 'Pays / Cuisine (optionnel)';
 
   @override
   String get postCountryCategory => 'Pays';
@@ -226,7 +225,7 @@ class L10nFr extends L10n {
   String get searchEmptyResult => 'Aucun résultat trouvé pour votre recherche.';
 
   @override
-  String get searchButton => 'Rechercher';
+  String get searchButton => 'Recherche';
 
   @override
   String get searchRestaurantTitle => 'Rechercher des restaurants';
@@ -235,8 +234,7 @@ class L10nFr extends L10n {
   String get searchUserTitle => 'Recherche d\'utilisateurs';
 
   @override
-  String get searchUserHeader =>
-      'Recherche d\'utilisateurs (par nombre de publications)';
+  String get searchUserHeader => 'Utilisateurs (par posts)';
 
   @override
   String searchUserPostCount(Object count) {
@@ -393,7 +391,7 @@ class L10nFr extends L10n {
   String get shareInviteMessage => 'Partage tes bons plats sur FoodGram !';
 
   @override
-  String get appRestaurantLabel => 'Rechercher un restaurant';
+  String get appRestaurantLabel => 'Rechercher restaurant';
 
   @override
   String get appRequestTitle => '🙇 Activez l\'emplacement actuel 🙇';
@@ -447,7 +445,7 @@ class L10nFr extends L10n {
   String get seeMore => 'Voir plus';
 
   @override
-  String get selectCountryTag => 'Sélectionner l\'étiquette de pays';
+  String get selectCountryTag => 'Tags pays';
 
   @override
   String get selectFavoriteTag => 'Sélectionner l\'étiquette favorite';
@@ -456,7 +454,7 @@ class L10nFr extends L10n {
   String get favoriteTagPlaceholder => 'Sélectionnez votre étiquette favorite';
 
   @override
-  String get selectFoodTag => 'Sélectionner l\'étiquette de nourriture';
+  String get selectFoodTag => 'Tags cuisine';
 
   @override
   String get tabHome => 'Nourriture';
@@ -523,26 +521,24 @@ class L10nFr extends L10n {
   String get snsLogin => 'Connexion SNS';
 
   @override
-  String get tutorialFirstPageTitle => 'Partagez vos moments délicieux';
+  String get tutorialFirstPageTitle => 'Partage tes moments';
 
   @override
   String get tutorialFirstPageSubTitle =>
-      'Avec FoodGram, rendez chaque repas plus spécial.\nProfitez de découvrir de nouvelles saveurs !';
+      'Avec FoodGram, chaque repas devient spécial.';
 
   @override
-  String get tutorialDiscoverTitle => 'Trouvez votre prochain plat préféré !';
+  String get tutorialDiscoverTitle => 'Trouve ton meilleur plat !';
 
   @override
   String get tutorialDiscoverSubTitle =>
-      'À chaque défilement, de nouvelles découvertes gourmandes.\nExplorez de bons plats maintenant.';
+      'À chaque scroll, une découverte gourmande.';
 
   @override
-  String get tutorialSecondPageTitle =>
-      'Une carte de nourriture unique pour cette application';
+  String get tutorialSecondPageTitle => 'La food map exclusive';
 
   @override
-  String get tutorialSecondPageSubTitle =>
-      'Créons une carte unique pour cette application.\nVos publications aideront à faire évoluer la carte.';
+  String get tutorialSecondPageSubTitle => 'Ta map évolue avec tes posts.';
 
   @override
   String get tutorialThirdPageTitle => 'Conditions d\'utilisation';
@@ -552,8 +548,7 @@ class L10nFr extends L10n {
       '・Soyez prudent lors du partage d\'informations personnelles telles que nom, adresse, numéro de téléphone ou emplacement.\n\n・Évitez de publier du contenu offensant, inapproprié ou nuisible, et n\'utilisez pas les œuvres d\'autrui sans permission.\n\n・Les publications non liées à la nourriture peuvent être supprimées.\n\n・Les utilisateurs qui violent répétitivement les règles ou publient du contenu répréhensible peuvent être supprimés par l\'équipe de gestion.\n\n・Nous attendons avec impatience d\'améliorer cette application avec tout le monde. par les développeurs';
 
   @override
-  String get tutorialThirdPageButton =>
-      'Accepter les conditions d\'utilisation';
+  String get tutorialThirdPageButton => 'Accepter';
 
   @override
   String get tutorialThirdPageClose => 'Fermer';
@@ -1576,7 +1571,7 @@ class L10nFr extends L10n {
       'Pour trouver de bons endroits à proximité,\nfacilitez la recherche de restaurants';
 
   @override
-  String get tutorialLocationButton => 'Activer la localisation';
+  String get tutorialLocationButton => 'Activer';
 
   @override
   String get tutorialNotificationTitle => 'Activer les notifications !';
