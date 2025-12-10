@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_premium_membership_card.dart';
@@ -25,6 +26,8 @@ class MyProfileScreen extends HookConsumerWidget {
     final state = ref.watch(myPostStreamProvider);
     final users = ref.watch(myProfileViewModelProvider());
     final scrollController = useScrollController();
+    final isSubscribeAsync = ref.watch(isSubscribeProvider);
+    final isSubscribe = isSubscribeAsync.valueOrNull ?? false;
     useEffect(() {
       users.whenOrNull(
         data: (users, __, ___) {
@@ -88,7 +91,7 @@ class MyProfileScreen extends HookConsumerWidget {
                               length: length,
                               heartAmount: heartAmount,
                             ),
-                            if (!users.isSubscribe)
+                            if (!isSubscribe)
                               const Positioned(
                                 top: 5,
                                 left: 0,
@@ -96,7 +99,7 @@ class MyProfileScreen extends HookConsumerWidget {
                                 child: AppPremiumMembershipCard(),
                               ),
                             Positioned(
-                              top: users.isSubscribe ? 10 : 60,
+                              top: !isSubscribe ? 10 : 60,
                               right: 15,
                               child: ElevatedButton(
                                 onPressed: () {
