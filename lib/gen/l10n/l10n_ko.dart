@@ -394,7 +394,7 @@ class L10nKo extends L10n {
   String get appTitle => 'FoodGram';
 
   @override
-  String get appSubtitle => '맛있는 순간을 공유하세요';
+  String get appSubtitle => '먹기 × 찍기 × 공유';
 
   @override
   String get agreeToTheTermsOfUse => '이용약관에 동의해 주세요';

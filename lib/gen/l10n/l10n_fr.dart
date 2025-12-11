@@ -411,7 +411,7 @@ class L10nFr extends L10n {
   String get appTitle => 'FoodGram';
 
   @override
-  String get appSubtitle => 'Partagez vos moments délicieux';
+  String get appSubtitle => 'Manger × Photo × Partager';
 
   @override
   String get agreeToTheTermsOfUse =>

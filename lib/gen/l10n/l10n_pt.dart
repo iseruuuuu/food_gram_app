@@ -411,7 +411,7 @@ class L10nPt extends L10n {
   String get appTitle => 'FoodGram';
 
   @override
-  String get appSubtitle => 'Compartilhe seus momentos deliciosos';
+  String get appSubtitle => 'Comer × Fotos × Compartilhar';
 
   @override
   String get agreeToTheTermsOfUse => 'Por favor, concorde com os Termos de Uso';
