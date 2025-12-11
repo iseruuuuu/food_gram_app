@@ -27,16 +27,7 @@ class MyProfileScreen extends HookConsumerWidget {
     final users = ref.watch(myProfileViewModelProvider());
     final scrollController = useScrollController();
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
-    final isSubscribeState = useState<bool?>(null);
-    useEffect(
-      () {
-        isSubscribeAsync.whenData((value) {
-          isSubscribeState.value = value;
-        });
-        return null;
-      },
-      [isSubscribeAsync],
-    );
+    final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
     useEffect(() {
       users.whenOrNull(
         data: (users, __, ___) {
@@ -100,7 +91,7 @@ class MyProfileScreen extends HookConsumerWidget {
                               length: length,
                               heartAmount: heartAmount,
                             ),
-                            if (!isSubscribeState.value!)
+                            if (!isSubscribed)
                               const Positioned(
                                 top: 5,
                                 left: 0,
@@ -108,7 +99,7 @@ class MyProfileScreen extends HookConsumerWidget {
                                 child: AppPremiumMembershipCard(),
                               ),
                             Positioned(
-                              top: !isSubscribeState.value! ? 60 : 10,
+                              top: !isSubscribed ? 60 : 10,
                               right: 15,
                               child: ElevatedButton(
                                 onPressed: () {

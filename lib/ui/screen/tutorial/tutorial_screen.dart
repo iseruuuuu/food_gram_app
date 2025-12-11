@@ -36,13 +36,7 @@ class TutorialScreen extends HookConsumerWidget {
       () => ConfettiController(duration: const Duration(seconds: 2)),
     );
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
-    final isSubscribeState = useState<bool?>(null);
-    useEffect(
-      () {
-        return controller.dispose;
-      },
-      [controller],
-    );
+    final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
     useEffect(
       () {
         Future<void> loadPreference() async {
@@ -58,17 +52,6 @@ class TutorialScreen extends HookConsumerWidget {
       [],
     );
 
-    // isSubscribeの更新
-    useEffect(
-      () {
-        isSubscribeAsync.whenData((value) {
-          isSubscribeState.value = value;
-        });
-        return null;
-      },
-      [isSubscribeAsync],
-    );
-
     void goToNextPage() {
       pageController.nextPage(
         duration: const Duration(milliseconds: 500),
@@ -76,7 +59,7 @@ class TutorialScreen extends HookConsumerWidget {
       );
     }
 
-    final isSubscribe = isSubscribeState.value ?? false;
+    final isSubscribe = isSubscribed;
     const totalPages = 7;
     return Scaffold(
       body: Stack(

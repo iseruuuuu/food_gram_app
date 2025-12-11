@@ -38,16 +38,7 @@ class MapScreen extends HookConsumerWidget {
     final isEarthStyle = useState(false);
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final adLoadAttempted = useRef(false);
-    final isSubscribeState = useState<bool?>(null);
-    useEffect(
-      () {
-        isSubscribeAsync.whenData((value) {
-          isSubscribeState.value = value;
-        });
-        return null;
-      },
-      [isSubscribeAsync],
-    );
+    final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
     useEffect(
       () {
         // トラッキング許可を取得
@@ -130,7 +121,7 @@ class MapScreen extends HookConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        if (!isSubscribeState.value!)
+                        if (!isSubscribed)
                           const AppPremiumMembershipCard(),
                         Padding(
                           padding: const EdgeInsets.only(right: 10),
@@ -160,7 +151,7 @@ class MapScreen extends HookConsumerWidget {
                                       hoverColor: Colors.white,
                                       elevation: 10,
                                       onPressed: () async {
-                                        if (!isSubscribeState.value!) {
+                                        if (!isSubscribed) {
                                           try {
                                             await RevenueCatUI.presentPaywall();
                                             ref.invalidate(
