@@ -47,7 +47,7 @@ class L10nDe extends L10n {
   String get settingAppBar => 'Einstellungen';
 
   @override
-  String get settingCheckVersion => 'Neueste Version prüfen';
+  String get settingCheckVersion => 'Aktualisieren';
 
   @override
   String get settingCheckVersionDialogTitle => 'Update-Informationen';
@@ -67,22 +67,22 @@ class L10nDe extends L10n {
   String get settingGithub => 'Github';
 
   @override
-  String get settingReview => 'Mit einer Bewertung unterstützen';
+  String get settingReview => 'Bewerten';
 
   @override
   String get settingLicense => 'Lizenz';
 
   @override
-  String get settingShareApp => 'Diese App teilen';
+  String get settingShareApp => 'Teilen';
 
   @override
   String get settingFaq => 'FAQ';
 
   @override
-  String get settingPrivacyPolicy => 'Datenschutzrichtlinie';
+  String get settingPrivacyPolicy => 'Datenschutz';
 
   @override
-  String get settingTermsOfUse => 'Nutzungsbedingungen';
+  String get settingTermsOfUse => 'Bedingungen';
 
   @override
   String get settingContact => 'Kontakt';
@@ -118,7 +118,7 @@ class L10nDe extends L10n {
   String get settingLogoutButton => 'Abmelden';
 
   @override
-  String get settingDeleteAccountButton => 'Kontolöschung beantragen';
+  String get settingDeleteAccountButton => 'Konto löschen';
 
   @override
   String get settingQuestion => 'Fragebox';
@@ -140,7 +140,7 @@ class L10nDe extends L10n {
       'Keine Kaufhistorie? Kontaktieren Sie den Support';
 
   @override
-  String get settingRestore => 'Kauf wiederherstellen';
+  String get settingRestore => 'Wiederherstellen';
 
   @override
   String get settingPremiumMembership => 'Premium-Mitglied werden';
@@ -152,11 +152,10 @@ class L10nDe extends L10n {
   String get postFoodName => 'Essensname';
 
   @override
-  String get postFoodNameInputField => 'Essensname eingeben (Erforderlich)';
+  String get postFoodNameInputField => 'Essen eingeben (Pflicht)';
 
   @override
-  String get postRestaurantNameInputField =>
-      'Restaurant hinzufügen (Erforderlich)';
+  String get postRestaurantNameInputField => 'Restaurant hinzufügen (Pflicht)';
 
   @override
   String get postComment => 'Kommentar eingeben (Optional)';
@@ -168,7 +167,7 @@ class L10nDe extends L10n {
   String get postError => 'Übermittlung fehlgeschlagen';
 
   @override
-  String get postCategoryTitle => 'Land/Küche-Etikett auswählen (optional)';
+  String get postCategoryTitle => 'Land/Küche-Tag wählen (Optional)';
 
   @override
   String get postCountryCategory => 'Land';
@@ -522,27 +521,25 @@ class L10nDe extends L10n {
   String get snsLogin => 'SNS-Anmeldung';
 
   @override
-  String get tutorialFirstPageTitle => 'Teilen Sie Ihre köstlichen Momente';
+  String get tutorialFirstPageTitle => 'Köstliche Momente teilen';
 
   @override
   String get tutorialFirstPageSubTitle =>
-      'Mit FoodGram wird jede Mahlzeit besonderer.\nGenießen Sie es, neue Geschmäcker zu entdecken!';
+      'Jede Mahlzeit wird besonderer.\nEntdecken Sie neue Geschmäcker!';
 
   @override
-  String get tutorialDiscoverTitle =>
-      'Finden Sie Ihr nächstes Lieblingsgericht!';
+  String get tutorialDiscoverTitle => 'Ihr nächstes Lieblingsgericht!';
 
   @override
   String get tutorialDiscoverSubTitle =>
-      'Mit jedem Scrollen neue leckere Entdeckungen.\nEntdecken Sie jetzt köstliches Essen.';
+      'Neue Entdeckungen bei jedem Scrollen.\nKöstliches Essen finden.';
 
   @override
-  String get tutorialSecondPageTitle =>
-      'Eine einzigartige Essenskarte für diese App';
+  String get tutorialSecondPageTitle => 'Einzigartige Essenskarte';
 
   @override
   String get tutorialSecondPageSubTitle =>
-      'Lassen Sie uns eine einzigartige Karte für diese App erstellen.\nIhre Beiträge werden helfen, die Karte zu entwickeln.';
+      'Erstellen Sie eine einzigartige Karte.\nIhre Beiträge entwickeln die Karte.';
 
   @override
   String get tutorialThirdPageTitle => 'Nutzungsbedingungen';
@@ -552,7 +549,7 @@ class L10nDe extends L10n {
       '・Seien Sie vorsichtig beim Teilen persönlicher Informationen wie Name, Adresse, Telefonnummer oder Standort.\n\n・Vermeiden Sie das Veröffentlichen anstößiger, unangemessener oder schädlicher Inhalte und verwenden Sie nicht die Werke anderer ohne Erlaubnis.\n\n・Beiträge, die nicht mit Essen zusammenhängen, können gelöscht werden.\n\n・Benutzer, die wiederholt gegen die Regeln verstoßen oder anstößige Inhalte veröffentlichen, können vom Management-Team entfernt werden.\n\n・Wir freuen uns darauf, diese App mit allen zu verbessern. von den Entwicklern';
 
   @override
-  String get tutorialThirdPageButton => 'Nutzungsbedingungen akzeptieren';
+  String get tutorialThirdPageButton => 'Akzeptieren';
 
   @override
   String get tutorialThirdPageClose => 'Schließen';
@@ -1571,7 +1568,7 @@ class L10nDe extends L10n {
 
   @override
   String get tutorialLocationSubTitle =>
-      'Um großartige Orte in der Nähe zu finden,\nvereinfache die Restaurantsuche';
+      'Großartige Orte in der Nähe finden.\nRestaurantsuche vereinfachen.';
 
   @override
   String get tutorialLocationButton => 'Standort aktivieren';
@@ -1581,10 +1578,10 @@ class L10nDe extends L10n {
 
   @override
   String get tutorialNotificationSubTitle =>
-      'Wir senden Erinnerungen zum Mittag- und Abendessen';
+      'Erinnerungen für Mittag- und Abendessen';
 
   @override
-  String get tutorialNotificationButton => 'Benachrichtigungen aktivieren';
+  String get tutorialNotificationButton => 'Aktivieren';
 
   @override
   String get selectMapApp => 'Karten-App auswählen';
