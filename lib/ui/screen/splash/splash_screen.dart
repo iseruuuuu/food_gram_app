@@ -94,7 +94,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
                         final count = (len * t).ceil().clamp(1, len);
                         final display = fullText.substring(0, count);
                         final style = TextStyle(
-                          fontSize: 46,
+                          fontSize: 44,
                           fontWeight: FontWeight.w700,
                           color: Colors.black,
                           letterSpacing: letterSpacing,
