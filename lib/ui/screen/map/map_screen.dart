@@ -7,6 +7,7 @@ import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
 import 'package:food_gram_app/core/local/force_update_checker.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
@@ -49,6 +50,8 @@ class MapScreen extends HookConsumerWidget {
             DialogHelper().forceUpdateDialog(context);
           },
         );
+        // 通知の初期化
+        initializeNotifications();
         return null;
       },
       [],
@@ -121,8 +124,7 @@ class MapScreen extends HookConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        if (!isSubscribed)
-                          const AppPremiumMembershipCard(),
+                        if (!isSubscribed) const AppPremiumMembershipCard(),
                         Padding(
                           padding: const EdgeInsets.only(right: 10),
                           child: Column(
