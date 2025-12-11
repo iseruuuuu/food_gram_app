@@ -47,7 +47,7 @@ class L10nEs extends L10n {
   String get settingAppBar => 'Configuración';
 
   @override
-  String get settingCheckVersion => 'Verificar última versión';
+  String get settingCheckVersion => 'Actualizar';
 
   @override
   String get settingCheckVersionDialogTitle => 'Información de Actualización';
@@ -67,22 +67,22 @@ class L10nEs extends L10n {
   String get settingGithub => 'Github';
 
   @override
-  String get settingReview => 'Apoyar con una Reseña';
+  String get settingReview => 'Reseña';
 
   @override
   String get settingLicense => 'Licencia';
 
   @override
-  String get settingShareApp => 'Compartir esta aplicación';
+  String get settingShareApp => 'Compartir';
 
   @override
   String get settingFaq => 'FAQ';
 
   @override
-  String get settingPrivacyPolicy => 'Política de Privacidad';
+  String get settingPrivacyPolicy => 'Privacidad';
 
   @override
-  String get settingTermsOfUse => 'Términos de Uso';
+  String get settingTermsOfUse => 'Términos';
 
   @override
   String get settingContact => 'Contacto';
@@ -118,16 +118,16 @@ class L10nEs extends L10n {
   String get settingLogoutButton => 'Cerrar Sesión';
 
   @override
-  String get settingDeleteAccountButton => 'Solicitar Eliminación de Cuenta';
+  String get settingDeleteAccountButton => 'Borrar cuenta';
 
   @override
-  String get settingQuestion => 'Caja de Preguntas';
+  String get settingQuestion => 'Preguntas';
 
   @override
   String get settingAccountManagement => 'Gestión de Cuenta';
 
   @override
-  String get settingRestoreSuccessTitle => 'Restauración exitosa';
+  String get settingRestoreSuccessTitle => 'Restaurar';
 
   @override
   String get settingRestoreSuccessSubtitle => '¡Funciones premium habilitadas!';
@@ -152,11 +152,10 @@ class L10nEs extends L10n {
   String get postFoodName => 'Nombre del Alimento';
 
   @override
-  String get postFoodNameInputField =>
-      'Ingrese nombre del alimento (Requerido)';
+  String get postFoodNameInputField => 'Qué comiste (obligatorio)';
 
   @override
-  String get postRestaurantNameInputField => 'Agregar restaurante (Requerido)';
+  String get postRestaurantNameInputField => 'Restaurante (obligatorio)';
 
   @override
   String get postComment => 'Ingrese comentario (Opcional)';
@@ -168,8 +167,7 @@ class L10nEs extends L10n {
   String get postError => 'Error de envío';
 
   @override
-  String get postCategoryTitle =>
-      'Seleccionar etiqueta de país/cocina (opcional)';
+  String get postCategoryTitle => 'País / Cocina (opcional)';
 
   @override
   String get postCountryCategory => 'País';
@@ -239,8 +237,7 @@ class L10nEs extends L10n {
   String get searchUserTitle => 'Búsqueda de Usuarios';
 
   @override
-  String get searchUserHeader =>
-      'Búsqueda de Usuarios (por Número de Publicaciones)';
+  String get searchUserHeader => 'Usuarios (por posts)';
 
   @override
   String searchUserPostCount(Object count) {
@@ -416,7 +413,7 @@ class L10nEs extends L10n {
   String get appTitle => 'FoodGram';
 
   @override
-  String get appSubtitle => 'Comparte tus momentos deliciosos';
+  String get appSubtitle => 'Comer × Foto × Compartir';
 
   @override
   String get agreeToTheTermsOfUse => 'Por favor acepte los Términos de Uso';
@@ -473,7 +470,7 @@ class L10nEs extends L10n {
   String get tabMyPage => 'Mi Página';
 
   @override
-  String get tabSetting => 'Configuración';
+  String get tabSetting => 'Ajustes';
 
   @override
   String get logoutFailure => 'Error de cierre de sesión';

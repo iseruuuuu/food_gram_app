@@ -74,13 +74,13 @@ class L10nTh extends L10n {
   String get settingShareApp => 'แชร์';
 
   @override
-  String get settingFaq => 'คำถามที่พบบ่อย';
+  String get settingFaq => 'FAQ';
 
   @override
-  String get settingPrivacyPolicy => 'นโยบายความเป็นส่วนตัว';
+  String get settingPrivacyPolicy => 'ความเป็นส่วนตัว';
 
   @override
-  String get settingTermsOfUse => 'ข้อกำหนดการใช้งาน';
+  String get settingTermsOfUse => 'ข้อกำหนด';
 
   @override
   String get settingContact => 'ติดต่อ';

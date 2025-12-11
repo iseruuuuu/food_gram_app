@@ -47,7 +47,7 @@ class L10nVi extends L10n {
   String get settingAppBar => 'Cài đặt';
 
   @override
-  String get settingCheckVersion => 'Kiểm tra phiên bản';
+  String get settingCheckVersion => 'Cập nhật';
 
   @override
   String get settingCheckVersionDialogTitle => 'Thông tin cập nhật';
@@ -78,10 +78,10 @@ class L10nVi extends L10n {
   String get settingFaq => 'FAQ';
 
   @override
-  String get settingPrivacyPolicy => 'Chính sách bảo mật';
+  String get settingPrivacyPolicy => 'Bảo mật';
 
   @override
-  String get settingTermsOfUse => 'Điều khoản sử dụng';
+  String get settingTermsOfUse => 'Điều khoản';
 
   @override
   String get settingContact => 'Liên hệ';
@@ -508,27 +508,25 @@ class L10nVi extends L10n {
   String get snsLogin => 'Đăng nhập SNS';
 
   @override
-  String get tutorialFirstPageTitle =>
-      'Chia sẻ những khoảnh khắc ngon miệng của bạn';
+  String get tutorialFirstPageTitle => 'Khoảnh khắc ngon miệng';
 
   @override
   String get tutorialFirstPageSubTitle =>
-      'Với FoodGram, làm cho mỗi bữa ăn trở nên đặc biệt hơn.\nTận hưởng khám phá hương vị mới!';
+      'Mỗi bữa ăn đặc biệt hơn.\nKhám phá hương vị mới!';
 
   @override
-  String get tutorialDiscoverTitle => 'Tìm món yêu thích tiếp theo của bạn!';
+  String get tutorialDiscoverTitle => 'Món yêu thích tiếp theo!';
 
   @override
   String get tutorialDiscoverSubTitle =>
-      'Với mỗi lần cuộn, những phát hiện ngon miệng mới.\nKhám phá món ăn ngon ngay bây giờ.';
+      'Phát hiện mới mỗi lần cuộn.\nKhám phá món ăn ngon.';
 
   @override
-  String get tutorialSecondPageTitle =>
-      'Bản đồ món ăn độc đáo cho ứng dụng này';
+  String get tutorialSecondPageTitle => 'Bản đồ món ăn độc đáo';
 
   @override
   String get tutorialSecondPageSubTitle =>
-      'Hãy tạo một bản đồ độc đáo cho ứng dụng này.\nBài đăng của bạn sẽ giúp phát triển bản đồ.';
+      'Tạo bản đồ độc đáo.\nBài đăng của bạn phát triển bản đồ.';
 
   @override
   String get tutorialThirdPageTitle => 'Điều khoản sử dụng';
@@ -538,7 +536,7 @@ class L10nVi extends L10n {
       '・Hãy thận trọng khi chia sẻ thông tin cá nhân, chẳng hạn như tên, địa chỉ, số điện thoại hoặc vị trí của bạn.\n\n・Tránh đăng nội dung xúc phạm, không phù hợp hoặc có hại, và không sử dụng tác phẩm của người khác mà không được phép.\n\n・Các bài đăng không liên quan đến thực phẩm có thể bị xóa.\n\n・Người dùng vi phạm lặp lại các quy tắc hoặc đăng nội dung phản cảm có thể bị đội ngũ quản lý xóa.\n\n・Chúng tôi mong muốn cải thiện ứng dụng này cùng với mọi người. bởi các nhà phát triển';
 
   @override
-  String get tutorialThirdPageButton => 'Đồng ý với điều khoản sử dụng';
+  String get tutorialThirdPageButton => 'Đồng ý';
 
   @override
   String get tutorialThirdPageClose => 'Đóng';
@@ -1552,20 +1550,19 @@ class L10nVi extends L10n {
 
   @override
   String get tutorialLocationSubTitle =>
-      'Để tìm những nơi tuyệt vời gần đây,\nlàm cho việc khám phá nhà hàng dễ dàng hơn';
+      'Tìm nơi tuyệt vời gần đây.\nKhám phá nhà hàng dễ dàng hơn.';
 
   @override
-  String get tutorialLocationButton => 'Bật vị trí';
+  String get tutorialLocationButton => 'Bật';
 
   @override
   String get tutorialNotificationTitle => 'Bật thông báo!';
 
   @override
-  String get tutorialNotificationSubTitle =>
-      'Chúng tôi sẽ gửi lời nhắc vào bữa trưa và bữa tối';
+  String get tutorialNotificationSubTitle => 'Lời nhắc cho bữa trưa và bữa tối';
 
   @override
-  String get tutorialNotificationButton => 'Bật thông báo';
+  String get tutorialNotificationButton => 'Bật';
 
   @override
   String get selectMapApp => 'Chọn ứng dụng bản đồ';

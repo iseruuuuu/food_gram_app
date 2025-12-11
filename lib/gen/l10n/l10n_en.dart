@@ -511,7 +511,7 @@ class L10nEn extends L10n {
 
   @override
   String get tutorialFirstPageSubTitle =>
-      'With FoodGram, make every meal more special.\nEnjoy discovering new flavors!';
+      'Make every meal special with FoodGram.\nEnjoy discovering new flavors!';
 
   @override
   String get tutorialDiscoverTitle => 'Find your next favorite dish!';
