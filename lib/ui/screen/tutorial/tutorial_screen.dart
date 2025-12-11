@@ -59,8 +59,7 @@ class TutorialScreen extends HookConsumerWidget {
       );
     }
 
-    final isSubscribe = isSubscribed;
-    const totalPages = 7;
+    final totalPages = isSubscribed ? 6 : 7;
     return Scaffold(
       body: Stack(
         children: [
@@ -209,7 +208,7 @@ class TutorialScreen extends HookConsumerWidget {
                 ],
               ),
               // 6ページ目
-              if (!isSubscribe)
+              if (!isSubscribed)
                 TutorialPaywall(
                   onNextPage: goToNextPage,
                   confettiController: controller,
