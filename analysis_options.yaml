@@ -17,3 +17,6 @@ linter:
 
     # BuildContextに関する警告
     use_build_context_synchronously: false
+    
+    # nullに関する警告
+    unreachable_from_main: false
