@@ -372,7 +372,7 @@ OAuth configuration for each provider:
 2. Verify redirect URL is correctly configured
 3. Verify deep link configuration
 
-## 参考リンク
+## Links
 
 - [Supabase Auth Documentation](https://supabase.com/docs/guides/auth)
 - [Google Sign-In Flutter](https://pub.dev/packages/google_sign_in)
