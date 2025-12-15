@@ -1,7 +1,13 @@
 # APP_USER_INTERFACE
 
-## 4.0
+## 5.0
+|  |  |  |  |  | 
+|:-----------:|:------------:|:------------:| :------------:| :------------:| 
+| <img width="2868" height="1320" alt="1" src="https://github.com/user-attachments/assets/68d90642-47b2-46ad-a452-484c02937cd9" /> | <img width="2868" height="1320" alt="2" src="https://github.com/user-attachments/assets/577f2c8e-646b-4ee2-8db3-0682861e0007" /> | <img width="2868" height="1320" alt="3" src="https://github.com/user-attachments/assets/8f9cf13e-115c-40dd-8f47-934291b31199" /> | <img width="2868" height="1320" alt="4" src="https://github.com/user-attachments/assets/ec1fc23e-fa5d-4ae9-937f-7b08ae378400" />  | <img width="2868" height="1320" alt="5" src="https://github.com/user-attachments/assets/0ec5181b-e951-4725-80ed-1625194785eb" /> | 
 
+
+
+## 4.0
 |  |  |  |  |  |  |
 |:-----------:|:------------:|:------------:| :------------:| :------------:| :------------:|
 | <img width="886" height="1920" alt="1" src="https://github.com/user-attachments/assets/b6379435-fe5d-4234-9859-df53cb97eb38" /> | <img width="886" height="1920" alt="2" src="https://github.com/user-attachments/assets/3ff8321f-d003-48c4-8946-2c07a3b99e38" /> | <img width="886" height="1920" alt="3" src="https://github.com/user-attachments/assets/16ba721d-d70e-4873-a3a7-8c6dc546ebec" /> | <img width="886" height="1920" alt="4" src="https://github.com/user-attachments/assets/2a36d821-dc48-458d-b470-35b68825b3d0" /> | <img width="886" height="1920" alt="5" src="https://github.com/user-attachments/assets/fba3cf83-c510-4040-a46c-38899031bd99" /> | 
