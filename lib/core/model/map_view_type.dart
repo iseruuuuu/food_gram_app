@@ -12,7 +12,7 @@ enum MapViewType {
   String get label {
     switch (this) {
       case MapViewType.detail:
-        return '詳細';
+        return '記録';
       case MapViewType.japan:
         return '日本';
       case MapViewType.world:
