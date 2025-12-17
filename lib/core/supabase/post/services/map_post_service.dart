@@ -136,4 +136,25 @@ class MapPostService extends _$MapPostService {
       duration: const Duration(minutes: 5),
     );
   }
+
+  /// 自分の投稿のみを取得（マップ表示用）
+  Future<List<Map<String, dynamic>>> getMyMapPosts() async {
+    final user = ref.read(currentUserProvider);
+    if (user == null) {
+      return [];
+    }
+
+    return _cacheManager.get<List<Map<String, dynamic>>>(
+      key: 'my_map_posts_$user',
+      fetcher: () async {
+        final posts = await supabase
+            .from('posts')
+            .select()
+            .eq('user_id', user)
+            .order('created_at');
+        return posts;
+      },
+      duration: const Duration(minutes: 5),
+    );
+  }
 }
