@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/ui/screen/map/map_screen.dart';
+import 'package:food_gram_app/ui/screen/map/my_map/my_map_screen.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_screen.dart';
-import 'package:food_gram_app/ui/screen/search/search_screen.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_screen.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
 import 'package:food_gram_app/ui/screen/time_line/time_line_screen.dart';
@@ -21,7 +21,7 @@ class TabViewModel extends _$TabViewModel {
   List<Widget> pageList = [
     const MapScreen(),
     const TimeLineScreen(),
-    const SearchScreen(),
+    const MyMapScreen(),
     const MyProfileScreen(),
     const SettingScreen(),
   ];
