@@ -151,6 +151,7 @@
   "mapStatsVisitedArea": "방문 지역",
   "mapStatsPosts": "게시물",
   "mapStatsActivityDays": "활동 일수",
+  "dayUnit": "일",
   "mapStatsPrefectures": "도도부현",
   "mapStatsAchievementRate": "달성률",
   "mapStatsVisitedCountries": "방문 국가",

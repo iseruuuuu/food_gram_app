@@ -469,6 +469,9 @@ class L10nZh extends L10n {
   String get mapStatsActivityDays => '活动天数';
 
   @override
+  String get dayUnit => '天';
+
+  @override
   String get mapStatsPrefectures => '都道府县';
 
   @override
@@ -2057,6 +2060,9 @@ class L10nZhTw extends L10nZh {
 
   @override
   String get mapStatsActivityDays => '活動天數';
+
+  @override
+  String get dayUnit => '天';
 
   @override
   String get mapStatsPrefectures => '都道府縣';

@@ -469,6 +469,9 @@ class L10nKo extends L10n {
   String get mapStatsActivityDays => '활동 일수';
 
   @override
+  String get dayUnit => '일';
+
+  @override
   String get mapStatsPrefectures => '도도부현';
 
   @override

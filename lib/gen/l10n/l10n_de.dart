@@ -488,6 +488,9 @@ class L10nDe extends L10n {
   String get mapStatsActivityDays => 'Tage';
 
   @override
+  String get dayUnit => 'Tage';
+
+  @override
   String get mapStatsPrefectures => 'Präfekturen';
 
   @override

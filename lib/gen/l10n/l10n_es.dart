@@ -488,6 +488,9 @@ class L10nEs extends L10n {
   String get mapStatsActivityDays => 'Días';
 
   @override
+  String get dayUnit => 'días';
+
+  @override
   String get mapStatsPrefectures => 'Prefecturas';
 
   @override

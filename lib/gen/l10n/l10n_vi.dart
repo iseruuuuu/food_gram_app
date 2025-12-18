@@ -477,6 +477,9 @@ class L10nVi extends L10n {
   String get mapStatsActivityDays => 'Ngày';
 
   @override
+  String get dayUnit => 'ngày';
+
+  @override
   String get mapStatsPrefectures => 'Tỉnh';
 
   @override

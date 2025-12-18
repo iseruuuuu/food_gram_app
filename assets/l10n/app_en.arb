@@ -151,6 +151,7 @@
   "mapStatsVisitedArea": "Areas",
   "mapStatsPosts": "Posts",
   "mapStatsActivityDays": "Days",
+  "dayUnit": "days",
   "mapStatsPrefectures": "Prefectures",
   "mapStatsAchievementRate": "Rate",
   "mapStatsVisitedCountries": "Countries",

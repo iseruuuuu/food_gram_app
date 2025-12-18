@@ -1027,6 +1027,12 @@ abstract class L10n {
   /// **'活動日数'**
   String get mapStatsActivityDays;
 
+  /// No description provided for @dayUnit.
+  ///
+  /// In ja, this message translates to:
+  /// **'日'**
+  String get dayUnit;
+
   /// No description provided for @mapStatsPrefectures.
   ///
   /// In ja, this message translates to:

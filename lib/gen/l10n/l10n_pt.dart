@@ -486,6 +486,9 @@ class L10nPt extends L10n {
   String get mapStatsActivityDays => 'Dias';
 
   @override
+  String get dayUnit => 'dias';
+
+  @override
   String get mapStatsPrefectures => 'Prefeituras';
 
   @override

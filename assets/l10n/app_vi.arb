@@ -151,6 +151,7 @@
   "mapStatsVisitedArea": "Khu vực",
   "mapStatsPosts": "Bài đăng",
   "mapStatsActivityDays": "Ngày",
+  "dayUnit": "ngày",
   "mapStatsPrefectures": "Tỉnh",
   "mapStatsAchievementRate": "Tỷ lệ",
   "mapStatsVisitedCountries": "Quốc gia",

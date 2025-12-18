@@ -487,6 +487,9 @@ class L10nFr extends L10n {
   String get mapStatsActivityDays => 'Jours';
 
   @override
+  String get dayUnit => 'jours';
+
+  @override
   String get mapStatsPrefectures => 'Préfectures';
 
   @override

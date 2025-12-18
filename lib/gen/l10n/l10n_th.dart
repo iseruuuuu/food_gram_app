@@ -471,6 +471,9 @@ class L10nTh extends L10n {
   String get mapStatsActivityDays => 'วัน';
 
   @override
+  String get dayUnit => 'วัน';
+
+  @override
   String get mapStatsPrefectures => 'จังหวัด';
 
   @override

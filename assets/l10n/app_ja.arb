@@ -151,6 +151,7 @@
   "mapStatsVisitedArea": "訪問エリア",
   "mapStatsPosts": "投稿",
   "mapStatsActivityDays": "活動日数",
+  "dayUnit": "日",
   "mapStatsPrefectures": "都道府県",
   "mapStatsAchievementRate": "達成率",
   "mapStatsVisitedCountries": "訪問国",

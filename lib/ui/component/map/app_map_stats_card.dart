@@ -114,7 +114,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(8),
               Text(
-                '$activityDays日',
+                '$activityDays${l10n.dayUnit}',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

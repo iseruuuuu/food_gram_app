@@ -469,6 +469,9 @@ class L10nJa extends L10n {
   String get mapStatsActivityDays => '活動日数';
 
   @override
+  String get dayUnit => '日';
+
+  @override
   String get mapStatsPrefectures => '都道府県';
 
   @override

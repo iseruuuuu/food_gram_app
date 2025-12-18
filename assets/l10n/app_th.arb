@@ -151,6 +151,7 @@
   "mapStatsVisitedArea": "พื้นที่",
   "mapStatsPosts": "โพสต์",
   "mapStatsActivityDays": "วัน",
+  "dayUnit": "วัน",
   "mapStatsPrefectures": "จังหวัด",
   "mapStatsAchievementRate": "อัตรา",
   "mapStatsVisitedCountries": "ประเทศ",
