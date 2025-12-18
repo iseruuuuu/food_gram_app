@@ -453,7 +453,7 @@ class L10nVi extends L10n {
   String get tabMap => 'Bản đồ';
 
   @override
-  String get tabMyMap => 'Bản đồ của tôi';
+  String get tabMyMap => 'Bản đồ tôi';
 
   @override
   String get tabSearch => 'Tìm kiếm';
