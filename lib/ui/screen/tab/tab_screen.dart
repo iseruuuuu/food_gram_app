@@ -84,7 +84,7 @@ class TabScreen extends ConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      'マイマップ',
+                      l10n.tabMyMap,
                       style: TabStyle.tab(value: state.selectedIndex == 2),
                     ),
                     const Gap(10),
