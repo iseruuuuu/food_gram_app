@@ -80,3 +80,11 @@ Future<Result<List<Model>, Exception>> restaurantReviews(
     failure: Failure<List<Model>, Exception>.new,
   );
 }
+
+/// 自分の投稿だけを取得するマップ用Provider
+@riverpod
+Future<List<Posts>> myMapRepository(Ref ref) async {
+  final response =
+      await ref.read(mapPostServiceProvider.notifier).getMyMapPosts();
+  return response.map(Posts.fromJson).toList();
+}

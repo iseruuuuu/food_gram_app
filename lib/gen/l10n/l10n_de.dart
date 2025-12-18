@@ -230,6 +230,9 @@ class L10nDe extends L10n {
   String get searchButton => 'Suchen';
 
   @override
+  String get searchTitle => 'Suchen';
+
+  @override
   String get searchRestaurantTitle => 'Restaurants suchen';
 
   @override
@@ -464,6 +467,9 @@ class L10nDe extends L10n {
   String get tabMap => 'Karte';
 
   @override
+  String get tabMyMap => 'Meine Karte';
+
+  @override
   String get tabSearch => 'Suchen';
 
   @override
@@ -471,6 +477,36 @@ class L10nDe extends L10n {
 
   @override
   String get tabSetting => 'Einstellungen';
+
+  @override
+  String get mapStatsVisitedArea => 'Gebiete';
+
+  @override
+  String get mapStatsPosts => 'Posts';
+
+  @override
+  String get mapStatsActivityDays => 'Tage';
+
+  @override
+  String get dayUnit => 'Tage';
+
+  @override
+  String get mapStatsPrefectures => 'Präfekturen';
+
+  @override
+  String get mapStatsAchievementRate => 'Rate';
+
+  @override
+  String get mapStatsVisitedCountries => 'Länder';
+
+  @override
+  String get mapViewTypeRecord => 'Aufzeichnung';
+
+  @override
+  String get mapViewTypeJapan => 'Japan';
+
+  @override
+  String get mapViewTypeWorld => 'Welt';
 
   @override
   String get logoutFailure => 'Abmeldung fehlgeschlagen';

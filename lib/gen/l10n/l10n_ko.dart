@@ -224,6 +224,9 @@ class L10nKo extends L10n {
   String get searchButton => '검색';
 
   @override
+  String get searchTitle => '검색';
+
+  @override
   String get searchRestaurantTitle => '레스토랑 검색';
 
   @override
@@ -445,6 +448,9 @@ class L10nKo extends L10n {
   String get tabMap => '지도';
 
   @override
+  String get tabMyMap => '내 지도';
+
+  @override
   String get tabSearch => '검색';
 
   @override
@@ -452,6 +458,36 @@ class L10nKo extends L10n {
 
   @override
   String get tabSetting => '설정';
+
+  @override
+  String get mapStatsVisitedArea => '방문 지역';
+
+  @override
+  String get mapStatsPosts => '게시물';
+
+  @override
+  String get mapStatsActivityDays => '활동 일수';
+
+  @override
+  String get dayUnit => '일';
+
+  @override
+  String get mapStatsPrefectures => '도도부현';
+
+  @override
+  String get mapStatsAchievementRate => '달성률';
+
+  @override
+  String get mapStatsVisitedCountries => '방문 국가';
+
+  @override
+  String get mapViewTypeRecord => '기록';
+
+  @override
+  String get mapViewTypeJapan => '일본';
+
+  @override
+  String get mapViewTypeWorld => '세계';
 
   @override
   String get logoutFailure => '로그아웃 실패';

@@ -78,13 +78,13 @@ class TabScreen extends ConsumerWidget {
                     const Gap(12),
                     Icon(
                       state.selectedIndex == 2
-                          ? CupertinoIcons.search_circle_fill
-                          : CupertinoIcons.search_circle,
+                          ? CupertinoIcons.map_pin_ellipse
+                          : CupertinoIcons.map_pin,
                       size: 30,
                     ),
                     const Gap(6),
                     Text(
-                      l10n.tabSearch,
+                      l10n.tabMyMap,
                       style: TabStyle.tab(value: state.selectedIndex == 2),
                     ),
                     const Gap(10),

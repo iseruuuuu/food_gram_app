@@ -224,6 +224,9 @@ class L10nJa extends L10n {
   String get searchButton => '検索';
 
   @override
+  String get searchTitle => '検索';
+
+  @override
   String get searchRestaurantTitle => 'レストランを探す';
 
   @override
@@ -445,6 +448,9 @@ class L10nJa extends L10n {
   String get tabMap => 'マップ';
 
   @override
+  String get tabMyMap => 'マイマップ';
+
+  @override
   String get tabSearch => '探す';
 
   @override
@@ -452,6 +458,36 @@ class L10nJa extends L10n {
 
   @override
   String get tabSetting => '設定';
+
+  @override
+  String get mapStatsVisitedArea => '訪問エリア';
+
+  @override
+  String get mapStatsPosts => '投稿';
+
+  @override
+  String get mapStatsActivityDays => '活動日数';
+
+  @override
+  String get dayUnit => '日';
+
+  @override
+  String get mapStatsPrefectures => '都道府県';
+
+  @override
+  String get mapStatsAchievementRate => '達成率';
+
+  @override
+  String get mapStatsVisitedCountries => '訪問国';
+
+  @override
+  String get mapViewTypeRecord => '記録';
+
+  @override
+  String get mapViewTypeJapan => '日本';
+
+  @override
+  String get mapViewTypeWorld => '世界';
 
   @override
   String get logoutFailure => 'ログアウト失敗';
