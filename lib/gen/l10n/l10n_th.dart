@@ -447,6 +447,9 @@ class L10nTh extends L10n {
   String get tabMap => 'แผนที่';
 
   @override
+  String get tabMyMap => 'แผนที่ของฉัน';
+
+  @override
   String get tabSearch => 'ค้นหา';
 
   @override
@@ -454,6 +457,33 @@ class L10nTh extends L10n {
 
   @override
   String get tabSetting => 'การตั้งค่า';
+
+  @override
+  String get mapStatsVisitedArea => 'พื้นที่';
+
+  @override
+  String get mapStatsPosts => 'โพสต์';
+
+  @override
+  String get mapStatsActivityDays => 'วัน';
+
+  @override
+  String get mapStatsPrefectures => 'จังหวัด';
+
+  @override
+  String get mapStatsAchievementRate => 'อัตรา';
+
+  @override
+  String get mapStatsVisitedCountries => 'ประเทศ';
+
+  @override
+  String get mapViewTypeRecord => 'บันทึก';
+
+  @override
+  String get mapViewTypeJapan => 'ญี่ปุ่น';
+
+  @override
+  String get mapViewTypeWorld => 'โลก';
 
   @override
   String get logoutFailure => 'ออกจากระบบล้มเหลว';

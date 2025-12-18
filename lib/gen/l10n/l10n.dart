@@ -979,6 +979,12 @@ abstract class L10n {
   /// **'マップ'**
   String get tabMap;
 
+  /// No description provided for @tabMyMap.
+  ///
+  /// In ja, this message translates to:
+  /// **'マイマップ'**
+  String get tabMyMap;
+
   /// No description provided for @tabSearch.
   ///
   /// In ja, this message translates to:
@@ -996,6 +1002,60 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'設定'**
   String get tabSetting;
+
+  /// No description provided for @mapStatsVisitedArea.
+  ///
+  /// In ja, this message translates to:
+  /// **'訪問エリア'**
+  String get mapStatsVisitedArea;
+
+  /// No description provided for @mapStatsPosts.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿'**
+  String get mapStatsPosts;
+
+  /// No description provided for @mapStatsActivityDays.
+  ///
+  /// In ja, this message translates to:
+  /// **'活動日数'**
+  String get mapStatsActivityDays;
+
+  /// No description provided for @mapStatsPrefectures.
+  ///
+  /// In ja, this message translates to:
+  /// **'都道府県'**
+  String get mapStatsPrefectures;
+
+  /// No description provided for @mapStatsAchievementRate.
+  ///
+  /// In ja, this message translates to:
+  /// **'達成率'**
+  String get mapStatsAchievementRate;
+
+  /// No description provided for @mapStatsVisitedCountries.
+  ///
+  /// In ja, this message translates to:
+  /// **'訪問国'**
+  String get mapStatsVisitedCountries;
+
+  /// No description provided for @mapViewTypeRecord.
+  ///
+  /// In ja, this message translates to:
+  /// **'記録'**
+  String get mapViewTypeRecord;
+
+  /// No description provided for @mapViewTypeJapan.
+  ///
+  /// In ja, this message translates to:
+  /// **'日本'**
+  String get mapViewTypeJapan;
+
+  /// No description provided for @mapViewTypeWorld.
+  ///
+  /// In ja, this message translates to:
+  /// **'世界'**
+  String get mapViewTypeWorld;
 
   /// No description provided for @logoutFailure.
   ///

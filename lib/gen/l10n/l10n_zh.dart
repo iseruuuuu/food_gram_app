@@ -445,6 +445,9 @@ class L10nZh extends L10n {
   String get tabMap => '地图';
 
   @override
+  String get tabMyMap => '我的地图';
+
+  @override
   String get tabSearch => '搜索';
 
   @override
@@ -452,6 +455,33 @@ class L10nZh extends L10n {
 
   @override
   String get tabSetting => '设置';
+
+  @override
+  String get mapStatsVisitedArea => '访问区域';
+
+  @override
+  String get mapStatsPosts => '投稿';
+
+  @override
+  String get mapStatsActivityDays => '活动天数';
+
+  @override
+  String get mapStatsPrefectures => '都道府县';
+
+  @override
+  String get mapStatsAchievementRate => '达成率';
+
+  @override
+  String get mapStatsVisitedCountries => '访问国家';
+
+  @override
+  String get mapViewTypeRecord => '记录';
+
+  @override
+  String get mapViewTypeJapan => '日本';
+
+  @override
+  String get mapViewTypeWorld => '世界';
 
   @override
   String get logoutFailure => '登出失败';
@@ -2002,6 +2032,9 @@ class L10nZhTw extends L10nZh {
   String get tabMap => '地圖';
 
   @override
+  String get tabMyMap => '我的地圖';
+
+  @override
   String get tabSearch => '搜尋';
 
   @override
@@ -2009,6 +2042,33 @@ class L10nZhTw extends L10nZh {
 
   @override
   String get tabSetting => '設定';
+
+  @override
+  String get mapStatsVisitedArea => '訪問區域';
+
+  @override
+  String get mapStatsPosts => '投稿';
+
+  @override
+  String get mapStatsActivityDays => '活動天數';
+
+  @override
+  String get mapStatsPrefectures => '都道府縣';
+
+  @override
+  String get mapStatsAchievementRate => '達成率';
+
+  @override
+  String get mapStatsVisitedCountries => '訪問國家';
+
+  @override
+  String get mapViewTypeRecord => '記錄';
+
+  @override
+  String get mapViewTypeJapan => '日本';
+
+  @override
+  String get mapViewTypeWorld => '世界';
 
   @override
   String get logoutFailure => '登出失敗';

@@ -464,6 +464,9 @@ class L10nEs extends L10n {
   String get tabMap => 'Mapa';
 
   @override
+  String get tabMyMap => 'Mi Mapa';
+
+  @override
   String get tabSearch => 'Buscar';
 
   @override
@@ -471,6 +474,33 @@ class L10nEs extends L10n {
 
   @override
   String get tabSetting => 'Ajustes';
+
+  @override
+  String get mapStatsVisitedArea => 'Zonas';
+
+  @override
+  String get mapStatsPosts => 'Posts';
+
+  @override
+  String get mapStatsActivityDays => 'Días';
+
+  @override
+  String get mapStatsPrefectures => 'Prefecturas';
+
+  @override
+  String get mapStatsAchievementRate => 'Tasa';
+
+  @override
+  String get mapStatsVisitedCountries => 'Países';
+
+  @override
+  String get mapViewTypeRecord => 'Registro';
+
+  @override
+  String get mapViewTypeJapan => 'Japón';
+
+  @override
+  String get mapViewTypeWorld => 'Mundo';
 
   @override
   String get logoutFailure => 'Error de cierre de sesión';

@@ -453,6 +453,9 @@ class L10nVi extends L10n {
   String get tabMap => 'Bản đồ';
 
   @override
+  String get tabMyMap => 'Bản đồ của tôi';
+
+  @override
   String get tabSearch => 'Tìm kiếm';
 
   @override
@@ -460,6 +463,33 @@ class L10nVi extends L10n {
 
   @override
   String get tabSetting => 'Cài đặt';
+
+  @override
+  String get mapStatsVisitedArea => 'Khu vực';
+
+  @override
+  String get mapStatsPosts => 'Bài đăng';
+
+  @override
+  String get mapStatsActivityDays => 'Ngày';
+
+  @override
+  String get mapStatsPrefectures => 'Tỉnh';
+
+  @override
+  String get mapStatsAchievementRate => 'Tỷ lệ';
+
+  @override
+  String get mapStatsVisitedCountries => 'Quốc gia';
+
+  @override
+  String get mapViewTypeRecord => 'Ghi chép';
+
+  @override
+  String get mapViewTypeJapan => 'Nhật Bản';
+
+  @override
+  String get mapViewTypeWorld => 'Thế giới';
 
   @override
   String get logoutFailure => 'Đăng xuất thất bại';

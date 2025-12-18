@@ -463,6 +463,9 @@ class L10nFr extends L10n {
   String get tabMap => 'Carte';
 
   @override
+  String get tabMyMap => 'Ma Carte';
+
+  @override
   String get tabSearch => 'Rechercher';
 
   @override
@@ -470,6 +473,33 @@ class L10nFr extends L10n {
 
   @override
   String get tabSetting => 'Paramètres';
+
+  @override
+  String get mapStatsVisitedArea => 'Zones';
+
+  @override
+  String get mapStatsPosts => 'Posts';
+
+  @override
+  String get mapStatsActivityDays => 'Jours';
+
+  @override
+  String get mapStatsPrefectures => 'Préfectures';
+
+  @override
+  String get mapStatsAchievementRate => 'Taux';
+
+  @override
+  String get mapStatsVisitedCountries => 'Pays';
+
+  @override
+  String get mapViewTypeRecord => 'Record';
+
+  @override
+  String get mapViewTypeJapan => 'Japon';
+
+  @override
+  String get mapViewTypeWorld => 'Monde';
 
   @override
   String get logoutFailure => 'Échec de la déconnexion';
