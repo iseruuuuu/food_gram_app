@@ -7,8 +7,8 @@ import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
-import 'package:food_gram_app/ui/component/map/map_stats_card.dart';
-import 'package:food_gram_app/ui/component/map/map_view_type_selector.dart';
+import 'package:food_gram_app/ui/component/map/app_map_stats_card.dart';
+import 'package:food_gram_app/ui/component/map/app_map_view_type_selector.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/my_map/my_map_view_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -82,11 +82,11 @@ class MyMapScreen extends HookConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        MapViewTypeSelector(
+                        AppMapViewTypeSelector(
                           currentViewType: state.viewType,
                           onViewTypeChanged: controller.changeViewType,
                         ),
-                        MapStatsCard(
+                        AppMapStatsCard(
                           visitedCitiesCount: state.visitedCitiesCount,
                           postsCount: state.postsCount,
                           completionPercentage: state.completionPercentage,
