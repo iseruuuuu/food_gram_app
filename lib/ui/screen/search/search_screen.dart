@@ -7,6 +7,7 @@ import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/screen/search/component/restaurant_search_tab.dart';
 import 'package:food_gram_app/ui/screen/search/component/user_search_tab.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SearchScreen extends HookConsumerWidget {
@@ -28,22 +29,37 @@ class SearchScreen extends HookConsumerWidget {
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
           elevation: 0,
-          toolbarHeight: 0,
-          bottom: TabBar(
-            indicatorWeight: 1,
-            automaticIndicatorColorAdjustment: false,
-            unselectedLabelColor: Colors.grey,
-            labelColor: Colors.black,
-            indicatorColor: Colors.black,
-            indicatorSize: TabBarIndicatorSize.tab,
-            splashFactory: NoSplash.splashFactory,
-            overlayColor: WidgetStateProperty.all(Colors.transparent),
-            enableFeedback: true,
-            controller: tabController,
-            tabs: [
-              Tab(text: l10n.searchRestaurantTitle),
-              Tab(text: l10n.searchUserTitle),
-            ],
+          title: Text(
+            l10n.searchTitle,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+          ),
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              context.pop();
+            },
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(48),
+            child: TabBar(
+              indicatorWeight: 1,
+              automaticIndicatorColorAdjustment: false,
+              unselectedLabelColor: Colors.grey,
+              labelColor: Colors.black,
+              indicatorColor: Colors.black,
+              indicatorSize: TabBarIndicatorSize.tab,
+              splashFactory: NoSplash.splashFactory,
+              overlayColor: WidgetStateProperty.all(Colors.transparent),
+              enableFeedback: true,
+              controller: tabController,
+              tabs: [
+                Tab(text: l10n.searchRestaurantTitle),
+                Tab(text: l10n.searchUserTitle),
+              ],
+            ),
           ),
         ),
         body: TabBarView(

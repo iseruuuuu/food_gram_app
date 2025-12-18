@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
@@ -22,11 +23,16 @@ class TimeLineScreen extends HookConsumerWidget {
     final tabController =
         useTabController(initialLength: categoriesData.length);
     final scrollController = useScrollController();
+    final l10n = L10n.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(0),
-        child: AppBar(backgroundColor: Colors.white),
+        child: AppBar(
+          surfaceTintColor: Colors.transparent,
+          forceMaterialTransparency: true,
+          elevation: 0,
+        ),
       ),
       body: RefreshIndicator(
         color: Colors.black,
@@ -44,6 +50,46 @@ class TimeLineScreen extends HookConsumerWidget {
             SliverToBoxAdapter(
               child: Column(
                 children: [
+                  // 検索ListTile
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: Colors.grey[300]!,
+                      ),
+                    ),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 2,
+                      ),
+                      dense: true,
+                      leading: const Icon(
+                        Icons.search,
+                        color: Colors.black,
+                        size: 24,
+                      ),
+                      title: Text(
+                        l10n.searchRestaurantTitle,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      trailing: const Icon(
+                        Icons.chevron_right,
+                        color: Colors.grey,
+                      ),
+                      onTap: () {
+                        context.pushNamed(RouterPath.search);
+                      },
+                    ),
+                  ),
                   TabBar(
                     tabAlignment: TabAlignment.start,
                     controller: tabController,
