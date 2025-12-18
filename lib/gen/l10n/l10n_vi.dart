@@ -227,6 +227,9 @@ class L10nVi extends L10n {
   String get searchButton => 'Tìm kiếm';
 
   @override
+  String get searchTitle => 'Tìm kiếm';
+
+  @override
   String get searchRestaurantTitle => 'Tìm kiếm nhà hàng';
 
   @override

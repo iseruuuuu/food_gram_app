@@ -70,6 +70,7 @@
   "emptyPosts": "投稿がありません",
   "searchEmptyResult": "該当する場所が見つかりませんでした",
   "searchButton":"検索",
+  "searchTitle": "検索",
   "searchRestaurantTitle": "レストランを探す",
   "searchUserTitle": "ユーザー検索",
   "searchUserHeader": "ユーザー検索（投稿数順）",

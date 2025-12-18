@@ -70,6 +70,7 @@
   "emptyPosts": "게시물이 없습니다",
   "searchEmptyResult": "검색 결과를 찾을 수 없습니다.",
   "searchButton": "검색",
+  "searchTitle": "검색",
   "searchRestaurantTitle": "레스토랑 검색",
   "searchUserTitle": "사용자 검색",
   "searchUserHeader": "사용자 검색 (게시물 수순)",

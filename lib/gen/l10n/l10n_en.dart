@@ -226,6 +226,9 @@ class L10nEn extends L10n {
   String get searchButton => 'Search';
 
   @override
+  String get searchTitle => 'Search';
+
+  @override
   String get searchRestaurantTitle => 'Search Restaurants';
 
   @override

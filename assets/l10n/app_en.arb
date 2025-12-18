@@ -70,6 +70,7 @@
   "emptyPosts": "There are no posts",
   "searchEmptyResult": "No results found for your search.",
   "searchButton":"Search",
+  "searchTitle": "Search",
   "searchRestaurantTitle": "Search Restaurants",
   "searchUserTitle": "User Search",
   "searchUserHeader": "User Search (by Post Count)",

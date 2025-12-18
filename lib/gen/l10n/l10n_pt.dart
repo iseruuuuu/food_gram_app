@@ -231,6 +231,9 @@ class L10nPt extends L10n {
   String get searchButton => 'Pesquisar';
 
   @override
+  String get searchTitle => 'Pesquisar';
+
+  @override
   String get searchRestaurantTitle => 'Pesquisar Restaurantes';
 
   @override

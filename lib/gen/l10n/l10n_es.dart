@@ -231,6 +231,9 @@ class L10nEs extends L10n {
   String get searchButton => 'Buscar';
 
   @override
+  String get searchTitle => 'Buscar';
+
+  @override
   String get searchRestaurantTitle => 'Buscar Restaurantes';
 
   @override

@@ -225,6 +225,9 @@ class L10nTh extends L10n {
   String get searchButton => 'ค้นหา';
 
   @override
+  String get searchTitle => 'ค้นหา';
+
+  @override
   String get searchRestaurantTitle => 'ค้นหาร้านอาหาร';
 
   @override

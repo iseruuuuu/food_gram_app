@@ -230,6 +230,9 @@ class L10nDe extends L10n {
   String get searchButton => 'Suchen';
 
   @override
+  String get searchTitle => 'Suchen';
+
+  @override
   String get searchRestaurantTitle => 'Restaurants suchen';
 
   @override

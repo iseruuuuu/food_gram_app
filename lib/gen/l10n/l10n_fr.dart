@@ -228,6 +228,9 @@ class L10nFr extends L10n {
   String get searchButton => 'Recherche';
 
   @override
+  String get searchTitle => 'Rechercher';
+
+  @override
   String get searchRestaurantTitle => 'Rechercher des restaurants';
 
   @override

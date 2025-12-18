@@ -224,6 +224,9 @@ class L10nJa extends L10n {
   String get searchButton => '検索';
 
   @override
+  String get searchTitle => '検索';
+
+  @override
   String get searchRestaurantTitle => 'レストランを探す';
 
   @override

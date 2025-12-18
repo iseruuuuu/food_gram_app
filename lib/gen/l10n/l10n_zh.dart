@@ -224,6 +224,9 @@ class L10nZh extends L10n {
   String get searchButton => '搜索';
 
   @override
+  String get searchTitle => '搜索';
+
+  @override
   String get searchRestaurantTitle => '搜索餐厅';
 
   @override
@@ -1809,6 +1812,9 @@ class L10nZhTw extends L10nZh {
 
   @override
   String get searchButton => '搜尋';
+
+  @override
+  String get searchTitle => '搜尋';
 
   @override
   String get searchRestaurantTitle => '搜尋餐廳';

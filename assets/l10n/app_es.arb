@@ -70,6 +70,7 @@
   "emptyPosts": "No hay publicaciones",
   "searchEmptyResult": "No se encontraron resultados para su búsqueda.",
   "searchButton": "Buscar",
+  "searchTitle": "Buscar",
   "searchRestaurantTitle": "Buscar Restaurantes",
   "searchUserTitle": "Búsqueda de Usuarios",
   "searchUserHeader": "Usuarios (por posts)",
