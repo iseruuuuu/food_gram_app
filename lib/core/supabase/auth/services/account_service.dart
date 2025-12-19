@@ -39,6 +39,8 @@ class AccountService {
       'exchanged_point': 0,
       'is_subscribe': false,
       'tag': '',
+      'last_post_date': null,
+      'streak_weeks': 0,
     };
 
     try {
