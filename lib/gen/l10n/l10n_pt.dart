@@ -1632,4 +1632,19 @@ class L10nPt extends L10n {
 
   @override
   String get mapAppNaver => 'Naver Map';
+
+  @override
+  String get streakDialogFirstTitle => 'Publicação concluída';
+
+  @override
+  String get streakDialogFirstContent =>
+      'Continue publicando\npara manter sequência';
+
+  @override
+  String get streakDialogContinueTitle => 'Publicação concluída';
+
+  @override
+  String streakDialogContinueContent(int weeks) {
+    return '$weeks semanas consecutivas!\nContinue publicando\npara manter sequência';
+  }
 }

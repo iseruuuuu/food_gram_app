@@ -1610,4 +1610,18 @@ class L10nTh extends L10n {
 
   @override
   String get mapAppNaver => 'Naver Map';
+
+  @override
+  String get streakDialogFirstTitle => 'โพสต์เสร็จสมบูรณ์';
+
+  @override
+  String get streakDialogFirstContent => 'โพสต์ต่อเนื่อง\nเพื่อรักษา streak';
+
+  @override
+  String get streakDialogContinueTitle => 'โพสต์เสร็จสมบูรณ์';
+
+  @override
+  String streakDialogContinueContent(int weeks) {
+    return 'ติดต่อกัน $weeks สัปดาห์!\nโพสต์ต่อเนื่อง\nเพื่อรักษา streak';
+  }
 }

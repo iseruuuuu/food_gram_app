@@ -527,7 +527,18 @@
   "mapAppBaidu": "Baidu Maps",
   "mapAppMapsMe": "Maps.me",
   "mapAppKakao": "KakaoMap",
-  "mapAppNaver": "Naver Map"
+  "mapAppNaver": "Naver Map",
+  "streakDialogFirstTitle": "โพสต์เสร็จสมบูรณ์",
+  "streakDialogFirstContent": "โพสต์ต่อเนื่อง\nเพื่อรักษา streak",
+  "streakDialogContinueTitle": "โพสต์เสร็จสมบูรณ์",
+  "streakDialogContinueContent": "ติดต่อกัน {weeks} สัปดาห์!\nโพสต์ต่อเนื่อง\nเพื่อรักษา streak",
+  "@streakDialogContinueContent": {
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      }
+    }
+  }
 }
 
 

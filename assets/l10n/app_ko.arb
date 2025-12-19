@@ -527,5 +527,16 @@
   "mapAppBaidu": "바이두 맵",
   "mapAppMapsMe": "Maps.me",
   "mapAppKakao": "카카오맵",
-  "mapAppNaver": "네이버 지도"
+  "mapAppNaver": "네이버 지도",
+  "streakDialogFirstTitle": "게시 완료",
+  "streakDialogFirstContent": "계속 게시하면\n연속 게시 가능",
+  "streakDialogContinueTitle": "게시 완료",
+  "streakDialogContinueContent": "{weeks}주 연속!\n계속 게시하면\n연속 게시 가능",
+  "@streakDialogContinueContent": {
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      }
+    }
+  }
 }

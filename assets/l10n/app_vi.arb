@@ -527,7 +527,18 @@
   "mapAppBaidu": "Baidu Maps",
   "mapAppMapsMe": "Maps.me",
   "mapAppKakao": "KakaoMap",
-  "mapAppNaver": "Naver Map"
+  "mapAppNaver": "Naver Map",
+  "streakDialogFirstTitle": "Đã đăng bài",
+  "streakDialogFirstContent": "Tiếp tục đăng\nđể duy trì streak",
+  "streakDialogContinueTitle": "Đã đăng bài",
+  "streakDialogContinueContent": "Liên tiếp {weeks} tuần!\nTiếp tục đăng\nđể duy trì streak",
+  "@streakDialogContinueContent": {
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      }
+    }
+  }
 }
 
 

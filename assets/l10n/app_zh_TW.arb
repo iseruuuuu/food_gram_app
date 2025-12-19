@@ -527,7 +527,18 @@
   "mapAppBaidu": "百度地圖",
   "mapAppMapsMe": "Maps.me",
   "mapAppKakao": "KakaoMap",
-  "mapAppNaver": "Naver地圖"
+  "mapAppNaver": "Naver地圖",
+  "streakDialogFirstTitle": "發布完成",
+  "streakDialogFirstContent": "持續發布\n可連續發布",
+  "streakDialogContinueTitle": "發布完成",
+  "streakDialogContinueContent": "連續{weeks}週！\n持續發布\n可連續發布",
+  "@streakDialogContinueContent": {
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      }
+    }
+  }
 }
 
 

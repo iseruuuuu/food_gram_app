@@ -1620,4 +1620,18 @@ class L10nVi extends L10n {
 
   @override
   String get mapAppNaver => 'Naver Map';
+
+  @override
+  String get streakDialogFirstTitle => 'Đã đăng bài';
+
+  @override
+  String get streakDialogFirstContent => 'Tiếp tục đăng\nđể duy trì streak';
+
+  @override
+  String get streakDialogContinueTitle => 'Đã đăng bài';
+
+  @override
+  String streakDialogContinueContent(int weeks) {
+    return 'Liên tiếp $weeks tuần!\nTiếp tục đăng\nđể duy trì streak';
+  }
 }

@@ -34,6 +34,10 @@ class $AssetsGifGen {
   AssetGenImage get myProfile =>
       const AssetGenImage('assets/gif/my_profile.gif');
 
+  /// File path: assets/gif/post_success.gif
+  AssetGenImage get postSuccess =>
+      const AssetGenImage('assets/gif/post_success.gif');
+
   /// File path: assets/gif/profile_detail.gif
   AssetGenImage get profileDetail =>
       const AssetGenImage('assets/gif/profile_detail.gif');
@@ -51,6 +55,7 @@ class $AssetsGifGen {
     login3,
     login4,
     myProfile,
+    postSuccess,
     profileDetail,
     tutorial1,
   ];

@@ -5,12 +5,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/theme/style/post_style.dart';
+import 'package:food_gram_app/core/supabase/user/services/streak_service.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/dialog/app_streak_dialog.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/post/post_view_model.dart';
 import 'package:gap/gap.dart';
@@ -373,7 +375,25 @@ class PostScreen extends HookConsumerWidget {
                                 foodTag: foodTagString,
                               );
                       if (result) {
-                        context.pop(true);
+                        // ストリークを更新
+                        final streakService =
+                            ref.read(streakServiceProvider.notifier);
+                        final streakResult = await streakService.updateStreak();
+                        // ストリークが更新された場合のみダイアログを表示
+                        if (streakResult.isUpdated) {
+                          // ダイアログを表示（初回投稿かどうかを判定）
+                          final isFirstTime = streakResult.newStreakWeeks == 1;
+                          if (context.mounted) {
+                            await showStreakDialog(
+                              context: context,
+                              streakWeeks: streakResult.newStreakWeeks,
+                              isFirstTime: isFirstTime,
+                            );
+                          }
+                        }
+                        if (context.mounted) {
+                          context.pop(true);
+                        }
                       } else {
                         final status =
                             ref.watch(postViewModelProvider()).status;

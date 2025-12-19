@@ -3282,6 +3282,30 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'Naver Map'**
   String get mapAppNaver;
+
+  /// No description provided for @streakDialogFirstTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿が完了しました'**
+  String get streakDialogFirstTitle;
+
+  /// No description provided for @streakDialogFirstContent.
+  ///
+  /// In ja, this message translates to:
+  /// **'継続投稿すると\n記録が残ります!'**
+  String get streakDialogFirstContent;
+
+  /// No description provided for @streakDialogContinueTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'投稿が完了しました'**
+  String get streakDialogContinueTitle;
+
+  /// No description provided for @streakDialogContinueContent.
+  ///
+  /// In ja, this message translates to:
+  /// **'{weeks}週間連続で投稿できました！\n継続して投稿していこう!'**
+  String streakDialogContinueContent(int weeks);
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
