@@ -1,7 +1,0 @@
-appId: com.example.food_gram_app.dev
----
-- tapOn: |-
-    profileIcon
-    Tab 2 of 3
-- assertVisible: プロフィールを編集
-- assertVisible: ポイントを交換する
