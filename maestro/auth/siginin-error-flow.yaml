@@ -1,9 +1,0 @@
-appId: com.example.food_gram_app.dev
----
-- launchApp
-- inputText: iseryuuuuu3@gmail.com
-- tapOn: 新規作成  /  ログイン
-- waitForAnimationToEnd
-- assertVisible: メールアプリで認証をしてください
-- tapOn: 新規作成  /  ログイン
-- assertVisible: エラーが発生しました
