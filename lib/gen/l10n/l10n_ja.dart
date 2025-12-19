@@ -1606,13 +1606,13 @@ class L10nJa extends L10n {
   String get streakDialogFirstTitle => '投稿が完了しました';
 
   @override
-  String get streakDialogFirstContent => '継続投稿すると\n連続で投稿ができます';
+  String get streakDialogFirstContent => '継続投稿すると\n記録が残ります!';
 
   @override
   String get streakDialogContinueTitle => '投稿が完了しました';
 
   @override
   String streakDialogContinueContent(int weeks) {
-    return '$weeks週間連続で投稿できました！\n継続して投稿しよう';
+    return '$weeks週間連続で投稿できました！\n継続して投稿していこう!';
   }
 }

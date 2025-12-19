@@ -3292,7 +3292,7 @@ abstract class L10n {
   /// No description provided for @streakDialogFirstContent.
   ///
   /// In ja, this message translates to:
-  /// **'継続投稿すると\n連続で投稿ができます'**
+  /// **'継続投稿すると\n記録が残ります!'**
   String get streakDialogFirstContent;
 
   /// No description provided for @streakDialogContinueTitle.
@@ -3304,7 +3304,7 @@ abstract class L10n {
   /// No description provided for @streakDialogContinueContent.
   ///
   /// In ja, this message translates to:
-  /// **'{weeks}週間連続で投稿できました！\n継続して投稿しよう'**
+  /// **'{weeks}週間連続で投稿できました！\n継続して投稿していこう!'**
   String streakDialogContinueContent(int weeks);
 }
 

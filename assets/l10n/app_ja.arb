@@ -529,9 +529,9 @@
   "mapAppKakao": "KakaoMap",
   "mapAppNaver": "Naver Map",
   "streakDialogFirstTitle": "投稿が完了しました",
-  "streakDialogFirstContent": "継続投稿すると\n連続で投稿ができます",
+  "streakDialogFirstContent": "継続投稿すると\n記録が残ります!",
   "streakDialogContinueTitle": "投稿が完了しました",
-  "streakDialogContinueContent": "{weeks}週間連続で投稿できました！\n継続して投稿しよう",
+  "streakDialogContinueContent": "{weeks}週間連続で投稿できました！\n継続して投稿していこう!",
   "@streakDialogContinueContent": {
     "placeholders": {
       "weeks": {
