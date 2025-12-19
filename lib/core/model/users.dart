@@ -17,6 +17,8 @@ class Users with _$Users {
     required int exchangedPoint,
     required bool isSubscribe,
     required String tag,
+    DateTime? lastPostDate,
+    @Default(0) int streakWeeks,
   }) = _Users;
 
   const Users._();
