@@ -1639,4 +1639,19 @@ class L10nFr extends L10n {
 
   @override
   String get mapAppNaver => 'Naver Map';
+
+  @override
+  String get streakDialogFirstTitle => 'Publication terminée';
+
+  @override
+  String get streakDialogFirstContent =>
+      'Continuez à publier\npour maintenir série';
+
+  @override
+  String get streakDialogContinueTitle => 'Publication terminée';
+
+  @override
+  String streakDialogContinueContent(int weeks) {
+    return '$weeks semaines consécutives !\nContinuez à publier\npour maintenir série';
+  }
 }

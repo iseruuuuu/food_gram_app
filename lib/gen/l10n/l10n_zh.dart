@@ -1597,6 +1597,20 @@ class L10nZh extends L10n {
 
   @override
   String get mapAppNaver => 'Naver地图';
+
+  @override
+  String get streakDialogFirstTitle => '发布完成';
+
+  @override
+  String get streakDialogFirstContent => '持续发布\n可连续发布';
+
+  @override
+  String get streakDialogContinueTitle => '发布完成';
+
+  @override
+  String streakDialogContinueContent(int weeks) {
+    return '连续$weeks周！\n持续发布\n可连续发布';
+  }
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -3190,4 +3204,18 @@ class L10nZhTw extends L10nZh {
 
   @override
   String get mapAppNaver => 'Naver地圖';
+
+  @override
+  String get streakDialogFirstTitle => '發布完成';
+
+  @override
+  String get streakDialogFirstContent => '持續發布\n可連續發布';
+
+  @override
+  String get streakDialogContinueTitle => '發布完成';
+
+  @override
+  String streakDialogContinueContent(int weeks) {
+    return '連續$weeks週！\n持續發布\n可連續發布';
+  }
 }

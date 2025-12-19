@@ -527,5 +527,16 @@
   "mapAppBaidu": "Baidu Maps",
   "mapAppMapsMe": "Maps.me",
   "mapAppKakao": "KakaoMap",
-  "mapAppNaver": "Naver Map"
+  "mapAppNaver": "Naver Map",
+  "streakDialogFirstTitle": "Publication terminée",
+  "streakDialogFirstContent": "Continuez à publier\npour maintenir série",
+  "streakDialogContinueTitle": "Publication terminée",
+  "streakDialogContinueContent": "{weeks} semaines consécutives !\nContinuez à publier\npour maintenir série",
+  "@streakDialogContinueContent": {
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      }
+    }
+  }
 }

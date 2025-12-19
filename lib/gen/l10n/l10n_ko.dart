@@ -1600,4 +1600,18 @@ class L10nKo extends L10n {
 
   @override
   String get mapAppNaver => '네이버 지도';
+
+  @override
+  String get streakDialogFirstTitle => '게시 완료';
+
+  @override
+  String get streakDialogFirstContent => '계속 게시하면\n연속 게시 가능';
+
+  @override
+  String get streakDialogContinueTitle => '게시 완료';
+
+  @override
+  String streakDialogContinueContent(int weeks) {
+    return '$weeks주 연속!\n계속 게시하면\n연속 게시 가능';
+  }
 }
