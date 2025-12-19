@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 
@@ -12,7 +13,6 @@ Future<void> showStreakDialog({
 
   final String title;
   final String content;
-  final String imageUrl;
 
   title = l10n.streakDialogFirstTitle;
 
@@ -24,8 +24,6 @@ Future<void> showStreakDialog({
     content = l10n.streakDialogContinueContent(streakWeeks);
   }
 
-  imageUrl = 'https://ugokawaii.com/wp-content/uploads/2023/01/eat-fish.gif';
-
   await showDialog<void>(
     context: context,
     builder: (context) {
@@ -33,8 +31,7 @@ Future<void> showStreakDialog({
       return SizedBox(
         width: deviceWidth * 0.85,
         child: GiffyDialog.image(
-          Image.network(
-            imageUrl,
+          Assets.gif.postSuccess.image(
             height: 250,
             fit: BoxFit.contain,
             errorBuilder: (context, error, stackTrace) {
