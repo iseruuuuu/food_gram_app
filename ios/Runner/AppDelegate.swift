@@ -57,4 +57,20 @@ import UserNotifications
     Messaging.messaging().appDidReceiveMessage(userInfo)
     completionHandler(.newData)
   }
+  
+  // ディープリンク処理: アプリがURLで開かれたとき
+  override func application(_ app: UIApplication,
+                            open url: URL,
+                            options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    // FlutterAppDelegateが自動的に処理する
+    return super.application(app, open: url, options: options)
+  }
+  
+  // ディープリンク処理: アプリがバックグラウンドでURLで開かれたとき
+  override func application(_ application: UIApplication,
+                            continue userActivity: NSUserActivity,
+                            restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+    // FlutterAppDelegateが自動的に処理する
+    return super.application(application, continue: userActivity, restorationHandler: restorationHandler)
+  }
 }
