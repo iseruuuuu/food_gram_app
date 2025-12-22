@@ -32,6 +32,11 @@ GoRouter router(Ref ref) {
       return null;
     },
     routes: <RouteBase>[
+      // ルートパス「/」をスプラッシュ画面にリダイレクト（ディープリンク対応）
+      GoRoute(
+        path: '/',
+        redirect: (context, state) => '/${RouterPath.splash}',
+      ),
       GoRoute(
         path: '/${RouterPath.tutorial}',
         name: RouterPath.tutorial,
