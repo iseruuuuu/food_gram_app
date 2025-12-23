@@ -63,13 +63,10 @@ class StreakService extends _$StreakService {
 
       // データベースを更新
       if (isUpdated) {
-        await supabase
-            .from('users')
-            .update({
-              'last_post_date': now.toIso8601String(),
-              'streak_weeks': newStreakWeeks,
-            })
-            .eq('user_id', _currentUserId!);
+        await supabase.from('users').update({
+          'last_post_date': now.toIso8601String(),
+          'streak_weeks': newStreakWeeks,
+        }).eq('user_id', _currentUserId!);
       }
 
       return (newStreakWeeks: newStreakWeeks, isUpdated: isUpdated);
@@ -99,4 +96,3 @@ class StreakService extends _$StreakService {
     }
   }
 }
-
