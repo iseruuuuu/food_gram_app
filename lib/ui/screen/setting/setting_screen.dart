@@ -95,18 +95,18 @@ class SettingScreen extends HookConsumerWidget {
                           SettingTile(
                             icon: Icons.help_outline,
                             title: l10n.settingFaq,
-                            onTap: () => LaunchUrlHelper().open(URL.faq),
+                            onTap: () => LaunchUrlHelper().open(URL.faq(context)),
                           ),
                           SettingTile(
                             icon: Icons.security,
                             title: l10n.settingPrivacyPolicy,
                             onTap: () =>
-                                LaunchUrlHelper().open(URL.privacyPolicy),
+                                LaunchUrlHelper().open(URL.privacyPolicy(context)),
                           ),
                           SettingTile(
                             icon: Icons.assignment,
                             title: l10n.settingTermsOfUse,
-                            onTap: () => LaunchUrlHelper().open(URL.termsOfUse),
+                            onTap: () => LaunchUrlHelper().open(URL.termsOfUse(context)),
                           ),
                           SettingTile(
                             icon: Icons.chat,
