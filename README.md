@@ -57,6 +57,28 @@ https://github.com/user-attachments/assets/8514a5a7-984a-4738-ba6e-23cee3c293e1
 
 [View on Google Play Store](https://play.google.com/store/apps/details?id=com.food_gram_app.com.com.com&hl=ja)
 
+## 📞 Contact & Support
+
+If you have any questions, issues, or feedback, please feel free to reach out:
+
+- **GitHub Issues**: [Create an issue](https://github.com/iseruuuuu/food_gram_app/issues) for bug reports or feature requests
+- **Twitter**: [@isekiryu](https://twitter.com/isekiryu) - DM for inquiries
+- **Email**: iseryuuuuu3@gmail.com
+
+We aim to respond to inquiries as soon as possible. Your feedback helps us improve FoodGram!
+
+## ❓ FAQ
+
+For frequently asked questions, please see our [FAQ documentation](./docs/ja/FAQ.md).
+
+- [日本語版 FAQ](./docs/ja/FAQ.md)
+- [English FAQ](./docs/en/FAQ.md)
+
+## 📋 Legal Documents
+
+- [利用規約 (Terms of Service)](./docs/ja/TERMS_OF_SERVICE.md) / [English](./docs/en/TERMS_OF_SERVICE.md)
+- [プライバシーポリシー (Privacy Policy)](./docs/ja/PRIVACY_POLICY.md) / [English](./docs/en/PRIVACY_POLICY.md)
+
 ## 🛠️ Development Environment
 
 ### Development Tools
