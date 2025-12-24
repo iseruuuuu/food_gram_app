@@ -1,8 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/api/client/dio_client.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
-import 'package:food_gram_app/env.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -15,46 +14,53 @@ Future<PaginationList<Restaurant>> kakaoRestaurantServices(
   Ref ref,
   String keyword,
 ) async {
-  final dio = ref.watch(dioClientProvider);
   final restaurants = <Restaurant>[];
-  final kakaoRestaurants = await _search(dio, ref, keyword);
+  final kakaoRestaurants = await _search(ref, keyword);
   restaurants.addAll(kakaoRestaurants);
   return restaurants;
 }
 
 Future<List<Restaurant>> _search(
-  Dio dio,
   Ref ref,
   String keyword,
 ) async {
   final logger = Logger();
   try {
-    final response = await dio.get<Map<String, dynamic>>(
-      'https://dapi.kakao.com/v2/local/search/keyword.json',
-      options: Options(
-        headers: {
-          'Authorization': 'KakaoAK ${Env.kakaoRestApiKey}',
-        },
-      ),
-      queryParameters: {
+    // 現在地を取得（Kakao Local APIは y=緯度(lat), x=経度(lon) で指定）
+    final currentLocation = await ref.read(locationProvider.future);
+    final supabase = ref.read(supabaseProvider);
+    final response = await supabase.functions.invoke(
+      // 注意: 関数名は大文字小文字まで一致が必要
+      'Kakao-Restaurant-Search-',
+      body: {
         'query': keyword,
-        'size': '15',
+        'size': 15,
+        'x': currentLocation.longitude,
+        'y': currentLocation.latitude,
+        'radius': 2000,
       },
     );
-    if (response.statusCode == 200) {
-      final data = response.data!;
-      final documents = data['documents'] as List<dynamic>;
 
-      return documents.map(
+    if (response.status == 200) {
+      final data = response.data as Map<String, dynamic>;
+      final documents = data['documents'] as List<dynamic>;
+      final list = documents.map(
         (value) {
           return Restaurant.fromKakaoJson(value as Map<String, dynamic>);
         },
       ).toList();
+      // 検索結果の件数を記録（0件ならクエリや半径の調整を検討）
+      Logger().i('Kakao Edge OK: count=${list.length}, query="$keyword"');
+      return list;
     } else {
+      logger.w(
+        'Kakao Edge Function returned non-200: '
+        'status=${response.status}, data=${response.data}',
+      );
       return [];
     }
-  } on DioException catch (e) {
-    logger.e('Kakao API Error: Status ${e.response?.statusCode}');
+  } on Exception catch (e) {
+    logger.e('Kakao API Error: $e');
     return [];
   }
 }

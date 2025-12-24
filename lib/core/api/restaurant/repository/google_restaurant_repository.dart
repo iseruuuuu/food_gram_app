@@ -1,6 +1,5 @@
 import 'dart:core';
 
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/api/restaurant/services/google_restaurant_service.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
@@ -8,12 +7,12 @@ import 'package:food_gram_app/core/utils/geo_distance.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'restaurant_repository.g.dart';
+part 'google_restaurant_repository.g.dart';
 
 typedef PaginationList<T> = List<T>;
 
 @riverpod
-Future<PaginationList<Restaurant>> restaurantRepository(
+Future<PaginationList<Restaurant>> googleRestaurantRepository(
   Ref ref,
   String keyword,
 ) async {
@@ -50,7 +49,7 @@ Future<PaginationList<Restaurant>> restaurantRepository(
     });
 
     return restaurants;
-  } on DioException catch (_) {
+  } on Exception catch (_) {
     return [];
   }
 }

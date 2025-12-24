@@ -1,6 +1,5 @@
 import 'dart:core';
 
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/api/restaurant/services/kakao_restaurant_service.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
@@ -48,7 +47,7 @@ Future<PaginationList<Restaurant>> kakaoRestaurantRepository(
       return distanceA.compareTo(distanceB);
     });
     return restaurants;
-  } on DioException catch (_) {
+  } on Exception catch (_) {
     return [];
   }
 }
