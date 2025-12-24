@@ -31,7 +31,7 @@ Future<List<Restaurant>> _search(
     final supabase = ref.read(supabaseProvider);
     final response = await supabase.functions.invoke(
       // 注意: 関数名は大文字小文字まで一致が必要
-      'Kakao-Restaurant-Search',
+      'Kakao-Restaurant-Search-',
       body: {
         'query': keyword,
         'size': 15,
