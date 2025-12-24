@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
@@ -72,19 +70,6 @@ class SettingViewModel extends _$SettingViewModel {
         context,
         'This App is new version👍',
       );
-    }
-  }
-
-  Future<bool> purchase() async {
-    loading.state = true;
-    try {
-      final offeringsName =
-          Platform.isIOS ? 'FoodGramのメンバーシップ' : 'foodgramspecial';
-      return await ref
-          .read(revenueCatServiceProvider.notifier)
-          .makePurchase(offeringsName);
-    } finally {
-      loading.state = false;
     }
   }
 

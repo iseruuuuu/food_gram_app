@@ -30,7 +30,7 @@ class RevenueCatService extends _$RevenueCatService {
       if (_isInitialized) {
         offerings = await Purchases.getOfferings();
         final customerInfo = await Purchases.getCustomerInfo();
-        await getPurchaserInfo(customerInfo);
+        await _getPurchaserInfo(customerInfo);
         final isSubscription = customerInfo.entitlements.active;
         return isSubscription.isNotEmpty;
       }
@@ -45,7 +45,7 @@ class RevenueCatService extends _$RevenueCatService {
       offerings = await Purchases.getOfferings();
       // Supabase の UID を使用してログイン
       final result = await Purchases.logIn(user!);
-      await getPurchaserInfo(result.customerInfo);
+      await _getPurchaserInfo(result.customerInfo);
       _isInitialized = true;
       final isSubscription = result.customerInfo.entitlements.active;
       if (isSubscription.isEmpty) {
@@ -59,16 +59,37 @@ class RevenueCatService extends _$RevenueCatService {
     }
   }
 
-  Future<void> getPurchaserInfo(CustomerInfo customerInfo) async {
+  /// 購入の復元
+  /// iosの場合は、購入の復元（以前の購入履歴を復元する）を実装することが必要
+  Future<bool> restorePurchase(String entitlement) async {
+    try {
+      final customerInfo = await Purchases.restorePurchases();
+      final isActive = await _updatePurchases(customerInfo, entitlement);
+      if (!isActive) {
+        logger.w('購入情報なし');
+        return false;
+      } else {
+        await _getPurchaserInfo(customerInfo);
+        await ref.read(accountServiceProvider).updateIsSubscribe();
+        await ref.read(isSubscribeProvider.notifier).refresh();
+        return true;
+      }
+    } on PlatformException catch (e) {
+      logger.e('purchase repo  restorePurchase error $e');
+      return false;
+    }
+  }
+
+  Future<void> _getPurchaserInfo(CustomerInfo customerInfo) async {
     try {
       isSubscribed =
-          await updatePurchases(customerInfo, 'monthly_subscription');
+          await _updatePurchases(customerInfo, 'monthly_subscription');
     } on PlatformException catch (e) {
       logger.e('getPurchaserInfo error $e');
     }
   }
 
-  Future<bool> updatePurchases(
+  Future<bool> _updatePurchases(
     CustomerInfo purchaserInfo,
     String entitlement,
   ) async {
@@ -81,65 +102,5 @@ class RevenueCatService extends _$RevenueCatService {
       isPurchased = true;
     }
     return isPurchased;
-  }
-
-  /// 購入処理
-  /// makePurchase()を呼び出して実際に課金処理を行う
-  Future<bool> makePurchase(String offeringsName) async {
-    try {
-      offerings = await Purchases.getOfferings();
-      Package? package;
-      final offering = offerings.all[offeringsName];
-      if (offering != null && offering.monthly != null) {
-        package = offering.monthly;
-        logger.i('Found package in offering: $offeringsName');
-      } else {
-        final currentOffering = offerings.current;
-        if (currentOffering != null) {
-          // monthlyパッケージを探す
-          package = currentOffering.monthly;
-          if (package == null && currentOffering.availablePackages.isNotEmpty) {
-            package = currentOffering.availablePackages.first;
-          }
-        }
-      }
-      if (package == null) {
-        return false;
-      }
-      final purchaseResult =
-          await Purchases.purchase(PurchaseParams.package(package));
-      await getPurchaserInfo(purchaseResult.customerInfo);
-      await ref.read(accountServiceProvider).updateIsSubscribe();
-      // サブスクリプション状態を更新
-      await ref.read(isSubscribeProvider.notifier).refresh();
-      return true;
-    } on PlatformException catch (e) {
-      logger.e('makePurchase error $e');
-      return false;
-    }
-  }
-
-  /// 購入の復元
-  /// iosの場合は、購入の復元（以前の購入履歴を復元する）を実装することが必要
-  Future<bool> restorePurchase(String entitlement) async {
-    try {
-      /// Entitlements
-      /// 「アイテムの保有状況（アイテムが購入済みで、アクティブになっているかどうか）」を確認するための設定項目
-      final customerInfo = await Purchases.restorePurchases();
-      final isActive = await updatePurchases(customerInfo, entitlement);
-      if (!isActive) {
-        logger.w('購入情報なし');
-        return false;
-      } else {
-        await getPurchaserInfo(customerInfo);
-        await ref.read(accountServiceProvider).updateIsSubscribe();
-        // サブスクリプション状態を更新
-        await ref.read(isSubscribeProvider.notifier).refresh();
-        return true;
-      }
-    } on PlatformException catch (e) {
-      logger.e('purchase repo  restorePurchase error $e');
-      return false;
-    }
   }
 }
