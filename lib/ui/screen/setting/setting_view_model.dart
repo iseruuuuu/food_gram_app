@@ -78,7 +78,7 @@ class SettingViewModel extends _$SettingViewModel {
     try {
       return await ref
           .read(revenueCatServiceProvider.notifier)
-          .restorePurchase('foodgram_premium_membership');
+          .restorePurchase();
     } finally {
       loading.state = false;
     }

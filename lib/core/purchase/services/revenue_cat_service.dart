@@ -17,6 +17,7 @@ class RevenueCatService extends _$RevenueCatService {
   bool isSubscribed = false;
   late Offerings offerings;
   bool _isInitialized = false;
+  static const String _entitlementId = 'foodgram_premium_membership';
 
   String? get user => ref.read(currentUserProvider);
 
@@ -64,9 +65,7 @@ class RevenueCatService extends _$RevenueCatService {
   Future<bool> syncAfterPaywall() async {
     try {
       final info = await Purchases.getCustomerInfo();
-      final active =
-          info.entitlements.all['foodgram_premium_membership']?.isActive ??
-              false;
+      final active = info.entitlements.all[_entitlementId]?.isActive ?? false;
       if (active) {
         await ref.read(accountServiceProvider).updateIsSubscribe();
       }
@@ -80,10 +79,10 @@ class RevenueCatService extends _$RevenueCatService {
 
   /// 購入の復元
   /// iosの場合は、購入の復元（以前の購入履歴を復元する）を実装することが必要
-  Future<bool> restorePurchase(String entitlement) async {
+  Future<bool> restorePurchase() async {
     try {
       final customerInfo = await Purchases.restorePurchases();
-      final isActive = await _updatePurchases(customerInfo, entitlement);
+      final isActive = await _updatePurchases(customerInfo, _entitlementId);
       if (!isActive) {
         logger.w('購入情報なし');
         return false;
@@ -101,8 +100,7 @@ class RevenueCatService extends _$RevenueCatService {
 
   Future<void> _getPurchaserInfo(CustomerInfo customerInfo) async {
     try {
-      isSubscribed =
-          await _updatePurchases(customerInfo, 'monthly_subscription');
+      isSubscribed = await _updatePurchases(customerInfo, _entitlementId);
     } on PlatformException catch (e) {
       logger.e('getPurchaserInfo error $e');
     }
