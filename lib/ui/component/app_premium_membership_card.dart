@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:food_gram_app/core/purchase/providers/subscription_provider.dart';
+import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/style/setting_style.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:gap/gap.dart';
@@ -62,9 +63,11 @@ class AppPremiumMembershipCard extends ConsumerWidget {
                 onTap: () async {
                   try {
                     await RevenueCatUI.presentPaywall();
-                    ref.invalidate(
-                      subscriptionProvider,
-                    );
+                    await ref
+                        .read(revenueCatServiceProvider.notifier)
+                        .syncAfterPaywall();
+                    // ユーザーのサブスク状態を再評価（UI全体に反映）
+                    ref.invalidate(isSubscribeProvider);
                   } on Exception catch (_) {
                     return;
                   }
