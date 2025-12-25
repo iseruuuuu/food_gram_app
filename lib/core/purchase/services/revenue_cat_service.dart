@@ -59,6 +59,8 @@ class RevenueCatService extends _$RevenueCatService {
     }
   }
 
+  /// RevenueCat の購入状態を再取得
+  /// 購入状態が有効なら、DBを更新し、UI側の購読フラグを再評価する
   Future<bool> syncAfterPaywall() async {
     try {
       final info = await Purchases.getCustomerInfo();
