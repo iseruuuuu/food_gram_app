@@ -63,7 +63,6 @@ class AppPremiumMembershipCard extends ConsumerWidget {
                 onTap: () async {
                   try {
                     await RevenueCatUI.presentPaywall();
-                    // サービスでDB更新とUI再評価まで実施
                     await ref
                         .read(revenueCatServiceProvider.notifier)
                         .syncAfterPaywall();
