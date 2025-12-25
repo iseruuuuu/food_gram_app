@@ -112,7 +112,6 @@ class RevenueCatService extends _$RevenueCatService {
   ) async {
     var isPurchased = false;
     final entitlements = purchaserInfo.entitlements.all;
-
     if (entitlements.isEmpty || !entitlements.containsKey(entitlement)) {
       isPurchased = false;
     } else if (entitlements[entitlement]!.isActive) {
