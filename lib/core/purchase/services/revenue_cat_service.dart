@@ -59,6 +59,23 @@ class RevenueCatService extends _$RevenueCatService {
     }
   }
 
+  Future<bool> syncAfterPaywall() async {
+    try {
+      final info = await Purchases.getCustomerInfo();
+      final active =
+          info.entitlements.all['foodgram_premium_membership']?.isActive ??
+              false;
+      if (active) {
+        await ref.read(accountServiceProvider).updateIsSubscribe();
+      }
+      await ref.read(isSubscribeProvider.notifier).refresh();
+      return active;
+    } on PlatformException catch (e) {
+      logger.e('syncAfterPaywall error $e');
+      return false;
+    }
+  }
+
   /// 購入の復元
   /// iosの場合は、購入の復元（以前の購入履歴を復元する）を実装することが必要
   Future<bool> restorePurchase(String entitlement) async {
