@@ -7,6 +7,7 @@ import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider
 import 'package:food_gram_app/env.dart';
 import 'package:logger/logger.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'revenue_cat_service.g.dart';
@@ -20,6 +21,7 @@ class RevenueCatService extends _$RevenueCatService {
   static const String _entitlementId = 'foodgram_premium_membership';
 
   String? get user => ref.read(currentUserProvider);
+  String get entitlementId => _entitlementId;
 
   @override
   Future<bool> build() {
@@ -58,6 +60,23 @@ class RevenueCatService extends _$RevenueCatService {
       logger.e('initInAppPurchase error caught! $e');
       return false;
     }
+  }
+
+  /// Paywall表示の前後でエンタイトルメントを比較し、
+  /// 非アクティブ→アクティブに変化した時のみ同期処理を行う
+  Future<bool> presentPaywallWithActivationGuard() async {
+    final beforeInfo = await Purchases.getCustomerInfo();
+    final wasActive =
+        beforeInfo.entitlements.all[_entitlementId]?.isActive ?? false;
+    await RevenueCatUI.presentPaywall();
+    final afterInfo = await Purchases.getCustomerInfo();
+    final isActiveNow =
+        afterInfo.entitlements.all[_entitlementId]?.isActive ?? false;
+    if (isActiveNow && !wasActive) {
+      await syncAfterPaywall();
+      return true;
+    }
+    return false;
   }
 
   /// RevenueCat の購入状態を再取得

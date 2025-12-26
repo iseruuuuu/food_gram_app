@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
-import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 
 class AppPromoteDialog extends ConsumerWidget {
   const AppPromoteDialog({super.key});
@@ -55,11 +53,13 @@ class AppPromoteDialog extends ConsumerWidget {
             ElevatedButton(
               onPressed: () async {
                 context.pop();
-                await RevenueCatUI.presentPaywall();
-                await ref
-                    .read(revenueCatServiceProvider.notifier)
-                    .syncAfterPaywall();
-                ref.invalidate(isSubscribeProvider);
+                try {
+                  await ref
+                      .read(revenueCatServiceProvider.notifier)
+                      .presentPaywallWithActivationGuard();
+                } on Exception catch (_) {
+                  return;
+                }
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
