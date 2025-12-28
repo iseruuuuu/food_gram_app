@@ -85,6 +85,27 @@ class TranslationService {
     }
   }
 
+  /// 翻訳が必要かどうかを判定するユーティリティ。
+  /// - 空文字は false
+  /// - 言語判定不可は false
+  /// - ソースとターゲットが同一言語なら false
+  /// - それ以外は true
+  Future<bool> shouldTranslate({
+    required String text,
+    required Locale targetLocale,
+  }) async {
+    final trimmed = text.trim();
+    if (trimmed.isEmpty) {
+      return false;
+    }
+    final detected = await _safeIdentifyLanguage(trimmed);
+    if (detected == null) {
+      return false;
+    }
+    final targetBcp47 = _localeToBcp47(targetLocale);
+    return detected != targetBcp47;
+  }
+
   /// 文字列の言語を推定し、BCP-47 形式（正規化後）で返す。
   /// 'und'（未判定）や例外時は null を返す。
   Future<String?> _safeIdentifyLanguage(String text) async {

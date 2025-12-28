@@ -101,9 +101,17 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
     if (_isTranslating) {
       return;
     }
-    setState(() => _isTranslating = true);
     final svc = ref.read(translationServiceProvider);
     final locale = Localizations.localeOf(context);
+    // 同一言語であれば何もしない（SnackBarも出さない）
+    final need = await svc.shouldTranslate(
+      text: widget.text,
+      targetLocale: locale,
+    );
+    if (!need) {
+      return;
+    }
+    setState(() => _isTranslating = true);
     try {
       final out = await svc.translateIfNeeded(
         text: widget.text,
