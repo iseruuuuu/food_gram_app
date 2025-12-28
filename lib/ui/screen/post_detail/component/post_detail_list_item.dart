@@ -14,7 +14,7 @@ import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/go_router_extension.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/common/widgets/translatable_text.dart';
+import 'package:food_gram_app/ui/component/app_translatable_text.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/dialog/app_share_dialog.dart';
 import 'package:food_gram_app/ui/component/profile/app_profile_image.dart';
@@ -439,7 +439,7 @@ class PostDetailListItem extends HookConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TranslatableText(
+                    AppTranslatableText(
                       posts.foodName,
                       style: DetailPostStyle.foodName(),
                     ),
@@ -460,7 +460,7 @@ class PostDetailListItem extends HookConsumerWidget {
                     if (posts.comment.isNotEmpty)
                       Column(
                         children: [
-                          TranslatableText(
+                          AppTranslatableText(
                             posts.comment,
                             style: DetailPostStyle.comment(),
                           ),

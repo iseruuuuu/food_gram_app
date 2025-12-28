@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/translation/translation_service.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 
-class TranslatableText extends ConsumerStatefulWidget {
-  const TranslatableText(
+class AppTranslatableText extends ConsumerStatefulWidget {
+  const AppTranslatableText(
     this.text, {
     super.key,
     this.style,
@@ -21,10 +21,10 @@ class TranslatableText extends ConsumerStatefulWidget {
   final bool enableCopy;
 
   @override
-  ConsumerState<TranslatableText> createState() => _TranslatableTextState();
+  ConsumerState<AppTranslatableText> createState() => _TranslatableTextState();
 }
 
-class _TranslatableTextState extends ConsumerState<TranslatableText> {
+class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
   String? _translated;
   // 二重実行防止のためのフラグ
   bool _isTranslating = false;
