@@ -538,5 +538,9 @@
         "type": "int"
       }
     }
-  }
+  },
+  "translatableTranslate": "Traduire",
+  "translatableShowOriginal": "Afficher l’original",
+  "translatableCopy": "Copier",
+  "translatableCopied": "Copié dans le presse-papiers"
 }

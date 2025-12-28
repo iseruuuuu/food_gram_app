@@ -538,5 +538,9 @@
         "type": "int"
       }
     }
-  }
+  },
+  "translatableTranslate": "번역하기",
+  "translatableShowOriginal": "원문 보기",
+  "translatableCopy": "복사",
+  "translatableCopied": "클립보드에 복사됨"
 }

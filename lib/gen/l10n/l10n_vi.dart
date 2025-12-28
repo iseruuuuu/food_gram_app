@@ -1634,4 +1634,16 @@ class L10nVi extends L10n {
   String streakDialogContinueContent(int weeks) {
     return 'Liên tiếp $weeks tuần!\nTiếp tục đăng\nđể duy trì streak';
   }
+
+  @override
+  String get translatableTranslate => 'Dịch';
+
+  @override
+  String get translatableShowOriginal => 'Hiển thị bản gốc';
+
+  @override
+  String get translatableCopy => 'Sao chép';
+
+  @override
+  String get translatableCopied => 'Đã sao chép vào bộ nhớ tạm';
 }

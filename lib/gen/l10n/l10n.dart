@@ -3306,6 +3306,30 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'{weeks}週間連続で投稿できました！\n継続して投稿していこう!'**
   String streakDialogContinueContent(int weeks);
+
+  /// No description provided for @translatableTranslate.
+  ///
+  /// In ja, this message translates to:
+  /// **'翻訳する'**
+  String get translatableTranslate;
+
+  /// No description provided for @translatableShowOriginal.
+  ///
+  /// In ja, this message translates to:
+  /// **'原文を表示'**
+  String get translatableShowOriginal;
+
+  /// No description provided for @translatableCopy.
+  ///
+  /// In ja, this message translates to:
+  /// **'コピー'**
+  String get translatableCopy;
+
+  /// No description provided for @translatableCopied.
+  ///
+  /// In ja, this message translates to:
+  /// **'コピーしました'**
+  String get translatableCopied;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

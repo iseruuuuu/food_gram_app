@@ -538,7 +538,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "translatableTranslate": "Dịch",
+  "translatableShowOriginal": "Hiển thị bản gốc",
+  "translatableCopy": "Sao chép",
+  "translatableCopied": "Đã sao chép vào bộ nhớ tạm"
 }
 
 

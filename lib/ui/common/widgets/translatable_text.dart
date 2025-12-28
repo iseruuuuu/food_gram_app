@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/translation/translation_service.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 
 class TranslatableText extends ConsumerStatefulWidget {
   const TranslatableText(
@@ -47,6 +48,10 @@ class _TranslatableTextState extends ConsumerState<TranslatableText> {
     if (!mounted) {
       return;
     }
+    final l10n = L10n.of(context);
+    final translateLabel = l10n.translatableTranslate;
+    final showOriginalLabel = l10n.translatableShowOriginal;
+    final copyLabel = l10n.translatableCopy;
     // 長押しメニュー（翻訳/原文/コピー）
     final action = await showModalBottomSheet<String>(
       context: context,
@@ -57,16 +62,19 @@ class _TranslatableTextState extends ConsumerState<TranslatableText> {
             children: [
               ListTile(
                 leading: const Icon(Icons.translate),
+                title: Text(translateLabel),
                 onTap: () => Navigator.of(ctx).pop('translate'),
               ),
               if (_translated != null)
                 ListTile(
                   leading: const Icon(Icons.undo),
+                  title: Text(showOriginalLabel),
                   onTap: () => Navigator.of(ctx).pop('original'),
                 ),
               if (widget.enableCopy)
                 ListTile(
                   leading: const Icon(Icons.copy),
+                  title: Text(copyLabel),
                   onTap: () => Navigator.of(ctx).pop('copy'),
                 ),
             ],
@@ -118,7 +126,8 @@ class _TranslatableTextState extends ConsumerState<TranslatableText> {
     if (!mounted) {
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-    );
+    final l10n = L10n.of(context);
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(l10n.translatableCopied)));
   }
 }

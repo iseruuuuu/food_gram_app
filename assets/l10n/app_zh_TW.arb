@@ -538,7 +538,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "translatableTranslate": "翻譯",
+  "translatableShowOriginal": "顯示原文",
+  "translatableCopy": "複製",
+  "translatableCopied": "已複製到剪貼簿"
 }
 
 

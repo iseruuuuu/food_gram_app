@@ -1647,4 +1647,16 @@ class L10nPt extends L10n {
   String streakDialogContinueContent(int weeks) {
     return '$weeks semanas consecutivas!\nContinue publicando\npara manter sequência';
   }
+
+  @override
+  String get translatableTranslate => 'Traduzir';
+
+  @override
+  String get translatableShowOriginal => 'Mostrar original';
+
+  @override
+  String get translatableCopy => 'Copiar';
+
+  @override
+  String get translatableCopied => 'Copiado para a área de transferência';
 }
