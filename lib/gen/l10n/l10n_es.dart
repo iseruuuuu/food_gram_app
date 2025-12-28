@@ -1651,4 +1651,19 @@ class L10nEs extends L10n {
   String streakDialogContinueContent(int weeks) {
     return '¡$weeks semanas seguidas!\nSigue publicando\npara mantener racha';
   }
+
+  @override
+  String get translatableTranslate => 'Traducir';
+
+  @override
+  String get translatableShowOriginal => 'Mostrar original';
+
+  @override
+  String get translatableCopy => 'Copiar';
+
+  @override
+  String get translatableCopied => 'Copiado al portapapeles';
+
+  @override
+  String get translatableTranslateFailed => 'Error al traducir';
 }

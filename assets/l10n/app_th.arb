@@ -538,7 +538,12 @@
         "type": "int"
       }
     }
-  }
+  },
+  "translatableTranslate": "แปลภาษา",
+  "translatableShowOriginal": "แสดงต้นฉบับ",
+  "translatableCopy": "คัดลอก",
+  "translatableCopied": "คัดลอกไปยังคลิปบอร์ดแล้ว",
+  "translatableTranslateFailed": "ไม่สามารถแปลได้"
 }
 
 

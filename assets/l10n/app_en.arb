@@ -538,5 +538,10 @@
         "type": "int"
       }
     }
-  }
+  },
+  "translatableTranslate": "Translate",
+  "translatableShowOriginal": "Show original",
+  "translatableCopy": "Copy",
+  "translatableCopied": "Copied to clipboard",
+  "translatableTranslateFailed": "Translation failed"
 }

@@ -1,3 +1,5 @@
+// dart format width=80
+
 /// GENERATED CODE - DO NOT MODIFY BY HAND
 /// *****************************************************
 ///  FlutterGen
@@ -5,7 +7,7 @@
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
+// ignore_for_file: deprecated_member_use,directives_ordering,implicit_dynamic_list_literal,unnecessary_import
 
 import 'package:flutter/widgets.dart';
 
@@ -48,17 +50,17 @@ class $AssetsGifGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-    empty,
-    error,
-    login1,
-    login2,
-    login3,
-    login4,
-    myProfile,
-    postSuccess,
-    profileDetail,
-    tutorial1,
-  ];
+        empty,
+        error,
+        login1,
+        login2,
+        login3,
+        login4,
+        myProfile,
+        postSuccess,
+        profileDetail,
+        tutorial1
+      ];
 }
 
 class $AssetsIconGen {
@@ -86,15 +88,8 @@ class $AssetsIconGen {
   AssetGenImage get icon6 => const AssetGenImage('assets/icon/icon6.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [
-    icon0,
-    icon1,
-    icon2,
-    icon3,
-    icon4,
-    icon5,
-    icon6,
-  ];
+  List<AssetGenImage> get values =>
+      [icon0, icon1, icon2, icon3, icon4, icon5, icon6];
 }
 
 class $AssetsImageGen {
@@ -169,26 +164,26 @@ class $AssetsImageGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-    appIcon,
-    authImage,
-    empty,
-    error,
-    food,
-    foodgramer,
-    frame,
-    loading,
-    logoGoogle,
-    paywall2,
-    paywallBackground,
-    pin,
-    pinIcon,
-    pinRamen,
-    present,
-    profileHeader,
-    profileIcon,
-    tutorial1,
-    tutorial2,
-  ];
+        appIcon,
+        authImage,
+        empty,
+        error,
+        food,
+        foodgramer,
+        frame,
+        loading,
+        logoGoogle,
+        paywall2,
+        paywallBackground,
+        pin,
+        pinIcon,
+        pinRamen,
+        present,
+        profileHeader,
+        profileIcon,
+        tutorial1,
+        tutorial2
+      ];
 }
 
 class $AssetsLottieGen {
@@ -217,14 +212,14 @@ class $AssetsLottieGen {
 
   /// List of all assets
   List<String> get values => [
-    heart,
-    loading,
-    notification,
-    permission,
-    tutorial1,
-    tutorial2,
-    tutorial3,
-  ];
+        heart,
+        loading,
+        notification,
+        permission,
+        tutorial1,
+        tutorial2,
+        tutorial3
+      ];
 }
 
 class $AssetsMapGen {
@@ -288,13 +283,8 @@ class $AssetsTrophyGen {
       const AssetGenImage('assets/trophy/trophy_silver.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [
-    trophyBronze,
-    trophyDiamond,
-    trophyEmerald,
-    trophyGold,
-    trophySilver,
-  ];
+  List<AssetGenImage> get values =>
+      [trophyBronze, trophyDiamond, trophyEmerald, trophyGold, trophySilver];
 }
 
 class Assets {
@@ -310,12 +300,18 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
+  const AssetGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+    this.animation,
+  });
 
   final String _assetName;
 
   final Size? size;
   final Set<String> flavors;
+  final AssetGenImageAnimation? animation;
 
   Image image({
     Key? key,
@@ -370,11 +366,30 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({AssetBundle? bundle, String? package}) {
-    return AssetImage(_assetName, bundle: bundle, package: package);
+  ImageProvider provider({
+    AssetBundle? bundle,
+    String? package,
+  }) {
+    return AssetImage(
+      _assetName,
+      bundle: bundle,
+      package: package,
+    );
   }
 
   String get path => _assetName;
 
   String get keyName => _assetName;
+}
+
+class AssetGenImageAnimation {
+  const AssetGenImageAnimation({
+    required this.isAnimation,
+    required this.duration,
+    required this.frames,
+  });
+
+  final bool isAnimation;
+  final Duration duration;
+  final int frames;
 }

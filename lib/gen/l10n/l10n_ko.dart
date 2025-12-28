@@ -1614,4 +1614,19 @@ class L10nKo extends L10n {
   String streakDialogContinueContent(int weeks) {
     return '$weeks주 연속!\n계속 게시하면\n연속 게시 가능';
   }
+
+  @override
+  String get translatableTranslate => '번역하기';
+
+  @override
+  String get translatableShowOriginal => '원문 보기';
+
+  @override
+  String get translatableCopy => '복사';
+
+  @override
+  String get translatableCopied => '클립보드에 복사됨';
+
+  @override
+  String get translatableTranslateFailed => '번역에 실패했습니다';
 }

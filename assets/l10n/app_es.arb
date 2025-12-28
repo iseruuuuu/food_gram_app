@@ -538,5 +538,10 @@
         "type": "int"
       }
     }
-  }
+  },
+  "translatableTranslate": "Traducir",
+  "translatableShowOriginal": "Mostrar original",
+  "translatableCopy": "Copiar",
+  "translatableCopied": "Copiado al portapapeles",
+  "translatableTranslateFailed": "Error al traducir"
 }

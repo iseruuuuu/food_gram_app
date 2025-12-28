@@ -538,5 +538,10 @@
         "type": "int"
       }
     }
-  }
+  },
+  "translatableTranslate": "翻译",
+  "translatableShowOriginal": "显示原文",
+  "translatableCopy": "复制",
+  "translatableCopied": "已复制到剪贴板",
+  "translatableTranslateFailed": "翻译失败"
 }

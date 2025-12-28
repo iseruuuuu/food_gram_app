@@ -1611,6 +1611,21 @@ class L10nZh extends L10n {
   String streakDialogContinueContent(int weeks) {
     return '连续$weeks周！\n持续发布\n可连续发布';
   }
+
+  @override
+  String get translatableTranslate => '翻译';
+
+  @override
+  String get translatableShowOriginal => '显示原文';
+
+  @override
+  String get translatableCopy => '复制';
+
+  @override
+  String get translatableCopied => '已复制到剪贴板';
+
+  @override
+  String get translatableTranslateFailed => '翻译失败';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -3218,4 +3233,19 @@ class L10nZhTw extends L10nZh {
   String streakDialogContinueContent(int weeks) {
     return '連續$weeks週！\n持續發布\n可連續發布';
   }
+
+  @override
+  String get translatableTranslate => '翻譯';
+
+  @override
+  String get translatableShowOriginal => '顯示原文';
+
+  @override
+  String get translatableCopy => '複製';
+
+  @override
+  String get translatableCopied => '已複製到剪貼簿';
+
+  @override
+  String get translatableTranslateFailed => '翻譯失敗';
 }

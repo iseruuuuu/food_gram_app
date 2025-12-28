@@ -1,5 +1,7 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, '13.0'
+platform :ios, '15.5'
+
+$iOSVersion = '15.5'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -38,9 +40,24 @@ target 'Runner' do
 end
 
 post_install do |installer|
+  # ML Kit要件: armv7を除外し、全コンフィグのデプロイターゲットを15.5へ揃える
+  installer.pods_project.build_configurations.each do |config|
+    config.build_settings["EXCLUDED_ARCHS[sdk=*]"] = "armv7"
+    config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = $iOSVersion
+  end
+
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
-  pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '11.13.0'
-    flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+
+    # 既存のビルド設定を上書きしないように比較して設定
+    target.build_configurations.each do |config|
+      if Gem::Version.new($iOSVersion) > Gem::Version.new(config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = $iOSVersion
+      end
+    end
   end
+
+  # 既存ワークアラウンド（Firestore frameworks）
+  pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '11.13.0'
+  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end

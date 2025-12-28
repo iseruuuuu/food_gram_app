@@ -1653,4 +1653,19 @@ class L10nDe extends L10n {
   String streakDialogContinueContent(int weeks) {
     return '$weeks Wochen Serie!\nWeiter posten\nfür Serie';
   }
+
+  @override
+  String get translatableTranslate => 'Übersetzen';
+
+  @override
+  String get translatableShowOriginal => 'Original anzeigen';
+
+  @override
+  String get translatableCopy => 'Kopieren';
+
+  @override
+  String get translatableCopied => 'In Zwischenablage kopiert';
+
+  @override
+  String get translatableTranslateFailed => 'Übersetzung fehlgeschlagen';
 }

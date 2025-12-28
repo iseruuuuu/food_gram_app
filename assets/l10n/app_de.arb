@@ -538,5 +538,10 @@
         "type": "int"
       }
     }
-  }
+  },
+  "translatableTranslate": "Übersetzen",
+  "translatableShowOriginal": "Original anzeigen",
+  "translatableCopy": "Kopieren",
+  "translatableCopied": "In Zwischenablage kopiert",
+  "translatableTranslateFailed": "Übersetzung fehlgeschlagen"
 }

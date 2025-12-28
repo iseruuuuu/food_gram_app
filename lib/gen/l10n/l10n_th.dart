@@ -1624,4 +1624,19 @@ class L10nTh extends L10n {
   String streakDialogContinueContent(int weeks) {
     return 'ติดต่อกัน $weeks สัปดาห์!\nโพสต์ต่อเนื่อง\nเพื่อรักษา streak';
   }
+
+  @override
+  String get translatableTranslate => 'แปลภาษา';
+
+  @override
+  String get translatableShowOriginal => 'แสดงต้นฉบับ';
+
+  @override
+  String get translatableCopy => 'คัดลอก';
+
+  @override
+  String get translatableCopied => 'คัดลอกไปยังคลิปบอร์ดแล้ว';
+
+  @override
+  String get translatableTranslateFailed => 'ไม่สามารถแปลได้';
 }

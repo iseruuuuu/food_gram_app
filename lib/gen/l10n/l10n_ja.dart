@@ -1615,4 +1615,19 @@ class L10nJa extends L10n {
   String streakDialogContinueContent(int weeks) {
     return '$weeks週間連続で投稿できました！\n継続して投稿していこう!';
   }
+
+  @override
+  String get translatableTranslate => '翻訳する';
+
+  @override
+  String get translatableShowOriginal => '原文を表示';
+
+  @override
+  String get translatableCopy => 'コピー';
+
+  @override
+  String get translatableCopied => 'コピーしました';
+
+  @override
+  String get translatableTranslateFailed => '翻訳できませんでした';
 }
