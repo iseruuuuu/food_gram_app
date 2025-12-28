@@ -1666,4 +1666,7 @@ class L10nFr extends L10n {
 
   @override
   String get translatableCopied => 'Copié dans le presse-papiers';
+
+  @override
+  String get translatableTranslateFailed => 'Échec de la traduction';
 }

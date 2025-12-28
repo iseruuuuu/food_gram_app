@@ -1627,4 +1627,7 @@ class L10nJa extends L10n {
 
   @override
   String get translatableCopied => 'コピーしました';
+
+  @override
+  String get translatableTranslateFailed => '翻訳できませんでした';
 }

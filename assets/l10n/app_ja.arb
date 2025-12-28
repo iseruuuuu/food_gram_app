@@ -542,5 +542,6 @@
   "translatableTranslate": "翻訳する",
   "translatableShowOriginal": "原文を表示",
   "translatableCopy": "コピー",
-  "translatableCopied": "コピーしました"
+  "translatableCopied": "コピーしました",
+  "translatableTranslateFailed": "翻訳できませんでした"
 }

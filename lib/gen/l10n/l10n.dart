@@ -3330,6 +3330,12 @@ abstract class L10n {
   /// In ja, this message translates to:
   /// **'コピーしました'**
   String get translatableCopied;
+
+  /// No description provided for @translatableTranslateFailed.
+  ///
+  /// In ja, this message translates to:
+  /// **'翻訳できませんでした'**
+  String get translatableTranslateFailed;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

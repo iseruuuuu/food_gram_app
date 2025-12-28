@@ -1665,4 +1665,7 @@ class L10nDe extends L10n {
 
   @override
   String get translatableCopied => 'In Zwischenablage kopiert';
+
+  @override
+  String get translatableTranslateFailed => 'Übersetzung fehlgeschlagen';
 }

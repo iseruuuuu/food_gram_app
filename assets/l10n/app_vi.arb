@@ -542,7 +542,8 @@
   "translatableTranslate": "Dịch",
   "translatableShowOriginal": "Hiển thị bản gốc",
   "translatableCopy": "Sao chép",
-  "translatableCopied": "Đã sao chép vào bộ nhớ tạm"
+  "translatableCopied": "Đã sao chép vào bộ nhớ tạm",
+  "translatableTranslateFailed": "Dịch không thành công"
 }
 
 

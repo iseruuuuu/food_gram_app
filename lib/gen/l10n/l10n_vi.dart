@@ -1646,4 +1646,7 @@ class L10nVi extends L10n {
 
   @override
   String get translatableCopied => 'Đã sao chép vào bộ nhớ tạm';
+
+  @override
+  String get translatableTranslateFailed => 'Dịch không thành công';
 }

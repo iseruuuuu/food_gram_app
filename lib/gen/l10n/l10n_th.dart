@@ -1636,4 +1636,7 @@ class L10nTh extends L10n {
 
   @override
   String get translatableCopied => 'คัดลอกไปยังคลิปบอร์ดแล้ว';
+
+  @override
+  String get translatableTranslateFailed => 'ไม่สามารถแปลได้';
 }

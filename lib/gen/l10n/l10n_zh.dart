@@ -1623,6 +1623,9 @@ class L10nZh extends L10n {
 
   @override
   String get translatableCopied => '已复制到剪贴板';
+
+  @override
+  String get translatableTranslateFailed => '翻译失败';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -3242,4 +3245,7 @@ class L10nZhTw extends L10nZh {
 
   @override
   String get translatableCopied => '已複製到剪貼簿';
+
+  @override
+  String get translatableTranslateFailed => '翻譯失敗';
 }

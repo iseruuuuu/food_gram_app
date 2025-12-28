@@ -112,6 +112,14 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
       if (!mounted) {
         return;
       }
+      // 翻訳できなかった（原文と同じ）の場合はSnackBarを表示
+      if (out.trim() == widget.text.trim()) {
+        final l10n = L10n.of(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.translatableTranslateFailed)),
+        );
+        return;
+      }
       setState(() => _translated = out);
     } finally {
       if (mounted) {

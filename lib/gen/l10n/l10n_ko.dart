@@ -1626,4 +1626,7 @@ class L10nKo extends L10n {
 
   @override
   String get translatableCopied => '클립보드에 복사됨';
+
+  @override
+  String get translatableTranslateFailed => '번역에 실패했습니다';
 }

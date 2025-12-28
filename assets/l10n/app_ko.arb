@@ -542,5 +542,6 @@
   "translatableTranslate": "번역하기",
   "translatableShowOriginal": "원문 보기",
   "translatableCopy": "복사",
-  "translatableCopied": "클립보드에 복사됨"
+  "translatableCopied": "클립보드에 복사됨",
+  "translatableTranslateFailed": "번역에 실패했습니다"
 }

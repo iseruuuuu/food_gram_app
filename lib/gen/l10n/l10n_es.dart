@@ -1663,4 +1663,7 @@ class L10nEs extends L10n {
 
   @override
   String get translatableCopied => 'Copiado al portapapeles';
+
+  @override
+  String get translatableTranslateFailed => 'Error al traducir';
 }

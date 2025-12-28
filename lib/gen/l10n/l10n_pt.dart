@@ -1659,4 +1659,7 @@ class L10nPt extends L10n {
 
   @override
   String get translatableCopied => 'Copiado para a área de transferência';
+
+  @override
+  String get translatableTranslateFailed => 'Falha na tradução';
 }

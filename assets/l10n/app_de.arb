@@ -542,5 +542,6 @@
   "translatableTranslate": "Übersetzen",
   "translatableShowOriginal": "Original anzeigen",
   "translatableCopy": "Kopieren",
-  "translatableCopied": "In Zwischenablage kopiert"
+  "translatableCopied": "In Zwischenablage kopiert",
+  "translatableTranslateFailed": "Übersetzung fehlgeschlagen"
 }
