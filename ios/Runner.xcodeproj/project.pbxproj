@@ -125,7 +125,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		6D17F4822CFDD8C7008B8435 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		6D17F4822CFDD8C7008B8435 /* Exceptions for "HomeWidgetSample" folder in "HomeWidgetSampleExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -135,7 +135,18 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		6D17F46D2CFDD8C3008B8435 /* HomeWidgetSample */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (6D17F4822CFDD8C7008B8435 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = HomeWidgetSample; sourceTree = "<group>"; };
+		6D17F46D2CFDD8C3008B8435 /* HomeWidgetSample */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6D17F4822CFDD8C7008B8435 /* Exceptions for "HomeWidgetSample" folder in "HomeWidgetSampleExtension" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = HomeWidgetSample;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -291,8 +302,6 @@
 				6D17F46D2CFDD8C3008B8435 /* HomeWidgetSample */,
 			);
 			name = HomeWidgetSampleExtension;
-			packageProductDependencies = (
-			);
 			productName = HomeWidgetSampleExtension;
 			productReference = 6D17F4682CFDD8C3008B8435 /* HomeWidgetSampleExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -641,6 +650,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=*]" = "armv7 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -897,6 +907,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=*]" = armv7;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -953,6 +964,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=*]" = "armv7 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
