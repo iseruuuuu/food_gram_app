@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_state.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
+import 'package:food_gram_app/core/vision/food_image_labeler.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
@@ -21,6 +22,7 @@ part 'edit_post_view_model.g.dart';
 @riverpod
 class EditPostViewModel extends _$EditPostViewModel {
   final logger = Logger();
+  final _foodLabeler = FoodImageLabeler();
 
   // 画像設定の定数
   static const _imageConfig = (
@@ -234,9 +236,10 @@ class EditPostViewModel extends _$EditPostViewModel {
     final imagePath = cropImage.path;
     _imageBytesMap[imagePath] = imageBytes;
     final updatedImages = [...state.foodImages, imagePath];
+    final isFood = await _foodLabeler.isFood(imagePath);
     state = state.copyWith(
       foodImages: updatedImages,
-      status: EditStatus.photoSuccess.name,
+      status: isFood ? EditStatus.photoSuccess.name : EditStatus.maybeNotFood.name,
     );
   }
 
@@ -275,6 +278,10 @@ class EditPostViewModel extends _$EditPostViewModel {
   void setAnonymous({required bool value}) {
     state = state.copyWith(isAnonymous: value);
   }
+
+  void resetStatus() {
+    state = state.copyWith(status: EditStatus.initial.name);
+  }
 }
 
 enum EditStatus {
@@ -286,4 +293,5 @@ enum EditStatus {
   success,
   loading,
   initial,
+  maybeNotFood,
 }

@@ -12,6 +12,7 @@ import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/dialog/app_maybe_not_food_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/app_streak_dialog.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/post/post_view_model.dart';
@@ -66,6 +67,34 @@ class PostScreen extends HookConsumerWidget {
         return null;
       },
       [restaurant],
+    );
+    useEffect(
+      () {
+        if (state.status == PostStatus.maybeNotFood.name) {
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            if (!context.mounted) {
+              return;
+            }
+            await showMaybeNotFoodDialog(
+              context: context,
+              onContinue: () {
+                ref.read(postViewModelProvider().notifier).resetStatus();
+              },
+              onDelete: () {
+                final images = ref.read(postViewModelProvider()).foodImages;
+                if (images.isNotEmpty) {
+                  ref
+                      .read(postViewModelProvider().notifier)
+                      .removeImage(images.last);
+                }
+                ref.read(postViewModelProvider().notifier).resetStatus();
+              },
+            );
+          });
+        }
+        return null;
+      },
+      [state.status],
     );
     return GestureDetector(
       onTap: () => primaryFocus?.unfocus(),
@@ -459,6 +488,8 @@ class PostScreen extends HookConsumerWidget {
         return l10n.postMissingRestaurant;
       case PostStatus.initial:
         return 'Loading...';
+      case PostStatus.maybeNotFood:
+        return '食べ物ではない可能性があります';
     }
   }
 }
