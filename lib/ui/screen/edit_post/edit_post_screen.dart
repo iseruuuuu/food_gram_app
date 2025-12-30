@@ -548,7 +548,7 @@ class EditPostScreen extends HookConsumerWidget {
       case EditStatus.initial:
         return '';
       case EditStatus.maybeNotFood:
-        return '食べ物ではない可能性があります';
+        return L10n.of(context).maybeNotFoodDialogTitle;
     }
   }
 }
