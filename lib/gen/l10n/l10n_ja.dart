@@ -11,6 +11,13 @@ class L10nJa extends L10n {
   L10nJa([String locale = 'ja']) : super(locale);
 
   @override
+  String get maybeNotFoodDialogTitle => 'ちょっと確認 🍽️';
+
+  @override
+  String get maybeNotFoodDialogText =>
+      'この写真、\n食べものじゃないかも…？と\nFoodGramが首をかしげています 🤔\n\nそれでも投稿しますか？';
+
+  @override
   String get close => '閉じる';
 
   @override

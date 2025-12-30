@@ -1,4 +1,6 @@
 {
+  "maybeNotFoodDialogTitle": "Una pequeña confirmación 🍽️",
+  "maybeNotFoodDialogText": "Esta foto podría no ser comida… 🤔\\n\\n¿Quieres publicarla de todos modos?",
   "close": "Cerrar",
   "cancel": "Cancelar",
   "editTitle": "Editar",

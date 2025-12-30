@@ -1,4 +1,6 @@
 {
+  "maybeNotFoodDialogTitle": "잠깐 확인 🍽️",
+  "maybeNotFoodDialogText": "이 사진은 음식이 아닐 수도 있어요… 🤔\\n\\n그래도 게시하시겠어요?",
   "close": "닫기",
   "cancel": "취소",
   "editTitle": "편집",

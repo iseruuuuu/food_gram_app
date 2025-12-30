@@ -11,6 +11,13 @@ class L10nDe extends L10n {
   L10nDe([String locale = 'de']) : super(locale);
 
   @override
+  String get maybeNotFoodDialogTitle => 'Kurze Bestätigung 🍽️';
+
+  @override
+  String get maybeNotFoodDialogText =>
+      'Dieses Foto zeigt möglicherweise kein Essen… 🤔\\n\\nTrotzdem posten?';
+
+  @override
   String get close => 'Schließen';
 
   @override

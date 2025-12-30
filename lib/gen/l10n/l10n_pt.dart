@@ -11,6 +11,13 @@ class L10nPt extends L10n {
   L10nPt([String locale = 'pt']) : super(locale);
 
   @override
+  String get maybeNotFoodDialogTitle => 'Só conferindo 🍽️';
+
+  @override
+  String get maybeNotFoodDialogText =>
+      'Esta foto pode não ser de comida… 🤔\\n\\nDeseja publicar mesmo assim?';
+
+  @override
   String get close => 'Fechar';
 
   @override

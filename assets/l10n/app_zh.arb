@@ -1,4 +1,6 @@
 {
+  "maybeNotFoodDialogTitle": "稍作确认 🍽️",
+  "maybeNotFoodDialogText": "这张照片可能不是食物… 🤔\\n\\n仍要发布吗？",
   "close": "关闭",
   "cancel": "取消",
   "editTitle": "编辑",
