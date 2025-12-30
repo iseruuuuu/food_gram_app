@@ -1,6 +1,8 @@
 {
   "maybeNotFoodDialogTitle": "ちょっと確認 🍽️",
   "maybeNotFoodDialogText": "この写真、\n食べものじゃないかも…？と\nFoodGramが首をかしげています 🤔\n\nそれでも投稿しますか？",
+  "maybeNotFoodDialogConfirm": "続ける",
+  "maybeNotFoodDialogDelete": "画像を削除",
   "close": "閉じる",
   "cancel": "キャンセル",
   "editTitle": "編集",

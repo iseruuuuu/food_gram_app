@@ -1,6 +1,8 @@
 {
   "maybeNotFoodDialogTitle": "稍作確認 🍽️",
   "maybeNotFoodDialogText": "這張照片可能不是食物… 🤔\\n\\n仍要發布嗎？",
+  "maybeNotFoodDialogConfirm": "繼續",
+  "maybeNotFoodDialogDelete": "刪除圖片",
   "close": "關閉",
   "cancel": "取消",
   "editTitle": "編輯",

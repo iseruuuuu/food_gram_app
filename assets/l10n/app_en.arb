@@ -1,6 +1,8 @@
 {
   "maybeNotFoodDialogTitle": "Just a quick check 🍽️",
   "maybeNotFoodDialogText": "This photo might not be food… 🤔\n\nDo you want to post it anyway?",
+  "maybeNotFoodDialogConfirm": "Continue",
+  "maybeNotFoodDialogDelete": "Delete image",
   "close": "Close",
   "cancel": "Cancel",
   "editTitle": "Edit",

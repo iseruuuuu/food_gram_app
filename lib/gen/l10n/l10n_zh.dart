@@ -17,6 +17,12 @@ class L10nZh extends L10n {
   String get maybeNotFoodDialogText => '这张照片可能不是食物… 🤔\\n\\n仍要发布吗？';
 
   @override
+  String get maybeNotFoodDialogConfirm => '继续';
+
+  @override
+  String get maybeNotFoodDialogDelete => '删除图片';
+
+  @override
   String get close => '关闭';
 
   @override
@@ -1643,6 +1649,12 @@ class L10nZhTw extends L10nZh {
 
   @override
   String get maybeNotFoodDialogText => '這張照片可能不是食物… 🤔\\n\\n仍要發布嗎？';
+
+  @override
+  String get maybeNotFoodDialogConfirm => '繼續';
+
+  @override
+  String get maybeNotFoodDialogDelete => '刪除圖片';
 
   @override
   String get close => '關閉';

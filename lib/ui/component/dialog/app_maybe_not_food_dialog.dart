@@ -11,19 +11,21 @@ Future<void> showMaybeNotFoodDialog({
   final l10n = L10n.of(context);
   final resolvedTitle = l10n.maybeNotFoodDialogTitle;
   final resolvedText = l10n.maybeNotFoodDialogText;
+  final resolvedConfirmText = l10n.maybeNotFoodDialogConfirm;
+  final resolvedDeleteText = l10n.maybeNotFoodDialogDelete;
   await QuickAlert.show(
     context: context,
     type: QuickAlertType.warning,
     title: resolvedTitle,
     text: resolvedText,
-    confirmBtnText: '続ける',
+    confirmBtnText: resolvedConfirmText,
     confirmBtnColor: Colors.black,
     onConfirmBtnTap: () {
       Navigator.of(context).pop();
       onContinue();
     },
     showCancelBtn: true,
-    cancelBtnText: '画像を削除',
+    cancelBtnText: resolvedDeleteText,
     onCancelBtnTap: () {
       Navigator.of(context).pop();
       onDelete();

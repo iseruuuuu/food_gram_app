@@ -18,6 +18,12 @@ class L10nEn extends L10n {
       'This photo might not be food… 🤔\n\nDo you want to post it anyway?';
 
   @override
+  String get maybeNotFoodDialogConfirm => 'Continue';
+
+  @override
+  String get maybeNotFoodDialogDelete => 'Delete image';
+
+  @override
   String get close => 'Close';
 
   @override

@@ -1,6 +1,8 @@
 {
   "maybeNotFoodDialogTitle": "Petite vérification 🍽️",
   "maybeNotFoodDialogText": "Cette photo n'est peut-être pas de la nourriture… 🤔\\n\\nVoulez-vous la publier quand même ?",
+  "maybeNotFoodDialogConfirm": "Continuer",
+  "maybeNotFoodDialogDelete": "Supprimer l'image",
   "close": "Fermer",
   "cancel": "Annuler",
   "editTitle": "Modifier",

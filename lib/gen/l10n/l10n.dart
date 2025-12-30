@@ -127,6 +127,18 @@ abstract class L10n {
   /// **'この写真、\n食べものじゃないかも…？と\nFoodGramが首をかしげています 🤔\n\nそれでも投稿しますか？'**
   String get maybeNotFoodDialogText;
 
+  /// No description provided for @maybeNotFoodDialogConfirm.
+  ///
+  /// In ja, this message translates to:
+  /// **'続ける'**
+  String get maybeNotFoodDialogConfirm;
+
+  /// No description provided for @maybeNotFoodDialogDelete.
+  ///
+  /// In ja, this message translates to:
+  /// **'画像を削除'**
+  String get maybeNotFoodDialogDelete;
+
   /// No description provided for @close.
   ///
   /// In ja, this message translates to:

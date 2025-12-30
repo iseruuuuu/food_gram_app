@@ -18,6 +18,12 @@ class L10nVi extends L10n {
       'Ảnh này có thể không phải là đồ ăn… 🤔\\n\\nBạn vẫn muốn đăng chứ?';
 
   @override
+  String get maybeNotFoodDialogConfirm => 'Tiếp tục';
+
+  @override
+  String get maybeNotFoodDialogDelete => 'Xóa ảnh';
+
+  @override
   String get close => 'Đóng';
 
   @override
