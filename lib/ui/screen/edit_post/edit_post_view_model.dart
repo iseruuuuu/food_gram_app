@@ -9,9 +9,9 @@ import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.
 import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
+import 'package:food_gram_app/core/vision/food_image_labeler.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_state.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
-import 'package:food_gram_app/core/vision/food_image_labeler.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
@@ -239,7 +239,8 @@ class EditPostViewModel extends _$EditPostViewModel {
     final isFood = await _foodLabeler.isFood(imagePath);
     state = state.copyWith(
       foodImages: updatedImages,
-      status: isFood ? EditStatus.photoSuccess.name : EditStatus.maybeNotFood.name,
+      status:
+          isFood ? EditStatus.photoSuccess.name : EditStatus.maybeNotFood.name,
     );
   }
 
