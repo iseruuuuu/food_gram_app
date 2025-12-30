@@ -1,4 +1,8 @@
 {
+  "maybeNotFoodDialogTitle": "Kurze Bestätigung 🍽️",
+  "maybeNotFoodDialogText": "Dieses Foto zeigt möglicherweise kein Essen… 🤔\\n\\nTrotzdem posten?",
+  "maybeNotFoodDialogConfirm": "Fortfahren",
+  "maybeNotFoodDialogDelete": "Bild löschen",
   "close": "Schließen",
   "cancel": "Abbrechen",
   "editTitle": "Bearbeiten",

@@ -1,4 +1,8 @@
 {
+  "maybeNotFoodDialogTitle": "Só conferindo 🍽️",
+  "maybeNotFoodDialogText": "Esta foto pode não ser de comida… 🤔\\n\\nDeseja publicar mesmo assim?",
+  "maybeNotFoodDialogConfirm": "Continuar",
+  "maybeNotFoodDialogDelete": "Excluir imagem",
   "close": "Fechar",
   "cancel": "Cancelar",
   "editTitle": "Editar",

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
+import 'package:food_gram_app/core/vision/food_image_labeler.dart';
 import 'package:food_gram_app/ui/screen/post/post_state.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,6 +24,7 @@ class PostViewModel extends _$PostViewModel {
   final _picker = ImagePicker();
   final Map<String, Uint8List> _imageBytesMap = {};
   final logger = Logger();
+  final _foodLabeler = FoodImageLabeler();
 
   TextEditingController get foodController => _foodController;
 
@@ -196,9 +198,12 @@ class PostViewModel extends _$PostViewModel {
     final imagePath = cropImage.path;
     _imageBytesMap[imagePath] = imageBytes;
     final updatedImages = [...state.foodImages, imagePath];
+    // 画像を一旦追加した上で、食べ物判定
+    final isFood = await _foodLabeler.isFood(imagePath);
     state = state.copyWith(
       foodImages: updatedImages,
-      status: PostStatus.photoSuccess.name,
+      status:
+          isFood ? PostStatus.photoSuccess.name : PostStatus.maybeNotFood.name,
     );
   }
 
@@ -249,6 +254,10 @@ class PostViewModel extends _$PostViewModel {
   void setAnonymous({required bool value}) {
     state = state.copyWith(isAnonymous: value);
   }
+
+  void resetStatus() {
+    state = state.copyWith(status: PostStatus.initial.name);
+  }
 }
 
 enum PostStatus {
@@ -263,4 +272,5 @@ enum PostStatus {
   missingPhoto,
   missingFoodName,
   missingRestaurant,
+  maybeNotFood,
 }

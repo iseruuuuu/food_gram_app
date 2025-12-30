@@ -15,6 +15,7 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/dialog/app_maybe_not_food_dialog.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_view_model.dart';
 import 'package:gap/gap.dart';
@@ -65,6 +66,34 @@ class EditPostScreen extends HookConsumerWidget {
         return null;
       },
       [posts],
+    );
+    useEffect(
+      () {
+        if (state.status == EditStatus.maybeNotFood.name) {
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            if (!context.mounted) {
+              return;
+            }
+            await showMaybeNotFoodDialog(
+              context: context,
+              onContinue: () {
+                ref.read(editPostViewModelProvider().notifier).resetStatus();
+              },
+              onDelete: () {
+                final images = ref.read(editPostViewModelProvider()).foodImages;
+                if (images.isNotEmpty) {
+                  ref
+                      .read(editPostViewModelProvider().notifier)
+                      .removeImage(images.last);
+                }
+                ref.read(editPostViewModelProvider().notifier).resetStatus();
+              },
+            );
+          });
+        }
+        return null;
+      },
+      [state.status],
     );
     final supabase = ref.watch(supabaseProvider);
     // 最初の画像のURLを取得（既存の表示用）
@@ -518,6 +547,8 @@ class EditPostScreen extends HookConsumerWidget {
         return 'Loading...';
       case EditStatus.initial:
         return '';
+      case EditStatus.maybeNotFood:
+        return L10n.of(context).maybeNotFoodDialogTitle;
     }
   }
 }

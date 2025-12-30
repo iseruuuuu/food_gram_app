@@ -115,6 +115,30 @@ abstract class L10n {
     Locale('zh', 'TW')
   ];
 
+  /// No description provided for @maybeNotFoodDialogTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'ちょっと確認 🍽️'**
+  String get maybeNotFoodDialogTitle;
+
+  /// No description provided for @maybeNotFoodDialogText.
+  ///
+  /// In ja, this message translates to:
+  /// **'この写真、\n食べものじゃないかも…？と\nFoodGramが首をかしげています 🤔\n\nそれでも投稿しますか？'**
+  String get maybeNotFoodDialogText;
+
+  /// No description provided for @maybeNotFoodDialogConfirm.
+  ///
+  /// In ja, this message translates to:
+  /// **'続ける'**
+  String get maybeNotFoodDialogConfirm;
+
+  /// No description provided for @maybeNotFoodDialogDelete.
+  ///
+  /// In ja, this message translates to:
+  /// **'画像を削除'**
+  String get maybeNotFoodDialogDelete;
+
   /// No description provided for @close.
   ///
   /// In ja, this message translates to:

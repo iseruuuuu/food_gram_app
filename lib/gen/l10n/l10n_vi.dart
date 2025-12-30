@@ -11,6 +11,19 @@ class L10nVi extends L10n {
   L10nVi([String locale = 'vi']) : super(locale);
 
   @override
+  String get maybeNotFoodDialogTitle => 'Kiểm tra nhanh 🍽️';
+
+  @override
+  String get maybeNotFoodDialogText =>
+      'Ảnh này có thể không phải là đồ ăn… 🤔\\n\\nBạn vẫn muốn đăng chứ?';
+
+  @override
+  String get maybeNotFoodDialogConfirm => 'Tiếp tục';
+
+  @override
+  String get maybeNotFoodDialogDelete => 'Xóa ảnh';
+
+  @override
   String get close => 'Đóng';
 
   @override

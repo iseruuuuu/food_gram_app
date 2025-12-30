@@ -1,4 +1,8 @@
 {
+  "maybeNotFoodDialogTitle": "Kiểm tra nhanh 🍽️",
+  "maybeNotFoodDialogText": "Ảnh này có thể không phải là đồ ăn… 🤔\\n\\nBạn vẫn muốn đăng chứ?",
+  "maybeNotFoodDialogConfirm": "Tiếp tục",
+  "maybeNotFoodDialogDelete": "Xóa ảnh",
   "close": "Đóng",
   "cancel": "Hủy",
   "editTitle": "Chỉnh sửa",

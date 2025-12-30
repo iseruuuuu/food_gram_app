@@ -11,6 +11,18 @@ class L10nZh extends L10n {
   L10nZh([String locale = 'zh']) : super(locale);
 
   @override
+  String get maybeNotFoodDialogTitle => '稍作确认 🍽️';
+
+  @override
+  String get maybeNotFoodDialogText => '这张照片可能不是食物… 🤔\\n\\n仍要发布吗？';
+
+  @override
+  String get maybeNotFoodDialogConfirm => '继续';
+
+  @override
+  String get maybeNotFoodDialogDelete => '删除图片';
+
+  @override
   String get close => '关闭';
 
   @override
@@ -1631,6 +1643,18 @@ class L10nZh extends L10n {
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
 class L10nZhTw extends L10nZh {
   L10nZhTw() : super('zh_TW');
+
+  @override
+  String get maybeNotFoodDialogTitle => '稍作確認 🍽️';
+
+  @override
+  String get maybeNotFoodDialogText => '這張照片可能不是食物… 🤔\\n\\n仍要發布嗎？';
+
+  @override
+  String get maybeNotFoodDialogConfirm => '繼續';
+
+  @override
+  String get maybeNotFoodDialogDelete => '刪除圖片';
 
   @override
   String get close => '關閉';

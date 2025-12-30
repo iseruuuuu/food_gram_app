@@ -60,6 +60,11 @@ PODS:
   - google_mlkit_commons (0.11.0):
     - Flutter
     - MLKitVision
+  - google_mlkit_image_labeling (0.14.1):
+    - Flutter
+    - google_mlkit_commons
+    - GoogleMLKit/ImageLabeling (~> 7.0.0)
+    - GoogleMLKit/ImageLabelingCustom (~> 7.0.0)
   - google_mlkit_language_id (0.13.0):
     - Flutter
     - google_mlkit_commons
@@ -81,6 +86,12 @@ PODS:
   - GoogleDataTransport (10.1.0):
     - nanopb (~> 3.30910.0)
     - PromisesObjC (~> 2.4)
+  - GoogleMLKit/ImageLabeling (7.0.0):
+    - GoogleMLKit/MLKitCore
+    - MLKitImageLabeling (~> 6.0.0)
+  - GoogleMLKit/ImageLabelingCustom (7.0.0):
+    - GoogleMLKit/MLKitCore
+    - MLKitImageLabelingCustom (~> 6.0.0)
   - GoogleMLKit/LanguageID (7.0.0):
     - GoogleMLKit/MLKitCore
     - MLKitLanguageID (~> 7.0.0)
@@ -155,6 +166,19 @@ PODS:
     - GoogleUtilities/Logger (~> 8.0)
     - GoogleUtilities/UserDefaults (~> 8.0)
     - GTMSessionFetcher/Core (< 4.0, >= 3.3.2)
+  - MLKitImageLabeling (6.0.0):
+    - MLKitCommon (~> 12.0)
+    - MLKitImageLabelingCommon (~> 8.0)
+    - MLKitVision (~> 8.0)
+    - MLKitVisionKit (~> 9.0)
+  - MLKitImageLabelingCommon (8.0.0):
+    - MLKitCommon (~> 12.0)
+    - MLKitVision (~> 8.0)
+  - MLKitImageLabelingCustom (6.0.0):
+    - MLKitCommon (~> 12.0)
+    - MLKitImageLabelingCommon (~> 8.0)
+    - MLKitVision (~> 8.0)
+    - MLKitVisionKit (~> 9.0)
   - MLKitLanguageID (7.0.0):
     - MLKitNaturalLanguage (~> 8.0)
   - MLKitNaturalLanguage (8.0.0):
@@ -163,6 +187,9 @@ PODS:
     - GoogleToolboxForMac/StringEncoding (< 5.0, >= 4.2.1)
     - GTMSessionFetcher/Core (< 4.0, >= 3.3.2)
     - MLKitCommon (~> 12.0)
+  - MLKitObjectDetectionCommon (8.0.0):
+    - MLKitCommon (~> 12.0)
+    - MLKitVision (~> 8.0)
   - MLKitTranslate (6.0.0):
     - MLKitNaturalLanguage (~> 8.0)
     - SSZipArchive (< 3.0, >= 2.5.5)
@@ -172,6 +199,11 @@ PODS:
     - GTMSessionFetcher/Core (< 4.0, >= 3.3.2)
     - MLImage (= 1.0.0-beta6)
     - MLKitCommon (~> 12.0)
+  - MLKitVisionKit (9.0.0):
+    - MLKitCommon (~> 12.0)
+    - MLKitImageLabelingCommon (~> 8.0)
+    - MLKitObjectDetectionCommon (~> 8.0)
+    - MLKitVision (~> 8.0)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
@@ -231,6 +263,7 @@ DEPENDENCIES:
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/darwin`)
   - google_mlkit_commons (from `.symlinks/plugins/google_mlkit_commons/ios`)
+  - google_mlkit_image_labeling (from `.symlinks/plugins/google_mlkit_image_labeling/ios`)
   - google_mlkit_language_id (from `.symlinks/plugins/google_mlkit_language_id/ios`)
   - google_mlkit_translation (from `.symlinks/plugins/google_mlkit_translation/ios`)
   - google_mobile_ads (from `.symlinks/plugins/google_mobile_ads/ios`)
@@ -274,10 +307,15 @@ SPEC REPOS:
     - MapLibre
     - MLImage
     - MLKitCommon
+    - MLKitImageLabeling
+    - MLKitImageLabelingCommon
+    - MLKitImageLabelingCustom
     - MLKitLanguageID
     - MLKitNaturalLanguage
+    - MLKitObjectDetectionCommon
     - MLKitTranslate
     - MLKitVision
+    - MLKitVisionKit
     - nanopb
     - PromisesObjC
     - PurchasesHybridCommon
@@ -311,6 +349,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/geolocator_apple/darwin"
   google_mlkit_commons:
     :path: ".symlinks/plugins/google_mlkit_commons/ios"
+  google_mlkit_image_labeling:
+    :path: ".symlinks/plugins/google_mlkit_image_labeling/ios"
   google_mlkit_language_id:
     :path: ".symlinks/plugins/google_mlkit_language_id/ios"
   google_mlkit_translation:
@@ -373,6 +413,7 @@ SPEC CHECKSUMS:
   geolocator_apple: ab36aa0e8b7d7a2d7639b3b4e48308394e8cef5e
   Google-Mobile-Ads-SDK: 14f57f2dc33532a24db288897e26494640810407
   google_mlkit_commons: 2abe6a70e1824e431d16a51085cb475b672c8aab
+  google_mlkit_image_labeling: 2e3181a45117018ec7e541ab5b5401a15d6a1d07
   google_mlkit_language_id: cbee6db1778d8e28a1eceb32548e8cad4e1bcef7
   google_mlkit_translation: 0af4cf99ea8459b5864e4c89e36a7c45a1300ef6
   google_mobile_ads: 16ad301354fa6a7ea55770c6254bd4339bf8558b
@@ -393,10 +434,15 @@ SPEC CHECKSUMS:
   maplibre_gl: d83126f1b19adee5e1071c453b421efd5fc99883
   MLImage: 0ad1c5f50edd027672d8b26b0fee78a8b4a0fc56
   MLKitCommon: 07c2c33ae5640e5380beaaa6e4b9c249a205542d
+  MLKitImageLabeling: 7f052589de9ffde213bc2c26854d212ea4dde17a
+  MLKitImageLabelingCommon: 23f0c9037c2c6433784db594bd1bb87173172fe9
+  MLKitImageLabelingCustom: 594c49fa1bb809ec05215bb4ac1c15729c7a601a
   MLKitLanguageID: f52e378d875f1a5e67ac0f259ebddaab95faa1c7
   MLKitNaturalLanguage: 1faece38017b0cf8eb49ac69cff10cb419f68c01
+  MLKitObjectDetectionCommon: 0198709a728984e3b6fac98a5fa53a8042880336
   MLKitTranslate: 2082cce437292f2f7477bfef02022ef69d8e77aa
   MLKitVision: 45e79d68845a2de77e2dd4d7f07947f0ed157b0e
+  MLKitVisionKit: 8a7abd5f11aeb1add2942a694c2685eca422a849
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   package_info_plus: 566e1b7a2f3900e4b0020914ad3fc051dcc95596
   path_provider_foundation: bb55f6dbba17d0dccd6737fe6f7f34fbd0376880
@@ -418,6 +464,6 @@ SPEC CHECKSUMS:
   url_launcher_ios: 7a95fa5b60cc718a708b8f2966718e93db0cef1b
   webview_flutter_wkwebview: 8ebf4fded22593026f7dbff1fbff31ea98573c8d
 
-PODFILE CHECKSUM: 3112ba66aec81dc8a12b82a67db92daf024ff15e
+PODFILE CHECKSUM: 14af54ea0741495ed39b946a1ab4b822fb33e507
 
 COCOAPODS: 1.16.2

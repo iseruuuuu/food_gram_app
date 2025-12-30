@@ -11,6 +11,19 @@ class L10nKo extends L10n {
   L10nKo([String locale = 'ko']) : super(locale);
 
   @override
+  String get maybeNotFoodDialogTitle => '잠깐 확인 🍽️';
+
+  @override
+  String get maybeNotFoodDialogText =>
+      '이 사진은 음식이 아닐 수도 있어요… 🤔\\n\\n그래도 게시하시겠어요?';
+
+  @override
+  String get maybeNotFoodDialogConfirm => '계속하기';
+
+  @override
+  String get maybeNotFoodDialogDelete => '이미지 삭제';
+
+  @override
   String get close => '닫기';
 
   @override

@@ -11,6 +11,19 @@ class L10nTh extends L10n {
   L10nTh([String locale = 'th']) : super(locale);
 
   @override
+  String get maybeNotFoodDialogTitle => 'ขอตรวจสอบสักครู่ 🍽️';
+
+  @override
+  String get maybeNotFoodDialogText =>
+      'ภาพนี้อาจไม่ใช่อาหาร... 🤔\\n\\nต้องการโพสต์ต่อหรือไม่?';
+
+  @override
+  String get maybeNotFoodDialogConfirm => 'ดำเนินการต่อ';
+
+  @override
+  String get maybeNotFoodDialogDelete => 'ลบรูปภาพ';
+
+  @override
   String get close => 'ปิด';
 
   @override
