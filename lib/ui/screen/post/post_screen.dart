@@ -486,10 +486,10 @@ class PostScreen extends HookConsumerWidget {
         return l10n.postMissingFoodName;
       case PostStatus.missingRestaurant:
         return l10n.postMissingRestaurant;
+      case PostStatus.maybeNotFood:
+        return l10n.maybeNotFoodDialogTitle;
       case PostStatus.initial:
         return 'Loading...';
-      case PostStatus.maybeNotFood:
-        return '食べ物ではない可能性があります';
     }
   }
 }
