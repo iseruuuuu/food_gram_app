@@ -26,10 +26,21 @@ class MyApp extends ConsumerWidget {
         ],
         localeListResolutionCallback: (locales, supported) {
           for (final deviceLocale in locales ?? const <Locale>[]) {
-            if (supported.any((s) => s.languageCode == deviceLocale.languageCode)) {
-              return deviceLocale;
+            // 1) 言語+地域の完全一致を優先して supported から返す
+            for (final s in supported) {
+              if (s.languageCode == deviceLocale.languageCode &&
+                  s.countryCode == deviceLocale.countryCode) {
+                return s;
+              }
+            }
+            // 2) 言語コード一致で supported から返す
+            for (final s in supported) {
+              if (s.languageCode == deviceLocale.languageCode) {
+                return s;
+              }
             }
           }
+          // 3) 非対応は英語
           return const Locale('en');
         },
         routerConfig: ref.watch(routerProvider),
