@@ -83,10 +83,10 @@ class L10nDe extends L10n {
   String get settingReview => 'Bewerten';
 
   @override
-  String get settingLicense => 'Lizenz';
+  String get settingShareApp => 'Teilen';
 
   @override
-  String get settingShareApp => 'Teilen';
+  String get settingLicense => 'Lizenz';
 
   @override
   String get settingFaq => 'FAQ';

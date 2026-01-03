@@ -81,10 +81,10 @@ class L10nKo extends L10n {
   String get settingReview => '리뷰로 지원하기';
 
   @override
-  String get settingLicense => '라이선스';
+  String get settingShareApp => '이 앱 공유하기';
 
   @override
-  String get settingShareApp => '이 앱 공유하기';
+  String get settingLicense => '라이선스';
 
   @override
   String get settingFaq => 'FAQ';

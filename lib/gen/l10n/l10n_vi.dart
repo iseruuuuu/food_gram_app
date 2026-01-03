@@ -82,10 +82,10 @@ class L10nVi extends L10n {
   String get settingReview => 'Đánh giá';
 
   @override
-  String get settingLicense => 'Giấy phép';
+  String get settingShareApp => 'Chia sẻ';
 
   @override
-  String get settingShareApp => 'Chia sẻ';
+  String get settingLicense => 'Giấy phép';
 
   @override
   String get settingFaq => 'FAQ';

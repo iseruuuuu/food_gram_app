@@ -83,10 +83,10 @@ class L10nPt extends L10n {
   String get settingReview => 'Avaliar';
 
   @override
-  String get settingLicense => 'Licença';
+  String get settingShareApp => 'Compartilhar';
 
   @override
-  String get settingShareApp => 'Compartilhar';
+  String get settingLicense => 'Licença';
 
   @override
   String get settingFaq => 'FAQ';

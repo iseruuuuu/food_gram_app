@@ -81,10 +81,10 @@ class L10nJa extends L10n {
   String get settingReview => 'レビューする';
 
   @override
-  String get settingLicense => 'ライセンス';
+  String get settingShareApp => 'シェアする';
 
   @override
-  String get settingShareApp => 'シェアする';
+  String get settingLicense => 'ライセンス';
 
   @override
   String get settingFaq => 'FAQ';

@@ -1,10 +1,10 @@
 arb-dir: assets/l10n
 output-dir: lib/gen/l10n
-template-arb-file: app_ja.arb
+template-arb-file: app_en.arb
 output-localization-file: l10n.dart
 output-class: L10n
 preferred-supported-locales:
-  - ja
   - en
+  - ja
 header: '// ignore_for_file'
 nullable-getter: false

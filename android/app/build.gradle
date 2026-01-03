@@ -109,6 +109,11 @@ android {
     }
 }
 
+// Avoid bringing deprecated firebase-iid which conflicts with latest firebase-messaging
+configurations.all {
+    exclude group: 'com.google.firebase', module: 'firebase-iid'
+}
+
 flutter {
     source '../..'
 }

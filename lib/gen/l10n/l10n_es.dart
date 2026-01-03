@@ -83,10 +83,10 @@ class L10nEs extends L10n {
   String get settingReview => 'Reseña';
 
   @override
-  String get settingLicense => 'Licencia';
+  String get settingShareApp => 'Compartir';
 
   @override
-  String get settingShareApp => 'Compartir';
+  String get settingLicense => 'Licencia';
 
   @override
   String get settingFaq => 'FAQ';

@@ -24,6 +24,25 @@ class MyApp extends ConsumerWidget {
         supportedLocales: const [
           ...L10n.supportedLocales,
         ],
+        localeListResolutionCallback: (locales, supported) {
+          for (final deviceLocale in locales ?? const <Locale>[]) {
+            // 1) 言語+地域の完全一致を優先して supported から返す
+            for (final s in supported) {
+              if (s.languageCode == deviceLocale.languageCode &&
+                  s.countryCode == deviceLocale.countryCode) {
+                return s;
+              }
+            }
+            // 2) 言語コード一致で supported から返す
+            for (final s in supported) {
+              if (s.languageCode == deviceLocale.languageCode) {
+                return s;
+              }
+            }
+          }
+          // 3) 非対応は英語
+          return const Locale('en');
+        },
         routerConfig: ref.watch(routerProvider),
         debugShowCheckedModeBanner: kReleaseMode,
         theme: ThemeData(
