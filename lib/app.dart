@@ -24,6 +24,14 @@ class MyApp extends ConsumerWidget {
         supportedLocales: const [
           ...L10n.supportedLocales,
         ],
+        localeListResolutionCallback: (locales, supported) {
+          for (final deviceLocale in locales ?? const <Locale>[]) {
+            if (supported.any((s) => s.languageCode == deviceLocale.languageCode)) {
+              return deviceLocale;
+            }
+          }
+          return const Locale('en');
+        },
         routerConfig: ref.watch(routerProvider),
         debugShowCheckedModeBanner: kReleaseMode,
         theme: ThemeData(

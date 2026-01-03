@@ -80,10 +80,10 @@ class L10nZh extends L10n {
   String get settingReview => '评价支持';
 
   @override
-  String get settingLicense => '许可证';
+  String get settingShareApp => '分享此应用';
 
   @override
-  String get settingShareApp => '分享此应用';
+  String get settingLicense => '许可证';
 
   @override
   String get settingFaq => '常见问题';
@@ -1714,10 +1714,10 @@ class L10nZhTw extends L10nZh {
   String get settingReview => '評價支援';
 
   @override
-  String get settingLicense => '授權';
+  String get settingShareApp => '分享此應用程式';
 
   @override
-  String get settingShareApp => '分享此應用程式';
+  String get settingLicense => '授權';
 
   @override
   String get settingFaq => '常見問題';

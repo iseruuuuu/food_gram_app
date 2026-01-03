@@ -83,10 +83,10 @@ class L10nFr extends L10n {
   String get settingReview => 'Noter';
 
   @override
-  String get settingLicense => 'Licence';
+  String get settingShareApp => 'Partager';
 
   @override
-  String get settingShareApp => 'Partager';
+  String get settingLicense => 'Licence';
 
   @override
   String get settingFaq => 'FAQ';

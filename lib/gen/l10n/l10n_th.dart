@@ -81,10 +81,10 @@ class L10nTh extends L10n {
   String get settingReview => 'รีวิว';
 
   @override
-  String get settingLicense => 'ใบอนุญาต';
+  String get settingShareApp => 'แชร์';
 
   @override
-  String get settingShareApp => 'แชร์';
+  String get settingLicense => 'ใบอนุญาต';
 
   @override
   String get settingFaq => 'FAQ';
