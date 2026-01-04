@@ -101,7 +101,7 @@ class DetailPostRepository extends _$DetailPostRepository {
             }
             if (seen.add(id)) {
               picked.add(m);
-              if (picked.length >= 15) {
+              if (picked.length >= 10) {
                 break;
               }
             }
@@ -208,7 +208,8 @@ class DetailPostRepository extends _$DetailPostRepository {
                         p.id < initialPost.id;
                 return isBefore || isSameAndLowerId;
               }).toList(growable: false);
-              return [initialPost, ...others];
+              final limited = others.take(10).toList(growable: false);
+              return [initialPost, ...limited];
             },
             failure: (_) => [initialPost],
           );
@@ -234,7 +235,8 @@ class DetailPostRepository extends _$DetailPostRepository {
                         p.id < initialPost.id;
                 return isBefore || isSameAndLowerId;
               }).toList(growable: false);
-              return [initialPost, ...others];
+              final limited = others.take(10).toList(growable: false);
+              return [initialPost, ...limited];
             },
             failure: (_) => [initialPost],
           );
@@ -249,7 +251,7 @@ class DetailPostRepository extends _$DetailPostRepository {
           return relatedPostsResult.when(
             success: (models) => [
               initialPost,
-              ...models.map((m) => m.posts),
+              ...models.take(10).map((m) => m.posts),
             ],
             failure: (_) => [initialPost],
           );
@@ -265,7 +267,8 @@ class DetailPostRepository extends _$DetailPostRepository {
               final others = posts
                   .where((p) => p.id != initialPost.id)
                   .toList(growable: false);
-              return [initialPost, ...others];
+              final limited = others.take(10).toList(growable: false);
+              return [initialPost, ...limited];
             },
             failure: (_) => [initialPost],
           );
@@ -295,7 +298,8 @@ class DetailPostRepository extends _$DetailPostRepository {
               final tail = index >= 0 && index + 1 < ordered.length
                   ? ordered.sublist(index + 1)
                   : <Posts>[];
-              return [initialPost, ...tail];
+              final limitedTail = tail.take(10).toList(growable: false);
+              return [initialPost, ...limitedTail];
             },
             failure: (_) => [initialPost],
           );
