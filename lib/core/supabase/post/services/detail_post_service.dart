@@ -85,26 +85,16 @@ class DetailPostService extends _$DetailPostService {
   /// 指定した投稿IDより新しい投稿のリストを取得する
   Future<Result<List<Map<String, dynamic>>, Exception>> getSequentialPosts({
     required int currentPostId,
-    int limit = 15,
+    int limit = 10,
   }) async {
     try {
-      final nextPosts = await supabase
-          .from('posts')
-          .select()
-          .gt('id', currentPostId)
-          .order('id', ascending: true)
-          .limit(limit);
       final prevPosts = await supabase
           .from('posts')
           .select()
           .lt('id', currentPostId)
           .order('id', ascending: false)
           .limit(limit);
-      final result = <Map<String, dynamic>>[...nextPosts];
-      if (result.length < limit) {
-        result.addAll(prevPosts.take(limit - result.length));
-      }
-      return Success(result.take(limit).toList());
+      return Success(prevPosts);
     } on PostgrestException catch (e) {
       return Failure(e);
     }
@@ -126,7 +116,7 @@ class DetailPostService extends _$DetailPostService {
           .gte('lng', lng - 0.00001)
           .lte('lng', lng + 0.00001)
           .order('created_at', ascending: false)
-          .limit(15);
+          .limit(10);
       return Success(posts);
     } on PostgrestException catch (e) {
       return Failure(e);

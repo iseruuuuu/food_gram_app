@@ -158,9 +158,9 @@ class PostDetailScreen extends HookConsumerWidget {
                 ),
                 data: (posts) => ListView.builder(
                   controller: scrollController,
-                  key: PageStorageKey('post_detail_list_${posts.first.id}'),
+                  key: PageStorageKey('post_detail_list_${memoizedPosts.id}'),
+                  restorationId: 'post_detail_list_${memoizedPosts.id}',
                   cacheExtent: 2000,
-                  physics: const BouncingScrollPhysics(),
                   itemCount: posts.length,
                   itemBuilder: (context, index) {
                     final post = posts[index];
