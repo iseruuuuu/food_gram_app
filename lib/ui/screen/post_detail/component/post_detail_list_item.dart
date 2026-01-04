@@ -46,6 +46,8 @@ class PostDetailListItem extends HookConsumerWidget {
     final isHearted = useState<bool>(false);
     final heartCount = useState<int>(posts.heart);
     final isStored = useState<bool?>(null);
+    // リスト再利用時も状態を保持
+    useAutomaticKeepAlive();
     useEffect(
       () {
         // 保存状態の初期化
@@ -71,7 +73,7 @@ class PostDetailListItem extends HookConsumerWidget {
     final snapshot = useFuture(userFuture);
     // 画像リストとPageControllerをメモ化
     final imageList = posts.foodImageList;
-    final pageController = useMemoized(PageController.new);
+    final pageController = useMemoized(() => PageController(keepPage: true));
     if (snapshot.connectionState == ConnectionState.waiting) {
       return const SizedBox.shrink();
     }
@@ -139,6 +141,8 @@ class PostDetailListItem extends HookConsumerWidget {
                     width: deviceWidth,
                     height: deviceWidth,
                     child: PageView.builder(
+                      allowImplicitScrolling: true,
+                      key: PageStorageKey('post_page_${posts.id}'),
                       controller: pageController,
                       itemCount: imageList.length,
                       itemBuilder: (context, index) {
@@ -355,79 +359,81 @@ class PostDetailListItem extends HookConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: SizedBox(
                   height: 38,
-                  child: ListView(
+                  child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    children: [
-                      AppDetailElevatedButton(
-                        onPressed: () {
-                          showGeneralDialog(
-                            context: context,
-                            pageBuilder: (_, __, ___) {
-                              return AppShareDialog(
-                                posts: posts,
-                                users: users,
-                              );
-                            },
-                          );
-                        },
-                        title: l10n.detailMenuShare,
-                        icon: Icons.share,
-                      ),
-                      AppDetailElevatedButton(
-                        onPressed: () async {
-                          final currentPath =
-                              GoRouter.of(context).isCurrentLocation();
-                          await context
-                              .pushNamed(
-                            currentPath,
-                            extra: Restaurant(
-                              name: posts.restaurant,
-                              lat: posts.lat,
-                              lng: posts.lng,
-                              address: '',
-                            ),
-                          )
-                              .then((value) async {
-                            if (value != null) {
-                              ref.invalidate(
-                                postsStreamProvider(posts.foodTag),
-                              );
-                            }
-                          });
-                        },
-                        title: l10n.detailMenuPost,
-                        icon: Icons.restaurant,
-                      ),
-                      AppDetailElevatedButton(
-                        onPressed: () => ref
-                            .read(postDetailViewModelProvider().notifier)
-                            .openUrl(posts.restaurant),
-                        title: l10n.detailMenuSearch,
-                        icon: Icons.search,
-                      ),
-                      AppDetailElevatedButton(
-                        onPressed: () {
-                          ref
-                              .read(
-                            postDetailViewModelProvider().notifier,
-                          )
-                              .openSelectedMap(
-                            context,
-                            posts.restaurant,
-                            posts.lat,
-                            posts.lng,
-                            () {
-                              SnackBarHelper().openSimpleSnackBar(
-                                context,
-                                l10n.noMapAppAvailable,
-                              );
-                            },
-                          );
-                        },
-                        title: l10n.detailMenuVisit,
-                        icon: Icons.directions_walk,
-                      ),
-                    ],
+                    child: Row(
+                      children: [
+                        AppDetailElevatedButton(
+                          onPressed: () {
+                            showGeneralDialog(
+                              context: context,
+                              pageBuilder: (_, __, ___) {
+                                return AppShareDialog(
+                                  posts: posts,
+                                  users: users,
+                                );
+                              },
+                            );
+                          },
+                          title: l10n.detailMenuShare,
+                          icon: Icons.share,
+                        ),
+                        AppDetailElevatedButton(
+                          onPressed: () async {
+                            final currentPath =
+                                GoRouter.of(context).isCurrentLocation();
+                            await context
+                                .pushNamed(
+                              currentPath,
+                              extra: Restaurant(
+                                name: posts.restaurant,
+                                lat: posts.lat,
+                                lng: posts.lng,
+                                address: '',
+                              ),
+                            )
+                                .then((value) async {
+                              if (value != null) {
+                                ref.invalidate(
+                                  postsStreamProvider(posts.foodTag),
+                                );
+                              }
+                            });
+                          },
+                          title: l10n.detailMenuPost,
+                          icon: Icons.restaurant,
+                        ),
+                        AppDetailElevatedButton(
+                          onPressed: () => ref
+                              .read(postDetailViewModelProvider().notifier)
+                              .openUrl(posts.restaurant),
+                          title: l10n.detailMenuSearch,
+                          icon: Icons.search,
+                        ),
+                        AppDetailElevatedButton(
+                          onPressed: () {
+                            ref
+                                .read(
+                              postDetailViewModelProvider().notifier,
+                            )
+                                .openSelectedMap(
+                              context,
+                              posts.restaurant,
+                              posts.lat,
+                              posts.lng,
+                              () {
+                                SnackBarHelper().openSimpleSnackBar(
+                                  context,
+                                  l10n.noMapAppAvailable,
+                                );
+                              },
+                            );
+                          },
+                          title: l10n.detailMenuVisit,
+                          icon: Icons.directions_walk,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -196,8 +196,11 @@ class DetailPostRepository extends _$DetailPostRepository {
           final userPostsResult = await getPostsFromUser(currentUser);
           return userPostsResult.when(
             success: (posts) {
-              final sorted = [...posts]
-                ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+              final sorted = [...posts]..sort((a, b) {
+                  final c = b.createdAt.compareTo(a.createdAt);
+                  if (c != 0) return c;
+                  return b.id.compareTo(a.id);
+                });
               final others = sorted.where((p) {
                 if (p.id == initialPost.id) {
                   return false;
@@ -223,8 +226,11 @@ class DetailPostRepository extends _$DetailPostRepository {
           final userPostsResult = await getPostsFromUser(userId);
           return userPostsResult.when(
             success: (posts) {
-              final sorted = [...posts]
-                ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+              final sorted = [...posts]..sort((a, b) {
+                  final c = b.createdAt.compareTo(a.createdAt);
+                  if (c != 0) return c;
+                  return b.id.compareTo(a.id);
+                });
               final others = sorted.where((p) {
                 if (p.id == initialPost.id) {
                   return false;

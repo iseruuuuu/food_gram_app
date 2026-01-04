@@ -88,23 +88,13 @@ class DetailPostService extends _$DetailPostService {
     int limit = 10,
   }) async {
     try {
-      final nextPosts = await supabase
-          .from('posts')
-          .select()
-          .gt('id', currentPostId)
-          .order('id', ascending: true)
-          .limit(limit);
       final prevPosts = await supabase
           .from('posts')
           .select()
           .lt('id', currentPostId)
           .order('id', ascending: false)
           .limit(limit);
-      final result = <Map<String, dynamic>>[...nextPosts];
-      if (result.length < limit) {
-        result.addAll(prevPosts.take(limit - result.length));
-      }
-      return Success(result.take(limit).toList());
+      return Success(prevPosts);
     } on PostgrestException catch (e) {
       return Failure(e);
     }
