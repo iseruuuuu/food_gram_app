@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:math' as math;
+
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/ui/component/app_pin_widget.dart';
 import 'package:food_gram_app/ui/screen/map/map_state.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -19,7 +22,6 @@ class MapViewModel extends _$MapViewModel {
     return const MapState();
   }
 
-  bool isInitialLoading = true;
   final screenshotController = ScreenshotController();
   final Map<String, Uint8List> _imageCache = {};
   final Set<String> _registeredImageKeys = {};
@@ -28,7 +30,10 @@ class MapViewModel extends _$MapViewModel {
   // ピン情報をキャッシュ
   List<Posts>? _cachedPosts;
   Map<String, String>? _cachedImageKeys;
-  double? _cachedIconSize;
+
+  // ランタイムスタイル（SymbolLayer）を使用するためのID
+  static const String _runtimeSourceId = 'fg_posts_source';
+  static const String _runtimeLayerId = 'fg_posts_layer';
 
   String _latLngKey(double lat, double lng, {int fractionDigits = 6}) {
     // 小数点以下を丸めたキーで安定比較（DB由来の微小誤差対策）
@@ -82,10 +87,6 @@ class MapViewModel extends _$MapViewModel {
     required void Function(List<Posts> posts) onPinTap,
     required double iconSize,
   }) async {
-    if (!isInitialLoading) {
-      await state.mapController!.clearSymbols();
-    }
-
     try {
       // 投稿データを取得
       final posts =
@@ -93,14 +94,10 @@ class MapViewModel extends _$MapViewModel {
       if (posts == null || posts.isEmpty) {
         return;
       }
-
       // 同一座標の重複排除
       final uniqueLocationPosts = _dedupeByLatLng(posts);
-
       // ピン情報をキャッシュ（重複排除後）
       _cachedPosts = uniqueLocationPosts;
-      _cachedIconSize = iconSize;
-
       // ピン画像の種類を収集
       final imageTypes = <String>{};
       for (final post in uniqueLocationPosts) {
@@ -113,42 +110,21 @@ class MapViewModel extends _$MapViewModel {
       final imageKeys =
           await _generatePinImages(imageTypes, uniqueLocationPosts);
       _cachedImageKeys = imageKeys;
-
-      // シンボルを作成して追加
-      final symbols = uniqueLocationPosts.map((post) {
-        final imageType = post.foodTag.isEmpty
-            ? 'default'
-            : post.foodTag.split(',').first.trim();
-        return SymbolOptions(
-          geometry: LatLng(post.lat, post.lng),
-          iconImage: imageKeys[imageType],
-          iconSize: iconSize,
-        );
-      }).toList();
-      if (symbols.isNotEmpty) {
-        await _addSymbolsInChunks(symbols);
-        await state.mapController?.setSymbolIconIgnorePlacement(true);
-        await state.mapController?.setSymbolIconAllowOverlap(true);
-      }
-
-      // 意図的に1度だけ呼ぶにようにする
+      await _addSymbolsAnnotation(imageKeys, uniqueLocationPosts);
       if (!_symbolTapHandlerRegistered) {
-        // タップイベントを設定
         state.mapController?.onSymbolTapped.add((symbol) async {
           state = state.copyWith(isLoading: true);
-          final latLng = symbol.options.geometry;
+          final latLng = symbol.options.geometry!;
           final restaurant = await ref
               .read(mapPostRepositoryProvider.notifier)
-              .getRestaurantPosts(lat: latLng!.latitude, lng: latLng.longitude);
+              .getRestaurantPosts(lat: latLng.latitude, lng: latLng.longitude);
           restaurant.whenOrNull(success: (posts) => onPinTap(posts));
           await state.mapController?.animateCamera(
             CameraUpdate.newLatLng(latLng),
             duration: const Duration(seconds: 1),
           );
-          isInitialLoading = false;
           state = state.copyWith(isLoading: false, hasError: false);
         });
-
         _symbolTapHandlerRegistered = true;
       }
     } on PlatformException catch (_) {
@@ -163,12 +139,10 @@ class MapViewModel extends _$MapViewModel {
   ) async {
     final imageKeys = <String, String>{};
     final imageTasks = <Future<void>>[];
-
     for (final imageType in imageTypes) {
       final imageKey = 'pin_$imageType';
       imageKeys[imageType] = imageKey;
       if (_imageCache.containsKey(imageType)) {
-        // キャッシュ済み → 即座にマップに追加
         if (!_registeredImageKeys.contains(imageKey)) {
           imageTasks.add(
             state.mapController!.addImage(imageKey, _imageCache[imageType]!),
@@ -243,8 +217,10 @@ class MapViewModel extends _$MapViewModel {
     if (state.mapController == null) {
       return;
     }
-    // スタイル変更時に画像登録情報をクリア（復元はスタイルロード完了後に実行）
+    // 旧スタイルのシンボル削除＋タップ登録のリセット
+    state.mapController!.clearSymbols();
     _registeredImageKeys.clear();
+    _symbolTapHandlerRegistered = false;
   }
 
   /// マップスタイルのロード完了時に呼ばれる
@@ -252,14 +228,15 @@ class MapViewModel extends _$MapViewModel {
     if (state.mapController == null) {
       return;
     }
-    if (_cachedPosts != null) {
+    // キャッシュがあれば高速復元、なければ通常追加
+    if (_cachedPosts != null && _cachedImageKeys != null) {
       _restorePinsFromCache();
     } else {
       _addPinsToMap();
     }
   }
 
-  /// キャッシュされたピン情報からマップにピンを復元
+  /// キャッシュからピンを復元（画像の再登録→シンボル再追加）
   Future<void> _restorePinsFromCache() async {
     if (state.mapController == null ||
         _cachedPosts == null ||
@@ -267,15 +244,17 @@ class MapViewModel extends _$MapViewModel {
       return;
     }
     await state.mapController!.clearSymbols();
-    for (final imageKey in _cachedImageKeys!.values) {
-      final imageType = _cachedImageKeys!.entries
-          .firstWhere((entry) => entry.value == imageKey)
-          .key;
-      if (_imageCache.containsKey(imageType)) {
-        await state.mapController!.addImage(imageKey, _imageCache[imageType]!);
+    // スタイル切替後は画像登録が失われるため、キャッシュ画像を再登録
+    for (final entry in _cachedImageKeys!.entries) {
+      final imageType = entry.key;
+      final imageKey = entry.value;
+      final bytes = _imageCache[imageType];
+      if (bytes != null) {
+        await state.mapController!.addImage(imageKey, bytes);
         _registeredImageKeys.add(imageKey);
       }
     }
+    // シンボル再追加
     final symbols = _cachedPosts!.map((post) {
       final imageType = post.foodTag.isEmpty
           ? 'default'
@@ -283,11 +262,10 @@ class MapViewModel extends _$MapViewModel {
       return SymbolOptions(
         geometry: LatLng(post.lat, post.lng),
         iconImage: _cachedImageKeys![imageType],
-        iconSize: _cachedIconSize ?? 0.6,
+        iconSize: 0.6,
       );
     }).toList();
-
-    if (symbols.isNotEmpty && state.mapController != null) {
+    if (symbols.isNotEmpty) {
       await _addSymbolsInChunks(symbols);
       await state.mapController!.setSymbolIconIgnorePlacement(true);
       await state.mapController!.setSymbolIconAllowOverlap(true);
@@ -315,7 +293,19 @@ class MapViewModel extends _$MapViewModel {
       imageTypes.add(type);
     }
     final imageKeys = await _generatePinImages(imageTypes, uniqueLocationPosts);
-    final symbols = uniqueLocationPosts.map((post) {
+    await _setupRuntimeLayer(imageKeys, uniqueLocationPosts);
+  }
+
+  // Annotation追加（フォールバック用）
+  Future<void> _addSymbolsAnnotation(
+    Map<String, String> imageKeys,
+    List<Posts> posts,
+  ) async {
+    if (state.mapController == null) {
+      return;
+    }
+    await state.mapController!.clearSymbols();
+    final symbols = posts.map((post) {
       final imageType = post.foodTag.isEmpty
           ? 'default'
           : post.foodTag.split(',').first.trim();
@@ -325,14 +315,14 @@ class MapViewModel extends _$MapViewModel {
         iconSize: 0.6,
       );
     }).toList();
-    if (symbols.isNotEmpty && state.mapController != null) {
-      await _addSymbolsInChunks(symbols);
-      await state.mapController!.setSymbolIconIgnorePlacement(true);
-      await state.mapController!.setSymbolIconAllowOverlap(true);
+    if (symbols.isEmpty) {
+      return;
     }
+    await _addSymbolsInChunks(symbols);
+    await state.mapController!.setSymbolIconIgnorePlacement(true);
+    await state.mapController!.setSymbolIconAllowOverlap(true);
   }
 
-  /// シンボルをチャンクに分けて追加し、UI スレッド負荷を軽減
   Future<void> _addSymbolsInChunks(
     List<SymbolOptions> symbols, {
     int chunkSize = 250,
@@ -348,6 +338,69 @@ class MapViewModel extends _$MapViewModel {
       final end = math.min(start + chunkSize, total);
       final chunk = symbols.sublist(start, end);
       await state.mapController!.addSymbols(chunk);
+    }
+  }
+
+  /// ランタイムスタイル（SymbolLayer）を追加・更新
+  Future<void> _setupRuntimeLayer(
+    Map<String, String> imageKeys,
+    List<Posts> posts,
+  ) async {
+    if (state.mapController == null) {
+      return;
+    }
+    // GeoJSON FeatureCollection を構築
+    final features = posts.map((post) {
+      final imageType = post.foodTag.isEmpty
+          ? 'default'
+          : post.foodTag.split(',').first.trim();
+      return {
+        'type': 'Feature',
+        'geometry': {
+          'type': 'Point',
+          'coordinates': [post.lng, post.lat],
+        },
+        'properties': {
+          'icon': imageKeys[imageType],
+          'lat': post.lat,
+          'lng': post.lng,
+          'selected': false,
+        },
+      };
+    }).toList();
+    final source = {
+      'type': 'geojson',
+      'data': {
+        'type': 'FeatureCollection',
+        'features': features,
+      },
+    };
+    // レイヤー定義（通常表示）
+    final layerJsonString =
+        await rootBundle.loadString(Assets.map.overlayPostsLayer);
+    final layer = jsonDecode(layerJsonString) as Map<String, dynamic>
+      ..['id'] = _runtimeLayerId
+      ..['source'] = _runtimeSourceId;
+    // レイヤー定義（選択表示）
+    final selectedLayerJsonString =
+        await rootBundle.loadString(Assets.map.overlayPostsSelectedLayer);
+    final selectedLayer =
+        jsonDecode(selectedLayerJsonString) as Map<String, dynamic>
+          ..['id'] = '${_runtimeLayerId}_selected'
+          ..['source'] = _runtimeSourceId;
+    final dynamic c = state.mapController;
+    try {
+      try {
+        await c.removeLayer(_runtimeLayerId);
+      } on Exception catch (_) {}
+      try {
+        await c.removeSource(_runtimeSourceId);
+      } on Exception catch (_) {}
+      await c.addSource(_runtimeSourceId, source);
+      await c.addLayer(layer);
+      await c.addLayer(selectedLayer);
+    } on Exception catch (_) {
+      await _addSymbolsAnnotation(imageKeys, posts);
     }
   }
 }
