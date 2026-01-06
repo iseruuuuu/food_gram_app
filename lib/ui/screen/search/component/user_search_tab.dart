@@ -130,23 +130,58 @@ class UserSearchTab extends ConsumerWidget {
                                   itemBuilder: (context, postIndex) {
                                     final post = latestPosts[postIndex]
                                         as Map<String, dynamic>;
+                                    final foodImage =
+                                        post['food_image'] as String? ?? '';
+                                    final imagePaths = foodImage.isNotEmpty
+                                        ? foodImage
+                                            .split(',')
+                                            .where((p) => p.isNotEmpty)
+                                            .toList()
+                                        : <String>[];
+                                    final firstImage = imagePaths.isNotEmpty
+                                        ? imagePaths.first
+                                        : '';
+                                    final hasMultipleImages =
+                                        imagePaths.length > 1;
                                     final imageUrl = supabase.storage
                                         .from('food')
-                                        .getPublicUrl(
-                                          post['food_image'] as String,
-                                        );
+                                        .getPublicUrl(firstImage);
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 4,
                                       ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: CachedNetworkImage(
-                                          imageUrl: imageUrl,
-                                          width: 80,
-                                          height: 80,
-                                          fit: BoxFit.cover,
-                                        ),
+                                      child: Stack(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            child: CachedNetworkImage(
+                                              imageUrl: imageUrl,
+                                              width: 80,
+                                              height: 80,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          if (hasMultipleImages)
+                                            Positioned(
+                                              top: 4,
+                                              right: 4,
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(4),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black
+                                                      .withValues(alpha: 0.6),
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: const Icon(
+                                                  Icons.collections,
+                                                  color: Colors.white,
+                                                  size: 14,
+                                                ),
+                                              ),
+                                            ),
+                                        ],
                                       ),
                                     );
                                   },
