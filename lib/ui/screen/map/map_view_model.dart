@@ -30,6 +30,31 @@ class MapViewModel extends _$MapViewModel {
   Map<String, String>? _cachedImageKeys;
   double? _cachedIconSize;
 
+  String _latLngKey(double lat, double lng, {int fractionDigits = 6}) {
+    // 小数点以下を丸めたキーで安定比較（DB由来の微小誤差対策）
+    return '${lat.toStringAsFixed(fractionDigits)},'
+        '${lng.toStringAsFixed(fractionDigits)}';
+  }
+
+  /// 同一座標の投稿を1つにまとめる（代表選出は非空の foodTag を優先）
+  List<Posts> _dedupeByLatLng(List<Posts> posts) {
+    final deduped = <String, Posts>{};
+    for (final post in posts) {
+      final key = _latLngKey(post.lat, post.lng);
+      final existing = deduped[key];
+      if (existing == null) {
+        deduped[key] = post;
+      } else {
+        final existingHasTag = existing.foodTag.isNotEmpty;
+        final currentHasTag = post.foodTag.isNotEmpty;
+        if (!existingHasTag && currentHasTag) {
+          deduped[key] = post;
+        }
+      }
+    }
+    return deduped.values.toList();
+  }
+
   /// デフォルト画像を事前生成
   Future<void> _preloadDefaultImages() async {
     if (!_imageCache.containsKey('default')) {
@@ -69,24 +94,28 @@ class MapViewModel extends _$MapViewModel {
         return;
       }
 
-      // ピン情報をキャッシュ
-      _cachedPosts = posts;
+      // 同一座標の重複排除
+      final uniqueLocationPosts = _dedupeByLatLng(posts);
+
+      // ピン情報をキャッシュ（重複排除後）
+      _cachedPosts = uniqueLocationPosts;
       _cachedIconSize = iconSize;
 
       // ピン画像の種類を収集
       final imageTypes = <String>{};
-      for (final post in posts) {
+      for (final post in uniqueLocationPosts) {
         final type = post.foodTag.isEmpty
             ? 'default'
             : post.foodTag.split(',').first.trim();
         imageTypes.add(type);
       }
       // 画像を並列で生成してマップに追加
-      final imageKeys = await _generatePinImages(imageTypes, posts);
+      final imageKeys =
+          await _generatePinImages(imageTypes, uniqueLocationPosts);
       _cachedImageKeys = imageKeys;
 
       // シンボルを作成して追加
-      final symbols = posts.map((post) {
+      final symbols = uniqueLocationPosts.map((post) {
         final imageType = post.foodTag.isEmpty
             ? 'default'
             : post.foodTag.split(',').first.trim();
@@ -275,16 +304,18 @@ class MapViewModel extends _$MapViewModel {
     if (posts == null || posts.isEmpty) {
       return;
     }
+    // 同一座標の重複排除
+    final uniqueLocationPosts = _dedupeByLatLng(posts);
     // ピン画像の種類を収集
     final imageTypes = <String>{};
-    for (final post in posts) {
+    for (final post in uniqueLocationPosts) {
       final type = post.foodTag.isEmpty
           ? 'default'
           : post.foodTag.split(',').first.trim();
       imageTypes.add(type);
     }
-    final imageKeys = await _generatePinImages(imageTypes, posts);
-    final symbols = posts.map((post) {
+    final imageKeys = await _generatePinImages(imageTypes, uniqueLocationPosts);
+    final symbols = uniqueLocationPosts.map((post) {
       final imageType = post.foodTag.isEmpty
           ? 'default'
           : post.foodTag.split(',').first.trim();

@@ -64,7 +64,7 @@ class RevenueCatService extends _$RevenueCatService {
 
   /// Paywall表示の前後でエンタイトルメントを比較し、
   /// 非アクティブ→アクティブに変化した時のみ同期処理を行う
-  Future<bool> presentPaywallWithActivationGuard() async {
+  Future<bool> presentPaywallGuarded() async {
     final beforeInfo = await Purchases.getCustomerInfo();
     final wasActive =
         beforeInfo.entitlements.all[_entitlementId]?.isActive ?? false;
