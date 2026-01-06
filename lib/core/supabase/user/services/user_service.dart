@@ -112,7 +112,7 @@ class UserService extends _$UserService {
       fetcher: () async {
         final postsResponse = await supabase
             .from('posts')
-            .select('user_id, food_image, created_at')
+            .select('id, user_id, food_image, created_at')
             .eq('is_anonymous', false)
             .order('created_at', ascending: false)
             .limit(2500);
@@ -130,6 +130,7 @@ class UserService extends _$UserService {
           }
           if (userLatestPosts[userId]!.length < 4) {
             userLatestPosts[userId]!.add({
+              'id': post['id'],
               'food_image': post['food_image'] ?? '',
               'created_at': post['created_at'],
             });

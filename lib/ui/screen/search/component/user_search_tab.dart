@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/model/model.dart';
+import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -130,6 +133,7 @@ class UserSearchTab extends ConsumerWidget {
                                   itemBuilder: (context, postIndex) {
                                     final post = latestPosts[postIndex]
                                         as Map<String, dynamic>;
+                                    final postId = post['id'] as int?;
                                     final foodImage =
                                         post['food_image'] as String? ?? '';
                                     final imagePaths = foodImage.isNotEmpty
@@ -143,45 +147,129 @@ class UserSearchTab extends ConsumerWidget {
                                         : '';
                                     final hasMultipleImages =
                                         imagePaths.length > 1;
+                                    // 画像パスが空の場合は安全にプレースホルダーを表示
+                                    if (firstImage.isEmpty) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 4,
+                                        ),
+                                        child: Container(
+                                          width: 80,
+                                          height: 80,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[300],
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: const Icon(
+                                            Icons.image_not_supported,
+                                            color: Colors.grey,
+                                            size: 20,
+                                          ),
+                                        ),
+                                      );
+                                    }
                                     final imageUrl = supabase.storage
                                         .from('food')
                                         .getPublicUrl(firstImage);
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 4,
-                                      ),
-                                      child: Stack(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            child: CachedNetworkImage(
-                                              imageUrl: imageUrl,
-                                              width: 80,
-                                              height: 80,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                          if (hasMultipleImages)
-                                            Positioned(
-                                              top: 4,
-                                              right: 4,
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(4),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.black
-                                                      .withValues(alpha: 0.6),
-                                                  shape: BoxShape.circle,
+                                    return GestureDetector(
+                                      onTap: postId == null
+                                          ? null
+                                          : () async {
+                                              final detailService = ref.read(
+                                                detailPostServiceProvider
+                                                    .notifier,
+                                              );
+                                              final result = await detailService
+                                                  .getPost(postId);
+                                              result.when(
+                                                success: (data) {
+                                                  final posts = Posts.fromJson(
+                                                    data['post']
+                                                        as Map<String, dynamic>,
+                                                  );
+                                                  final users = Users.fromJson(
+                                                    data['user']
+                                                        as Map<String, dynamic>,
+                                                  );
+                                                  context.pushNamed(
+                                                    RouterPath.searchDetailPost,
+                                                    extra: Model(users, posts),
+                                                  );
+                                                },
+                                                failure: (error) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                        l10n.error,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 4,
+                                        ),
+                                        child: Stack(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: CachedNetworkImage(
+                                                imageUrl: imageUrl,
+                                                width: 80,
+                                                height: 80,
+                                                fit: BoxFit.cover,
+                                                placeholder: (context, url) =>
+                                                    Container(
+                                                  width: 80,
+                                                  height: 80,
+                                                  color: Colors.grey[200],
                                                 ),
-                                                child: const Icon(
-                                                  Icons.collections,
-                                                  color: Colors.white,
-                                                  size: 14,
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Container(
+                                                  width: 80,
+                                                  height: 80,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey[300],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      8,
+                                                    ),
+                                                  ),
+                                                  child: const Icon(
+                                                    Icons.broken_image,
+                                                    color: Colors.grey,
+                                                    size: 20,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                        ],
+                                            if (hasMultipleImages)
+                                              Positioned(
+                                                top: 4,
+                                                right: 4,
+                                                child: Container(
+                                                  padding:
+                                                      const EdgeInsets.all(4),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.black
+                                                        .withValues(alpha: 0.6),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: const Icon(
+                                                    Icons.collections,
+                                                    color: Colors.white,
+                                                    size: 14,
+                                                  ),
+                                                ),
+                                              ),
+                                          ],
+                                        ),
                                       ),
                                     );
                                   },
