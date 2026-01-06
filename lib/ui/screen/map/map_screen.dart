@@ -8,6 +8,7 @@ import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
 import 'package:food_gram_app/core/local/force_update_checker.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
+import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
@@ -18,7 +19,6 @@ import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
-import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -160,7 +160,7 @@ class MapScreen extends HookConsumerWidget {
                                                   revenueCatServiceProvider
                                                       .notifier,
                                                 )
-                                                .presentPaywallWithActivationGuard();
+                                                .presentPaywallGuarded();
                                           } on Exception catch (_) {
                                             return;
                                           }

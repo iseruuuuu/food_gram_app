@@ -56,7 +56,7 @@ class AppPromoteDialog extends ConsumerWidget {
                 try {
                   await ref
                       .read(revenueCatServiceProvider.notifier)
-                      .presentPaywallWithActivationGuard();
+                      .presentPaywallGuarded();
                 } on Exception catch (_) {
                   return;
                 }
