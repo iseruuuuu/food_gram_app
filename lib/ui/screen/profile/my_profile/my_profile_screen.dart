@@ -92,47 +92,70 @@ class MyProfileScreen extends HookConsumerWidget {
                             ),
                             if (!isSubscribed)
                               const Positioned(
-                                top: 5,
+                                top: 10,
                                 left: 0,
                                 right: 0,
                                 child: AppPremiumMembershipCard(),
                               ),
+                            // ヘッダー右上の操作群（通知・保存）
                             Positioned(
-                              top: !isSubscribed ? 60 : 10,
-                              right: 15,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  context.pushNamed(RouterPath.storedPost);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  foregroundColor: Colors.black,
-                                  elevation: 4,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 8,
-                                  ),
-                                  shape: RoundedRectangleBorder(
+                              top: !isSubscribed ? 70 : 10,
+                              right: 12,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Material(
+                                    color: Colors.white,
+                                    elevation: 4,
                                     borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Icon(
-                                      Icons.bookmark,
-                                      size: 24,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      L10n.of(context).savedPosts,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(20),
+                                      onTap: () => context
+                                          .pushNamed(RouterPath.storedPost),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 24,
+                                          vertical: 12,
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const Icon(
+                                              Icons.bookmark,
+                                              size: 20,
+                                            ),
+                                            const SizedBox(width: 6),
+                                            Text(
+                                              L10n.of(context).savedPosts,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Material(
+                                    color: Colors.white,
+                                    shape: const CircleBorder(),
+                                    elevation: 4,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        context.pushNamed(
+                                          RouterPath.notifications,
+                                        );
+                                      },
+                                      icon: const Icon(
+                                        Icons.favorite_border,
+                                        color: Colors.red,
+                                        size: 28,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
