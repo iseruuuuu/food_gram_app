@@ -34,8 +34,20 @@ class EditPostScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
     final deviceWidth = MediaQuery.of(context).size.width;
+    final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+    final previewWidth = (deviceWidth * 0.85 * devicePixelRatio).round();
+    final previewHeight = (deviceWidth / 1.7 * devicePixelRatio).round();
     final loading = ref.watch(loadingProvider);
-    final state = ref.watch(editPostViewModelProvider());
+    final status =
+        ref.watch(editPostViewModelProvider().select((s) => s.status));
+    final existingImagePaths = ref
+        .watch(editPostViewModelProvider().select((s) => s.existingImagePaths));
+    final foodImages =
+        ref.watch(editPostViewModelProvider().select((s) => s.foodImages));
+    final restaurantName =
+        ref.watch(editPostViewModelProvider().select((s) => s.restaurant));
+    final isAnonymous =
+        ref.watch(editPostViewModelProvider().select((s) => s.isAnonymous));
     final viewModel = ref.watch(editPostViewModelProvider().notifier);
     final countryTag = useState(posts.restaurantTag);
     final countryText = useMemoized(
@@ -69,7 +81,7 @@ class EditPostScreen extends HookConsumerWidget {
     );
     useEffect(
       () {
-        if (state.status == EditStatus.maybeNotFood.name) {
+        if (status == EditStatus.maybeNotFood.name) {
           WidgetsBinding.instance.addPostFrameCallback((_) async {
             if (!context.mounted) {
               return;
@@ -93,7 +105,7 @@ class EditPostScreen extends HookConsumerWidget {
         }
         return null;
       },
-      [state.status],
+      [status],
     );
     final supabase = ref.watch(supabaseProvider);
     // 最初の画像のURLを取得（既存の表示用）
@@ -143,22 +155,20 @@ class EditPostScreen extends HookConsumerWidget {
                     Column(
                       children: [
                         // 既存の画像（サーバーから読み込んだもの）
-                        if (state.existingImagePaths.isNotEmpty)
+                        if (existingImagePaths.isNotEmpty)
                           SizedBox(
                             height: deviceWidth / 1.7,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: state.existingImagePaths.length,
+                              itemCount: existingImagePaths.length,
                               itemBuilder: (context, index) {
-                                final imagePath =
-                                    state.existingImagePaths[index];
+                                final imagePath = existingImagePaths[index];
                                 final existingImageUrl = supabase.storage
                                     .from('food')
                                     .getPublicUrl(imagePath);
                                 return Padding(
                                   padding: EdgeInsets.only(
-                                    right: index <
-                                            state.existingImagePaths.length - 1
+                                    right: index < existingImagePaths.length - 1
                                         ? 12
                                         : 0,
                                   ),
@@ -180,6 +190,8 @@ class EditPostScreen extends HookConsumerWidget {
                                           child: CachedNetworkImage(
                                             imageUrl: existingImageUrl,
                                             fit: BoxFit.cover,
+                                            memCacheWidth: previewWidth,
+                                            memCacheHeight: previewHeight,
                                           ),
                                         ),
                                       ),
@@ -216,19 +228,18 @@ class EditPostScreen extends HookConsumerWidget {
                             ),
                           ),
                         // 新しく追加した画像
-                        if (state.foodImages.isNotEmpty)
+                        if (foodImages.isNotEmpty)
                           SizedBox(
                             height: deviceWidth / 1.7,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: state.foodImages.length,
+                              itemCount: foodImages.length,
                               itemBuilder: (context, index) {
-                                final imagePath = state.foodImages[index];
+                                final imagePath = foodImages[index];
                                 return Padding(
                                   padding: EdgeInsets.only(
-                                    right: index < state.foodImages.length - 1
-                                        ? 12
-                                        : 0,
+                                    right:
+                                        index < foodImages.length - 1 ? 12 : 0,
                                   ),
                                   child: Stack(
                                     children: [
@@ -248,6 +259,9 @@ class EditPostScreen extends HookConsumerWidget {
                                           child: Image.file(
                                             File(imagePath),
                                             fit: BoxFit.cover,
+                                            cacheWidth: previewWidth,
+                                            cacheHeight: previewHeight,
+                                            filterQuality: FilterQuality.high,
                                           ),
                                         ),
                                       ),
@@ -284,8 +298,7 @@ class EditPostScreen extends HookConsumerWidget {
                             ),
                           ),
                         // 画像追加ボタン（画像がない場合のみ表示）
-                        if (state.existingImagePaths.isEmpty &&
-                            state.foodImages.isEmpty)
+                        if (existingImagePaths.isEmpty && foodImages.isEmpty)
                           GestureDetector(
                             onTap: () async {
                               primaryFocus?.unfocus();
@@ -327,6 +340,8 @@ class EditPostScreen extends HookConsumerWidget {
                                       child: CachedNetworkImage(
                                         imageUrl: foodImageUrl,
                                         fit: BoxFit.cover,
+                                        memCacheWidth: previewWidth,
+                                        memCacheHeight: previewHeight,
                                       ),
                                     )
                                   : const Icon(
@@ -379,7 +394,7 @@ class EditPostScreen extends HookConsumerWidget {
                                       const Gap(16),
                                       Expanded(
                                         child: Text(
-                                          state.restaurant,
+                                          restaurantName,
                                           overflow: TextOverflow.ellipsis,
                                           style: EditPostStyle.restaurant(),
                                         ),
@@ -442,7 +457,7 @@ class EditPostScreen extends HookConsumerWidget {
                         ),
                       ),
                       trailing: Switch(
-                        value: state.isAnonymous,
+                        value: isAnonymous,
                         activeThumbColor: Colors.blue[600],
                         activeTrackColor: Colors.blue[100],
                         inactiveTrackColor: Colors.grey[300],
@@ -461,7 +476,7 @@ class EditPostScreen extends HookConsumerWidget {
             ),
             AppProcessLoading(
               loading: loading,
-              status: state.status,
+              status: status,
             ),
           ],
         ),
@@ -497,7 +512,7 @@ class EditPostScreen extends HookConsumerWidget {
                         SnackBarHelper().openErrorSnackBar(
                           context,
                           l10n.postError,
-                          _getLocalizedStatus(context, state.status),
+                          _getLocalizedStatus(context, status),
                         );
                       }
                     },
@@ -512,7 +527,7 @@ class EditPostScreen extends HookConsumerWidget {
                       ),
                     ),
                     child: Text(
-                      state.isAnonymous
+                      isAnonymous
                           ? l10n.anonymousUpdate
                           : l10n.editUpdateButton,
                       style: const TextStyle(color: Colors.white),
