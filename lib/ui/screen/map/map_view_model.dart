@@ -35,6 +35,31 @@ class MapViewModel extends _$MapViewModel {
   static const String _runtimeSourceId = 'fg_posts_source';
   static const String _runtimeLayerId = 'fg_posts_layer';
 
+  /// JSONレイヤーの icon-size と同等の線形補間（Annotation用フォールバック）
+  double _interpolatedIconSize(double zoom) {
+    // アンカー: 3.8->0.40, 7->0.45, 10->0.60, 14->0.70, 22->0.70
+    final anchors = <double, double>{
+      3.8: 0.40,
+      7.0: 0.45,
+      10.0: 0.60,
+      14.0: 0.70,
+      22.0: 0.70,
+    };
+    final keys = anchors.keys.toList()..sort();
+    final z = zoom.clamp(keys.first, keys.last);
+    for (var i = 0; i < keys.length - 1; i++) {
+      final z0 = keys[i];
+      final z1 = keys[i + 1];
+      if (z >= z0 && z <= z1) {
+        final s0 = anchors[z0]!;
+        final s1 = anchors[z1]!;
+        final t = (z - z0) / (z1 - z0);
+        return s0 + (s1 - s0) * t;
+      }
+    }
+    return anchors.values.last;
+  }
+
   String _latLngKey(double lat, double lng, {int fractionDigits = 6}) {
     // 小数点以下を丸めたキーで安定比較（DB由来の微小誤差対策）
     return '${lat.toStringAsFixed(fractionDigits)},'
@@ -263,10 +288,11 @@ class MapViewModel extends _$MapViewModel {
       final imageType = post.foodTag.isEmpty
           ? 'default'
           : post.foodTag.split(',').first.trim();
+      final zoom = state.mapController?.cameraPosition?.zoom ?? 14.0;
       return SymbolOptions(
         geometry: LatLng(post.lat, post.lng),
         iconImage: _cachedImageKeys![imageType],
-        iconSize: 0.6,
+        iconSize: _interpolatedIconSize(zoom),
       );
     }).toList();
     if (symbols.isNotEmpty) {
@@ -313,10 +339,11 @@ class MapViewModel extends _$MapViewModel {
       final imageType = post.foodTag.isEmpty
           ? 'default'
           : post.foodTag.split(',').first.trim();
+      final zoom = state.mapController?.cameraPosition?.zoom ?? 14.0;
       return SymbolOptions(
         geometry: LatLng(post.lat, post.lng),
         iconImage: imageKeys[imageType],
-        iconSize: 0.6,
+        iconSize: _interpolatedIconSize(zoom),
       );
     }).toList();
     if (symbols.isEmpty) {
