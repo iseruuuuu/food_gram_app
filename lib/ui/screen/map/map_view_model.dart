@@ -114,7 +114,11 @@ class MapViewModel extends _$MapViewModel {
       if (!_symbolTapHandlerRegistered) {
         state.mapController?.onSymbolTapped.add((symbol) async {
           state = state.copyWith(isLoading: true);
-          final latLng = symbol.options.geometry!;
+          final latLng = symbol.options.geometry;
+          if (latLng == null) {
+            state = state.copyWith(isLoading: false);
+            return;
+          }
           final restaurant = await ref
               .read(mapPostRepositoryProvider.notifier)
               .getRestaurantPosts(lat: latLng.latitude, lng: latLng.longitude);

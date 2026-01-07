@@ -3,6 +3,14 @@
     "type": "symbol",
     "source": "fg_posts_source",
     "layout": {
+        "filter": [
+            "!=",
+            [
+                "get",
+                "selected"
+            ],
+            true
+        ],
         "icon-image": [
             "get",
             "icon"
@@ -29,31 +37,19 @@
             0.70
         ],
         "icon-opacity": [
-            "case",
+            "interpolate",
             [
-                "boolean",
-                [
-                    "get",
-                    "selected"
-                ],
-                false
+                "linear"
             ],
-            1.0,
             [
-                "interpolate",
-                [
-                    "linear"
-                ],
-                [
-                    "zoom"
-                ],
-                3.8,
-                0.90,
-                16,
-                0.70,
-                18,
-                0.60
-            ]
+                "zoom"
+            ],
+            3.8,
+            0.90,
+            16,
+            0.70,
+            18,
+            0.60
         ]
     }
 }
