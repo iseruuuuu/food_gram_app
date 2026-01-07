@@ -35,11 +35,9 @@ class EditPostScreen extends HookConsumerWidget {
     final l10n = L10n.of(context);
     final deviceWidth = MediaQuery.of(context).size.width;
     final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    // プレビュー用の物理解像度（縮小デコード）
     final previewWidth = (deviceWidth * 0.85 * devicePixelRatio).round();
     final previewHeight = (deviceWidth / 1.7 * devicePixelRatio).round();
     final loading = ref.watch(loadingProvider);
-    // 必要なフィールドのみwatchしてリビルドを最小化
     final status =
         ref.watch(editPostViewModelProvider().select((s) => s.status));
     final existingImagePaths = ref
@@ -240,9 +238,8 @@ class EditPostScreen extends HookConsumerWidget {
                                 final imagePath = foodImages[index];
                                 return Padding(
                                   padding: EdgeInsets.only(
-                                    right: index < foodImages.length - 1
-                                        ? 12
-                                        : 0,
+                                    right:
+                                        index < foodImages.length - 1 ? 12 : 0,
                                   ),
                                   child: Stack(
                                     children: [

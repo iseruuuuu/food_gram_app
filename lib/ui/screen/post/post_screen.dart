@@ -34,7 +34,6 @@ class PostScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
     final deviceWidth = MediaQuery.of(context).size.width;
-    // rebuild最小化: 必要なフィールドのみwatch
     final status = ref.watch(postViewModelProvider().select((s) => s.status));
     final foodImages =
         ref.watch(postViewModelProvider().select((s) => s.foodImages));
