@@ -1,0 +1,36 @@
+{
+    "id": "fg_posts_layer_selected",
+    "type": "symbol",
+    "source": "fg_posts_source",
+    "minzoom": 14,
+    "filter": [
+        "==",
+        [
+            "get",
+            "selected"
+        ],
+        true
+    ],
+    "layout": {
+        "icon-image": [
+            "get",
+            "icon"
+        ],
+        "icon-allow-overlap": true,
+        "icon-ignore-placement": true,
+        "icon-size": [
+            "interpolate",
+            [
+                "linear"
+            ],
+            [
+                "zoom"
+            ],
+            14,
+            1.00,
+            18,
+            1.10
+        ],
+        "icon-opacity": 1.0
+    }
+}

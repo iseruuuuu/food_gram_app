@@ -1,0 +1,55 @@
+{
+    "id": "fg_posts_layer",
+    "type": "symbol",
+    "source": "fg_posts_source",
+    "layout": {
+        "filter": [
+            "!=",
+            [
+                "get",
+                "selected"
+            ],
+            true
+        ],
+        "icon-image": [
+            "get",
+            "icon"
+        ],
+        "icon-allow-overlap": true,
+        "icon-ignore-placement": true,
+        "icon-size": [
+            "interpolate",
+            [
+                "linear"
+            ],
+            [
+                "zoom"
+            ],
+            3.8,
+            0.40,
+            7,
+            0.45,
+            10,
+            0.60,
+            14,
+            0.70,
+            22,
+            0.70
+        ],
+        "icon-opacity": [
+            "interpolate",
+            [
+                "linear"
+            ],
+            [
+                "zoom"
+            ],
+            3.8,
+            0.90,
+            16,
+            0.70,
+            18,
+            0.60
+        ]
+    }
+}
