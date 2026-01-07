@@ -34,7 +34,14 @@ class PostScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
     final deviceWidth = MediaQuery.of(context).size.width;
-    final state = ref.watch(postViewModelProvider());
+    // rebuild最小化: 必要なフィールドのみwatch
+    final status = ref.watch(postViewModelProvider().select((s) => s.status));
+    final foodImages =
+        ref.watch(postViewModelProvider().select((s) => s.foodImages));
+    final restaurantName =
+        ref.watch(postViewModelProvider().select((s) => s.restaurant));
+    final isAnonymous =
+        ref.watch(postViewModelProvider().select((s) => s.isAnonymous));
     final loading = ref.watch(loadingProvider);
     final countryTag = useState('');
     final countryText = useMemoized(
@@ -70,7 +77,7 @@ class PostScreen extends HookConsumerWidget {
     );
     useEffect(
       () {
-        if (state.status == PostStatus.maybeNotFood.name) {
+        if (status == PostStatus.maybeNotFood.name) {
           WidgetsBinding.instance.addPostFrameCallback((_) async {
             if (!context.mounted) {
               return;
@@ -94,8 +101,12 @@ class PostScreen extends HookConsumerWidget {
         }
         return null;
       },
-      [state.status],
+      [status],
     );
+    // プレビューサイズに合わせて縮小デコード（物理解像度で指定）
+    final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+    final previewWidth = (deviceWidth * 0.85 * devicePixelRatio).round();
+    final previewHeight = (deviceWidth / 1.7 * devicePixelRatio).round();
     return GestureDetector(
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
@@ -128,19 +139,18 @@ class PostScreen extends HookConsumerWidget {
                   children: [
                     Column(
                       children: [
-                        if (state.foodImages.isNotEmpty)
+                        if (foodImages.isNotEmpty)
                           SizedBox(
                             height: deviceWidth / 1.7,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: state.foodImages.length,
+                              itemCount: foodImages.length,
                               itemBuilder: (context, index) {
-                                final imagePath = state.foodImages[index];
+                                final imagePath = foodImages[index];
                                 return Padding(
                                   padding: EdgeInsets.only(
-                                    right: index < state.foodImages.length - 1
-                                        ? 12
-                                        : 0,
+                                    right:
+                                        index < foodImages.length - 1 ? 12 : 0,
                                   ),
                                   child: Stack(
                                     children: [
@@ -160,6 +170,9 @@ class PostScreen extends HookConsumerWidget {
                                           child: Image.file(
                                             File(imagePath),
                                             fit: BoxFit.cover,
+                                            cacheWidth: previewWidth,
+                                            cacheHeight: previewHeight,
+                                            filterQuality: FilterQuality.high,
                                           ),
                                         ),
                                       ),
@@ -283,17 +296,17 @@ class PostScreen extends HookConsumerWidget {
                                       const Gap(16),
                                       Expanded(
                                         child: Text(
-                                          state.restaurant == '場所を追加'
+                                          restaurantName == '場所を追加'
                                               ? l10n
                                                   .postRestaurantNameInputField
-                                              : state.restaurant,
+                                              : restaurantName,
                                           overflow: TextOverflow.ellipsis,
                                           style: PostStyle.restaurant(
-                                            value: state.restaurant == '場所を追加',
+                                            value: restaurantName == '場所を追加',
                                           ),
                                         ),
                                       ),
-                                      if (state.restaurant == '場所を追加')
+                                      if (restaurantName == '場所を追加')
                                         const Row(
                                           children: [
                                             Icon(
@@ -364,7 +377,7 @@ class PostScreen extends HookConsumerWidget {
                         ),
                       ),
                       trailing: Switch(
-                        value: state.isAnonymous,
+                        value: isAnonymous,
                         activeThumbColor: Colors.blue[600],
                         activeTrackColor: Colors.blue[100],
                         inactiveTrackColor: Colors.grey[300],
@@ -383,7 +396,7 @@ class PostScreen extends HookConsumerWidget {
             ),
             AppProcessLoading(
               loading: loading,
-              status: state.status,
+              status: status,
             ),
           ],
         ),
@@ -424,8 +437,6 @@ class PostScreen extends HookConsumerWidget {
                           context.pop(true);
                         }
                       } else {
-                        final status =
-                            ref.watch(postViewModelProvider()).status;
                         SnackBarHelper().openErrorSnackBar(
                           context,
                           l10n.postError,
@@ -444,9 +455,7 @@ class PostScreen extends HookConsumerWidget {
                       ),
                     ),
                     child: Text(
-                      state.isAnonymous
-                          ? l10n.anonymousShare
-                          : l10n.shareButton,
+                      isAnonymous ? l10n.anonymousShare : l10n.shareButton,
                       style: const TextStyle(
                         color: Colors.white,
                       ),
