@@ -302,7 +302,7 @@ class FirebaseMessagingService {
       final requestBody = {
         'type': 'heart',
         'postOwnerId': postOwnerId,
-        'postId': postId,
+        'post_id': postId,
         'likerName': likerName,
       };
 
@@ -394,7 +394,8 @@ class FirebaseMessagingService {
     final messageType = message.data['type'] as String?;
     if (messageType == 'heart') {
       // いいね通知がタップされた場合
-      final postIdStr = message.data['postId'] as String?;
+      final postIdStr =
+          (message.data['post_id'] ?? message.data['postId']) as String?;
       if (postIdStr == null) {
         _logger.w('投稿IDが取得できませんでした');
         return;
@@ -412,7 +413,8 @@ class FirebaseMessagingService {
       await _navigateToPostDetail(postId);
     } else {
       // その他の通知がタップされた場合
-      final postIdStr = message.data['postId'] as String?;
+      final postIdStr =
+          (message.data['post_id'] ?? message.data['postId']) as String?;
       if (postIdStr != null) {
         final postId = int.tryParse(postIdStr);
         if (postId != null) {
