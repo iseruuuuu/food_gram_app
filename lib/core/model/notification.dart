@@ -1,8 +1,9 @@
 import 'package:food_gram_app/core/model/posts.dart';
 
-/// 通知一覧のキー（postId / 更新時刻 / いいねした人のID）
-class LikeNotificationKey {
-  LikeNotificationKey({
+/// 通知一覧を取得するためのKey
+/// （postId / 更新時刻 / いいねした人のID）
+class NotificationKey {
+  NotificationKey({
     required this.postId,
     required this.updatedAt,
     this.likerUserId,
@@ -12,7 +13,8 @@ class LikeNotificationKey {
   final String? likerUserId;
 }
 
-/// 通知一覧の表示用モデル（投稿 / 更新時刻 / いいねした人のID）
+/// 通知一覧の表示用モデル
+/// （投稿 / 更新時刻 / いいねした人のID）
 class LikeNotification {
   LikeNotification({
     required this.post,

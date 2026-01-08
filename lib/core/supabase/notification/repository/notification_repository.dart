@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/model/like_notification.dart';
+import 'package:food_gram_app/core/model/notification.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/notification/services/notification_fetch_service.dart';
