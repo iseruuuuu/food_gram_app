@@ -547,5 +547,14 @@
   "translatableShowOriginal": "显示原文",
   "translatableCopy": "复制",
   "translatableCopied": "已复制到剪贴板",
-  "translatableTranslateFailed": "翻译失败"
+  "translatableTranslateFailed": "翻译失败",
+  "likeNotificationsTitle": "点赞通知",
+  "loadFailed": "加载失败",
+  "someoneLikedYourPost": "有人给你的帖子点了赞。",
+  "userLikedYourPost": "{name} 给你的帖子点了赞。",
+  "@userLikedYourPost": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  }
 }
