@@ -1638,6 +1638,20 @@ class L10nZh extends L10n {
 
   @override
   String get translatableTranslateFailed => '翻译失败';
+
+  @override
+  String get likeNotificationsTitle => 'Likes';
+
+  @override
+  String get loadFailed => 'Failed to load';
+
+  @override
+  String get someoneLikedYourPost => 'Someone liked your post.';
+
+  @override
+  String userLikedYourPost(String name) {
+    return '$name liked your post.';
+  }
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).

@@ -547,5 +547,16 @@
   "translatableShowOriginal": "Original anzeigen",
   "translatableCopy": "Kopieren",
   "translatableCopied": "In Zwischenablage kopiert",
-  "translatableTranslateFailed": "Übersetzung fehlgeschlagen"
+  "translatableTranslateFailed": "Übersetzung fehlgeschlagen",
+  "likeNotificationsTitle": "Gefällt-mir-Benachrichtigungen",
+  "loadFailed": "Laden fehlgeschlagen",
+  "someoneLikedYourPost": "Jemand hat deinen Beitrag mit „Gefällt mir“ markiert.",
+  "userLikedYourPost": "{name} hat deinen Beitrag mit „Gefällt mir“ markiert.",
+  "@userLikedYourPost": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }

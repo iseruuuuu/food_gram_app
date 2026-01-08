@@ -1662,4 +1662,18 @@ class L10nVi extends L10n {
 
   @override
   String get translatableTranslateFailed => 'Dịch không thành công';
+
+  @override
+  String get likeNotificationsTitle => 'Likes';
+
+  @override
+  String get loadFailed => 'Failed to load';
+
+  @override
+  String get someoneLikedYourPost => 'Someone liked your post.';
+
+  @override
+  String userLikedYourPost(String name) {
+    return '$name liked your post.';
+  }
 }

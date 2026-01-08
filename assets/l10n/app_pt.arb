@@ -547,5 +547,14 @@
   "translatableShowOriginal": "Mostrar original",
   "translatableCopy": "Copiar",
   "translatableCopied": "Copiado para a área de transferência",
-  "translatableTranslateFailed": "Falha na tradução"
+  "translatableTranslateFailed": "Falha na tradução",
+  "likeNotificationsTitle": "Notificações de curtidas",
+  "loadFailed": "Falha ao carregar",
+  "someoneLikedYourPost": "Alguém curtiu sua publicação.",
+  "userLikedYourPost": "{name} curtiu sua publicação.",
+  "@userLikedYourPost": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  }
 }

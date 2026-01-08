@@ -547,7 +547,16 @@
   "translatableShowOriginal": "แสดงต้นฉบับ",
   "translatableCopy": "คัดลอก",
   "translatableCopied": "คัดลอกไปยังคลิปบอร์ดแล้ว",
-  "translatableTranslateFailed": "ไม่สามารถแปลได้"
+  "translatableTranslateFailed": "ไม่สามารถแปลได้",
+  "likeNotificationsTitle": "การแจ้งเตือนถูกใจ",
+  "loadFailed": "โหลดไม่สำเร็จ",
+  "someoneLikedYourPost": "มีคนถูกใจโพสต์ของคุณ",
+  "userLikedYourPost": "{name} ถูกใจโพสต์ของคุณ",
+  "@userLikedYourPost": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  }
 }
 
 

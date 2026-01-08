@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/notification/repository/notification_repository.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
+import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:go_router/go_router.dart';
@@ -17,8 +18,9 @@ class NotificationsScreen extends ConsumerWidget {
     final async = ref.watch(myLikeNotificationsProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          style: TextStyle(
+        title: Text(
+          L10n.of(context).likeNotificationsTitle,
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
@@ -36,9 +38,10 @@ class NotificationsScreen extends ConsumerWidget {
       backgroundColor: Colors.white,
       body: async.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, __) => const Center(
+        error: (e, __) => Center(
           child: Text(
-            style: TextStyle(color: Colors.black54),
+            L10n.of(context).loadFailed,
+            style: const TextStyle(color: Colors.black54),
           ),
         ),
         data: (notifications) {
@@ -75,6 +78,7 @@ class NotificationsScreen extends ConsumerWidget {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 title: likerUserId == null
+                    ? Text(L10n.of(context).someoneLikedYourPost)
                     : FutureBuilder<Map<String, dynamic>>(
                         future: ref
                             .read(detailPostRepositoryProvider.notifier)
@@ -85,6 +89,7 @@ class NotificationsScreen extends ConsumerWidget {
                                   : null) ??
                               '誰か';
                           return Text(
+                            L10n.of(context).userLikedYourPost(name),
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
