@@ -295,6 +295,7 @@ class FirebaseMessagingService {
     required String postOwnerId,
     required int postId,
     required String likerName,
+    required String likerUserId,
   }) async {
     try {
       final supabase = Supabase.instance.client;
@@ -304,6 +305,7 @@ class FirebaseMessagingService {
         'postOwnerId': postOwnerId,
         'post_id': postId,
         'likerName': likerName,
+        'likerUserId': likerUserId,
       };
 
       _logger.i(

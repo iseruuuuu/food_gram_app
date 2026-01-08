@@ -80,11 +80,11 @@ class PostDetailViewModel extends _$PostDetailViewModel {
       );
     } else {
       // 10回以上いいねした場合は制限
-      final canLike = await preference.canLike();
-      if (!canLike) {
-        onHeartLimitReached?.call();
-        return;
-      }
+      // final canLike = await preference.canLike();
+      // if (!canLike) {
+      //   onHeartLimitReached?.call();
+      //   return;
+      // }
       await supabase.from('posts').update({
         'heart': currentHeart + 1,
       }).match({'id': posts.id});
@@ -109,6 +109,7 @@ class PostDetailViewModel extends _$PostDetailViewModel {
           postOwnerId: userId,
           postId: posts.id,
           likerName: likerName,
+          likerUserId: currentUser,
         );
         logger.i(
           'いいね通知を送信しました: '
