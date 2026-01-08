@@ -222,6 +222,13 @@ final myProfileRouter = GoRoute(
   },
   routes: <RouteBase>[
     GoRoute(
+      path: '${RouterPath.myProfile}/${RouterPath.notifications}',
+      name: RouterPath.notifications,
+      pageBuilder: (context, state) {
+        return whiteOut(const NotificationsScreen());
+      },
+    ),
+    GoRoute(
       path: RouterPath.edit,
       name: RouterPath.edit,
       pageBuilder: (context, state) {
@@ -504,6 +511,7 @@ final class RouterPath {
   static const String authentication = 'authentication';
   static const String newAccount = 'new_account';
   static const String license = 'license';
+  static const String notifications = 'notifications';
   static const String edit = 'edit';
   static const String myProfile = 'my_profile';
   static const String myProfilePost = 'my_profile_post';
