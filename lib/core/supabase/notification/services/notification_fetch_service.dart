@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/model/like_notification.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
-import 'package:food_gram_app/core/model/like_notification.dart';
 import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -110,11 +110,21 @@ class NotificationFetchService {
       );
       final dynamic data = res.data;
       final rows = _unwrapRows(data);
-      if (rows.isEmpty) {
+      // 念のためサーバー返却を二重フィルタ（自分宛のみ、post_id があるもののみ）
+      final filtered = rows.where((r) {
+        if (r is Map<String, dynamic>) {
+          final m = r;
+          final rowUserId = m['user_id'] as String?;
+          final hasPostId = m['post_id'] != null;
+          return rowUserId == userId && hasPostId;
+        }
+        return false;
+      }).toList();
+      if (filtered.isEmpty) {
         // フォールバック
         return _fetchLikedTokenRowsFallback(userId);
       }
-      return rows.map<_TokenRow>(_TokenRow.fromDynamic).toList();
+      return filtered.map<_TokenRow>(_TokenRow.fromDynamic).toList();
     } on Exception catch (e) {
       _logger.w('EdgeFunction fetch_likes に失敗したためフォールバックします: $e');
       return _fetchLikedTokenRowsFallback(userId);
@@ -126,7 +136,8 @@ class NotificationFetchService {
     try {
       final rows = await _supabase
           .from('user_fcm_tokens')
-          .select('fcm_token, post_id, updated_at')
+          .select('fcm_token, post_id, like_id, updated_at')
+          .not('post_id', 'is', null)
           .eq('user_id', userId);
       return rows.map<_TokenRow>(_TokenRow.fromDynamic).toList();
     } on Exception catch (e) {
@@ -177,9 +188,11 @@ class _TokenRow {
       final updatedAt = updatedRaw is String
           ? DateTime.tryParse(updatedRaw)
           : (updatedRaw is DateTime ? updatedRaw : null);
-      // liker のユーザーIDを優先順で抽出: liker_id → likerUserId → id
-      final likerId =
-          (map['liker_id'] ?? map['likerUserId'] ?? map['id']) as String?;
+      // いいねしたユーザーIDを優先順で抽出: like_id → liker_id → likerUserId → id
+      final likerId = (map['like_id'] ??
+          map['liker_id'] ??
+          map['likerUserId'] ??
+          map['id']) as String?;
       return _TokenRow(
         fcmToken: token,
         postId: pid,
