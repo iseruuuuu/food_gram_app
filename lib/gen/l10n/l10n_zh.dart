@@ -1640,17 +1640,17 @@ class L10nZh extends L10n {
   String get translatableTranslateFailed => '翻译失败';
 
   @override
-  String get likeNotificationsTitle => 'Likes';
+  String get likeNotificationsTitle => '点赞通知';
 
   @override
-  String get loadFailed => 'Failed to load';
+  String get loadFailed => '加载失败';
 
   @override
-  String get someoneLikedYourPost => 'Someone liked your post.';
+  String get someoneLikedYourPost => '有人给你的帖子点了赞。';
 
   @override
   String userLikedYourPost(String name) {
-    return '$name liked your post.';
+    return '$name 给你的帖子点了赞。';
   }
 }
 
@@ -3286,4 +3286,18 @@ class L10nZhTw extends L10nZh {
 
   @override
   String get translatableTranslateFailed => '翻譯失敗';
+
+  @override
+  String get likeNotificationsTitle => '按讚通知';
+
+  @override
+  String get loadFailed => '載入失敗';
+
+  @override
+  String get someoneLikedYourPost => '有人對你的貼文按了讚。';
+
+  @override
+  String userLikedYourPost(String name) {
+    return '$name 對你的貼文按了讚。';
+  }
 }

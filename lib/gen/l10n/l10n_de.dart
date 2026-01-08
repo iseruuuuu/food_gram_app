@@ -1683,16 +1683,17 @@ class L10nDe extends L10n {
   String get translatableTranslateFailed => 'Übersetzung fehlgeschlagen';
 
   @override
-  String get likeNotificationsTitle => 'Likes';
+  String get likeNotificationsTitle => 'Gefällt-mir-Benachrichtigungen';
 
   @override
-  String get loadFailed => 'Failed to load';
+  String get loadFailed => 'Laden fehlgeschlagen';
 
   @override
-  String get someoneLikedYourPost => 'Someone liked your post.';
+  String get someoneLikedYourPost =>
+      'Jemand hat deinen Beitrag mit „Gefällt mir“ markiert.';
 
   @override
   String userLikedYourPost(String name) {
-    return '$name liked your post.';
+    return '$name hat deinen Beitrag mit „Gefällt mir“ markiert.';
   }
 }

@@ -1664,16 +1664,16 @@ class L10nVi extends L10n {
   String get translatableTranslateFailed => 'Dịch không thành công';
 
   @override
-  String get likeNotificationsTitle => 'Likes';
+  String get likeNotificationsTitle => 'Thông báo lượt thích';
 
   @override
-  String get loadFailed => 'Failed to load';
+  String get loadFailed => 'Tải thất bại';
 
   @override
-  String get someoneLikedYourPost => 'Someone liked your post.';
+  String get someoneLikedYourPost => 'Ai đó đã thích bài viết của bạn.';
 
   @override
   String userLikedYourPost(String name) {
-    return '$name liked your post.';
+    return '$name đã thích bài viết của bạn.';
   }
 }

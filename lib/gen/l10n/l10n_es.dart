@@ -1681,16 +1681,17 @@ class L10nEs extends L10n {
   String get translatableTranslateFailed => 'Error al traducir';
 
   @override
-  String get likeNotificationsTitle => 'Likes';
+  String get likeNotificationsTitle => 'Notificaciones de Me gusta';
 
   @override
-  String get loadFailed => 'Failed to load';
+  String get loadFailed => 'Error al cargar';
 
   @override
-  String get someoneLikedYourPost => 'Someone liked your post.';
+  String get someoneLikedYourPost =>
+      'Alguien indicó que le gusta tu publicación.';
 
   @override
   String userLikedYourPost(String name) {
-    return '$name liked your post.';
+    return '$name indicó que le gusta tu publicación.';
   }
 }
