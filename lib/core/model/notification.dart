@@ -15,8 +15,8 @@ class NotificationKey {
 
 /// 通知一覧の表示用モデル
 /// （投稿 / 更新時刻 / いいねした人のID）
-class LikeNotification {
-  LikeNotification({
+class Notification {
+  Notification({
     required this.post,
     required this.updatedAt,
     this.likerUserId,

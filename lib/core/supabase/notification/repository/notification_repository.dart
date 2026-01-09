@@ -19,7 +19,7 @@ class NotificationRepository {
       _ref.read(notificationFetchServiceProvider);
 
   /// 自分の投稿に届いた「いいね」通知（投稿＋最新時刻）を取得
-  Future<List<LikeNotification>> getMyLikeNotifications() async {
+  Future<List<Notification>> getMyLikeNotifications() async {
     final keys = await _service.fetchMyLikeNotificationKeys();
     if (keys.isEmpty) {
       return [];
@@ -33,12 +33,12 @@ class NotificationRepository {
     final ids = postIdToUpdatedAt.keys.toList();
     try {
       final rows = await _supabase.from('posts').select().inFilter('id', ids);
-      final notifications = rows.map<LikeNotification>((row) {
+      final notifications = rows.map<Notification>((row) {
         final map = Map<String, dynamic>.from(row as Map);
         final post = Posts.fromJson(map);
         final updatedAt = postIdToUpdatedAt[post.id]!;
         final likerId = postIdToLikerId[post.id];
-        return LikeNotification(
+        return Notification(
           post: post,
           updatedAt: updatedAt,
           likerUserId: likerId,
@@ -59,7 +59,7 @@ NotificationRepository notificationRepository(NotificationRepositoryRef ref) {
 }
 
 @riverpod
-Future<List<LikeNotification>> myLikeNotifications(
+Future<List<Notification>> myLikeNotifications(
   MyLikeNotificationsRef ref,
 ) async {
   final repo = ref.watch(notificationRepositoryProvider);
