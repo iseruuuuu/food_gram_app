@@ -31,7 +31,7 @@ class NotificationEdgeClient {
       final rows = _unwrap(res.data);
       return rows.whereType<Map<String, dynamic>>().toList();
     } on Exception catch (e) {
-      _logger.w('EdgeFunction fetch_likes に失敗しました: $e');
+      _logger.w('EdgeFunction UserFcmTokens に失敗しました: $e');
       return [];
     }
   }
