@@ -24,26 +24,30 @@ class NotificationRepository {
     if (keys.isEmpty) {
       return [];
     }
-    final postIdToUpdatedAt = {
-      for (final k in keys) k.postId: k.updatedAt,
-    };
-    final postIdToLikerId = {
-      for (final k in keys) k.postId: k.likerUserId,
-    };
-    final ids = postIdToUpdatedAt.keys.toList();
+    final ids = keys.map((k) => k.postId).toSet().toList();
     try {
       final rows = await _supabase.from('posts').select().inFilter('id', ids);
-      final notifications = rows.map<Notification>((row) {
+      final postsById = <int, Posts>{};
+      for (final row in rows) {
         final map = Map<String, dynamic>.from(row as Map);
         final post = Posts.fromJson(map);
-        final updatedAt = postIdToUpdatedAt[post.id]!;
-        final likerId = postIdToLikerId[post.id];
-        return Notification(
-          post: post,
-          updatedAt: updatedAt,
-          likerUserId: likerId,
-        );
-      }).toList();
+        postsById[post.id] = post;
+      }
+      final notifications = keys
+          .map<Notification?>((key) {
+            final post = postsById[key.postId];
+            if (post == null) {
+              _logger.w('通知用投稿が見つかりませんでした: postId=${key.postId}');
+              return null;
+            }
+            return Notification(
+              post: post,
+              updatedAt: key.updatedAt,
+              likerUserId: key.likerUserId,
+            );
+          })
+          .whereType<Notification>()
+          .toList();
       notifications.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
       return notifications;
     } on Exception catch (e) {
