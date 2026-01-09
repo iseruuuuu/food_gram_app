@@ -1,7 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:logger/logger.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+part 'notification_edge_client.g.dart';
 
 /// Edge Function `UserFcmTokens` を取得する
 /// 自分の投稿についた「いいね通知」の最新キー一覧を返す
@@ -50,6 +53,7 @@ class NotificationEdgeClient {
   }
 }
 
-final notificationEdgeClientProvider = Provider<NotificationEdgeClient>((ref) {
+@riverpod
+NotificationEdgeClient notificationEdgeClient(NotificationEdgeClientRef ref) {
   return NotificationEdgeClient(ref);
-});
+}

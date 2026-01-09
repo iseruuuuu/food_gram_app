@@ -3,7 +3,10 @@ import 'package:food_gram_app/core/model/notification.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/notification/edge_client/notification_edge_client.dart';
 import 'package:logger/logger.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+part 'notification_fetch_service.g.dart';
 
 class NotificationFetchService {
   NotificationFetchService(this._ref);
@@ -120,10 +123,12 @@ class _TokenRow {
   final String? likerUserId;
 }
 
-final notificationFetchServiceProvider =
-    Provider<NotificationFetchService>((ref) {
+@riverpod
+NotificationFetchService notificationFetchService(
+  NotificationFetchServiceRef ref,
+) {
   return NotificationFetchService(ref);
-});
+}
 
 class _LatestLike {
   _LatestLike({

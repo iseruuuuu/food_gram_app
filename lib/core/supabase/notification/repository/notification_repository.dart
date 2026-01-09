@@ -4,7 +4,10 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/notification/services/notification_fetch_service.dart';
 import 'package:logger/logger.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+part 'notification_repository.g.dart';
 
 class NotificationRepository {
   NotificationRepository(this._ref);
@@ -50,12 +53,15 @@ class NotificationRepository {
   }
 }
 
-final notificationRepositoryProvider = Provider<NotificationRepository>((ref) {
+@riverpod
+NotificationRepository notificationRepository(NotificationRepositoryRef ref) {
   return NotificationRepository(ref);
-});
+}
 
-final myLikeNotificationsProvider =
-    FutureProvider<List<LikeNotification>>((ref) async {
-  final repo = ref.read(notificationRepositoryProvider);
+@riverpod
+Future<List<LikeNotification>> myLikeNotifications(
+  MyLikeNotificationsRef ref,
+) async {
+  final repo = ref.watch(notificationRepositoryProvider);
   return repo.getMyLikeNotifications();
-});
+}
