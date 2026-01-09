@@ -547,7 +547,16 @@
   "translatableShowOriginal": "顯示原文",
   "translatableCopy": "複製",
   "translatableCopied": "已複製到剪貼簿",
-  "translatableTranslateFailed": "翻譯失敗"
+  "translatableTranslateFailed": "翻譯失敗",
+  "likeNotificationsTitle": "按讚通知",
+  "loadFailed": "載入失敗",
+  "someoneLikedYourPost": "有人對你的貼文按了讚。",
+  "userLikedYourPost": "{name} 對你的貼文按了讚。",
+  "@userLikedYourPost": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  }
 }
 
 

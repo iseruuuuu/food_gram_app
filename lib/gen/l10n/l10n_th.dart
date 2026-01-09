@@ -1652,4 +1652,18 @@ class L10nTh extends L10n {
 
   @override
   String get translatableTranslateFailed => 'ไม่สามารถแปลได้';
+
+  @override
+  String get likeNotificationsTitle => 'การแจ้งเตือนถูกใจ';
+
+  @override
+  String get loadFailed => 'โหลดไม่สำเร็จ';
+
+  @override
+  String get someoneLikedYourPost => 'มีคนถูกใจโพสต์ของคุณ';
+
+  @override
+  String userLikedYourPost(String name) {
+    return '$name ถูกใจโพสต์ของคุณ';
+  }
 }

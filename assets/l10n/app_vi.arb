@@ -547,7 +547,16 @@
   "translatableShowOriginal": "Hiển thị bản gốc",
   "translatableCopy": "Sao chép",
   "translatableCopied": "Đã sao chép vào bộ nhớ tạm",
-  "translatableTranslateFailed": "Dịch không thành công"
+  "translatableTranslateFailed": "Dịch không thành công",
+  "likeNotificationsTitle": "Thông báo lượt thích",
+  "loadFailed": "Tải thất bại",
+  "someoneLikedYourPost": "Ai đó đã thích bài viết của bạn.",
+  "userLikedYourPost": "{name} đã thích bài viết của bạn.",
+  "@userLikedYourPost": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  }
 }
 
 

@@ -34,14 +34,13 @@ class AppProfileHeader extends ConsumerWidget {
     final point =
         (heartAmount - users.exchangedPoint) * conversion + postlengthPoint;
     final trophyAsset = _getTrophyAsset(length);
-
     return Stack(
       clipBehavior: Clip.none,
       children: [
         Column(
           children: [
             Container(
-              height: 150,
+              height: 180,
               width: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -334,7 +333,7 @@ class AppProfileHeader extends ConsumerWidget {
           ],
         ),
         Positioned(
-          top: 105,
+          top: 130,
           left: 0,
           right: 0,
           child: Center(

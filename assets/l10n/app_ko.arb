@@ -547,5 +547,14 @@
   "translatableShowOriginal": "원문 보기",
   "translatableCopy": "복사",
   "translatableCopied": "클립보드에 복사됨",
-  "translatableTranslateFailed": "번역에 실패했습니다"
+  "translatableTranslateFailed": "번역에 실패했습니다",
+  "likeNotificationsTitle": "좋아요 알림",
+  "loadFailed": "불러오기에 실패했어요",
+  "someoneLikedYourPost": "누군가가 당신의 게시글을 좋아합니다.",
+  "userLikedYourPost": "{name}님이 당신의 게시글을 좋아합니다.",
+  "@userLikedYourPost": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  }
 }

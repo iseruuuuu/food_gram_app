@@ -1675,4 +1675,18 @@ class L10nPt extends L10n {
 
   @override
   String get translatableTranslateFailed => 'Falha na tradução';
+
+  @override
+  String get likeNotificationsTitle => 'Notificações de curtidas';
+
+  @override
+  String get loadFailed => 'Falha ao carregar';
+
+  @override
+  String get someoneLikedYourPost => 'Alguém curtiu sua publicação.';
+
+  @override
+  String userLikedYourPost(String name) {
+    return '$name curtiu sua publicação.';
+  }
 }

@@ -109,6 +109,7 @@ class PostDetailViewModel extends _$PostDetailViewModel {
           postOwnerId: userId,
           postId: posts.id,
           likerName: likerName,
+          likerUserId: currentUser,
         );
         logger.i(
           'いいね通知を送信しました: '

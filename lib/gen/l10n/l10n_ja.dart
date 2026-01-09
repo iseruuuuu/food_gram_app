@@ -1643,4 +1643,18 @@ class L10nJa extends L10n {
 
   @override
   String get translatableTranslateFailed => '翻訳できませんでした';
+
+  @override
+  String get likeNotificationsTitle => 'いいね通知';
+
+  @override
+  String get loadFailed => '読み込みに失敗しました';
+
+  @override
+  String get someoneLikedYourPost => '誰かがあなたの投稿にいいねをつけました。';
+
+  @override
+  String userLikedYourPost(String name) {
+    return '$nameがあなたの投稿にいいねをつけました。';
+  }
 }

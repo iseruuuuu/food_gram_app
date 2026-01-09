@@ -3360,6 +3360,30 @@ abstract class L10n {
   /// In en, this message translates to:
   /// **'Translation failed'**
   String get translatableTranslateFailed;
+
+  /// No description provided for @likeNotificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Likes'**
+  String get likeNotificationsTitle;
+
+  /// No description provided for @loadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load'**
+  String get loadFailed;
+
+  /// No description provided for @someoneLikedYourPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone liked your post.'**
+  String get someoneLikedYourPost;
+
+  /// No description provided for @userLikedYourPost.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} liked your post.'**
+  String userLikedYourPost(String name);
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

@@ -1642,4 +1642,18 @@ class L10nKo extends L10n {
 
   @override
   String get translatableTranslateFailed => '번역에 실패했습니다';
+
+  @override
+  String get likeNotificationsTitle => '좋아요 알림';
+
+  @override
+  String get loadFailed => '불러오기에 실패했어요';
+
+  @override
+  String get someoneLikedYourPost => '누군가가 당신의 게시글을 좋아합니다.';
+
+  @override
+  String userLikedYourPost(String name) {
+    return '$name님이 당신의 게시글을 좋아합니다.';
+  }
 }

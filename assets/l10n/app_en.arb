@@ -547,5 +547,16 @@
   "translatableShowOriginal": "Show original",
   "translatableCopy": "Copy",
   "translatableCopied": "Copied to clipboard",
-  "translatableTranslateFailed": "Translation failed"
+  "translatableTranslateFailed": "Translation failed",
+  "likeNotificationsTitle": "Likes",
+  "loadFailed": "Failed to load",
+  "someoneLikedYourPost": "Someone liked your post.",
+  "userLikedYourPost": "{name} liked your post.",
+  "@userLikedYourPost": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }

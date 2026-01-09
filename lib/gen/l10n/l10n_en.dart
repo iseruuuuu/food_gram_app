@@ -1660,4 +1660,18 @@ class L10nEn extends L10n {
 
   @override
   String get translatableTranslateFailed => 'Translation failed';
+
+  @override
+  String get likeNotificationsTitle => 'Likes';
+
+  @override
+  String get loadFailed => 'Failed to load';
+
+  @override
+  String get someoneLikedYourPost => 'Someone liked your post.';
+
+  @override
+  String userLikedYourPost(String name) {
+    return '$name liked your post.';
+  }
 }
