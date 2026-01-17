@@ -13,6 +13,7 @@ class EditPostState with _$EditPostState {
     @Default('') String restaurant,
     @Default(0.0) double lat,
     @Default(0.0) double lng,
+    @Default(0.0) double star,
     @Default(false) bool isAnonymous,
     Posts? posts,
   }) = _EditPostState;

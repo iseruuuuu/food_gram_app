@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/user/services/streak_service.dart';
@@ -41,16 +42,8 @@ class PostScreen extends HookConsumerWidget {
         ref.watch(postViewModelProvider().select((s) => s.restaurant));
     final isAnonymous =
         ref.watch(postViewModelProvider().select((s) => s.isAnonymous));
+    final star = ref.watch(postViewModelProvider().select((s) => s.star));
     final loading = ref.watch(loadingProvider);
-    final countryTag = useState('');
-    final countryText = useMemoized(
-      () => ValueNotifier(
-        countryTag.value.isNotEmpty
-            ? getLocalizedCountryName(countryTag.value, context)
-            : '',
-      ),
-      [countryTag.value],
-    );
     final foodTags = useState<List<String>>([]);
     final foodTexts = useMemoized(
       () => ValueNotifier<List<String>>(
@@ -310,7 +303,6 @@ class PostScreen extends HookConsumerWidget {
                                           children: [
                                             Icon(
                                               Icons.arrow_forward_ios,
-                                              color: Colors.black,
                                               size: 20,
                                             ),
                                             Gap(10),
@@ -325,27 +317,68 @@ class PostScreen extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    const Gap(12),
+                    const Gap(6),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          const Gap(5),
+                          const Icon(
+                            Icons.label,
+                            size: 28,
+                            color: Colors.black,
+                          ),
+                          const Gap(5),
+                          Expanded(
+                            child: AppFoodTag(
+                              foodTags: foodTags.value,
+                              foodTexts: foodTexts,
+                              onTagSelected: (tags) {
+                                foodTags.value = tags;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Gap(6),
                     Text(
-                      l10n.postCategoryTitle,
+                      l10n.postRatingLabel,
                       style: PostStyle.categoryTitle(),
                     ),
-                    const Gap(4),
-                    AppCountryTag(
-                      countryTag: countryTag.value,
-                      countryText: countryText,
-                      onTagSelected: (tag) {
-                        countryTag.value = tag;
-                      },
+                    const Gap(6),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          RatingBar.builder(
+                            initialRating: star,
+                            allowHalfRating: true,
+                            itemPadding:
+                                const EdgeInsets.symmetric(horizontal: 2),
+                            unratedColor: Colors.grey.shade300,
+                            itemBuilder: (context, _) => const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (rating) {
+                              ref
+                                  .read(postViewModelProvider().notifier)
+                                  .setStar(rating);
+                            },
+                          ),
+                          const Spacer(),
+                          Text(
+                            star.toStringAsFixed(1),
+                            style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    AppFoodTag(
-                      foodTags: foodTags.value,
-                      foodTexts: foodTexts,
-                      onTagSelected: (tags) {
-                        foodTags.value = tags;
-                      },
-                    ),
-                    const Gap(12),
+                    const Gap(16),
                     AppCommentTextField(
                       controller: ref
                           .read(postViewModelProvider().notifier)
@@ -412,7 +445,7 @@ class PostScreen extends HookConsumerWidget {
                           : foodTags.value.join(',');
                       final result =
                           await ref.read(postViewModelProvider().notifier).post(
-                                restaurantTag: countryTag.value,
+                                restaurantTag: '',
                                 foodTag: foodTagString,
                               );
                       if (result) {

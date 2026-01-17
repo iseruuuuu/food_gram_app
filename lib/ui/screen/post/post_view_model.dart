@@ -99,6 +99,7 @@ class PostViewModel extends _$PostViewModel {
           lat: state.lat,
           restaurantTag: restaurantTag,
           foodTag: foodTag,
+          star: state.star,
           isAnonymous: state.isAnonymous,
         );
     await result.when(
@@ -253,6 +254,10 @@ class PostViewModel extends _$PostViewModel {
 
   void setAnonymous({required bool value}) {
     state = state.copyWith(isAnonymous: value);
+  }
+
+  void setStar(double value) {
+    state = state.copyWith(star: value);
   }
 
   void resetStatus() {

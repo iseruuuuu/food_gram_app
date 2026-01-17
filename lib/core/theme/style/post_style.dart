@@ -28,6 +28,6 @@ class PostStyle {
   }
 
   static TextStyle categoryTitle() {
-    return const TextStyle(fontSize: 16);
+    return const TextStyle(fontSize: 18);
   }
 }
