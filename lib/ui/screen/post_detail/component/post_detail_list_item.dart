@@ -73,7 +73,7 @@ class PostDetailListItem extends HookConsumerWidget {
     final snapshot = useFuture(userFuture);
     // 画像リストとPageControllerをメモ化
     final imageList = posts.foodImageList;
-    final pageController = useMemoized(() => PageController(keepPage: true));
+    final pageController = useMemoized(PageController.new);
     if (snapshot.connectionState == ConnectionState.waiting) {
       return const SizedBox.shrink();
     }
