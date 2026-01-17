@@ -16,8 +16,8 @@
             "get",
             "icon"
         ],
-        "icon-allow-overlap": true,
-        "icon-ignore-placement": true,
+        "icon-allow-overlap": false,
+        "icon-ignore-placement": false,
         "icon-size": [
             "interpolate",
             [
@@ -27,9 +27,15 @@
                 "zoom"
             ],
             14,
-            1.00,
+            0.54,
+            15,
+            0.58,
+            16,
+            0.62,
+            17,
+            0.62,
             18,
-            1.10
+            0.62
         ],
         "icon-opacity": 1.0
     }
