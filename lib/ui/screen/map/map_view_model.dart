@@ -114,6 +114,7 @@ class MapViewModel extends _$MapViewModel {
       onPinTap: onPinTap,
       iconSize: iconSize,
     );
+    await updateVisibleMealsCount();
   }
 
   Future<void> setPin({
@@ -270,6 +271,33 @@ class MapViewModel extends _$MapViewModel {
       _restorePinsFromCache();
     } else {
       _addPinsToMap();
+    }
+    updateVisibleMealsCount();
+  }
+
+  /// 表示範囲内の投稿件数を計算して状態に反映
+  Future<void> updateVisibleMealsCount() async {
+    final ctrl = state.mapController;
+    if (ctrl == null) {
+      return;
+    }
+    final posts =
+        ref.read(mapRepositoryProvider).whenOrNull(data: (value) => value);
+    if (posts == null || posts.isEmpty) {
+      state = state.copyWith(visibleMealsCount: 0);
+      return;
+    }
+    try {
+      final bounds = await ctrl.getVisibleRegion();
+      var count = 0;
+      for (final post in posts) {
+        if (bounds.contains(LatLng(post.lat, post.lng))) {
+          count++;
+        }
+      }
+      state = state.copyWith(visibleMealsCount: count);
+    } on Exception catch (_) {
+      // 取得失敗時はそのまま
     }
   }
 

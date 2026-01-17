@@ -17,6 +17,7 @@ import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/ui/component/app_premium_membership_card.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/map/app_area_meals_badge.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -70,6 +71,13 @@ class MapScreen extends HookConsumerWidget {
       },
       [],
     );
+    useEffect(
+      () {
+        controller.updateVisibleMealsCount();
+        return null;
+      },
+      [mapService, state.mapController],
+    );
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -89,8 +97,8 @@ class MapScreen extends HookConsumerWidget {
                 alignment: Alignment.bottomCenter,
                 children: [
                   MapLibreMap(
-                    onMapCreated: (mapLibre) {
-                      controller.setMapController(
+                    onMapCreated: (mapLibre) async {
+                      await controller.setMapController(
                         mapLibre,
                         onPinTap: (posts) {
                           isTapPin.value = true;
@@ -101,6 +109,7 @@ class MapScreen extends HookConsumerWidget {
                     },
                     onMapClick: (_, __) => isTapPin.value = false,
                     onStyleLoadedCallback: controller.onStyleLoaded,
+                    onCameraIdle: controller.updateVisibleMealsCount,
                     annotationOrder: const [AnnotationType.symbol],
                     key: const ValueKey('mapWidget'),
                     myLocationEnabled: isLocationEnabled,
@@ -125,6 +134,19 @@ class MapScreen extends HookConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         if (!isSubscribed) const AppPremiumMembershipCard(),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 10,
+                            left: 16,
+                            bottom: 8,
+                          ),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: AppAreaMealsBadge(
+                              count: state.visibleMealsCount,
+                            ),
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(right: 10),
                           child: Column(
