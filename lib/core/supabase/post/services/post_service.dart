@@ -30,6 +30,7 @@ class PostService extends _$PostService {
     required double lng,
     required String restaurantTag,
     required String foodTag,
+    required double star,
     required bool isAnonymous,
   }) async {
     try {
@@ -66,6 +67,7 @@ class PostService extends _$PostService {
         'lng': lng,
         'restaurant_tag': restaurantTag,
         'food_tag': foodTag,
+        'star': star,
         'is_anonymous': isAnonymous,
       };
       await supabase.from('posts').insert(post);
@@ -89,6 +91,7 @@ class PostService extends _$PostService {
     required String foodTag,
     required double lat,
     required double lng,
+    required double star,
     required bool isAnonymous,
     required List<String> newImagePaths,
     required Map<String, Uint8List> imageBytesMap,
@@ -104,6 +107,7 @@ class PostService extends _$PostService {
         'food_tag': foodTag,
         'lat': lat,
         'lng': lng,
+        'star': star,
         'is_anonymous': isAnonymous,
       };
       
