@@ -457,9 +457,37 @@ class PostDetailListItem extends HookConsumerWidget {
                           extra: posts,
                         );
                       },
-                      child: Text(
-                        'In ${posts.restaurant}',
-                        style: DetailPostStyle.restaurant(),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'In ${posts.restaurant}',
+                              style: DetailPostStyle.restaurant(),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          if (posts.star > 0) ...[
+                            const Gap(8),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                  size: 28,
+                                ),
+                                const Gap(4),
+                                Text(
+                                  posts.star.toStringAsFixed(1),
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ],
                       ),
                     ),
                     const Gap(8),
