@@ -31,8 +31,6 @@ class AppAreaMealsBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('📍', style: TextStyle(fontSize: 16)),
-          const SizedBox(width: 8),
           Text(
             displayText,
             style: const TextStyle(
