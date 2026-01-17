@@ -439,6 +439,12 @@ abstract class L10n {
   /// **'Comment'**
   String get postCommentInputField;
 
+  /// No description provided for @postRatingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get postRatingLabel;
+
   /// No description provided for @postError.
   ///
   /// In en, this message translates to:
@@ -448,7 +454,7 @@ abstract class L10n {
   /// No description provided for @postCategoryTitle.
   ///
   /// In en, this message translates to:
-  /// **'Select country/cuisine tag (optional)'**
+  /// **'Select cuisine tag (optional)'**
   String get postCategoryTitle;
 
   /// No description provided for @postCountryCategory.

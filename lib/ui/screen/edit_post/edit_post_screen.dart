@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
@@ -48,16 +49,9 @@ class EditPostScreen extends HookConsumerWidget {
         ref.watch(editPostViewModelProvider().select((s) => s.restaurant));
     final isAnonymous =
         ref.watch(editPostViewModelProvider().select((s) => s.isAnonymous));
+    final star = ref.watch(editPostViewModelProvider().select((s) => s.star));
     final viewModel = ref.watch(editPostViewModelProvider().notifier);
     final countryTag = useState(posts.restaurantTag);
-    final countryText = useMemoized(
-      () => ValueNotifier(
-        countryTag.value.isNotEmpty
-            ? getLocalizedCountryName(countryTag.value, context)
-            : '',
-      ),
-      [countryTag.value],
-    );
     final foodTags = useState<List<String>>(
       posts.foodTag.isNotEmpty ? posts.foodTag.split(',') : [],
     );
@@ -408,27 +402,68 @@ class EditPostScreen extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    const Gap(12),
+                    const Gap(6),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          const Gap(5),
+                          const Icon(
+                            Icons.label,
+                            size: 28,
+                            color: Colors.black,
+                          ),
+                          const Gap(5),
+                          Expanded(
+                            child: AppFoodTag(
+                              foodTags: foodTags.value,
+                              foodTexts: foodTexts,
+                              onTagSelected: (tags) {
+                                foodTags.value = tags;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Gap(6),
                     Text(
-                      l10n.postCategoryTitle,
+                      l10n.postRatingLabel,
                       style: EditPostStyle.category(),
                     ),
-                    const Gap(4),
-                    AppCountryTag(
-                      countryTag: countryTag.value,
-                      countryText: countryText,
-                      onTagSelected: (tag) {
-                        countryTag.value = tag;
-                      },
+                    const Gap(6),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          RatingBar.builder(
+                            initialRating: star,
+                            allowHalfRating: true,
+                            itemPadding:
+                                const EdgeInsets.symmetric(horizontal: 2),
+                            unratedColor: Colors.grey.shade300,
+                            itemBuilder: (context, _) => const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (rating) {
+                              ref
+                                  .read(editPostViewModelProvider().notifier)
+                                  .setStar(rating);
+                            },
+                          ),
+                          const Spacer(),
+                          Text(
+                            star.toStringAsFixed(1),
+                            style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    AppFoodTag(
-                      foodTags: foodTags.value,
-                      foodTexts: foodTexts,
-                      onTagSelected: (tags) {
-                        foodTags.value = tags;
-                      },
-                    ),
-                    const Gap(12),
+                    const Gap(16),
                     AppCommentTextField(
                       controller: viewModel.commentController,
                     ),

@@ -289,7 +289,7 @@ class AppFoodTag extends HookWidget {
     return GestureDetector(
       onTap: () => _showTagSelector(context, foodTexts),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 8),
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -306,7 +306,7 @@ class AppFoodTag extends HookWidget {
                     Expanded(
                       child: foodTags.isEmpty
                           ? Text(
-                              L10n.of(context).selectFoodTag,
+                              L10n.of(context).postCategoryTitle,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -409,12 +409,13 @@ class AppFoodTag extends HookWidget {
                     ),
                     if (foodTags.isEmpty)
                       const Padding(
-                        padding: EdgeInsets.only(right: 8),
+                        padding: EdgeInsets.only(right: 5),
                         child: Icon(
-                          Icons.chevron_right,
-                          size: 30,
+                          Icons.arrow_forward_ios,
+                          size: 20,
                         ),
                       ),
+                    const Gap(2),
                   ],
                 ),
               ),

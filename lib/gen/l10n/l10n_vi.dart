@@ -177,10 +177,13 @@ class L10nVi extends L10n {
   String get postCommentInputField => 'Bình luận';
 
   @override
+  String get postRatingLabel => 'Đánh giá';
+
+  @override
   String get postError => 'Gửi thất bại';
 
   @override
-  String get postCategoryTitle => 'Chọn thẻ quốc gia/ẩm thực';
+  String get postCategoryTitle => 'Chọn thẻ ẩm thực';
 
   @override
   String get postCountryCategory => 'Quốc gia';

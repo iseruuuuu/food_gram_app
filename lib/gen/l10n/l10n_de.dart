@@ -177,10 +177,13 @@ class L10nDe extends L10n {
   String get postCommentInputField => 'Kommentar';
 
   @override
+  String get postRatingLabel => 'Bewertung';
+
+  @override
   String get postError => 'Übermittlung fehlgeschlagen';
 
   @override
-  String get postCategoryTitle => 'Land/Küche-Tag wählen (Optional)';
+  String get postCategoryTitle => 'Küchen-Tag wählen (Optional)';
 
   @override
   String get postCountryCategory => 'Land';

@@ -33,6 +33,7 @@ class PostRepository extends _$PostRepository {
     required double lng,
     required String restaurantTag,
     required String foodTag,
+    required double star,
     required bool isAnonymous,
   }) async {
     try {
@@ -46,6 +47,7 @@ class PostRepository extends _$PostRepository {
         lng: lng,
         restaurantTag: restaurantTag,
         foodTag: foodTag,
+        star: star,
         isAnonymous: isAnonymous,
       );
       if (result is Success) {
@@ -72,6 +74,7 @@ class PostRepository extends _$PostRepository {
     required String foodTag,
     required double lat,
     required double lng,
+    required double star,
     required bool isAnonymous,
     required List<String> newImagePaths,
     required Map<String, Uint8List> imageBytesMap,
@@ -87,6 +90,7 @@ class PostRepository extends _$PostRepository {
         foodTag: foodTag,
         lat: lat,
         lng: lng,
+        star: star,
         isAnonymous: isAnonymous,
         newImagePaths: newImagePaths,
         imageBytesMap: imageBytesMap,

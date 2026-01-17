@@ -175,10 +175,13 @@ class L10nTh extends L10n {
   String get postCommentInputField => 'ความคิดเห็น';
 
   @override
+  String get postRatingLabel => 'ให้คะแนน';
+
+  @override
   String get postError => 'ส่งล้มเหลว';
 
   @override
-  String get postCategoryTitle => 'เลือกแท็กประเทศ/อาหาร';
+  String get postCategoryTitle => 'เลือกแท็กอาหาร';
 
   @override
   String get postCountryCategory => 'ประเทศ';

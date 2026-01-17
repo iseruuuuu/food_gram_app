@@ -178,10 +178,13 @@ class L10nFr extends L10n {
   String get postCommentInputField => 'Commentaire';
 
   @override
+  String get postRatingLabel => 'Note';
+
+  @override
   String get postError => 'Échec de soumission';
 
   @override
-  String get postCategoryTitle => 'Pays / Cuisine (optionnel)';
+  String get postCategoryTitle => 'Étiquette cuisine (optionnel)';
 
   @override
   String get postCountryCategory => 'Pays';

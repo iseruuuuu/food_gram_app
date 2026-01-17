@@ -177,10 +177,13 @@ class L10nPt extends L10n {
   String get postCommentInputField => 'Comentário';
 
   @override
+  String get postRatingLabel => 'Avaliação';
+
+  @override
   String get postError => 'Falha no envio';
 
   @override
-  String get postCategoryTitle => 'País/Cozinha (Opcional)';
+  String get postCategoryTitle => 'Etiqueta de cozinha (Opcional)';
 
   @override
   String get postCountryCategory => 'País';

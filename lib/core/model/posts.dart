@@ -16,6 +16,7 @@ abstract class Posts with _$Posts {
     required double lng,
     required String userId,
     required int heart,
+    @JsonKey(defaultValue: 0.0) required double star,
     required String restaurantTag,
     required String foodTag,
     required bool isAnonymous,

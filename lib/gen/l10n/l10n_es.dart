@@ -177,10 +177,13 @@ class L10nEs extends L10n {
   String get postCommentInputField => 'Comentario';
 
   @override
+  String get postRatingLabel => 'Calificación';
+
+  @override
   String get postError => 'Error de envío';
 
   @override
-  String get postCategoryTitle => 'País / Cocina (opcional)';
+  String get postCategoryTitle => 'Etiqueta de cocina (opcional)';
 
   @override
   String get postCountryCategory => 'País';
