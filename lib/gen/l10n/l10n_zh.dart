@@ -376,6 +376,14 @@ class L10nZh extends L10n {
   String get mapLoadingRestaurant => '正在获取餐厅信息...';
 
   @override
+  String mapVisibleAreaMeals(int count) {
+    return '📍 此区域有$count条美食';
+  }
+
+  @override
+  String get mapVisibleAreaLoading => '加载中...';
+
+  @override
   String get appShareTitle => '分享';
 
   @override
@@ -2025,6 +2033,14 @@ class L10nZhTw extends L10nZh {
 
   @override
   String get mapLoadingRestaurant => '正在取得餐廳資訊...';
+
+  @override
+  String mapVisibleAreaMeals(int count) {
+    return '📍 此區域有$count筆餐點';
+  }
+
+  @override
+  String get mapVisibleAreaLoading => '載入中...';
 
   @override
   String get appShareTitle => '分享';

@@ -120,6 +120,15 @@
   "error": "Errors have occurred",
   "mapLoadingError": "An error occurred",
   "mapLoadingRestaurant": "Getting restaurant information...",
+  "mapVisibleAreaMeals": "📍 This area has {count} meals",
+  "@mapVisibleAreaMeals": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mapVisibleAreaLoading": "Loading...",
   "appShareTitle": "Share",
   "appShareStoreButton": "Share this store",
   "appShareInstagramButton": "Share on Instagram",

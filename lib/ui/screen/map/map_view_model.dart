@@ -37,13 +37,21 @@ class MapViewModel extends _$MapViewModel {
 
   /// JSONレイヤーの icon-size と同等の線形補間（Annotation用フォールバック）
   double _interpolatedIconSize(double zoom) {
-    // アンカー: 3.8->0.40, 7->0.45, 10->0.60, 14->0.70, 22->0.70
+    // アンカー: 3.5->0.17, 5->0.21, 7->0.25, 9->0.31, 10.5->0.35, 12->0.41,
+    // 13->0.47, 14->0.53, 15->0.57, 16->0.61, 17->0.61, 22->0.61
     final anchors = <double, double>{
-      3.8: 0.40,
-      7.0: 0.45,
-      10.0: 0.60,
-      14.0: 0.70,
-      22.0: 0.70,
+      3.5: 0.17,
+      5.0: 0.21,
+      7.0: 0.25,
+      9.0: 0.31,
+      10.5: 0.35,
+      12.0: 0.41,
+      13.0: 0.47,
+      14.0: 0.53,
+      15.0: 0.57,
+      16.0: 0.61,
+      17.0: 0.61,
+      22.0: 0.61,
     };
     final keys = anchors.keys.toList()..sort();
     final z = zoom.clamp(keys.first, keys.last);
@@ -106,6 +114,7 @@ class MapViewModel extends _$MapViewModel {
       onPinTap: onPinTap,
       iconSize: iconSize,
     );
+    await updateVisibleMealsCount();
   }
 
   Future<void> setPin({
@@ -149,7 +158,7 @@ class MapViewModel extends _$MapViewModel {
               .getRestaurantPosts(lat: latLng.latitude, lng: latLng.longitude);
           restaurant.whenOrNull(success: (posts) => onPinTap(posts));
           await state.mapController?.animateCamera(
-            CameraUpdate.newLatLng(latLng),
+            CameraUpdate.newLatLngZoom(latLng, 14),
             duration: const Duration(seconds: 1),
           );
           state = state.copyWith(isLoading: false, hasError: false);
@@ -262,6 +271,33 @@ class MapViewModel extends _$MapViewModel {
       _restorePinsFromCache();
     } else {
       _addPinsToMap();
+    }
+    updateVisibleMealsCount();
+  }
+
+  /// 表示範囲内の投稿件数を計算して状態に反映
+  Future<void> updateVisibleMealsCount() async {
+    final ctrl = state.mapController;
+    if (ctrl == null) {
+      return;
+    }
+    final posts =
+        ref.read(mapRepositoryProvider).whenOrNull(data: (value) => value);
+    if (posts == null || posts.isEmpty) {
+      state = state.copyWith(visibleMealsCount: 0);
+      return;
+    }
+    try {
+      final bounds = await ctrl.getVisibleRegion();
+      var count = 0;
+      for (final post in posts) {
+        if (bounds.contains(LatLng(post.lat, post.lng))) {
+          count++;
+        }
+      }
+      state = state.copyWith(visibleMealsCount: count);
+    } on Exception catch (_) {
+      // 取得失敗時はそのまま
     }
   }
 

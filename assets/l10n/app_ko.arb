@@ -120,6 +120,15 @@
   "error": "오류가 발생했습니다",
   "mapLoadingError": "오류가 발생했습니다",
   "mapLoadingRestaurant": "레스토랑 정보를 가져오는 중...",
+  "mapVisibleAreaMeals": "📍 이 지역에는 {count}개의 식사가 있습니다",
+  "@mapVisibleAreaMeals": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mapVisibleAreaLoading": "불러오는 중...",
   "appShareTitle": "공유",
   "appShareStoreButton": "이 가게 공유",
   "appShareInstagramButton": "Instagram에서 공유",

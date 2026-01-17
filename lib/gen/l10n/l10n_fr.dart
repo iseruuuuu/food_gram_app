@@ -392,6 +392,14 @@ class L10nFr extends L10n {
       'Obtention des informations du restaurant...';
 
   @override
+  String mapVisibleAreaMeals(int count) {
+    return '📍 Cette zone compte $count plats';
+  }
+
+  @override
+  String get mapVisibleAreaLoading => 'Chargement...';
+
+  @override
   String get appShareTitle => 'Partager';
 
   @override

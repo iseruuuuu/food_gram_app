@@ -382,6 +382,14 @@ class L10nEn extends L10n {
   String get mapLoadingRestaurant => 'Getting restaurant information...';
 
   @override
+  String mapVisibleAreaMeals(int count) {
+    return '📍 This area has $count meals';
+  }
+
+  @override
+  String get mapVisibleAreaLoading => 'Loading...';
+
+  @override
   String get appShareTitle => 'Share';
 
   @override

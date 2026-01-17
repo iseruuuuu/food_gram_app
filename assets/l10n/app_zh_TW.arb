@@ -120,6 +120,15 @@
   "error": "發生錯誤",
   "mapLoadingError": "發生錯誤",
   "mapLoadingRestaurant": "正在取得餐廳資訊...",
+  "mapVisibleAreaMeals": "📍 此區域有{count}筆餐點",
+  "@mapVisibleAreaMeals": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mapVisibleAreaLoading": "載入中...",
   "appShareTitle": "分享",
   "appShareStoreButton": "分享此店家",
   "appShareInstagramButton": "在Instagram上分享",

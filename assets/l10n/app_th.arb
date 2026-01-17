@@ -120,6 +120,15 @@
   "error": "เกิดข้อผิดพลาด",
   "mapLoadingError": "เกิดข้อผิดพลาด",
   "mapLoadingRestaurant": "กำลังดึงข้อมูลร้านอาหาร...",
+  "mapVisibleAreaMeals": "📍 บริเวณนี้มี {count} เมนู",
+  "@mapVisibleAreaMeals": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mapVisibleAreaLoading": "กำลังโหลด...",
   "appShareTitle": "แชร์",
   "appShareStoreButton": "แชร์ร้านนี้",
   "appShareInstagramButton": "แชร์บน Instagram",

@@ -841,6 +841,18 @@ abstract class L10n {
   /// **'Getting restaurant information...'**
   String get mapLoadingRestaurant;
 
+  /// No description provided for @mapVisibleAreaMeals.
+  ///
+  /// In en, this message translates to:
+  /// **'📍 This area has {count} meals'**
+  String mapVisibleAreaMeals(int count);
+
+  /// No description provided for @mapVisibleAreaLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get mapVisibleAreaLoading;
+
   /// No description provided for @appShareTitle.
   ///
   /// In en, this message translates to:

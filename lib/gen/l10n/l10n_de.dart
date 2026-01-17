@@ -393,6 +393,14 @@ class L10nDe extends L10n {
       'Restaurant-Informationen werden abgerufen...';
 
   @override
+  String mapVisibleAreaMeals(int count) {
+    return '📍 In diesem Bereich gibt es $count Gerichte';
+  }
+
+  @override
+  String get mapVisibleAreaLoading => 'Wird geladen...';
+
+  @override
   String get appShareTitle => 'Teilen';
 
   @override

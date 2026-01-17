@@ -120,6 +120,15 @@
   "error": "エラーが発生しました",
   "mapLoadingError": "エラーが発生しました",
   "mapLoadingRestaurant": "店舗情報を取得中...",
+  "mapVisibleAreaMeals": "📍 このエリアに{count}件の投稿があります",
+  "@mapVisibleAreaMeals": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mapVisibleAreaLoading": "読み込み中…",
   "appShareTitle": "共有",
   "appShareStoreButton": "このお店を共有する",
   "appShareInstagramButton": "Instagramで共有する",

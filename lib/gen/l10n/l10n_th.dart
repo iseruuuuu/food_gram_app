@@ -379,6 +379,14 @@ class L10nTh extends L10n {
   String get mapLoadingRestaurant => 'กำลังดึงข้อมูลร้านอาหาร...';
 
   @override
+  String mapVisibleAreaMeals(int count) {
+    return '📍 บริเวณนี้มี $count เมนู';
+  }
+
+  @override
+  String get mapVisibleAreaLoading => 'กำลังโหลด...';
+
+  @override
   String get appShareTitle => 'แชร์';
 
   @override

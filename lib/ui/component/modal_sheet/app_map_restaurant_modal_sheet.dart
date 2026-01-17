@@ -8,6 +8,7 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -33,6 +34,16 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
           itemCount: post.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
+            final currentPost = post[index];
+            if (currentPost == null) {
+              return const SizedBox.shrink();
+            }
+            final images = currentPost.foodImageList;
+            final imageUrls = images
+                .map(
+                  (path) => supabase.storage.from('food').getPublicUrl(path),
+                )
+                .toList();
             return GestureDetector(
               onTap: () {
                 EasyDebounce.debounce(
@@ -76,12 +87,25 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
                         SizedBox(
                           width: deviceWidth,
                           height: deviceWidth / 2.7,
-                          child: CachedNetworkImage(
-                            imageUrl: supabase.storage
-                                .from('food')
-                                .getPublicUrl(post[index]!.foodImage),
-                            fit: BoxFit.fitWidth,
-                          ),
+                          child: imageUrls.isEmpty
+                              ? Image.asset(
+                                  Assets.image.empty.path,
+                                  fit: BoxFit.cover,
+                                )
+                              : PageView.builder(
+                                  itemCount: imageUrls.length,
+                                  controller: PageController(),
+                                  itemBuilder: (context, pageIndex) {
+                                    return CachedNetworkImage(
+                                      imageUrl: imageUrls[pageIndex],
+                                      fit: BoxFit.cover,
+                                      errorWidget: (_, __, ___) => Image.asset(
+                                        Assets.image.empty.path,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    );
+                                  },
+                                ),
                         ),
                         Container(
                           color: Colors.white,

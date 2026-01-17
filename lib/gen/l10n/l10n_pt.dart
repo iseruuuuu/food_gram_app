@@ -392,6 +392,14 @@ class L10nPt extends L10n {
   String get mapLoadingRestaurant => 'Obtendo informações do restaurante...';
 
   @override
+  String mapVisibleAreaMeals(int count) {
+    return '📍 Esta área tem $count refeições';
+  }
+
+  @override
+  String get mapVisibleAreaLoading => 'Carregando...';
+
+  @override
   String get appShareTitle => 'Compartilhar';
 
   @override
