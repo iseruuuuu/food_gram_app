@@ -176,10 +176,13 @@ class L10nEn extends L10n {
   String get postCommentInputField => 'Comment';
 
   @override
+  String get postRatingLabel => 'Rating';
+
+  @override
   String get postError => 'Submission failure';
 
   @override
-  String get postCategoryTitle => 'Select country/cuisine tag (optional)';
+  String get postCategoryTitle => 'Select cuisine tag (optional)';
 
   @override
   String get postCountryCategory => 'Country';

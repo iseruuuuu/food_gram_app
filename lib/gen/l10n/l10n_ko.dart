@@ -174,10 +174,13 @@ class L10nKo extends L10n {
   String get postCommentInputField => '댓글';
 
   @override
+  String get postRatingLabel => '평점';
+
+  @override
   String get postError => '제출 실패';
 
   @override
-  String get postCategoryTitle => '국가/요리 태그 선택 (선택사항)';
+  String get postCategoryTitle => '요리 태그 선택 (선택사항)';
 
   @override
   String get postCountryCategory => '국가';

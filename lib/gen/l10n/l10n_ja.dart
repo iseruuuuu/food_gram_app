@@ -174,10 +174,13 @@ class L10nJa extends L10n {
   String get postCommentInputField => 'コメント(任意)';
 
   @override
+  String get postRatingLabel => '星評価';
+
+  @override
   String get postError => '投稿失敗';
 
   @override
-  String get postCategoryTitle => '国・料理タグの選択(任意)';
+  String get postCategoryTitle => '料理タグの選択(任意)';
 
   @override
   String get postCountryCategory => '国';

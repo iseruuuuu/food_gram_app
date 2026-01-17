@@ -173,10 +173,13 @@ class L10nZh extends L10n {
   String get postCommentInputField => '评论';
 
   @override
+  String get postRatingLabel => '评分';
+
+  @override
   String get postError => '提交失败';
 
   @override
-  String get postCategoryTitle => '选择国家/菜系标签（可选）';
+  String get postCategoryTitle => '选择菜系标签（可选）';
 
   @override
   String get postCountryCategory => '国家';
@@ -1821,10 +1824,13 @@ class L10nZhTw extends L10nZh {
   String get postCommentInputField => '評論';
 
   @override
+  String get postRatingLabel => '評分';
+
+  @override
   String get postError => '提交失敗';
 
   @override
-  String get postCategoryTitle => '選擇國家/菜系標籤（選填）';
+  String get postCategoryTitle => '選擇菜系標籤（選填）';
 
   @override
   String get postCountryCategory => '國家';
