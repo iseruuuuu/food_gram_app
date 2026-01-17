@@ -377,6 +377,14 @@ class L10nKo extends L10n {
   String get mapLoadingRestaurant => '레스토랑 정보를 가져오는 중...';
 
   @override
+  String mapVisibleAreaMeals(int count) {
+    return '📍 이 지역에는 $count개의 식사가 있습니다';
+  }
+
+  @override
+  String get mapVisibleAreaLoading => '불러오는 중...';
+
+  @override
   String get appShareTitle => '공유';
 
   @override

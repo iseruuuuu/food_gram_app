@@ -385,6 +385,14 @@ class L10nVi extends L10n {
   String get mapLoadingRestaurant => 'Đang lấy thông tin nhà hàng...';
 
   @override
+  String mapVisibleAreaMeals(int count) {
+    return '📍 Khu vực này có $count món ăn';
+  }
+
+  @override
+  String get mapVisibleAreaLoading => 'Đang tải...';
+
+  @override
   String get appShareTitle => 'Chia sẻ';
 
   @override

@@ -120,6 +120,15 @@
   "error": "Des erreurs se sont produites",
   "mapLoadingError": "Une erreur s'est produite",
   "mapLoadingRestaurant": "Obtention des informations du restaurant...",
+  "mapVisibleAreaMeals": "📍 Cette zone compte {count} plats",
+  "@mapVisibleAreaMeals": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mapVisibleAreaLoading": "Chargement...",
   "appShareTitle": "Partager",
   "appShareStoreButton": "Partager ce magasin",
   "appShareInstagramButton": "Partager sur Instagram",

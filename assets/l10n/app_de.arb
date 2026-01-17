@@ -120,6 +120,15 @@
   "error": "Fehler sind aufgetreten",
   "mapLoadingError": "Ein Fehler ist aufgetreten",
   "mapLoadingRestaurant": "Restaurant-Informationen werden abgerufen...",
+  "mapVisibleAreaMeals": "📍 In diesem Bereich gibt es {count} Gerichte",
+  "@mapVisibleAreaMeals": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mapVisibleAreaLoading": "Wird geladen...",
   "appShareTitle": "Teilen",
   "appShareStoreButton": "Diesen Laden teilen",
   "appShareInstagramButton": "Auf Instagram teilen",

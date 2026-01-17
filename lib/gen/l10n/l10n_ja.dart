@@ -377,6 +377,14 @@ class L10nJa extends L10n {
   String get mapLoadingRestaurant => '店舗情報を取得中...';
 
   @override
+  String mapVisibleAreaMeals(int count) {
+    return '📍 このエリアに$count件の投稿があります';
+  }
+
+  @override
+  String get mapVisibleAreaLoading => '読み込み中…';
+
+  @override
   String get appShareTitle => '共有';
 
   @override
