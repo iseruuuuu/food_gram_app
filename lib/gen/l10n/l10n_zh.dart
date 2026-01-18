@@ -483,10 +483,10 @@ class L10nZh extends L10n {
   String get tabSetting => '设置';
 
   @override
-  String get mapStatsVisitedArea => '访问区域';
+  String get mapStatsVisitedArea => '已访问的地点';
 
   @override
-  String get mapStatsPosts => '投稿';
+  String get mapStatsPosts => '帖子';
 
   @override
   String get mapStatsActivityDays => '活动天数';
@@ -495,13 +495,31 @@ class L10nZh extends L10n {
   String get dayUnit => '天';
 
   @override
-  String get mapStatsPrefectures => '都道府县';
+  String get mapStatsPrefectures => '访问的都道府县';
 
   @override
   String get mapStatsAchievementRate => '达成率';
 
   @override
-  String get mapStatsVisitedCountries => '访问国家';
+  String get mapStatsWorldAchievementRate => '世界达成率';
+
+  @override
+  String get mapStatsVisitedCountries => '访问的国家';
+
+  @override
+  String mapStatsRecordSummary(Object days) {
+    return '你的餐食已记录了 $days 天✨';
+  }
+
+  @override
+  String mapStatsJapanSummary(Object prefectures) {
+    return '在日本，你的餐食遍布 $prefectures 个都道府县✨';
+  }
+
+  @override
+  String mapStatsWorldSummary(Object countries) {
+    return '在世界范围内，你的餐食遍布 $countries 个国家✨';
+  }
 
   @override
   String get mapViewTypeRecord => '记录';
@@ -2142,10 +2160,10 @@ class L10nZhTw extends L10nZh {
   String get tabSetting => '設定';
 
   @override
-  String get mapStatsVisitedArea => '訪問區域';
+  String get mapStatsVisitedArea => '造訪過的地點';
 
   @override
-  String get mapStatsPosts => '投稿';
+  String get mapStatsPosts => '貼文';
 
   @override
   String get mapStatsActivityDays => '活動天數';
@@ -2154,13 +2172,31 @@ class L10nZhTw extends L10nZh {
   String get dayUnit => '天';
 
   @override
-  String get mapStatsPrefectures => '都道府縣';
+  String get mapStatsPrefectures => '造訪過的都道府縣';
 
   @override
   String get mapStatsAchievementRate => '達成率';
 
   @override
-  String get mapStatsVisitedCountries => '訪問國家';
+  String get mapStatsWorldAchievementRate => '世界達成率';
+
+  @override
+  String get mapStatsVisitedCountries => '造訪過的國家';
+
+  @override
+  String mapStatsRecordSummary(Object days) {
+    return '你的餐點已記錄了 $days 天✨';
+  }
+
+  @override
+  String mapStatsJapanSummary(Object prefectures) {
+    return '在日本，你的餐點遍佈 $prefectures 個都道府縣✨';
+  }
+
+  @override
+  String mapStatsWorldSummary(Object countries) {
+    return '在世界，你的餐點遍佈 $countries 個國家✨';
+  }
 
   @override
   String get mapViewTypeRecord => '記錄';

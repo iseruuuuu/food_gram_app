@@ -486,25 +486,43 @@ class L10nTh extends L10n {
   String get tabSetting => 'การตั้งค่า';
 
   @override
-  String get mapStatsVisitedArea => 'พื้นที่';
+  String get mapStatsVisitedArea => 'สถานที่ที่ไปมา';
 
   @override
   String get mapStatsPosts => 'โพสต์';
 
   @override
-  String get mapStatsActivityDays => 'วัน';
+  String get mapStatsActivityDays => 'จำนวนวันใช้งาน';
 
   @override
   String get dayUnit => 'วัน';
 
   @override
-  String get mapStatsPrefectures => 'จังหวัด';
+  String get mapStatsPrefectures => 'จังหวัดที่ไปมา';
 
   @override
   String get mapStatsAchievementRate => 'อัตรา';
 
   @override
-  String get mapStatsVisitedCountries => 'ประเทศ';
+  String get mapStatsWorldAchievementRate => 'อัตราการพิชิตทั่วโลก';
+
+  @override
+  String get mapStatsVisitedCountries => 'ประเทศที่ไปมา';
+
+  @override
+  String mapStatsRecordSummary(Object days) {
+    return 'มื้ออาหารของคุณถูกบันทึกไว้ $days วัน ✨';
+  }
+
+  @override
+  String mapStatsJapanSummary(Object prefectures) {
+    return 'ในญี่ปุ่น มื้ออาหารของคุณอยู่ใน $prefectures จังหวัด ✨';
+  }
+
+  @override
+  String mapStatsWorldSummary(Object countries) {
+    return 'ทั่วโลก มื้ออาหารของคุณอยู่ใน $countries ประเทศ ✨';
+  }
 
   @override
   String get mapViewTypeRecord => 'บันทึก';

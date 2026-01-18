@@ -484,7 +484,7 @@ class L10nJa extends L10n {
   String get tabSetting => '設定';
 
   @override
-  String get mapStatsVisitedArea => '訪問エリア';
+  String get mapStatsVisitedArea => '訪れた場所';
 
   @override
   String get mapStatsPosts => '投稿';
@@ -496,13 +496,31 @@ class L10nJa extends L10n {
   String get dayUnit => '日';
 
   @override
-  String get mapStatsPrefectures => '都道府県';
+  String get mapStatsPrefectures => '行った都道府県';
 
   @override
   String get mapStatsAchievementRate => '達成率';
 
   @override
-  String get mapStatsVisitedCountries => '訪問国';
+  String get mapStatsWorldAchievementRate => '世界達成率';
+
+  @override
+  String get mapStatsVisitedCountries => '行った国';
+
+  @override
+  String mapStatsRecordSummary(Object days) {
+    return '$days日分の食事が、記録として残っています✨';
+  }
+
+  @override
+  String mapStatsJapanSummary(Object prefectures) {
+    return '$prefecturesの都道府県に、食事が残っています✨';
+  }
+
+  @override
+  String mapStatsWorldSummary(Object countries) {
+    return '$countriesカ国に、食事が届いています✨';
+  }
 
   @override
   String get mapViewTypeRecord => '記録';
