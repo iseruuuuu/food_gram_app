@@ -491,25 +491,43 @@ class L10nEn extends L10n {
   String get tabSetting => 'Setting';
 
   @override
-  String get mapStatsVisitedArea => 'Areas';
+  String get mapStatsVisitedArea => 'Visited places';
 
   @override
   String get mapStatsPosts => 'Posts';
 
   @override
-  String get mapStatsActivityDays => 'Days';
+  String get mapStatsActivityDays => 'Active days';
 
   @override
   String get dayUnit => 'days';
 
   @override
-  String get mapStatsPrefectures => 'Prefectures';
+  String get mapStatsPrefectures => 'Visited prefectures';
 
   @override
   String get mapStatsAchievementRate => 'Rate';
 
   @override
-  String get mapStatsVisitedCountries => 'Countries';
+  String get mapStatsWorldAchievementRate => 'World achievement rate';
+
+  @override
+  String get mapStatsVisitedCountries => 'Visited countries';
+
+  @override
+  String mapStatsRecordSummary(Object days) {
+    return 'Your meals are recorded for $days days ✨';
+  }
+
+  @override
+  String mapStatsJapanSummary(Object prefectures) {
+    return 'In Japan, your meals remain in $prefectures prefectures ✨';
+  }
+
+  @override
+  String mapStatsWorldSummary(Object countries) {
+    return 'In the world, your meals remain in $countries countries ✨';
+  }
 
   @override
   String get mapViewTypeRecord => 'Record';

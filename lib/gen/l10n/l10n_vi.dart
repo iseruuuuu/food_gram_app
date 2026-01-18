@@ -492,25 +492,43 @@ class L10nVi extends L10n {
   String get tabSetting => 'Cài đặt';
 
   @override
-  String get mapStatsVisitedArea => 'Khu vực';
+  String get mapStatsVisitedArea => 'Địa điểm đã đến';
 
   @override
   String get mapStatsPosts => 'Bài đăng';
 
   @override
-  String get mapStatsActivityDays => 'Ngày';
+  String get mapStatsActivityDays => 'Ngày hoạt động';
 
   @override
   String get dayUnit => 'ngày';
 
   @override
-  String get mapStatsPrefectures => 'Tỉnh';
+  String get mapStatsPrefectures => 'Tỉnh đã đến';
 
   @override
   String get mapStatsAchievementRate => 'Tỷ lệ';
 
   @override
-  String get mapStatsVisitedCountries => 'Quốc gia';
+  String get mapStatsWorldAchievementRate => 'Tỷ lệ hoàn thành toàn cầu';
+
+  @override
+  String get mapStatsVisitedCountries => 'Quốc gia đã đến';
+
+  @override
+  String mapStatsRecordSummary(Object days) {
+    return 'Bữa ăn của bạn được lưu lại $days ngày ✨';
+  }
+
+  @override
+  String mapStatsJapanSummary(Object prefectures) {
+    return 'Tại Nhật, bữa ăn của bạn có ở $prefectures tỉnh ✨';
+  }
+
+  @override
+  String mapStatsWorldSummary(Object countries) {
+    return 'Trên thế giới, bữa ăn của bạn có ở $countries quốc gia ✨';
+  }
 
   @override
   String get mapViewTypeRecord => 'Ghi chép';

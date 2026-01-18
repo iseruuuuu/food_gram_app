@@ -29,9 +29,14 @@ class AppMapStatsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
+    final summary = switch (viewType) {
+      MapViewType.detail => l10n.mapStatsRecordSummary(activityDays),
+      MapViewType.japan => l10n.mapStatsJapanSummary(visitedPrefecturesCount),
+      MapViewType.world => l10n.mapStatsWorldSummary(visitedCountriesCount),
+    };
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -43,9 +48,25 @@ class AppMapStatsCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: _buildStatItems(l10n),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: _buildStatItems(l10n),
+          ),
+          const Gap(12),
+          Center(
+            child: Text(
+              summary,
+              style: const TextStyle(
+                fontSize: 15,
+                color: Color(0xFF444444),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

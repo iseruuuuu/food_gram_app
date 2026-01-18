@@ -1054,7 +1054,7 @@ abstract class L10n {
   /// No description provided for @mapStatsVisitedArea.
   ///
   /// In en, this message translates to:
-  /// **'Areas'**
+  /// **'Visited places'**
   String get mapStatsVisitedArea;
 
   /// No description provided for @mapStatsPosts.
@@ -1066,7 +1066,7 @@ abstract class L10n {
   /// No description provided for @mapStatsActivityDays.
   ///
   /// In en, this message translates to:
-  /// **'Days'**
+  /// **'Active days'**
   String get mapStatsActivityDays;
 
   /// No description provided for @dayUnit.
@@ -1078,7 +1078,7 @@ abstract class L10n {
   /// No description provided for @mapStatsPrefectures.
   ///
   /// In en, this message translates to:
-  /// **'Prefectures'**
+  /// **'Visited prefectures'**
   String get mapStatsPrefectures;
 
   /// No description provided for @mapStatsAchievementRate.
@@ -1087,11 +1087,35 @@ abstract class L10n {
   /// **'Rate'**
   String get mapStatsAchievementRate;
 
+  /// No description provided for @mapStatsWorldAchievementRate.
+  ///
+  /// In en, this message translates to:
+  /// **'World achievement rate'**
+  String get mapStatsWorldAchievementRate;
+
   /// No description provided for @mapStatsVisitedCountries.
   ///
   /// In en, this message translates to:
-  /// **'Countries'**
+  /// **'Visited countries'**
   String get mapStatsVisitedCountries;
+
+  /// No description provided for @mapStatsRecordSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Your meals are recorded for {days} days ✨'**
+  String mapStatsRecordSummary(Object days);
+
+  /// No description provided for @mapStatsJapanSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'In Japan, your meals remain in {prefectures} prefectures ✨'**
+  String mapStatsJapanSummary(Object prefectures);
+
+  /// No description provided for @mapStatsWorldSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'In the world, your meals remain in {countries} countries ✨'**
+  String mapStatsWorldSummary(Object countries);
 
   /// No description provided for @mapViewTypeRecord.
   ///

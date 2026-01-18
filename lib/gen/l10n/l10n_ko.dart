@@ -484,7 +484,7 @@ class L10nKo extends L10n {
   String get tabSetting => '설정';
 
   @override
-  String get mapStatsVisitedArea => '방문 지역';
+  String get mapStatsVisitedArea => '방문한 장소';
 
   @override
   String get mapStatsPosts => '게시물';
@@ -496,13 +496,31 @@ class L10nKo extends L10n {
   String get dayUnit => '일';
 
   @override
-  String get mapStatsPrefectures => '도도부현';
+  String get mapStatsPrefectures => '방문한 도도부현';
 
   @override
   String get mapStatsAchievementRate => '달성률';
 
   @override
-  String get mapStatsVisitedCountries => '방문 국가';
+  String get mapStatsWorldAchievementRate => '세계 달성률';
+
+  @override
+  String get mapStatsVisitedCountries => '방문한 국가';
+
+  @override
+  String mapStatsRecordSummary(Object days) {
+    return '$days일 동안 당신의 식사가 기록으로 남았어요 ✨';
+  }
+
+  @override
+  String mapStatsJapanSummary(Object prefectures) {
+    return '일본에서는 $prefectures개 도도부현에 당신의 식사가 남아 있어요 ✨';
+  }
+
+  @override
+  String mapStatsWorldSummary(Object countries) {
+    return '세계에서는 $countries개 국가에 당신의 식사가 남아 있어요 ✨';
+  }
 
   @override
   String get mapViewTypeRecord => '기록';
