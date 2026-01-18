@@ -79,7 +79,6 @@ GoRouter router(Ref ref) {
           mapRouter,
           myProfileRouter,
           settingRouter,
-          searchRouter,
         ],
       ),
     ],
@@ -207,6 +206,21 @@ final timeLineRouter = GoRoute(
         return slideUpTransition(
           RestaurantReviewScreen(
             posts: posts,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path:
+          '${RouterPath.timeLine}/${RouterPath.timeLineDetail}/${RouterPath.searchDetailPost}',
+      name: RouterPath.searchDetailPost,
+      pageBuilder: (context, state) {
+        final model = state.extra! as Model;
+        return slideUpTransition(
+          PostDetailScreen(
+            posts: model.posts,
+            users: model.users,
+            type: PostDetailScreenType.search,
           ),
         );
       },
@@ -459,53 +473,6 @@ final mapRouter = GoRoute(
   ],
 );
 
-final searchRouter = GoRoute(
-  path: RouterPath.search,
-  name: RouterPath.search,
-  builder: (context, state) {
-    return const SearchScreen();
-  },
-  routes: <RouteBase>[
-    GoRoute(
-      path: '${RouterPath.search}/${RouterPath.searchRestaurantReview}',
-      name: RouterPath.searchRestaurantReview,
-      pageBuilder: (context, state) {
-        final posts = state.extra! as Posts;
-        return slideUpTransition(
-          RestaurantReviewScreen(
-            posts: posts,
-          ),
-        );
-      },
-    ),
-    GoRoute(
-      path: '${RouterPath.search}/${RouterPath.searchDetail}',
-      name: RouterPath.searchDetail,
-      pageBuilder: (context, state) {
-        final posts = state.extra! as List<Posts>;
-        return slideUpTransition(
-          SearchDetailScreen(posts: posts),
-        );
-      },
-    ),
-    GoRoute(
-      path:
-          '${RouterPath.search}/${RouterPath.searchDetail}/${RouterPath.searchDetailPost}',
-      name: RouterPath.searchDetailPost,
-      pageBuilder: (context, state) {
-        final model = state.extra! as Model;
-        return slideUpTransition(
-          PostDetailScreen(
-            posts: model.posts,
-            users: model.users,
-            type: PostDetailScreenType.search,
-          ),
-        );
-      },
-    ),
-  ],
-);
-
 final class RouterPath {
   static const String tab = 'tab';
   static const String authentication = 'authentication';
@@ -542,9 +509,6 @@ final class RouterPath {
   static const String timeLineEditPost = 'time_line_edit_post';
   static const String mapEditPost = 'map_edit_post';
   static const String myProfileEditPost = 'my_profile_edit_post';
-  static const String search = 'search';
-  static const String searchRestaurantReview = 'search_restaurant_review';
-  static const String searchDetail = 'search_detail';
   static const String storedPost = 'stored_post';
   static const String searchDetailPost = 'search_detail_post';
   static const String storedPostDetail = 'stored_post_detail';

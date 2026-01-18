@@ -50,46 +50,6 @@ class TimeLineScreen extends HookConsumerWidget {
             SliverToBoxAdapter(
               child: Column(
                 children: [
-                  // 検索ListTile
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: Colors.grey[300]!,
-                      ),
-                    ),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 2,
-                      ),
-                      dense: true,
-                      leading: const Icon(
-                        Icons.search,
-                        color: Colors.black,
-                        size: 24,
-                      ),
-                      title: Text(
-                        l10n.searchRestaurantTitle,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      trailing: const Icon(
-                        Icons.chevron_right,
-                        color: Colors.grey,
-                      ),
-                      onTap: () {
-                        context.pushNamed(RouterPath.search);
-                      },
-                    ),
-                  ),
                   TabBar(
                     tabAlignment: TabAlignment.start,
                     controller: tabController,
