@@ -304,7 +304,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                             return GestureDetector(
                               onTap: () {
                                 context.pushNamed(
-                                  RouterPath.timeLineDetail,
+                                  RouterPath.searchDetailPost,
                                   extra: model,
                                 );
                               },
