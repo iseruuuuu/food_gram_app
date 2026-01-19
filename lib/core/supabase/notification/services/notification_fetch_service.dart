@@ -125,7 +125,7 @@ class _TokenRow {
 
 @riverpod
 NotificationFetchService notificationFetchService(
-  NotificationFetchServiceRef ref,
+  Ref ref,
 ) {
   return NotificationFetchService(ref);
 }

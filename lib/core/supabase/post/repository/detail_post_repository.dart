@@ -198,7 +198,9 @@ class DetailPostRepository extends _$DetailPostRepository {
             success: (posts) {
               final sorted = [...posts]..sort((a, b) {
                   final c = b.createdAt.compareTo(a.createdAt);
-                  if (c != 0) return c;
+                  if (c != 0) {
+                    return c;
+                  }
                   return b.id.compareTo(a.id);
                 });
               final others = sorted.where((p) {
@@ -228,7 +230,9 @@ class DetailPostRepository extends _$DetailPostRepository {
             success: (posts) {
               final sorted = [...posts]..sort((a, b) {
                   final c = b.createdAt.compareTo(a.createdAt);
-                  if (c != 0) return c;
+                  if (c != 0) {
+                    return c;
+                  }
                   return b.id.compareTo(a.id);
                 });
               final others = sorted.where((p) {

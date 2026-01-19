@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
@@ -23,7 +22,6 @@ class TimeLineScreen extends HookConsumerWidget {
     final tabController =
         useTabController(initialLength: categoriesData.length);
     final scrollController = useScrollController();
-    final l10n = L10n.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(

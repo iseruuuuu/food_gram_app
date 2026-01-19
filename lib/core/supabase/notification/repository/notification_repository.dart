@@ -58,13 +58,13 @@ class NotificationRepository {
 }
 
 @riverpod
-NotificationRepository notificationRepository(NotificationRepositoryRef ref) {
+NotificationRepository notificationRepository(Ref ref) {
   return NotificationRepository(ref);
 }
 
 @riverpod
 Future<List<Notification>> myLikeNotifications(
-  MyLikeNotificationsRef ref,
+  Ref ref,
 ) async {
   final repo = ref.watch(notificationRepositoryProvider);
   return repo.getMyLikeNotifications();

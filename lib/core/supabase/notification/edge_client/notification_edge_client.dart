@@ -54,6 +54,6 @@ class NotificationEdgeClient {
 }
 
 @riverpod
-NotificationEdgeClient notificationEdgeClient(NotificationEdgeClientRef ref) {
+NotificationEdgeClient notificationEdgeClient(Ref ref) {
   return NotificationEdgeClient(ref);
 }
