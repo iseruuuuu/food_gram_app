@@ -6,7 +6,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/theme/style/restaurant_review_style.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/profile/app_profile_image.dart';
@@ -31,7 +31,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
         lng: posts.lng,
       ),
     );
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     final animationController =
         useAnimationController(duration: const Duration(seconds: 2));
     useEffect(
@@ -180,7 +180,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                       ],
                                     ),
                                     child: Text(
-                                      l10n.restaurantReviewNew,
+                                      t.restaurantReviewNew,
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 14,
@@ -250,7 +250,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            l10n.restaurantReviewViewDetails,
+                                            t.restaurantReviewViewDetails,
                                             style: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.bold,
@@ -282,7 +282,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                             ),
                             const Gap(8),
                             Text(
-                              l10n.restaurantReviewOtherPosts,
+                              t.restaurantReviewOtherPosts,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -423,7 +423,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                           ),
                           const Gap(8),
                           Text(
-                            l10n.restaurantReviewReviewList,
+                            t.restaurantReviewReviewList,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -505,7 +505,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                         children: [
                                           Text(
                                             model.posts.isAnonymous
-                                                ? l10n.anonymousPoster
+                                                ? t.anonymousPoster
                                                 : model.users.name,
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
@@ -552,7 +552,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
               );
             },
             failure: (_) {
-              return Center(child: Text(l10n.restaurantReviewError));
+              return Center(child: Text(t.restaurantReviewError));
             },
           ),
         ),

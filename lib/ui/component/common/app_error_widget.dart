@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 
 class AppErrorWidget extends StatelessWidget {
@@ -13,7 +13,7 @@ class AppErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Center(
@@ -21,7 +21,7 @@ class AppErrorWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              l10n.errorTitle,
+              t.errorTitle,
               style: const TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
@@ -29,9 +29,9 @@ class AppErrorWidget extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              '${l10n.errorDescription1}'
+              '${t.errorDescription1}'
               '\n'
-              '${l10n.errorDescription2}',
+              '${t.errorDescription2}',
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 15,
@@ -46,7 +46,7 @@ class AppErrorWidget extends StatelessWidget {
             const SizedBox(height: 50),
             AppElevatedButton(
               onPressed: onTap,
-              title: l10n.errorRefreshButton,
+              title: t.errorRefreshButton,
             ),
           ],
         ),

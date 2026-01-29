@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 import 'package:gap/gap.dart';
 
 typedef OnSubmitted = void Function(String value);
@@ -48,7 +48,7 @@ class AppSearchTextField extends HookWidget {
                     .textTheme
                     .bodyMedium!
                     .copyWith(color: Colors.grey),
-                label: Text(L10n.of(context).appRestaurantLabel),
+                label: Text(Translations.of(context).appRestaurantLabel),
                 labelStyle: Theme.of(context)
                     .textTheme
                     .bodyMedium!
@@ -105,7 +105,7 @@ class AppSearchTextField extends HookWidget {
                 onSubmitted!(searchText.value);
               },
               child: Text(
-                L10n.of(context).searchButton,
+                Translations.of(context).searchButton,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -164,7 +164,7 @@ class AppFoodTextField extends StatelessWidget {
                   borderSide: const BorderSide(color: Colors.blueAccent),
                   borderRadius: BorderRadius.circular(6),
                 ),
-                label: Text(L10n.of(context).postFoodNameInputField),
+                label: Text(Translations.of(context).postFoodNameInputField),
                 labelStyle: const TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.bold,
@@ -221,7 +221,7 @@ class AppCommentTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(6),
           ),
           label: Text(
-            L10n.of(context).postComment,
+            Translations.of(context).postComment,
           ),
           labelStyle: const TextStyle(
             color: Colors.grey,
@@ -266,7 +266,7 @@ class AppAuthTextField extends StatelessWidget {
         autovalidateMode: AutovalidateMode.always,
         validator: (value) => value!.isValidEmail() || value.isEmpty
             ? null
-            : L10n.of(context).enterTheCorrectFormat,
+            : Translations.of(context).enterTheCorrectFormat,
         controller: controller,
         autocorrect: false,
         keyboardType: TextInputType.emailAddress,
@@ -276,7 +276,7 @@ class AppAuthTextField extends StatelessWidget {
             ),
         decoration: InputDecoration(
           alignLabelWithHint: true,
-          labelText: L10n.of(context).email,
+          labelText: Translations.of(context).email,
           labelStyle: Theme.of(context)
               .textTheme
               .bodyLarge!
@@ -335,9 +335,9 @@ class AppNameTextField extends StatelessWidget {
                 selectionHeightStyle: BoxHeightStyle.strut,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: L10n.of(context).userName,
+                  hintText: Translations.of(context).userName,
                   label: Text(
-                    L10n.of(context).userNameInputField,
+                    Translations.of(context).userNameInputField,
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ),
@@ -391,9 +391,9 @@ class AppSelfIntroductionTextField extends StatelessWidget {
                 decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   border: InputBorder.none,
-                  hintText: L10n.of(context).editBioInputField,
+                  hintText: Translations.of(context).editBioInputField,
                   label: Text(
-                    L10n.of(context).editBio,
+                    Translations.of(context).editBio,
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ),
@@ -446,9 +446,9 @@ class AppUserNameTextField extends StatelessWidget {
                 selectionHeightStyle: BoxHeightStyle.strut,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: L10n.of(context).userId,
+                  hintText: Translations.of(context).userId,
                   label: Text(
-                    L10n.of(context).userIdInputField,
+                    Translations.of(context).userIdInputField,
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ),

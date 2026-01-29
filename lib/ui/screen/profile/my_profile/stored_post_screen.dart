@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
@@ -24,7 +24,7 @@ class StoredPostScreen extends HookConsumerWidget {
       },
       [],
     );
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     final state = ref.watch(storedPostViewModelProvider);
     final scrollController = useScrollController();
     return Scaffold(
@@ -33,7 +33,7 @@ class StoredPostScreen extends HookConsumerWidget {
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         title: Text(
-          l10n.savedPosts,
+          t.savedPosts,
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,

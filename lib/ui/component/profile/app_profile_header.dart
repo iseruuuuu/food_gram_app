@@ -5,7 +5,7 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/dialog/app_profile_dialog.dart';
 import 'package:food_gram_app/ui/component/profile/app_profile_image.dart';
@@ -27,7 +27,7 @@ class AppProfileHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     final currentUser = ref.watch(currentUserProvider);
     final conversion = double.parse(Env.point);
     final postlengthPoint = length * double.parse(Env.postLengthPoint);
@@ -121,7 +121,7 @@ class AppProfileHeader extends ConsumerWidget {
                               ),
                               const Gap(8),
                               Text(
-                                '${_getRank(context, length)}${l10n.rank}',
+                                '${_getRank(context, length)}${t.rank}',
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -153,16 +153,16 @@ class AppProfileHeader extends ConsumerWidget {
                     children: [
                       BuildStatColumn(
                         count: length.toString(),
-                        label: l10n.profilePostCount,
+                        label: t.profilePostCount,
                       ),
                       BuildStatColumn(
                         count: heartAmount.toString(),
-                        label: l10n.likeButton,
+                        label: t.likeButton,
                       ),
                       if (currentUser == users.userId)
                         BuildStatColumn(
                           count: point.toStringAsFixed(2),
-                          label: l10n.profilePointCount,
+                          label: t.profilePointCount,
                         ),
                     ],
                   ),
@@ -193,7 +193,7 @@ class AppProfileHeader extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
                           child: Text(
-                            l10n.profileEditButton,
+                            t.profileEditButton,
                             style: const TextStyle(
                               color: Colors.black87,
                               fontSize: 14,
@@ -273,7 +273,7 @@ class AppProfileHeader extends ConsumerWidget {
                                     ),
                                     const Gap(8),
                                     Text(
-                                      l10n.profileFavoriteGenre,
+                                      t.profileFavoriteGenre,
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
@@ -311,7 +311,7 @@ class AppProfileHeader extends ConsumerWidget {
                                                   users.tag,
                                                   context,
                                                 )
-                                            : l10n.selectFoodTag,
+                                            : t.selectFoodTag,
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
@@ -359,20 +359,20 @@ class AppProfileHeader extends ConsumerWidget {
   }
 
   String _getRank(BuildContext context, int postCount) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     if (postCount >= 10000) {
-      return l10n.rankEmerald;
+      return t.rankEmerald;
     }
     if (postCount >= 5000) {
-      return l10n.rankDiamond;
+      return t.rankDiamond;
     }
     if (postCount >= 1000) {
-      return l10n.rankGold;
+      return t.rankGold;
     }
     if (postCount >= 500) {
-      return l10n.rankSilver;
+      return t.rankSilver;
     }
-    return l10n.rankBronze;
+    return t.rankBronze;
   }
 
   String _getTrophyAsset(int postCount) {

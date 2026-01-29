@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/translation/translation_service.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 
 class AppTranslatableText extends ConsumerStatefulWidget {
   const AppTranslatableText(
@@ -48,10 +48,10 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
     if (!mounted) {
       return;
     }
-    final l10n = L10n.of(context);
-    final translateLabel = l10n.translatableTranslate;
-    final showOriginalLabel = l10n.translatableShowOriginal;
-    final copyLabel = l10n.translatableCopy;
+    final t = Translations.of(context);
+    final translateLabel = t.translatableTranslate;
+    final showOriginalLabel = t.translatableShowOriginal;
+    final copyLabel = t.translatableCopy;
     // 長押しメニュー（翻訳/原文/コピー）
     final action = await showModalBottomSheet<String>(
       context: context,
@@ -122,9 +122,9 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
       }
       // 翻訳できなかった（原文と同じ）の場合はSnackBarを表示
       if (out.trim() == widget.text.trim()) {
-        final l10n = L10n.of(context);
+        final t = Translations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.translatableTranslateFailed)),
+          SnackBar(content: Text(t.translatableTranslateFailed)),
         );
         return;
       }
@@ -142,8 +142,8 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
     if (!mounted) {
       return;
     }
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(l10n.translatableCopied)));
+        .showSnackBar(SnackBar(content: Text(t.translatableCopied)));
   }
 }

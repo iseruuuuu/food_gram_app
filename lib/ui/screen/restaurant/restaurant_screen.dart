@@ -4,7 +4,7 @@ import 'package:food_gram_app/core/api/restaurant/repository/google_restaurant_r
 import 'package:food_gram_app/core/api/restaurant/repository/kakao_restaurant_repository.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/theme/style/restaurant_style.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
@@ -67,7 +67,7 @@ class RestaurantScreen extends HookConsumerWidget {
               },
               child: Chip(
                 backgroundColor: Colors.white,
-                label: Text(L10n.of(context).unknown),
+                label: Text(Translations.of(context).unknown),
                 labelStyle: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,

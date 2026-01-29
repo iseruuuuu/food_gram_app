@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 import 'package:go_router/go_router.dart';
 
 class AppDetailMasterModalSheet extends ConsumerWidget {
@@ -20,7 +20,7 @@ class AppDetailMasterModalSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     return Container(
       height: MediaQuery.sizeOf(context).width - 150,
       decoration: const BoxDecoration(
@@ -37,7 +37,7 @@ class AppDetailMasterModalSheet extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 20),
               child: Text(
-                '${l10n.postDetailSheetTitle}  【開発者用】',
+                '${t.postDetailSheetTitle}  【開発者用】',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -81,7 +81,7 @@ class AppDetailMasterModalSheet extends ConsumerWidget {
                       ),
                       const SizedBox(width: 20),
                       Text(
-                        l10n.dialogDeleteTitle,
+                        t.dialogDeleteTitle,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -126,7 +126,7 @@ class AppDetailMasterModalSheet extends ConsumerWidget {
                       ),
                       const SizedBox(width: 20),
                       Text(
-                        l10n.close,
+                        t.close,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,

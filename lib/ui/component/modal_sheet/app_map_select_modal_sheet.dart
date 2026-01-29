@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 import 'package:go_router/go_router.dart';
 import 'package:map_launcher/map_launcher.dart';
 
@@ -13,7 +13,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     return SizedBox(
       height: MediaQuery.of(context).size.height / 2.1,
       child: DecoratedBox(
@@ -49,7 +49,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    l10n.selectMapApp,
+                    t.selectMapApp,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -78,7 +78,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                       children: [
                         _MapOptionItem(
                           mapType: MapType.google,
-                          title: l10n.mapAppGoogle,
+                          title: t.mapAppGoogle,
                           onTap: () {
                             context.pop();
                             onMapSelected(MapType.google);
@@ -86,7 +86,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                         ),
                         _MapOptionItem(
                           mapType: MapType.apple,
-                          title: l10n.mapAppApple,
+                          title: t.mapAppApple,
                           onTap: () {
                             context.pop();
                             onMapSelected(MapType.apple);
@@ -94,7 +94,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                         ),
                         _MapOptionItem(
                           mapType: MapType.baidu,
-                          title: l10n.mapAppBaidu,
+                          title: t.mapAppBaidu,
                           onTap: () {
                             context.pop();
                             onMapSelected(MapType.baidu);
@@ -102,7 +102,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                         ),
                         _MapOptionItem(
                           mapType: MapType.mapswithme,
-                          title: l10n.mapAppMapsMe,
+                          title: t.mapAppMapsMe,
                           onTap: () {
                             context.pop();
                             onMapSelected(MapType.mapswithme);
@@ -110,7 +110,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                         ),
                         _MapOptionItem(
                           mapType: MapType.kakao,
-                          title: l10n.mapAppKakao,
+                          title: t.mapAppKakao,
                           onTap: () {
                             context.pop();
                             onMapSelected(MapType.kakao);
@@ -118,7 +118,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                         ),
                         _MapOptionItem(
                           mapType: MapType.naver,
-                          title: l10n.mapAppNaver,
+                          title: t.mapAppNaver,
                           onTap: () {
                             context.pop();
                             onMapSelected(MapType.naver);
@@ -134,7 +134,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                     child: TextButton(
                       onPressed: () => context.pop(),
                       child: Text(
-                        l10n.close,
+                        t.close,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,7 +10,7 @@ class AppPromoteDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     return Dialog(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
@@ -22,7 +22,7 @@ class AppPromoteDialog extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              l10n.promoteDialogTitle,
+              t.promoteDialogTitle,
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -31,23 +31,23 @@ class AppPromoteDialog extends ConsumerWidget {
             const Gap(20),
             _buildFeatureItem(
               icon: Icons.emoji_events,
-              title: l10n.promoteDialogTrophyTitle,
-              description: l10n.promoteDialogTrophyDesc,
+              title: t.promoteDialogTrophyTitle,
+              description: t.promoteDialogTrophyDesc,
             ),
             _buildFeatureItem(
               icon: Icons.label,
-              title: l10n.promoteDialogTagTitle,
-              description: l10n.promoteDialogTagDesc,
+              title: t.promoteDialogTagTitle,
+              description: t.promoteDialogTagDesc,
             ),
             _buildFeatureItem(
               icon: Icons.account_circle,
-              title: l10n.promoteDialogIconTitle,
-              description: l10n.promoteDialogIconDesc,
+              title: t.promoteDialogIconTitle,
+              description: t.promoteDialogIconDesc,
             ),
             _buildFeatureItem(
               icon: Icons.block,
-              title: l10n.promoteDialogAdTitle,
-              description: l10n.promoteDialogAdDesc,
+              title: t.promoteDialogAdTitle,
+              description: t.promoteDialogAdDesc,
             ),
             const Gap(20),
             ElevatedButton(
@@ -70,7 +70,7 @@ class AppPromoteDialog extends ConsumerWidget {
                 foregroundColor: Colors.white,
               ),
               child: Text(
-                l10n.promoteDialogButton,
+                t.promoteDialogButton,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -84,7 +84,7 @@ class AppPromoteDialog extends ConsumerWidget {
                 splashFactory: NoSplash.splashFactory,
               ),
               child: Text(
-                l10n.promoteDialogLater,
+                t.promoteDialogLater,
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black,

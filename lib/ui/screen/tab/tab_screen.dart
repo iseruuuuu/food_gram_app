@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/theme/style/tab_style.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
 import 'package:gap/gap.dart';
 
@@ -15,7 +15,7 @@ class TabScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(tabViewModelProvider());
     final controller = ref.watch(tabViewModelProvider().notifier);
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     return MediaQuery.removePadding(
       context: context,
       removeBottom: Platform.isIOS,
@@ -45,7 +45,7 @@ class TabScreen extends ConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      l10n.tabMap,
+                      t.tabMap,
                       style: TabStyle.tab(value: state.selectedIndex == 0),
                     ),
                     const Gap(10),
@@ -64,7 +64,7 @@ class TabScreen extends ConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      l10n.tabHome,
+                      t.tabHome,
                       style: TabStyle.tab(value: state.selectedIndex == 1),
                     ),
                     const Gap(10),
@@ -84,7 +84,7 @@ class TabScreen extends ConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      l10n.tabMyMap,
+                      t.tabMyMap,
                       style: TabStyle.tab(value: state.selectedIndex == 2),
                     ),
                     const Gap(10),
@@ -104,7 +104,7 @@ class TabScreen extends ConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      l10n.tabMyPage,
+                      t.tabMyPage,
                       style: TabStyle.tab(value: state.selectedIndex == 3),
                     ),
                     const Gap(10),
@@ -123,7 +123,7 @@ class TabScreen extends ConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      l10n.tabSetting,
+                      t.tabSetting,
                       style: TabStyle.tab(value: state.selectedIndex == 4),
                     ),
                     const Gap(10),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 import 'package:go_router/go_router.dart';
 
 class AppShareModalSheet extends StatelessWidget {
@@ -36,7 +36,7 @@ class AppShareModalSheet extends StatelessWidget {
                     sharePost();
                   },
                   child: Text(
-                    L10n.of(context).shareTextAndImage,
+                    Translations.of(context).shareTextAndImage,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -55,7 +55,7 @@ class AppShareModalSheet extends StatelessWidget {
                   shareOnlyPost();
                 },
                 child: Text(
-                  L10n.of(context).shareImageOnly,
+                  Translations.of(context).shareImageOnly,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -70,7 +70,7 @@ class AppShareModalSheet extends StatelessWidget {
               child: TextButton(
                 onPressed: () => context.pop(),
                 child: Text(
-                  L10n.of(context).close,
+                  Translations.of(context).close,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,

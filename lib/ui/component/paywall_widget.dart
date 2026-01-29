@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/theme/style/paywall_style.dart';
 import 'package:food_gram_app/core/theme/style/tutorial_style.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -90,7 +90,7 @@ class PaywallCardBase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -121,17 +121,17 @@ class PaywallCardBase extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        l10n.paywallComingSoon,
+                        t.paywallComingSoon,
                         style: PaywallStyle.comingSoon(),
                       ),
                       Text(
-                        l10n.paywallNewFeatures,
+                        t.paywallNewFeatures,
                         style: PaywallStyle.newFeatures(),
                       ),
                     ],
                   )
                 : Text(
-                    l10n.paywallPrice,
+                    t.paywallPrice,
                     style: const TextStyle(
                       fontSize: 20,
                       color: Colors.white,
@@ -163,7 +163,7 @@ class PaywallContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     return Container(
       padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(
@@ -187,38 +187,38 @@ class PaywallContent extends StatelessWidget {
             )
           else
             Text(
-              l10n.paywallPremiumTitle,
+              t.paywallPremiumTitle,
               style: PaywallStyle.premiumTitle(),
             ),
           const Gap(16),
           PaywallFeatureItem(
             icon: Icons.emoji_events,
-            title: l10n.paywallTrophyTitle,
-            description: l10n.paywallTrophyDesc,
+            title: t.paywallTrophyTitle,
+            description: t.paywallTrophyDesc,
           ),
           PaywallFeatureItem(
             icon: Icons.label,
-            title: l10n.paywallTagTitle,
-            description: l10n.paywallTagDesc,
+            title: t.paywallTagTitle,
+            description: t.paywallTagDesc,
           ),
           PaywallFeatureItem(
             icon: Icons.account_circle,
-            title: l10n.paywallIconTitle,
-            description: l10n.paywallIconDesc,
+            title: t.paywallIconTitle,
+            description: t.paywallIconDesc,
           ),
           PaywallFeatureItem(
             icon: Icons.block,
-            title: l10n.paywallAdTitle,
-            description: l10n.paywallAdDesc,
+            title: t.paywallAdTitle,
+            description: t.paywallAdDesc,
           ),
           PaywallFeatureItem(
             icon: Icons.map,
-            title: l10n.paywallMapTitle,
-            description: l10n.paywallMapDesc,
+            title: t.paywallMapTitle,
+            description: t.paywallMapDesc,
           ),
           const Gap(8),
           Text(
-            l10n.paywallTagline,
+            t.paywallTagline,
             style: PaywallStyle.contentsTitle(),
           ),
           const Gap(8),
@@ -236,7 +236,7 @@ class PaywallContent extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            l10n.paywallSubscribeButton,
+                            t.paywallSubscribeButton,
                             style: PaywallStyle.subscribeButton(),
                           ),
                         ],
@@ -249,7 +249,7 @@ class PaywallContent extends StatelessWidget {
                   TextButton(
                     onPressed: onSkip,
                     child: Text(
-                      l10n.paywallSkip,
+                      t.paywallSkip,
                       style: TutorialStyle.subTitle(),
                     ),
                   ),
@@ -266,13 +266,13 @@ class PaywallContent extends StatelessWidget {
 class PaywallSuccessDialog extends StatelessWidget {
   const PaywallSuccessDialog({
     required this.controller,
-    required this.l10n,
+    required this.t,
     this.timeoutDuration = const Duration(seconds: 3),
     super.key,
   });
 
   final ConfettiController controller;
-  final L10n l10n;
+  final Translations t;
   final Duration timeoutDuration;
 
   @override
@@ -310,7 +310,7 @@ class PaywallSuccessDialog extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    l10n.paywallWelcomeTitle,
+                    t.paywallWelcomeTitle,
                     style: PaywallStyle.wellComeTitle(),
                     textAlign: TextAlign.center,
                   ),
@@ -335,7 +335,7 @@ Future<void> showPaywallSuccessDialog({
   required ConfettiController controller,
   Duration timeoutDuration = const Duration(seconds: 3),
 }) async {
-  final l10n = L10n.of(context);
+  final t = Translations.of(context);
   try {
     await showDialog<void>(
       context: context,
@@ -344,7 +344,7 @@ Future<void> showPaywallSuccessDialog({
       builder: (_) {
         return PaywallSuccessDialog(
           controller: controller,
-          l10n: l10n,
+          t: t,
           timeoutDuration: timeoutDuration,
         );
       },

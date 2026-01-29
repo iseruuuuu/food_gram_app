@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/theme/style/restaurant_style.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -192,7 +192,7 @@ class _RestaurantMapScreenState extends State<RestaurantMapScreen> {
                     ),
                   ),
                   child: Text(
-                    L10n.of(context).done,
+                    Translations.of(context).done,
                     style: const TextStyle(
                       color: Colors.white,
                     ),

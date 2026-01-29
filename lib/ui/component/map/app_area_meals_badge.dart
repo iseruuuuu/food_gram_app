@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 
 class AppAreaMealsBadge extends StatelessWidget {
   const AppAreaMealsBadge({
@@ -11,10 +11,10 @@ class AppAreaMealsBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     final displayText = count == null
-        ? l10n.mapVisibleAreaLoading
-        : l10n.mapVisibleAreaMeals(count!);
+        ? t.mapVisibleAreaLoading
+        : t.mapVisibleAreaMeals.replaceAll('{count}', count.toString());
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,

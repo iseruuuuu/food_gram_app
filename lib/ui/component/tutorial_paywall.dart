@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/style/paywall_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/i18n/strings.g.dart';
 import 'package:food_gram_app/ui/component/dialog/app_paywall_success_dialog.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
@@ -35,7 +35,7 @@ class TutorialPaywall extends ConsumerWidget {
         if (offering == null) {
           return Center(
             child: Text(
-              L10n.of(context).paywallTitle,
+              Translations.of(context).paywallTitle,
               style: PaywallStyle.title(),
             ),
           );
@@ -67,7 +67,7 @@ class TutorialPaywall extends ConsumerWidget {
               if (context.mounted) {
                 SnackBarHelper().openSimpleSnackBar(
                   context,
-                  L10n.of(context).settingRestoreSuccessTitle,
+                  Translations.of(context).settingRestoreSuccessTitle,
                 );
               }
             },
