@@ -1,0 +1,9 @@
+# Slang設定ファイル
+base_locale: en
+input_directory: lib/i18n
+input_file_pattern: .i18n.json
+output_directory: lib/i18n
+output_file_name: strings.g.dart
+
+# プレースホルダーの設定
+# Slangは自動的に{param}形式のプレースホルダーを認識します
