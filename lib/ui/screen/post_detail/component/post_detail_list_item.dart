@@ -334,8 +334,8 @@ class PostDetailListItem extends HookConsumerWidget {
                                 context,
                                 Column(
                                   children: [
-                                    Text(t.postSaved),
-                                    Text(t.postSavedMessage),
+                                    Text(t.stored.postSaved),
+                                    Text(t.stored.postSavedMessage),
                                   ],
                                 ),
                               );

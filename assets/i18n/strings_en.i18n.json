@@ -1,14 +1,46 @@
 {
+  "close": "Close",
+  "cancel": "Cancel",
+  "registerButton": "Register",
+  "unregistered": "Unregistered",
+  "emptyPosts": "There are no posts",
+  "unknown": "Unknown・No Hits",
+  "likeButton": "Like",
+  "heartLimitMessage": "You've reached today's limit of 10 likes. Please try again tomorrow.",
+  "seeMore": "See More",
+  "dayUnit": "days",
+  "purchaseError": "An error occurred during purchase",
+  "done": "Done",
+  "save": "Save",
+  "searchFood": "Search food",
+  "noResultsFound": "No results found",
+  "searchCountry": "Search country",
+  "searchEmptyTitle": "Enter restaurant name to search",
+  "userInfoFetchError": "Failed to fetch user information",
+  "noMapAppAvailable": "No map app available",
+  "posted": "posted",
+  "selectMapApp": "Select Map App",
+  "auth": {
+    "logoutFailure": "Logout failure",
+    "accountDeletionFailure": "Account deletion failure",
+    "appleLoginFailure": "Apple login not available",
+    "loginError": "Login Error",
+    "loginSuccessful": "Successful login",
+    "authSocketException": "There is a problem with the network. Please check the connection.",
+    "snsLogin": "SNS login"
+  },
+  "stored": {
+    "saved": "Saved",
+    "savedPosts": "Saved Posts",
+    "postSaved": "Post saved",
+    "postSavedMessage": "You can view saved posts in My Page"
+  },
   "maybeNotFoodDialog": {
     "title": "Just a quick check 🍽️",
     "text": "This photo might not be food… 🤔\n\nDo you want to post it anyway?",
     "confirm": "Continue",
     "delete": "Delete image"
   },
-  "close": "Close",
-  "cancel": "Cancel",
-  "editTitle": "Edit",
-  "editPostButton": "Edit Post",
   "setting": {
     "icon": "Select Icon",
     "appBar": "Settings",
@@ -44,13 +76,6 @@
     "restore": "Restore",
     "premiumMembership": "Become Premium Member Ship"
   },
-  "userName": "Username",
-  "userNameInputField": "Username (e.g., iseryu)",
-  "userId": "User ID",
-  "userIdInputField": "User ID (e.g., iseryuuu)",
-  "registerButton": "Register",
-  "unregistered": "Unregistered",
-  "shareButton": "Share",
   "post": {
     "foodName": "Food Name",
     "foodNameInputField": "Enter food name(Required)",
@@ -71,15 +96,32 @@
     "cameraPermission": "Camera permission is required",
     "albumPermission": "Photo library permission is required",
     "success": "Post successful",
-    "searchError": "Unable to search for place names"
+    "searchError": "Unable to search for place names",
+    "errorPickImage": "Failed to take photo",
+    "camera": "Camera",
+    "album": "Album",
+    "restaurantCategoryList": "Select a Cuisine by Country",
+    "cookingCategoryList": "Select a food tag",
+    "selectCountryTag": "Select a Country Tag",
+    "selectFavoriteTag": "Select Favorite Tag",
+    "favoriteTagPlaceholder": "Select your favorite tag",
+    "selectFoodTag": "Select Food Tag",
+    "requiredInfoMissing": "Required information is missing"
+  },
+  "share": {
+    "shareButton": "Share",
+    "inviteMessage": "Share delicious food on FoodGram!",
+    "textAndImage": "Share with text and image",
+    "imageOnly": "Share image only"
   },
   "edit": {
+    "editTitle": "Edit",
+    "editPostButton": "Edit Post",
     "updateButton": "Update",
     "bio": "Bio (optional)",
     "bioInputField": "Enter bio",
     "favoriteTagTitle": "Select Favorite Tag"
   },
-  "emptyPosts": "There are no posts",
   "search": {
     "emptyResult": "No results found for your search.",
     "button": "Search",
@@ -87,7 +129,6 @@
     "emptyHintLocation": "Turn on location to show nearby results first",
     "emptyHintSearch": "Search by restaurant name or cuisine type"
   },
-  "unknown": "Unknown・No Hits",
   "profile": {
     "postCount": "Posts",
     "pointCount": "Points",
@@ -95,9 +136,6 @@
     "exchangePointsButton": "Exchange Points",
     "favoriteGenre": "Favorite Genre"
   },
-  "likeButton": "Like",
-  "shareReviewPrefix": "Just shared my review of what I ate!",
-  "shareReviewSuffix": "For more, take a look at foodGram!",
   "postDetailSheet": {
     "title": "About this post",
     "shareButton": "Share this post",
@@ -123,7 +161,6 @@
     "logoutDescription2": "Account status is stored on the server.",
     "logoutButton": "Logout"
   },
-  "heartLimitMessage": "You've reached today's limit of 10 likes. Please try again tomorrow.",
   "error": {
     "title": "Communication Error",
     "description1": "A connection error has occurred.",
@@ -151,10 +188,6 @@
     "title": "FoodGram",
     "subtitle": "Eat × Snap × Share"
   },
-  "shareInviteMessage": "Share delicious food on FoodGram!",
-  "agreeToTheTermsOfUse": "Please agree to the Terms of Use",
-  "restaurantCategoryList": "Select a Cuisine by Country",
-  "cookingCategoryList": "Select a food tag",
   "restaurantReview": {
     "newLabel": "New",
     "viewDetails": "View Details",
@@ -162,12 +195,6 @@
     "reviewList": "Review List",
     "error": "An error occurred"
   },
-  "nearbyRestaurants": "📍Nearby Restaurants",
-  "seeMore": "See More",
-  "selectCountryTag": "Select a Country Tag",
-  "selectFavoriteTag": "Select Favorite Tag",
-  "favoriteTagPlaceholder": "Select your favorite tag",
-  "selectFoodTag": "Select Food Tag",
   "tab": {
     "home": "Food",
     "map": "Map",
@@ -188,27 +215,11 @@
     "japanSummary": "In Japan, your meals remain in {prefectures} prefectures ✨",
     "worldSummary": "In the world, your meals remain in {countries} countries ✨"
   },
-  "dayUnit": "days",
   "mapViewType": {
     "record": "Record",
     "japan": "Japan",
     "world": "World"
   },
-  "logoutFailure": "Logout failure",
-  "accountDeletionFailure": "Account deletion failure",
-  "appleLoginFailure": "Apple login not available",
-  "emailAuthenticationFailure": "Email authentication failure",
-  "loginError": "Login Error",
-  "loginSuccessful": "Successful login",
-  "emailAuthentication": "Authenticate with your email application",
-  "emailEmpty": "No email address has been entered",
-  "email": "Email Address",
-  "enterTheCorrectFormat": "Please enter the correct format",
-  "authInvalidFormat": "Email address format is incorrect.",
-  "authSocketException": "There is a problem with the network. Please check the connection.",
-  "camera": "Camera",
-  "album": "Album",
-  "snsLogin": "SNS login",
   "tutorial": {
     "firstPageTitle": "Share your delicious moments",
     "firstPageSubTitle": "Make every meal special with FoodGram.\nEnjoy discovering new flavors!",
@@ -225,7 +236,8 @@
     "locationButton": "Enable Location",
     "notificationTitle": "Turn on Notifications!",
     "notificationSubTitle": "We'll send reminders at lunch and dinner",
-    "notificationButton": "Enable Notifications"
+    "notificationButton": "Enable Notifications",
+    "agreeToTheTermsOfUse": "Please agree to the Terms of Use"
   },
   "detailMenu": {
     "share": "Share",
@@ -239,6 +251,10 @@
     "buttonTitle": "Update"
   },
   "newAccount": {
+    "userName": "Username",
+    "userNameInputField": "Username (e.g., iseryu)",
+    "userId": "User ID",
+    "userIdInputField": "User ID (e.g., iseryuuu)",
     "importantTitle": "Important Note",
     "important": "When creating an account, please do not include personal information such as your email address or phone number in your username or user ID. To ensure a safe online experience, choose a name that does not reveal your personal details."
   },
@@ -246,9 +262,6 @@
     "success": "Account registration completed",
     "error": "An error occurred"
   },
-  "requiredInfoMissing": "Required information is missing",
-  "shareTextAndImage": "Share with text and image",
-  "shareImageOnly": "Share image only",
   "foodCategory": {
     "noodles": "Noodles",
     "meat": "Meat",
@@ -305,7 +318,6 @@
     "mapTitle": "Find with map",
     "mapDesc": "Find restaurants faster and easier"
   },
-  "purchaseError": "An error occurred during purchase",
   "anonymous": {
     "post": "Post Anonymously",
     "postDescription": "Username will be hidden",
@@ -548,31 +560,20 @@
     "friedEgg": "Fried Egg",
     "butter": "Butter"
   },
-  "done": "Done",
-  "save": "Save",
-  "searchFood": "Search food",
-  "noResultsFound": "No results found",
-  "searchCountry": "Search country",
-  "searchEmptyTitle": "Enter restaurant name to search",
-  "postErrorPickImage": "Failed to take photo",
   "favoritePostEmpty": {
     "title": "No saved posts",
     "subtitle": "Save posts that interest you!"
   },
-  "userInfoFetchError": "Failed to fetch user information",
-  "saved": "Saved",
-  "savedPosts": "Saved Posts",
-  "postSaved": "Post saved",
-  "postSavedMessage": "You can view saved posts in My Page",
-  "noMapAppAvailable": "No map app available",
   "notification": {
+    "likeNotificationsTitle": "Likes",
+    "loadFailed": "Failed to load",
+    "someoneLikedYourPost": "Someone liked your post.",
+    "userLikedYourPost": "{name} liked your post.",
     "lunchTitle": "#Did you post today's meal? 🍜",
     "lunchBody": "Why not record today's lunch while you still remember it?",
     "dinnerTitle": "#Did you post today's meal? 🍛",
     "dinnerBody": "Post today's meal and wrap up your day gently 📷"
   },
-  "posted": "posted",
-  "selectMapApp": "Select Map App",
   "mapApp": {
     "google": "Google Maps",
     "apple": "Apple Maps",
@@ -593,9 +594,5 @@
     "copy": "Copy",
     "copied": "Copied to clipboard",
     "translateFailed": "Translation failed"
-  },
-  "likeNotificationsTitle": "Likes",
-  "loadFailed": "Failed to load",
-  "someoneLikedYourPost": "Someone liked your post.",
-  "userLikedYourPost": "{name} liked your post."
+  }
 }

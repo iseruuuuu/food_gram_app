@@ -84,7 +84,7 @@ class AppShareDialog extends HookConsumerWidget {
                                   ),
                                   shareText: '${posts.foodName} '
                                       'in ${posts.restaurant}\n\n '
-                                      '${t.shareInviteMessage}\n'
+                                      '${t.share.inviteMessage}\n'
                                       '#FoodGram',
                                   loading: loading,
                                   hasText: true,
@@ -101,7 +101,7 @@ class AppShareDialog extends HookConsumerWidget {
                               ),
                               const Gap(15),
                               Text(
-                                t.shareTextAndImage,
+                                t.share.textAndImage,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.black,
@@ -143,7 +143,7 @@ class AppShareDialog extends HookConsumerWidget {
                               ),
                               const Gap(15),
                               Text(
-                                t.shareImageOnly,
+                                t.share.imageOnly,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.black,

@@ -33,7 +33,7 @@ class StoredPostScreen extends HookConsumerWidget {
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         title: Text(
-          t.savedPosts,
+          t.stored.savedPosts,
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,

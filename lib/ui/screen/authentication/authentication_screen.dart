@@ -120,7 +120,7 @@ class AuthenticationScreen extends HookConsumerWidget {
                       } else {
                         SnackBarHelper().openErrorSnackBar(
                           context,
-                          Translations.of(context).appleLoginFailure,
+                          Translations.of(context).auth.appleLoginFailure,
                           '',
                         );
                       }

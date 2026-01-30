@@ -1,14 +1,52 @@
 {
+  "close": "Fermer",
+  "cancel": "Annuler",
+  "registerButton": "S'inscrire",
+  "unregistered": "Non enregistré",
+  "emptyPosts": "Aucune publication",
+  "unknown": "Inconnu・Aucun résultat",
+  "likeButton": "J'aime",
+  "heartLimitMessage": "Vous avez atteint la limite de 10 j'aime d'aujourd'hui. Veuillez réessayer demain.",
+  "seeMore": "Voir plus",
+  "dayUnit": "jours",
+  "purchaseError": "Une erreur s'est produite lors de l'achat",
+  "done": "Terminé",
+  "save": "Enregistrer",
+  "searchFood": "Rechercher de la nourriture",
+  "noResultsFound": "Aucun résultat trouvé",
+  "searchCountry": "Rechercher un pays",
+  "searchEmptyTitle": "Entrez le nom du restaurant pour rechercher",
+  "userInfoFetchError": "Échec de la récupération des informations utilisateur",
+  "noMapAppAvailable": "Aucune application de carte disponible",
+  "posted": "publié",
+  "selectMapApp": "Sélectionner l'application de carte",
+  "auth": {
+    "logoutFailure": "Échec de la déconnexion",
+    "accountDeletionFailure": "Échec de la suppression du compte",
+    "appleLoginFailure": "Connexion Apple non disponible",
+    "loginError": "Erreur de connexion",
+    "loginSuccessful": "Connexion réussie",
+    "authSocketException": "Il y a un problème avec le réseau. Veuillez vérifier la connexion.",
+    "snsLogin": "Connexion SNS"
+  },
+  "stored": {
+    "saved": "Sauvegardé",
+    "savedPosts": "Publications sauvegardées",
+    "postSaved": "Publication sauvegardée",
+    "postSavedMessage": "Vous pouvez voir les publications sauvegardées dans Ma page"
+  },
+  "notification": {
+    "likeNotificationsTitle": "Mentions J’aime",
+    "loadFailed": "Échec du chargement",
+    "someoneLikedYourPost": "Quelqu’un aime votre publication.",
+    "userLikedYourPost": "{name} aime votre publication."
+  },
   "maybeNotFoodDialog": {
     "title": "Petite vérification 🍽️",
     "text": "Cette photo n'est peut-être pas de la nourriture… 🤔\\n\\nVoulez-vous la publier quand même ?",
     "confirm": "Continuer",
     "delete": "Supprimer l'image"
   },
-  "close": "Fermer",
-  "cancel": "Annuler",
-  "editTitle": "Modifier",
-  "editPostButton": "Modifier la Publication",
   "setting": {
     "icon": "Sélectionner l'icône",
     "appBar": "Paramètres",
@@ -44,13 +82,6 @@
     "restore": "Restaurer",
     "premiumMembership": "Devenez membre Premium"
   },
-  "userName": "Nom d'utilisateur",
-  "userNameInputField": "Nom d'utilisateur (ex: iseryu)",
-  "userId": "ID utilisateur",
-  "userIdInputField": "ID utilisateur (ex: iseryuuu)",
-  "registerButton": "S'inscrire",
-  "unregistered": "Non enregistré",
-  "shareButton": "Partager",
   "post": {
     "foodName": "Nom du plat",
     "foodNameInputField": "Entrez le nom du plat (Requis)",
@@ -71,15 +102,32 @@
     "cameraPermission": "Permission d'appareil photo requise",
     "albumPermission": "Permission de bibliothèque photo requise",
     "success": "Publication réussie",
-    "searchError": "Impossible de rechercher les noms de lieux"
+    "searchError": "Impossible de rechercher les noms de lieux",
+    "errorPickImage": "Échec de la prise de photo",
+    "camera": "Caméra",
+    "album": "Album",
+    "restaurantCategoryList": "Sélectionner une cuisine par pays",
+    "cookingCategoryList": "Sélectionner une étiquette de nourriture",
+    "selectCountryTag": "Tags pays",
+    "selectFavoriteTag": "Sélectionner l'étiquette favorite",
+    "favoriteTagPlaceholder": "Sélectionnez votre étiquette favorite",
+    "selectFoodTag": "Tags cuisine",
+    "requiredInfoMissing": "Informations requises manquantes"
+  },
+  "share": {
+    "shareButton": "Partager",
+    "inviteMessage": "Partage tes bons plats sur FoodGram !",
+    "textAndImage": "Partager avec texte et image",
+    "imageOnly": "Partager image uniquement"
   },
   "edit": {
+    "editTitle": "Modifier",
+    "editPostButton": "Modifier la Publication",
     "updateButton": "Mettre à jour",
     "bio": "Biographie (optionnel)",
     "bioInputField": "Entrez la biographie",
     "favoriteTagTitle": "Sélectionner l'étiquette favorite"
   },
-  "emptyPosts": "Aucune publication",
   "search": {
     "emptyResult": "Aucun résultat trouvé pour votre recherche.",
     "button": "Recherche",
@@ -87,7 +135,6 @@
     "emptyHintLocation": "Activez l'emplacement pour afficher d'abord les résultats à proximité",
     "emptyHintSearch": "Recherchez par nom de restaurant ou type de cuisine"
   },
-  "unknown": "Inconnu・Aucun résultat",
   "profile": {
     "postCount": "Publications",
     "pointCount": "Points",
@@ -95,9 +142,6 @@
     "exchangePointsButton": "Échanger des points",
     "favoriteGenre": "Genre favori"
   },
-  "likeButton": "J'aime",
-  "shareReviewPrefix": "Je viens de partager mon avis sur ce que j'ai mangé !",
-  "shareReviewSuffix": "Pour plus, jetez un œil à foodGram !",
   "postDetailSheet": {
     "title": "À propos de cette publication",
     "shareButton": "Partager cette publication",
@@ -123,7 +167,6 @@
     "logoutDescription2": "L'état du compte est stocké sur le serveur.",
     "logoutButton": "Se déconnecter"
   },
-  "heartLimitMessage": "Vous avez atteint la limite de 10 j'aime d'aujourd'hui. Veuillez réessayer demain.",
   "error": {
     "title": "Erreur de communication",
     "description1": "Une erreur de connexion s'est produite.",
@@ -151,10 +194,6 @@
     "title": "FoodGram",
     "subtitle": "Manger × Photo × Partager"
   },
-  "shareInviteMessage": "Partage tes bons plats sur FoodGram !",
-  "agreeToTheTermsOfUse": "Veuillez accepter les conditions d'utilisation",
-  "restaurantCategoryList": "Sélectionner une cuisine par pays",
-  "cookingCategoryList": "Sélectionner une étiquette de nourriture",
   "restaurantReview": {
     "newLabel": "Nouveau",
     "viewDetails": "Voir les détails",
@@ -162,12 +201,6 @@
     "reviewList": "Liste des avis",
     "error": "Une erreur s'est produite"
   },
-  "nearbyRestaurants": "📍Restaurants à proximité",
-  "seeMore": "Voir plus",
-  "selectCountryTag": "Tags pays",
-  "selectFavoriteTag": "Sélectionner l'étiquette favorite",
-  "favoriteTagPlaceholder": "Sélectionnez votre étiquette favorite",
-  "selectFoodTag": "Tags cuisine",
   "tab": {
     "home": "Nourriture",
     "map": "Carte",
@@ -188,27 +221,11 @@
     "japanSummary": "Au Japon, vos repas sont présents dans {prefectures} préfectures ✨",
     "worldSummary": "Dans le monde, vos repas sont présents dans {countries} pays ✨"
   },
-  "dayUnit": "jours",
   "mapViewType": {
     "record": "Record",
     "japan": "Japon",
     "world": "Monde"
   },
-  "logoutFailure": "Échec de la déconnexion",
-  "accountDeletionFailure": "Échec de la suppression du compte",
-  "appleLoginFailure": "Connexion Apple non disponible",
-  "emailAuthenticationFailure": "Échec de l'authentification par e-mail",
-  "loginError": "Erreur de connexion",
-  "loginSuccessful": "Connexion réussie",
-  "emailAuthentication": "Authentifiez-vous avec votre application e-mail",
-  "emailEmpty": "Aucune adresse e-mail n'a été saisie",
-  "email": "Adresse e-mail",
-  "enterTheCorrectFormat": "Veuillez entrer le format correct",
-  "authInvalidFormat": "Le format de l'adresse e-mail est incorrect.",
-  "authSocketException": "Il y a un problème avec le réseau. Veuillez vérifier la connexion.",
-  "camera": "Caméra",
-  "album": "Album",
-  "snsLogin": "Connexion SNS",
   "tutorial": {
     "firstPageTitle": "Partage tes moments",
     "firstPageSubTitle": "Avec FoodGram, chaque repas devient spécial.",
@@ -225,7 +242,8 @@
     "locationButton": "Activer",
     "notificationTitle": "Activer les notifications !",
     "notificationSubTitle": "Nous enverrons des rappels au déjeuner et au dîner",
-    "notificationButton": "Activer les notifications"
+    "notificationButton": "Activer les notifications",
+    "agreeToTheTermsOfUse": "Veuillez accepter les conditions d'utilisation"
   },
   "detailMenu": {
     "share": "Partager",
@@ -239,6 +257,10 @@
     "buttonTitle": "Mettre à jour"
   },
   "newAccount": {
+    "userName": "Nom d'utilisateur",
+    "userNameInputField": "Nom d'utilisateur (ex: iseryu)",
+    "userId": "ID utilisateur",
+    "userIdInputField": "ID utilisateur (ex: iseryuuu)",
     "importantTitle": "Note importante",
     "important": "Lors de la création d'un compte, veuillez ne pas inclure d'informations personnelles telles que l'adresse e-mail ou le numéro de téléphone dans votre nom d'utilisateur ou ID utilisateur. Pour assurer une expérience en ligne sûre, choisissez un nom qui ne révèle pas vos détails personnels."
   },
@@ -246,9 +268,6 @@
     "success": "Inscription du compte terminée",
     "error": "Une erreur s'est produite"
   },
-  "requiredInfoMissing": "Informations requises manquantes",
-  "shareTextAndImage": "Partager avec texte et image",
-  "shareImageOnly": "Partager image uniquement",
   "foodCategory": {
     "noodles": "Nouilles",
     "meat": "Viande",
@@ -305,7 +324,6 @@
     "mapTitle": "Chercher avec la carte",
     "mapDesc": "Trouve des restaurants plus vite et plus facilement"
   },
-  "purchaseError": "Une erreur s'est produite lors de l'achat",
   "anonymous": {
     "post": "Publier anonymement",
     "postDescription": "Le nom d'utilisateur sera masqué",
@@ -548,31 +566,20 @@
     "friedEgg": "Œuf au plat",
     "butter": "Beurre"
   },
-  "done": "Terminé",
-  "save": "Enregistrer",
-  "searchFood": "Rechercher de la nourriture",
-  "noResultsFound": "Aucun résultat trouvé",
-  "searchCountry": "Rechercher un pays",
-  "searchEmptyTitle": "Entrez le nom du restaurant pour rechercher",
-  "postErrorPickImage": "Échec de la prise de photo",
   "favoritePostEmpty": {
     "title": "Aucune publication sauvegardée",
     "subtitle": "Sauvegardez les publications qui vous intéressent !"
   },
-  "userInfoFetchError": "Échec de la récupération des informations utilisateur",
-  "saved": "Sauvegardé",
-  "savedPosts": "Publications sauvegardées",
-  "postSaved": "Publication sauvegardée",
-  "postSavedMessage": "Vous pouvez voir les publications sauvegardées dans Ma page",
-  "noMapAppAvailable": "Aucune application de carte disponible",
   "notification": {
+    "likeNotificationsTitle": "Mentions J'aime",
+    "loadFailed": "Échec du chargement",
+    "someoneLikedYourPost": "Quelqu'un aime votre publication.",
+    "userLikedYourPost": "{name} aime votre publication.",
     "lunchTitle": "#Avez-vous déjà posté le repas d'aujourd'hui ? 🍜",
     "lunchBody": "Pourquoi ne pas enregistrer le déjeuner d'aujourd'hui tant que vous vous en souvenez ?",
     "dinnerTitle": "#Avez-vous déjà posté le repas d'aujourd'hui ? 🍛",
     "dinnerBody": "Postez le repas d'aujourd'hui et terminez la journée en douceur 📷"
   },
-  "posted": "publié",
-  "selectMapApp": "Sélectionner l'application de carte",
   "mapApp": {
     "google": "Google Maps",
     "apple": "Apple Maps",
@@ -593,9 +600,5 @@
     "copy": "Copier",
     "copied": "Copié dans le presse-papiers",
     "translateFailed": "Échec de la traduction"
-  },
-  "likeNotificationsTitle": "Mentions J’aime",
-  "loadFailed": "Échec du chargement",
-  "someoneLikedYourPost": "Quelqu’un aime votre publication.",
-  "userLikedYourPost": "{name} aime votre publication."
+  }
 }

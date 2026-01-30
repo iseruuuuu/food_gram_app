@@ -1,14 +1,46 @@
 {
+  "close": "Schließen",
+  "cancel": "Abbrechen",
+  "registerButton": "Registrieren",
+  "unregistered": "Nicht registriert",
+  "emptyPosts": "Keine Beiträge",
+  "unknown": "Unbekannt・Keine Ergebnisse",
+  "likeButton": "Gefällt mir",
+  "heartLimitMessage": "Sie haben das heutige Limit von 10 Likes erreicht. Bitte versuchen Sie es morgen erneut.",
+  "seeMore": "Mehr anzeigen",
+  "dayUnit": "Tage",
+  "purchaseError": "Beim Kauf ist ein Fehler aufgetreten",
+  "done": "Fertig",
+  "save": "Speichern",
+  "searchFood": "Essen suchen",
+  "noResultsFound": "Keine Ergebnisse gefunden",
+  "searchCountry": "Land suchen",
+  "searchEmptyTitle": "Geben Sie den Restaurantnamen ein, um zu suchen",
+  "userInfoFetchError": "Fehler beim Abrufen der Benutzerinformationen",
+  "noMapAppAvailable": "Keine Karten-App verfügbar",
+  "posted": "veröffentlicht",
+  "selectMapApp": "Karten-App auswählen",
+  "auth": {
+    "logoutFailure": "Abmeldung fehlgeschlagen",
+    "accountDeletionFailure": "Kontolöschung fehlgeschlagen",
+    "appleLoginFailure": "Apple-Anmeldung nicht verfügbar",
+    "loginError": "Anmeldefehler",
+    "loginSuccessful": "Anmeldung erfolgreich",
+    "authSocketException": "Es gibt ein Problem mit dem Netzwerk. Bitte überprüfen Sie die Verbindung.",
+    "snsLogin": "SNS-Anmeldung"
+  },
+  "stored": {
+    "saved": "Gespeichert",
+    "savedPosts": "Gespeicherte Beiträge",
+    "postSaved": "Beitrag gespeichert",
+    "postSavedMessage": "Sie können gespeicherte Beiträge auf der Meine Seite anzeigen"
+  },
   "maybeNotFoodDialog": {
     "title": "Kurze Bestätigung 🍽️",
     "text": "Dieses Foto zeigt möglicherweise kein Essen… 🤔\\n\\nTrotzdem posten?",
     "confirm": "Fortfahren",
     "delete": "Bild löschen"
   },
-  "close": "Schließen",
-  "cancel": "Abbrechen",
-  "editTitle": "Bearbeiten",
-  "editPostButton": "Beitrag bearbeiten",
   "setting": {
     "icon": "Symbol auswählen",
     "appBar": "Einstellungen",
@@ -44,13 +76,6 @@
     "restore": "Wiederherstellen",
     "premiumMembership": "Premium-Mitglied werden"
   },
-  "userName": "Benutzername",
-  "userNameInputField": "Benutzername (z.B. iseryu)",
-  "userId": "Benutzer-ID",
-  "userIdInputField": "Benutzer-ID (z.B. iseryuuu)",
-  "registerButton": "Registrieren",
-  "unregistered": "Nicht registriert",
-  "shareButton": "Teilen",
   "post": {
     "foodName": "Essensname",
     "foodNameInputField": "Essen eingeben (Pflicht)",
@@ -71,15 +96,32 @@
     "cameraPermission": "Kamera-Berechtigung erforderlich",
     "albumPermission": "Foto-Bibliothek-Berechtigung erforderlich",
     "success": "Veröffentlichung erfolgreich",
-    "searchError": "Ortsnamen können nicht gesucht werden"
+    "searchError": "Ortsnamen können nicht gesucht werden",
+    "errorPickImage": "Fotoaufnahme fehlgeschlagen",
+    "camera": "Kamera",
+    "album": "Album",
+    "restaurantCategoryList": "Küche nach Land auswählen",
+    "cookingCategoryList": "Essens-Etikett auswählen",
+    "selectCountryTag": "Land-Etikett auswählen",
+    "selectFavoriteTag": "Lieblings-Etikett auswählen",
+    "favoriteTagPlaceholder": "Wählen Sie Ihr Lieblings-Etikett",
+    "selectFoodTag": "Essens-Etikett auswählen",
+    "requiredInfoMissing": "Erforderliche Informationen fehlen"
+  },
+  "share": {
+    "shareButton": "Teilen",
+    "inviteMessage": "Teile leckeres Essen auf FoodGram!",
+    "textAndImage": "Mit Text und Bild teilen",
+    "imageOnly": "Nur Bild teilen"
   },
   "edit": {
+    "editTitle": "Bearbeiten",
+    "editPostButton": "Beitrag bearbeiten",
     "updateButton": "Aktualisieren",
     "bio": "Biografie (optional)",
     "bioInputField": "Biografie eingeben",
     "favoriteTagTitle": "Lieblings-Etikett auswählen"
   },
-  "emptyPosts": "Keine Beiträge",
   "search": {
     "emptyResult": "Keine Ergebnisse für Ihre Suche gefunden.",
     "button": "Suchen",
@@ -87,7 +129,6 @@
     "emptyHintLocation": "Aktivieren Sie den Standort, um zuerst nahegelegene Ergebnisse anzuzeigen",
     "emptyHintSearch": "Suchen Sie nach Restaurantname oder Küchentyp"
   },
-  "unknown": "Unbekannt・Keine Ergebnisse",
   "profile": {
     "postCount": "Beiträge",
     "pointCount": "Punkte",
@@ -95,9 +136,6 @@
     "exchangePointsButton": "Punkte einlösen",
     "favoriteGenre": "Lieblingsgenre"
   },
-  "likeButton": "Gefällt mir",
-  "shareReviewPrefix": "Ich habe gerade meine Bewertung von dem, was ich gegessen habe, geteilt!",
-  "shareReviewSuffix": "Für mehr schauen Sie sich foodGram an!",
   "postDetailSheet": {
     "title": "Über diesen Beitrag",
     "shareButton": "Diesen Beitrag teilen",
@@ -123,7 +161,6 @@
     "logoutDescription2": "Der Kontostatus wird auf dem Server gespeichert.",
     "logoutButton": "Abmelden"
   },
-  "heartLimitMessage": "Sie haben das heutige Limit von 10 Likes erreicht. Bitte versuchen Sie es morgen erneut.",
   "error": {
     "title": "Kommunikationsfehler",
     "description1": "Ein Verbindungsfehler ist aufgetreten.",
@@ -151,10 +188,6 @@
     "title": "FoodGram",
     "subtitle": "Essen × Schnapp × Teilen"
   },
-  "shareInviteMessage": "Teile leckeres Essen auf FoodGram!",
-  "agreeToTheTermsOfUse": "Bitte stimmen Sie den Nutzungsbedingungen zu",
-  "restaurantCategoryList": "Küche nach Land auswählen",
-  "cookingCategoryList": "Essens-Etikett auswählen",
   "restaurantReview": {
     "newLabel": "Neu",
     "viewDetails": "Details anzeigen",
@@ -162,12 +195,6 @@
     "reviewList": "Bewertungsliste",
     "error": "Ein Fehler ist aufgetreten"
   },
-  "nearbyRestaurants": "📍Restaurants in der Nähe",
-  "seeMore": "Mehr anzeigen",
-  "selectCountryTag": "Land-Etikett auswählen",
-  "selectFavoriteTag": "Lieblings-Etikett auswählen",
-  "favoriteTagPlaceholder": "Wählen Sie Ihr Lieblings-Etikett",
-  "selectFoodTag": "Essens-Etikett auswählen",
   "tab": {
     "home": "Essen",
     "map": "Karte",
@@ -188,27 +215,11 @@
     "japanSummary": "In Japan sind deine Mahlzeiten in {prefectures} Präfekturen festgehalten ✨",
     "worldSummary": "Weltweit sind deine Mahlzeiten in {countries} Ländern festgehalten ✨"
   },
-  "dayUnit": "Tage",
   "mapViewType": {
     "record": "Aufzeichnung",
     "japan": "Japan",
     "world": "Welt"
   },
-  "logoutFailure": "Abmeldung fehlgeschlagen",
-  "accountDeletionFailure": "Kontolöschung fehlgeschlagen",
-  "appleLoginFailure": "Apple-Anmeldung nicht verfügbar",
-  "emailAuthenticationFailure": "E-Mail-Authentifizierung fehlgeschlagen",
-  "loginError": "Anmeldefehler",
-  "loginSuccessful": "Anmeldung erfolgreich",
-  "emailAuthentication": "Authentifizieren Sie sich mit Ihrer E-Mail-App",
-  "emailEmpty": "Keine E-Mail-Adresse eingegeben",
-  "email": "E-Mail-Adresse",
-  "enterTheCorrectFormat": "Bitte geben Sie das richtige Format ein",
-  "authInvalidFormat": "Das Format der E-Mail-Adresse ist falsch.",
-  "authSocketException": "Es gibt ein Problem mit dem Netzwerk. Bitte überprüfen Sie die Verbindung.",
-  "camera": "Kamera",
-  "album": "Album",
-  "snsLogin": "SNS-Anmeldung",
   "tutorial": {
     "firstPageTitle": "Köstliche Momente teilen",
     "firstPageSubTitle": "Jede Mahlzeit wird besonderer.\nEntdecken Sie neue Geschmäcker!",
@@ -225,7 +236,8 @@
     "locationButton": "Standort aktivieren",
     "notificationTitle": "Benachrichtigungen aktivieren!",
     "notificationSubTitle": "Erinnerungen für Mittag- und Abendessen",
-    "notificationButton": "Aktivieren"
+    "notificationButton": "Aktivieren",
+    "agreeToTheTermsOfUse": "Bitte stimmen Sie den Nutzungsbedingungen zu"
   },
   "detailMenu": {
     "share": "Teilen",
@@ -239,6 +251,10 @@
     "buttonTitle": "Aktualisieren"
   },
   "newAccount": {
+    "userName": "Benutzername",
+    "userNameInputField": "Benutzername (z.B. iseryu)",
+    "userId": "Benutzer-ID",
+    "userIdInputField": "Benutzer-ID (z.B. iseryuuu)",
     "importantTitle": "Wichtiger Hinweis",
     "important": "Beim Erstellen eines Kontos fügen Sie bitte keine persönlichen Informationen wie E-Mail-Adresse oder Telefonnummer in Ihren Benutzernamen oder Ihre Benutzer-ID ein. Für eine sichere Online-Erfahrung wählen Sie einen Namen, der Ihre persönlichen Details nicht preisgibt."
   },
@@ -246,9 +262,6 @@
     "success": "Kontoregistrierung abgeschlossen",
     "error": "Ein Fehler ist aufgetreten"
   },
-  "requiredInfoMissing": "Erforderliche Informationen fehlen",
-  "shareTextAndImage": "Mit Text und Bild teilen",
-  "shareImageOnly": "Nur Bild teilen",
   "foodCategory": {
     "noodles": "Nudeln",
     "meat": "Fleisch",
@@ -305,7 +318,6 @@
     "mapTitle": "Mit Karte suchen",
     "mapDesc": "Finde Restaurants schneller und einfacher"
   },
-  "purchaseError": "Beim Kauf ist ein Fehler aufgetreten",
   "anonymous": {
     "post": "Anonym veröffentlichen",
     "postDescription": "Benutzername wird ausgeblendet",
@@ -548,31 +560,20 @@
     "friedEgg": "Spiegelei",
     "butter": "Butter"
   },
-  "done": "Fertig",
-  "save": "Speichern",
-  "searchFood": "Essen suchen",
-  "noResultsFound": "Keine Ergebnisse gefunden",
-  "searchCountry": "Land suchen",
-  "searchEmptyTitle": "Geben Sie den Restaurantnamen ein, um zu suchen",
-  "postErrorPickImage": "Fotoaufnahme fehlgeschlagen",
   "favoritePostEmpty": {
     "title": "Keine gespeicherten Beiträge",
     "subtitle": "Speichern Sie Beiträge, die Sie interessieren!"
   },
-  "userInfoFetchError": "Fehler beim Abrufen der Benutzerinformationen",
-  "saved": "Gespeichert",
-  "savedPosts": "Gespeicherte Beiträge",
-  "postSaved": "Beitrag gespeichert",
-  "postSavedMessage": "Sie können gespeicherte Beiträge auf der Meine Seite anzeigen",
-  "noMapAppAvailable": "Keine Karten-App verfügbar",
   "notification": {
+    "likeNotificationsTitle": "Gefällt-mir-Benachrichtigungen",
+    "loadFailed": "Laden fehlgeschlagen",
+    "someoneLikedYourPost": "Jemand hat deinen Beitrag mit „Gefällt mir“ markiert.",
+    "userLikedYourPost": "{name} hat deinen Beitrag mit „Gefällt mir“ markiert.",
     "lunchTitle": "#Hast du heute schon dein Essen gepostet? 🍜",
     "lunchBody": "Warum nicht das heutige Mittagessen aufzeichnen, solange du dich daran erinnerst?",
     "dinnerTitle": "#Hast du heute schon dein Essen gepostet? 🍛",
     "dinnerBody": "Poste das heutige Essen und beende den Tag sanft 📷"
   },
-  "posted": "veröffentlicht",
-  "selectMapApp": "Karten-App auswählen",
   "mapApp": {
     "google": "Google Maps",
     "apple": "Apple Maps",
@@ -593,9 +594,5 @@
     "copy": "Kopieren",
     "copied": "In Zwischenablage kopiert",
     "translateFailed": "Übersetzung fehlgeschlagen"
-  },
-  "likeNotificationsTitle": "Gefällt-mir-Benachrichtigungen",
-  "loadFailed": "Laden fehlgeschlagen",
-  "someoneLikedYourPost": "Jemand hat deinen Beitrag mit „Gefällt mir“ markiert.",
-  "userLikedYourPost": "{name} hat deinen Beitrag mit „Gefällt mir“ markiert."
+  }
 }

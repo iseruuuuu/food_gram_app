@@ -116,7 +116,7 @@ class EditPostScreen extends HookConsumerWidget {
           surfaceTintColor: Colors.transparent,
           backgroundColor: !loading ? Colors.white : Colors.transparent,
           title: Text(
-            t.editTitle,
+            t.edit.editTitle,
             style: EditPostStyle.editTitle(),
           ),
           centerTitle: true,

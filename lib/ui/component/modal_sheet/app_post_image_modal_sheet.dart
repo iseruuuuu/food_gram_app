@@ -36,7 +36,7 @@ class AppPostImageModalSheet extends StatelessWidget {
                     camera();
                   },
                   child: Text(
-                    Translations.of(context).camera,
+                    Translations.of(context).post.camera,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -55,7 +55,7 @@ class AppPostImageModalSheet extends StatelessWidget {
                   album();
                 },
                 child: Text(
-                  Translations.of(context).album,
+                  Translations.of(context).post.album,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,

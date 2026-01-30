@@ -1,14 +1,46 @@
 {
+  "close": "閉じる",
+  "cancel": "キャンセル",
+  "registerButton": "登録",
+  "unregistered": "未登録",
+  "emptyPosts": "投稿がありません",
+  "unknown": "不明・ヒットなし",
+  "likeButton": "いいね",
+  "heartLimitMessage": "今日は10回までです。明日までお待ちください。",
+  "seeMore": "もっとみる",
+  "dayUnit": "日",
+  "purchaseError": "購入処理中にエラーが発生しました",
+  "done": "決定",
+  "save": "保存",
+  "searchFood": "料理を検索",
+  "noResultsFound": "検索結果が見つかりませんでした",
+  "searchCountry": "国を検索",
+  "searchEmptyTitle": "店舗名を入力して検索してください",
+  "userInfoFetchError": "ユーザー情報の取得に失敗しました",
+  "noMapAppAvailable": "マップアプリが利用できません",
+  "posted": "に投稿",
+  "selectMapApp": "地図アプリを選択",
+  "auth": {
+    "logoutFailure": "ログアウト失敗",
+    "accountDeletionFailure": "アカウント削除失敗",
+    "appleLoginFailure": "Appleログインはできません",
+    "loginError": "ログインエラー",
+    "loginSuccessful": "ログイン成功",
+    "authSocketException": "ネットワークに問題があります。接続を確認してください",
+    "snsLogin": "SNSログイン"
+  },
+  "stored": {
+    "saved": "保存済み",
+    "savedPosts": "保存した投稿",
+    "postSaved": "投稿を保存しました",
+    "postSavedMessage": "マイページにて保存した投稿が確認できます"
+  },
   "maybeNotFoodDialog": {
     "title": "ちょっと確認 🍽️",
     "text": "この写真、\n食べものじゃないかも…？と\nFoodGramが首をかしげています 🤔\n\nそれでも投稿しますか？",
     "confirm": "続ける",
     "delete": "画像を削除"
   },
-  "close": "閉じる",
-  "cancel": "キャンセル",
-  "editTitle": "編集",
-  "editPostButton": "編集する",
   "setting": {
     "icon": "アイコンの設定",
     "appBar": "基本設定",
@@ -44,13 +76,6 @@
     "restore": "購入を復元",
     "premiumMembership": "プレミアム会員になって特別な体験を"
   },
-  "userName": "ユーザー名",
-  "userNameInputField": "ユーザー名（例：いせりゅー）",
-  "userId": "ユーザーID",
-  "userIdInputField": "ユーザーID （例：iseryuuu）",
-  "registerButton": "登録",
-  "unregistered": "未登録",
-  "shareButton": "シェア",
   "post": {
     "foodName": "食べたもの",
     "foodNameInputField": "食べたものを入力(必須)",
@@ -71,15 +96,32 @@
     "cameraPermission": "カメラの許可が必要です",
     "albumPermission": "フォトライブラリの許可が必要です",
     "success": "投稿が完了しました",
-    "searchError": "場所名の検索ができません"
+    "searchError": "場所名の検索ができません",
+    "errorPickImage": "写真ができませんでした",
+    "camera": "カメラ",
+    "album": "アルバム",
+    "restaurantCategoryList": "国別料理を選ぶ",
+    "cookingCategoryList": "料理タグを選ぶ",
+    "selectCountryTag": "国タグの選択",
+    "selectFavoriteTag": "お気に入りタグを選択",
+    "favoriteTagPlaceholder": "お気に入りのタグ",
+    "selectFoodTag": "料理タグの選択",
+    "requiredInfoMissing": "必要な情報が入力されていません"
+  },
+  "share": {
+    "shareButton": "シェア",
+    "inviteMessage": "美味しいフードをFoodGramでシェアしよう!",
+    "textAndImage": "テキスト＋画像でシェア",
+    "imageOnly": "画像のみシェア"
   },
   "edit": {
+    "editTitle": "編集",
+    "editPostButton": "編集する",
     "updateButton": "更新",
     "bio": "自己紹介(任意)",
     "bioInputField": "自己紹介を入力してください",
     "favoriteTagTitle": "お気に入りタグの選択"
   },
-  "emptyPosts": "投稿がありません",
   "search": {
     "emptyResult": "該当する場所が見つかりませんでした",
     "button": "検索",
@@ -87,7 +129,6 @@
     "emptyHintLocation": "位置情報をオンにすると近い順で表示します",
     "emptyHintSearch": "店舗名や料理ジャンルで検索できます"
   },
-  "unknown": "不明・ヒットなし",
   "profile": {
     "postCount": "投稿",
     "pointCount": "ポイント",
@@ -95,9 +136,6 @@
     "exchangePointsButton": "ポイントを交換する",
     "favoriteGenre": "好きなジャンル"
   },
-  "likeButton": "いいね",
-  "shareReviewPrefix": "で食べたレビューを投稿しました！",
-  "shareReviewSuffix": "詳しくはfoodGramで確認してみよう！",
   "postDetailSheet": {
     "title": "この投稿について",
     "shareButton": "この投稿をシェアする",
@@ -123,7 +161,6 @@
     "logoutDescription2": "アカウントの状態はサーバー上に保存されています。",
     "logoutButton": "ログアウト"
   },
-  "heartLimitMessage": "今日は10回までです。明日までお待ちください。",
   "error": {
     "title": "通信エラー",
     "description1": "接続エラーが発生しました",
@@ -151,10 +188,6 @@
     "title": "FoodGram",
     "subtitle": "美味しい瞬間、シェアしよう"
   },
-  "shareInviteMessage": "美味しいフードをFoodGramでシェアしよう!",
-  "agreeToTheTermsOfUse": "利用規約に同意してください",
-  "restaurantCategoryList": "国別料理を選ぶ",
-  "cookingCategoryList": "料理タグを選ぶ",
   "restaurantReview": {
     "newLabel": "新着",
     "viewDetails": "詳細を見る",
@@ -162,12 +195,6 @@
     "reviewList": "レビュー一覧",
     "error": "エラーが発生しました"
   },
-  "nearbyRestaurants": "📍近いレストラン",
-  "seeMore": "もっとみる",
-  "selectCountryTag": "国タグの選択",
-  "selectFavoriteTag": "お気に入りタグを選択",
-  "favoriteTagPlaceholder": "お気に入りのタグ",
-  "selectFoodTag": "料理タグの選択",
   "tab": {
     "home": "フード",
     "map": "マップ",
@@ -188,27 +215,11 @@
     "japanSummary": "{prefectures}の都道府県に、食事が残っています✨",
     "worldSummary": "{countries}カ国に、食事が届いています✨"
   },
-  "dayUnit": "日",
   "mapViewType": {
     "record": "記録",
     "japan": "日本",
     "world": "世界"
   },
-  "logoutFailure": "ログアウト失敗",
-  "accountDeletionFailure": "アカウント削除失敗",
-  "appleLoginFailure": "Appleログインはできません",
-  "emailAuthenticationFailure": "メール認証の失敗",
-  "loginError": "ログインエラー",
-  "loginSuccessful": "ログイン成功",
-  "emailAuthentication": "メールアプリで認証をしてください",
-  "emailEmpty": "メールアドレスが入力されていません",
-  "email": "メールアドレス",
-  "enterTheCorrectFormat": "正しい形式で入力してください",
-  "authInvalidFormat": "メールアドレスのフォーマットが間違っています",
-  "authSocketException": "ネットワークに問題があります。接続を確認してください",
-  "camera": "カメラ",
-  "album": "アルバム",
-  "snsLogin": "SNSログイン",
   "tutorial": {
     "firstPageTitle": "美味しい瞬間、シェアしよう",
     "firstPageSubTitle": "FoodGramで、毎日の食事がもっと特別に\n新しい味との出会いを楽しもう",
@@ -225,7 +236,8 @@
     "locationButton": "位置情報をオンにする",
     "notificationTitle": "通知をオンにしよう！",
     "notificationSubTitle": "ランチとディナーのときに\n通知をお送りします",
-    "notificationButton": "通知をオンにする"
+    "notificationButton": "通知をオンにする",
+    "agreeToTheTermsOfUse": "利用規約に同意してください"
   },
   "detailMenu": {
     "share": "シェア",
@@ -239,6 +251,10 @@
     "buttonTitle": "アップデート"
   },
   "newAccount": {
+    "userName": "ユーザー名",
+    "userNameInputField": "ユーザー名（例：いせりゅー）",
+    "userId": "ユーザーID",
+    "userIdInputField": "ユーザーID （例：iseryuuu）",
     "importantTitle": "重要な注意事項",
     "important": "アカウントを作成する際、ユーザー名やユーザーIDには、メールアドレスや電話番号などの個人情報を含めないようにしてください。安全なオンライン体験のため、個人情報が特定されない名前を設定してください。"
   },
@@ -246,9 +262,6 @@
     "success": "アカウントの登録が完了しました",
     "error": "エラーが発生しました"
   },
-  "requiredInfoMissing": "必要な情報が入力されていません",
-  "shareTextAndImage": "テキスト＋画像でシェア",
-  "shareImageOnly": "画像のみシェア",
   "foodCategory": {
     "noodles": "麺類",
     "meat": "肉料理",
@@ -305,7 +318,6 @@
     "mapTitle": "衛生地図でレストランを探せる",
     "mapDesc": "より快適に楽しく見つけることができる"
   },
-  "purchaseError": "購入処理中にエラーが発生しました",
   "anonymous": {
     "post": "匿名で投稿",
     "postDescription": "ユーザー名が非表示になります",
@@ -548,31 +560,20 @@
     "friedEgg": "目玉焼き",
     "butter": "バター"
   },
-  "done": "決定",
-  "save": "保存",
-  "searchFood": "料理を検索",
-  "noResultsFound": "検索結果が見つかりませんでした",
-  "searchCountry": "国を検索",
-  "searchEmptyTitle": "店舗名を入力して検索してください",
-  "postErrorPickImage": "写真ができませんでした",
   "favoritePostEmpty": {
     "title": "保存した投稿がありません",
     "subtitle": "気になった投稿を保存してみましょう!"
   },
-  "userInfoFetchError": "ユーザー情報の取得に失敗しました",
-  "saved": "保存済み",
-  "savedPosts": "保存した投稿",
-  "postSaved": "投稿を保存しました",
-  "postSavedMessage": "マイページにて保存した投稿が確認できます",
-  "noMapAppAvailable": "マップアプリが利用できません",
   "notification": {
+    "likeNotificationsTitle": "いいね通知",
+    "loadFailed": "読み込みに失敗しました",
+    "someoneLikedYourPost": "誰かがあなたの投稿にいいねをつけました。",
+    "userLikedYourPost": "{name}があなたの投稿にいいねをつけました。",
     "lunchTitle": "#今日のごはん、もう投稿した？🍜",
     "lunchBody": "今日のランチ、思い出せるうちに記録しませんか？",
     "dinnerTitle": "#今日のごはん、もう投稿した？🍛",
     "dinnerBody": "今日のごはん、投稿して1日をゆるっと締めくくろう📷"
   },
-  "posted": "に投稿",
-  "selectMapApp": "地図アプリを選択",
   "mapApp": {
     "google": "Google Map",
     "apple": "Apple Map",
@@ -593,9 +594,5 @@
     "copy": "コピー",
     "copied": "コピーしました",
     "translateFailed": "翻訳できませんでした"
-  },
-  "likeNotificationsTitle": "いいね通知",
-  "loadFailed": "読み込みに失敗しました",
-  "someoneLikedYourPost": "誰かがあなたの投稿にいいねをつけました。",
-  "userLikedYourPost": "{name}があなたの投稿にいいねをつけました。"
+  }
 }

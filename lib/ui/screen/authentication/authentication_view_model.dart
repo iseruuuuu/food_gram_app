@@ -17,13 +17,10 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
   AuthenticationState build({
     AuthenticationState initState = const AuthenticationState(),
   }) {
-    ref.onDispose(emailTextField.dispose);
     return initState;
   }
 
   final logger = Logger();
-
-  final emailTextField = TextEditingController();
 
   Loading get loading => ref.read(loadingProvider.notifier);
 
@@ -33,14 +30,14 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     await result.when(
       success: (_) async {
         state = state.copyWith(
-          loginStatus: Translations.of(context).loginSuccessful,
+          loginStatus: Translations.of(context).auth.loginSuccessful,
         );
       },
       failure: (error) {
         logger.e(error);
         SnackBarHelper().openErrorSnackBar(
           context,
-          Translations.of(context).loginError,
+          Translations.of(context).auth.loginError,
           Translations.of(context).error.message,
         );
       },
@@ -53,14 +50,14 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     await result.when(
       success: (_) async {
         state = state.copyWith(
-          loginStatus: Translations.of(context).loginSuccessful,
+          loginStatus: Translations.of(context).auth.loginSuccessful,
         );
       },
       failure: (error) {
         logger.e(error);
         SnackBarHelper().openErrorSnackBar(
           context,
-          Translations.of(context).loginError,
+          Translations.of(context).auth.loginError,
           Translations.of(context).error.message,
         );
       },
@@ -73,14 +70,14 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     await result.when(
       success: (_) async {
         state = state.copyWith(
-          loginStatus: Translations.of(context).loginSuccessful,
+          loginStatus: Translations.of(context).auth.loginSuccessful,
         );
       },
       failure: (error) {
         logger.e(error);
         SnackBarHelper().openErrorSnackBar(
           context,
-          Translations.of(context).loginError,
+          Translations.of(context).auth.loginError,
           Translations.of(context).error.message,
         );
       },
@@ -89,10 +86,5 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
 }
 
 String authErrorManager(String error, BuildContext context) {
-  switch (error) {
-    case 'Unable to validate email address: invalid format':
-      return Translations.of(context).authInvalidFormat;
-    default:
-      return Translations.of(context).authSocketException;
-  }
+  return Translations.of(context).auth.authSocketException;
 }

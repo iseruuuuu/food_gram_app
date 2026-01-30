@@ -1,14 +1,46 @@
 {
+  "close": "关闭",
+  "cancel": "取消",
+  "registerButton": "注册",
+  "unregistered": "未注册",
+  "emptyPosts": "暂无帖子",
+  "unknown": "未知・无结果",
+  "likeButton": "点赞",
+  "heartLimitMessage": "您已达到今天10个赞的限制。请明天再试。",
+  "seeMore": "查看更多",
+  "dayUnit": "天",
+  "purchaseError": "购买过程中发生错误",
+  "done": "完成",
+  "save": "保存",
+  "searchFood": "搜索食物",
+  "noResultsFound": "未找到搜索结果",
+  "searchCountry": "搜索国家",
+  "searchEmptyTitle": "输入餐厅名称进行搜索",
+  "userInfoFetchError": "获取用户信息失败",
+  "noMapAppAvailable": "没有可用的地图应用",
+  "posted": "发布",
+  "selectMapApp": "选择地图应用",
+  "auth": {
+    "logoutFailure": "登出失败",
+    "accountDeletionFailure": "账户删除失败",
+    "appleLoginFailure": "Apple登录不可用",
+    "loginError": "登录错误",
+    "loginSuccessful": "登录成功",
+    "authSocketException": "网络有问题。请检查连接。",
+    "snsLogin": "SNS登录"
+  },
+  "stored": {
+    "saved": "已保存",
+    "savedPosts": "保存的帖子",
+    "postSaved": "帖子已保存",
+    "postSavedMessage": "您可以在我的页面查看保存的帖子"
+  },
   "maybeNotFoodDialog": {
     "title": "稍作确认 🍽️",
     "text": "这张照片可能不是食物… 🤔\\n\\n仍要发布吗？",
     "confirm": "继续",
     "delete": "删除图片"
   },
-  "close": "关闭",
-  "cancel": "取消",
-  "editTitle": "编辑",
-  "editPostButton": "编辑帖子",
   "setting": {
     "icon": "选择图标",
     "appBar": "设置",
@@ -44,13 +76,6 @@
     "restore": "恢复购买",
     "premiumMembership": "成为高级会员，享受特别体验"
   },
-  "userName": "用户名",
-  "userNameInputField": "用户名（例如：iseryu）",
-  "userId": "用户ID",
-  "userIdInputField": "用户ID（例如：iseryuuu）",
-  "registerButton": "注册",
-  "unregistered": "未注册",
-  "shareButton": "分享",
   "post": {
     "foodName": "食物名称",
     "foodNameInputField": "输入食物名称（必填）",
@@ -71,15 +96,32 @@
     "cameraPermission": "需要相机权限",
     "albumPermission": "需要照片库权限",
     "success": "发布成功",
-    "searchError": "无法搜索地点名称"
+    "searchError": "无法搜索地点名称",
+    "errorPickImage": "拍照失败",
+    "camera": "相机",
+    "album": "相册",
+    "restaurantCategoryList": "按国家选择菜系",
+    "cookingCategoryList": "选择食物标签",
+    "selectCountryTag": "选择国家标签",
+    "selectFavoriteTag": "选择收藏标签",
+    "favoriteTagPlaceholder": "选择您的收藏标签",
+    "selectFoodTag": "选择食物标签",
+    "requiredInfoMissing": "缺少必要信息"
+  },
+  "share": {
+    "shareButton": "分享",
+    "inviteMessage": "在 FoodGram 分享美味吧！",
+    "textAndImage": "分享文字和图片",
+    "imageOnly": "仅分享图片"
   },
   "edit": {
+    "editTitle": "编辑",
+    "editPostButton": "编辑帖子",
     "updateButton": "更新",
     "bio": "个人简介（可选）",
     "bioInputField": "输入个人简介",
     "favoriteTagTitle": "选择收藏标签"
   },
-  "emptyPosts": "暂无帖子",
   "search": {
     "emptyResult": "未找到搜索结果。",
     "button": "搜索",
@@ -87,7 +129,6 @@
     "emptyHintLocation": "开启位置信息可优先显示附近结果",
     "emptyHintSearch": "可通过餐厅名称或菜系类型搜索"
   },
-  "unknown": "未知・无结果",
   "profile": {
     "postCount": "帖子",
     "pointCount": "积分",
@@ -95,9 +136,6 @@
     "exchangePointsButton": "兑换积分",
     "favoriteGenre": "收藏类型"
   },
-  "likeButton": "点赞",
-  "shareReviewPrefix": "刚刚分享了我吃的美食评论！",
-  "shareReviewSuffix": "更多内容，请查看foodGram！",
   "postDetailSheet": {
     "title": "关于此帖子",
     "shareButton": "分享此帖子",
@@ -123,7 +161,6 @@
     "logoutDescription2": "账户状态保存在服务器上。",
     "logoutButton": "登出"
   },
-  "heartLimitMessage": "您已达到今天10个赞的限制。请明天再试。",
   "error": {
     "title": "通信错误",
     "description1": "发生连接错误。",
@@ -151,10 +188,6 @@
     "title": "FoodGram",
     "subtitle": "分享您的美味时刻"
   },
-  "shareInviteMessage": "在 FoodGram 分享美味吧！",
-  "agreeToTheTermsOfUse": "请同意使用条款",
-  "restaurantCategoryList": "按国家选择菜系",
-  "cookingCategoryList": "选择食物标签",
   "restaurantReview": {
     "newLabel": "新",
     "viewDetails": "查看详情",
@@ -162,12 +195,6 @@
     "reviewList": "评论列表",
     "error": "发生错误"
   },
-  "nearbyRestaurants": "📍附近餐厅",
-  "seeMore": "查看更多",
-  "selectCountryTag": "选择国家标签",
-  "selectFavoriteTag": "选择收藏标签",
-  "favoriteTagPlaceholder": "选择您的收藏标签",
-  "selectFoodTag": "选择食物标签",
   "tab": {
     "home": "美食",
     "map": "地图",
@@ -188,27 +215,11 @@
     "japanSummary": "在日本，你的餐食遍布 {prefectures} 个都道府县✨",
     "worldSummary": "在世界范围内，你的餐食遍布 {countries} 个国家✨"
   },
-  "dayUnit": "天",
   "mapViewType": {
     "record": "记录",
     "japan": "日本",
     "world": "世界"
   },
-  "logoutFailure": "登出失败",
-  "accountDeletionFailure": "账户删除失败",
-  "appleLoginFailure": "Apple登录不可用",
-  "emailAuthenticationFailure": "邮箱认证失败",
-  "loginError": "登录错误",
-  "loginSuccessful": "登录成功",
-  "emailAuthentication": "请通过您的邮箱应用进行认证",
-  "emailEmpty": "未输入邮箱地址",
-  "email": "邮箱地址",
-  "enterTheCorrectFormat": "请输入正确格式",
-  "authInvalidFormat": "邮箱地址格式不正确。",
-  "authSocketException": "网络有问题。请检查连接。",
-  "camera": "相机",
-  "album": "相册",
-  "snsLogin": "SNS登录",
   "tutorial": {
     "firstPageTitle": "分享您的美味时刻",
     "firstPageSubTitle": "通过FoodGram，让每顿饭都更加特别。\n享受发现新口味的乐趣！",
@@ -225,7 +236,8 @@
     "locationButton": "开启位置",
     "notificationTitle": "开启通知！",
     "notificationSubTitle": "我们将在午餐和晚餐时间发送提醒",
-    "notificationButton": "开启通知"
+    "notificationButton": "开启通知",
+    "agreeToTheTermsOfUse": "请同意使用条款"
   },
   "detailMenu": {
     "share": "分享",
@@ -239,6 +251,10 @@
     "buttonTitle": "更新"
   },
   "newAccount": {
+    "userName": "用户名",
+    "userNameInputField": "用户名（例如：iseryu）",
+    "userId": "用户ID",
+    "userIdInputField": "用户ID（例如：iseryuuu）",
     "importantTitle": "重要提示",
     "important": "创建账户时，请不要在用户名或用户ID中包含邮箱地址或电话号码等个人信息。为确保安全的在线体验，请选择不会泄露个人信息的名称。"
   },
@@ -246,9 +262,6 @@
     "success": "账户注册完成",
     "error": "发生错误"
   },
-  "requiredInfoMissing": "缺少必要信息",
-  "shareTextAndImage": "分享文字和图片",
-  "shareImageOnly": "仅分享图片",
   "foodCategory": {
     "noodles": "面条",
     "meat": "肉类",
@@ -305,7 +318,6 @@
     "mapTitle": "地图查找",
     "mapDesc": "更快更容易找到餐厅"
   },
-  "purchaseError": "购买过程中发生错误",
   "anonymous": {
     "post": "匿名发布",
     "postDescription": "用户名将被隐藏",
@@ -548,31 +560,20 @@
     "friedEgg": "煎蛋",
     "butter": "黄油"
   },
-  "done": "完成",
-  "save": "保存",
-  "searchFood": "搜索食物",
-  "noResultsFound": "未找到搜索结果",
-  "searchCountry": "搜索国家",
-  "searchEmptyTitle": "输入餐厅名称进行搜索",
-  "postErrorPickImage": "拍照失败",
   "favoritePostEmpty": {
     "title": "没有保存的帖子",
     "subtitle": "保存您感兴趣的帖子吧！"
   },
-  "userInfoFetchError": "获取用户信息失败",
-  "saved": "已保存",
-  "savedPosts": "保存的帖子",
-  "postSaved": "帖子已保存",
-  "postSavedMessage": "您可以在我的页面查看保存的帖子",
-  "noMapAppAvailable": "没有可用的地图应用",
   "notification": {
+    "likeNotificationsTitle": "点赞通知",
+    "loadFailed": "加载失败",
+    "someoneLikedYourPost": "有人给你的帖子点了赞。",
+    "userLikedYourPost": "{name} 给你的帖子点了赞。",
     "lunchTitle": "#今天的饭菜，已经发了吗？🍜",
     "lunchBody": "今天的午餐，趁还记得的时候记录一下吧？",
     "dinnerTitle": "#今天的饭菜，已经发了吗？🍛",
     "dinnerBody": "发布今天的饭菜，轻松结束这一天吧📷"
   },
-  "posted": "发布",
-  "selectMapApp": "选择地图应用",
   "mapApp": {
     "google": "谷歌地图",
     "apple": "苹果地图",
@@ -593,9 +594,5 @@
     "copy": "复制",
     "copied": "已复制到剪贴板",
     "translateFailed": "翻译失败"
-  },
-  "likeNotificationsTitle": "点赞通知",
-  "loadFailed": "加载失败",
-  "someoneLikedYourPost": "有人给你的帖子点了赞。",
-  "userLikedYourPost": "{name} 给你的帖子点了赞。"
+  }
 }

@@ -87,7 +87,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                     ),
                     const SizedBox(width: 20),
                     Text(
-                      t.editPostButton,
+                      t.edit.editPostButton,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,

@@ -294,7 +294,7 @@ class TutorialScreen extends HookConsumerWidget {
                     if (currentPage == totalPages - 1 && !isAccept.value) {
                       SnackBarHelper().openSimpleSnackBar(
                         context,
-                        Translations.of(context).agreeToTheTermsOfUse,
+                        Translations.of(context).tutorial.agreeToTheTermsOfUse,
                       );
                     } else if (currentPage < totalPages - 1) {
                       pageController.nextPage(

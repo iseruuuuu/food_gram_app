@@ -127,6 +127,7 @@ class MyProfileScreen extends HookConsumerWidget {
                                             const SizedBox(width: 6),
                                             Text(
                                               Translations.of(context)
+                                                  .stored
                                                   .savedPosts,
                                               style: const TextStyle(
                                                 fontSize: 14,

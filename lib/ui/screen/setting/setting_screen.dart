@@ -190,7 +190,7 @@ class SettingScreen extends HookConsumerWidget {
                                       } else {
                                         SnackBarHelper().openErrorSnackBar(
                                           context,
-                                          t.logoutFailure,
+                                          t.auth.logoutFailure,
                                           '',
                                         );
                                       }
@@ -211,7 +211,7 @@ class SettingScreen extends HookConsumerWidget {
                                 if (!value) {
                                   SnackBarHelper().openErrorSnackBar(
                                     context,
-                                    t.accountDeletionFailure,
+                                    t.auth.accountDeletionFailure,
                                     '',
                                   );
                                 }

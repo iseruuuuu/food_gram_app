@@ -1,14 +1,46 @@
 {
+  "close": "Fechar",
+  "cancel": "Cancelar",
+  "registerButton": "Registrar",
+  "unregistered": "Não Registrado",
+  "emptyPosts": "Não há publicações",
+  "unknown": "Desconhecido・Sem resultados",
+  "likeButton": "Curtir",
+  "heartLimitMessage": "Você atingiu o limite de 10 curtidas de hoje. Por favor, tente novamente amanhã.",
+  "seeMore": "Ver Mais",
+  "dayUnit": "dias",
+  "purchaseError": "Ocorreu um erro durante a compra",
+  "done": "Concluído",
+  "save": "Salvar",
+  "searchFood": "Pesquisar comida",
+  "noResultsFound": "Nenhum resultado encontrado",
+  "searchCountry": "Pesquisar país",
+  "searchEmptyTitle": "Digite o nome do restaurante para pesquisar",
+  "userInfoFetchError": "Falha ao buscar informações do usuário",
+  "noMapAppAvailable": "Nenhum aplicativo de mapa disponível",
+  "posted": "postado",
+  "selectMapApp": "Selecionar aplicativo de mapa",
+  "auth": {
+    "logoutFailure": "Falha no logout",
+    "accountDeletionFailure": "Falha na exclusão da conta",
+    "appleLoginFailure": "Login Apple não disponível",
+    "loginError": "Erro de Login",
+    "loginSuccessful": "Login bem-sucedido",
+    "authSocketException": "Há um problema com a rede. Por favor, verifique a conexão.",
+    "snsLogin": "Login SNS"
+  },
+  "stored": {
+    "saved": "Salvo",
+    "savedPosts": "Postagens salvas",
+    "postSaved": "Postagem salva",
+    "postSavedMessage": "Você pode ver as postagens salvas na Minha página"
+  },
   "maybeNotFoodDialog": {
     "title": "Só conferindo 🍽️",
     "text": "Esta foto pode não ser de comida… 🤔\\n\\nDeseja publicar mesmo assim?",
     "confirm": "Continuar",
     "delete": "Excluir imagem"
   },
-  "close": "Fechar",
-  "cancel": "Cancelar",
-  "editTitle": "Editar",
-  "editPostButton": "Editar Publicação",
   "setting": {
     "icon": "Selecionar Ícone",
     "appBar": "Configurações",
@@ -44,13 +76,6 @@
     "restore": "Restaurar",
     "premiumMembership": "Torne-se membro Premium"
   },
-  "userName": "Nome de Usuário",
-  "userNameInputField": "Nome de usuário (ex: iseryu)",
-  "userId": "ID do Usuário",
-  "userIdInputField": "ID do usuário (ex: iseryuuu)",
-  "registerButton": "Registrar",
-  "unregistered": "Não Registrado",
-  "shareButton": "Compartilhar",
   "post": {
     "foodName": "Nome da Comida",
     "foodNameInputField": "Comida (Obrigatório)",
@@ -71,15 +96,32 @@
     "cameraPermission": "Permissão de câmera necessária",
     "albumPermission": "Permissão de biblioteca de fotos necessária",
     "success": "Publicação bem-sucedida",
-    "searchError": "Não é possível pesquisar nomes de lugares"
+    "searchError": "Não é possível pesquisar nomes de lugares",
+    "errorPickImage": "Falha ao tirar foto",
+    "camera": "Câmera",
+    "album": "Álbum",
+    "restaurantCategoryList": "Selecionar Cozinha por País",
+    "cookingCategoryList": "Selecionar etiqueta de comida",
+    "selectCountryTag": "Selecionar Etiqueta de País",
+    "selectFavoriteTag": "Selecionar Etiqueta Favorita",
+    "favoriteTagPlaceholder": "Selecione sua etiqueta favorita",
+    "selectFoodTag": "Selecionar Etiqueta de Comida",
+    "requiredInfoMissing": "Informações obrigatórias em falta"
+  },
+  "share": {
+    "shareButton": "Compartilhar",
+    "inviteMessage": "Compartilhe comida deliciosa no FoodGram!",
+    "textAndImage": "Texto e imagem",
+    "imageOnly": "Compartilhar apenas imagem"
   },
   "edit": {
+    "editTitle": "Editar",
+    "editPostButton": "Editar Publicação",
     "updateButton": "Atualizar",
     "bio": "Biografia (opcional)",
     "bioInputField": "Digite a biografia",
     "favoriteTagTitle": "Selecionar Etiqueta Favorita"
   },
-  "emptyPosts": "Não há publicações",
   "search": {
     "emptyResult": "Nenhum resultado encontrado para sua pesquisa.",
     "button": "Pesquisar",
@@ -87,7 +129,6 @@
     "emptyHintLocation": "Ative a localização para mostrar resultados próximos primeiro",
     "emptyHintSearch": "Pesquise por nome do restaurante ou tipo de cozinha"
   },
-  "unknown": "Desconhecido・Sem resultados",
   "profile": {
     "postCount": "Publicações",
     "pointCount": "Pontos",
@@ -95,9 +136,6 @@
     "exchangePointsButton": "Trocar Pontos",
     "favoriteGenre": "Gênero Favorito"
   },
-  "likeButton": "Curtir",
-  "shareReviewPrefix": "Acabei de compartilhar minha avaliação do que comi!",
-  "shareReviewSuffix": "Para mais, dê uma olhada no foodGram!",
   "postDetailSheet": {
     "title": "Sobre esta publicação",
     "shareButton": "Compartilhar esta publicação",
@@ -123,7 +161,6 @@
     "logoutDescription2": "O status da conta é armazenado no servidor.",
     "logoutButton": "Sair"
   },
-  "heartLimitMessage": "Você atingiu o limite de 10 curtidas de hoje. Por favor, tente novamente amanhã.",
   "error": {
     "title": "Erro de Comunicação",
     "description1": "Ocorreu um erro de conexão.",
@@ -151,10 +188,6 @@
     "title": "FoodGram",
     "subtitle": "Comer × Fotos × Compartilhar"
   },
-  "shareInviteMessage": "Compartilhe comida deliciosa no FoodGram!",
-  "agreeToTheTermsOfUse": "Por favor, concorde com os Termos de Uso",
-  "restaurantCategoryList": "Selecionar Cozinha por País",
-  "cookingCategoryList": "Selecionar etiqueta de comida",
   "restaurantReview": {
     "newLabel": "Novo",
     "viewDetails": "Ver Detalhes",
@@ -162,12 +195,6 @@
     "reviewList": "Lista de Avaliações",
     "error": "Ocorreu um erro"
   },
-  "nearbyRestaurants": "📍Restaurantes Próximos",
-  "seeMore": "Ver Mais",
-  "selectCountryTag": "Selecionar Etiqueta de País",
-  "selectFavoriteTag": "Selecionar Etiqueta Favorita",
-  "favoriteTagPlaceholder": "Selecione sua etiqueta favorita",
-  "selectFoodTag": "Selecionar Etiqueta de Comida",
   "tab": {
     "home": "Comida",
     "map": "Mapa",
@@ -188,27 +215,11 @@
     "japanSummary": "No Japão, suas refeições estão em {prefectures} prefeituras ✨",
     "worldSummary": "No mundo, suas refeições estão em {countries} países ✨"
   },
-  "dayUnit": "dias",
   "mapViewType": {
     "record": "Registro",
     "japan": "Japão",
     "world": "Mundo"
   },
-  "logoutFailure": "Falha no logout",
-  "accountDeletionFailure": "Falha na exclusão da conta",
-  "appleLoginFailure": "Login Apple não disponível",
-  "emailAuthenticationFailure": "Falha na autenticação por e-mail",
-  "loginError": "Erro de Login",
-  "loginSuccessful": "Login bem-sucedido",
-  "emailAuthentication": "Autentique-se com seu aplicativo de e-mail",
-  "emailEmpty": "Nenhum endereço de e-mail foi inserido",
-  "email": "Endereço de E-mail",
-  "enterTheCorrectFormat": "Por favor, digite o formato correto",
-  "authInvalidFormat": "O formato do endereço de e-mail está incorreto.",
-  "authSocketException": "Há um problema com a rede. Por favor, verifique a conexão.",
-  "camera": "Câmera",
-  "album": "Álbum",
-  "snsLogin": "Login SNS",
   "tutorial": {
     "firstPageTitle": "Momentos deliciosos",
     "firstPageSubTitle": "Cada refeição mais especial.\nDescubra novos sabores!",
@@ -225,7 +236,8 @@
     "locationButton": "Ativar",
     "notificationTitle": "Ative as Notificações!",
     "notificationSubTitle": "Lembretes para almoço e jantar",
-    "notificationButton": "Ativar"
+    "notificationButton": "Ativar",
+    "agreeToTheTermsOfUse": "Por favor, concorde com os Termos de Uso"
   },
   "detailMenu": {
     "share": "Compartilhar",
@@ -239,6 +251,10 @@
     "buttonTitle": "Atualizar"
   },
   "newAccount": {
+    "userName": "Nome de Usuário",
+    "userNameInputField": "Nome de usuário (ex: iseryu)",
+    "userId": "ID do Usuário",
+    "userIdInputField": "ID do usuário (ex: iseryuuu)",
     "importantTitle": "Nota Importante",
     "important": "Ao criar uma conta, por favor não inclua informações pessoais como endereço de e-mail ou número de telefone em seu nome de usuário ou ID de usuário. Para garantir uma experiência online segura, escolha um nome que não revele seus detalhes pessoais."
   },
@@ -246,9 +262,6 @@
     "success": "Registro de conta concluído",
     "error": "Ocorreu um erro"
   },
-  "requiredInfoMissing": "Informações obrigatórias em falta",
-  "shareTextAndImage": "Texto e imagem",
-  "shareImageOnly": "Compartilhar apenas imagem",
   "foodCategory": {
     "noodles": "Macarrão",
     "meat": "Carne",
@@ -305,7 +318,6 @@
     "mapTitle": "Buscar no mapa",
     "mapDesc": "Encontre restaurantes de forma rápida e fácil"
   },
-  "purchaseError": "Ocorreu um erro durante a compra",
   "anonymous": {
     "post": "Publicar Anonimamente",
     "postDescription": "Nome de usuário será ocultado",
@@ -548,31 +560,20 @@
     "friedEgg": "Ovo Frito",
     "butter": "Manteiga"
   },
-  "done": "Concluído",
-  "save": "Salvar",
-  "searchFood": "Pesquisar comida",
-  "noResultsFound": "Nenhum resultado encontrado",
-  "searchCountry": "Pesquisar país",
-  "searchEmptyTitle": "Digite o nome do restaurante para pesquisar",
-  "postErrorPickImage": "Falha ao tirar foto",
   "favoritePostEmpty": {
     "title": "Nenhuma postagem salva",
     "subtitle": "Salve postagens que te interessam!"
   },
-  "userInfoFetchError": "Falha ao buscar informações do usuário",
-  "saved": "Salvo",
-  "savedPosts": "Postagens salvas",
-  "postSaved": "Postagem salva",
-  "postSavedMessage": "Você pode ver as postagens salvas na Minha página",
-  "noMapAppAvailable": "Nenhum aplicativo de mapa disponível",
   "notification": {
+    "likeNotificationsTitle": "Notificações de curtidas",
+    "loadFailed": "Falha ao carregar",
+    "someoneLikedYourPost": "Alguém curtiu sua publicação.",
+    "userLikedYourPost": "{name} curtiu sua publicação.",
     "lunchTitle": "#Já postou a refeição de hoje? 🍜",
     "lunchBody": "Que tal registrar o almoço de hoje enquanto ainda se lembra?",
     "dinnerTitle": "#Já postou a refeição de hoje? 🍛",
     "dinnerBody": "Poste a refeição de hoje e termine o dia suavemente 📷"
   },
-  "posted": "postado",
-  "selectMapApp": "Selecionar aplicativo de mapa",
   "mapApp": {
     "google": "Google Maps",
     "apple": "Apple Maps",
@@ -593,9 +594,5 @@
     "copy": "Copiar",
     "copied": "Copiado para a área de transferência",
     "translateFailed": "Falha na tradução"
-  },
-  "likeNotificationsTitle": "Notificações de curtidas",
-  "loadFailed": "Falha ao carregar",
-  "someoneLikedYourPost": "Alguém curtiu sua publicação.",
-  "userLikedYourPost": "{name} curtiu sua publicação."
+  }
 }

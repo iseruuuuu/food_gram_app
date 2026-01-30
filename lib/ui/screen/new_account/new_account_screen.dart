@@ -30,7 +30,7 @@ class NewAccountScreen extends ConsumerWidget {
             message = Translations.of(context).accountRegistration.error;
             SnackBarHelper().openErrorSnackBar(context, '', message);
           case 'required_info_missing':
-            message = Translations.of(context).requiredInfoMissing;
+            message = Translations.of(context).post.requiredInfoMissing;
             SnackBarHelper().openErrorSnackBar(context, '', message);
           default:
             message = current.loginStatus;

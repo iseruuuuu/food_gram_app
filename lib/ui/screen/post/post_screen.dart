@@ -487,7 +487,7 @@ class PostScreen extends HookConsumerWidget {
                       ),
                     ),
                     child: Text(
-                      isAnonymous ? t.anonymous.share : t.shareButton,
+                      isAnonymous ? t.anonymous.share : t.share.shareButton,
                       style: const TextStyle(
                         color: Colors.white,
                       ),
@@ -508,7 +508,7 @@ class PostScreen extends HookConsumerWidget {
     final t = Translations.of(context);
     switch (postStatus) {
       case PostStatus.errorPickImage:
-        return t.postErrorPickImage;
+        return t.post.errorPickImage;
       case PostStatus.error:
         return t.post.error;
       case PostStatus.photoSuccess:

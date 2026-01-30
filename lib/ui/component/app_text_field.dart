@@ -243,66 +243,6 @@ class AppCommentTextField extends StatelessWidget {
   }
 }
 
-class AppAuthTextField extends StatelessWidget {
-  const AppAuthTextField({required this.controller, super.key});
-
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
-      child: TextFormField(
-        contextMenuBuilder: (context, state) {
-          if (SystemContextMenu.isSupported(context)) {
-            return SystemContextMenu.editableText(editableTextState: state);
-          }
-          return AdaptiveTextSelectionToolbar.editableText(
-            editableTextState: state,
-          );
-        },
-        selectionHeightStyle: BoxHeightStyle.strut,
-        onTap: ScaffoldMessenger.of(context).hideCurrentSnackBar,
-        autovalidateMode: AutovalidateMode.always,
-        validator: (value) => value!.isValidEmail() || value.isEmpty
-            ? null
-            : Translations.of(context).enterTheCorrectFormat,
-        controller: controller,
-        autocorrect: false,
-        keyboardType: TextInputType.emailAddress,
-        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-        decoration: InputDecoration(
-          alignLabelWithHint: true,
-          labelText: Translations.of(context).email,
-          labelStyle: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(fontWeight: FontWeight.bold, color: Colors.black54),
-          filled: true,
-          fillColor: Colors.white,
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black87),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.blue),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-extension StringEx on String {
-  bool isValidEmail() {
-    return RegExp(
-      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
-    ).hasMatch(this);
-  }
-}
-
 class AppNameTextField extends StatelessWidget {
   const AppNameTextField({
     required this.controller,
@@ -335,9 +275,9 @@ class AppNameTextField extends StatelessWidget {
                 selectionHeightStyle: BoxHeightStyle.strut,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: Translations.of(context).userName,
+                  hintText: Translations.of(context).newAccount.userName,
                   label: Text(
-                    Translations.of(context).userNameInputField,
+                    Translations.of(context).newAccount.userNameInputField,
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ),
@@ -446,9 +386,9 @@ class AppUserNameTextField extends StatelessWidget {
                 selectionHeightStyle: BoxHeightStyle.strut,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: Translations.of(context).userId,
+                  hintText: Translations.of(context).newAccount.userId,
                   label: Text(
-                    Translations.of(context).userIdInputField,
+                    Translations.of(context).newAccount.userIdInputField,
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ),

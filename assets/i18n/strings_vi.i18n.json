@@ -1,14 +1,46 @@
 {
+  "close": "Đóng",
+  "cancel": "Hủy",
+  "registerButton": "Đăng ký",
+  "unregistered": "Chưa đăng ký",
+  "emptyPosts": "Không có bài đăng nào",
+  "unknown": "Không xác định・Không có kết quả",
+  "likeButton": "Thích",
+  "heartLimitMessage": "Đã đạt giới hạn 10 lượt thích hôm nay. Thử lại ngày mai.",
+  "seeMore": "Xem thêm",
+  "dayUnit": "ngày",
+  "purchaseError": "Đã xảy ra lỗi trong quá trình mua",
+  "done": "Hoàn thành",
+  "save": "Lưu",
+  "searchFood": "Tìm kiếm món ăn",
+  "noResultsFound": "Không tìm thấy kết quả",
+  "searchCountry": "Tìm kiếm quốc gia",
+  "searchEmptyTitle": "Nhập tên nhà hàng để tìm kiếm",
+  "userInfoFetchError": "Không thể lấy thông tin người dùng",
+  "noMapAppAvailable": "Không có ứng dụng bản đồ khả dụng",
+  "posted": "đã đăng",
+  "selectMapApp": "Chọn ứng dụng bản đồ",
+  "auth": {
+    "logoutFailure": "Đăng xuất thất bại",
+    "accountDeletionFailure": "Xóa tài khoản thất bại",
+    "appleLoginFailure": "Đăng nhập Apple không khả dụng",
+    "loginError": "Lỗi đăng nhập",
+    "loginSuccessful": "Đăng nhập thành công",
+    "authSocketException": "Có vấn đề với mạng. Vui lòng kiểm tra kết nối.",
+    "snsLogin": "Đăng nhập SNS"
+  },
+  "stored": {
+    "saved": "Đã lưu",
+    "savedPosts": "Bài đăng đã lưu",
+    "postSaved": "Bài đăng đã được lưu",
+    "postSavedMessage": "Xem bài đăng đã lưu trong Trang của tôi"
+  },
   "maybeNotFoodDialog": {
     "title": "Kiểm tra nhanh 🍽️",
     "text": "Ảnh này có thể không phải là đồ ăn… 🤔\\n\\nBạn vẫn muốn đăng chứ?",
     "confirm": "Tiếp tục",
     "delete": "Xóa ảnh"
   },
-  "close": "Đóng",
-  "cancel": "Hủy",
-  "editTitle": "Chỉnh sửa",
-  "editPostButton": "Sửa bài đăng",
   "setting": {
     "icon": "Chọn biểu tượng",
     "appBar": "Cài đặt",
@@ -44,13 +76,6 @@
     "restore": "Khôi phục",
     "premiumMembership": "Trở thành Premium"
   },
-  "userName": "Tên người dùng",
-  "userNameInputField": "Tên người dùng (ví dụ: iseryu)",
-  "userId": "ID người dùng",
-  "userIdInputField": "ID người dùng (ví dụ: iseryuuu)",
-  "registerButton": "Đăng ký",
-  "unregistered": "Chưa đăng ký",
-  "shareButton": "Chia sẻ",
   "post": {
     "foodName": "Tên món ăn",
     "foodNameInputField": "Nhập tên món (Bắt buộc)",
@@ -71,15 +96,32 @@
     "cameraPermission": "Cần quyền camera",
     "albumPermission": "Cần quyền thư viện ảnh",
     "success": "Đăng thành công",
-    "searchError": "Không thể tìm kiếm tên địa điểm"
+    "searchError": "Không thể tìm kiếm tên địa điểm",
+    "errorPickImage": "Chụp ảnh thất bại",
+    "camera": "Máy ảnh",
+    "album": "Album",
+    "restaurantCategoryList": "Chọn ẩm thực theo quốc gia",
+    "cookingCategoryList": "Chọn thẻ món ăn",
+    "selectCountryTag": "Chọn thẻ quốc gia",
+    "selectFavoriteTag": "Chọn thẻ yêu thích",
+    "favoriteTagPlaceholder": "Chọn thẻ yêu thích của bạn",
+    "selectFoodTag": "Chọn thẻ món ăn",
+    "requiredInfoMissing": "Thông tin bắt buộc bị thiếu"
+  },
+  "share": {
+    "shareButton": "Chia sẻ",
+    "inviteMessage": "Chia sẻ món ăn ngon trên FoodGram!",
+    "textAndImage": "Chia sẻ với văn bản và hình ảnh",
+    "imageOnly": "Chia sẻ chỉ hình ảnh"
   },
   "edit": {
+    "editTitle": "Chỉnh sửa",
+    "editPostButton": "Sửa bài đăng",
     "updateButton": "Cập nhật",
     "bio": "Tiểu sử (tùy chọn)",
     "bioInputField": "Nhập tiểu sử",
     "favoriteTagTitle": "Chọn thẻ yêu thích"
   },
-  "emptyPosts": "Không có bài đăng nào",
   "search": {
     "emptyResult": "Không tìm thấy kết quả.",
     "button": "Tìm kiếm",
@@ -87,7 +129,6 @@
     "emptyHintLocation": "Bật vị trí để hiển thị kết quả gần đây trước",
     "emptyHintSearch": "Tìm kiếm theo tên nhà hàng hoặc loại ẩm thực"
   },
-  "unknown": "Không xác định・Không có kết quả",
   "profile": {
     "postCount": "Bài đăng",
     "pointCount": "Điểm",
@@ -95,9 +136,6 @@
     "exchangePointsButton": "Đổi điểm",
     "favoriteGenre": "Thể loại yêu thích"
   },
-  "likeButton": "Thích",
-  "shareReviewPrefix": "Vừa chia sẻ món đã ăn!",
-  "shareReviewSuffix": "Xem thêm tại foodGram!",
   "postDetailSheet": {
     "title": "Về bài đăng này",
     "shareButton": "Chia sẻ bài đăng này",
@@ -123,7 +161,6 @@
     "logoutDescription2": "Trạng thái tài khoản được lưu trên máy chủ.",
     "logoutButton": "Đăng xuất"
   },
-  "heartLimitMessage": "Đã đạt giới hạn 10 lượt thích hôm nay. Thử lại ngày mai.",
   "error": {
     "title": "Lỗi kết nối",
     "description1": "Đã xảy ra lỗi kết nối.",
@@ -151,10 +188,6 @@
     "title": "FoodGram",
     "subtitle": "Ăn × Chụp × Chia sẻ"
   },
-  "shareInviteMessage": "Chia sẻ món ăn ngon trên FoodGram!",
-  "agreeToTheTermsOfUse": "Vui lòng đồng ý với Điều khoản sử dụng",
-  "restaurantCategoryList": "Chọn ẩm thực theo quốc gia",
-  "cookingCategoryList": "Chọn thẻ món ăn",
   "restaurantReview": {
     "newLabel": "Mới",
     "viewDetails": "Xem chi tiết",
@@ -162,12 +195,6 @@
     "reviewList": "Danh sách đánh giá",
     "error": "Đã xảy ra lỗi"
   },
-  "nearbyRestaurants": "📍 Nhà hàng gần đây",
-  "seeMore": "Xem thêm",
-  "selectCountryTag": "Chọn thẻ quốc gia",
-  "selectFavoriteTag": "Chọn thẻ yêu thích",
-  "favoriteTagPlaceholder": "Chọn thẻ yêu thích của bạn",
-  "selectFoodTag": "Chọn thẻ món ăn",
   "tab": {
     "home": "Món ăn",
     "map": "Bản đồ",
@@ -188,27 +215,11 @@
     "japanSummary": "Tại Nhật, bữa ăn của bạn có ở {prefectures} tỉnh ✨",
     "worldSummary": "Trên thế giới, bữa ăn của bạn có ở {countries} quốc gia ✨"
   },
-  "dayUnit": "ngày",
   "mapViewType": {
     "record": "Ghi chép",
     "japan": "Nhật Bản",
     "world": "Thế giới"
   },
-  "logoutFailure": "Đăng xuất thất bại",
-  "accountDeletionFailure": "Xóa tài khoản thất bại",
-  "appleLoginFailure": "Đăng nhập Apple không khả dụng",
-  "emailAuthenticationFailure": "Xác thực email thất bại",
-  "loginError": "Lỗi đăng nhập",
-  "loginSuccessful": "Đăng nhập thành công",
-  "emailAuthentication": "Xác thực bằng email",
-  "emailEmpty": "Chưa nhập địa chỉ email",
-  "email": "Địa chỉ email",
-  "enterTheCorrectFormat": "Vui lòng nhập đúng định dạng",
-  "authInvalidFormat": "Định dạng địa chỉ email không đúng.",
-  "authSocketException": "Có vấn đề với mạng. Vui lòng kiểm tra kết nối.",
-  "camera": "Máy ảnh",
-  "album": "Album",
-  "snsLogin": "Đăng nhập SNS",
   "tutorial": {
     "firstPageTitle": "Khoảnh khắc ngon miệng",
     "firstPageSubTitle": "Mỗi bữa ăn đặc biệt hơn.\nKhám phá hương vị mới!",
@@ -225,7 +236,8 @@
     "locationButton": "Bật",
     "notificationTitle": "Bật thông báo!",
     "notificationSubTitle": "Lời nhắc cho bữa trưa và bữa tối",
-    "notificationButton": "Bật"
+    "notificationButton": "Bật",
+    "agreeToTheTermsOfUse": "Vui lòng đồng ý với Điều khoản sử dụng"
   },
   "detailMenu": {
     "share": "Chia sẻ",
@@ -239,6 +251,10 @@
     "buttonTitle": "Cập nhật"
   },
   "newAccount": {
+    "userName": "Tên người dùng",
+    "userNameInputField": "Tên người dùng (ví dụ: iseryu)",
+    "userId": "ID người dùng",
+    "userIdInputField": "ID người dùng (ví dụ: iseryuuu)",
     "importantTitle": "Lưu ý quan trọng",
     "important": "Khi tạo tài khoản, vui lòng không bao gồm thông tin cá nhân như địa chỉ email hoặc số điện thoại trong tên người dùng hoặc ID người dùng của bạn. Để đảm bảo trải nghiệm trực tuyến an toàn, hãy chọn tên không tiết lộ thông tin chi tiết cá nhân của bạn."
   },
@@ -246,9 +262,6 @@
     "success": "Đăng ký tài khoản hoàn tất",
     "error": "Đã xảy ra lỗi"
   },
-  "requiredInfoMissing": "Thông tin bắt buộc bị thiếu",
-  "shareTextAndImage": "Chia sẻ với văn bản và hình ảnh",
-  "shareImageOnly": "Chia sẻ chỉ hình ảnh",
   "foodCategory": {
     "noodles": "Mì",
     "meat": "Thịt",
@@ -305,7 +318,6 @@
     "mapTitle": "Tìm bằng bản đồ",
     "mapDesc": "Tìm nhà hàng nhanh hơn và dễ dàng hơn"
   },
-  "purchaseError": "Đã xảy ra lỗi trong quá trình mua",
   "anonymous": {
     "post": "Đăng ẩn danh",
     "postDescription": "Tên người dùng sẽ bị ẩn",
@@ -548,31 +560,20 @@
     "friedEgg": "Trứng chiên",
     "butter": "Bơ"
   },
-  "done": "Hoàn thành",
-  "save": "Lưu",
-  "searchFood": "Tìm kiếm món ăn",
-  "noResultsFound": "Không tìm thấy kết quả",
-  "searchCountry": "Tìm kiếm quốc gia",
-  "searchEmptyTitle": "Nhập tên nhà hàng để tìm kiếm",
-  "postErrorPickImage": "Chụp ảnh thất bại",
   "favoritePostEmpty": {
     "title": "Không có bài đăng đã lưu",
     "subtitle": "Lưu các bài đăng mà bạn quan tâm!"
   },
-  "userInfoFetchError": "Không thể lấy thông tin người dùng",
-  "saved": "Đã lưu",
-  "savedPosts": "Bài đăng đã lưu",
-  "postSaved": "Bài đăng đã được lưu",
-  "postSavedMessage": "Xem bài đăng đã lưu trong Trang của tôi",
-  "noMapAppAvailable": "Không có ứng dụng bản đồ khả dụng",
   "notification": {
+    "likeNotificationsTitle": "Thông báo lượt thích",
+    "loadFailed": "Tải thất bại",
+    "someoneLikedYourPost": "Ai đó đã thích bài viết của bạn.",
+    "userLikedYourPost": "{name} đã thích bài viết của bạn.",
     "lunchTitle": "#Bạn đã đăng bữa ăn hôm nay chưa? 🍜",
     "lunchBody": "Ghi lại bữa trưa hôm nay nhé!",
     "dinnerTitle": "#Bạn đã đăng bữa ăn hôm nay chưa? 🍛",
     "dinnerBody": "Đăng bữa ăn hôm nay và kết thúc ngày nhẹ nhàng 📷"
   },
-  "posted": "đã đăng",
-  "selectMapApp": "Chọn ứng dụng bản đồ",
   "mapApp": {
     "google": "Google Maps",
     "apple": "Apple Maps",
@@ -593,9 +594,5 @@
     "copy": "Sao chép",
     "copied": "Đã sao chép vào bộ nhớ tạm",
     "translateFailed": "Dịch không thành công"
-  },
-  "likeNotificationsTitle": "Thông báo lượt thích",
-  "loadFailed": "Tải thất bại",
-  "someoneLikedYourPost": "Ai đó đã thích bài viết của bạn.",
-  "userLikedYourPost": "{name} đã thích bài viết của bạn."
+  }
 }

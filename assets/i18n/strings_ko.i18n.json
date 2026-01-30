@@ -1,14 +1,46 @@
 {
+  "close": "닫기",
+  "cancel": "취소",
+  "registerButton": "등록",
+  "unregistered": "미등록",
+  "emptyPosts": "게시물이 없습니다",
+  "unknown": "알 수 없음・검색 결과 없음",
+  "likeButton": "좋아요",
+  "heartLimitMessage": "오늘의 좋아요 10개 한도에 도달했습니다. 내일 다시 시도해 주세요.",
+  "seeMore": "더 보기",
+  "dayUnit": "일",
+  "purchaseError": "구매 중 오류가 발생했습니다",
+  "done": "완료",
+  "save": "저장",
+  "searchFood": "음식 검색",
+  "noResultsFound": "검색 결과를 찾을 수 없습니다",
+  "searchCountry": "국가 검색",
+  "searchEmptyTitle": "레스토랑 이름을 입력하여 검색하세요",
+  "userInfoFetchError": "사용자 정보를 가져오는데 실패했습니다",
+  "noMapAppAvailable": "지도 앱을 사용할 수 없습니다",
+  "posted": "에 게시",
+  "selectMapApp": "지도 앱 선택",
+  "auth": {
+    "logoutFailure": "로그아웃 실패",
+    "accountDeletionFailure": "계정 삭제 실패",
+    "appleLoginFailure": "Apple 로그인을 사용할 수 없습니다",
+    "loginError": "로그인 오류",
+    "loginSuccessful": "로그인 성공",
+    "authSocketException": "네트워크에 문제가 있습니다. 연결을 확인해 주세요.",
+    "snsLogin": "SNS 로그인"
+  },
+  "stored": {
+    "saved": "저장됨",
+    "savedPosts": "저장된 게시물",
+    "postSaved": "게시물이 저장되었습니다",
+    "postSavedMessage": "마이페이지에서 저장된 게시물을 확인할 수 있습니다"
+  },
   "maybeNotFoodDialog": {
     "title": "잠깐 확인 🍽️",
     "text": "이 사진은 음식이 아닐 수도 있어요… 🤔\\n\\n그래도 게시하시겠어요?",
     "confirm": "계속하기",
     "delete": "이미지 삭제"
   },
-  "close": "닫기",
-  "cancel": "취소",
-  "editTitle": "편집",
-  "editPostButton": "게시물 편집",
   "setting": {
     "icon": "아이콘 선택",
     "appBar": "설정",
@@ -44,13 +76,6 @@
     "restore": "구매 복원",
     "premiumMembership": "프리미엄 회원이 되어 특별한 경험을"
   },
-  "userName": "사용자명",
-  "userNameInputField": "사용자명 (예: iseryu)",
-  "userId": "사용자 ID",
-  "userIdInputField": "사용자 ID (예: iseryuuu)",
-  "registerButton": "등록",
-  "unregistered": "미등록",
-  "shareButton": "공유",
   "post": {
     "foodName": "음식 이름",
     "foodNameInputField": "음식 이름 입력(필수)",
@@ -71,15 +96,32 @@
     "cameraPermission": "카메라 권한이 필요합니다",
     "albumPermission": "사진 라이브러리 권한이 필요합니다",
     "success": "게시 성공",
-    "searchError": "장소 이름을 검색할 수 없습니다"
+    "searchError": "장소 이름을 검색할 수 없습니다",
+    "errorPickImage": "사진 촬영에 실패했습니다",
+    "camera": "카메라",
+    "album": "앨범",
+    "restaurantCategoryList": "국가별 요리 선택",
+    "cookingCategoryList": "음식 태그 선택",
+    "selectCountryTag": "국가 태그 선택",
+    "selectFavoriteTag": "즐겨찾기 태그 선택",
+    "favoriteTagPlaceholder": "즐겨찾기 태그 선택",
+    "selectFoodTag": "음식 태그 선택",
+    "requiredInfoMissing": "필수 정보가 누락되었습니다"
+  },
+  "share": {
+    "shareButton": "공유",
+    "inviteMessage": "맛있는 음식을 FoodGram에서 공유해요!",
+    "textAndImage": "텍스트와 이미지로 공유",
+    "imageOnly": "이미지만 공유"
   },
   "edit": {
+    "editTitle": "편집",
+    "editPostButton": "게시물 편집",
     "updateButton": "업데이트",
     "bio": "소개 (선택사항)",
     "bioInputField": "소개 입력",
     "favoriteTagTitle": "즐겨찾기 태그 선택"
   },
-  "emptyPosts": "게시물이 없습니다",
   "search": {
     "emptyResult": "검색 결과를 찾을 수 없습니다.",
     "button": "검색",
@@ -87,7 +129,6 @@
     "emptyHintLocation": "위치를 켜면 가까운 결과가 먼저 표시됩니다",
     "emptyHintSearch": "레스토랑 이름이나 요리 유형으로 검색하세요"
   },
-  "unknown": "알 수 없음・검색 결과 없음",
   "profile": {
     "postCount": "게시물",
     "pointCount": "포인트",
@@ -95,9 +136,6 @@
     "exchangePointsButton": "포인트 교환",
     "favoriteGenre": "즐겨찾기 장르"
   },
-  "likeButton": "좋아요",
-  "shareReviewPrefix": "먹은 것의 리뷰를 공유했습니다!",
-  "shareReviewSuffix": "더 자세한 내용은 foodGram에서 확인해보세요!",
   "postDetailSheet": {
     "title": "이 게시물에 대해",
     "shareButton": "이 게시물 공유",
@@ -123,7 +161,6 @@
     "logoutDescription2": "계정 상태는 서버에 저장됩니다.",
     "logoutButton": "로그아웃"
   },
-  "heartLimitMessage": "오늘의 좋아요 10개 한도에 도달했습니다. 내일 다시 시도해 주세요.",
   "error": {
     "title": "통신 오류",
     "description1": "연결 오류가 발생했습니다.",
@@ -151,10 +188,6 @@
     "title": "FoodGram",
     "subtitle": "먹기 × 찍기 × 공유"
   },
-  "shareInviteMessage": "맛있는 음식을 FoodGram에서 공유해요!",
-  "agreeToTheTermsOfUse": "이용약관에 동의해 주세요",
-  "restaurantCategoryList": "국가별 요리 선택",
-  "cookingCategoryList": "음식 태그 선택",
   "restaurantReview": {
     "newLabel": "신규",
     "viewDetails": "자세히 보기",
@@ -162,12 +195,6 @@
     "reviewList": "리뷰 목록",
     "error": "오류가 발생했습니다"
   },
-  "nearbyRestaurants": "📍주변 레스토랑",
-  "seeMore": "더 보기",
-  "selectCountryTag": "국가 태그 선택",
-  "selectFavoriteTag": "즐겨찾기 태그 선택",
-  "favoriteTagPlaceholder": "즐겨찾기 태그 선택",
-  "selectFoodTag": "음식 태그 선택",
   "tab": {
     "home": "음식",
     "map": "지도",
@@ -188,27 +215,11 @@
     "japanSummary": "일본에서는 {prefectures}개 도도부현에 당신의 식사가 남아 있어요 ✨",
     "worldSummary": "세계에서는 {countries}개 국가에 당신의 식사가 남아 있어요 ✨"
   },
-  "dayUnit": "일",
   "mapViewType": {
     "record": "기록",
     "japan": "일본",
     "world": "세계"
   },
-  "logoutFailure": "로그아웃 실패",
-  "accountDeletionFailure": "계정 삭제 실패",
-  "appleLoginFailure": "Apple 로그인을 사용할 수 없습니다",
-  "emailAuthenticationFailure": "이메일 인증 실패",
-  "loginError": "로그인 오류",
-  "loginSuccessful": "로그인 성공",
-  "emailAuthentication": "이메일 앱으로 인증하세요",
-  "emailEmpty": "이메일 주소가 입력되지 않았습니다",
-  "email": "이메일 주소",
-  "enterTheCorrectFormat": "올바른 형식으로 입력해 주세요",
-  "authInvalidFormat": "이메일 주소 형식이 잘못되었습니다.",
-  "authSocketException": "네트워크에 문제가 있습니다. 연결을 확인해 주세요.",
-  "camera": "카메라",
-  "album": "앨범",
-  "snsLogin": "SNS 로그인",
   "tutorial": {
     "firstPageTitle": "맛있는 순간을 공유하세요",
     "firstPageSubTitle": "FoodGram으로 매 식사가 더욱 특별해집니다.\n새로운 맛을 발견하는 즐거움을 경험하세요!",
@@ -225,7 +236,8 @@
     "locationButton": "위치 활성화",
     "notificationTitle": "알림을 켜세요!",
     "notificationSubTitle": "점심/저녁 시간에 알림을 보냅니다",
-    "notificationButton": "알림 활성화"
+    "notificationButton": "알림 활성화",
+    "agreeToTheTermsOfUse": "이용약관에 동의해 주세요"
   },
   "detailMenu": {
     "share": "공유",
@@ -239,6 +251,10 @@
     "buttonTitle": "업데이트"
   },
   "newAccount": {
+    "userName": "사용자명",
+    "userNameInputField": "사용자명 (예: iseryu)",
+    "userId": "사용자 ID",
+    "userIdInputField": "사용자 ID (예: iseryuuu)",
     "importantTitle": "중요한 참고사항",
     "important": "계정을 만들 때 사용자명이나 사용자 ID에 이메일 주소나 전화번호와 같은 개인정보를 포함하지 마세요. 안전한 온라인 경험을 위해 개인정보가 드러나지 않는 이름을 선택하세요."
   },
@@ -246,9 +262,6 @@
     "success": "계정 등록이 완료되었습니다",
     "error": "오류가 발생했습니다"
   },
-  "requiredInfoMissing": "필수 정보가 누락되었습니다",
-  "shareTextAndImage": "텍스트와 이미지로 공유",
-  "shareImageOnly": "이미지만 공유",
   "foodCategory": {
     "noodles": "면류",
     "meat": "고기",
@@ -305,7 +318,6 @@
     "mapTitle": "지도로 찾기",
     "mapDesc": "식당을 더 빠르고 쉽게 찾기"
   },
-  "purchaseError": "구매 중 오류가 발생했습니다",
   "anonymous": {
     "post": "익명으로 게시",
     "postDescription": "사용자명이 숨겨집니다",
@@ -548,31 +560,20 @@
     "friedEgg": "계란프라이",
     "butter": "버터"
   },
-  "done": "완료",
-  "save": "저장",
-  "searchFood": "음식 검색",
-  "noResultsFound": "검색 결과를 찾을 수 없습니다",
-  "searchCountry": "국가 검색",
-  "searchEmptyTitle": "레스토랑 이름을 입력하여 검색하세요",
-  "postErrorPickImage": "사진 촬영에 실패했습니다",
   "favoritePostEmpty": {
     "title": "저장된 게시물이 없습니다",
     "subtitle": "관심 있는 게시물을 저장해보세요!"
   },
-  "userInfoFetchError": "사용자 정보를 가져오는데 실패했습니다",
-  "saved": "저장됨",
-  "savedPosts": "저장된 게시물",
-  "postSaved": "게시물이 저장되었습니다",
-  "postSavedMessage": "마이페이지에서 저장된 게시물을 확인할 수 있습니다",
-  "noMapAppAvailable": "지도 앱을 사용할 수 없습니다",
   "notification": {
+    "likeNotificationsTitle": "좋아요 알림",
+    "loadFailed": "불러오기에 실패했어요",
+    "someoneLikedYourPost": "누군가가 당신의 게시글을 좋아합니다.",
+    "userLikedYourPost": "{name}님이 당신의 게시글을 좋아합니다.",
     "lunchTitle": "#오늘의 식사, 이미 올렸나요? 🍜",
     "lunchBody": "오늘의 점심, 맛을 까먹기 전에 기록해볼까요?",
     "dinnerTitle": "#오늘의 식사, 이미 올렸나요? 🍛",
     "dinnerBody": "오늘의 식사를 올리고 하루를 편안하게 마무리해보세요 📷"
   },
-  "posted": "에 게시",
-  "selectMapApp": "지도 앱 선택",
   "mapApp": {
     "google": "구글 맵",
     "apple": "애플 맵",
@@ -593,9 +594,5 @@
     "copy": "복사",
     "copied": "클립보드에 복사됨",
     "translateFailed": "번역에 실패했습니다"
-  },
-  "likeNotificationsTitle": "좋아요 알림",
-  "loadFailed": "불러오기에 실패했어요",
-  "someoneLikedYourPost": "누군가가 당신의 게시글을 좋아합니다.",
-  "userLikedYourPost": "{name}님이 당신의 게시글을 좋아합니다."
+  }
 }

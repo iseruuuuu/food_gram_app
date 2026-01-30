@@ -36,7 +36,7 @@ class AppShareModalSheet extends StatelessWidget {
                     sharePost();
                   },
                   child: Text(
-                    Translations.of(context).shareTextAndImage,
+                    Translations.of(context).share.textAndImage,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -55,7 +55,7 @@ class AppShareModalSheet extends StatelessWidget {
                   shareOnlyPost();
                 },
                 child: Text(
-                  Translations.of(context).shareImageOnly,
+                  Translations.of(context).share.imageOnly,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,

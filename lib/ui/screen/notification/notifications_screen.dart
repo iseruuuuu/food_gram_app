@@ -19,7 +19,7 @@ class NotificationsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          Translations.of(context).likeNotificationsTitle,
+          Translations.of(context).notification.likeNotificationsTitle,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
@@ -40,7 +40,7 @@ class NotificationsScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, __) => Center(
           child: Text(
-            Translations.of(context).loadFailed,
+            Translations.of(context).notification.loadFailed,
             style: const TextStyle(color: Colors.black54),
           ),
         ),
@@ -78,7 +78,11 @@ class NotificationsScreen extends ConsumerWidget {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 title: likerUserId == null
-                    ? Text(Translations.of(context).someoneLikedYourPost)
+                    ? Text(
+                        Translations.of(context)
+                            .notification
+                            .someoneLikedYourPost,
+                      )
                     : FutureBuilder<Map<String, dynamic>>(
                         future: ref
                             .read(detailPostRepositoryProvider.notifier)
@@ -90,6 +94,7 @@ class NotificationsScreen extends ConsumerWidget {
                               '誰か';
                           return Text(
                             Translations.of(context)
+                                .notification
                                 .userLikedYourPost
                                 .replaceAll('{name}', name),
                             style: const TextStyle(

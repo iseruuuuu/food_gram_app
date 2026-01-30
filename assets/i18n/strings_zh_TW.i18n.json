@@ -1,14 +1,46 @@
 {
+  "close": "關閉",
+  "cancel": "取消",
+  "registerButton": "註冊",
+  "unregistered": "未註冊",
+  "emptyPosts": "暫無貼文",
+  "unknown": "未知・無結果",
+  "likeButton": "按讚",
+  "heartLimitMessage": "您已達到今天10個讚的限制。請明天再試。",
+  "seeMore": "查看更多",
+  "dayUnit": "天",
+  "purchaseError": "購買過程中發生錯誤",
+  "done": "完成",
+  "save": "儲存",
+  "searchFood": "搜尋食物",
+  "noResultsFound": "未找到搜尋結果",
+  "searchCountry": "搜尋國家",
+  "searchEmptyTitle": "輸入餐廳名稱進行搜尋",
+  "userInfoFetchError": "取得使用者資訊失敗",
+  "noMapAppAvailable": "沒有可用的地圖應用程式",
+  "posted": "發布",
+  "selectMapApp": "選擇地圖應用程式",
+  "auth": {
+    "logoutFailure": "登出失敗",
+    "accountDeletionFailure": "帳戶刪除失敗",
+    "appleLoginFailure": "Apple登入不可用",
+    "loginError": "登入錯誤",
+    "loginSuccessful": "登入成功",
+    "authSocketException": "網路有問題。請檢查連線。",
+    "snsLogin": "SNS登入"
+  },
+  "stored": {
+    "saved": "已儲存",
+    "savedPosts": "儲存的貼文",
+    "postSaved": "貼文已儲存",
+    "postSavedMessage": "您可以在我的頁面查看儲存的貼文"
+  },
   "maybeNotFoodDialog": {
     "title": "稍作確認 🍽️",
     "text": "這張照片可能不是食物… 🤔\\n\\n仍要發布嗎？",
     "confirm": "繼續",
     "delete": "刪除圖片"
   },
-  "close": "關閉",
-  "cancel": "取消",
-  "editTitle": "編輯",
-  "editPostButton": "編輯貼文",
   "setting": {
     "icon": "選擇圖示",
     "appBar": "設定",
@@ -44,13 +76,6 @@
     "restore": "還原購買",
     "premiumMembership": "成為進階會員，享受特別體驗"
   },
-  "userName": "使用者名稱",
-  "userNameInputField": "使用者名稱（例如：iseryu）",
-  "userId": "使用者ID",
-  "userIdInputField": "使用者ID（例如：iseryuuu）",
-  "registerButton": "註冊",
-  "unregistered": "未註冊",
-  "shareButton": "分享",
   "post": {
     "foodName": "食物名稱",
     "foodNameInputField": "輸入食物名稱（必填）",
@@ -71,15 +96,32 @@
     "cameraPermission": "需要相機權限",
     "albumPermission": "需要照片庫權限",
     "success": "發布成功",
-    "searchError": "無法搜尋地點名稱"
+    "searchError": "無法搜尋地點名稱",
+    "errorPickImage": "拍照失敗",
+    "camera": "相機",
+    "album": "相簿",
+    "restaurantCategoryList": "依國家選擇菜系",
+    "cookingCategoryList": "選擇食物標籤",
+    "selectCountryTag": "選擇國家標籤",
+    "selectFavoriteTag": "選擇收藏標籤",
+    "favoriteTagPlaceholder": "選擇您的收藏標籤",
+    "selectFoodTag": "選擇食物標籤",
+    "requiredInfoMissing": "缺少必要資訊"
+  },
+  "share": {
+    "shareButton": "分享",
+    "inviteMessage": "在 FoodGram 分享美味吧！",
+    "textAndImage": "分享文字和圖片",
+    "imageOnly": "僅分享圖片"
   },
   "edit": {
+    "editTitle": "編輯",
+    "editPostButton": "編輯貼文",
     "updateButton": "更新",
     "bio": "個人簡介（選填）",
     "bioInputField": "輸入個人簡介",
     "favoriteTagTitle": "選擇收藏標籤"
   },
-  "emptyPosts": "暫無貼文",
   "search": {
     "emptyResult": "未找到搜尋結果。",
     "button": "搜尋",
@@ -87,7 +129,6 @@
     "emptyHintLocation": "開啟位置資訊可優先顯示附近結果",
     "emptyHintSearch": "可透過餐廳名稱或菜系類型搜尋"
   },
-  "unknown": "未知・無結果",
   "profile": {
     "postCount": "貼文",
     "pointCount": "積分",
@@ -95,9 +136,6 @@
     "exchangePointsButton": "兌換積分",
     "favoriteGenre": "收藏類型"
   },
-  "likeButton": "按讚",
-  "shareReviewPrefix": "剛剛分享了我吃的美食評論！",
-  "shareReviewSuffix": "更多內容，請查看foodGram！",
   "postDetailSheet": {
     "title": "關於此貼文",
     "shareButton": "分享此貼文",
@@ -123,7 +161,6 @@
     "logoutDescription2": "帳戶狀態儲存在伺服器上。",
     "logoutButton": "登出"
   },
-  "heartLimitMessage": "您已達到今天10個讚的限制。請明天再試。",
   "error": {
     "title": "通訊錯誤",
     "description1": "發生連線錯誤。",
@@ -151,10 +188,6 @@
     "title": "FoodGram",
     "subtitle": "分享您的美味時刻"
   },
-  "shareInviteMessage": "在 FoodGram 分享美味吧！",
-  "agreeToTheTermsOfUse": "請同意使用條款",
-  "restaurantCategoryList": "依國家選擇菜系",
-  "cookingCategoryList": "選擇食物標籤",
   "restaurantReview": {
     "newLabel": "新",
     "viewDetails": "查看詳情",
@@ -162,12 +195,6 @@
     "reviewList": "評論列表",
     "error": "發生錯誤"
   },
-  "nearbyRestaurants": "📍附近餐廳",
-  "seeMore": "查看更多",
-  "selectCountryTag": "選擇國家標籤",
-  "selectFavoriteTag": "選擇收藏標籤",
-  "favoriteTagPlaceholder": "選擇您的收藏標籤",
-  "selectFoodTag": "選擇食物標籤",
   "tab": {
     "home": "美食",
     "map": "地圖",
@@ -188,27 +215,11 @@
     "japanSummary": "在日本，你的餐點遍佈 {prefectures} 個都道府縣✨",
     "worldSummary": "在世界，你的餐點遍佈 {countries} 個國家✨"
   },
-  "dayUnit": "天",
   "mapViewType": {
     "record": "記錄",
     "japan": "日本",
     "world": "世界"
   },
-  "logoutFailure": "登出失敗",
-  "accountDeletionFailure": "帳戶刪除失敗",
-  "appleLoginFailure": "Apple登入不可用",
-  "emailAuthenticationFailure": "電子郵件認證失敗",
-  "loginError": "登入錯誤",
-  "loginSuccessful": "登入成功",
-  "emailAuthentication": "請透過您的電子郵件應用程式進行認證",
-  "emailEmpty": "未輸入電子郵件地址",
-  "email": "電子郵件地址",
-  "enterTheCorrectFormat": "請輸入正確格式",
-  "authInvalidFormat": "電子郵件地址格式不正確。",
-  "authSocketException": "網路有問題。請檢查連線。",
-  "camera": "相機",
-  "album": "相簿",
-  "snsLogin": "SNS登入",
   "tutorial": {
     "firstPageTitle": "分享您的美味時刻",
     "firstPageSubTitle": "透過FoodGram，讓每頓飯都更加特別。\n享受發現新口味的樂趣！",
@@ -225,7 +236,8 @@
     "locationButton": "開啟位置",
     "notificationTitle": "開啟通知！",
     "notificationSubTitle": "我們將在午餐和晚餐時間發送提醒",
-    "notificationButton": "開啟通知"
+    "notificationButton": "開啟通知",
+    "agreeToTheTermsOfUse": "請同意使用條款"
   },
   "detailMenu": {
     "share": "分享",
@@ -239,6 +251,10 @@
     "buttonTitle": "更新"
   },
   "newAccount": {
+    "userName": "使用者名稱",
+    "userNameInputField": "使用者名稱（例如：iseryu）",
+    "userId": "使用者ID",
+    "userIdInputField": "使用者ID（例如：iseryuuu）",
     "importantTitle": "重要提示",
     "important": "建立帳戶時，請不要在使用者名稱或使用者ID中包含電子郵件地址或電話號碼等個人資訊。為確保安全的線上體驗，請選擇不會洩露個人資訊的名稱。"
   },
@@ -246,9 +262,6 @@
     "success": "帳戶註冊完成",
     "error": "發生錯誤"
   },
-  "requiredInfoMissing": "缺少必要資訊",
-  "shareTextAndImage": "分享文字和圖片",
-  "shareImageOnly": "僅分享圖片",
   "foodCategory": {
     "noodles": "麵條",
     "meat": "肉類",
@@ -305,7 +318,6 @@
     "mapTitle": "地圖查找",
     "mapDesc": "更快更容易找到餐廳"
   },
-  "purchaseError": "購買過程中發生錯誤",
   "anonymous": {
     "post": "匿名發布",
     "postDescription": "使用者名稱將被隱藏",
@@ -548,31 +560,20 @@
     "friedEgg": "煎蛋",
     "butter": "奶油"
   },
-  "done": "完成",
-  "save": "儲存",
-  "searchFood": "搜尋食物",
-  "noResultsFound": "未找到搜尋結果",
-  "searchCountry": "搜尋國家",
-  "searchEmptyTitle": "輸入餐廳名稱進行搜尋",
-  "postErrorPickImage": "拍照失敗",
   "favoritePostEmpty": {
     "title": "沒有儲存的貼文",
     "subtitle": "儲存您感興趣的貼文吧！"
   },
-  "userInfoFetchError": "取得使用者資訊失敗",
-  "saved": "已儲存",
-  "savedPosts": "儲存的貼文",
-  "postSaved": "貼文已儲存",
-  "postSavedMessage": "您可以在我的頁面查看儲存的貼文",
-  "noMapAppAvailable": "沒有可用的地圖應用程式",
   "notification": {
+    "likeNotificationsTitle": "按讚通知",
+    "loadFailed": "載入失敗",
+    "someoneLikedYourPost": "有人對你的貼文按了讚。",
+    "userLikedYourPost": "{name} 對你的貼文按了讚。",
     "lunchTitle": "#今天的飯菜，已經發了嗎？🍜",
     "lunchBody": "今天的午餐，趁還記得的時候記錄一下吧？",
     "dinnerTitle": "#今天的飯菜，已經發了嗎？🍛",
     "dinnerBody": "發布今天的飯菜，輕鬆結束這一天吧📷"
   },
-  "posted": "發布",
-  "selectMapApp": "選擇地圖應用程式",
   "mapApp": {
     "google": "Google地圖",
     "apple": "Apple地圖",
@@ -593,9 +594,5 @@
     "copy": "複製",
     "copied": "已複製到剪貼簿",
     "translateFailed": "翻譯失敗"
-  },
-  "likeNotificationsTitle": "按讚通知",
-  "loadFailed": "載入失敗",
-  "someoneLikedYourPost": "有人對你的貼文按了讚。",
-  "userLikedYourPost": "{name} 對你的貼文按了讚。"
+  }
 }

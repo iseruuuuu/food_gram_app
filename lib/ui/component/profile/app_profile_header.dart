@@ -311,7 +311,7 @@ class AppProfileHeader extends ConsumerWidget {
                                                   users.tag,
                                                   context,
                                                 )
-                                            : t.selectFoodTag,
+                                            : t.post.selectFoodTag,
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,

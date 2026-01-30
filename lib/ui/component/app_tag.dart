@@ -96,7 +96,7 @@ class AppFoodTag extends HookWidget {
                         ),
                         const Spacer(),
                         Text(
-                          Translations.of(context).selectFoodTag,
+                          Translations.of(context).post.selectFoodTag,
                           style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
@@ -507,7 +507,7 @@ class AppCountryTag extends HookWidget {
                         ),
                         const Spacer(),
                         Text(
-                          Translations.of(context).selectCountryTag,
+                          Translations.of(context).post.selectCountryTag,
                           style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
@@ -690,7 +690,7 @@ class AppCountryTag extends HookWidget {
                     Expanded(
                       child: countryTag.isEmpty
                           ? Text(
-                              Translations.of(context).selectCountryTag,
+                              Translations.of(context).post.selectCountryTag,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
