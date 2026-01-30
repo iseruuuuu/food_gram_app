@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/theme/style/restaurant_style.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/i18n/strings.g.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';

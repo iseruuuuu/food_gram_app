@@ -12,7 +12,7 @@ import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/i18n/strings.g.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_premium_membership_card.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';

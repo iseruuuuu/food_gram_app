@@ -5,7 +5,7 @@ import 'package:food_gram_app/core/supabase/auth/services/auth_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/i18n/strings.g.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_state.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:new_version_plus/new_version_plus.dart';

@@ -4,7 +4,7 @@ import 'package:food_gram_app/core/api/restaurant/repository/google_restaurant_r
 import 'package:food_gram_app/core/api/restaurant/repository/kakao_restaurant_repository.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/theme/style/restaurant_style.dart';
-import 'package:food_gram_app/i18n/strings.g.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';

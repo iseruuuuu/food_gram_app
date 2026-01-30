@@ -5,7 +5,7 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/i18n/strings.g.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/dialog/app_profile_dialog.dart';
 import 'package:food_gram_app/ui/component/profile/app_profile_image.dart';

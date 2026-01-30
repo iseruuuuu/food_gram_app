@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/i18n/strings.g.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 
 class AppErrorWidget extends StatelessWidget {

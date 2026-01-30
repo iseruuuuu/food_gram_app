@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
-import 'package:food_gram_app/i18n/strings.g.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:go_router/go_router.dart';
 
 class AppDetailMasterModalSheet extends ConsumerWidget {

@@ -5,7 +5,7 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
-import 'package:food_gram_app/i18n/strings.g.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

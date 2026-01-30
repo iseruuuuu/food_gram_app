@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/app.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/env.dart';
-import 'package:food_gram_app/i18n/strings.g.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

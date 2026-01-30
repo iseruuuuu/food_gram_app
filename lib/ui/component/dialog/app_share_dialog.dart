@@ -4,7 +4,7 @@ import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
-import 'package:food_gram_app/i18n/strings.g.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_share_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:gap/gap.dart';

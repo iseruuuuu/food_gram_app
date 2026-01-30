@@ -6,7 +6,7 @@ import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/theme/style/edit_style.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/i18n/strings.g.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_icon.dart';
 import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';

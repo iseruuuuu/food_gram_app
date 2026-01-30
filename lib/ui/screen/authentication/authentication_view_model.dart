@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/supabase/auth/services/auth_service.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/i18n/strings.g.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_state.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

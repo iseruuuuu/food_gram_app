@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/i18n/strings.g.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 
 final Set<String> countryEmojis = {
   '🇯🇵', '🇮🇹', '🇫🇷', '🇨🇳', '🇮🇳', '🇲🇽', '🇭🇰', '🇺🇸', '🇲🇹', '🇹🇭', '🇬🇷', '🇹🇷', '🇰🇷', '🇷🇺', '🇪🇸', '🇻🇳', '🇵🇹', '🇦🇹', '🇧🇪', '🇸🇪',

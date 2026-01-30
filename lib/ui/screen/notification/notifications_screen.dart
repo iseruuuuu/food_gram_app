@@ -5,7 +5,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/notification/repository/notification_repository.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
-import 'package:food_gram_app/i18n/strings.g.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:go_router/go_router.dart';
