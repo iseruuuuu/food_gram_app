@@ -9,7 +9,6 @@
   "cancel": "ยกเลิก",
   "editTitle": "แก้ไข",
   "editPostButton": "แก้โพสต์",
-  "emailInputField": "กรอกอีเมล",
   "setting": {
     "icon": "เลือกไอคอน",
     "appBar": "การตั้งค่า",
@@ -84,13 +83,6 @@
   "search": {
     "emptyResult": "ไม่พบผลลัพธ์",
     "button": "ค้นหา",
-    "title": "ค้นหา",
-    "restaurantTitle": "ค้นหาร้านอาหาร",
-    "userTitle": "ค้นหาผู้ใช้",
-    "userHeader": "ค้นหาผู้ใช้",
-    "userPostCount": "โพสต์: {count}",
-    "userLatestPosts": "โพสต์ล่าสุด",
-    "userNoUsers": "ไม่พบผู้ใช้ที่มีโพสต์",
     "emptyHintTitle": "เคล็ดลับการค้นหา",
     "emptyHintLocation": "เปิดใช้งานตำแหน่งเพื่อแสดงผลลัพธ์ใกล้ๆ ก่อน",
     "emptyHintSearch": "ค้นหาตามชื่อร้านอาหารหรือประเภทอาหาร"
@@ -307,18 +299,11 @@
     "newFeatures": "ฟีเจอร์พิเศษสำหรับพรีเมียมใหม่\nเร็วๆ นี้!",
     "subscribeButton": "เป็นพรีเมียม",
     "price": "รายเดือน {price} / เดือน",
-    "cancelNote": "ยกเลิกได้ตลอดเวลา",
     "welcomeTitle": "ยินดีต้อนรับสู่\nFoodGram Premium!",
     "skip": "ข้าม",
     "tagline": "✨ อัปเกรดประสบการณ์อาหารของคุณ ✨",
     "mapTitle": "ค้นหาด้วยแผนที่",
-    "mapDesc": "ค้นหาร้านอาหารได้เร็วและง่ายขึ้น",
-    "rankTitle": "รับตำแหน่งเมื่อคุณโพสต์มากขึ้น",
-    "rankDesc": "ตำแหน่งอัปเกรดตามจำนวนโพสต์ของคุณ",
-    "genreTitle": "ตั้งค่าประเภทที่คุณชื่นชอบ",
-    "genreDesc": "ปรับแต่งสไตล์โปรไฟล์ของคุณ",
-    "customIconTitle": "ใช้รูปภาพใดก็ได้เป็นไอคอนของคุณ",
-    "customIconDesc": "โดดเด่นจากผู้โพสต์คนอื่นๆ"
+    "mapDesc": "ค้นหาร้านอาหารได้เร็วและง่ายขึ้น"
   },
   "purchaseError": "เกิดข้อผิดพลาดระหว่างการซื้อ",
   "anonymous": {

@@ -9,7 +9,6 @@
   "cancel": "取消",
   "editTitle": "编辑",
   "editPostButton": "编辑帖子",
-  "emailInputField": "请输入您的邮箱地址",
   "setting": {
     "icon": "选择图标",
     "appBar": "设置",
@@ -84,13 +83,6 @@
   "search": {
     "emptyResult": "未找到搜索结果。",
     "button": "搜索",
-    "title": "搜索",
-    "restaurantTitle": "搜索餐厅",
-    "userTitle": "用户搜索",
-    "userHeader": "用户搜索（按帖子数量）",
-    "userPostCount": "帖子数: {count}",
-    "userLatestPosts": "最新帖子",
-    "userNoUsers": "没有找到有帖子的用户",
     "emptyHintTitle": "搜索提示",
     "emptyHintLocation": "开启位置信息可优先显示附近结果",
     "emptyHintSearch": "可通过餐厅名称或菜系类型搜索"
@@ -307,18 +299,11 @@
     "newFeatures": "高级会员专属新功能\n即将推出！",
     "subscribeButton": "成为高级会员",
     "price": "每月 {price} / 月",
-    "cancelNote": "随时可取消",
     "welcomeTitle": "欢迎加入\nFoodGram会员！",
     "skip": "跳过",
     "tagline": "✨ 升级你的美食体验 ✨",
     "mapTitle": "地图查找",
-    "mapDesc": "更快更容易找到餐厅",
-    "rankTitle": "发帖越多获得称号",
-    "rankDesc": "称号会随帖子数量升级",
-    "genreTitle": "设置喜爱类别",
-    "genreDesc": "让个人资料更有风格",
-    "customIconTitle": "用任意图片做头像",
-    "customIconDesc": "更显眼，脱颖而出"
+    "mapDesc": "更快更容易找到餐厅"
   },
   "purchaseError": "购买过程中发生错误",
   "anonymous": {

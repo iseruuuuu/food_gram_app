@@ -9,7 +9,6 @@
   "cancel": "取消",
   "editTitle": "編輯",
   "editPostButton": "編輯貼文",
-  "emailInputField": "請輸入您的電子郵件地址",
   "setting": {
     "icon": "選擇圖示",
     "appBar": "設定",
@@ -84,13 +83,6 @@
   "search": {
     "emptyResult": "未找到搜尋結果。",
     "button": "搜尋",
-    "title": "搜尋",
-    "restaurantTitle": "搜尋餐廳",
-    "userTitle": "使用者搜尋",
-    "userHeader": "使用者搜尋（依貼文數量）",
-    "userPostCount": "貼文數: {count}",
-    "userLatestPosts": "最新貼文",
-    "userNoUsers": "沒有找到有貼文的使用者",
     "emptyHintTitle": "搜尋提示",
     "emptyHintLocation": "開啟位置資訊可優先顯示附近結果",
     "emptyHintSearch": "可透過餐廳名稱或菜系類型搜尋"
@@ -307,18 +299,11 @@
     "newFeatures": "進階會員專屬新功能\n即將推出！",
     "subscribeButton": "成為進階會員",
     "price": "每月 {price} / 月",
-    "cancelNote": "隨時可取消",
     "welcomeTitle": "歡迎加入\nFoodGram會員！",
     "skip": "跳過",
     "tagline": "✨ 升級你的美食體驗 ✨",
     "mapTitle": "地圖查找",
-    "mapDesc": "更快更容易找到餐廳",
-    "rankTitle": "發文越多獲得稱號",
-    "rankDesc": "稱號會隨貼文數量升級",
-    "genreTitle": "設定喜愛類別",
-    "genreDesc": "讓個人資料更有風格",
-    "customIconTitle": "用任意圖片做頭像",
-    "customIconDesc": "更顯眼，脫穎而出"
+    "mapDesc": "更快更容易找到餐廳"
   },
   "purchaseError": "購買過程中發生錯誤",
   "anonymous": {

@@ -9,7 +9,6 @@
   "cancel": "キャンセル",
   "editTitle": "編集",
   "editPostButton": "編集する",
-  "emailInputField": "メールアドレスを入力してください",
   "setting": {
     "icon": "アイコンの設定",
     "appBar": "基本設定",
@@ -84,13 +83,6 @@
   "search": {
     "emptyResult": "該当する場所が見つかりませんでした",
     "button": "検索",
-    "title": "検索",
-    "restaurantTitle": "レストランを探す",
-    "userTitle": "ユーザー検索",
-    "userHeader": "ユーザー検索（投稿数順）",
-    "userPostCount": "投稿数: {count}件",
-    "userLatestPosts": "最新の投稿",
-    "userNoUsers": "投稿しているユーザーがいません",
     "emptyHintTitle": "検索のヒント",
     "emptyHintLocation": "位置情報をオンにすると近い順で表示します",
     "emptyHintSearch": "店舗名や料理ジャンルで検索できます"
@@ -307,18 +299,11 @@
     "newFeatures": "プレミアム会員限定の新機能を\n随時リリース予定！",
     "subscribeButton": "プレミアム会員になる",
     "price": "月額 {price} / 月",
-    "cancelNote": "いつでも解約可能",
     "welcomeTitle": "Welcome to\nFoodGram Members!",
     "skip": "スキップ",
     "tagline": "✨️ あなたの食事体験をもっと豪華に ✨️",
     "mapTitle": "衛生地図でレストランを探せる",
-    "mapDesc": "より快適に楽しく見つけることができる",
-    "rankTitle": "投稿数に応じて称号がもらえる",
-    "rankDesc": "投稿数が増えると称号が変わる",
-    "genreTitle": "好きなジャンルを設定可能に",
-    "genreDesc": "設定してよりおしゃれなプロフィールに",
-    "customIconTitle": "アイコンを好きな画像に変更可能",
-    "customIconDesc": "他の投稿者よりも目立つようになる"
+    "mapDesc": "より快適に楽しく見つけることができる"
   },
   "purchaseError": "購入処理中にエラーが発生しました",
   "anonymous": {

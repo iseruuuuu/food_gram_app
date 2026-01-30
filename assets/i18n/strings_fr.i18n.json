@@ -9,7 +9,6 @@
   "cancel": "Annuler",
   "editTitle": "Modifier",
   "editPostButton": "Modifier la Publication",
-  "emailInputField": "Entrez votre adresse e-mail",
   "setting": {
     "icon": "Sélectionner l'icône",
     "appBar": "Paramètres",
@@ -84,13 +83,6 @@
   "search": {
     "emptyResult": "Aucun résultat trouvé pour votre recherche.",
     "button": "Recherche",
-    "title": "Rechercher",
-    "restaurantTitle": "Rechercher des restaurants",
-    "userTitle": "Recherche d'utilisateurs",
-    "userHeader": "Utilisateurs (par posts)",
-    "userPostCount": "Publications: {count}",
-    "userLatestPosts": "Dernières publications",
-    "userNoUsers": "Aucun utilisateur avec des publications trouvé",
     "emptyHintTitle": "Conseils de recherche",
     "emptyHintLocation": "Activez l'emplacement pour afficher d'abord les résultats à proximité",
     "emptyHintSearch": "Recherchez par nom de restaurant ou type de cuisine"
@@ -307,18 +299,11 @@
     "newFeatures": "Nouvelles fonctionnalités exclusives premium\nbientôt disponibles !",
     "subscribeButton": "Devenir membre premium",
     "price": "mensuel {price} / mois",
-    "cancelNote": "Annuler à tout moment",
     "welcomeTitle": "Bienvenue chez\nFoodGram Members !",
     "skip": "Passer",
     "tagline": "✨ Améliore ton expérience culinaire ✨",
     "mapTitle": "Chercher avec la carte",
-    "mapDesc": "Trouve des restaurants plus vite et plus facilement",
-    "rankTitle": "Gagne des titres en publiant plus",
-    "rankDesc": "Les titres évoluent avec ton nombre de posts",
-    "genreTitle": "Définis tes genres favoris",
-    "genreDesc": "Personnalise davantage ton profil",
-    "customIconTitle": "Utilise une image comme icône",
-    "customIconDesc": "Démarque-toi des autres auteurs"
+    "mapDesc": "Trouve des restaurants plus vite et plus facilement"
   },
   "purchaseError": "Une erreur s'est produite lors de l'achat",
   "anonymous": {

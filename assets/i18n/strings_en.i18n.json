@@ -9,7 +9,6 @@
   "cancel": "Cancel",
   "editTitle": "Edit",
   "editPostButton": "Edit Post",
-  "emailInputField": "Enter your email address",
   "setting": {
     "icon": "Select Icon",
     "appBar": "Settings",
@@ -84,13 +83,6 @@
   "search": {
     "emptyResult": "No results found for your search.",
     "button": "Search",
-    "title": "Search",
-    "restaurantTitle": "Search Restaurants",
-    "userTitle": "User Search",
-    "userHeader": "User Search (by Post Count)",
-    "userPostCount": "Posts: {count}",
-    "userLatestPosts": "Latest Posts",
-    "userNoUsers": "No users with posts found",
     "emptyHintTitle": "Search Tips",
     "emptyHintLocation": "Turn on location to show nearby results first",
     "emptyHintSearch": "Search by restaurant name or cuisine type"
@@ -307,18 +299,11 @@
     "newFeatures": "New premium-exclusive features\ncoming soon!",
     "subscribeButton": "Become a Premium Member",
     "price": "monthly {price} / month",
-    "cancelNote": "Cancel anytime",
     "welcomeTitle": "Welcome to\nFoodGram Members!",
     "skip": "Skip",
     "tagline": "✨ Upgrade your food experience ✨",
     "mapTitle": "Find with map",
-    "mapDesc": "Find restaurants faster and easier",
-    "rankTitle": "Earn titles as you post more",
-    "rankDesc": "Titles upgrade with your post count",
-    "genreTitle": "Set your favorite genres",
-    "genreDesc": "Personalize your profile style",
-    "customIconTitle": "Use any image as your icon",
-    "customIconDesc": "Stand out from other posters"
+    "mapDesc": "Find restaurants faster and easier"
   },
   "purchaseError": "An error occurred during purchase",
   "anonymous": {

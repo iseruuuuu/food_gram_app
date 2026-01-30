@@ -9,7 +9,6 @@
   "cancel": "Hủy",
   "editTitle": "Chỉnh sửa",
   "editPostButton": "Sửa bài đăng",
-  "emailInputField": "Nhập email",
   "setting": {
     "icon": "Chọn biểu tượng",
     "appBar": "Cài đặt",
@@ -84,13 +83,6 @@
   "search": {
     "emptyResult": "Không tìm thấy kết quả.",
     "button": "Tìm kiếm",
-    "title": "Tìm kiếm",
-    "restaurantTitle": "Tìm kiếm nhà hàng",
-    "userTitle": "Tìm kiếm người dùng",
-    "userHeader": "Tìm kiếm người dùng",
-    "userPostCount": "Bài đăng: {count}",
-    "userLatestPosts": "Bài đăng mới nhất",
-    "userNoUsers": "Không tìm thấy người dùng có bài đăng",
     "emptyHintTitle": "Mẹo tìm kiếm",
     "emptyHintLocation": "Bật vị trí để hiển thị kết quả gần đây trước",
     "emptyHintSearch": "Tìm kiếm theo tên nhà hàng hoặc loại ẩm thực"
@@ -307,18 +299,11 @@
     "newFeatures": "Tính năng độc quyền Premium mới\nsắp ra mắt!",
     "subscribeButton": "Trở thành Premium",
     "price": "hàng tháng {price} / tháng",
-    "cancelNote": "Hủy bất cứ lúc nào",
     "welcomeTitle": "Chào mừng đến\nFoodGram Premium!",
     "skip": "Bỏ qua",
     "tagline": "✨ Nâng cấp trải nghiệm ẩm thực của bạn ✨",
     "mapTitle": "Tìm bằng bản đồ",
-    "mapDesc": "Tìm nhà hàng nhanh hơn và dễ dàng hơn",
-    "rankTitle": "Kiếm danh hiệu khi bạn đăng nhiều hơn",
-    "rankDesc": "Danh hiệu nâng cấp với số bài đăng của bạn",
-    "genreTitle": "Đặt thể loại yêu thích của bạn",
-    "genreDesc": "Cá nhân hóa phong cách hồ sơ của bạn",
-    "customIconTitle": "Sử dụng bất kỳ hình ảnh nào làm biểu tượng của bạn",
-    "customIconDesc": "Nổi bật so với các người đăng khác"
+    "mapDesc": "Tìm nhà hàng nhanh hơn và dễ dàng hơn"
   },
   "purchaseError": "Đã xảy ra lỗi trong quá trình mua",
   "anonymous": {

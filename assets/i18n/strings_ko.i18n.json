@@ -9,7 +9,6 @@
   "cancel": "취소",
   "editTitle": "편집",
   "editPostButton": "게시물 편집",
-  "emailInputField": "이메일 주소를 입력하세요",
   "setting": {
     "icon": "아이콘 선택",
     "appBar": "설정",
@@ -84,13 +83,6 @@
   "search": {
     "emptyResult": "검색 결과를 찾을 수 없습니다.",
     "button": "검색",
-    "title": "검색",
-    "restaurantTitle": "레스토랑 검색",
-    "userTitle": "사용자 검색",
-    "userHeader": "사용자 검색 (게시물 수순)",
-    "userPostCount": "게시물: {count}개",
-    "userLatestPosts": "최신 게시물",
-    "userNoUsers": "게시물이 있는 사용자를 찾을 수 없습니다",
     "emptyHintTitle": "검색 팁",
     "emptyHintLocation": "위치를 켜면 가까운 결과가 먼저 표시됩니다",
     "emptyHintSearch": "레스토랑 이름이나 요리 유형으로 검색하세요"
@@ -307,18 +299,11 @@
     "newFeatures": "프리미엄 전용 신기능이\n곧 출시됩니다!",
     "subscribeButton": "프리미엄 회원 되기",
     "price": "월 {price} / 월",
-    "cancelNote": "언제든지 취소 가능",
     "welcomeTitle": "FoodGram 멤버에\n오신 것을 환영합니다!",
     "skip": "건너뛰기",
     "tagline": "✨ 음식 경험을 업그레이드 ✨",
     "mapTitle": "지도로 찾기",
-    "mapDesc": "식당을 더 빠르고 쉽게 찾기",
-    "rankTitle": "게시물이 늘수록 칭호 획득",
-    "rankDesc": "게시물 수에 따라 칭호가 업그레이드",
-    "genreTitle": "좋아하는 장르 설정",
-    "genreDesc": "프로필을 더 세련되게 꾸미기",
-    "customIconTitle": "원하는 이미지를 아이콘으로",
-    "customIconDesc": "다른 게시자보다 눈에 띄어요"
+    "mapDesc": "식당을 더 빠르고 쉽게 찾기"
   },
   "purchaseError": "구매 중 오류가 발생했습니다",
   "anonymous": {
