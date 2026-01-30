@@ -22,7 +22,7 @@ class AppPromoteDialog extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              t.promoteDialogTitle,
+              t.promoteDialog.title,
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -31,23 +31,23 @@ class AppPromoteDialog extends ConsumerWidget {
             const Gap(20),
             _buildFeatureItem(
               icon: Icons.emoji_events,
-              title: t.promoteDialogTrophyTitle,
-              description: t.promoteDialogTrophyDesc,
+              title: t.promoteDialog.trophyTitle,
+              description: t.promoteDialog.trophyDesc,
             ),
             _buildFeatureItem(
               icon: Icons.label,
-              title: t.promoteDialogTagTitle,
-              description: t.promoteDialogTagDesc,
+              title: t.promoteDialog.tagTitle,
+              description: t.promoteDialog.tagDesc,
             ),
             _buildFeatureItem(
               icon: Icons.account_circle,
-              title: t.promoteDialogIconTitle,
-              description: t.promoteDialogIconDesc,
+              title: t.promoteDialog.iconTitle,
+              description: t.promoteDialog.iconDesc,
             ),
             _buildFeatureItem(
               icon: Icons.block,
-              title: t.promoteDialogAdTitle,
-              description: t.promoteDialogAdDesc,
+              title: t.promoteDialog.adTitle,
+              description: t.promoteDialog.adDesc,
             ),
             const Gap(20),
             ElevatedButton(
@@ -70,7 +70,7 @@ class AppPromoteDialog extends ConsumerWidget {
                 foregroundColor: Colors.white,
               ),
               child: Text(
-                t.promoteDialogButton,
+                t.promoteDialog.button,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -84,7 +84,7 @@ class AppPromoteDialog extends ConsumerWidget {
                 splashFactory: NoSplash.splashFactory,
               ),
               child: Text(
-                t.promoteDialogLater,
+                t.promoteDialog.later,
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black,

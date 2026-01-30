@@ -54,7 +54,7 @@ class AppShareDialog extends HookConsumerWidget {
                     ),
                   ),
                   title: Text(
-                    t.appShareTitle,
+                    t.app.shareTitle,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,

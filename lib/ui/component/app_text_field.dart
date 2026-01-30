@@ -48,7 +48,7 @@ class AppSearchTextField extends HookWidget {
                     .textTheme
                     .bodyMedium!
                     .copyWith(color: Colors.grey),
-                label: Text(Translations.of(context).appRestaurantLabel),
+                label: Text(Translations.of(context).app.restaurantLabel),
                 labelStyle: Theme.of(context)
                     .textTheme
                     .bodyMedium!
@@ -105,7 +105,7 @@ class AppSearchTextField extends HookWidget {
                 onSubmitted!(searchText.value);
               },
               child: Text(
-                Translations.of(context).searchButton,
+                Translations.of(context).search.button,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -164,7 +164,7 @@ class AppFoodTextField extends StatelessWidget {
                   borderSide: const BorderSide(color: Colors.blueAccent),
                   borderRadius: BorderRadius.circular(6),
                 ),
-                label: Text(Translations.of(context).postFoodNameInputField),
+                label: Text(Translations.of(context).post.foodNameInputField),
                 labelStyle: const TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.bold,
@@ -221,7 +221,7 @@ class AppCommentTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(6),
           ),
           label: Text(
-            Translations.of(context).postComment,
+            Translations.of(context).post.comment,
           ),
           labelStyle: const TextStyle(
             color: Colors.grey,
@@ -391,9 +391,9 @@ class AppSelfIntroductionTextField extends StatelessWidget {
                 decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   border: InputBorder.none,
-                  hintText: Translations.of(context).editBioInputField,
+                  hintText: Translations.of(context).edit.bioInputField,
                   label: Text(
-                    Translations.of(context).editBio,
+                    Translations.of(context).edit.bio,
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ),

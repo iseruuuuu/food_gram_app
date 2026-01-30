@@ -98,11 +98,11 @@ class AuthenticationScreen extends HookConsumerWidget {
                       Column(
                         children: [
                           Text(
-                            Translations.of(context).appTitle,
+                            Translations.of(context).app.title,
                             style: AuthenticationStyle.authTitleStyle(),
                           ),
                           Text(
-                            Translations.of(context).appSubtitle,
+                            Translations.of(context).app.subtitle,
                             style: AuthenticationStyle.authSubTitleStyle(),
                           ),
                         ],

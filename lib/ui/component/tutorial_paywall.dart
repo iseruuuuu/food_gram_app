@@ -35,7 +35,7 @@ class TutorialPaywall extends ConsumerWidget {
         if (offering == null) {
           return Center(
             child: Text(
-              Translations.of(context).paywallTitle,
+              Translations.of(context).paywall.title,
               style: PaywallStyle.title(),
             ),
           );
@@ -67,7 +67,7 @@ class TutorialPaywall extends ConsumerWidget {
               if (context.mounted) {
                 SnackBarHelper().openSimpleSnackBar(
                   context,
-                  Translations.of(context).settingRestoreSuccessTitle,
+                  Translations.of(context).setting.restoreSuccessTitle,
                 );
               }
             },

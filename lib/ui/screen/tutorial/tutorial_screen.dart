@@ -78,12 +78,12 @@ class TutorialScreen extends HookConsumerWidget {
                   ),
                   const Gap(24),
                   Text(
-                    t.tutorialFirstPageTitle,
+                    t.tutorial.firstPageTitle,
                     style: TutorialStyle.title(),
                   ),
                   const Gap(12),
                   Text(
-                    t.tutorialFirstPageSubTitle,
+                    t.tutorial.firstPageSubTitle,
                     style: TutorialStyle.subTitle(),
                     textAlign: TextAlign.center,
                   ),
@@ -101,12 +101,12 @@ class TutorialScreen extends HookConsumerWidget {
                   ),
                   const Gap(24),
                   Text(
-                    t.tutorialDiscoverTitle,
+                    t.tutorial.discoverTitle,
                     style: TutorialStyle.title(),
                   ),
                   const Gap(12),
                   Text(
-                    t.tutorialDiscoverSubTitle,
+                    t.tutorial.discoverSubTitle,
                     style: TutorialStyle.subTitle(),
                     textAlign: TextAlign.center,
                   ),
@@ -124,12 +124,12 @@ class TutorialScreen extends HookConsumerWidget {
                   ),
                   const Gap(24),
                   Text(
-                    t.tutorialSecondPageTitle,
+                    t.tutorial.secondPageTitle,
                     style: TutorialStyle.title(),
                   ),
                   const Gap(12),
                   Text(
-                    t.tutorialSecondPageSubTitle,
+                    t.tutorial.secondPageSubTitle,
                     style: TutorialStyle.subTitle(),
                     textAlign: TextAlign.center,
                   ),
@@ -147,12 +147,12 @@ class TutorialScreen extends HookConsumerWidget {
                   ),
                   const Gap(56),
                   Text(
-                    t.tutorialLocationTitle,
+                    t.tutorial.locationTitle,
                     style: TutorialStyle.title(),
                   ),
                   const Gap(12),
                   Text(
-                    t.appRequestReason,
+                    t.app.requestReason,
                     style: TutorialStyle.subTitle(),
                     textAlign: TextAlign.center,
                   ),
@@ -165,7 +165,7 @@ class TutorialScreen extends HookConsumerWidget {
                       }
                       goToNextPage();
                     },
-                    title: t.tutorialLocationButton,
+                    title: t.tutorial.locationButton,
                   ),
                 ],
               ),
@@ -180,12 +180,12 @@ class TutorialScreen extends HookConsumerWidget {
                   ),
                   const Gap(48),
                   Text(
-                    t.tutorialDiscoverTitle,
+                    t.tutorial.discoverTitle,
                     style: TutorialStyle.title(),
                   ),
                   const Gap(12),
                   Text(
-                    t.tutorialDiscoverSubTitle,
+                    t.tutorial.discoverSubTitle,
                     style: TutorialStyle.subTitle(),
                     textAlign: TextAlign.center,
                   ),
@@ -195,7 +195,7 @@ class TutorialScreen extends HookConsumerWidget {
                       await initializeNotifications();
                       goToNextPage();
                     },
-                    title: t.tutorialNotificationButton,
+                    title: t.tutorial.notificationButton,
                   ),
                 ],
               ),
@@ -218,7 +218,7 @@ class TutorialScreen extends HookConsumerWidget {
                           const Gap(10),
                           Assets.gif.tutorial1.image(width: 50),
                           Text(
-                            t.tutorialThirdPageTitle,
+                            t.tutorial.thirdPageTitle,
                             style: TutorialStyle.thirdTitle(),
                           ),
                           Assets.gif.tutorial1.image(width: 50),
@@ -229,7 +229,7 @@ class TutorialScreen extends HookConsumerWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Text(
-                          t.tutorialThirdPageSubTitle,
+                          t.tutorial.thirdPageSubTitle,
                           style: TutorialStyle.thirdSubTitle(),
                         ),
                       ),
@@ -238,7 +238,7 @@ class TutorialScreen extends HookConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            t.tutorialThirdPageButton,
+                            t.tutorial.thirdPageButton,
                             style: TutorialStyle.accept(),
                           ),
                           const Gap(10),
@@ -270,7 +270,7 @@ class TutorialScreen extends HookConsumerWidget {
                                 }
                               : null,
                           child: Text(
-                            t.tutorialThirdPageClose,
+                            t.tutorial.thirdPageClose,
                             style: TutorialStyle.close(),
                           ),
                         ),

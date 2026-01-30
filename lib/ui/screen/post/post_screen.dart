@@ -106,7 +106,7 @@ class PostScreen extends HookConsumerWidget {
         appBar: AppBar(
           surfaceTintColor: Colors.transparent,
           backgroundColor: !loading ? Colors.white : Colors.transparent,
-          title: Text(t.postTitle, style: PostStyle.title()),
+          title: Text(t.post.title, style: PostStyle.title()),
           centerTitle: true,
           leading: !loading
               ? IconButton(
@@ -289,8 +289,8 @@ class PostScreen extends HookConsumerWidget {
                                       Expanded(
                                         child: Text(
                                           restaurantName == '場所を追加'
-                                              ? t
-                                                  .postRestaurantNameInputField
+                                              ? t.post
+                                                  .restaurantNameInputField
                                               : restaurantName,
                                           overflow: TextOverflow.ellipsis,
                                           style: PostStyle.restaurant(
@@ -343,7 +343,7 @@ class PostScreen extends HookConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      t.postRatingLabel,
+                      t.post.ratingLabel,
                       style: PostStyle.categoryTitle(),
                     ),
                     const Gap(6),
@@ -395,14 +395,14 @@ class PostScreen extends HookConsumerWidget {
                         color: Colors.black,
                       ),
                       title: Text(
-                        t.anonymousPost,
+                        t.anonymous.post,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
                       subtitle: Text(
-                        t.anonymousPostDescription,
+                        t.anonymous.postDescription,
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.grey,
@@ -471,7 +471,7 @@ class PostScreen extends HookConsumerWidget {
                       } else {
                         SnackBarHelper().openErrorSnackBar(
                           context,
-                          t.postError,
+                          t.post.error,
                           _getLocalizedStatus(context, status),
                         );
                       }
@@ -487,7 +487,7 @@ class PostScreen extends HookConsumerWidget {
                       ),
                     ),
                     child: Text(
-                      isAnonymous ? t.anonymousShare : t.shareButton,
+                      isAnonymous ? t.anonymous.share : t.shareButton,
                       style: const TextStyle(
                         color: Colors.white,
                       ),
@@ -510,25 +510,25 @@ class PostScreen extends HookConsumerWidget {
       case PostStatus.errorPickImage:
         return t.postErrorPickImage;
       case PostStatus.error:
-        return t.postError;
+        return t.post.error;
       case PostStatus.photoSuccess:
-        return t.postPhotoSuccess;
+        return t.post.photoSuccess;
       case PostStatus.cameraPermission:
-        return t.postCameraPermission;
+        return t.post.cameraPermission;
       case PostStatus.albumPermission:
-        return t.postAlbumPermission;
+        return t.post.albumPermission;
       case PostStatus.success:
-        return t.postSuccess;
+        return t.post.success;
       case PostStatus.loading:
         return 'Loading...';
       case PostStatus.missingPhoto:
-        return t.postMissingPhoto;
+        return t.post.missingPhoto;
       case PostStatus.missingFoodName:
-        return t.postMissingFoodName;
+        return t.post.missingFoodName;
       case PostStatus.missingRestaurant:
-        return t.postMissingRestaurant;
+        return t.post.missingRestaurant;
       case PostStatus.maybeNotFood:
-        return t.maybeNotFoodDialogTitle;
+        return t.maybeNotFoodDialog.title;
       case PostStatus.initial:
         return 'Loading...';
     }

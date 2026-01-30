@@ -428,7 +428,7 @@ class EditPostScreen extends HookConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      t.postRatingLabel,
+                      t.post.ratingLabel,
                       style: EditPostStyle.category(),
                     ),
                     const Gap(6),
@@ -478,14 +478,14 @@ class EditPostScreen extends HookConsumerWidget {
                         color: Colors.black,
                       ),
                       title: Text(
-                        t.anonymousPost,
+                        t.anonymous.post,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
                       subtitle: Text(
-                        t.anonymousPostDescription,
+                        t.anonymous.postDescription,
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.grey,
@@ -546,7 +546,7 @@ class EditPostScreen extends HookConsumerWidget {
                       } else {
                         SnackBarHelper().openErrorSnackBar(
                           context,
-                          t.postError,
+                          t.post.error,
                           _getLocalizedStatus(context, status),
                         );
                       }
@@ -563,8 +563,8 @@ class EditPostScreen extends HookConsumerWidget {
                     ),
                     child: Text(
                       isAnonymous
-                          ? t.anonymousUpdate
-                          : t.editUpdateButton,
+                          ? t.anonymous.update
+                          : t.edit.updateButton,
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
@@ -582,23 +582,23 @@ class EditPostScreen extends HookConsumerWidget {
     );
     switch (postStatus) {
       case EditStatus.missingInfo:
-        return Translations.of(context).postMissingInfo;
+        return Translations.of(context).post.missingInfo;
       case EditStatus.error:
-        return Translations.of(context).postError;
+        return Translations.of(context).post.error;
       case EditStatus.photoSuccess:
-        return Translations.of(context).postPhotoSuccess;
+        return Translations.of(context).post.photoSuccess;
       case EditStatus.cameraPermission:
-        return Translations.of(context).postCameraPermission;
+        return Translations.of(context).post.cameraPermission;
       case EditStatus.albumPermission:
-        return Translations.of(context).postAlbumPermission;
+        return Translations.of(context).post.albumPermission;
       case EditStatus.success:
-        return Translations.of(context).postSuccess;
+        return Translations.of(context).post.success;
       case EditStatus.loading:
         return 'Loading...';
       case EditStatus.initial:
         return '';
       case EditStatus.maybeNotFood:
-        return Translations.of(context).maybeNotFoodDialogTitle;
+        return Translations.of(context).maybeNotFoodDialog.title;
     }
   }
 }

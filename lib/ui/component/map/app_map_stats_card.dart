@@ -31,10 +31,10 @@ class AppMapStatsCard extends StatelessWidget {
     final t = Translations.of(context);
     final summary = switch (viewType) {
       MapViewType.detail =>
-        t.mapStatsRecordSummary.replaceAll('{days}', activityDays.toString()),
-      MapViewType.japan => t.mapStatsJapanSummary
+        t.mapStats.recordSummary.replaceAll('{days}', activityDays.toString()),
+      MapViewType.japan => t.mapStats.japanSummary
           .replaceAll('{prefectures}', visitedPrefecturesCount.toString()),
-      MapViewType.world => t.mapStatsWorldSummary
+      MapViewType.world => t.mapStats.worldSummary
           .replaceAll('{countries}', visitedCountriesCount.toString()),
     };
     return Container(
@@ -95,7 +95,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                t.mapStatsVisitedArea,
+                t.mapStats.visitedArea,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -121,7 +121,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                t.mapStatsPosts,
+                t.mapStats.posts,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -147,7 +147,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                t.mapStatsActivityDays,
+                t.mapStats.activityDays,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -176,7 +176,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                t.mapStatsPrefectures,
+                t.mapStats.prefectures,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -202,7 +202,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                t.mapStatsPosts,
+                t.mapStats.posts,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -228,7 +228,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                t.mapStatsAchievementRate,
+                t.mapStats.achievementRate,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -257,7 +257,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                t.mapStatsVisitedCountries,
+                t.mapStats.visitedCountries,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -283,7 +283,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                t.mapStatsPosts,
+                t.mapStats.posts,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -309,7 +309,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                t.mapStatsAchievementRate,
+                t.mapStats.achievementRate,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],

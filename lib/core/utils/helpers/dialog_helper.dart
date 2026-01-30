@@ -15,9 +15,9 @@ class DialogHelper {
       disableBackBtn: true,
       context: context,
       type: QuickAlertType.info,
-      title: t.forceUpdateTitle,
-      text: t.forceUpdateText,
-      confirmBtnText: t.forceUpdateButtonTitle,
+      title: t.forceUpdate.title,
+      text: t.forceUpdate.text,
+      confirmBtnText: t.forceUpdate.buttonTitle,
       confirmBtnColor: Colors.black,
       onConfirmBtnTap: () {
         if (Platform.isIOS) {
@@ -41,7 +41,7 @@ class DialogHelper {
       type: QuickAlertType.warning,
       title: title,
       text: text,
-      confirmBtnText: t.dialogYesButton,
+      confirmBtnText: t.dialog.yesButton,
       onConfirmBtnTap: onTap,
       confirmBtnTextStyle: const TextStyle(
         fontSize: 16,
@@ -49,7 +49,7 @@ class DialogHelper {
         color: Colors.white,
       ),
       showCancelBtn: true,
-      cancelBtnText: t.dialogNoButton,
+      cancelBtnText: t.dialog.noButton,
       onCancelBtnTap: () => context.pop(),
       cancelBtnTextStyle: const TextStyle(
         fontSize: 16,
@@ -70,7 +70,7 @@ class DialogHelper {
       type: QuickAlertType.warning,
       title: title,
       text: text,
-      confirmBtnText: t.dialogLogoutButton,
+      confirmBtnText: t.dialog.logoutButton,
       onConfirmBtnTap: onTap,
       confirmBtnColor: Colors.red,
       confirmBtnTextStyle: const TextStyle(

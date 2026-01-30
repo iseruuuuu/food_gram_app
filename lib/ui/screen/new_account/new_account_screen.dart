@@ -27,7 +27,7 @@ class NewAccountScreen extends ConsumerWidget {
         var message = '';
         switch (current.loginStatus) {
           case 'account_registration_error':
-            message = Translations.of(context).accountRegistrationError;
+            message = Translations.of(context).accountRegistration.error;
             SnackBarHelper().openErrorSnackBar(context, '', message);
           case 'required_info_missing':
             message = Translations.of(context).requiredInfoMissing;
@@ -62,7 +62,7 @@ class NewAccountScreen extends ConsumerWidget {
                     ),
                     const Gap(10),
                     Text(
-                      Translations.of(context).settingIcon,
+                      Translations.of(context).setting.icon,
                       style: NewAccountStyle.icon(),
                     ),
                     const Gap(10),
@@ -103,12 +103,12 @@ class NewAccountScreen extends ConsumerWidget {
                     ),
                     const Gap(24),
                     Text(
-                      Translations.of(context).newAccountImportantTitle,
+                      Translations.of(context).newAccount.importantTitle,
                       style: NewAccountStyle.title(),
                     ),
                     const Gap(18),
                     Text(
-                      Translations.of(context).newAccountImportant,
+                      Translations.of(context).newAccount.important,
                       textAlign: TextAlign.center,
                       style: NewAccountStyle.contents(),
                     ),

@@ -90,7 +90,7 @@ class EditScreen extends HookConsumerWidget {
                     }
                   },
                   child: Text(
-                    Translations.of(context).editUpdateButton,
+                    Translations.of(context).edit.updateButton,
                     style: EditStyle.editButton(loading: loading),
                   ),
                 )
@@ -128,7 +128,7 @@ class EditScreen extends HookConsumerWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          Translations.of(context).settingIcon,
+                          Translations.of(context).setting.icon,
                           style: EditStyle.settingsIcon(),
                         ),
                       ),
@@ -211,7 +211,7 @@ class EditScreen extends HookConsumerWidget {
                                   const Icon(Icons.tag, size: 20),
                                   Text(
                                     Translations.of(context)
-                                        .editFavoriteTagTitle,
+                                        .edit.favoriteTagTitle,
                                     style: EditStyle.tag(),
                                   ),
                                 ],

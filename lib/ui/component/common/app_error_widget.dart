@@ -21,7 +21,7 @@ class AppErrorWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              t.errorTitle,
+              t.error.title,
               style: const TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
@@ -29,9 +29,9 @@ class AppErrorWidget extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              '${t.errorDescription1}'
+              '${t.error.description1}'
               '\n'
-              '${t.errorDescription2}',
+              '${t.error.description2}',
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 15,
@@ -46,7 +46,7 @@ class AppErrorWidget extends StatelessWidget {
             const SizedBox(height: 50),
             AppElevatedButton(
               onPressed: onTap,
-              title: t.errorRefreshButton,
+              title: t.error.refreshButton,
             ),
           ],
         ),

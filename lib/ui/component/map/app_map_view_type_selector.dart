@@ -69,11 +69,11 @@ class AppMapViewTypeSelector extends StatelessWidget {
   String _getLabel(MapViewType type, Translations t) {
     switch (type) {
       case MapViewType.detail:
-        return t.mapViewTypeRecord;
+        return t.mapViewType.record;
       case MapViewType.japan:
-        return t.mapViewTypeJapan;
+        return t.mapViewType.japan;
       case MapViewType.world:
-        return t.mapViewTypeWorld;
+        return t.mapViewType.world;
     }
   }
 }

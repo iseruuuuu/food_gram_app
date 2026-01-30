@@ -46,7 +46,7 @@ class AppPremiumMembershipCard extends ConsumerWidget {
                       ),
                       const Gap(18),
                       Text(
-                        t.settingPremiumMembership,
+                        t.setting.premiumMembership,
                         style: SettingStyle.premium(),
                       ),
                       const Gap(18),

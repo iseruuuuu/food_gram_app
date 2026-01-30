@@ -33,7 +33,7 @@ class AppSearchResultEmpty extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          Translations.of(context).searchEmptyResult,
+          Translations.of(context).search.emptyResult,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
@@ -97,7 +97,7 @@ class AppSearchEmpty extends StatelessWidget {
                     ),
                     const Gap(8),
                     Text(
-                      Translations.of(context).searchEmptyHintTitle,
+                      Translations.of(context).search.emptyHintTitle,
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.blue.shade700,
@@ -117,7 +117,7 @@ class AppSearchEmpty extends StatelessWidget {
                     const Gap(8),
                     Expanded(
                       child: Text(
-                        Translations.of(context).searchEmptyHintLocation,
+                        Translations.of(context).search.emptyHintLocation,
                         style: TextStyle(
                           fontSize: 13,
                           color: Colors.blue.shade800,
@@ -139,7 +139,7 @@ class AppSearchEmpty extends StatelessWidget {
                     const Gap(8),
                     Expanded(
                       child: Text(
-                        Translations.of(context).searchEmptyHintSearch,
+                        Translations.of(context).search.emptyHintSearch,
                         style: TextStyle(
                           fontSize: 13,
                           color: Colors.blue.shade800,
@@ -170,11 +170,11 @@ class AppFavoritePostEmpty extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            Translations.of(context).favoritePostEmptyTitle,
+            Translations.of(context).favoritePostEmpty.title,
             style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           Text(
-            Translations.of(context).favoritePostEmptySubtitle,
+            Translations.of(context).favoritePostEmpty.subtitle,
             style: const TextStyle(fontSize: 14),
           ),
           Assets.gif.error.image(width: 180, height: 180),

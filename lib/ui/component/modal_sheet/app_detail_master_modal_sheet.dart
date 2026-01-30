@@ -37,7 +37,7 @@ class AppDetailMasterModalSheet extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 20),
               child: Text(
-                '${t.postDetailSheetTitle}  【開発者用】',
+                '${t.postDetailSheet.title}  【開発者用】',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -81,7 +81,7 @@ class AppDetailMasterModalSheet extends ConsumerWidget {
                       ),
                       const SizedBox(width: 20),
                       Text(
-                        t.dialogDeleteTitle,
+                        t.dialog.deleteTitle,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,

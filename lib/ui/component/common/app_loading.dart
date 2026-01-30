@@ -101,8 +101,8 @@ class AppMapLoading extends StatelessWidget {
                       const SizedBox(height: 16),
                       Text(
                         hasError
-                            ? Translations.of(context).mapLoadingError
-                            : Translations.of(context).mapLoadingRestaurant,
+                            ? Translations.of(context).map.loadingError
+                            : Translations.of(context).map.loadingRestaurant,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 14,

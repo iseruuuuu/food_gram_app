@@ -180,7 +180,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                       ],
                                     ),
                                     child: Text(
-                                      t.restaurantReviewNew,
+                                      t.restaurantReview.newLabel,
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 14,
@@ -250,7 +250,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            t.restaurantReviewViewDetails,
+                                            t.restaurantReview.viewDetails,
                                             style: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.bold,
@@ -282,7 +282,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                             ),
                             const Gap(8),
                             Text(
-                              t.restaurantReviewOtherPosts,
+                              t.restaurantReview.otherPosts,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -423,7 +423,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                           ),
                           const Gap(8),
                           Text(
-                            t.restaurantReviewReviewList,
+                            t.restaurantReview.reviewList,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -505,7 +505,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                         children: [
                                           Text(
                                             model.posts.isAnonymous
-                                                ? t.anonymousPoster
+                                                ? t.anonymous.poster
                                                 : model.users.name,
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
@@ -552,7 +552,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
               );
             },
             failure: (_) {
-              return Center(child: Text(t.restaurantReviewError));
+              return Center(child: Text(t.restaurantReview.error));
             },
           ),
         ),

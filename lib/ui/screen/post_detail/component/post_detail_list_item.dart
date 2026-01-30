@@ -113,14 +113,14 @@ class PostDetailListItem extends HookConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        posts.isAnonymous ? t.anonymousPoster : users.name,
+                        posts.isAnonymous ? t.anonymous.poster : users.name,
                         style: DetailPostStyle.name(),
                         overflow: TextOverflow.ellipsis,
                       ),
                       Builder(
                         builder: (context) {
                           final username = posts.isAnonymous
-                              ? t.anonymousUsername
+                              ? t.anonymous.username
                               : users.userName;
                           return Text(
                             '@$username',
@@ -375,7 +375,7 @@ class PostDetailListItem extends HookConsumerWidget {
                               },
                             );
                           },
-                          title: t.detailMenuShare,
+                          title: t.detailMenu.share,
                           icon: Icons.share,
                         ),
                         AppDetailElevatedButton(
@@ -400,14 +400,14 @@ class PostDetailListItem extends HookConsumerWidget {
                               }
                             });
                           },
-                          title: t.detailMenuPost,
+                          title: t.detailMenu.post,
                           icon: Icons.restaurant,
                         ),
                         AppDetailElevatedButton(
                           onPressed: () => ref
                               .read(postDetailViewModelProvider().notifier)
                               .openUrl(posts.restaurant),
-                          title: t.detailMenuSearch,
+                          title: t.detailMenu.search,
                           icon: Icons.search,
                         ),
                         AppDetailElevatedButton(
@@ -429,7 +429,7 @@ class PostDetailListItem extends HookConsumerWidget {
                               },
                             );
                           },
-                          title: t.detailMenuVisit,
+                          title: t.detailMenu.visit,
                           icon: Icons.directions_walk,
                         ),
                       ],

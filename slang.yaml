@@ -1,8 +1,8 @@
 # Slang設定ファイル
 base_locale: en
-input_directory: lib/i18n
+input_directory: assets/i18n
 input_file_pattern: .i18n.json
-output_directory: lib/i18n
+output_directory: lib/gen
 output_file_name: strings.g.dart
 
 # プレースホルダーの設定

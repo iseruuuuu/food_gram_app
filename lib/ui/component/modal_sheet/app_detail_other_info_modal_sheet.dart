@@ -42,7 +42,7 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 20),
               child: Text(
-                t.postDetailSheetTitle,
+                t.postDetailSheet.title,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -68,10 +68,10 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
                   ),
                   onPressed: () {
                     DialogHelper().openDialog(
-                      title: t.dialogReportTitle,
-                      text: '${t.dialogReportDescription1}'
+                      title: t.dialog.reportTitle,
+                      text: '${t.dialog.reportDescription1}'
                           '\n '
-                          '${t.dialogReportDescription2}',
+                          '${t.dialog.reportDescription2}',
                       onTap: () async {
                         context.pop();
                         await LaunchUrlHelper().open(URL.report).then((value) {
@@ -90,7 +90,7 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
                       ),
                       const SizedBox(width: 20),
                       Text(
-                        t.postDetailSheetReportButton,
+                        t.postDetailSheet.reportButton,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -122,12 +122,12 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
                   ),
                   onPressed: () {
                     DialogHelper().openDialog(
-                      title: t.dialogBlockTitle,
-                      text: '${t.dialogBlockDescription1}'
+                      title: t.dialog.blockTitle,
+                      text: '${t.dialog.blockDescription1}'
                           '\n'
-                          '${t.dialogBlockDescription2}'
+                          '${t.dialog.blockDescription2}'
                           '\n'
-                          '${t.dialogBlockDescription3}',
+                          '${t.dialog.blockDescription3}',
                       onTap: () async {
                         context
                           ..pop()
@@ -151,7 +151,7 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
                       ),
                       const SizedBox(width: 20),
                       Text(
-                        t.postDetailSheetBlockButton,
+                        t.postDetailSheet.blockButton,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,

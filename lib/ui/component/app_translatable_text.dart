@@ -49,9 +49,9 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
       return;
     }
     final t = Translations.of(context);
-    final translateLabel = t.translatableTranslate;
-    final showOriginalLabel = t.translatableShowOriginal;
-    final copyLabel = t.translatableCopy;
+    final translateLabel = t.translatable.translate;
+    final showOriginalLabel = t.translatable.showOriginal;
+    final copyLabel = t.translatable.copy;
     // 長押しメニュー（翻訳/原文/コピー）
     final action = await showModalBottomSheet<String>(
       context: context,
@@ -124,7 +124,7 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
       if (out.trim() == widget.text.trim()) {
         final t = Translations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(t.translatableTranslateFailed)),
+          SnackBar(content: Text(t.translatable.translateFailed)),
         );
         return;
       }
@@ -144,6 +144,6 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
     }
     final t = Translations.of(context);
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(t.translatableCopied)));
+        .showSnackBar(SnackBar(content: Text(t.translatable.copied)));
   }
 }

@@ -13,8 +13,8 @@ class AppAreaMealsBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translations.of(context);
     final displayText = count == null
-        ? t.mapVisibleAreaLoading
-        : t.mapVisibleAreaMeals.replaceAll('{count}', count.toString());
+        ? t.map.visibleAreaLoading
+        : t.map.visibleAreaMeals.replaceAll('{count}', count.toString());
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,

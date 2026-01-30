@@ -54,23 +54,23 @@ class SettingScreen extends HookConsumerWidget {
                         children: [
                           SettingTile(
                             icon: FontAwesomeIcons.twitter,
-                            title: t.settingDeveloper,
+                            title: t.setting.developer,
                             onTap: () => LaunchUrlHelper().openSNSUrl(URL.sns),
                           ),
                           SettingTile(
                             icon: FontAwesomeIcons.github,
-                            title: t.settingGithub,
+                            title: t.setting.github,
                             onTap: () =>
                                 LaunchUrlHelper().openSNSUrl(URL.github),
                           ),
                           SettingTile(
                             icon: Icons.verified,
-                            title: t.settingLicense,
+                            title: t.setting.license,
                             onTap: () => context.pushNamed(RouterPath.license),
                           ),
                           SettingTile(
                             icon: Icons.share,
-                            title: t.settingShareApp,
+                            title: t.setting.shareApp,
                             onTap: () {
                               final url = Platform.isIOS
                                   ? URL.appleStore
@@ -80,50 +80,50 @@ class SettingScreen extends HookConsumerWidget {
                           ),
                           SettingTile(
                             icon: Icons.rate_review_outlined,
-                            title: t.settingReview,
+                            title: t.setting.review,
                             onTap: () => ref
                                 .read(settingViewModelProvider().notifier)
                                 .review(),
                           ),
                           SettingTile(
                             icon: Icons.system_update,
-                            title: t.settingCheckVersion,
+                            title: t.setting.checkVersion,
                             onTap: () => ref
                                 .read(settingViewModelProvider().notifier)
                                 .checkNewVersion(context),
                           ),
                           SettingTile(
                             icon: Icons.help_outline,
-                            title: t.settingFaq,
+                            title: t.setting.faq,
                             onTap: () =>
                                 LaunchUrlHelper().open(URL.faq(context)),
                           ),
                           SettingTile(
                             icon: Icons.security,
-                            title: t.settingPrivacyPolicy,
+                            title: t.setting.privacyPolicy,
                             onTap: () => LaunchUrlHelper()
                                 .open(URL.privacyPolicy(context)),
                           ),
                           SettingTile(
                             icon: Icons.assignment,
-                            title: t.settingTermsOfUse,
+                            title: t.setting.termsOfUse,
                             onTap: () =>
                                 LaunchUrlHelper().open(URL.termsOfUse(context)),
                           ),
                           SettingTile(
                             icon: Icons.chat,
-                            title: t.settingContact,
+                            title: t.setting.contact,
                             onTap: () => LaunchUrlHelper().open(URL.contact),
                           ),
                           SettingTile(
                             icon: Icons.school,
-                            title: t.settingTutorial,
+                            title: t.setting.tutorial,
                             onTap: () =>
                                 context.pushNamed(RouterPath.settingTutorial),
                           ),
                           SettingTile(
                             icon: CupertinoIcons.cube_box_fill,
-                            title: t.settingQuestion,
+                            title: t.setting.question,
                             onTap: () {
                               LaunchUrlHelper().open(URL.question);
                             },
@@ -155,7 +155,7 @@ class SettingScreen extends HookConsumerWidget {
                             ),
                             const Gap(8),
                             Text(
-                              t.settingAccountManagement,
+                              t.setting.accountManagement,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -170,12 +170,12 @@ class SettingScreen extends HookConsumerWidget {
                         children: [
                           SettingTile(
                             icon: Icons.power_settings_new,
-                            title: t.settingLogoutButton,
+                            title: t.setting.logoutButton,
                             onTap: () {
                               DialogHelper().openLogoutDialog(
-                                title: t.dialogLogoutTitle,
-                                text: '${t.dialogLogoutDescription1}\n'
-                                    '${t.dialogLogoutDescription2}',
+                                title: t.dialog.logoutTitle,
+                                text: '${t.dialog.logoutDescription1}\n'
+                                    '${t.dialog.logoutDescription2}',
                                 onTap: () {
                                   context.pop();
                                   ref
@@ -203,7 +203,7 @@ class SettingScreen extends HookConsumerWidget {
                           ),
                           SettingTile(
                             icon: Icons.delete,
-                            title: t.settingDeleteAccountButton,
+                            title: t.setting.deleteAccountButton,
                             onTap: () {
                               LaunchUrlHelper()
                                   .open('https://forms.gle/B2cG3FEynh1tbfUdA')
@@ -220,7 +220,7 @@ class SettingScreen extends HookConsumerWidget {
                           ),
                           SettingTile(
                             icon: Icons.restore,
-                            title: t.settingRestore,
+                            title: t.setting.restore,
                             onTap: () {
                               ref
                                   .read(settingViewModelProvider().notifier)
@@ -230,14 +230,14 @@ class SettingScreen extends HookConsumerWidget {
                                   if (isRestore) {
                                     SnackBarHelper().openSuccessSnackBar(
                                       context,
-                                      t.settingRestoreSuccessTitle,
-                                      t.settingRestoreSuccessSubtitle,
+                                      t.setting.restoreSuccessTitle,
+                                      t.setting.restoreSuccessSubtitle,
                                     );
                                   } else {
                                     SnackBarHelper().openErrorSnackBar(
                                       context,
-                                      t.settingRestoreFailureTitle,
-                                      t.settingRestoreFailureSubtitle,
+                                      t.setting.restoreFailureTitle,
+                                      t.setting.restoreFailureSubtitle,
                                     );
                                   }
                                 },
@@ -256,7 +256,7 @@ class SettingScreen extends HookConsumerWidget {
                                 color: Colors.grey,
                               ),
                               title: Text(
-                                t.settingAppVersion,
+                                t.setting.appVersion,
                                 style: SettingStyle.appVersion(),
                               ),
                               trailing: Text(

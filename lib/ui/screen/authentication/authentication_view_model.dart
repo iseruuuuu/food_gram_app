@@ -41,7 +41,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         SnackBarHelper().openErrorSnackBar(
           context,
           Translations.of(context).loginError,
-          Translations.of(context).error,
+          Translations.of(context).error.message,
         );
       },
     );
@@ -61,7 +61,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         SnackBarHelper().openErrorSnackBar(
           context,
           Translations.of(context).loginError,
-          Translations.of(context).error,
+          Translations.of(context).error.message,
         );
       },
     );
@@ -81,7 +81,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         SnackBarHelper().openErrorSnackBar(
           context,
           Translations.of(context).loginError,
-          Translations.of(context).error,
+          Translations.of(context).error.message,
         );
       },
     );

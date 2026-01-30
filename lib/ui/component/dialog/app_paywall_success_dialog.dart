@@ -56,7 +56,7 @@ class PaywallSuccessDialog extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    t.paywallWelcomeTitle,
+                    t.paywall.welcomeTitle,
                     style: PaywallStyle.wellComeTitle(),
                     textAlign: TextAlign.center,
                   ),

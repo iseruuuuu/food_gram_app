@@ -45,7 +45,7 @@ class TabScreen extends ConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      t.tabMap,
+                      t.tab.map,
                       style: TabStyle.tab(value: state.selectedIndex == 0),
                     ),
                     const Gap(10),
@@ -64,7 +64,7 @@ class TabScreen extends ConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      t.tabHome,
+                      t.tab.home,
                       style: TabStyle.tab(value: state.selectedIndex == 1),
                     ),
                     const Gap(10),
@@ -84,7 +84,7 @@ class TabScreen extends ConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      t.tabMyMap,
+                      t.tab.myMap,
                       style: TabStyle.tab(value: state.selectedIndex == 2),
                     ),
                     const Gap(10),
@@ -104,7 +104,7 @@ class TabScreen extends ConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      t.tabMyPage,
+                      t.tab.myPage,
                       style: TabStyle.tab(value: state.selectedIndex == 3),
                     ),
                     const Gap(10),
@@ -123,7 +123,7 @@ class TabScreen extends ConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      t.tabSetting,
+                      t.tab.setting,
                       style: TabStyle.tab(value: state.selectedIndex == 4),
                     ),
                     const Gap(10),

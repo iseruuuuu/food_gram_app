@@ -239,8 +239,8 @@ class NotificationService {
   /// 食事リマインダーを設定（昼12時）
   Future<void> scheduleLunchReminder() async {
     final t = _getTranslations();
-    final title = t.notificationLunchTitle;
-    final body = t.notificationLunchBody;
+    final title = t.notification.lunchTitle;
+    final body = t.notification.lunchBody;
     final payload = json.encode({
       'type': 'meal_reminder',
       'mealType': 'lunch',
@@ -266,8 +266,8 @@ class NotificationService {
   /// 食事リマインダーを設定（夜7時）
   Future<void> scheduleDinnerReminder() async {
     final t = _getTranslations();
-    final title = t.notificationDinnerTitle;
-    final body = t.notificationDinnerBody;
+    final title = t.notification.dinnerTitle;
+    final body = t.notification.dinnerBody;
     final payload = json.encode({
       'type': 'meal_reminder',
       'mealType': 'dinner',

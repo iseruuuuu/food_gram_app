@@ -14,14 +14,14 @@ Future<void> showStreakDialog({
   final String title;
   final String content;
 
-  title = t.streakDialogFirstTitle;
+  title = t.streakDialog.firstTitle;
 
   if (isFirstTime || streakWeeks == 1) {
     // 初回またはリセット後の1週目
-    content = t.streakDialogFirstContent;
+    content = t.streakDialog.firstContent;
   } else {
     // 2週目以降
-    content = t.streakDialogContinueContent
+    content = t.streakDialog.continueContent
         .replaceAll('{weeks}', streakWeeks.toString());
   }
 

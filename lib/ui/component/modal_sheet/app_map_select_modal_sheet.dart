@@ -78,7 +78,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                       children: [
                         _MapOptionItem(
                           mapType: MapType.google,
-                          title: t.mapAppGoogle,
+                          title: t.mapApp.google,
                           onTap: () {
                             context.pop();
                             onMapSelected(MapType.google);
@@ -86,7 +86,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                         ),
                         _MapOptionItem(
                           mapType: MapType.apple,
-                          title: t.mapAppApple,
+                          title: t.mapApp.apple,
                           onTap: () {
                             context.pop();
                             onMapSelected(MapType.apple);
@@ -94,7 +94,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                         ),
                         _MapOptionItem(
                           mapType: MapType.baidu,
-                          title: t.mapAppBaidu,
+                          title: t.mapApp.baidu,
                           onTap: () {
                             context.pop();
                             onMapSelected(MapType.baidu);
@@ -102,7 +102,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                         ),
                         _MapOptionItem(
                           mapType: MapType.mapswithme,
-                          title: t.mapAppMapsMe,
+                          title: t.mapApp.mapsMe,
                           onTap: () {
                             context.pop();
                             onMapSelected(MapType.mapswithme);
@@ -110,7 +110,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                         ),
                         _MapOptionItem(
                           mapType: MapType.kakao,
-                          title: t.mapAppKakao,
+                          title: t.mapApp.kakao,
                           onTap: () {
                             context.pop();
                             onMapSelected(MapType.kakao);
@@ -118,7 +118,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                         ),
                         _MapOptionItem(
                           mapType: MapType.naver,
-                          title: t.mapAppNaver,
+                          title: t.mapApp.naver,
                           onTap: () {
                             context.pop();
                             onMapSelected(MapType.naver);

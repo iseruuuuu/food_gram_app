@@ -42,7 +42,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 20),
               child: Text(
-                t.postDetailSheetTitle,
+                t.postDetailSheet.title,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -118,10 +118,10 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                   ),
                   onPressed: () async {
                     DialogHelper().openDialog(
-                      title: t.dialogDeleteTitle,
-                      text: '${t.dialogDeleteDescription1}'
+                      title: t.dialog.deleteTitle,
+                      text: '${t.dialog.deleteDescription1}'
                           '\n '
-                          '${t.dialogDeleteDescription2}',
+                          '${t.dialog.deleteDescription2}',
                       onTap: () async {
                         context
                           ..pop()
@@ -141,7 +141,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                       ),
                       const SizedBox(width: 20),
                       Text(
-                        t.dialogDeleteTitle,
+                        t.dialog.deleteTitle,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,

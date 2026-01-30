@@ -121,17 +121,17 @@ class PaywallCardBase extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        t.paywallComingSoon,
+                        t.paywall.comingSoon,
                         style: PaywallStyle.comingSoon(),
                       ),
                       Text(
-                        t.paywallNewFeatures,
+                        t.paywall.newFeatures,
                         style: PaywallStyle.newFeatures(),
                       ),
                     ],
                   )
                 : Text(
-                    t.paywallPrice,
+                    t.paywall.price,
                     style: const TextStyle(
                       fontSize: 20,
                       color: Colors.white,
@@ -187,38 +187,38 @@ class PaywallContent extends StatelessWidget {
             )
           else
             Text(
-              t.paywallPremiumTitle,
+              t.paywall.premiumTitle,
               style: PaywallStyle.premiumTitle(),
             ),
           const Gap(16),
           PaywallFeatureItem(
             icon: Icons.emoji_events,
-            title: t.paywallTrophyTitle,
-            description: t.paywallTrophyDesc,
+            title: t.paywall.trophyTitle,
+            description: t.paywall.trophyDesc,
           ),
           PaywallFeatureItem(
             icon: Icons.label,
-            title: t.paywallTagTitle,
-            description: t.paywallTagDesc,
+            title: t.paywall.tagTitle,
+            description: t.paywall.tagDesc,
           ),
           PaywallFeatureItem(
             icon: Icons.account_circle,
-            title: t.paywallIconTitle,
-            description: t.paywallIconDesc,
+            title: t.paywall.iconTitle,
+            description: t.paywall.iconDesc,
           ),
           PaywallFeatureItem(
             icon: Icons.block,
-            title: t.paywallAdTitle,
-            description: t.paywallAdDesc,
+            title: t.paywall.adTitle,
+            description: t.paywall.adDesc,
           ),
           PaywallFeatureItem(
             icon: Icons.map,
-            title: t.paywallMapTitle,
-            description: t.paywallMapDesc,
+            title: t.paywall.mapTitle,
+            description: t.paywall.mapDesc,
           ),
           const Gap(8),
           Text(
-            t.paywallTagline,
+            t.paywall.tagline,
             style: PaywallStyle.contentsTitle(),
           ),
           const Gap(8),
@@ -236,7 +236,7 @@ class PaywallContent extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            t.paywallSubscribeButton,
+                            t.paywall.subscribeButton,
                             style: PaywallStyle.subscribeButton(),
                           ),
                         ],
@@ -249,7 +249,7 @@ class PaywallContent extends StatelessWidget {
                   TextButton(
                     onPressed: onSkip,
                     child: Text(
-                      t.paywallSkip,
+                      t.paywall.skip,
                       style: TutorialStyle.subTitle(),
                     ),
                   ),
@@ -310,7 +310,7 @@ class PaywallSuccessDialog extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    t.paywallWelcomeTitle,
+                    t.paywall.welcomeTitle,
                     style: PaywallStyle.wellComeTitle(),
                     textAlign: TextAlign.center,
                   ),

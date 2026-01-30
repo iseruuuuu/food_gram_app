@@ -9,10 +9,10 @@ Future<void> showMaybeNotFoodDialog({
   required VoidCallback onDelete,
 }) async {
   final t = Translations.of(context);
-  final resolvedTitle = t.maybeNotFoodDialogTitle;
-  final resolvedText = t.maybeNotFoodDialogText;
-  final resolvedConfirmText = t.maybeNotFoodDialogConfirm;
-  final resolvedDeleteText = t.maybeNotFoodDialogDelete;
+  final resolvedTitle = t.maybeNotFoodDialog.title;
+  final resolvedText = t.maybeNotFoodDialog.text;
+  final resolvedConfirmText = t.maybeNotFoodDialog.confirm;
+  final resolvedDeleteText = t.maybeNotFoodDialog.delete;
   await QuickAlert.show(
     context: context,
     type: QuickAlertType.warning,

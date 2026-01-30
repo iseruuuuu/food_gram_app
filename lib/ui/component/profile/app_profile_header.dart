@@ -153,7 +153,7 @@ class AppProfileHeader extends ConsumerWidget {
                     children: [
                       BuildStatColumn(
                         count: length.toString(),
-                        label: t.profilePostCount,
+                        label: t.profile.postCount,
                       ),
                       BuildStatColumn(
                         count: heartAmount.toString(),
@@ -162,7 +162,7 @@ class AppProfileHeader extends ConsumerWidget {
                       if (currentUser == users.userId)
                         BuildStatColumn(
                           count: point.toStringAsFixed(2),
-                          label: t.profilePointCount,
+                          label: t.profile.pointCount,
                         ),
                     ],
                   ),
@@ -193,7 +193,7 @@ class AppProfileHeader extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
                           child: Text(
-                            t.profileEditButton,
+                            t.profile.editButton,
                             style: const TextStyle(
                               color: Colors.black87,
                               fontSize: 14,
@@ -273,7 +273,7 @@ class AppProfileHeader extends ConsumerWidget {
                                     ),
                                     const Gap(8),
                                     Text(
-                                      t.profileFavoriteGenre,
+                                      t.profile.favoriteGenre,
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
@@ -361,18 +361,18 @@ class AppProfileHeader extends ConsumerWidget {
   String _getRank(BuildContext context, int postCount) {
     final t = Translations.of(context);
     if (postCount >= 10000) {
-      return t.rankEmerald;
+      return t.rank.emerald;
     }
     if (postCount >= 5000) {
-      return t.rankDiamond;
+      return t.rank.diamond;
     }
     if (postCount >= 1000) {
-      return t.rankGold;
+      return t.rank.gold;
     }
     if (postCount >= 500) {
-      return t.rankSilver;
+      return t.rank.silver;
     }
-    return t.rankBronze;
+    return t.rank.bronze;
   }
 
   String _getTrophyAsset(int postCount) {

@@ -306,7 +306,7 @@ class AppFoodTag extends HookWidget {
                     Expanded(
                       child: foodTags.isEmpty
                           ? Text(
-                              Translations.of(context).postCategoryTitle,
+                              Translations.of(context).post.categoryTitle,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
