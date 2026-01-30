@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 
 /// ストリークバッジ取得・更新ダイアログを表示
@@ -9,19 +9,20 @@ Future<void> showStreakDialog({
   required int streakWeeks,
   required bool isFirstTime,
 }) async {
-  final l10n = L10n.of(context);
+  final t = Translations.of(context);
 
   final String title;
   final String content;
 
-  title = l10n.streakDialogFirstTitle;
+  title = t.streakDialog.firstTitle;
 
   if (isFirstTime || streakWeeks == 1) {
     // 初回またはリセット後の1週目
-    content = l10n.streakDialogFirstContent;
+    content = t.streakDialog.firstContent;
   } else {
     // 2週目以降
-    content = l10n.streakDialogContinueContent(streakWeeks);
+    content = t.streakDialog.continueContent
+        .replaceAll('{weeks}', streakWeeks.toString());
   }
 
   await showDialog<void>(
@@ -69,7 +70,7 @@ Future<void> showStreakDialog({
                   foregroundColor: Colors.blue,
                 ),
                 child: Text(
-                  l10n.close,
+                  t.close,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

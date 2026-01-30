@@ -6,7 +6,7 @@ import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/theme/style/edit_style.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_icon.dart';
 import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
@@ -90,7 +90,7 @@ class EditScreen extends HookConsumerWidget {
                     }
                   },
                   child: Text(
-                    L10n.of(context).editUpdateButton,
+                    Translations.of(context).edit.updateButton,
                     style: EditStyle.editButton(loading: loading),
                   ),
                 )
@@ -128,7 +128,7 @@ class EditScreen extends HookConsumerWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          L10n.of(context).settingIcon,
+                          Translations.of(context).setting.icon,
                           style: EditStyle.settingsIcon(),
                         ),
                       ),
@@ -210,7 +210,8 @@ class EditScreen extends HookConsumerWidget {
                                 children: [
                                   const Icon(Icons.tag, size: 20),
                                   Text(
-                                    L10n.of(context).editFavoriteTagTitle,
+                                    Translations.of(context)
+                                        .edit.favoriteTagTitle,
                                     style: EditStyle.tag(),
                                   ),
                                 ],

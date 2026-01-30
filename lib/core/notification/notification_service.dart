@@ -3,17 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
-import 'package:food_gram_app/gen/l10n/l10n_de.dart';
-import 'package:food_gram_app/gen/l10n/l10n_en.dart';
-import 'package:food_gram_app/gen/l10n/l10n_es.dart';
-import 'package:food_gram_app/gen/l10n/l10n_fr.dart';
-import 'package:food_gram_app/gen/l10n/l10n_ja.dart';
-import 'package:food_gram_app/gen/l10n/l10n_ko.dart';
-import 'package:food_gram_app/gen/l10n/l10n_pt.dart';
-import 'package:food_gram_app/gen/l10n/l10n_th.dart';
-import 'package:food_gram_app/gen/l10n/l10n_vi.dart';
-import 'package:food_gram_app/gen/l10n/l10n_zh.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -30,41 +20,11 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
   final Logger _logger = Logger();
 
-  /// ロケールに基づいて適切なL10nインスタンスを取得
-  L10n _getL10n() {
-    final locale = Platform.localeName;
-    final parts = locale.split('_');
-    final languageCode = parts[0];
-    final countryCode = parts.length > 1 ? parts[1] : null;
-
-    switch (languageCode) {
-      case 'ja':
-        return L10nJa();
-      case 'en':
-        return L10nEn();
-      case 'ko':
-        return L10nKo();
-      case 'zh':
-        // 繁体字中国語（台湾）の場合は L10nZhTw を返す
-        if (countryCode == 'TW') {
-          return L10nZhTw();
-        }
-        return L10nZh();
-      case 'es':
-        return L10nEs();
-      case 'fr':
-        return L10nFr();
-      case 'de':
-        return L10nDe();
-      case 'pt':
-        return L10nPt();
-      case 'vi':
-        return L10nVi();
-      case 'th':
-        return L10nTh();
-      default:
-        return L10nJa(); // デフォルトは日本語
-    }
+  /// ロケールに基づいて適切なTranslationsインスタンスを取得
+  Translations _getTranslations() {
+    final rawLocale = Platform.localeName.replaceAll('_', '-');
+    final appLocale = AppLocaleUtils.parse(rawLocale);
+    return LocaleSettings.instance.translationMap[appLocale]!;
   }
 
   /// 通知サービスを初期化
@@ -278,9 +238,9 @@ class NotificationService {
 
   /// 食事リマインダーを設定（昼12時）
   Future<void> scheduleLunchReminder() async {
-    final l10n = _getL10n();
-    final title = l10n.notificationLunchTitle;
-    final body = l10n.notificationLunchBody;
+    final t = _getTranslations();
+    final title = t.notification.lunchTitle;
+    final body = t.notification.lunchBody;
     final payload = json.encode({
       'type': 'meal_reminder',
       'mealType': 'lunch',
@@ -305,9 +265,9 @@ class NotificationService {
 
   /// 食事リマインダーを設定（夜7時）
   Future<void> scheduleDinnerReminder() async {
-    final l10n = _getL10n();
-    final title = l10n.notificationDinnerTitle;
-    final body = l10n.notificationDinnerBody;
+    final t = _getTranslations();
+    final title = t.notification.dinnerTitle;
+    final body = t.notification.dinnerBody;
     final payload = json.encode({
       'type': 'meal_reminder',
       'mealType': 'dinner',

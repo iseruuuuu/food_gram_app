@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/theme/style/new_account_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/app_icon.dart';
@@ -27,10 +27,10 @@ class NewAccountScreen extends ConsumerWidget {
         var message = '';
         switch (current.loginStatus) {
           case 'account_registration_error':
-            message = L10n.of(context).accountRegistrationError;
+            message = Translations.of(context).accountRegistration.error;
             SnackBarHelper().openErrorSnackBar(context, '', message);
           case 'required_info_missing':
-            message = L10n.of(context).requiredInfoMissing;
+            message = Translations.of(context).post.requiredInfoMissing;
             SnackBarHelper().openErrorSnackBar(context, '', message);
           default:
             message = current.loginStatus;
@@ -62,7 +62,7 @@ class NewAccountScreen extends ConsumerWidget {
                     ),
                     const Gap(10),
                     Text(
-                      L10n.of(context).settingIcon,
+                      Translations.of(context).setting.icon,
                       style: NewAccountStyle.icon(),
                     ),
                     const Gap(10),
@@ -99,16 +99,16 @@ class NewAccountScreen extends ConsumerWidget {
                           }
                         });
                       },
-                      title: L10n.of(context).registerButton,
+                      title: Translations.of(context).registerButton,
                     ),
                     const Gap(24),
                     Text(
-                      L10n.of(context).newAccountImportantTitle,
+                      Translations.of(context).newAccount.importantTitle,
                       style: NewAccountStyle.title(),
                     ),
                     const Gap(18),
                     Text(
-                      L10n.of(context).newAccountImportant,
+                      Translations.of(context).newAccount.important,
                       textAlign: TextAlign.center,
                       style: NewAccountStyle.contents(),
                     ),

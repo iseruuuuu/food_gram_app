@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,7 +25,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     return Container(
       height: MediaQuery.sizeOf(context).width / 1.5,
       decoration: const BoxDecoration(
@@ -42,7 +42,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 20),
               child: Text(
-                l10n.postDetailSheetTitle,
+                t.postDetailSheet.title,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -87,7 +87,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                     ),
                     const SizedBox(width: 20),
                     Text(
-                      l10n.editPostButton,
+                      t.edit.editPostButton,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -118,10 +118,10 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                   ),
                   onPressed: () async {
                     DialogHelper().openDialog(
-                      title: l10n.dialogDeleteTitle,
-                      text: '${l10n.dialogDeleteDescription1}'
+                      title: t.dialog.deleteTitle,
+                      text: '${t.dialog.deleteDescription1}'
                           '\n '
-                          '${l10n.dialogDeleteDescription2}',
+                          '${t.dialog.deleteDescription2}',
                       onTap: () async {
                         context
                           ..pop()
@@ -141,7 +141,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                       ),
                       const SizedBox(width: 20),
                       Text(
-                        l10n.dialogDeleteTitle,
+                        t.dialog.deleteTitle,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -186,7 +186,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                       ),
                       const SizedBox(width: 20),
                       Text(
-                        l10n.close,
+                        t.close,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,

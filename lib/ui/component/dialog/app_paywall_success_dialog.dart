@@ -5,20 +5,20 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/theme/style/paywall_style.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class PaywallSuccessDialog extends StatelessWidget {
   const PaywallSuccessDialog({
     required this.controller,
-    required this.l10n,
+    required this.t,
     this.timeoutDuration = const Duration(seconds: 3),
     super.key,
   });
 
   final ConfettiController controller;
-  final L10n l10n;
+  final Translations t;
   final Duration timeoutDuration;
 
   @override
@@ -56,7 +56,7 @@ class PaywallSuccessDialog extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    l10n.paywallWelcomeTitle,
+                    t.paywall.welcomeTitle,
                     style: PaywallStyle.wellComeTitle(),
                     textAlign: TextAlign.center,
                   ),
@@ -81,7 +81,7 @@ Future<void> showPaywallSuccessDialog({
   required ConfettiController controller,
   Duration timeoutDuration = const Duration(seconds: 3),
 }) async {
-  final l10n = L10n.of(context);
+  final t = Translations.of(context);
   try {
     await showDialog<void>(
       context: context,
@@ -90,7 +90,7 @@ Future<void> showPaywallSuccessDialog({
       builder: (_) {
         return PaywallSuccessDialog(
           controller: controller,
-          l10n: l10n,
+          t: t,
           timeoutDuration: timeoutDuration,
         );
       },

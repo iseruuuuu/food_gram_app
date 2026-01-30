@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/supabase/auth/services/auth_service.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_state.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -17,13 +17,10 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
   AuthenticationState build({
     AuthenticationState initState = const AuthenticationState(),
   }) {
-    ref.onDispose(emailTextField.dispose);
     return initState;
   }
 
   final logger = Logger();
-
-  final emailTextField = TextEditingController();
 
   Loading get loading => ref.read(loadingProvider.notifier);
 
@@ -32,14 +29,16 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     final result = await ref.read(authServiceProvider).loginApple();
     await result.when(
       success: (_) async {
-        state = state.copyWith(loginStatus: L10n.of(context).loginSuccessful);
+        state = state.copyWith(
+          loginStatus: Translations.of(context).auth.loginSuccessful,
+        );
       },
       failure: (error) {
         logger.e(error);
         SnackBarHelper().openErrorSnackBar(
           context,
-          L10n.of(context).loginError,
-          L10n.of(context).error,
+          Translations.of(context).auth.loginError,
+          Translations.of(context).error.message,
         );
       },
     );
@@ -51,15 +50,15 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     await result.when(
       success: (_) async {
         state = state.copyWith(
-          loginStatus: L10n.of(context).loginSuccessful,
+          loginStatus: Translations.of(context).auth.loginSuccessful,
         );
       },
       failure: (error) {
         logger.e(error);
         SnackBarHelper().openErrorSnackBar(
           context,
-          L10n.of(context).loginError,
-          L10n.of(context).error,
+          Translations.of(context).auth.loginError,
+          Translations.of(context).error.message,
         );
       },
     );
@@ -70,14 +69,16 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     final result = await ref.read(authServiceProvider).loginTwitter();
     await result.when(
       success: (_) async {
-        state = state.copyWith(loginStatus: L10n.of(context).loginSuccessful);
+        state = state.copyWith(
+          loginStatus: Translations.of(context).auth.loginSuccessful,
+        );
       },
       failure: (error) {
         logger.e(error);
         SnackBarHelper().openErrorSnackBar(
           context,
-          L10n.of(context).loginError,
-          L10n.of(context).error,
+          Translations.of(context).auth.loginError,
+          Translations.of(context).error.message,
         );
       },
     );
@@ -85,10 +86,5 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
 }
 
 String authErrorManager(String error, BuildContext context) {
-  switch (error) {
-    case 'Unable to validate email address: invalid format':
-      return L10n.of(context).authInvalidFormat;
-    default:
-      return L10n.of(context).authSocketException;
-  }
+  return Translations.of(context).auth.authSocketException;
 }

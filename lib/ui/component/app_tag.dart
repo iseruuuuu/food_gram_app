@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/utils/search_utils.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -86,7 +86,7 @@ class AppFoodTag extends HookWidget {
                         TextButton(
                           onPressed: context.pop,
                           child: Text(
-                            L10n.of(context).cancel,
+                            Translations.of(context).cancel,
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -96,7 +96,7 @@ class AppFoodTag extends HookWidget {
                         ),
                         const Spacer(),
                         Text(
-                          L10n.of(context).selectFoodTag,
+                          Translations.of(context).post.selectFoodTag,
                           style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
@@ -111,7 +111,7 @@ class AppFoodTag extends HookWidget {
                             context.pop();
                           },
                           child: Text(
-                            L10n.of(context).save,
+                            Translations.of(context).save,
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -130,7 +130,7 @@ class AppFoodTag extends HookWidget {
                     child: TextField(
                       controller: searchController,
                       decoration: InputDecoration(
-                        hintText: L10n.of(context).searchFood,
+                        hintText: Translations.of(context).searchFood,
                         prefixIcon: const Icon(Icons.search),
                         suffixIcon: searchQuery.value.isNotEmpty
                             ? IconButton(
@@ -164,7 +164,7 @@ class AppFoodTag extends HookWidget {
                                   ),
                                   const Gap(16),
                                   Text(
-                                    L10n.of(context).noResultsFound,
+                                    Translations.of(context).noResultsFound,
                                     style: const TextStyle(
                                       fontSize: 16,
                                       color: Colors.grey,
@@ -306,7 +306,7 @@ class AppFoodTag extends HookWidget {
                     Expanded(
                       child: foodTags.isEmpty
                           ? Text(
-                              L10n.of(context).postCategoryTitle,
+                              Translations.of(context).post.categoryTitle,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -497,7 +497,7 @@ class AppCountryTag extends HookWidget {
                         TextButton(
                           onPressed: context.pop,
                           child: Text(
-                            L10n.of(context).cancel,
+                            Translations.of(context).cancel,
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -507,7 +507,7 @@ class AppCountryTag extends HookWidget {
                         ),
                         const Spacer(),
                         Text(
-                          L10n.of(context).selectCountryTag,
+                          Translations.of(context).post.selectCountryTag,
                           style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
@@ -522,7 +522,7 @@ class AppCountryTag extends HookWidget {
                             context.pop();
                           },
                           child: Text(
-                            L10n.of(context).save,
+                            Translations.of(context).save,
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -541,7 +541,7 @@ class AppCountryTag extends HookWidget {
                     child: TextField(
                       controller: searchController,
                       decoration: InputDecoration(
-                        hintText: L10n.of(context).searchCountry,
+                        hintText: Translations.of(context).searchCountry,
                         prefixIcon: const Icon(Icons.search),
                         suffixIcon: searchQuery.value.isNotEmpty
                             ? IconButton(
@@ -575,7 +575,7 @@ class AppCountryTag extends HookWidget {
                                   ),
                                   const Gap(16),
                                   Text(
-                                    L10n.of(context).noResultsFound,
+                                    Translations.of(context).noResultsFound,
                                     style: const TextStyle(
                                       fontSize: 16,
                                       color: Colors.grey,
@@ -690,7 +690,7 @@ class AppCountryTag extends HookWidget {
                     Expanded(
                       child: countryTag.isEmpty
                           ? Text(
-                              L10n.of(context).selectCountryTag,
+                              Translations.of(context).post.selectCountryTag,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

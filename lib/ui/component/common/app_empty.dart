@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 
 class AppEmpty extends StatelessWidget {
@@ -13,7 +13,7 @@ class AppEmpty extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            L10n.of(context).emptyPosts,
+            Translations.of(context).emptyPosts,
             style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
@@ -33,7 +33,7 @@ class AppSearchResultEmpty extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          L10n.of(context).searchEmptyResult,
+          Translations.of(context).search.emptyResult,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
@@ -60,7 +60,7 @@ class AppSearchEmpty extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Text(
-              L10n.of(context).searchEmptyTitle,
+              Translations.of(context).searchEmptyTitle,
               style: const TextStyle(
                 fontSize: 18,
                 color: Colors.black,
@@ -97,7 +97,7 @@ class AppSearchEmpty extends StatelessWidget {
                     ),
                     const Gap(8),
                     Text(
-                      L10n.of(context).searchEmptyHintTitle,
+                      Translations.of(context).search.emptyHintTitle,
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.blue.shade700,
@@ -117,7 +117,7 @@ class AppSearchEmpty extends StatelessWidget {
                     const Gap(8),
                     Expanded(
                       child: Text(
-                        L10n.of(context).searchEmptyHintLocation,
+                        Translations.of(context).search.emptyHintLocation,
                         style: TextStyle(
                           fontSize: 13,
                           color: Colors.blue.shade800,
@@ -139,7 +139,7 @@ class AppSearchEmpty extends StatelessWidget {
                     const Gap(8),
                     Expanded(
                       child: Text(
-                        L10n.of(context).searchEmptyHintSearch,
+                        Translations.of(context).search.emptyHintSearch,
                         style: TextStyle(
                           fontSize: 13,
                           color: Colors.blue.shade800,
@@ -170,11 +170,11 @@ class AppFavoritePostEmpty extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            L10n.of(context).favoritePostEmptyTitle,
+            Translations.of(context).favoritePostEmpty.title,
             style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           Text(
-            L10n.of(context).favoritePostEmptySubtitle,
+            Translations.of(context).favoritePostEmpty.subtitle,
             style: const TextStyle(fontSize: 14),
           ),
           Assets.gif.error.image(width: 180, height: 180),

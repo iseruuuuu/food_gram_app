@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/theme/style/setting_style.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -11,7 +11,7 @@ class AppPremiumMembershipCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     return Column(
       children: [
         Padding(
@@ -46,7 +46,7 @@ class AppPremiumMembershipCard extends ConsumerWidget {
                       ),
                       const Gap(18),
                       Text(
-                        l10n.settingPremiumMembership,
+                        t.setting.premiumMembership,
                         style: SettingStyle.premium(),
                       ),
                       const Gap(18),

@@ -9,7 +9,7 @@ import 'package:food_gram_app/core/supabase/user/services/streak_service.dart';
 import 'package:food_gram_app/core/theme/style/post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
@@ -33,7 +33,7 @@ class PostScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     final deviceWidth = MediaQuery.of(context).size.width;
     final status = ref.watch(postViewModelProvider().select((s) => s.status));
     final foodImages =
@@ -106,7 +106,7 @@ class PostScreen extends HookConsumerWidget {
         appBar: AppBar(
           surfaceTintColor: Colors.transparent,
           backgroundColor: !loading ? Colors.white : Colors.transparent,
-          title: Text(l10n.postTitle, style: PostStyle.title()),
+          title: Text(t.post.title, style: PostStyle.title()),
           centerTitle: true,
           leading: !loading
               ? IconButton(
@@ -289,8 +289,8 @@ class PostScreen extends HookConsumerWidget {
                                       Expanded(
                                         child: Text(
                                           restaurantName == '場所を追加'
-                                              ? l10n
-                                                  .postRestaurantNameInputField
+                                              ? t.post
+                                                  .restaurantNameInputField
                                               : restaurantName,
                                           overflow: TextOverflow.ellipsis,
                                           style: PostStyle.restaurant(
@@ -343,7 +343,7 @@ class PostScreen extends HookConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      l10n.postRatingLabel,
+                      t.post.ratingLabel,
                       style: PostStyle.categoryTitle(),
                     ),
                     const Gap(6),
@@ -395,14 +395,14 @@ class PostScreen extends HookConsumerWidget {
                         color: Colors.black,
                       ),
                       title: Text(
-                        l10n.anonymousPost,
+                        t.anonymous.post,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
                       subtitle: Text(
-                        l10n.anonymousPostDescription,
+                        t.anonymous.postDescription,
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.grey,
@@ -471,7 +471,7 @@ class PostScreen extends HookConsumerWidget {
                       } else {
                         SnackBarHelper().openErrorSnackBar(
                           context,
-                          l10n.postError,
+                          t.post.error,
                           _getLocalizedStatus(context, status),
                         );
                       }
@@ -487,7 +487,7 @@ class PostScreen extends HookConsumerWidget {
                       ),
                     ),
                     child: Text(
-                      isAnonymous ? l10n.anonymousShare : l10n.shareButton,
+                      isAnonymous ? t.anonymous.share : t.share.shareButton,
                       style: const TextStyle(
                         color: Colors.white,
                       ),
@@ -505,30 +505,30 @@ class PostScreen extends HookConsumerWidget {
       (e) => e.name == status,
       orElse: () => PostStatus.initial,
     );
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     switch (postStatus) {
       case PostStatus.errorPickImage:
-        return l10n.postErrorPickImage;
+        return t.post.errorPickImage;
       case PostStatus.error:
-        return l10n.postError;
+        return t.post.error;
       case PostStatus.photoSuccess:
-        return l10n.postPhotoSuccess;
+        return t.post.photoSuccess;
       case PostStatus.cameraPermission:
-        return l10n.postCameraPermission;
+        return t.post.cameraPermission;
       case PostStatus.albumPermission:
-        return l10n.postAlbumPermission;
+        return t.post.albumPermission;
       case PostStatus.success:
-        return l10n.postSuccess;
+        return t.post.success;
       case PostStatus.loading:
         return 'Loading...';
       case PostStatus.missingPhoto:
-        return l10n.postMissingPhoto;
+        return t.post.missingPhoto;
       case PostStatus.missingFoodName:
-        return l10n.postMissingFoodName;
+        return t.post.missingFoodName;
       case PostStatus.missingRestaurant:
-        return l10n.postMissingRestaurant;
+        return t.post.missingRestaurant;
       case PostStatus.maybeNotFood:
-        return l10n.maybeNotFoodDialogTitle;
+        return t.maybeNotFoodDialog.title;
       case PostStatus.initial:
         return 'Loading...';
     }

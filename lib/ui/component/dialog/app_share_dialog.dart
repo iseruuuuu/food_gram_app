@@ -4,7 +4,7 @@ import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_share_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:gap/gap.dart';
@@ -23,7 +23,7 @@ class AppShareDialog extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     final loading = useState(false);
     final adInterstitial =
         useMemoized(() => ref.read(admobInterstitialNotifierProvider));
@@ -54,7 +54,7 @@ class AppShareDialog extends HookConsumerWidget {
                     ),
                   ),
                   title: Text(
-                    l10n.appShareTitle,
+                    t.app.shareTitle,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -84,7 +84,7 @@ class AppShareDialog extends HookConsumerWidget {
                                   ),
                                   shareText: '${posts.foodName} '
                                       'in ${posts.restaurant}\n\n '
-                                      '${l10n.shareInviteMessage}\n'
+                                      '${t.share.inviteMessage}\n'
                                       '#FoodGram',
                                   loading: loading,
                                   hasText: true,
@@ -101,7 +101,7 @@ class AppShareDialog extends HookConsumerWidget {
                               ),
                               const Gap(15),
                               Text(
-                                l10n.shareTextAndImage,
+                                t.share.textAndImage,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.black,
@@ -143,7 +143,7 @@ class AppShareDialog extends HookConsumerWidget {
                               ),
                               const Gap(15),
                               Text(
-                                l10n.shareImageOnly,
+                                t.share.imageOnly,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.black,

@@ -11,7 +11,7 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/theme/style/detail_post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/go_router_extension.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
@@ -40,7 +40,7 @@ class PostDetailListItem extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = MediaQuery.of(context).size.width;
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     final currentUser = ref.watch(currentUserProvider);
     final supabase = ref.watch(supabaseProvider);
     final isHearted = useState<bool>(false);
@@ -113,14 +113,14 @@ class PostDetailListItem extends HookConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        posts.isAnonymous ? l10n.anonymousPoster : users.name,
+                        posts.isAnonymous ? t.anonymous.poster : users.name,
                         style: DetailPostStyle.name(),
                         overflow: TextOverflow.ellipsis,
                       ),
                       Builder(
                         builder: (context) {
                           final username = posts.isAnonymous
-                              ? l10n.anonymousUsername
+                              ? t.anonymous.username
                               : users.userName;
                           return Text(
                             '@$username',
@@ -321,7 +321,7 @@ class PostDetailListItem extends HookConsumerWidget {
                   ),
                   const Spacer(),
                   Text(
-                    '${heartCount.value} ${l10n.likeButton}',
+                    '${heartCount.value} ${t.likeButton}',
                     style: DetailPostStyle.like(),
                   ),
                   IconButton(
@@ -329,13 +329,13 @@ class PostDetailListItem extends HookConsumerWidget {
                       ref.read(postDetailViewModelProvider().notifier).store(
                             postId: posts.id,
                             openSnackBar: () {
-                              final l10n = L10n.of(context);
+                              final t = Translations.of(context);
                               SnackBarHelper().openInfoSnackBar(
                                 context,
                                 Column(
                                   children: [
-                                    Text(l10n.postSaved),
-                                    Text(l10n.postSavedMessage),
+                                    Text(t.stored.postSaved),
+                                    Text(t.stored.postSavedMessage),
                                   ],
                                 ),
                               );
@@ -375,7 +375,7 @@ class PostDetailListItem extends HookConsumerWidget {
                               },
                             );
                           },
-                          title: l10n.detailMenuShare,
+                          title: t.detailMenu.share,
                           icon: Icons.share,
                         ),
                         AppDetailElevatedButton(
@@ -400,14 +400,14 @@ class PostDetailListItem extends HookConsumerWidget {
                               }
                             });
                           },
-                          title: l10n.detailMenuPost,
+                          title: t.detailMenu.post,
                           icon: Icons.restaurant,
                         ),
                         AppDetailElevatedButton(
                           onPressed: () => ref
                               .read(postDetailViewModelProvider().notifier)
                               .openUrl(posts.restaurant),
-                          title: l10n.detailMenuSearch,
+                          title: t.detailMenu.search,
                           icon: Icons.search,
                         ),
                         AppDetailElevatedButton(
@@ -424,12 +424,12 @@ class PostDetailListItem extends HookConsumerWidget {
                               () {
                                 SnackBarHelper().openSimpleSnackBar(
                                   context,
-                                  l10n.noMapAppAvailable,
+                                  t.noMapAppAvailable,
                                 );
                               },
                             );
                           },
-                          title: l10n.detailMenuVisit,
+                          title: t.detailMenu.visit,
                           icon: Icons.directions_walk,
                         ),
                       ],
@@ -503,7 +503,7 @@ class PostDetailListItem extends HookConsumerWidget {
                       ),
                     const Gap(4),
                     Text(
-                      '${_formatDateTime(posts.createdAt)} ${l10n.posted}',
+                      '${_formatDateTime(posts.createdAt)} ${t.posted}',
                       style: DetailPostStyle.comment(),
                     ),
                     const Gap(12),

@@ -12,7 +12,7 @@ import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_premium_membership_card.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
@@ -30,7 +30,7 @@ class SettingScreen extends HookConsumerWidget {
     final loading = ref.watch(loadingProvider);
     final state = ref.watch(settingViewModelProvider());
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -54,23 +54,23 @@ class SettingScreen extends HookConsumerWidget {
                         children: [
                           SettingTile(
                             icon: FontAwesomeIcons.twitter,
-                            title: l10n.settingDeveloper,
+                            title: t.setting.developer,
                             onTap: () => LaunchUrlHelper().openSNSUrl(URL.sns),
                           ),
                           SettingTile(
                             icon: FontAwesomeIcons.github,
-                            title: l10n.settingGithub,
+                            title: t.setting.github,
                             onTap: () =>
                                 LaunchUrlHelper().openSNSUrl(URL.github),
                           ),
                           SettingTile(
                             icon: Icons.verified,
-                            title: l10n.settingLicense,
+                            title: t.setting.license,
                             onTap: () => context.pushNamed(RouterPath.license),
                           ),
                           SettingTile(
                             icon: Icons.share,
-                            title: l10n.settingShareApp,
+                            title: t.setting.shareApp,
                             onTap: () {
                               final url = Platform.isIOS
                                   ? URL.appleStore
@@ -80,50 +80,50 @@ class SettingScreen extends HookConsumerWidget {
                           ),
                           SettingTile(
                             icon: Icons.rate_review_outlined,
-                            title: l10n.settingReview,
+                            title: t.setting.review,
                             onTap: () => ref
                                 .read(settingViewModelProvider().notifier)
                                 .review(),
                           ),
                           SettingTile(
                             icon: Icons.system_update,
-                            title: l10n.settingCheckVersion,
+                            title: t.setting.checkVersion,
                             onTap: () => ref
                                 .read(settingViewModelProvider().notifier)
                                 .checkNewVersion(context),
                           ),
                           SettingTile(
                             icon: Icons.help_outline,
-                            title: l10n.settingFaq,
+                            title: t.setting.faq,
                             onTap: () =>
                                 LaunchUrlHelper().open(URL.faq(context)),
                           ),
                           SettingTile(
                             icon: Icons.security,
-                            title: l10n.settingPrivacyPolicy,
+                            title: t.setting.privacyPolicy,
                             onTap: () => LaunchUrlHelper()
                                 .open(URL.privacyPolicy(context)),
                           ),
                           SettingTile(
                             icon: Icons.assignment,
-                            title: l10n.settingTermsOfUse,
+                            title: t.setting.termsOfUse,
                             onTap: () =>
                                 LaunchUrlHelper().open(URL.termsOfUse(context)),
                           ),
                           SettingTile(
                             icon: Icons.chat,
-                            title: l10n.settingContact,
+                            title: t.setting.contact,
                             onTap: () => LaunchUrlHelper().open(URL.contact),
                           ),
                           SettingTile(
                             icon: Icons.school,
-                            title: l10n.settingTutorial,
+                            title: t.setting.tutorial,
                             onTap: () =>
                                 context.pushNamed(RouterPath.settingTutorial),
                           ),
                           SettingTile(
                             icon: CupertinoIcons.cube_box_fill,
-                            title: l10n.settingQuestion,
+                            title: t.setting.question,
                             onTap: () {
                               LaunchUrlHelper().open(URL.question);
                             },
@@ -155,7 +155,7 @@ class SettingScreen extends HookConsumerWidget {
                             ),
                             const Gap(8),
                             Text(
-                              l10n.settingAccountManagement,
+                              t.setting.accountManagement,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -170,12 +170,12 @@ class SettingScreen extends HookConsumerWidget {
                         children: [
                           SettingTile(
                             icon: Icons.power_settings_new,
-                            title: l10n.settingLogoutButton,
+                            title: t.setting.logoutButton,
                             onTap: () {
                               DialogHelper().openLogoutDialog(
-                                title: l10n.dialogLogoutTitle,
-                                text: '${l10n.dialogLogoutDescription1}\n'
-                                    '${l10n.dialogLogoutDescription2}',
+                                title: t.dialog.logoutTitle,
+                                text: '${t.dialog.logoutDescription1}\n'
+                                    '${t.dialog.logoutDescription2}',
                                 onTap: () {
                                   context.pop();
                                   ref
@@ -190,7 +190,7 @@ class SettingScreen extends HookConsumerWidget {
                                       } else {
                                         SnackBarHelper().openErrorSnackBar(
                                           context,
-                                          l10n.logoutFailure,
+                                          t.auth.logoutFailure,
                                           '',
                                         );
                                       }
@@ -203,7 +203,7 @@ class SettingScreen extends HookConsumerWidget {
                           ),
                           SettingTile(
                             icon: Icons.delete,
-                            title: l10n.settingDeleteAccountButton,
+                            title: t.setting.deleteAccountButton,
                             onTap: () {
                               LaunchUrlHelper()
                                   .open('https://forms.gle/B2cG3FEynh1tbfUdA')
@@ -211,7 +211,7 @@ class SettingScreen extends HookConsumerWidget {
                                 if (!value) {
                                   SnackBarHelper().openErrorSnackBar(
                                     context,
-                                    l10n.accountDeletionFailure,
+                                    t.auth.accountDeletionFailure,
                                     '',
                                   );
                                 }
@@ -220,7 +220,7 @@ class SettingScreen extends HookConsumerWidget {
                           ),
                           SettingTile(
                             icon: Icons.restore,
-                            title: l10n.settingRestore,
+                            title: t.setting.restore,
                             onTap: () {
                               ref
                                   .read(settingViewModelProvider().notifier)
@@ -230,14 +230,14 @@ class SettingScreen extends HookConsumerWidget {
                                   if (isRestore) {
                                     SnackBarHelper().openSuccessSnackBar(
                                       context,
-                                      l10n.settingRestoreSuccessTitle,
-                                      l10n.settingRestoreSuccessSubtitle,
+                                      t.setting.restoreSuccessTitle,
+                                      t.setting.restoreSuccessSubtitle,
                                     );
                                   } else {
                                     SnackBarHelper().openErrorSnackBar(
                                       context,
-                                      l10n.settingRestoreFailureTitle,
-                                      l10n.settingRestoreFailureSubtitle,
+                                      t.setting.restoreFailureTitle,
+                                      t.setting.restoreFailureSubtitle,
                                     );
                                   }
                                 },
@@ -256,7 +256,7 @@ class SettingScreen extends HookConsumerWidget {
                                 color: Colors.grey,
                               ),
                               title: Text(
-                                l10n.settingAppVersion,
+                                t.setting.appVersion,
                                 style: SettingStyle.appVersion(),
                               ),
                               trailing: Text(

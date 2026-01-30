@@ -5,7 +5,7 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -25,7 +25,7 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     return Container(
       height: MediaQuery.sizeOf(context).width / 1.5,
       decoration: const BoxDecoration(
@@ -42,7 +42,7 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 20),
               child: Text(
-                l10n.postDetailSheetTitle,
+                t.postDetailSheet.title,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -68,10 +68,10 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
                   ),
                   onPressed: () {
                     DialogHelper().openDialog(
-                      title: l10n.dialogReportTitle,
-                      text: '${l10n.dialogReportDescription1}'
+                      title: t.dialog.reportTitle,
+                      text: '${t.dialog.reportDescription1}'
                           '\n '
-                          '${l10n.dialogReportDescription2}',
+                          '${t.dialog.reportDescription2}',
                       onTap: () async {
                         context.pop();
                         await LaunchUrlHelper().open(URL.report).then((value) {
@@ -90,7 +90,7 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
                       ),
                       const SizedBox(width: 20),
                       Text(
-                        l10n.postDetailSheetReportButton,
+                        t.postDetailSheet.reportButton,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -122,12 +122,12 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
                   ),
                   onPressed: () {
                     DialogHelper().openDialog(
-                      title: l10n.dialogBlockTitle,
-                      text: '${l10n.dialogBlockDescription1}'
+                      title: t.dialog.blockTitle,
+                      text: '${t.dialog.blockDescription1}'
                           '\n'
-                          '${l10n.dialogBlockDescription2}'
+                          '${t.dialog.blockDescription2}'
                           '\n'
-                          '${l10n.dialogBlockDescription3}',
+                          '${t.dialog.blockDescription3}',
                       onTap: () async {
                         context
                           ..pop()
@@ -151,7 +151,7 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
                       ),
                       const SizedBox(width: 20),
                       Text(
-                        l10n.postDetailSheetBlockButton,
+                        t.postDetailSheet.blockButton,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -196,7 +196,7 @@ class AppDetailOtherInfoModalSheet extends HookConsumerWidget {
                       ),
                       const SizedBox(width: 20),
                       Text(
-                        l10n.close,
+                        t.close,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,

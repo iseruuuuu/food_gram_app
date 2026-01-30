@@ -3,21 +3,21 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 class DialogHelper {
   void forceUpdateDialog(BuildContext context) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     QuickAlert.show(
       disableBackBtn: true,
       context: context,
       type: QuickAlertType.info,
-      title: l10n.forceUpdateTitle,
-      text: l10n.forceUpdateText,
-      confirmBtnText: l10n.forceUpdateButtonTitle,
+      title: t.forceUpdate.title,
+      text: t.forceUpdate.text,
+      confirmBtnText: t.forceUpdate.buttonTitle,
       confirmBtnColor: Colors.black,
       onConfirmBtnTap: () {
         if (Platform.isIOS) {
@@ -35,13 +35,13 @@ class DialogHelper {
     required VoidCallback onTap,
     required BuildContext context,
   }) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     QuickAlert.show(
       context: context,
       type: QuickAlertType.warning,
       title: title,
       text: text,
-      confirmBtnText: l10n.dialogYesButton,
+      confirmBtnText: t.dialog.yesButton,
       onConfirmBtnTap: onTap,
       confirmBtnTextStyle: const TextStyle(
         fontSize: 16,
@@ -49,7 +49,7 @@ class DialogHelper {
         color: Colors.white,
       ),
       showCancelBtn: true,
-      cancelBtnText: l10n.dialogNoButton,
+      cancelBtnText: t.dialog.noButton,
       onCancelBtnTap: () => context.pop(),
       cancelBtnTextStyle: const TextStyle(
         fontSize: 16,
@@ -64,13 +64,13 @@ class DialogHelper {
     required VoidCallback onTap,
     required BuildContext context,
   }) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     QuickAlert.show(
       context: context,
       type: QuickAlertType.warning,
       title: title,
       text: text,
-      confirmBtnText: l10n.dialogLogoutButton,
+      confirmBtnText: t.dialog.logoutButton,
       onConfirmBtnTap: onTap,
       confirmBtnColor: Colors.red,
       confirmBtnTextStyle: const TextStyle(
@@ -79,7 +79,7 @@ class DialogHelper {
         color: Colors.white,
       ),
       showCancelBtn: true,
-      cancelBtnText: l10n.cancel,
+      cancelBtnText: t.cancel,
       onCancelBtnTap: () => context.pop(),
       cancelBtnTextStyle: const TextStyle(
         fontSize: 16,

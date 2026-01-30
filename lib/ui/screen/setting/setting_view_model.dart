@@ -5,7 +5,7 @@ import 'package:food_gram_app/core/supabase/auth/services/auth_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/screen/setting/setting_state.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:new_version_plus/new_version_plus.dart';
@@ -47,7 +47,7 @@ class SettingViewModel extends _$SettingViewModel {
 
   Future<void> checkNewVersion(BuildContext context) async {
     loading.state = true;
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     final newVersion = NewVersionPlus();
     final status = await newVersion.getVersionStatus();
     final packageInfo = await PackageInfo.fromPlatform();
@@ -60,9 +60,9 @@ class SettingViewModel extends _$SettingViewModel {
       newVersion.showUpdateDialog(
         context: context,
         versionStatus: status,
-        dialogTitle: l10n.settingCheckVersionDialogTitle,
-        dialogText: '${l10n.settingCheckVersionDialogText1}\n'
-            '${l10n.settingCheckVersionDialogText2}',
+        dialogTitle: t.setting.checkVersionDialogTitle,
+        dialogText: '${t.setting.checkVersionDialogText1}\n'
+            '${t.setting.checkVersionDialogText2}',
         launchModeVersion: LaunchModeVersion.external,
       );
     } else {

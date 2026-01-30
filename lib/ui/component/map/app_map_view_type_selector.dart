@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 
 class AppMapViewTypeSelector extends StatelessWidget {
   const AppMapViewTypeSelector({
@@ -14,7 +14,7 @@ class AppMapViewTypeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
@@ -49,7 +49,7 @@ class AppMapViewTypeSelector extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  _getLabel(type, l10n),
+                  _getLabel(type, t),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: isSelected ? Colors.white : Colors.black87,
@@ -66,14 +66,14 @@ class AppMapViewTypeSelector extends StatelessWidget {
     );
   }
 
-  String _getLabel(MapViewType type, L10n l10n) {
+  String _getLabel(MapViewType type, Translations t) {
     switch (type) {
       case MapViewType.detail:
-        return l10n.mapViewTypeRecord;
+        return t.mapViewType.record;
       case MapViewType.japan:
-        return l10n.mapViewTypeJapan;
+        return t.mapViewType.japan;
       case MapViewType.world:
-        return l10n.mapViewTypeWorld;
+        return t.mapViewType.world;
     }
   }
 }

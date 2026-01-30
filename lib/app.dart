@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/notification/firebase_messaging_service.dart';
 import 'package:food_gram_app/core/theme/text_form_borders.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:toastification/toastification.dart';
 
@@ -18,12 +19,14 @@ class MyApp extends ConsumerWidget {
 
     return ToastificationWrapper(
       child: MaterialApp.router(
+        // TranslationProviderをロケールにセット
+        locale: TranslationProvider.of(context).flutterLocale,
         localizationsDelegates: const [
-          ...L10n.localizationsDelegates,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
         ],
-        supportedLocales: const [
-          ...L10n.supportedLocales,
-        ],
+        supportedLocales: AppLocaleUtils.supportedLocales,
         localeListResolutionCallback: (locales, supported) {
           for (final deviceLocale in locales ?? const <Locale>[]) {
             // 1) 言語+地域の完全一致を優先して supported から返す

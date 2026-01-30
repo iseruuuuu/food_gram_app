@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 
@@ -101,8 +101,8 @@ class AppMapLoading extends StatelessWidget {
                       const SizedBox(height: 16),
                       Text(
                         hasError
-                            ? L10n.of(context).mapLoadingError
-                            : L10n.of(context).mapLoadingRestaurant,
+                            ? Translations.of(context).map.loadingError
+                            : Translations.of(context).map.loadingRestaurant,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 14,

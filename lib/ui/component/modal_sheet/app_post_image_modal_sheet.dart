@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:go_router/go_router.dart';
 
 class AppPostImageModalSheet extends StatelessWidget {
@@ -36,7 +36,7 @@ class AppPostImageModalSheet extends StatelessWidget {
                     camera();
                   },
                   child: Text(
-                    L10n.of(context).camera,
+                    Translations.of(context).post.camera,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -55,7 +55,7 @@ class AppPostImageModalSheet extends StatelessWidget {
                   album();
                 },
                 child: Text(
-                  L10n.of(context).album,
+                  Translations.of(context).post.album,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -70,7 +70,7 @@ class AppPostImageModalSheet extends StatelessWidget {
               child: TextButton(
                 onPressed: () => context.pop(),
                 child: Text(
-                  L10n.of(context).close,
+                  Translations.of(context).close,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,

@@ -8,7 +8,7 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/env.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
@@ -48,7 +48,7 @@ class PostDetailScreen extends HookConsumerWidget {
       },
       [posts.id],
     );
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     final menuLoading = useState(false);
     final loading = ref.watch(loadingProvider);
     final currentUser = ref.watch(currentUserProvider);
@@ -171,7 +171,7 @@ class PostDetailScreen extends HookConsumerWidget {
                       onHeartLimitReached: () {
                         SnackBarHelper().openWarningSnackBar(
                           context,
-                          l10n.heartLimitMessage,
+                          t.heartLimitMessage,
                         );
                       },
                     );

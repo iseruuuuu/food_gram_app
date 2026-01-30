@@ -10,7 +10,7 @@ import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider
 import 'package:food_gram_app/core/theme/style/tutorial_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/tutorial_paywall.dart';
@@ -25,7 +25,7 @@ class TutorialScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     final isAccept = useState(false);
     final isFinishedTutorial = useState(false);
     final notifier = useValueNotifier<double>(0);
@@ -78,12 +78,12 @@ class TutorialScreen extends HookConsumerWidget {
                   ),
                   const Gap(24),
                   Text(
-                    l10n.tutorialFirstPageTitle,
+                    t.tutorial.firstPageTitle,
                     style: TutorialStyle.title(),
                   ),
                   const Gap(12),
                   Text(
-                    l10n.tutorialFirstPageSubTitle,
+                    t.tutorial.firstPageSubTitle,
                     style: TutorialStyle.subTitle(),
                     textAlign: TextAlign.center,
                   ),
@@ -101,12 +101,12 @@ class TutorialScreen extends HookConsumerWidget {
                   ),
                   const Gap(24),
                   Text(
-                    l10n.tutorialDiscoverTitle,
+                    t.tutorial.discoverTitle,
                     style: TutorialStyle.title(),
                   ),
                   const Gap(12),
                   Text(
-                    l10n.tutorialDiscoverSubTitle,
+                    t.tutorial.discoverSubTitle,
                     style: TutorialStyle.subTitle(),
                     textAlign: TextAlign.center,
                   ),
@@ -124,12 +124,12 @@ class TutorialScreen extends HookConsumerWidget {
                   ),
                   const Gap(24),
                   Text(
-                    l10n.tutorialSecondPageTitle,
+                    t.tutorial.secondPageTitle,
                     style: TutorialStyle.title(),
                   ),
                   const Gap(12),
                   Text(
-                    l10n.tutorialSecondPageSubTitle,
+                    t.tutorial.secondPageSubTitle,
                     style: TutorialStyle.subTitle(),
                     textAlign: TextAlign.center,
                   ),
@@ -147,12 +147,12 @@ class TutorialScreen extends HookConsumerWidget {
                   ),
                   const Gap(56),
                   Text(
-                    l10n.tutorialLocationTitle,
+                    t.tutorial.locationTitle,
                     style: TutorialStyle.title(),
                   ),
                   const Gap(12),
                   Text(
-                    l10n.appRequestReason,
+                    t.app.requestReason,
                     style: TutorialStyle.subTitle(),
                     textAlign: TextAlign.center,
                   ),
@@ -165,7 +165,7 @@ class TutorialScreen extends HookConsumerWidget {
                       }
                       goToNextPage();
                     },
-                    title: l10n.tutorialLocationButton,
+                    title: t.tutorial.locationButton,
                   ),
                 ],
               ),
@@ -180,12 +180,12 @@ class TutorialScreen extends HookConsumerWidget {
                   ),
                   const Gap(48),
                   Text(
-                    l10n.tutorialDiscoverTitle,
+                    t.tutorial.discoverTitle,
                     style: TutorialStyle.title(),
                   ),
                   const Gap(12),
                   Text(
-                    l10n.tutorialDiscoverSubTitle,
+                    t.tutorial.discoverSubTitle,
                     style: TutorialStyle.subTitle(),
                     textAlign: TextAlign.center,
                   ),
@@ -195,7 +195,7 @@ class TutorialScreen extends HookConsumerWidget {
                       await initializeNotifications();
                       goToNextPage();
                     },
-                    title: l10n.tutorialNotificationButton,
+                    title: t.tutorial.notificationButton,
                   ),
                 ],
               ),
@@ -218,7 +218,7 @@ class TutorialScreen extends HookConsumerWidget {
                           const Gap(10),
                           Assets.gif.tutorial1.image(width: 50),
                           Text(
-                            l10n.tutorialThirdPageTitle,
+                            t.tutorial.thirdPageTitle,
                             style: TutorialStyle.thirdTitle(),
                           ),
                           Assets.gif.tutorial1.image(width: 50),
@@ -229,7 +229,7 @@ class TutorialScreen extends HookConsumerWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Text(
-                          l10n.tutorialThirdPageSubTitle,
+                          t.tutorial.thirdPageSubTitle,
                           style: TutorialStyle.thirdSubTitle(),
                         ),
                       ),
@@ -238,7 +238,7 @@ class TutorialScreen extends HookConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            l10n.tutorialThirdPageButton,
+                            t.tutorial.thirdPageButton,
                             style: TutorialStyle.accept(),
                           ),
                           const Gap(10),
@@ -270,7 +270,7 @@ class TutorialScreen extends HookConsumerWidget {
                                 }
                               : null,
                           child: Text(
-                            l10n.tutorialThirdPageClose,
+                            t.tutorial.thirdPageClose,
                             style: TutorialStyle.close(),
                           ),
                         ),
@@ -294,7 +294,7 @@ class TutorialScreen extends HookConsumerWidget {
                     if (currentPage == totalPages - 1 && !isAccept.value) {
                       SnackBarHelper().openSimpleSnackBar(
                         context,
-                        L10n.of(context).agreeToTheTermsOfUse,
+                        Translations.of(context).tutorial.agreeToTheTermsOfUse,
                       );
                     } else if (currentPage < totalPages - 1) {
                       pageController.nextPage(

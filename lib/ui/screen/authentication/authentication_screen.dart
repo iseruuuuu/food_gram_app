@@ -10,7 +10,7 @@ import 'package:food_gram_app/core/theme/style/authentication_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/screen/authentication/authentication_view_model.dart';
@@ -98,11 +98,11 @@ class AuthenticationScreen extends HookConsumerWidget {
                       Column(
                         children: [
                           Text(
-                            L10n.of(context).appTitle,
+                            Translations.of(context).app.title,
                             style: AuthenticationStyle.authTitleStyle(),
                           ),
                           Text(
-                            L10n.of(context).appSubtitle,
+                            Translations.of(context).app.subtitle,
                             style: AuthenticationStyle.authSubTitleStyle(),
                           ),
                         ],
@@ -120,7 +120,7 @@ class AuthenticationScreen extends HookConsumerWidget {
                       } else {
                         SnackBarHelper().openErrorSnackBar(
                           context,
-                          L10n.of(context).appleLoginFailure,
+                          Translations.of(context).auth.appleLoginFailure,
                           '',
                         );
                       }

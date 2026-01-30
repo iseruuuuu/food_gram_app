@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_premium_membership_card.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
@@ -126,7 +126,9 @@ class MyProfileScreen extends HookConsumerWidget {
                                             ),
                                             const SizedBox(width: 6),
                                             Text(
-                                              L10n.of(context).savedPosts,
+                                              Translations.of(context)
+                                                  .stored
+                                                  .savedPosts,
                                               style: const TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,

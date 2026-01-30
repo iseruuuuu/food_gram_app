@@ -5,7 +5,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/notification/repository/notification_repository.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:go_router/go_router.dart';
@@ -19,7 +19,7 @@ class NotificationsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          L10n.of(context).likeNotificationsTitle,
+          Translations.of(context).notification.likeNotificationsTitle,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
@@ -40,7 +40,7 @@ class NotificationsScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, __) => Center(
           child: Text(
-            L10n.of(context).loadFailed,
+            Translations.of(context).notification.loadFailed,
             style: const TextStyle(color: Colors.black54),
           ),
         ),
@@ -78,7 +78,11 @@ class NotificationsScreen extends ConsumerWidget {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 title: likerUserId == null
-                    ? Text(L10n.of(context).someoneLikedYourPost)
+                    ? Text(
+                        Translations.of(context)
+                            .notification
+                            .someoneLikedYourPost,
+                      )
                     : FutureBuilder<Map<String, dynamic>>(
                         future: ref
                             .read(detailPostRepositoryProvider.notifier)
@@ -89,7 +93,10 @@ class NotificationsScreen extends ConsumerWidget {
                                   : null) ??
                               '誰か';
                           return Text(
-                            L10n.of(context).userLikedYourPost(name),
+                            Translations.of(context)
+                                .notification
+                                .userLikedYourPost
+                                .replaceAll('{name}', name),
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,

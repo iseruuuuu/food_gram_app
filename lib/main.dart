@@ -9,17 +9,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/app.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/env.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // デバイスのロケールで初期化
+  LocaleSettings.useDeviceLocale();
   await initializeSystemSettings();
   await initializeThirdPartyServices();
   await initializePurchases();
   await MobileAds.instance.initialize();
-  runApp(const ProviderScope(child: MyApp()));
+  // TranslationProviderでラップ
+  runApp(TranslationProvider(child: const ProviderScope(child: MyApp())));
 }
 
 Future<void> initializeSystemSettings() async {

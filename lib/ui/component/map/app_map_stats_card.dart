@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 
 /// マイマップの統計情報を表示するカード
@@ -28,11 +28,14 @@ class AppMapStatsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     final summary = switch (viewType) {
-      MapViewType.detail => l10n.mapStatsRecordSummary(activityDays),
-      MapViewType.japan => l10n.mapStatsJapanSummary(visitedPrefecturesCount),
-      MapViewType.world => l10n.mapStatsWorldSummary(visitedCountriesCount),
+      MapViewType.detail =>
+        t.mapStats.recordSummary.replaceAll('{days}', activityDays.toString()),
+      MapViewType.japan => t.mapStats.japanSummary
+          .replaceAll('{prefectures}', visitedPrefecturesCount.toString()),
+      MapViewType.world => t.mapStats.worldSummary
+          .replaceAll('{countries}', visitedCountriesCount.toString()),
     };
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -53,7 +56,7 @@ class AppMapStatsCard extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: _buildStatItems(l10n),
+            children: _buildStatItems(t),
           ),
           const Gap(12),
           Center(
@@ -71,7 +74,7 @@ class AppMapStatsCard extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildStatItems(L10n l10n) {
+  List<Widget> _buildStatItems(Translations t) {
     switch (viewType) {
       case MapViewType.detail:
         return [
@@ -92,7 +95,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                l10n.mapStatsVisitedArea,
+                t.mapStats.visitedArea,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -118,7 +121,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                l10n.mapStatsPosts,
+                t.mapStats.posts,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -135,7 +138,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(8),
               Text(
-                '$activityDays${l10n.dayUnit}',
+                '$activityDays${t.dayUnit}',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -144,7 +147,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                l10n.mapStatsActivityDays,
+                t.mapStats.activityDays,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -173,7 +176,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                l10n.mapStatsPrefectures,
+                t.mapStats.prefectures,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -199,7 +202,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                l10n.mapStatsPosts,
+                t.mapStats.posts,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -225,7 +228,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                l10n.mapStatsAchievementRate,
+                t.mapStats.achievementRate,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -254,7 +257,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                l10n.mapStatsVisitedCountries,
+                t.mapStats.visitedCountries,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -280,7 +283,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                l10n.mapStatsPosts,
+                t.mapStats.posts,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
@@ -306,7 +309,7 @@ class AppMapStatsCard extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                l10n.mapStatsAchievementRate,
+                t.mapStats.achievementRate,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],

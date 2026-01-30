@@ -11,7 +11,7 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/theme/style/edit_post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/gen/l10n/l10n.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
@@ -33,7 +33,7 @@ class EditPostScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = L10n.of(context);
+    final t = Translations.of(context);
     final deviceWidth = MediaQuery.of(context).size.width;
     final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
     final previewWidth = (deviceWidth * 0.85 * devicePixelRatio).round();
@@ -116,7 +116,7 @@ class EditPostScreen extends HookConsumerWidget {
           surfaceTintColor: Colors.transparent,
           backgroundColor: !loading ? Colors.white : Colors.transparent,
           title: Text(
-            l10n.editTitle,
+            t.edit.editTitle,
             style: EditPostStyle.editTitle(),
           ),
           centerTitle: true,
@@ -428,7 +428,7 @@ class EditPostScreen extends HookConsumerWidget {
                     ),
                     const Gap(6),
                     Text(
-                      l10n.postRatingLabel,
+                      t.post.ratingLabel,
                       style: EditPostStyle.category(),
                     ),
                     const Gap(6),
@@ -478,14 +478,14 @@ class EditPostScreen extends HookConsumerWidget {
                         color: Colors.black,
                       ),
                       title: Text(
-                        l10n.anonymousPost,
+                        t.anonymous.post,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
                       subtitle: Text(
-                        l10n.anonymousPostDescription,
+                        t.anonymous.postDescription,
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.grey,
@@ -546,7 +546,7 @@ class EditPostScreen extends HookConsumerWidget {
                       } else {
                         SnackBarHelper().openErrorSnackBar(
                           context,
-                          l10n.postError,
+                          t.post.error,
                           _getLocalizedStatus(context, status),
                         );
                       }
@@ -563,8 +563,8 @@ class EditPostScreen extends HookConsumerWidget {
                     ),
                     child: Text(
                       isAnonymous
-                          ? l10n.anonymousUpdate
-                          : l10n.editUpdateButton,
+                          ? t.anonymous.update
+                          : t.edit.updateButton,
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
@@ -582,23 +582,23 @@ class EditPostScreen extends HookConsumerWidget {
     );
     switch (postStatus) {
       case EditStatus.missingInfo:
-        return L10n.of(context).postMissingInfo;
+        return Translations.of(context).post.missingInfo;
       case EditStatus.error:
-        return L10n.of(context).postError;
+        return Translations.of(context).post.error;
       case EditStatus.photoSuccess:
-        return L10n.of(context).postPhotoSuccess;
+        return Translations.of(context).post.photoSuccess;
       case EditStatus.cameraPermission:
-        return L10n.of(context).postCameraPermission;
+        return Translations.of(context).post.cameraPermission;
       case EditStatus.albumPermission:
-        return L10n.of(context).postAlbumPermission;
+        return Translations.of(context).post.albumPermission;
       case EditStatus.success:
-        return L10n.of(context).postSuccess;
+        return Translations.of(context).post.success;
       case EditStatus.loading:
         return 'Loading...';
       case EditStatus.initial:
         return '';
       case EditStatus.maybeNotFood:
-        return L10n.of(context).maybeNotFoodDialogTitle;
+        return Translations.of(context).maybeNotFoodDialog.title;
     }
   }
 }
