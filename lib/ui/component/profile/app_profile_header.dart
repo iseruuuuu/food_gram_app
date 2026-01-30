@@ -121,7 +121,7 @@ class AppProfileHeader extends ConsumerWidget {
                               ),
                               const Gap(8),
                               Text(
-                                '${_getRank(context, length)}${t.rank}',
+                                '${_getRank(context, length)} ${t.rank.label}',
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
