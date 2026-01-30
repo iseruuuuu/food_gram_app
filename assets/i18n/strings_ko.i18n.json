@@ -9,7 +9,6 @@
   "heartLimitMessage": "오늘의 좋아요 10개 한도에 도달했습니다. 내일 다시 시도해 주세요.",
   "seeMore": "더 보기",
   "dayUnit": "일",
-  "purchaseError": "구매 중 오류가 발생했습니다",
   "done": "완료",
   "save": "저장",
   "searchFood": "음식 검색",
@@ -74,6 +73,7 @@
     "restoreFailureTitle": "복원 실패",
     "restoreFailureSubtitle": "구매 기록이 없나요? 지원팀에 문의하세요",
     "restore": "구매 복원",
+    "purchaseError": "구매 중 오류가 발생했습니다",
     "premiumMembership": "프리미엄 회원이 되어 특별한 경험을"
   },
   "post": {

@@ -9,7 +9,6 @@
   "heartLimitMessage": "您已達到今天10個讚的限制。請明天再試。",
   "seeMore": "查看更多",
   "dayUnit": "天",
-  "purchaseError": "購買過程中發生錯誤",
   "done": "完成",
   "save": "儲存",
   "searchFood": "搜尋食物",
@@ -74,6 +73,7 @@
     "restoreFailureTitle": "還原失敗",
     "restoreFailureSubtitle": "沒有購買記錄？請聯絡客服",
     "restore": "還原購買",
+    "purchaseError": "購買過程中發生錯誤",
     "premiumMembership": "成為進階會員，享受特別體驗"
   },
   "post": {

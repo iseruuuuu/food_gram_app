@@ -9,7 +9,6 @@
   "heartLimitMessage": "Vous avez atteint la limite de 10 j'aime d'aujourd'hui. Veuillez réessayer demain.",
   "seeMore": "Voir plus",
   "dayUnit": "jours",
-  "purchaseError": "Une erreur s'est produite lors de l'achat",
   "done": "Terminé",
   "save": "Enregistrer",
   "searchFood": "Rechercher de la nourriture",
@@ -80,6 +79,7 @@
     "restoreFailureTitle": "Échec de la restauration",
     "restoreFailureSubtitle": "Aucun historique d'achat ? Contactez le support",
     "restore": "Restaurer",
+    "purchaseError": "Une erreur s'est produite lors de l'achat",
     "premiumMembership": "Devenez membre Premium"
   },
   "post": {

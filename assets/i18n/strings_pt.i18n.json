@@ -9,7 +9,6 @@
   "heartLimitMessage": "Você atingiu o limite de 10 curtidas de hoje. Por favor, tente novamente amanhã.",
   "seeMore": "Ver Mais",
   "dayUnit": "dias",
-  "purchaseError": "Ocorreu um erro durante a compra",
   "done": "Concluído",
   "save": "Salvar",
   "searchFood": "Pesquisar comida",
@@ -74,6 +73,7 @@
     "restoreFailureTitle": "Falha na restauração",
     "restoreFailureSubtitle": "Sem histórico de compras? Entre em contato com o suporte",
     "restore": "Restaurar",
+    "purchaseError": "Ocorreu um erro durante a compra",
     "premiumMembership": "Torne-se membro Premium"
   },
   "post": {

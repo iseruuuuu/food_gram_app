@@ -9,7 +9,6 @@
   "heartLimitMessage": "您已达到今天10个赞的限制。请明天再试。",
   "seeMore": "查看更多",
   "dayUnit": "天",
-  "purchaseError": "购买过程中发生错误",
   "done": "完成",
   "save": "保存",
   "searchFood": "搜索食物",
@@ -74,6 +73,7 @@
     "restoreFailureTitle": "恢复失败",
     "restoreFailureSubtitle": "没有购买记录？请联系客服",
     "restore": "恢复购买",
+    "purchaseError": "购买过程中发生错误",
     "premiumMembership": "成为高级会员，享受特别体验"
   },
   "post": {

@@ -9,7 +9,6 @@
   "heartLimitMessage": "今日は10回までです。明日までお待ちください。",
   "seeMore": "もっとみる",
   "dayUnit": "日",
-  "purchaseError": "購入処理中にエラーが発生しました",
   "done": "決定",
   "save": "保存",
   "searchFood": "料理を検索",
@@ -74,6 +73,7 @@
     "restoreFailureTitle": "復元失敗",
     "restoreFailureSubtitle": "購入履歴がない場合はサポートにご連絡を",
     "restore": "購入を復元",
+    "purchaseError": "購入処理中にエラーが発生しました",
     "premiumMembership": "プレミアム会員になって特別な体験を"
   },
   "post": {

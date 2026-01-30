@@ -9,7 +9,6 @@
   "heartLimitMessage": "ถึงขีดจำกัด 10 ถูกใจวันนี้แล้ว ลองใหม่อีกครั้งพรุ่งนี้",
   "seeMore": "ดูเพิ่มเติม",
   "dayUnit": "วัน",
-  "purchaseError": "เกิดข้อผิดพลาดระหว่างการซื้อ",
   "done": "เสร็จสิ้น",
   "save": "บันทึก",
   "searchFood": "ค้นหาอาหาร",
@@ -74,6 +73,7 @@
     "restoreFailureTitle": "กู้คืนล้มเหลว",
     "restoreFailureSubtitle": "ไม่มีประวัติซื้อ? ติดต่อสนับสนุน",
     "restore": "กู้คืน",
+    "purchaseError": "เกิดข้อผิดพลาดระหว่างการซื้อ",
     "premiumMembership": "เป็นพรีเมียม"
   },
   "post": {

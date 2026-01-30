@@ -9,7 +9,6 @@
   "heartLimitMessage": "Đã đạt giới hạn 10 lượt thích hôm nay. Thử lại ngày mai.",
   "seeMore": "Xem thêm",
   "dayUnit": "ngày",
-  "purchaseError": "Đã xảy ra lỗi trong quá trình mua",
   "done": "Hoàn thành",
   "save": "Lưu",
   "searchFood": "Tìm kiếm món ăn",
@@ -74,6 +73,7 @@
     "restoreFailureTitle": "Khôi phục thất bại",
     "restoreFailureSubtitle": "Không có lịch sử mua? Liên hệ hỗ trợ",
     "restore": "Khôi phục",
+    "purchaseError": "Đã xảy ra lỗi trong quá trình mua",
     "premiumMembership": "Trở thành Premium"
   },
   "post": {

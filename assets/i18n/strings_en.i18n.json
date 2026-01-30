@@ -9,7 +9,6 @@
   "heartLimitMessage": "You've reached today's limit of 10 likes. Please try again tomorrow.",
   "seeMore": "See More",
   "dayUnit": "days",
-  "purchaseError": "An error occurred during purchase",
   "done": "Done",
   "save": "Save",
   "searchFood": "Search food",
@@ -74,6 +73,7 @@
     "restoreFailureTitle": "Restore failed",
     "restoreFailureSubtitle": "No purchase history? Contact support",
     "restore": "Restore",
+    "purchaseError": "An error occurred during purchase",
     "premiumMembership": "Become Premium Member Ship"
   },
   "post": {

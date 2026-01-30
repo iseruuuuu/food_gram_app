@@ -9,7 +9,6 @@
   "heartLimitMessage": "Sie haben das heutige Limit von 10 Likes erreicht. Bitte versuchen Sie es morgen erneut.",
   "seeMore": "Mehr anzeigen",
   "dayUnit": "Tage",
-  "purchaseError": "Beim Kauf ist ein Fehler aufgetreten",
   "done": "Fertig",
   "save": "Speichern",
   "searchFood": "Essen suchen",
@@ -74,6 +73,7 @@
     "restoreFailureTitle": "Wiederherstellung fehlgeschlagen",
     "restoreFailureSubtitle": "Keine Kaufhistorie? Kontaktieren Sie den Support",
     "restore": "Wiederherstellen",
+    "purchaseError": "Beim Kauf ist ein Fehler aufgetreten",
     "premiumMembership": "Premium-Mitglied werden"
   },
   "post": {

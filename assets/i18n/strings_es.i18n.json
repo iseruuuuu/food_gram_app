@@ -9,7 +9,6 @@
   "heartLimitMessage": "Has alcanzado el límite de 10 me gusta de hoy. Por favor, inténtalo de nuevo mañana.",
   "seeMore": "Ver Más",
   "dayUnit": "días",
-  "purchaseError": "Ha ocurrido un error durante la compra",
   "done": "Hecho",
   "save": "Guardar",
   "searchFood": "Buscar comida",
@@ -74,6 +73,7 @@
     "restoreFailureTitle": "Restauración fallida",
     "restoreFailureSubtitle": "¿Sin historial de compras? Contacte soporte",
     "restore": "Restaurar compra",
+    "purchaseError": "Ha ocurrido un error durante la compra",
     "premiumMembership": "Hazte miembro Premium"
   },
   "post": {
