@@ -233,6 +233,20 @@ class MapViewModel extends _$MapViewModel {
     );
   }
 
+  /// 任意の座標へズーム移動する
+  Future<void> animateToLatLng({
+    required double lat,
+    required double lng,
+    double zoom = 16,
+    Duration duration = const Duration(milliseconds: 500),
+  }) async {
+    final target = LatLng(lat, lng);
+    await state.mapController?.animateCamera(
+      CameraUpdate.newLatLngZoom(target, zoom),
+      duration: duration,
+    );
+  }
+
   /// 方位をリセット（北を上にする）
   Future<void> resetBearing() async {
     if (state.mapController == null) {
