@@ -37,7 +37,7 @@ Future<List<Posts>> mapRepository(Ref ref) async {
   return response.map(Posts.fromJson).toList();
 }
 
-/// 現在地から近い投稿を10件取得するProvider
+/// 現在地から近い投稿を20件取得するProvider
 @riverpod
 Future<List<Posts>> getNearByPosts(Ref ref) async {
   try {
@@ -45,6 +45,22 @@ Future<List<Posts>> getNearByPosts(Ref ref) async {
         await ref.read(mapPostServiceProvider.notifier).getNearbyPosts();
     final posts = data.map(Posts.fromJson).toList();
     return posts;
+  } on PostgrestException catch (_) {
+    return [];
+  }
+}
+
+/// レストラン名で投稿一覧を取得するProvider
+@riverpod
+Future<List<Posts>> restaurantPostsByName(
+  Ref ref, {
+  required String name,
+}) async {
+  try {
+    final data = await ref
+        .read(mapPostServiceProvider.notifier)
+        .getPostsByRestaurantName(name);
+    return data.map(Posts.fromJson).toList();
   } on PostgrestException catch (_) {
     return [];
   }
