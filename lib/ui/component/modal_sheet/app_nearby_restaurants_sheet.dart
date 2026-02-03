@@ -116,11 +116,15 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
                                     Center(child: CircularProgressIndicator()),
                               ),
                             ),
-                            error: (_, __) => const SliverToBoxAdapter(
+                            error: (_, __) => SliverToBoxAdapter(
                               child: Padding(
-                                padding: EdgeInsets.all(16),
+                                padding: const EdgeInsets.all(16),
                                 child: Center(
-                                  child: Text('読み込みに失敗しました'),
+                                  child: Text(
+                                    Translations.of(context)
+                                        .notification
+                                        .loadFailed,
+                                  ),
                                 ),
                               ),
                             ),
