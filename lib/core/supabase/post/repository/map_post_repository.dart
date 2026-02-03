@@ -27,6 +27,16 @@ class MapPostRepository extends _$MapPostRepository {
       failure: Failure.new,
     );
   }
+
+  /// レストラン名で投稿一覧を取得（Repository経由）
+  Future<List<Posts>> getPostsByRestaurantName({
+    required String name,
+  }) async {
+    final data = await ref
+        .read(mapPostServiceProvider.notifier)
+        .getPostsByRestaurantName(name);
+    return data.map(Posts.fromJson).toList();
+  }
 }
 
 /// マップ表示のレストランの投稿を全部取得するProvider

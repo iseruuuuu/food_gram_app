@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
 import 'package:food_gram_app/core/local/force_update_checker.dart';
+import 'package:food_gram_app/core/model/restaurant_group.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
@@ -116,7 +117,6 @@ class MapScreen extends HookConsumerWidget {
                         iconSize: _calculateIconSize(context),
                       );
                     },
-                    onMapClick: (_, __) {},
                     onStyleLoadedCallback: controller.onStyleLoaded,
                     onCameraIdle: controller.updateVisibleMealsCount,
                     annotationOrder: const [AnnotationType.symbol],
