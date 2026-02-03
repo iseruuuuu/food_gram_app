@@ -158,7 +158,7 @@ class MapViewModel extends _$MapViewModel {
               .getRestaurantPosts(lat: latLng.latitude, lng: latLng.longitude);
           restaurant.whenOrNull(success: (posts) => onPinTap(posts));
           await state.mapController?.animateCamera(
-            CameraUpdate.newLatLngZoom(latLng, 14),
+            CameraUpdate.newLatLngZoom(latLng, 16),
             duration: const Duration(seconds: 1),
           );
           state = state.copyWith(isLoading: false, hasError: false);
