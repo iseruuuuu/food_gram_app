@@ -60,22 +60,6 @@ Future<List<Posts>> getNearByPosts(Ref ref) async {
   }
 }
 
-/// レストラン名で投稿一覧を取得するProvider
-@riverpod
-Future<List<Posts>> restaurantPostsByName(
-  Ref ref, {
-  required String name,
-}) async {
-  try {
-    final data = await ref
-        .read(mapPostServiceProvider.notifier)
-        .getPostsByRestaurantName(name);
-    return data.map(Posts.fromJson).toList();
-  } on PostgrestException catch (_) {
-    return [];
-  }
-}
-
 /// 特定のレストランの投稿一覧を取得するProvider
 @riverpod
 Future<Result<List<Model>, Exception>> restaurantReviews(
