@@ -80,8 +80,13 @@ class EditPostScreen extends HookConsumerWidget {
             if (!context.mounted) {
               return;
             }
+            final images =
+                ref.read(editPostViewModelProvider()).foodImages; // 新規画像のみ
+            final index = images.length; // 1始まりで表示
             await showMaybeNotFoodDialog(
               context: context,
+              title: t.maybeNotFoodDialog.title,
+              text: _maybeNotFoodDialogText(context, index),
               onContinue: () {
                 ref.read(editPostViewModelProvider().notifier).resetStatus();
               },
@@ -601,4 +606,9 @@ class EditPostScreen extends HookConsumerWidget {
         return Translations.of(context).maybeNotFoodDialog.title;
     }
   }
+}
+
+String _maybeNotFoodDialogText(BuildContext context, int index) {
+  final t = Translations.of(context);
+  return t.maybeNotFoodDialog.text.replaceFirst('{index}', index.toString());
 }
