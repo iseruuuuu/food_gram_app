@@ -36,7 +36,7 @@
   },
   "maybeNotFoodDialog": {
     "title": "稍作确认 🍽️",
-    "text": "这张照片可能不是食物… 🤔\\n\\n仍要发布吗？",
+    "text": "第{index}张照片，\n这张照片可能不是食物… 🤔\\n\\n仍要发布吗？",
     "confirm": "继续",
     "delete": "删除图片"
   },

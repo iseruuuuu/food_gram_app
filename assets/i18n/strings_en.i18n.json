@@ -36,7 +36,7 @@
   },
   "maybeNotFoodDialog": {
     "title": "Just a quick check 🍽️",
-    "text": "This photo might not be food… 🤔\n\nDo you want to post it anyway?",
+    "text": "Image {index},\nThis photo might not be food… 🤔\n\nDo you want to post it anyway?",
     "confirm": "Continue",
     "delete": "Delete image"
   },

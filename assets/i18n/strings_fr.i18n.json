@@ -34,15 +34,9 @@
     "postSaved": "Publication sauvegardée",
     "postSavedMessage": "Vous pouvez voir les publications sauvegardées dans Ma page"
   },
-  "notification": {
-    "likeNotificationsTitle": "Mentions J’aime",
-    "loadFailed": "Échec du chargement",
-    "someoneLikedYourPost": "Quelqu’un aime votre publication.",
-    "userLikedYourPost": "{name} aime votre publication."
-  },
   "maybeNotFoodDialog": {
     "title": "Petite vérification 🍽️",
-    "text": "Cette photo n'est peut-être pas de la nourriture… 🤔\\n\\nVoulez-vous la publier quand même ?",
+    "text": "Image {index},\nCette photo n'est peut-être pas de la nourriture… 🤔\\n\\nVoulez-vous la publier quand même ?",
     "confirm": "Continuer",
     "delete": "Supprimer l'image"
   },
