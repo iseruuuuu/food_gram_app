@@ -74,9 +74,8 @@ class PostScreen extends HookConsumerWidget {
             if (!context.mounted) {
               return;
             }
-            final images =
-                ref.read(postViewModelProvider()).foodImages; // 直近までの画像
-            final index = images.length; // 1枚目=1 という表記にする
+            final images = ref.read(postViewModelProvider()).foodImages;
+            final index = images.length;
             await showMaybeNotFoodDialog(
               context: context,
               title: Translations.of(context).maybeNotFoodDialog.title,

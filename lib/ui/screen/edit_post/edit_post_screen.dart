@@ -80,9 +80,8 @@ class EditPostScreen extends HookConsumerWidget {
             if (!context.mounted) {
               return;
             }
-            final images =
-                ref.read(editPostViewModelProvider()).foodImages; // 新規画像のみ
-            final index = images.length; // 1始まりで表示
+            final images = ref.read(editPostViewModelProvider()).foodImages;
+            final index = images.length;
             await showMaybeNotFoodDialog(
               context: context,
               title: t.maybeNotFoodDialog.title,
@@ -567,9 +566,7 @@ class EditPostScreen extends HookConsumerWidget {
                       ),
                     ),
                     child: Text(
-                      isAnonymous
-                          ? t.anonymous.update
-                          : t.edit.updateButton,
+                      isAnonymous ? t.anonymous.update : t.edit.updateButton,
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
