@@ -27,6 +27,16 @@ class MapPostRepository extends _$MapPostRepository {
       failure: Failure.new,
     );
   }
+
+  /// レストラン名で投稿一覧を取得（Repository経由）
+  Future<List<Posts>> getPostsByRestaurantName({
+    required String name,
+  }) async {
+    final data = await ref
+        .read(mapPostServiceProvider.notifier)
+        .getPostsByRestaurantName(name);
+    return data.map(Posts.fromJson).toList();
+  }
 }
 
 /// マップ表示のレストランの投稿を全部取得するProvider
@@ -37,7 +47,7 @@ Future<List<Posts>> mapRepository(Ref ref) async {
   return response.map(Posts.fromJson).toList();
 }
 
-/// 現在地から近い投稿を10件取得するProvider
+/// 現在地から近い投稿を20件取得するProvider
 @riverpod
 Future<List<Posts>> getNearByPosts(Ref ref) async {
   try {

@@ -189,6 +189,51 @@ class AppSearchListViewSkeleton extends StatelessWidget {
   }
 }
 
+/// 近隣レストランモーダル用のスケルトン
+class AppNearbyRestaurantsSkeleton extends StatelessWidget {
+  const AppNearbyRestaurantsSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: 6,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 180,
+                height: 16,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              ),
+              const Gap(8),
+              Row(
+                children: List.generate(3, (i) {
+                  return Expanded(
+                    child: Container(
+                      height: 90,
+                      margin: EdgeInsets.only(right: i == 2 ? 0 : 8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
 class AppPostDetailSkeleton extends StatelessWidget {
   const AppPostDetailSkeleton({super.key});
 

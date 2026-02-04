@@ -87,7 +87,7 @@ class MapPostService extends _$MapPostService {
     );
   }
 
-  /// 現在地から近い投稿を10件取得
+  /// 現在地から近い投稿を20件取得
   Future<List<Map<String, dynamic>>> getNearbyPosts() async {
     final currentLocation = await ref.read(locationProvider.future);
     if (currentLocation == const maplibre.LatLng(0, 0)) {
@@ -128,10 +128,30 @@ class MapPostService extends _$MapPostService {
                 (a['distance'] as double).compareTo(b['distance'] as double),
           );
 
-        return postsWithDistance.take(10).map((post) {
+        return postsWithDistance.take(20).map((post) {
           final result = Map<String, dynamic>.from(post)..remove('distance');
           return result;
         }).toList();
+      },
+      duration: const Duration(minutes: 5),
+    );
+  }
+
+  /// レストラン名で投稿を取得（ブロック除外）
+  Future<List<Map<String, dynamic>>> getPostsByRestaurantName(
+    String restaurantName,
+  ) async {
+    return _cacheManager.get<List<Map<String, dynamic>>>(
+      key: 'restaurant_name_$restaurantName',
+      fetcher: () async {
+        final posts = await supabase
+            .from('posts')
+            .select()
+            .eq('restaurant', restaurantName)
+            .order('created_at', ascending: false);
+        return posts
+            .where((post) => !blockList.contains(post['user_id']))
+            .toList();
       },
       duration: const Duration(minutes: 5),
     );

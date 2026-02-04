@@ -6,7 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
 import 'package:food_gram_app/core/local/force_update_checker.dart';
-import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/restaurant_group.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
@@ -18,7 +18,7 @@ import 'package:food_gram_app/ui/component/app_premium_membership_card.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/map/app_area_meals_badge.dart';
-import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/app_nearby_restaurants_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -35,8 +35,6 @@ class MapScreen extends HookConsumerWidget {
     final controller = ref.watch(mapViewModelProvider.notifier);
     final location = ref.watch(locationProvider);
     final mapService = ref.watch(mapRepositoryProvider);
-    final isTapPin = useState(false);
-    final post = useState<List<Posts?>>([]);
     final isEarthStyle = useState(false);
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final adLoadAttempted = useRef(false);
@@ -100,14 +98,25 @@ class MapScreen extends HookConsumerWidget {
                     onMapCreated: (mapLibre) async {
                       await controller.setMapController(
                         mapLibre,
-                        onPinTap: (posts) {
-                          isTapPin.value = true;
-                          post.value = posts;
+                        onPinTap: (posts) async {
+                          if (posts.isEmpty) {
+                            return;
+                          }
+                          final first = posts.first;
+                          ref
+                              .read(
+                                AppNearbyRestaurantsSheet
+                                    .mapModalSelectionProvider.notifier,
+                              )
+                              .state = MapModalSelection(
+                            name: first.restaurant,
+                            lat: first.lat,
+                            lng: first.lng,
+                          );
                         },
                         iconSize: _calculateIconSize(context),
                       );
                     },
-                    onMapClick: (_, __) => isTapPin.value = false,
                     onStyleLoadedCallback: controller.onStyleLoaded,
                     onCameraIdle: controller.updateVisibleMealsCount,
                     annotationOrder: const [AnnotationType.symbol],
@@ -122,10 +131,7 @@ class MapScreen extends HookConsumerWidget {
                     styleString:
                         _localizedStyleAsset(context, isEarthStyle.value),
                   ),
-                  Visibility(
-                    visible: isTapPin.value,
-                    child: AppMapRestaurantModalSheet(post: post.value),
-                  ),
+                  const AppNearbyRestaurantsSheet(),
                   Positioned(
                     top: _calculateTopPosition(context),
                     left: 0,
