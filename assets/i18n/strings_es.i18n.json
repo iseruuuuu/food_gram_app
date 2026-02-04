@@ -36,7 +36,7 @@
   },
   "maybeNotFoodDialog": {
     "title": "Una pequeña confirmación 🍽️",
-    "text": "Esta foto podría no ser comida… 🤔\\n\\n¿Quieres publicarla de todos modos?",
+    "text": "Imagen {index},\nEsta foto podría no ser comida… 🤔\\n\\n¿Quieres publicarla de todos modos?",
     "confirm": "Continuar",
     "delete": "Eliminar imagen"
   },

@@ -6,6 +6,8 @@ analyzer:
   errors: # https://pub.dev/packages/freezed#install
     invalid_annotation_target: ignore
     avoid_dynamic_calls: ignore
+  exclude:
+    - lib/gen/**
 
 linter:
   rules:

@@ -36,7 +36,7 @@
   },
   "maybeNotFoodDialog": {
     "title": "Kiểm tra nhanh 🍽️",
-    "text": "Ảnh này có thể không phải là đồ ăn… 🤔\\n\\nBạn vẫn muốn đăng chứ?",
+    "text": "Ảnh {index},\nẢnh này có thể không phải là đồ ăn… 🤔\\n\\nBạn vẫn muốn đăng chứ?",
     "confirm": "Tiếp tục",
     "delete": "Xóa ảnh"
   },

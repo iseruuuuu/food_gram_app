@@ -36,7 +36,7 @@
   },
   "maybeNotFoodDialog": {
     "title": "ちょっと確認 🍽️",
-    "text": "この写真、\n食べものじゃないかも…？と\nFoodGramが首をかしげています 🤔\n\nそれでも投稿しますか？",
+    "text": "{index}枚目の写真、\n食べものじゃないかも…？と\nFoodGramが首をかしげています 🤔\n\nそれでも投稿しますか？",
     "confirm": "続ける",
     "delete": "画像を削除"
   },

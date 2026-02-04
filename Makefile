@@ -3,6 +3,7 @@ setup:
 	fvm flutter pub get
 	fvm flutter pub run build_runner build --delete-conflicting-outputs
 	fvm dart run flutter_launcher_icons
+	fvm dart run slang
     dart run flutter_native_splash:create
 
 gen:

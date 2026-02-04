@@ -80,8 +80,12 @@ class EditPostScreen extends HookConsumerWidget {
             if (!context.mounted) {
               return;
             }
+            final images = ref.read(editPostViewModelProvider()).foodImages;
+            final index = images.length;
             await showMaybeNotFoodDialog(
               context: context,
+              title: t.maybeNotFoodDialog.title,
+              text: _maybeNotFoodDialogText(context, index),
               onContinue: () {
                 ref.read(editPostViewModelProvider().notifier).resetStatus();
               },
@@ -562,9 +566,7 @@ class EditPostScreen extends HookConsumerWidget {
                       ),
                     ),
                     child: Text(
-                      isAnonymous
-                          ? t.anonymous.update
-                          : t.edit.updateButton,
+                      isAnonymous ? t.anonymous.update : t.edit.updateButton,
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
@@ -601,4 +603,9 @@ class EditPostScreen extends HookConsumerWidget {
         return Translations.of(context).maybeNotFoodDialog.title;
     }
   }
+}
+
+String _maybeNotFoodDialogText(BuildContext context, int index) {
+  final t = Translations.of(context);
+  return t.maybeNotFoodDialog.text.replaceFirst('{index}', index.toString());
 }

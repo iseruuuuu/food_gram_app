@@ -74,8 +74,12 @@ class PostScreen extends HookConsumerWidget {
             if (!context.mounted) {
               return;
             }
+            final images = ref.read(postViewModelProvider()).foodImages;
+            final index = images.length;
             await showMaybeNotFoodDialog(
               context: context,
+              title: Translations.of(context).maybeNotFoodDialog.title,
+              text: _maybeNotFoodDialogText(context, index),
               onContinue: () {
                 ref.read(postViewModelProvider().notifier).resetStatus();
               },
@@ -289,8 +293,7 @@ class PostScreen extends HookConsumerWidget {
                                       Expanded(
                                         child: Text(
                                           restaurantName == '場所を追加'
-                                              ? t.post
-                                                  .restaurantNameInputField
+                                              ? t.post.restaurantNameInputField
                                               : restaurantName,
                                           overflow: TextOverflow.ellipsis,
                                           style: PostStyle.restaurant(
@@ -533,4 +536,9 @@ class PostScreen extends HookConsumerWidget {
         return 'Loading...';
     }
   }
+}
+
+String _maybeNotFoodDialogText(BuildContext context, int index) {
+  final t = Translations.of(context);
+  return t.maybeNotFoodDialog.text.replaceFirst('{index}', index.toString());
 }

@@ -183,6 +183,11 @@ class PostViewModel extends _$PostViewModel {
       if (croppedImages.isNotEmpty) {
         for (final cropImage in croppedImages) {
           await _processImage(cropImage);
+          // 食べ物ではない判定が出た場合は、ユーザーの応答（続行/削除）で
+          // ステータスがリセットされるまで待機してから次へ進む
+          if (state.status == PostStatus.maybeNotFood.name) {
+            await _waitMaybeNotFoodHandled();
+          }
         }
         return true;
       }
@@ -191,6 +196,14 @@ class PostViewModel extends _$PostViewModel {
       logger.e(error.message);
       state = state.copyWith(status: errorPickerImage);
       return false;
+    }
+  }
+
+  Future<void> _waitMaybeNotFoodHandled() async {
+    // UI側のダイアログで「続行」または「削除」によって
+    // resetStatus() が呼ばれ、status が initial 等に戻るまで待機
+    while (state.status == PostStatus.maybeNotFood.name) {
+      await Future<void>.delayed(const Duration(milliseconds: 100));
     }
   }
 

@@ -36,7 +36,7 @@
   },
   "maybeNotFoodDialog": {
     "title": "Kurze Bestätigung 🍽️",
-    "text": "Dieses Foto zeigt möglicherweise kein Essen… 🤔\\n\\nTrotzdem posten?",
+    "text": "Bild {index},\nDieses Foto zeigt möglicherweise kein Essen… 🤔\\n\\nTrotzdem posten?",
     "confirm": "Fortfahren",
     "delete": "Bild löschen"
   },
