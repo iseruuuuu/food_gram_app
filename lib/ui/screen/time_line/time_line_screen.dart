@@ -8,11 +8,14 @@ import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
+import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class TimeLineScreen extends HookConsumerWidget {
   const TimeLineScreen({super.key});
+
+  static const int _tabIndex = 1;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,6 +25,11 @@ class TimeLineScreen extends HookConsumerWidget {
     final tabController =
         useTabController(initialLength: categoriesData.length);
     final scrollController = useScrollController();
+    useScrollToTopOnTabTrigger(
+      ref: ref,
+      scrollController: scrollController,
+      tabIndex: _tabIndex,
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
