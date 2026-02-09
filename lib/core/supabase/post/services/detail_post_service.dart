@@ -82,7 +82,7 @@ class DetailPostService extends _$DetailPostService {
     );
   }
 
-  /// 指定した投稿IDより新しい投稿のリストを取得する
+  /// 指定した投稿IDより古い投稿のリストを取得する（件数指定可能・カテゴリフィルタは呼び出し側で実施）
   Future<Result<List<Map<String, dynamic>>, Exception>> getSequentialPosts({
     required int currentPostId,
     int limit = 10,

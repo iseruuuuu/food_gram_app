@@ -304,11 +304,13 @@ class PostDetailListInput {
     required this.mode,
     this.profileUserId,
     this.restaurant,
+    this.categoryName,
   });
   final Posts initialPost;
   final PostDetailListMode mode;
   final String? profileUserId;
   final String? restaurant;
+  final String? categoryName;
 
   @override
   bool operator ==(Object other) {
@@ -317,6 +319,7 @@ class PostDetailListInput {
             other.mode == mode &&
             other.profileUserId == profileUserId &&
             other.restaurant == restaurant &&
+            other.categoryName == categoryName &&
             other.initialPost.id == initialPost.id;
   }
 
@@ -325,6 +328,7 @@ class PostDetailListInput {
         mode,
         profileUserId,
         restaurant,
+        categoryName,
         initialPost.id,
       );
 }
@@ -340,5 +344,6 @@ Future<List<Posts>> postDetailList(
     mode: listInput.mode,
     profileUserId: listInput.profileUserId,
     restaurant: listInput.restaurant,
+    categoryName: listInput.categoryName,
   );
 }
