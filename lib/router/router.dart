@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/core/model/timeline_detail_extra.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/core/model/timeline_detail_extra.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/auth/providers/auth_state_provider.dart';
 import 'package:food_gram_app/router/amination.dart';
@@ -133,7 +133,8 @@ final timeLineRouter = GoRoute(
       name: RouterPath.timeLineDetail,
       pageBuilder: (context, state) {
         final extra = state.extra!;
-        final model = extra is TimelineDetailExtra ? extra.model : extra as Model;
+        final model =
+            extra is TimelineDetailExtra ? extra.model : extra as Model;
         final categoryName =
             extra is TimelineDetailExtra ? extra.categoryName : null;
         return slideUpTransition(

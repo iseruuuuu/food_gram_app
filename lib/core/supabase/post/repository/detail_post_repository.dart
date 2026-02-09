@@ -197,7 +197,6 @@ class DetailPostRepository extends _$DetailPostRepository {
         {
           final sequentialPostsResult = await getSequentialPosts(
             currentPostId: initialPost.id,
-            limit: 10,
             categoryName: categoryName,
           );
           return sequentialPostsResult.when(
