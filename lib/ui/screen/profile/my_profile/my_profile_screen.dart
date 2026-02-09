@@ -14,7 +14,7 @@ import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/dialog/app_promote_dialog.dart';
 import 'package:food_gram_app/ui/component/profile/app_profile_header.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
-import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
+import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -28,58 +28,12 @@ class MyProfileScreen extends HookConsumerWidget {
     final state = ref.watch(myPostStreamProvider);
     final users = ref.watch(myProfileViewModelProvider());
     final scrollController = useScrollController();
-    final scrollToTopRequested = ref.watch(scrollToTopForTabProvider);
     final hasData = state.valueOrNull != null;
-
-    /// スクロールを先頭へ戻すためのHooks
-    useEffect(
-      () {
-        if (scrollToTopRequested == null ||
-            scrollToTopRequested.tabIndex != _tabIndex) {
-          return null;
-        }
-        var cancelled = false;
-        const maxRetries = 20;
-        var retryCount = 0;
-        void scrollToTop() {
-          if (cancelled || !scrollController.hasClients) {
-            return;
-          }
-          scrollController
-              .animateTo(
-            0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOutCubic,
-          )
-              .then((_) {
-            if (!cancelled) {
-              ref.read(scrollToTopForTabProvider.notifier).state = null;
-            }
-          });
-        }
-
-        void tryScroll() {
-          if (cancelled) {
-            return;
-          }
-          if (scrollController.hasClients) {
-            scrollToTop();
-          } else if (retryCount < maxRetries) {
-            retryCount++;
-            WidgetsBinding.instance.addPostFrameCallback((_) => tryScroll());
-          } else {
-            if (!cancelled) {
-              ref.read(scrollToTopForTabProvider.notifier).state = null;
-            }
-          }
-        }
-
-        WidgetsBinding.instance.addPostFrameCallback((_) => tryScroll());
-        return () {
-          cancelled = true;
-        };
-      },
-      [scrollToTopRequested, hasData],
+    useScrollToTopOnTabTrigger(
+      ref: ref,
+      scrollController: scrollController,
+      tabIndex: _tabIndex,
+      extraDeps: [hasData],
     );
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
