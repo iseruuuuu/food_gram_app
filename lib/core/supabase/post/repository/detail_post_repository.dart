@@ -3,6 +3,7 @@ import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/post_deail_list_mode.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
+import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
@@ -76,18 +77,28 @@ class DetailPostRepository extends _$DetailPostRepository {
     }
   }
 
-  /// 指定した投稿IDより新しい投稿のリストを取得する
+  /// 指定した投稿IDより古い投稿のリストを取得する。
+  /// [categoryName] を指定した場合はそのカテゴリに属する投稿のみ返す（多めに取得してフィルタする）。
   Future<Result<List<Model>, Exception>> getSequentialPosts({
     required int currentPostId,
+    int limit = 10,
+    String? categoryName,
   }) async {
     try {
       final service = ref.read(detailPostServiceProvider.notifier);
-      final result =
-          await service.getSequentialPosts(currentPostId: currentPostId);
+      final fetchLimit =
+          (categoryName != null && categoryName.isNotEmpty) ? 50 : limit;
+      final result = await service.getSequentialPosts(
+        currentPostId: currentPostId,
+        limit: fetchLimit,
+      );
       return await result.when(
         success: (data) async {
           final blockList =
               ref.read(blockListProvider).asData?.value ?? const <String>[];
+          final foodEmojis = (categoryName != null && categoryName.isNotEmpty)
+              ? (foodCategory[categoryName] ?? <String>[])
+              : null;
           final sorted = [...data]..sort(
               (a, b) => ((b['id'] as num).toInt())
                   .compareTo((a['id'] as num).toInt()),
@@ -99,9 +110,15 @@ class DetailPostRepository extends _$DetailPostRepository {
             if (id >= currentPostId) {
               continue;
             }
+            if (foodEmojis != null) {
+              final tag = m['food_tag'] as String? ?? '';
+              if (!foodEmojis.contains(tag)) {
+                continue;
+              }
+            }
             if (seen.add(id)) {
               picked.add(m);
-              if (picked.length >= 10) {
+              if (picked.length >= limit) {
                 break;
               }
             }
@@ -173,12 +190,16 @@ class DetailPostRepository extends _$DetailPostRepository {
     required PostDetailListMode mode,
     String? profileUserId,
     String? restaurant,
+    String? categoryName,
   }) async {
     switch (mode) {
       case PostDetailListMode.timeline:
         {
-          final sequentialPostsResult =
-              await getSequentialPosts(currentPostId: initialPost.id);
+          final sequentialPostsResult = await getSequentialPosts(
+            currentPostId: initialPost.id,
+            limit: 10,
+            categoryName: categoryName,
+          );
           return sequentialPostsResult.when(
             success: (models) => [
               initialPost,
