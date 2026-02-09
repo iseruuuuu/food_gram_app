@@ -40,8 +40,8 @@ class AppListView extends HookConsumerWidget {
     const adEvery = 30;
     final adRowInterval = (adEvery / 3).floor();
     const options = LiveOptions(
-      showItemInterval: Duration(milliseconds: 200),
-      showItemDuration: Duration(milliseconds: 300),
+      showItemInterval: Duration(milliseconds: 150),
+      showItemDuration: Duration(milliseconds: 240),
       visibleFraction: 0.01,
     );
     return LiveSliverList.options(
