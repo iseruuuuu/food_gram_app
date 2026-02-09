@@ -15,7 +15,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class TimeLineScreen extends HookConsumerWidget {
   const TimeLineScreen({super.key});
 
-  static const int _tabIndex = 1; // フードタブ
+  static const int _tabIndex = 1;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
