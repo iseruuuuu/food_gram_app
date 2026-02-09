@@ -191,7 +191,7 @@ final timeLineRouter = GoRoute(
         final model = state.extra! as Restaurant;
         return whiteOut(
           PostScreen(
-            routerPath: RouterPath.timeLineDetailPost,
+            routerPath: RouterPath.timeLineRestaurant,
             restaurant: model,
           ),
         );
