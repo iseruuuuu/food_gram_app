@@ -10,7 +10,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'tab_view_model.g.dart';
 
-final scrollToTopForTabProvider = StateProvider<int?>((ref) => null);
+final scrollToTopForTabProvider =
+    StateProvider<({int tabIndex, int trigger})?>((ref) => null);
 
 @riverpod
 class TabViewModel extends _$TabViewModel {
@@ -31,7 +32,11 @@ class TabViewModel extends _$TabViewModel {
 
   void onTap(int index) {
     if (index == 1 || index == 3) {
-      ref.read(scrollToTopForTabProvider.notifier).state = index;
+      final current = ref.read(scrollToTopForTabProvider);
+      ref.read(scrollToTopForTabProvider.notifier).state = (
+        tabIndex: index,
+        trigger: (current?.trigger ?? -1) + 1,
+      );
     }
     state = TabState(selectedIndex: index);
   }

@@ -34,7 +34,8 @@ class MyProfileScreen extends HookConsumerWidget {
     /// スクロールを先頭へ戻すためのHooks
     useEffect(
       () {
-        if (scrollToTopRequested != _tabIndex) {
+        if (scrollToTopRequested == null ||
+            scrollToTopRequested.tabIndex != _tabIndex) {
           return null;
         }
         var cancelled = false;
