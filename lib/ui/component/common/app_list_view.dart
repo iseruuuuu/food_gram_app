@@ -4,10 +4,12 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/admob/services/admob_rectangle_banner.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/timeline_detail_extra.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/subscribed_users_provider.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,6 +21,7 @@ class AppListView extends HookConsumerWidget {
     required this.refresh,
     required this.type,
     this.controller,
+    this.categoryName,
     super.key,
   });
 
@@ -27,6 +30,7 @@ class AppListView extends HookConsumerWidget {
   final VoidCallback refresh;
   final AppListViewType type;
   final ScrollController? controller;
+  final String? categoryName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -83,9 +87,18 @@ class AppListView extends HookConsumerWidget {
                             .getPostData(posts, itemIndex);
                         await postResult.whenOrNull(
                           success: (model) async {
+                            final extra = (type == AppListViewType.timeline &&
+                                    routerPath == RouterPath.timeLineDetail &&
+                                    categoryName != null &&
+                                    categoryName!.isNotEmpty)
+                                ? TimelineDetailExtra(
+                                    model: model,
+                                    categoryName: categoryName,
+                                  )
+                                : model;
                             final result = await context.pushNamed(
                               routerPath,
-                              extra: model,
+                              extra: extra,
                             );
                             if (result != null) {
                               refresh();
