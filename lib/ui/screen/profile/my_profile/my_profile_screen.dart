@@ -14,17 +14,62 @@ import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/dialog/app_promote_dialog.dart';
 import 'package:food_gram_app/ui/component/profile/app_profile_header.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class MyProfileScreen extends HookConsumerWidget {
   const MyProfileScreen({super.key});
 
+  static const int _tabIndex = 3;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(myPostStreamProvider);
     final users = ref.watch(myProfileViewModelProvider());
     final scrollController = useScrollController();
+    final scrollToTopRequested = ref.watch(scrollToTopForTabProvider);
+    final hasData = state.valueOrNull != null;
+
+    /// スクロールを先頭へ戻すためのHooks
+    useEffect(
+      () {
+        if (scrollToTopRequested != _tabIndex) {
+          return null;
+        }
+        const maxRetries = 20;
+        var retryCount = 0;
+        void scrollToTop() {
+          if (!scrollController.hasClients) {
+            return;
+          }
+          scrollController
+              .animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOutCubic,
+          )
+              .then((_) {
+            ref.read(scrollToTopForTabProvider.notifier).state = null;
+          });
+        }
+
+        void tryScroll() {
+          if (scrollController.hasClients) {
+            scrollToTop();
+          } else if (retryCount < maxRetries) {
+            retryCount++;
+            WidgetsBinding.instance.addPostFrameCallback((_) => tryScroll());
+          } else {
+            ref.read(scrollToTopForTabProvider.notifier).state = null;
+          }
+        }
+
+        WidgetsBinding.instance.addPostFrameCallback((_) => tryScroll());
+        return null;
+      },
+      [scrollToTopRequested, hasData],
+    );
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
     useEffect(() {

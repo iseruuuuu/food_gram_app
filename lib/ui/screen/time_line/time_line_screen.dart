@@ -8,11 +8,14 @@ import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class TimeLineScreen extends HookConsumerWidget {
   const TimeLineScreen({super.key});
+
+  static const int _tabIndex = 1; // フードタブ
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,6 +25,38 @@ class TimeLineScreen extends HookConsumerWidget {
     final tabController =
         useTabController(initialLength: categoriesData.length);
     final scrollController = useScrollController();
+    final scrollToTopRequested = ref.watch(scrollToTopForTabProvider);
+
+    /// スクロールを先頭へ戻すためのHooks
+    useEffect(
+      () {
+        if (scrollToTopRequested != _tabIndex) {
+          return null;
+        }
+        void scrollToTop() {
+          if (!scrollController.hasClients) {
+            return;
+          }
+          scrollController
+              .animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOutCubic,
+          )
+              .then((_) {
+            ref.read(scrollToTopForTabProvider.notifier).state = null;
+          });
+        }
+
+        if (scrollController.hasClients) {
+          scrollToTop();
+        } else {
+          WidgetsBinding.instance.addPostFrameCallback((_) => scrollToTop());
+        }
+        return null;
+      },
+      [scrollToTopRequested],
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
