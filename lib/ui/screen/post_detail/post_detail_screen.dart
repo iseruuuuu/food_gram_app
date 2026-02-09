@@ -25,12 +25,14 @@ class PostDetailScreen extends HookConsumerWidget {
     required this.posts,
     required this.users,
     required this.type,
+    this.categoryName,
     super.key,
   });
 
   final Posts posts;
   final Users users;
   final PostDetailScreenType type;
+  final String? categoryName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -69,6 +71,7 @@ class PostDetailScreen extends HookConsumerWidget {
               type == PostDetailScreenType.profile ? users.userId : null,
           restaurant:
               type == PostDetailScreenType.search ? posts.restaurant : null,
+          categoryName: categoryName,
         ),
       ),
     );

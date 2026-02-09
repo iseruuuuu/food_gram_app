@@ -93,6 +93,9 @@ class TimeLineScreen extends HookConsumerWidget {
                       routerPath: RouterPath.timeLineDetail,
                       type: AppListViewType.timeline,
                       controller: scrollController,
+                      categoryName: selectedCategoryName.value.isEmpty
+                          ? null
+                          : selectedCategoryName.value,
                       refresh: () {
                         ref
                           ..invalidate(
