@@ -3,6 +3,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'post_stream_provider.g.dart';
@@ -23,10 +24,16 @@ Stream<List<Posts>> postsStream(
       final filtered =
           mapped.where((post) => !blockList.contains(post.userId)).toList();
       if (categoryName.isNotEmpty) {
-        final foodEmojis = foodCategory[categoryName] ?? [];
-        final result = filtered
-            .where((post) => foodEmojis.contains(post.foodTag))
-            .toList();
+        final foodEmojis = foodCategory[categoryName];
+        if (foodEmojis == null) {
+          Logger().w(
+            'Unknown category passed to postsStream: "$categoryName". '
+            'No posts will match.',
+          );
+        }
+        final emojis = foodEmojis ?? <String>[];
+        final result =
+            filtered.where((post) => emojis.contains(post.foodTag)).toList();
         return result;
       }
       return filtered;

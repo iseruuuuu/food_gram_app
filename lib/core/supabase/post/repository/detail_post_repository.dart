@@ -96,9 +96,19 @@ class DetailPostRepository extends _$DetailPostRepository {
         success: (data) async {
           final blockList =
               ref.read(blockListProvider).asData?.value ?? const <String>[];
-          final foodEmojis = (categoryName != null && categoryName.isNotEmpty)
-              ? (foodCategory[categoryName] ?? <String>[])
-              : null;
+          final List<String>? foodEmojis;
+          if (categoryName != null && categoryName.isNotEmpty) {
+            final emojis = foodCategory[categoryName];
+            if (emojis == null) {
+              logger.w(
+                'Unknown category passed to getSequentialPosts: '
+                '"$categoryName". No posts will match.',
+              );
+            }
+            foodEmojis = emojis ?? <String>[];
+          } else {
+            foodEmojis = null;
+          }
           final sorted = [...data]..sort(
               (a, b) => ((b['id'] as num).toInt())
                   .compareTo((a['id'] as num).toInt()),
