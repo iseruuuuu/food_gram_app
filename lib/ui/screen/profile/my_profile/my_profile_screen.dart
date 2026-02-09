@@ -37,10 +37,11 @@ class MyProfileScreen extends HookConsumerWidget {
         if (scrollToTopRequested != _tabIndex) {
           return null;
         }
+        var cancelled = false;
         const maxRetries = 20;
         var retryCount = 0;
         void scrollToTop() {
-          if (!scrollController.hasClients) {
+          if (cancelled || !scrollController.hasClients) {
             return;
           }
           scrollController
@@ -50,23 +51,32 @@ class MyProfileScreen extends HookConsumerWidget {
             curve: Curves.easeOutCubic,
           )
               .then((_) {
-            ref.read(scrollToTopForTabProvider.notifier).state = null;
+            if (!cancelled) {
+              ref.read(scrollToTopForTabProvider.notifier).state = null;
+            }
           });
         }
 
         void tryScroll() {
+          if (cancelled) {
+            return;
+          }
           if (scrollController.hasClients) {
             scrollToTop();
           } else if (retryCount < maxRetries) {
             retryCount++;
             WidgetsBinding.instance.addPostFrameCallback((_) => tryScroll());
           } else {
-            ref.read(scrollToTopForTabProvider.notifier).state = null;
+            if (!cancelled) {
+              ref.read(scrollToTopForTabProvider.notifier).state = null;
+            }
           }
         }
 
         WidgetsBinding.instance.addPostFrameCallback((_) => tryScroll());
-        return null;
+        return () {
+          cancelled = true;
+        };
       },
       [scrollToTopRequested, hasData],
     );

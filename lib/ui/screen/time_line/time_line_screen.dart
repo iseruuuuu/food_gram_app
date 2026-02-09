@@ -33,8 +33,9 @@ class TimeLineScreen extends HookConsumerWidget {
         if (scrollToTopRequested != _tabIndex) {
           return null;
         }
+        var cancelled = false;
         void scrollToTop() {
-          if (!scrollController.hasClients) {
+          if (cancelled || !scrollController.hasClients) {
             return;
           }
           scrollController
@@ -44,7 +45,9 @@ class TimeLineScreen extends HookConsumerWidget {
             curve: Curves.easeOutCubic,
           )
               .then((_) {
-            ref.read(scrollToTopForTabProvider.notifier).state = null;
+            if (!cancelled) {
+              ref.read(scrollToTopForTabProvider.notifier).state = null;
+            }
           });
         }
 
@@ -53,7 +56,9 @@ class TimeLineScreen extends HookConsumerWidget {
         } else {
           WidgetsBinding.instance.addPostFrameCallback((_) => scrollToTop());
         }
-        return null;
+        return () {
+          cancelled = true;
+        };
       },
       [scrollToTopRequested],
     );
