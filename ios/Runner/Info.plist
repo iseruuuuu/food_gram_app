@@ -75,13 +75,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>This app needs camera access to post photos</string>
+	<string>Take meal photos to attach to your posts in FoodGram. Photos you capture are uploaded to your account and shown on your map and profile.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app needs location access to find nearby restaurants</string>
+	<string>Show nearby restaurants and place your meals on the map. Location is used to suggest places near you and to pin your posts on the map.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs location access to find nearby restaurants</string>
+	<string>Show nearby restaurants and place your meals on the map. Location is used to suggest places near you and to pin your posts on the map.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app needs photo library access to post photos</string>
+	<string>Select meal photos to attach to your posts. Chosen photos are uploaded to your account and shown on your map and profile.</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Allow tracking to show you personalized ads</string>
 	<key>SKAdNetworkItems</key>
