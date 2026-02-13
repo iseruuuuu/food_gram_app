@@ -141,6 +141,9 @@ class AuthService {
       var data = res.data;
       var ok = data is Map && (data['ok'] == true);
       if (ok) {
+        // 成功時は即座にサインアウトし、ローカル状態もクリア
+        await supabase.auth.signOut();
+        ref.read(currentUserProvider.notifier).clear();
         return true;
       }
       // リトライ（Unauthorized想定などで一度だけ）
@@ -152,8 +155,12 @@ class AuthService {
         final step = data is Map ? data['step'] : null;
         final error = data is Map ? data['error'] : null;
         logger.w('Delete account failed: step=$step, error=$error, data=$data');
+        return false;
       }
-      return ok;
+      // リトライ成功時もサインアウトとローカル状態クリア
+      await supabase.auth.signOut();
+      ref.read(currentUserProvider.notifier).clear();
+      return true;
     } on AuthException catch (e) {
       logger.e('Delete account auth error: ${e.message}');
       return false;
