@@ -159,7 +159,11 @@
     "logoutTitle": "Confirmar Cierre de Sesión",
     "logoutDescription1": "¿Le gustaría cerrar sesión?",
     "logoutDescription2": "El estado de la cuenta se almacena en el servidor.",
-    "logoutButton": "Cerrar Sesión"
+    "logoutButton": "Cerrar Sesión",
+    "deleteAccountConfirmTitle": "Eliminar cuenta",
+    "deleteAccountConfirmText": "No solo se eliminará la información de tu cuenta, también tus publicaciones. ¿Deseas continuar?",
+    "deleteAccountFinalTitle": "¿Seguro que deseas eliminar?",
+    "deleteAccountFinalText": "Los datos eliminados no se pueden recuperar. ¿Deseas continuar?"
   },
   "error": {
     "title": "Error de Comunicación",

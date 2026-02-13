@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/style/setting_style.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
@@ -30,6 +31,7 @@ class SettingScreen extends HookConsumerWidget {
     final loading = ref.watch(loadingProvider);
     final state = ref.watch(settingViewModelProvider());
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
+    final hasUser = ref.watch(currentUserProvider) != null;
     final t = Translations.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -201,23 +203,46 @@ class SettingScreen extends HookConsumerWidget {
                               );
                             },
                           ),
-                          SettingTile(
-                            icon: Icons.delete,
-                            title: t.setting.deleteAccountButton,
-                            onTap: () {
-                              LaunchUrlHelper()
-                                  .open('https://forms.gle/B2cG3FEynh1tbfUdA')
-                                  .then((value) {
-                                if (!value) {
-                                  SnackBarHelper().openErrorSnackBar(
-                                    context,
-                                    t.auth.accountDeletionFailure,
-                                    '',
-                                  );
-                                }
-                              });
-                            },
-                          ),
+                          if (hasUser)
+                            SettingTile(
+                              icon: Icons.delete,
+                              title: t.setting.deleteAccountButton,
+                              onTap: () {
+                                DialogHelper().openDialog(
+                                  title: t.dialog.deleteAccountConfirmTitle,
+                                  text: t.dialog.deleteAccountConfirmText,
+                                  onTap: () async {
+                                    context.pop();
+                                    DialogHelper().openDialog(
+                                      title: t.dialog.deleteAccountFinalTitle,
+                                      text: t.dialog.deleteAccountFinalText,
+                                      onTap: () async {
+                                        context.pop();
+                                        final ok = await ref
+                                            .read(
+                                              settingViewModelProvider()
+                                                  .notifier,
+                                            )
+                                            .deleteAccount();
+                                        if (ok) {
+                                          context.pushReplacementNamed(
+                                            RouterPath.authentication,
+                                          );
+                                        } else {
+                                          SnackBarHelper().openErrorSnackBar(
+                                            context,
+                                            t.auth.accountDeletionFailure,
+                                            '',
+                                          );
+                                        }
+                                      },
+                                      context: context,
+                                    );
+                                  },
+                                  context: context,
+                                );
+                              },
+                            ),
                           SettingTile(
                             icon: Icons.restore,
                             title: t.setting.restore,

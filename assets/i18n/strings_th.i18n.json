@@ -159,7 +159,11 @@
     "logoutTitle": "ยืนยันการออกจากระบบ",
     "logoutDescription1": "คุณต้องการออกจากระบบหรือไม่?",
     "logoutDescription2": "สถานะบัญชีถูกเก็บไว้บนเซิร์ฟเวอร์",
-    "logoutButton": "ออกจากระบบ"
+    "logoutButton": "ออกจากระบบ",
+    "deleteAccountConfirmTitle": "ลบบัญชี",
+    "deleteAccountConfirmText": "ไม่เพียงแค่ข้อมูลบัญชี แต่โพสต์ทั้งหมดจะถูกลบด้วย ต้องการดำเนินการต่อหรือไม่?",
+    "deleteAccountFinalTitle": "ยืนยันการลบจริงหรือไม่?",
+    "deleteAccountFinalText": "ข้อมูลที่ลบไปแล้วไม่สามารถกู้คืนได้ แน่ใจหรือไม่ว่าจะดำเนินการต่อ?"
   },
   "error": {
     "title": "ข้อผิดพลาดในการเชื่อมต่อ",

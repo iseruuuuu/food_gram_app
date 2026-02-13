@@ -65,7 +65,7 @@
     "appVersion": "應用程式版本",
     "account": "帳戶",
     "logoutButton": "登出",
-    "deleteAccountButton": "申請刪除帳戶",
+    "deleteAccountButton": "刪除帳戶",
     "question": "問題箱",
     "accountManagement": "帳戶管理",
     "restoreSuccessTitle": "還原成功",
@@ -159,7 +159,11 @@
     "logoutTitle": "確認登出",
     "logoutDescription1": "您要登出嗎？",
     "logoutDescription2": "帳戶狀態儲存在伺服器上。",
-    "logoutButton": "登出"
+    "logoutButton": "登出",
+    "deleteAccountConfirmTitle": "刪除帳戶",
+    "deleteAccountConfirmText": "不僅是帳戶資訊，您發布的內容也會被刪除。是否繼續？",
+    "deleteAccountFinalTitle": "確定要刪除嗎？",
+    "deleteAccountFinalText": "刪除的資料無法復原。仍然要繼續嗎？"
   },
   "error": {
     "title": "通訊錯誤",

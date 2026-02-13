@@ -167,6 +167,11 @@ class TutorialScreen extends HookConsumerWidget {
                     },
                     title: t.tutorial.locationButton,
                   ),
+                  const Gap(12),
+                  TextButton(
+                    onPressed: goToNextPage,
+                    child: Text(t.maybeNotFoodDialog.confirm),
+                  ),
                 ],
               ),
               // 5ページ目
@@ -196,6 +201,11 @@ class TutorialScreen extends HookConsumerWidget {
                       goToNextPage();
                     },
                     title: t.tutorial.notificationButton,
+                  ),
+                  const Gap(12),
+                  TextButton(
+                    onPressed: goToNextPage,
+                    child: Text(t.maybeNotFoodDialog.confirm),
                   ),
                 ],
               ),

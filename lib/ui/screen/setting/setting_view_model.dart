@@ -97,4 +97,12 @@ class SettingViewModel extends _$SettingViewModel {
     loading.state = false;
     return false;
   }
+
+  /// アカウント削除
+  Future<bool> deleteAccount() async {
+    loading.state = true;
+    final ok = await ref.read(authServiceProvider).delete();
+    loading.state = false;
+    return ok;
+  }
 }
