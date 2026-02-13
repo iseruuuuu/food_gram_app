@@ -162,7 +162,7 @@
     "logoutButton": "Logout",
     "deleteAccountConfirmTitle": "Delete Account",
     "deleteAccountConfirmText": "Not only your account info, but your posts will also be deleted. Proceed?",
-    "deleteAccountFinalTitle": "Delete Account",
+    "deleteAccountFinalTitle": "Are you sure you want to delete?",
     "deleteAccountFinalText": "Deleted data cannot be restored. Do you still want to continue?"
   },
   "error": {

@@ -162,7 +162,7 @@
     "logoutButton": "Cerrar Sesión",
     "deleteAccountConfirmTitle": "Eliminar cuenta",
     "deleteAccountConfirmText": "No solo se eliminará la información de tu cuenta, también tus publicaciones. ¿Deseas continuar?",
-    "deleteAccountFinalTitle": "Eliminar cuenta",
+    "deleteAccountFinalTitle": "¿Seguro que deseas eliminar?",
     "deleteAccountFinalText": "Los datos eliminados no se pueden recuperar. ¿Deseas continuar?"
   },
   "error": {

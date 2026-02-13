@@ -162,7 +162,7 @@
     "logoutButton": "Se déconnecter",
     "deleteAccountConfirmTitle": "Supprimer le compte",
     "deleteAccountConfirmText": "Non seulement les informations de votre compte, mais aussi vos publications seront supprimées. Continuer ?",
-    "deleteAccountFinalTitle": "Supprimer le compte",
+    "deleteAccountFinalTitle": "Êtes-vous sûr de vouloir supprimer ?",
     "deleteAccountFinalText": "Les données supprimées ne peuvent pas être restaurées. Voulez-vous vraiment continuer ?"
   },
   "error": {

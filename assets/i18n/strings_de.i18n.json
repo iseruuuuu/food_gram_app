@@ -162,7 +162,7 @@
     "logoutButton": "Abmelden",
     "deleteAccountConfirmTitle": "Konto löschen",
     "deleteAccountConfirmText": "Nicht nur Ihre Kontoinformationen, sondern auch Ihre Beiträge werden gelöscht. Fortfahren?",
-    "deleteAccountFinalTitle": "Konto löschen",
+    "deleteAccountFinalTitle": "Sind Sie sicher, dass Sie löschen möchten?",
     "deleteAccountFinalText": "Gelöschte Daten können nicht wiederhergestellt werden. Möchten Sie trotzdem fortfahren?"
   },
   "error": {

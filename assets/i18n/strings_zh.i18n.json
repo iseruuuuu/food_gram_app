@@ -162,7 +162,7 @@
     "logoutButton": "登出",
     "deleteAccountConfirmTitle": "删除账户",
     "deleteAccountConfirmText": "不仅是账户信息，您发布的内容也将被删除。是否继续？",
-    "deleteAccountFinalTitle": "删除账户",
+    "deleteAccountFinalTitle": "确定要删除吗？",
     "deleteAccountFinalText": "已删除的数据无法恢复。仍然要继续吗？"
   },
   "error": {

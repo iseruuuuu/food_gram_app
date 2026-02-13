@@ -162,7 +162,7 @@
     "logoutButton": "Sair",
     "deleteAccountConfirmTitle": "Excluir conta",
     "deleteAccountConfirmText": "Não apenas suas informações de conta, mas também suas publicações serão excluídas. Deseja continuar?",
-    "deleteAccountFinalTitle": "Excluir conta",
+    "deleteAccountFinalTitle": "Tem certeza que deseja excluir?",
     "deleteAccountFinalText": "Os dados excluídos não podem ser restaurados. Deseja continuar mesmo assim?"
   },
   "error": {

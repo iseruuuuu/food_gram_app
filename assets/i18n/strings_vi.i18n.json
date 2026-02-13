@@ -162,7 +162,7 @@
     "logoutButton": "Đăng xuất",
     "deleteAccountConfirmTitle": "Xóa tài khoản",
     "deleteAccountConfirmText": "Không chỉ thông tin tài khoản, các bài đăng của bạn cũng sẽ bị xóa. Tiếp tục?",
-    "deleteAccountFinalTitle": "Xóa tài khoản",
+    "deleteAccountFinalTitle": "Bạn có chắc chắn muốn xóa?",
     "deleteAccountFinalText": "Dữ liệu đã xóa không thể khôi phục. Bạn vẫn muốn tiếp tục?"
   },
   "error": {
