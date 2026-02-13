@@ -129,4 +129,37 @@ class AuthService {
       return Failure(error);
     }
   }
+
+  Future<bool> delete() async {
+    try {
+      // セッションが無い/失効している場合の安定化
+      if (supabase.auth.currentSession == null) {
+        await supabase.auth.refreshSession();
+      }
+      // 1回目
+      var res = await supabase.functions.invoke('Delete-User-And-Post');
+      var data = res.data;
+      var ok = data is Map && (data['ok'] == true);
+      if (ok) {
+        return true;
+      }
+      // リトライ（Unauthorized想定などで一度だけ）
+      await supabase.auth.refreshSession();
+      res = await supabase.functions.invoke('Delete-User-And-Post');
+      data = res.data;
+      ok = data is Map && (data['ok'] == true);
+      if (!ok) {
+        final step = data is Map ? data['step'] : null;
+        final error = data is Map ? data['error'] : null;
+        logger.w('Delete account failed: step=$step, error=$error, data=$data');
+      }
+      return ok;
+    } on AuthException catch (e) {
+      logger.e('Delete account auth error: ${e.message}');
+      return false;
+    } on Exception catch (e) {
+      logger.e('Delete account exception: $e');
+      return false;
+    }
+  }
 }
