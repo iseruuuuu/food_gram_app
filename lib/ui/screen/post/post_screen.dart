@@ -448,7 +448,6 @@ class PostScreen extends HookConsumerWidget {
                           : foodTags.value.join(',');
                       final result =
                           await ref.read(postViewModelProvider().notifier).post(
-                                restaurantTag: '',
                                 foodTag: foodTagString,
                               );
                       if (result) {
