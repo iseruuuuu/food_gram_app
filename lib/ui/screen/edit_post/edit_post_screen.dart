@@ -51,7 +51,6 @@ class EditPostScreen extends HookConsumerWidget {
         ref.watch(editPostViewModelProvider().select((s) => s.isAnonymous));
     final star = ref.watch(editPostViewModelProvider().select((s) => s.star));
     final viewModel = ref.watch(editPostViewModelProvider().notifier);
-    final countryTag = useState(posts.restaurantTag);
     final foodTags = useState<List<String>>(
       posts.foodTag.isNotEmpty ? posts.foodTag.split(',') : [],
     );
@@ -533,7 +532,6 @@ class EditPostScreen extends HookConsumerWidget {
                       final isSuccess = await ref
                           .read(editPostViewModelProvider().notifier)
                           .update(
-                            restaurantTag: countryTag.value,
                             foodTag: foodTagString,
                           );
                       if (isSuccess) {

@@ -89,7 +89,6 @@ class EditPostViewModel extends _$EditPostViewModel {
   }
 
   Future<bool> update({
-    required String restaurantTag,
     required String foodTag,
   }) async {
     primaryFocus?.unfocus();
@@ -101,7 +100,7 @@ class EditPostViewModel extends _$EditPostViewModel {
       return false;
     }
     try {
-      await _updatePost(restaurantTag, foodTag);
+      await _updatePost(foodTag);
       return state.isSuccess;
     } finally {
       loading.state = false;
@@ -119,13 +118,12 @@ class EditPostViewModel extends _$EditPostViewModel {
     return _pickMultiImage(EditStatus.albumPermission.name);
   }
 
-  Future<void> _updatePost(String restaurantTag, String foodTag) async {
+  Future<void> _updatePost(String foodTag) async {
     final result = await ref.read(postServiceProvider.notifier).updatePost(
           posts: _posts,
           foodName: _foodController.text,
           comment: _commentController.text,
           restaurant: state.restaurant,
-          restaurantTag: restaurantTag,
           foodTag: foodTag,
           lat: state.lat,
           lng: state.lng,
