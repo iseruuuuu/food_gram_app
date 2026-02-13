@@ -51,7 +51,6 @@ class PostViewModel extends _$PostViewModel {
   }
 
   Future<bool> post({
-    required String restaurantTag,
     required String foodTag,
   }) async {
     primaryFocus?.unfocus();
@@ -61,7 +60,7 @@ class PostViewModel extends _$PostViewModel {
       loading.state = false;
       return false;
     }
-    await _submitPost(restaurantTag, foodTag);
+    await _submitPost(foodTag);
     loading.state = false;
     return state.isSuccess;
   }
@@ -88,7 +87,7 @@ class PostViewModel extends _$PostViewModel {
     _updateRestaurantState(restaurant);
   }
 
-  Future<void> _submitPost(String restaurantTag, String foodTag) async {
+  Future<void> _submitPost(String foodTag) async {
     final result = await ref.read(postRepositoryProvider.notifier).createPost(
           foodName: foodController.text,
           comment: commentController.text,
@@ -97,7 +96,6 @@ class PostViewModel extends _$PostViewModel {
           restaurant: state.restaurant,
           lng: state.lng,
           lat: state.lat,
-          restaurantTag: restaurantTag,
           foodTag: foodTag,
           star: state.star,
           isAnonymous: state.isAnonymous,

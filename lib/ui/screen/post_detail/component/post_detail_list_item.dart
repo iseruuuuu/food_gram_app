@@ -538,32 +538,6 @@ class PostDetailListItem extends HookConsumerWidget {
                                   ),
                                 ),
                               ),
-                        if (posts.restaurantTag.isNotEmpty)
-                          Chip(
-                            backgroundColor: Colors.white,
-                            padding: const EdgeInsets.all(2),
-                            label: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  posts.restaurantTag,
-                                  style: const TextStyle(fontSize: 24),
-                                ),
-                                const Gap(4),
-                                Text(
-                                  getLocalizedCountryName(
-                                    posts.restaurantTag,
-                                    context,
-                                  ),
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
                       ],
                     ),
                   ],
