@@ -7,7 +7,7 @@
 
 ### 依存方向（絶対に守る）
 
-```
+```text
 View → ViewModel → Repository → Service → Supabase
 ```
 
@@ -202,7 +202,7 @@ class MyService extends _$MyService {
 
 ### Providerの依存関係
 
-```
+```text
 ViewModel Provider
   ↓ depends on
 Repository Provider
