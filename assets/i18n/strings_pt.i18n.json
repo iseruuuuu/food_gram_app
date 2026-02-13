@@ -159,7 +159,11 @@
     "logoutTitle": "Confirmar Saída",
     "logoutDescription1": "Você quer sair?",
     "logoutDescription2": "O status da conta é armazenado no servidor.",
-    "logoutButton": "Sair"
+    "logoutButton": "Sair",
+    "deleteAccountConfirmTitle": "Excluir conta",
+    "deleteAccountConfirmText": "Não apenas suas informações de conta, mas também suas publicações serão excluídas. Deseja continuar?",
+    "deleteAccountFinalTitle": "Excluir conta",
+    "deleteAccountFinalText": "Os dados excluídos não podem ser restaurados. Deseja continuar mesmo assim?"
   },
   "error": {
     "title": "Erro de Comunicação",

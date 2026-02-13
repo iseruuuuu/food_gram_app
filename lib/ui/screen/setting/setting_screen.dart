@@ -209,13 +209,13 @@ class SettingScreen extends HookConsumerWidget {
                               title: t.setting.deleteAccountButton,
                               onTap: () {
                                 DialogHelper().openDialog(
-                                  title: 'アカウントを削除しますか？',
-                                  text: 'アカウント情報だけでなく、投稿した内容も消えてしまいます。よろしいですか？',
+                                  title: t.dialog.deleteAccountConfirmTitle,
+                                  text: t.dialog.deleteAccountConfirmText,
                                   onTap: () async {
                                     context.pop();
                                     DialogHelper().openDialog(
-                                      title: '本当に削除しますか？',
-                                      text: '削除したデータは復元できません。それでもよろしいでしょうか？？',
+                                      title: t.dialog.deleteAccountFinalTitle,
+                                      text: t.dialog.deleteAccountFinalText,
                                       onTap: () async {
                                         context.pop();
                                         final ok = await ref

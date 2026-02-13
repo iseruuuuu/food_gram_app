@@ -65,7 +65,7 @@
     "appVersion": "アプリバージョン",
     "account": "アカウント",
     "logoutButton": "ログアウト",
-    "deleteAccountButton": "アカウント削除申請",
+      "deleteAccountButton": "アカウント削除",
     "question": "質問箱",
     "accountManagement": "アカウント管理",
     "restoreSuccessTitle": "復元が成功しました",
@@ -159,7 +159,11 @@
     "logoutTitle": "ログアウトの確認",
     "logoutDescription1": "ログアウトしますか?",
     "logoutDescription2": "アカウントの状態はサーバー上に保存されています。",
-    "logoutButton": "ログアウト"
+    "logoutButton": "ログアウト",
+      "deleteAccountConfirmTitle": "アカウント削除",
+      "deleteAccountConfirmText": "アカウント情報だけでなく、投稿した内容も消えてしまいます。よろしいですか？",
+      "deleteAccountFinalTitle": "アカウント削除",
+    "deleteAccountFinalText": "削除したデータは復元できません。それでもよろしいでしょうか？？"
   },
   "error": {
     "title": "通信エラー",

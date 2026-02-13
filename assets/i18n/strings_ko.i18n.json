@@ -65,7 +65,7 @@
     "appVersion": "앱 버전",
     "account": "계정",
     "logoutButton": "로그아웃",
-    "deleteAccountButton": "계정 삭제 요청",
+      "deleteAccountButton": "계정 삭제",
     "question": "질문함",
     "accountManagement": "계정 관리",
     "restoreSuccessTitle": "복원 성공",
@@ -159,7 +159,11 @@
     "logoutTitle": "로그아웃 확인",
     "logoutDescription1": "로그아웃하시겠습니까?",
     "logoutDescription2": "계정 상태는 서버에 저장됩니다.",
-    "logoutButton": "로그아웃"
+    "logoutButton": "로그아웃",
+    "deleteAccountConfirmTitle": "계정 삭제",
+    "deleteAccountConfirmText": "계정 정보뿐만 아니라 게시한 내용도 모두 삭제됩니다. 계속하시겠습니까?",
+    "deleteAccountFinalTitle": "계정 삭제",
+    "deleteAccountFinalText": "삭제된 데이터는 복구할 수 없습니다. 그래도 진행하시겠습니까?"
   },
   "error": {
     "title": "통신 오류",

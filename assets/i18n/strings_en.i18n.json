@@ -65,7 +65,7 @@
     "appVersion": "App Version",
     "account": "Account",
     "logoutButton": "Logout",
-    "deleteAccountButton": "Request Deletion",
+    "deleteAccountButton": "Delete Account",
     "question": "Question Box",
     "accountManagement": "Account Management",
     "restoreSuccessTitle": "Restore successful",
@@ -159,7 +159,11 @@
     "logoutTitle": "Confirm Logout",
     "logoutDescription1": "Would you like to log out?",
     "logoutDescription2": "Account status is stored on the server.",
-    "logoutButton": "Logout"
+    "logoutButton": "Logout",
+    "deleteAccountConfirmTitle": "Delete Account",
+    "deleteAccountConfirmText": "Not only your account info, but your posts will also be deleted. Proceed?",
+    "deleteAccountFinalTitle": "Delete Account",
+    "deleteAccountFinalText": "Deleted data cannot be restored. Do you still want to continue?"
   },
   "error": {
     "title": "Communication Error",

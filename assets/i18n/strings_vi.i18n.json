@@ -159,7 +159,11 @@
     "logoutTitle": "Xác nhận đăng xuất",
     "logoutDescription1": "Bạn có muốn đăng xuất không?",
     "logoutDescription2": "Trạng thái tài khoản được lưu trên máy chủ.",
-    "logoutButton": "Đăng xuất"
+    "logoutButton": "Đăng xuất",
+    "deleteAccountConfirmTitle": "Xóa tài khoản",
+    "deleteAccountConfirmText": "Không chỉ thông tin tài khoản, các bài đăng của bạn cũng sẽ bị xóa. Tiếp tục?",
+    "deleteAccountFinalTitle": "Xóa tài khoản",
+    "deleteAccountFinalText": "Dữ liệu đã xóa không thể khôi phục. Bạn vẫn muốn tiếp tục?"
   },
   "error": {
     "title": "Lỗi kết nối",
