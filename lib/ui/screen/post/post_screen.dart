@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
+import 'package:food_gram_app/core/review/in_app_review_service.dart';
 import 'package:food_gram_app/core/supabase/user/services/streak_service.dart';
 import 'package:food_gram_app/core/theme/style/post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
@@ -459,12 +460,27 @@ class PostScreen extends HookConsumerWidget {
                         if (streakResult.isUpdated) {
                           // ダイアログを表示（初回投稿かどうかを判定）
                           final isFirstTime = streakResult.newStreakWeeks == 1;
+                          // ストリークの節目（3週、5週、10週）を判定
+                          final milestoneWeeks = [3, 5, 10];
+                          final isMilestone = milestoneWeeks
+                              .contains(streakResult.newStreakWeeks);
+
                           if (context.mounted) {
                             await showStreakDialog(
                               context: context,
                               streakWeeks: streakResult.newStreakWeeks,
                               isFirstTime: isFirstTime,
                             );
+
+                            // 初回投稿またはストリークの節目の場合、レビューを表示
+                            if (isFirstTime || isMilestone) {
+                              // ストリークダイアログ表示後、少し間を置いてからレビューを表示
+                              await Future<void>.delayed(
+                                const Duration(seconds: 2),
+                              );
+                              final reviewService = InAppReviewService();
+                              await reviewService.requestReview();
+                            }
                           }
                         }
                         if (context.mounted) {

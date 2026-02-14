@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/app.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
+import 'package:food_gram_app/core/review/in_app_review_service.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -24,6 +25,10 @@ void main() async {
   await MobileAds.instance.initialize();
   // TranslationProviderでラップ
   runApp(TranslationProvider(child: const ProviderScope(child: MyApp())));
+  // アプリ起動後、表示が落ち着いてから7日経過時レビューをチェック
+  Future.delayed(const Duration(seconds: 3), () {
+    InAppReviewService().maybeRequestReviewFor7DayMilestone();
+  });
 }
 
 Future<void> initializeSystemSettings() async {
