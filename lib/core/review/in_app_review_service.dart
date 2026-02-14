@@ -77,4 +77,51 @@ class InAppReviewService {
       _logger.e('Error requesting review: $e');
     }
   }
+
+  /// 初回起動日から [requiredDays] 日経過したかどうかを判定する（テスト用に公開）
+  /// [firstLaunchDateStr] 初回起動日（ISO8601）。空の場合は未記録として false
+  /// [requiredDays] 必要経過日数（例: 7）
+  /// [now] 現在日時
+  static bool shouldShowReviewFor7DayMilestone(
+    String firstLaunchDateStr,
+    int requiredDays,
+    DateTime now,
+  ) {
+    if (firstLaunchDateStr.isEmpty) {
+      return false;
+    }
+    final firstLaunch = DateTime.parse(firstLaunchDateStr);
+    final days = now.difference(firstLaunch).inDays;
+    return days >= requiredDays;
+  }
+
+  /// アプリ初回起動から [daysSinceFirstLaunch] 日経過時にレビューを表示する（定着ユーザー向け）
+  /// 初回起動日が未設定の場合は今を記録して何もしない
+  Future<void> maybeRequestReviewFor7DayMilestone({
+    int daysSinceFirstLaunch = 7,
+  }) async {
+    try {
+      final firstLaunchStr =
+          await _preference.getString(PreferenceKey.firstLaunchDate);
+
+      if (firstLaunchStr.isEmpty) {
+        await _preference.setString(
+          PreferenceKey.firstLaunchDate,
+          DateTime.now().toIso8601String(),
+        );
+        _logger.d('First launch date saved');
+        return;
+      }
+
+      if (shouldShowReviewFor7DayMilestone(
+        firstLaunchStr,
+        daysSinceFirstLaunch,
+        DateTime.now(),
+      )) {
+        await requestReview();
+      }
+    } on Exception catch (e) {
+      _logger.e('Error in 7-day review check: $e');
+    }
+  }
 }
