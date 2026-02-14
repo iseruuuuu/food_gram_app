@@ -78,7 +78,7 @@ class InAppReviewService {
     }
   }
 
-  /// 初回起動日から [requiredDays] 日経過したかどうかを判定する（テスト用に公開）
+  /// 初回起動日から [requiredDays] 日経過したかどうかを判定する
   /// [firstLaunchDateStr] 初回起動日（ISO8601）。空の場合は未記録として false
   /// [requiredDays] 必要経過日数（例: 7）
   /// [now] 現在日時
