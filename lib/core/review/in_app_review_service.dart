@@ -8,7 +8,7 @@ class InAppReviewService {
   final Preference _preference = Preference();
   final Logger _logger = Logger();
 
-  /// 最後のレビュー表示日と経過日数から、表示可能かどうかを判定する（テスト用に公開）
+  /// 最後のレビュー表示日と経過日数から、表示可能かどうかを判定する
   /// [lastReviewDateStr] 最後のレビュー表示日（ISO8601）。空の場合は初回として true
   /// [minDays] 最低経過日数
   /// [now] 現在日時
