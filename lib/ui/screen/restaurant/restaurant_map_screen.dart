@@ -68,25 +68,23 @@ class _RestaurantMapScreenState extends State<RestaurantMapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        surfaceTintColor: Colors.white,
-        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           onPressed: context.pop,
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios,
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         title: Text(
           widget.restaurant.name,
-          style: const TextStyle(
-            color: Colors.black,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
-      backgroundColor: Colors.white,
       body: Stack(
         children: [
           MapLibreMap(
