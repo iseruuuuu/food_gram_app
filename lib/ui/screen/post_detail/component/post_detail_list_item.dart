@@ -114,7 +114,7 @@ class PostDetailListItem extends HookConsumerWidget {
                     children: [
                       Text(
                         posts.isAnonymous ? t.anonymous.poster : users.name,
-                        style: DetailPostStyle.name(),
+                        style: DetailPostStyle.name(context),
                         overflow: TextOverflow.ellipsis,
                       ),
                       Builder(
@@ -124,7 +124,7 @@ class PostDetailListItem extends HookConsumerWidget {
                               : users.userName;
                           return Text(
                             '@$username',
-                            style: DetailPostStyle.userName(),
+                            style: DetailPostStyle.userName(context),
                           );
                         },
                       ),
@@ -160,7 +160,7 @@ class PostDetailListItem extends HookConsumerWidget {
                               builder: (context) => Container(
                                 width: deviceWidth,
                                 height: deviceWidth,
-                                color: Colors.white,
+                                color: Theme.of(context).colorScheme.surface,
                                 child: CachedNetworkImage(
                                   imageUrl: imageUrl,
                                   fit: BoxFit.cover,
@@ -199,7 +199,7 @@ class PostDetailListItem extends HookConsumerWidget {
                             width: deviceWidth,
                             height: deviceWidth,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.surface,
                               borderRadius: BorderRadius.zero,
                               boxShadow: [
                                 BoxShadow(
@@ -300,7 +300,9 @@ class PostDetailListItem extends HookConsumerWidget {
                       isHearted.value
                           ? CupertinoIcons.heart_fill
                           : CupertinoIcons.heart,
-                      color: isHearted.value ? Colors.red : Colors.black,
+                      color: isHearted.value
+                          ? Colors.red
+                          : Theme.of(context).colorScheme.onSurface,
                       size: 36,
                     ),
                   ),
@@ -317,12 +319,16 @@ class PostDetailListItem extends HookConsumerWidget {
                         },
                       );
                     },
-                    child: const Icon(Icons.send, size: 36),
+                    child: Icon(
+                      Icons.send,
+                      size: 36,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                   const Spacer(),
                   Text(
                     '${heartCount.value} ${t.likeButton}',
-                    style: DetailPostStyle.like(),
+                    style: DetailPostStyle.like(context),
                   ),
                   IconButton(
                     onPressed: () {
@@ -350,7 +356,7 @@ class PostDetailListItem extends HookConsumerWidget {
                           : Icons.bookmark_border,
                     ),
                     iconSize: 36,
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ],
               ),
@@ -447,7 +453,7 @@ class PostDetailListItem extends HookConsumerWidget {
                   children: [
                     AppTranslatableText(
                       posts.foodName,
-                      style: DetailPostStyle.foodName(),
+                      style: DetailPostStyle.foodName(context),
                     ),
                     const Gap(4),
                     GestureDetector(
@@ -462,7 +468,7 @@ class PostDetailListItem extends HookConsumerWidget {
                           Expanded(
                             child: Text(
                               'In ${posts.restaurant}',
-                              style: DetailPostStyle.restaurant(),
+                              style: DetailPostStyle.restaurant(context),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -479,9 +485,10 @@ class PostDetailListItem extends HookConsumerWidget {
                                 const Gap(4),
                                 Text(
                                   posts.star.toStringAsFixed(1),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).colorScheme.onSurface,
                                   ),
                                 ),
                               ],
@@ -496,7 +503,7 @@ class PostDetailListItem extends HookConsumerWidget {
                         children: [
                           AppTranslatableText(
                             posts.comment,
-                            style: DetailPostStyle.comment(),
+                            style: DetailPostStyle.comment(context),
                           ),
                           const Gap(12),
                         ],
@@ -504,7 +511,7 @@ class PostDetailListItem extends HookConsumerWidget {
                     const Gap(4),
                     Text(
                       '${_formatDateTime(posts.createdAt)} ${t.posted}',
-                      style: DetailPostStyle.comment(),
+                      style: DetailPostStyle.comment(context),
                     ),
                     const Gap(12),
                     Wrap(
@@ -513,7 +520,7 @@ class PostDetailListItem extends HookConsumerWidget {
                         if (posts.foodTag.isNotEmpty)
                           ...posts.foodTag.split(',').map(
                                 (tag) => Chip(
-                                  backgroundColor: Colors.white,
+                                  backgroundColor: Theme.of(context).colorScheme.surface,
                                   padding: const EdgeInsets.all(2),
                                   label: Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -528,10 +535,10 @@ class PostDetailListItem extends HookConsumerWidget {
                                           tag,
                                           context,
                                         ),
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.black,
+                                          color: Theme.of(context).colorScheme.onSurface,
                                         ),
                                       ),
                                     ],

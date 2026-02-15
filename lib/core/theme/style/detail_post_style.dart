@@ -3,53 +3,57 @@ import 'package:flutter/material.dart';
 class DetailPostStyle {
   DetailPostStyle._();
 
-  static TextStyle name() {
-    return const TextStyle(
+  static Color _onSurface(BuildContext context) =>
+      Theme.of(context).colorScheme.onSurface;
+
+  static TextStyle name(BuildContext context) {
+    return TextStyle(
       fontSize: 15,
       fontWeight: FontWeight.bold,
-      color: Colors.black,
+      color: _onSurface(context),
     );
   }
 
-  static TextStyle userName() {
-    return const TextStyle(
+  static TextStyle userName(BuildContext context) {
+    return TextStyle(
       fontSize: 11,
       fontWeight: FontWeight.normal,
-      color: Colors.black,
+      color: _onSurface(context),
     );
   }
 
-  static TextStyle like() {
-    return const TextStyle(
+  static TextStyle like(BuildContext context) {
+    return TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
+      color: _onSurface(context),
     );
   }
 
-  static TextStyle foodName() {
-    return const TextStyle(
+  static TextStyle foodName(BuildContext context) {
+    return TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
-      color: Colors.black,
+      color: _onSurface(context),
     );
   }
 
-  static TextStyle restaurant() {
-    return const TextStyle(
+  static TextStyle restaurant(BuildContext context) {
+    return TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
-      color: Colors.black,
+      color: _onSurface(context),
       fontFamily: 'Hiragino Kaku Gothic ProN',
       decoration: TextDecoration.underline,
       decorationThickness: 2,
     );
   }
 
-  static TextStyle comment() {
-    return const TextStyle(
+  static TextStyle comment(BuildContext context) {
+    return TextStyle(
       fontSize: 15,
       fontWeight: FontWeight.w500,
-      color: Colors.black,
+      color: _onSurface(context),
     );
   }
 }

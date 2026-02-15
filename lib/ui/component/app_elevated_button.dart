@@ -52,16 +52,20 @@ class AppDetailElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? Colors.black : const Color(0xFFEFEFEF);
+    final fgColor = isDark ? Colors.white : Colors.black;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 14),
           elevation: 0,
-          backgroundColor: const Color(0xFFEFEFEF),
-          foregroundColor: Colors.black,
+          backgroundColor: bgColor,
+          foregroundColor: fgColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
+            side: isDark ? const BorderSide(color: Colors.white54) : BorderSide.none,
           ),
         ),
         onPressed: onPressed,
@@ -69,15 +73,16 @@ class AppDetailElevatedButton extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: Colors.black,
+              color: fgColor,
               size: 20,
             ),
             const Gap(4),
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
+                color: fgColor,
               ),
             ),
           ],
