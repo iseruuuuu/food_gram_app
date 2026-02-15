@@ -20,7 +20,6 @@ class TabScreen extends ConsumerWidget {
       context: context,
       removeBottom: Platform.isIOS,
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: Platform.isIOS
             ? controller.pageList[state.selectedIndex]
             : SafeArea(child: controller.pageList[state.selectedIndex]),
@@ -42,11 +41,12 @@ class TabScreen extends ConsumerWidget {
                       state.selectedIndex == 0
                           ? CupertinoIcons.map_fill
                           : CupertinoIcons.map,
+                      color: TabStyle.tabColor(context, selected: state.selectedIndex == 0),
                     ),
                     const Gap(6),
                     Text(
                       t.tab.map,
-                      style: TabStyle.tab(value: state.selectedIndex == 0),
+                      style: TabStyle.tab(context, value: state.selectedIndex == 0),
                     ),
                     const Gap(10),
                   ],
@@ -61,11 +61,12 @@ class TabScreen extends ConsumerWidget {
                       state.selectedIndex == 1
                           ? Icons.fastfood
                           : Icons.fastfood_outlined,
+                      color: TabStyle.tabColor(context, selected: state.selectedIndex == 1),
                     ),
                     const Gap(6),
                     Text(
                       t.tab.home,
-                      style: TabStyle.tab(value: state.selectedIndex == 1),
+                      style: TabStyle.tab(context, value: state.selectedIndex == 1),
                     ),
                     const Gap(10),
                   ],
@@ -81,11 +82,12 @@ class TabScreen extends ConsumerWidget {
                           ? CupertinoIcons.map_pin_ellipse
                           : CupertinoIcons.map_pin,
                       size: 30,
+                      color: TabStyle.tabColor(context, selected: state.selectedIndex == 2),
                     ),
                     const Gap(6),
                     Text(
                       t.tab.myMap,
-                      style: TabStyle.tab(value: state.selectedIndex == 2),
+                      style: TabStyle.tab(context, value: state.selectedIndex == 2),
                     ),
                     const Gap(10),
                   ],
@@ -101,11 +103,12 @@ class TabScreen extends ConsumerWidget {
                           ? CupertinoIcons.person_circle_fill
                           : CupertinoIcons.person_circle,
                       size: 30,
+                      color: TabStyle.tabColor(context, selected: state.selectedIndex == 3),
                     ),
                     const Gap(6),
                     Text(
                       t.tab.myPage,
-                      style: TabStyle.tab(value: state.selectedIndex == 3),
+                      style: TabStyle.tab(context, value: state.selectedIndex == 3),
                     ),
                     const Gap(10),
                   ],
@@ -120,11 +123,12 @@ class TabScreen extends ConsumerWidget {
                       state.selectedIndex == 4
                           ? Icons.settings
                           : Icons.settings_outlined,
+                      color: TabStyle.tabColor(context, selected: state.selectedIndex == 4),
                     ),
                     const Gap(6),
                     Text(
                       t.tab.setting,
-                      style: TabStyle.tab(value: state.selectedIndex == 4),
+                      style: TabStyle.tab(context, value: state.selectedIndex == 4),
                     ),
                     const Gap(10),
                   ],
@@ -135,9 +139,9 @@ class TabScreen extends ConsumerWidget {
             type: BottomNavigationBarType.fixed,
             selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
             elevation: 0,
-            backgroundColor: Colors.white,
-            selectedItemColor: Colors.black,
-            unselectedItemColor: Colors.grey,
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            selectedItemColor: Theme.of(context).colorScheme.onSurface,
+            unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
             iconSize: 26,
             selectedFontSize: 0,
             unselectedFontSize: 0,
