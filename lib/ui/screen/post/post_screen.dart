@@ -107,11 +107,10 @@ class PostScreen extends HookConsumerWidget {
     return GestureDetector(
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           surfaceTintColor: Colors.transparent,
-          backgroundColor: !loading ? Colors.white : Colors.transparent,
-          title: Text(t.post.title, style: PostStyle.title()),
+          backgroundColor: loading ? Colors.transparent : null,
+          title: Text(t.post.title, style: PostStyle.title(context)),
           centerTitle: true,
           leading: !loading
               ? IconButton(
@@ -122,7 +121,8 @@ class PostScreen extends HookConsumerWidget {
                     );
                     context.pop();
                   },
-                  icon: const Icon(Icons.close, size: 28, color: Colors.black),
+                  icon: Icon(Icons.close,
+                      size: 28, color: Theme.of(context).colorScheme.onSurface),
                 )
               : const SizedBox(),
         ),
@@ -206,45 +206,60 @@ class PostScreen extends HookConsumerWidget {
                             ),
                           )
                         else
-                          GestureDetector(
-                            onTap: () async {
-                              primaryFocus?.unfocus();
-                              await showModalBottomSheet<void>(
-                                context: context,
-                                builder: (context) {
-                                  return AppPostImageModalSheet(
-                                    camera: () async {
-                                      await ref
-                                          .read(
-                                            postViewModelProvider().notifier,
-                                          )
-                                          .camera();
-                                    },
-                                    album: () async {
-                                      await ref
-                                          .read(
-                                            postViewModelProvider().notifier,
-                                          )
-                                          .album();
+                          Builder(
+                            builder: (context) {
+                              final isDark = Theme.of(context).brightness ==
+                                  Brightness.dark;
+                              final placeholderBg =
+                                  isDark ? Colors.black : Colors.white;
+                              final placeholderBorder =
+                                  isDark ? Colors.white54 : Colors.black87;
+                              final plusIconColor =
+                                  isDark ? Colors.white : Colors.black;
+                              return GestureDetector(
+                                onTap: () async {
+                                  primaryFocus?.unfocus();
+                                  await showModalBottomSheet<void>(
+                                    context: context,
+                                    builder: (context) {
+                                      return AppPostImageModalSheet(
+                                        camera: () async {
+                                          await ref
+                                              .read(
+                                                postViewModelProvider()
+                                                    .notifier,
+                                              )
+                                              .camera();
+                                        },
+                                        album: () async {
+                                          await ref
+                                              .read(
+                                                postViewModelProvider()
+                                                    .notifier,
+                                              )
+                                              .album();
+                                        },
+                                      );
                                     },
                                   );
                                 },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: placeholderBg,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border:
+                                        Border.all(color: placeholderBorder),
+                                  ),
+                                  width: deviceWidth,
+                                  height: deviceWidth / 1.7,
+                                  child: Icon(
+                                    Icons.add,
+                                    size: 40,
+                                    color: plusIconColor,
+                                  ),
+                                ),
                               );
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: Colors.black87),
-                              ),
-                              width: deviceWidth,
-                              height: deviceWidth / 1.7,
-                              child: const Icon(
-                                Icons.add,
-                                size: 40,
-                                color: Colors.black,
-                              ),
-                            ),
                           ),
                       ],
                     ),
@@ -255,100 +270,119 @@ class PostScreen extends HookConsumerWidget {
                           .foodController,
                     ),
                     const Gap(12),
-                    GestureDetector(
-                      onTap: () async {
-                        primaryFocus?.unfocus();
-                        final result = await context.pushNamed(routerPath);
-                        if (result != null) {
-                          ref
-                              .read(postViewModelProvider().notifier)
-                              .getPlace(result as Restaurant);
-                        }
-                      },
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Row(
-                          children: [
-                            const Gap(5),
-                            const Icon(
-                              Icons.place,
-                              size: 28,
-                              color: Colors.black,
-                            ),
-                            const Gap(10),
-                            Expanded(
-                              child: SizedBox(
-                                height: 50,
-                                child: ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.zero,
-                                  shape: RoundedRectangleBorder(
-                                    side: const BorderSide(
-                                      color: Colors.black87,
+                    Builder(
+                      builder: (context) {
+                        final isDark =
+                            Theme.of(context).brightness == Brightness.dark;
+                        final rowBg = isDark ? Colors.black : null;
+                        final rowBorder =
+                            isDark ? Colors.white54 : Colors.black87;
+                        final iconColor = isDark
+                            ? Colors.white
+                            : Colors.black;
+                        return SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: Row(
+                            children: [
+                              const Gap(5),
+                              Icon(
+                                Icons.place,
+                                size: 28,
+                                color: iconColor,
+                              ),
+                              const Gap(10),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    primaryFocus?.unfocus();
+                                    final result =
+                                        await context.pushNamed(routerPath);
+                                    if (result != null) {
+                                      ref
+                                          .read(postViewModelProvider().notifier)
+                                          .getPlace(result as Restaurant);
+                                    }
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: rowBg,
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(color: rowBorder),
                                     ),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  title: Row(
-                                    children: [
-                                      const Gap(16),
-                                      Expanded(
-                                        child: Text(
-                                          restaurantName == '場所を追加'
-                                              ? t.post.restaurantNameInputField
-                                              : restaurantName,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: PostStyle.restaurant(
-                                            value: restaurantName == '場所を追加',
-                                          ),
-                                        ),
+                                    child: ListTile(
+                                      dense: true,
+                                      contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 0,
                                       ),
-                                      if (restaurantName == '場所を追加')
-                                        const Row(
-                                          children: [
+                                      title: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              restaurantName == '場所を追加'
+                                                  ? t.post.restaurantNameInputField
+                                                  : restaurantName,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: PostStyle.restaurant(
+                                                context,
+                                                value: restaurantName == '場所を追加',
+                                              ),
+                                            ),
+                                          ),
+                                          if (restaurantName == '場所を追加')
                                             Icon(
                                               Icons.arrow_forward_ios,
                                               size: 20,
+                                              color: iconColor,
                                             ),
-                                            Gap(10),
-                                          ],
-                                        ),
-                                    ],
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
                     const Gap(6),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Row(
-                        children: [
-                          const Gap(5),
-                          const Icon(
-                            Icons.label,
-                            size: 28,
-                            color: Colors.black,
-                          ),
-                          const Gap(5),
-                          Expanded(
-                            child: AppFoodTag(
+                    Builder(
+                      builder: (context) {
+                        final isDark =
+                            Theme.of(context).brightness == Brightness.dark;
+                        return SizedBox(
+                          width: double.infinity,
+                          child: Row(
+                            children: [
+                              const Gap(5),
+                              Icon(
+                                Icons.label,
+                                size: 28,
+                                color: isDark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                              const Gap(5),
+                              Expanded(
+                                child: AppFoodTag(
                               foodTags: foodTags.value,
                               foodTexts: foodTexts,
-                              onTagSelected: (tags) {
-                                foodTags.value = tags;
-                              },
-                            ),
+                                  onTagSelected: (tags) {
+                                    foodTags.value = tags;
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                     const Gap(6),
                     Text(
                       t.post.ratingLabel,
-                      style: PostStyle.categoryTitle(),
+                      style: PostStyle.categoryTitle(context),
                     ),
                     const Gap(6),
                     Padding(
@@ -374,9 +408,10 @@ class PostScreen extends HookConsumerWidget {
                           const Spacer(),
                           Text(
                             star.toStringAsFixed(1),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                         ],
@@ -393,23 +428,24 @@ class PostScreen extends HookConsumerWidget {
                       dense: true,
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 10),
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.visibility_off,
                         size: 28,
-                        color: Colors.black,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                       title: Text(
                         t.anonymous.post,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       subtitle: Text(
                         t.anonymous.postDescription,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
-                          color: Colors.grey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                       trailing: Switch(

@@ -130,53 +130,64 @@ class AppFoodTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? Colors.black : null;
+    final borderColor = isDark ? Colors.white54 : Colors.black87;
+    final fgColor = isDark ? Colors.white : Colors.black;
+    final labelColor = isDark ? Colors.white70 : Colors.grey;
     return SizedBox(
       width: double.infinity,
       height: 50,
       child: Row(
         children: [
           const Gap(5),
-          const Icon(
+          Icon(
             Icons.fastfood,
-            color: Colors.black,
+            color: fgColor,
             size: 28,
           ),
           const Gap(10),
           Expanded(
-            child: TextField(
-              contextMenuBuilder: (context, state) {
-                if (SystemContextMenu.isSupported(context)) {
-                  return SystemContextMenu.editableText(
+            child: Container(
+              decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: borderColor),
+              ),
+              child: TextField(
+                contextMenuBuilder: (context, state) {
+                  if (SystemContextMenu.isSupported(context)) {
+                    return SystemContextMenu.editableText(
+                      editableTextState: state,
+                    );
+                  }
+                  return AdaptiveTextSelectionToolbar.editableText(
                     editableTextState: state,
                   );
-                }
-                return AdaptiveTextSelectionToolbar.editableText(
-                  editableTextState: state,
-                );
-              },
-              selectionHeightStyle: BoxHeightStyle.strut,
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.black87),
-                  borderRadius: BorderRadius.circular(6),
+                },
+                selectionHeightStyle: BoxHeightStyle.strut,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 12,
+                  ),
+                  hintText: Translations.of(context).post.foodNameInputField,
+                  hintStyle: TextStyle(
+                    color: labelColor,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.blueAccent),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                label: Text(Translations.of(context).post.foodNameInputField),
-                labelStyle: const TextStyle(
-                  color: Colors.grey,
+                controller: controller,
+                keyboardType: TextInputType.text,
+                autocorrect: false,
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
+                  color: fgColor,
+                  fontSize: 15,
                 ),
-              ),
-              controller: controller,
-              keyboardType: TextInputType.text,
-              autocorrect: false,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 15,
               ),
             ),
           ),
@@ -196,8 +207,18 @@ class AppCommentTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? Colors.black : null;
+    final borderColor = isDark ? Colors.white54 : Colors.black87;
+    final fgColor = isDark ? Colors.white : Colors.black;
+    final labelColor = isDark ? Colors.white70 : Colors.grey;
+    return Container(
       width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: borderColor),
+      ),
       child: TextField(
         contextMenuBuilder: (context, state) {
           if (SystemContextMenu.isSupported(context)) {
@@ -212,19 +233,16 @@ class AppCommentTextField extends StatelessWidget {
         selectionHeightStyle: BoxHeightStyle.strut,
         decoration: InputDecoration(
           alignLabelWithHint: true,
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.black87),
-            borderRadius: BorderRadius.circular(6),
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 12,
           ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.blueAccent),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          label: Text(
-            Translations.of(context).post.comment,
-          ),
-          labelStyle: const TextStyle(
-            color: Colors.grey,
+          hintText: Translations.of(context).post.comment,
+          hintStyle: TextStyle(
+            color: labelColor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -233,9 +251,9 @@ class AppCommentTextField extends StatelessWidget {
         textInputAction: TextInputAction.newline,
         maxLines: 6,
         autocorrect: false,
-        style: const TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.bold,
-          color: Colors.black,
+          color: fgColor,
           fontSize: 15,
         ),
       ),

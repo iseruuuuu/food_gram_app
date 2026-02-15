@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class PostStyle {
   PostStyle._();
 
-  static TextStyle title() {
-    return const TextStyle(
+  static TextStyle title(BuildContext context) {
+    return TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
-      color: Colors.black,
+      color: Theme.of(context).colorScheme.onSurface,
     );
   }
 
@@ -19,15 +19,21 @@ class PostStyle {
     );
   }
 
-  static TextStyle restaurant({required bool value}) {
+  static TextStyle restaurant(BuildContext context, {required bool value}) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return TextStyle(
       fontSize: 15,
       fontWeight: FontWeight.bold,
-      color: value ? Colors.grey : Colors.black,
+      color: value
+          ? (isDark ? Colors.white70 : Colors.grey)
+          : Theme.of(context).colorScheme.onSurface,
     );
   }
 
-  static TextStyle categoryTitle() {
-    return const TextStyle(fontSize: 18);
+  static TextStyle categoryTitle(BuildContext context) {
+    return TextStyle(
+      fontSize: 18,
+      color: Theme.of(context).colorScheme.onSurface,
+    );
   }
 }
