@@ -26,16 +26,13 @@ class NotificationsScreen extends ConsumerWidget {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
         surfaceTintColor: Colors.transparent,
         elevation: 0.5,
         leading: IconButton(
           onPressed: () => context.pop(),
-          icon: const Icon(Icons.close, size: 32, color: Colors.black),
+          icon: Icon(Icons.close, size: 32, color: Theme.of(context).colorScheme.onSurface),
         ),
       ),
-      backgroundColor: Colors.white,
       body: async.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, __) => Center(
