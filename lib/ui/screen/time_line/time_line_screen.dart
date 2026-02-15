@@ -31,7 +31,6 @@ class TimeLineScreen extends HookConsumerWidget {
       tabIndex: _tabIndex,
     );
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(0),
         child: AppBar(
@@ -41,8 +40,8 @@ class TimeLineScreen extends HookConsumerWidget {
         ),
       ),
       body: RefreshIndicator(
-        color: Colors.black,
-        backgroundColor: Colors.white,
+        color: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         onRefresh: () async {
           await Future<void>.delayed(const Duration(seconds: 1));
           ref.invalidate(postsStreamProvider);
@@ -62,9 +61,9 @@ class TimeLineScreen extends HookConsumerWidget {
                     indicatorWeight: 3,
                     isScrollable: true,
                     automaticIndicatorColorAdjustment: false,
-                    unselectedLabelColor: Colors.grey,
-                    labelColor: Colors.black,
-                    indicatorColor: Colors.black,
+                    unselectedLabelColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                    labelColor: Theme.of(context).colorScheme.onSurface,
+                    indicatorColor: Theme.of(context).colorScheme.onSurface,
                     indicatorSize: TabBarIndicatorSize.tab,
                     splashFactory: NoSplash.splashFactory,
                     overlayColor: WidgetStateProperty.all(Colors.transparent),
