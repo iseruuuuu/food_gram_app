@@ -33,9 +33,7 @@ class UserProfileScreen extends HookConsumerWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
           elevation: 0,
           centerTitle: false,
