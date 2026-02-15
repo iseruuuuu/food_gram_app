@@ -29,8 +29,12 @@ class MyMapScreen extends HookConsumerWidget {
     final isTapPin = useState(false);
     final post = useState<List<Posts?>>([]);
     final isEarthStyle = useState(false);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final fabBg = isDark ? Colors.black : Colors.white;
+    const fabFg = Color(0xFF1A73E8);
+    final fabBorder = isDark ? Colors.white : Colors.white;
+
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Stack(
         children: [
           AsyncValueSwitcher(
@@ -110,27 +114,27 @@ class MyMapScreen extends HookConsumerWidget {
                                     height: 60,
                                     child: Theme(
                                       data: Theme.of(context).copyWith(
-                                        highlightColor: Colors.white,
+                                        highlightColor: fabBg,
                                       ),
                                       child: FloatingActionButton(
                                         heroTag: null,
-                                        shape: const RoundedRectangleBorder(
-                                          side: BorderSide(color: Colors.white),
-                                          borderRadius: BorderRadius.all(
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(color: fabBorder),
+                                          borderRadius: const BorderRadius.all(
                                             Radius.circular(20),
                                           ),
                                         ),
-                                        foregroundColor: Colors.white,
-                                        backgroundColor: Colors.white,
-                                        focusColor: Colors.white,
-                                        splashColor: Colors.white,
-                                        hoverColor: Colors.white,
+                                        foregroundColor: fabBg,
+                                        backgroundColor: fabBg,
+                                        focusColor: fabBg,
+                                        splashColor: fabBg,
+                                        hoverColor: fabBg,
                                         elevation: 10,
                                         onPressed:
                                             controller.moveToCurrentLocation,
-                                        child: const Icon(
+                                        child: Icon(
                                           CupertinoIcons.location,
-                                          color: Color(0xFF1A73E8),
+                                          color: fabFg,
                                           size: 28,
                                         ),
                                       ),
@@ -145,26 +149,26 @@ class MyMapScreen extends HookConsumerWidget {
                                   height: 60,
                                   child: Theme(
                                     data: Theme.of(context).copyWith(
-                                      highlightColor: Colors.white,
+                                      highlightColor: fabBg,
                                     ),
                                     child: FloatingActionButton(
                                       heroTag: 'compass',
-                                      shape: const RoundedRectangleBorder(
-                                        side: BorderSide(color: Colors.white),
-                                        borderRadius: BorderRadius.all(
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(color: fabBorder),
+                                        borderRadius: const BorderRadius.all(
                                           Radius.circular(20),
                                         ),
                                       ),
-                                      foregroundColor: Colors.white,
-                                      backgroundColor: Colors.white,
-                                      focusColor: Colors.white,
-                                      splashColor: Colors.white,
-                                      hoverColor: Colors.white,
+                                      foregroundColor: fabBg,
+                                      backgroundColor: fabBg,
+                                      focusColor: fabBg,
+                                      splashColor: fabBg,
+                                      hoverColor: fabBg,
                                       elevation: 10,
                                       onPressed: controller.resetBearing,
-                                      child: const Icon(
+                                      child: Icon(
                                         CupertinoIcons.compass,
-                                        color: Color.fromRGBO(26, 115, 232, 1),
+                                        color: fabFg,
                                         size: 30,
                                       ),
                                     ),

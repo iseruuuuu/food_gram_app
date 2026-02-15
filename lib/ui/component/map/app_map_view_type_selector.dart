@@ -15,10 +15,13 @@ class AppMapViewTypeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? Colors.black : Colors.white;
+    final unselectedTextColor = isDark ? Colors.white : Colors.black87;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: bgColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -52,7 +55,7 @@ class AppMapViewTypeSelector extends StatelessWidget {
                   _getLabel(type, t),
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: isSelected ? Colors.white : Colors.black87,
+                    color: isSelected ? Colors.white : unselectedTextColor,
                     fontWeight:
                         isSelected ? FontWeight.bold : FontWeight.normal,
                     fontSize: 14,

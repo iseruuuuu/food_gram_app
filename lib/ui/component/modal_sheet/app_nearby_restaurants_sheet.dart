@@ -37,10 +37,14 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
       minChildSize: 0.15,
       maxChildSize: 0.95,
       builder: (context, controller) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        final sheetBg = isDark ? Colors.black : Colors.white;
+        final sheetFg = isDark ? Colors.white : Colors.black;
+        final handleColor = isDark ? Colors.white54 : Colors.grey[300];
         return DecoratedBox(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            color: sheetBg,
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(24),
               topRight: Radius.circular(24),
             ),
@@ -53,7 +57,7 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
                   width: 36,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
+                    color: handleColor,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -83,10 +87,10 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
                                   Expanded(
                                     child: Text(
                                       selection.name,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.black,
+                                        color: sheetFg,
                                       ),
                                     ),
                                   ),
@@ -96,7 +100,7 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
                                           mapModalSelectionProvider.notifier,
                                         )
                                         .state = null,
-                                    icon: const Icon(Icons.close),
+                                    icon: Icon(Icons.close, color: sheetFg),
                                   ),
                                 ],
                               ),
@@ -124,6 +128,11 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
                                     Translations.of(context)
                                         .notification
                                         .loadFailed,
+                                    style: TextStyle(
+                                      color: Theme.of(context).brightness == Brightness.dark
+                                          ? Colors.white
+                                          : null,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -186,10 +195,12 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
                                     Expanded(
                                       child: Text(
                                         group.name,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.black,
+                                          color: Theme.of(context).brightness == Brightness.dark
+                                              ? Colors.white
+                                              : Colors.black,
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -219,9 +230,11 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
                                           const SizedBox(width: 2),
                                           Text(
                                             avg.toStringAsFixed(1),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 16,
-                                              color: Colors.black87,
+                                              color: Theme.of(context).brightness == Brightness.dark
+                                                  ? Colors.white
+                                                  : Colors.black87,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -388,10 +401,13 @@ class _EmptyNearby extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Center(
       child: Text(
         t.noResultsFound,
-        style: const TextStyle(color: Colors.black54),
+        style: TextStyle(
+          color: isDark ? Colors.white70 : Colors.black54,
+        ),
       ),
     );
   }

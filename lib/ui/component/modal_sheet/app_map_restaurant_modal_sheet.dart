@@ -25,6 +25,10 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final supabase = ref.watch(supabaseProvider);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardBg = isDark ? Colors.black : Colors.white;
+    final titleColor = isDark ? Colors.white : Colors.black;
+    final subtitleColor = isDark ? Colors.white70 : Colors.grey.shade600;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: SizedBox(
@@ -108,7 +112,7 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
                                 ),
                         ),
                         Container(
-                          color: Colors.white,
+                          color: cardBg,
                           width: double.infinity,
                           height: 80,
                           child: Padding(
@@ -120,8 +124,8 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
                                 FittedBox(
                                   child: Text(
                                     post[index]!.restaurant,
-                                    style: const TextStyle(
-                                      color: Colors.black,
+                                    style: TextStyle(
+                                      color: titleColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -132,7 +136,7 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
                                   child: Text(
                                     post[index]!.foodName,
                                     style: TextStyle(
-                                      color: Colors.grey.shade600,
+                                      color: subtitleColor,
                                     ),
                                   ),
                                 ),

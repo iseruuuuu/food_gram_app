@@ -15,9 +15,12 @@ class AppAreaMealsBadge extends StatelessWidget {
     final displayText = count == null
         ? t.map.visibleAreaLoading
         : t.map.visibleAreaMeals.replaceAll('{count}', count.toString());
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? Colors.black : Colors.white;
+    final textColor = isDark ? Colors.white : Colors.black87;
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: bgColor,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
@@ -33,10 +36,10 @@ class AppAreaMealsBadge extends StatelessWidget {
         children: [
           Text(
             displayText,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: Colors.black87,
+              color: textColor,
             ),
           ),
         ],

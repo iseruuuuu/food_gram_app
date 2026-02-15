@@ -29,6 +29,9 @@ class AppMapStatsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardBg = isDark ? Colors.black : Colors.white;
+    final summaryColor = isDark ? Colors.white : const Color(0xFF444444);
     final summary = switch (viewType) {
       MapViewType.detail =>
         t.mapStats.recordSummary.replaceAll('{days}', activityDays.toString()),
@@ -41,7 +44,7 @@ class AppMapStatsCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardBg,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -56,15 +59,15 @@ class AppMapStatsCard extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: _buildStatItems(t),
+            children: _buildStatItems(t, isDark),
           ),
           const Gap(12),
           Center(
             child: Text(
               summary,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 15,
-                color: Color(0xFF444444),
+                color: summaryColor,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -74,7 +77,8 @@ class AppMapStatsCard extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildStatItems(Translations t) {
+  List<Widget> _buildStatItems(Translations t, bool isDark) {
+    final labelColor = isDark ? Colors.white70 : Colors.grey[600];
     switch (viewType) {
       case MapViewType.detail:
         return [
@@ -98,7 +102,7 @@ class AppMapStatsCard extends StatelessWidget {
                 t.mapStats.visitedArea,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey[600],
+                  color: labelColor,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -124,7 +128,7 @@ class AppMapStatsCard extends StatelessWidget {
                 t.mapStats.posts,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey[600],
+                  color: labelColor,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -150,7 +154,7 @@ class AppMapStatsCard extends StatelessWidget {
                 t.mapStats.activityDays,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey[600],
+                  color: labelColor,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -179,7 +183,7 @@ class AppMapStatsCard extends StatelessWidget {
                 t.mapStats.prefectures,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey[600],
+                  color: labelColor,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -205,7 +209,7 @@ class AppMapStatsCard extends StatelessWidget {
                 t.mapStats.posts,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey[600],
+                  color: labelColor,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -231,7 +235,7 @@ class AppMapStatsCard extends StatelessWidget {
                 t.mapStats.achievementRate,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey[600],
+                  color: labelColor,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -260,7 +264,7 @@ class AppMapStatsCard extends StatelessWidget {
                 t.mapStats.visitedCountries,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey[600],
+                  color: labelColor,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -286,7 +290,7 @@ class AppMapStatsCard extends StatelessWidget {
                 t.mapStats.posts,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey[600],
+                  color: labelColor,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -312,7 +316,7 @@ class AppMapStatsCard extends StatelessWidget {
                 t.mapStats.achievementRate,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey[600],
+                  color: labelColor,
                   fontWeight: FontWeight.w500,
                 ),
               ),
