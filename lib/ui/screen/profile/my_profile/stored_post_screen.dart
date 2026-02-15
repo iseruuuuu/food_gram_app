@@ -28,10 +28,8 @@ class StoredPostScreen extends HookConsumerWidget {
     final state = ref.watch(storedPostViewModelProvider);
     final scrollController = useScrollController();
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
         title: Text(
           t.stored.savedPosts,
           style: const TextStyle(
