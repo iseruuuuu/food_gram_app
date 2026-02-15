@@ -66,13 +66,18 @@ class AppFoodTag extends HookWidget {
             },
             [searchController],
           );
+          final isDark =
+              Theme.of(context).brightness == Brightness.dark;
+          final sheetBg = isDark ? Colors.black : Colors.white;
+          final sheetFg = isDark ? Colors.white : Colors.black;
+          final sheetFgMuted = isDark ? Colors.white70 : Colors.grey;
           return GestureDetector(
             onTap: () => primaryFocus?.unfocus(),
             child: Container(
               height: MediaQuery.of(context).size.height * 0.7,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: sheetBg,
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
                 ),
@@ -97,9 +102,10 @@ class AppFoodTag extends HookWidget {
                         const Spacer(),
                         Text(
                           Translations.of(context).post.selectFoodTag,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
+                            color: sheetFg,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -112,10 +118,12 @@ class AppFoodTag extends HookWidget {
                           },
                           child: Text(
                             Translations.of(context).save,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF0168B7),
+                              color: isDark
+                                  ? Colors.white
+                                  : const Color(0xFF0168B7),
                             ),
                           ),
                         ),
@@ -129,17 +137,26 @@ class AppFoodTag extends HookWidget {
                     ),
                     child: TextField(
                       controller: searchController,
+                      style: TextStyle(color: sheetFg),
                       decoration: InputDecoration(
                         hintText: Translations.of(context).searchFood,
-                        prefixIcon: const Icon(Icons.search),
+                        hintStyle: TextStyle(color: sheetFgMuted),
+                        prefixIcon: Icon(Icons.search, color: sheetFg),
                         suffixIcon: searchQuery.value.isNotEmpty
                             ? IconButton(
-                                icon: const Icon(Icons.clear),
+                                icon: Icon(Icons.clear, color: sheetFg),
                                 onPressed: searchController.clear,
                               )
                             : null,
+                        filled: isDark,
+                        fillColor: isDark ? Colors.grey[900] : null,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: sheetFgMuted),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: sheetFgMuted),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -157,17 +174,17 @@ class AppFoodTag extends HookWidget {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.search_off,
                                     size: 64,
-                                    color: Colors.grey,
+                                    color: sheetFgMuted,
                                   ),
                                   const Gap(16),
                                   Text(
                                     Translations.of(context).noResultsFound,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.grey,
+                                      color: sheetFgMuted,
                                     ),
                                   ),
                                 ],
@@ -188,9 +205,10 @@ class AppFoodTag extends HookWidget {
                                           entry.key,
                                           context,
                                         ),
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
+                                          color: sheetFg,
                                         ),
                                       ),
                                     ),
@@ -233,13 +251,15 @@ class AppFoodTag extends HookWidget {
                                             decoration: BoxDecoration(
                                               color: isSelected
                                                   ? Colors.blue
-                                                  : Colors.white,
+                                                  : sheetBg,
                                               borderRadius:
                                                   BorderRadius.circular(20),
                                               border: Border.all(
                                                 color: isSelected
                                                     ? Colors.blue
-                                                    : Colors.grey[300]!,
+                                                    : (isDark
+                                                        ? Colors.white54
+                                                        : Colors.grey[300]!),
                                               ),
                                             ),
                                             child: Row(
@@ -258,7 +278,7 @@ class AppFoodTag extends HookWidget {
                                                     fontSize: 14,
                                                     color: isSelected
                                                         ? Colors.white
-                                                        : Colors.black87,
+                                                        : sheetFg,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
@@ -286,14 +306,19 @@ class AppFoodTag extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useValueListenable(foodTexts);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? Colors.black : Colors.white;
+    final borderColor = isDark ? Colors.white54 : Colors.black;
+    final textColor = isDark ? Colors.white : Colors.grey;
+    final iconColor = isDark ? Colors.white : null;
     return GestureDetector(
       onTap: () => _showTagSelector(context, foodTexts),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 8),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(),
+            color: bgColor,
+            border: Border.all(color: borderColor),
             borderRadius: BorderRadius.circular(6),
           ),
           child: Column(
@@ -307,10 +332,10 @@ class AppFoodTag extends HookWidget {
                       child: foodTags.isEmpty
                           ? Text(
                               Translations.of(context).post.categoryTitle,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey,
+                                color: textColor,
                               ),
                             )
                           : Row(
@@ -342,10 +367,12 @@ class AppFoodTag extends HookWidget {
                                             foodTags.first,
                                             context,
                                           ),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
-                                            color: Color(0xFF0168B7),
+                                            color: isDark
+                                                ? Colors.white
+                                                : const Color(0xFF0168B7),
                                           ),
                                         ),
                                       ],
@@ -382,10 +409,12 @@ class AppFoodTag extends HookWidget {
                                               foodTags[1],
                                               context,
                                             ),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.bold,
-                                              color: Color(0xFF0168B7),
+                                              color: isDark
+                                                  ? Colors.white
+                                                  : const Color(0xFF0168B7),
                                             ),
                                           ),
                                         ],
@@ -397,10 +426,12 @@ class AppFoodTag extends HookWidget {
                                     padding: const EdgeInsets.only(left: 8),
                                     child: Text(
                                       '+${foodTags.length - 2}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: Color(0xFF0168B7),
+                                        color: isDark
+                                            ? Colors.white
+                                            : const Color(0xFF0168B7),
                                       ),
                                     ),
                                   ),
@@ -408,11 +439,12 @@ class AppFoodTag extends HookWidget {
                             ),
                     ),
                     if (foodTags.isEmpty)
-                      const Padding(
-                        padding: EdgeInsets.only(right: 5),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5),
                         child: Icon(
                           Icons.arrow_forward_ios,
                           size: 20,
+                          color: iconColor,
                         ),
                       ),
                     const Gap(2),
