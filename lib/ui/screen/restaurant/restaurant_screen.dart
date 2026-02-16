@@ -128,7 +128,9 @@ class RestaurantScreen extends HookConsumerWidget {
                                     trailing: Icon(
                                       Icons.arrow_forward_ios,
                                       size: 20,
-                                      color: Theme.of(context).colorScheme.onSurface,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface,
                                     ),
                                     title: Text(
                                       value[index].name,
