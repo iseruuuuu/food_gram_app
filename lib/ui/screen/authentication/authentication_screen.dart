@@ -49,7 +49,6 @@ class AuthenticationScreen extends HookConsumerWidget {
     );
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Stack(
         children: [
           SizedBox.expand(
@@ -72,12 +71,15 @@ class AuthenticationScreen extends HookConsumerWidget {
                   right: 0,
                   height: MediaQuery.of(context).size.height * 0.45,
                   child: Container(
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        colors: [Colors.transparent, Colors.white],
-                        stops: [0.6, 1.0],
+                        colors: [
+                          Colors.transparent,
+                          Theme.of(context).colorScheme.surface,
+                        ],
+                        stops: const [0.6, 1.0],
                       ),
                     ),
                   ),
@@ -99,21 +101,25 @@ class AuthenticationScreen extends HookConsumerWidget {
                         children: [
                           Text(
                             Translations.of(context).app.title,
-                            style: AuthenticationStyle.authTitleStyle(),
+                            style: AuthenticationStyle.authTitleStyle(context),
                           ),
                           Text(
                             Translations.of(context).app.subtitle,
-                            style: AuthenticationStyle.authSubTitleStyle(),
+                            style:
+                                AuthenticationStyle.authSubTitleStyle(context),
                           ),
                         ],
                       ),
                     ],
                   ),
                   const Gap(14),
-                  const Divider(),
+                  Divider(color: Theme.of(context).colorScheme.outlineVariant),
                   const Gap(14),
                   AppleAuthButton(
-                    style: AuthenticationStyle.authButtonStyle(buttonWidth),
+                    style: AuthenticationStyle.authButtonStyle(
+                      context,
+                      buttonWidth,
+                    ),
                     onPressed: () {
                       if (Platform.isIOS) {
                         controller.loginApple(context);
@@ -129,12 +135,18 @@ class AuthenticationScreen extends HookConsumerWidget {
                   const Gap(24),
                   GoogleAuthButton(
                     onPressed: () => controller.loginGoogle(context),
-                    style: AuthenticationStyle.authButtonStyle(buttonWidth),
+                    style: AuthenticationStyle.authButtonStyle(
+                      context,
+                      buttonWidth,
+                    ),
                   ),
                   const Gap(24),
                   TwitterAuthButton(
                     onPressed: () => controller.loginTwitter(context),
-                    style: AuthenticationStyle.authButtonStyle(buttonWidth),
+                    style: AuthenticationStyle.authButtonStyle(
+                      context,
+                      buttonWidth,
+                    ),
                   ),
                 ],
               ),
