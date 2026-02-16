@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/cache/cache_manager.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
@@ -32,7 +33,7 @@ class EditPostViewModel extends _$EditPostViewModel {
 
   // UI設定
   final _androidSettings = AndroidUiSettings(
-    toolbarColor: Colors.blue,
+    toolbarColor: AppTheme.primaryBlue,
     toolbarWidgetColor: Colors.white,
     initAspectRatio: CropAspectRatioPreset.original,
     lockAspectRatio: false,
