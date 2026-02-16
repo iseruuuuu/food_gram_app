@@ -13,16 +13,22 @@ class AppElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: MediaQuery.of(context).size.width - 100,
       height: 50,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? null : Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: isDark ? const BorderSide(color: Colors.white54) : BorderSide.none,
+          ),
         ),
         onPressed: onPressed,
         child: Text(

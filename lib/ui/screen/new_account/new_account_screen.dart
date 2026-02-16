@@ -41,7 +41,6 @@ class NewAccountScreen extends ConsumerWidget {
     return GestureDetector(
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: Stack(
           children: [
             SingleChildScrollView(
@@ -50,12 +49,11 @@ class NewAccountScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     AppBar(
-                      backgroundColor: Colors.white,
-                      surfaceTintColor: Colors.white,
+                      surfaceTintColor: Colors.transparent,
                     ),
                     const Gap(20),
                     CircleAvatar(
-                      backgroundColor: Colors.white,
+                      backgroundColor: Theme.of(context).colorScheme.surface,
                       backgroundImage:
                           AssetImage('assets/icon/icon${state.number}.png'),
                       radius: 60,
@@ -63,7 +61,7 @@ class NewAccountScreen extends ConsumerWidget {
                     const Gap(10),
                     Text(
                       Translations.of(context).setting.icon,
-                      style: NewAccountStyle.icon(),
+                      style: NewAccountStyle.icon(context),
                     ),
                     const Gap(10),
                     Wrap(
@@ -104,13 +102,13 @@ class NewAccountScreen extends ConsumerWidget {
                     const Gap(24),
                     Text(
                       Translations.of(context).newAccount.importantTitle,
-                      style: NewAccountStyle.title(),
+                      style: NewAccountStyle.title(context),
                     ),
                     const Gap(18),
                     Text(
                       Translations.of(context).newAccount.important,
                       textAlign: TextAlign.center,
-                      style: NewAccountStyle.contents(),
+                      style: NewAccountStyle.contents(context),
                     ),
                   ],
                 ),
