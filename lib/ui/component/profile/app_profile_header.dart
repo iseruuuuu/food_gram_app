@@ -35,7 +35,7 @@ class AppProfileHeader extends ConsumerWidget {
         (heartAmount - users.exchangedPoint) * conversion + postlengthPoint;
     final trophyAsset = _getTrophyAsset(length);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final headerBg = isDark ? Colors.black : Colors.white;
+    final headerBg = Theme.of(context).colorScheme.surface;
     final textColor = isDark ? Colors.white : Colors.black;
     final textColor87 = isDark ? Colors.white70 : Colors.black87;
     return Stack(

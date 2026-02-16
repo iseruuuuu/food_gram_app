@@ -105,6 +105,10 @@ class $AssetsImageGen {
   /// File path: assets/image/empty.png
   AssetGenImage get empty => const AssetGenImage('assets/image/empty.png');
 
+  /// File path: assets/image/empty_dark.png
+  AssetGenImage get emptyDark =>
+      const AssetGenImage('assets/image/empty_dark.png');
+
   /// File path: assets/image/error.png
   AssetGenImage get error => const AssetGenImage('assets/image/error.png');
 
@@ -167,6 +171,7 @@ class $AssetsImageGen {
         appIcon,
         authImage,
         empty,
+        emptyDark,
         error,
         food,
         foodgramer,

@@ -14,10 +14,16 @@ class AppEmpty extends StatelessWidget {
         children: [
           Text(
             Translations.of(context).emptyPosts,
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
           const SizedBox(height: 20),
-          Assets.image.empty.image(width: 110, height: 110),
+          Theme.of(context).brightness == Brightness.dark
+              ? Assets.image.emptyDark.image(width: 110, height: 110)
+              : Assets.image.empty.image(width: 110, height: 110),
         ],
       ),
     );
@@ -34,10 +40,10 @@ class AppSearchResultEmpty extends StatelessWidget {
       children: [
         Text(
           Translations.of(context).search.emptyResult,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         Assets.gif.error.image(width: 180, height: 180),
@@ -61,9 +67,9 @@ class AppSearchEmpty extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Text(
               Translations.of(context).searchEmptyTitle,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
@@ -74,16 +80,11 @@ class AppSearchEmpty extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.blue.shade50,
-                  Colors.blue.shade100,
-                ],
-              ),
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.blue.shade200),
+              border: Border.all(
+                color: Theme.of(context).colorScheme.outlineVariant,
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +93,7 @@ class AppSearchEmpty extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.lightbulb_outline,
-                      color: Colors.blue.shade700,
+                      color: Theme.of(context).colorScheme.primary,
                       size: 28,
                     ),
                     const Gap(8),
@@ -100,7 +101,7 @@ class AppSearchEmpty extends StatelessWidget {
                       Translations.of(context).search.emptyHintTitle,
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.blue.shade700,
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -111,7 +112,7 @@ class AppSearchEmpty extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.location_on,
-                      color: Colors.blue.shade600,
+                      color: Theme.of(context).colorScheme.primary,
                       size: 24,
                     ),
                     const Gap(8),
@@ -120,7 +121,7 @@ class AppSearchEmpty extends StatelessWidget {
                         Translations.of(context).search.emptyHintLocation,
                         style: TextStyle(
                           fontSize: 13,
-                          color: Colors.blue.shade800,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
                           height: 1.3,
                         ),
@@ -133,7 +134,7 @@ class AppSearchEmpty extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.map,
-                      color: Colors.blue.shade600,
+                      color: Theme.of(context).colorScheme.primary,
                       size: 24,
                     ),
                     const Gap(8),
@@ -142,7 +143,7 @@ class AppSearchEmpty extends StatelessWidget {
                         Translations.of(context).search.emptyHintSearch,
                         style: TextStyle(
                           fontSize: 13,
-                          color: Colors.blue.shade800,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
                           height: 1.3,
                         ),
@@ -171,11 +172,18 @@ class AppFavoritePostEmpty extends StatelessWidget {
         children: [
           Text(
             Translations.of(context).favoritePostEmpty.title,
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
           Text(
             Translations.of(context).favoritePostEmpty.subtitle,
-            style: const TextStyle(fontSize: 14),
+            style: TextStyle(
+              fontSize: 14,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
           Assets.gif.error.image(width: 180, height: 180),
         ],
