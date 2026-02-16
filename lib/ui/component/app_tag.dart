@@ -702,85 +702,68 @@ class AppCountryTag extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useValueListenable(countryText);
+    final scheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? Colors.black : null;
+    final borderColor = isDark ? Colors.white54 : Colors.black87;
+    final fgColor = scheme.onSurface;
+    final labelColor = scheme.onSurfaceVariant;
     return GestureDetector(
       onTap: () => _showTagSelector(context, countryText),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Column(
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: borderColor),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        child: Row(
             children: [
-              SizedBox(
-                height: 50,
-                child: Row(
-                  children: [
-                    const Gap(16),
-                    Expanded(
-                      child: countryTag.isEmpty
-                          ? Text(
-                              Translations.of(context).post.selectCountryTag,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                              ),
-                            )
-                          : Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue.withValues(alpha: 0.1),
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: Colors.blue.withValues(alpha: 0.3),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        countryTag,
-                                        style: const TextStyle(fontSize: 18),
-                                      ),
-                                      const Gap(2),
-                                      Text(
-                                        getLocalizedCountryName(
-                                          countryTag,
-                                          context,
-                                        ),
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xFF0168B7),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                    ),
-                    if (countryTag.isEmpty)
-                      const Padding(
-                        padding: EdgeInsets.only(right: 8),
-                        child: Icon(
-                          Icons.chevron_right,
-                          size: 30,
+              Expanded(
+                child: countryTag.isEmpty
+                    ? Text(
+                        Translations.of(context).post.selectCountryTag,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: labelColor,
                         ),
+                      )
+                    : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            countryTag,
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          const Gap(4),
+                          Flexible(
+                            child: Text(
+                              getLocalizedCountryName(
+                                countryTag,
+                                context,
+                              ),
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: isDark
+                                    ? Colors.white
+                                    : const Color(0xFF0168B7),
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
-                  ],
-                ),
               ),
+              if (countryTag.isEmpty)
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 20,
+                  color: fgColor,
+                ),
             ],
-          ),
         ),
       ),
     );

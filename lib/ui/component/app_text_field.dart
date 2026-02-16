@@ -271,6 +271,8 @@ class AppNameTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fgColor = Theme.of(context).colorScheme.onSurface;
+    final labelColor = Theme.of(context).colorScheme.onSurfaceVariant;
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -296,14 +298,14 @@ class AppNameTextField extends StatelessWidget {
                   hintText: Translations.of(context).newAccount.userName,
                   label: Text(
                     Translations.of(context).newAccount.userNameInputField,
-                    style: const TextStyle(color: Colors.grey),
+                    style: TextStyle(color: labelColor),
                   ),
                 ),
                 controller: controller,
                 autocorrect: false,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: fgColor,
                   fontSize: 16,
                 ),
               ),
@@ -325,6 +327,8 @@ class AppSelfIntroductionTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fgColor = Theme.of(context).colorScheme.onSurface;
+    final labelColor = Theme.of(context).colorScheme.onSurfaceVariant;
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -352,15 +356,15 @@ class AppSelfIntroductionTextField extends StatelessWidget {
                   hintText: Translations.of(context).edit.bioInputField,
                   label: Text(
                     Translations.of(context).edit.bio,
-                    style: const TextStyle(color: Colors.grey),
+                    style: TextStyle(color: labelColor),
                   ),
                 ),
                 controller: controller,
                 maxLines: 5,
                 autocorrect: false,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: fgColor,
                   fontSize: 17,
                 ),
               ),
@@ -382,6 +386,8 @@ class AppUserNameTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fgColor = Theme.of(context).colorScheme.onSurface;
+    final labelColor = Theme.of(context).colorScheme.onSurfaceVariant;
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -407,7 +413,7 @@ class AppUserNameTextField extends StatelessWidget {
                   hintText: Translations.of(context).newAccount.userId,
                   label: Text(
                     Translations.of(context).newAccount.userIdInputField,
-                    style: const TextStyle(color: Colors.grey),
+                    style: TextStyle(color: labelColor),
                   ),
                 ),
                 controller: controller,
@@ -417,9 +423,9 @@ class AppUserNameTextField extends StatelessWidget {
                     RegExp('[a-zA-Z0-9@_.-]'),
                   ),
                 ],
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: fgColor,
                   fontSize: 17,
                 ),
               ),

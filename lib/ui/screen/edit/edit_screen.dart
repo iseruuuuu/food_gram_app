@@ -49,10 +49,9 @@ class EditScreen extends HookConsumerWidget {
       child: GestureDetector(
         onTap: () => primaryFocus?.unfocus(),
         child: Scaffold(
-          backgroundColor: Colors.white,
           appBar: AppBar(
             surfaceTintColor: Colors.transparent,
-            backgroundColor: !loading ? Colors.white : Colors.transparent,
+            backgroundColor: loading ? Colors.transparent : null,
             leading: !loading
                 ? IconButton(
                     onPressed: () async {
@@ -62,9 +61,10 @@ class EditScreen extends HookConsumerWidget {
                       );
                       context.pop();
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.close,
                       size: 30,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   )
                 : Container(),
@@ -91,7 +91,7 @@ class EditScreen extends HookConsumerWidget {
                   },
                   child: Text(
                     Translations.of(context).edit.updateButton,
-                    style: EditStyle.editButton(loading: loading),
+                    style: EditStyle.editButton(context, loading: loading),
                   ),
                 )
               else
@@ -107,7 +107,8 @@ class EditScreen extends HookConsumerWidget {
                     children: [
                       if (state.uploadImage != '')
                         CircleAvatar(
-                          backgroundColor: Colors.white,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.surface,
                           backgroundImage: FileImage(
                             File(state.uploadImage),
                           ),
@@ -120,7 +121,8 @@ class EditScreen extends HookConsumerWidget {
                         )
                       else
                         CircleAvatar(
-                          backgroundColor: Colors.white,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.surface,
                           backgroundImage:
                               AssetImage('assets/icon/icon${state.number}.png'),
                           radius: 70,
@@ -129,7 +131,7 @@ class EditScreen extends HookConsumerWidget {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
                           Translations.of(context).setting.icon,
-                          style: EditStyle.settingsIcon(),
+                          style: EditStyle.settingsIcon(context),
                         ),
                       ),
                       Wrap(
@@ -208,11 +210,15 @@ class EditScreen extends HookConsumerWidget {
                                   const EdgeInsets.symmetric(horizontal: 10),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.tag, size: 20),
+                                  Icon(
+                                    Icons.tag,
+                                    size: 20,
+                                    color: Theme.of(context).colorScheme.onSurface,
+                                  ),
                                   Text(
                                     Translations.of(context)
                                         .edit.favoriteTagTitle,
-                                    style: EditStyle.tag(),
+                                    style: EditStyle.tag(context),
                                   ),
                                 ],
                               ),
