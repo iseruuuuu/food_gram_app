@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,7 +41,7 @@ class AppShareModalSheet extends StatelessWidget {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
-                      color: Colors.blue,
+                      color: AppTheme.primaryBlue,
                     ),
                   ),
                 ),
@@ -59,7 +60,7 @@ class AppShareModalSheet extends StatelessWidget {
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
-                    color: Colors.blue,
+                    color: AppTheme.primaryBlue,
                   ),
                 ),
               ),

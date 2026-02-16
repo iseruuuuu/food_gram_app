@@ -11,10 +11,10 @@ class PostStyle {
     );
   }
 
-  static TextStyle share() {
-    return const TextStyle(
+  static TextStyle share(BuildContext context) {
+    return TextStyle(
       fontSize: 16,
-      color: Colors.blue,
+      color: Theme.of(context).colorScheme.primary,
       fontWeight: FontWeight.bold,
     );
   }

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 
@@ -55,23 +56,23 @@ class AppSearchTextField extends HookWidget {
                     .textTheme
                     .bodyMedium!
                     .copyWith(color: scheme.onSurface),
-                enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(8),
                     bottomLeft: Radius.circular(8),
                   ),
                   borderSide: BorderSide(
-                    color: Colors.blueAccent,
+                    color: AppTheme.primaryBlue,
                     width: 2,
                   ),
                 ),
-                focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(8),
                     bottomLeft: Radius.circular(8),
                   ),
                   borderSide: BorderSide(
-                    color: Colors.blueAccent,
+                    color: AppTheme.primaryBlue,
                     width: 2,
                   ),
                 ),
@@ -93,8 +94,8 @@ class AppSearchTextField extends HookWidget {
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 padding: EdgeInsets.zero,
-                foregroundColor: Colors.blueAccent,
-                backgroundColor: Colors.blueAccent,
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.black,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(8),

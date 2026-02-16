@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/notification/firebase_messaging_service.dart';
-import 'package:food_gram_app/core/theme/text_form_borders.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:toastification/toastification.dart';
@@ -48,15 +48,9 @@ class MyApp extends ConsumerWidget {
         },
         routerConfig: ref.watch(routerProvider),
         debugShowCheckedModeBanner: kReleaseMode,
-        theme: ThemeData(
-          inputDecorationTheme: const InputDecorationTheme(
-            contentPadding: EdgeInsets.all(15),
-            focusedBorder: TextFormBorders.textFormFocusedBorder,
-            enabledBorder: TextFormBorders.textFormEnabledBorder,
-            focusedErrorBorder: TextFormBorders.textFormErrorBorder,
-            errorBorder: TextFormBorders.textFormErrorBorder,
-          ),
-        ),
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: ThemeMode.system,
       ),
     );
   }

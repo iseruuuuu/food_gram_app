@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 
 class TextFormBorders {
   const TextFormBorders._();
@@ -6,10 +7,10 @@ class TextFormBorders {
   static const double _borderRadius = 15;
   static const double _borderWidth = 2;
 
-  static const textFormFocusedBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
+  static final textFormFocusedBorder = OutlineInputBorder(
+    borderRadius: const BorderRadius.all(Radius.circular(_borderRadius)),
     borderSide: BorderSide(
-      color: Colors.blue,
+      color: AppTheme.primaryBlue,
       width: _borderWidth,
     ),
   );
@@ -26,6 +27,22 @@ class TextFormBorders {
     borderSide: BorderSide(
       color: Colors.red,
       width: _borderWidth,
+    ),
+  );
+
+  /// ダークモード用（明るい色で視認性を確保）
+  static final textFormFocusedBorderDark = OutlineInputBorder(
+    borderRadius: const BorderRadius.all(Radius.circular(_borderRadius)),
+    borderSide: BorderSide(
+      color: AppTheme.primaryBlue,
+      width: _borderWidth,
+    ),
+  );
+
+  static const textFormEnabledBorderDark = OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
+    borderSide: BorderSide(
+      color: Color(0xFF757575),
     ),
   );
 }

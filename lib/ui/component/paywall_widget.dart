@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/theme/style/paywall_style.dart';
 import 'package:food_gram_app/core/theme/style/tutorial_style.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
@@ -97,7 +98,7 @@ class PaywallCardBase extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             Colors.purple[400]!,
-            Colors.blue[400]!,
+            AppTheme.primaryBlue,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,

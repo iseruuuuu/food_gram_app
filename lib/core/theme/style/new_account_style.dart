@@ -3,27 +3,27 @@ import 'package:flutter/material.dart';
 class NewAccountStyle {
   NewAccountStyle._();
 
-  static TextStyle icon() {
-    return const TextStyle(
+  static TextStyle icon(BuildContext context) {
+    return TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 18,
-      color: Colors.black,
+      color: Theme.of(context).colorScheme.onSurface,
     );
   }
 
-  static TextStyle title() {
-    return const TextStyle(
+  static TextStyle title(BuildContext context) {
+    return TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 18,
-      color: Colors.black,
+      color: Theme.of(context).colorScheme.onSurface,
     );
   }
 
-  static TextStyle contents() {
-    return const TextStyle(
+  static TextStyle contents(BuildContext context) {
+    return TextStyle(
       fontWeight: FontWeight.normal,
       fontSize: 16,
-      color: Colors.black,
+      color: Theme.of(context).colorScheme.onSurface,
     );
   }
 }

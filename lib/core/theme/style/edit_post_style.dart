@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 
 class EditPostStyle {
   EditPostStyle._();
 
-  static TextStyle editTitle() {
-    return const TextStyle(
+  static TextStyle editTitle(BuildContext context) {
+    return TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
-      color: Colors.black,
+      color: Theme.of(context).colorScheme.onSurface,
     );
   }
 
@@ -15,23 +16,23 @@ class EditPostStyle {
     return const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
-      color: Colors.blue,
+      color: AppTheme.primaryBlue,
     );
   }
 
-  static TextStyle restaurant() {
-    return const TextStyle(
+  static TextStyle restaurant(BuildContext context) {
+    return TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
-      color: Colors.black,
+      color: Theme.of(context).colorScheme.onSurface,
     );
   }
 
-  static TextStyle category() {
-    return const TextStyle(
+  static TextStyle category(BuildContext context) {
+    return TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.normal,
-      color: Colors.black,
+      color: Theme.of(context).colorScheme.onSurface,
     );
   }
 }

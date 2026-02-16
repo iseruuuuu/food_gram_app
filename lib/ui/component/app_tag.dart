@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/tag.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/search_utils.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
@@ -123,7 +124,7 @@ class AppFoodTag extends HookWidget {
                               fontWeight: FontWeight.bold,
                               color: isDark
                                   ? Colors.white
-                                  : const Color(0xFF0168B7),
+                                  : AppTheme.primaryBlue,
                             ),
                           ),
                         ),
@@ -250,13 +251,13 @@ class AppFoodTag extends HookWidget {
                                             ),
                                             decoration: BoxDecoration(
                                               color: isSelected
-                                                  ? Colors.blue
+                                                  ? AppTheme.primaryBlue
                                                   : sheetBg,
                                               borderRadius:
                                                   BorderRadius.circular(20),
                                               border: Border.all(
                                                 color: isSelected
-                                                    ? Colors.blue
+                                                    ? AppTheme.primaryBlue
                                                     : (isDark
                                                         ? Colors.white54
                                                         : Colors.grey[300]!),
@@ -347,11 +348,12 @@ class AppFoodTag extends HookWidget {
                                       vertical: 4,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: Colors.blue.withValues(alpha: 0.1),
+                                      color: AppTheme.primaryBlue
+                                          .withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
-                                        color:
-                                            Colors.blue.withValues(alpha: 0.3),
+                                        color: AppTheme.primaryBlue
+                                            .withValues(alpha: 0.3),
                                       ),
                                     ),
                                     child: Row(
@@ -372,7 +374,7 @@ class AppFoodTag extends HookWidget {
                                             fontWeight: FontWeight.bold,
                                             color: isDark
                                                 ? Colors.white
-                                                : const Color(0xFF0168B7),
+                                                : AppTheme.primaryBlue,
                                           ),
                                         ),
                                       ],
@@ -387,11 +389,11 @@ class AppFoodTag extends HookWidget {
                                         vertical: 4,
                                       ),
                                       decoration: BoxDecoration(
-                                        color:
-                                            Colors.blue.withValues(alpha: 0.1),
+                                        color: AppTheme.primaryBlue
+                                            .withValues(alpha: 0.1),
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
-                                          color: Colors.blue
+                                          color: AppTheme.primaryBlue
                                               .withValues(alpha: 0.3),
                                         ),
                                       ),
@@ -414,7 +416,7 @@ class AppFoodTag extends HookWidget {
                                               fontWeight: FontWeight.bold,
                                               color: isDark
                                                   ? Colors.white
-                                                  : const Color(0xFF0168B7),
+                                                  : AppTheme.primaryBlue,
                                             ),
                                           ),
                                         ],
@@ -431,7 +433,7 @@ class AppFoodTag extends HookWidget {
                                         fontWeight: FontWeight.bold,
                                         color: isDark
                                             ? Colors.white
-                                            : const Color(0xFF0168B7),
+                                            : AppTheme.primaryBlue,
                                       ),
                                     ),
                                   ),
@@ -558,7 +560,7 @@ class AppCountryTag extends HookWidget {
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF0168B7),
+                              color: AppTheme.primaryBlue,
                             ),
                           ),
                         ),
@@ -642,13 +644,13 @@ class AppCountryTag extends HookWidget {
                                         ),
                                         decoration: BoxDecoration(
                                           color: isSelected
-                                              ? Colors.blue
+                                              ? AppTheme.primaryBlue
                                               : Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(20),
                                           border: Border.all(
                                             color: isSelected
-                                                ? Colors.blue
+                                                ? AppTheme.primaryBlue
                                                 : Colors.grey[300]!,
                                           ),
                                         ),
@@ -749,7 +751,7 @@ class AppCountryTag extends HookWidget {
                                 fontWeight: FontWeight.bold,
                                 color: isDark
                                     ? Colors.white
-                                    : const Color(0xFF0168B7),
+                                    : AppTheme.primaryBlue,
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),

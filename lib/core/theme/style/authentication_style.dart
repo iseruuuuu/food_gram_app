@@ -15,7 +15,8 @@ class AuthenticationStyle {
   static ButtonStyle signMail(BuildContext context) {
     return ElevatedButton.styleFrom(
       elevation: 0,
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Colors.black,
+      foregroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(12),
@@ -25,9 +26,9 @@ class AuthenticationStyle {
   }
 
   static TextStyle signMailText(BuildContext context) {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 16,
-      color: Theme.of(context).colorScheme.onPrimary,
+      color: Colors.white,
     );
   }
 

@@ -93,7 +93,9 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
                           height: deviceWidth / 2.7,
                           child: imageUrls.isEmpty
                               ? Image.asset(
-                                  Assets.image.empty.path,
+                                  isDark
+                                      ? Assets.image.emptyDark.path
+                                      : Assets.image.empty.path,
                                   fit: BoxFit.cover,
                                 )
                               : PageView.builder(
@@ -104,7 +106,9 @@ class AppMapRestaurantModalSheet extends ConsumerWidget {
                                       imageUrl: imageUrls[pageIndex],
                                       fit: BoxFit.cover,
                                       errorWidget: (_, __, ___) => Image.asset(
-                                        Assets.image.empty.path,
+                                        isDark
+                                            ? Assets.image.emptyDark.path
+                                            : Assets.image.empty.path,
                                         fit: BoxFit.cover,
                                       ),
                                     );

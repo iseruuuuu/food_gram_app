@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:gap/gap.dart';
@@ -48,7 +49,7 @@ class AppPostCountryCategoryModalSheet extends ConsumerWidget {
                     height: 60,
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: tagValue == emoji ? Colors.blue : Colors.grey,
+                        color: tagValue == emoji ? AppTheme.primaryBlue : Colors.grey,
                         width: tagValue == emoji ? 2 : 1,
                       ),
                       borderRadius: BorderRadius.circular(8),
@@ -128,7 +129,7 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
                           decoration: BoxDecoration(
                             border: Border.all(
                               color:
-                                  tagValue == food ? Colors.blue : Colors.grey,
+                                  tagValue == food ? AppTheme.primaryBlue : Colors.grey,
                               width: tagValue == food ? 2 : 1,
                             ),
                             borderRadius: BorderRadius.circular(8),

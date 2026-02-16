@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
@@ -67,14 +68,14 @@ Future<void> showStreakDialog({
               child: TextButton(
                 onPressed: () => Navigator.of(context).pop(),
                 style: TextButton.styleFrom(
-                  foregroundColor: Colors.blue,
+                  foregroundColor: AppTheme.primaryBlue,
                 ),
                 child: Text(
                   t.close,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: AppTheme.primaryBlue,
                   ),
                 ),
               ),

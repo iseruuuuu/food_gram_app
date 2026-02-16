@@ -264,7 +264,9 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
                                           borderRadius:
                                               BorderRadius.circular(10),
                                           child: Image.asset(
-                                            Assets.image.empty.path,
+                                            isDark
+                                                ? Assets.image.emptyDark.path
+                                                : Assets.image.empty.path,
                                             height: 90,
                                             width: double.infinity,
                                             fit: BoxFit.cover,
@@ -297,7 +299,9 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
                                           borderRadius:
                                               BorderRadius.circular(10),
                                           child: Image.asset(
-                                            Assets.image.empty.path,
+                                            isDark
+                                                ? Assets.image.emptyDark.path
+                                                : Assets.image.empty.path,
                                             height: 90,
                                             width: double.infinity,
                                             fit: BoxFit.cover,
@@ -330,7 +334,9 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
                                           borderRadius:
                                               BorderRadius.circular(10),
                                           child: Image.asset(
-                                            Assets.image.empty.path,
+                                            isDark
+                                                ? Assets.image.emptyDark.path
+                                                : Assets.image.empty.path,
                                             height: 90,
                                             width: double.infinity,
                                             fit: BoxFit.cover,
