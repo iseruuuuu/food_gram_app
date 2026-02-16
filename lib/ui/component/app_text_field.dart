@@ -19,6 +19,7 @@ class AppSearchTextField extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final searchText = useState('');
+    final scheme = Theme.of(context).colorScheme;
     return SizedBox(
       height: 50,
       child: Row(
@@ -36,23 +37,24 @@ class AppSearchTextField extends HookWidget {
                 );
               },
               selectionHeightStyle: BoxHeightStyle.strut,
+              style: TextStyle(color: scheme.onSurface),
               decoration: InputDecoration(
-                prefixIcon: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5),
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: Icon(
                     Icons.search,
-                    color: Colors.black,
+                    color: scheme.onSurface,
                   ),
                 ),
                 hintStyle: Theme.of(context)
                     .textTheme
                     .bodyMedium!
-                    .copyWith(color: Colors.grey),
+                    .copyWith(color: scheme.onSurfaceVariant),
                 label: Text(Translations.of(context).app.restaurantLabel),
                 labelStyle: Theme.of(context)
                     .textTheme
                     .bodyMedium!
-                    .copyWith(color: Colors.black),
+                    .copyWith(color: scheme.onSurface),
                 enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8),

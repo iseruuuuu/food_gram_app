@@ -26,8 +26,7 @@ class RestaurantScreen extends HookConsumerWidget {
         ref.watch(kakaoRestaurantRepositoryProvider(keyword.value));
     return Scaffold(
       appBar: AppBar(
-        surfaceTintColor: Colors.white,
-        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
         actions: [
           TextButton(
             onPressed: () {
@@ -43,14 +42,13 @@ class RestaurantScreen extends HookConsumerWidget {
         ],
         leading: IconButton(
           onPressed: context.pop,
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios,
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
       ),
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -66,17 +64,17 @@ class RestaurantScreen extends HookConsumerWidget {
                 context.pop(restaurant);
               },
               child: Chip(
-                backgroundColor: Colors.white,
+                backgroundColor: Theme.of(context).colorScheme.surface,
                 label: Text(Translations.of(context).unknown),
-                labelStyle: const TextStyle(
+                labelStyle: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
-                avatar: const Icon(
+                avatar: Icon(
                   Icons.restaurant_menu,
                   size: 20,
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),
@@ -127,17 +125,18 @@ class RestaurantScreen extends HookConsumerWidget {
                                         context.pop(result);
                                       }
                                     },
-                                    trailing: const Icon(
+                                    trailing: Icon(
                                       Icons.arrow_forward_ios,
                                       size: 20,
+                                      color: Theme.of(context).colorScheme.onSurface,
                                     ),
                                     title: Text(
                                       value[index].name,
-                                      style: RestaurantStyle.name(),
+                                      style: RestaurantStyle.name(context),
                                     ),
                                     subtitle: Text(
                                       value[index].address,
-                                      style: RestaurantStyle.address(),
+                                      style: RestaurantStyle.address(context),
                                     ),
                                   );
                                 },
