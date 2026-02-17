@@ -11,6 +11,7 @@ Future<void> showMaybeNotFoodDialog({
   String? text,
 }) async {
   final t = Translations.of(context);
+  final colorScheme = Theme.of(context).colorScheme;
   final resolvedTitle = title ?? t.maybeNotFoodDialog.title;
   final resolvedText = text ?? t.maybeNotFoodDialog.text;
   final resolvedConfirmText = t.maybeNotFoodDialog.confirm;
@@ -37,9 +38,13 @@ Future<void> showMaybeNotFoodDialog({
       fontWeight: FontWeight.bold,
       color: Colors.white,
     ),
-    cancelBtnTextStyle: const TextStyle(
+    cancelBtnTextStyle: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
+      color: colorScheme.onSurface,
     ),
+    backgroundColor: colorScheme.surface,
+    titleColor: colorScheme.onSurface,
+    textColor: colorScheme.onSurface,
   );
 }

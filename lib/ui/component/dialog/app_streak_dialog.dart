@@ -30,6 +30,7 @@ Future<void> showStreakDialog({
     context: context,
     builder: (context) {
       final deviceWidth = MediaQuery.of(context).size.width;
+      final colorScheme = Theme.of(context).colorScheme;
       return SizedBox(
         width: deviceWidth * 0.85,
         child: GiffyDialog.image(
@@ -39,7 +40,7 @@ Future<void> showStreakDialog({
             errorBuilder: (context, error, stackTrace) {
               return Container(
                 height: 250,
-                color: Colors.grey[200],
+                color: colorScheme.surfaceContainerHighest,
                 child: const Icon(
                   Icons.celebration,
                   size: 100,
@@ -51,16 +52,18 @@ Future<void> showStreakDialog({
           title: Text(
             '✨$title✨',
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
+              color: colorScheme.onSurface,
             ),
           ),
           content: Text(
             content,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
+              color: colorScheme.onSurface,
             ),
           ),
           actions: [
@@ -81,7 +84,7 @@ Future<void> showStreakDialog({
               ),
             ),
           ],
-          backgroundColor: Colors.white,
+          backgroundColor: colorScheme.surface,
         ),
       );
     },
