@@ -133,11 +133,7 @@ class AppFoodTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = isDark ? Colors.black : null;
-    final borderColor = isDark ? Colors.white54 : Colors.black87;
-    final fgColor = isDark ? Colors.white : Colors.black;
-    final labelColor = isDark ? Colors.white70 : Colors.grey;
+    final scheme = Theme.of(context).colorScheme;
     return SizedBox(
       width: double.infinity,
       height: 50,
@@ -146,16 +142,16 @@ class AppFoodTextField extends StatelessWidget {
           const Gap(5),
           Icon(
             Icons.fastfood,
-            color: fgColor,
+            color: scheme.onSurface,
             size: 28,
           ),
           const Gap(10),
           Expanded(
-            child: Container(
+            child: DecoratedBox(
               decoration: BoxDecoration(
-                color: bgColor,
+                color: scheme.surface,
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: borderColor),
+                border: Border.all(color: scheme.outlineVariant),
               ),
               child: TextField(
                 contextMenuBuilder: (context, state) {
@@ -179,7 +175,7 @@ class AppFoodTextField extends StatelessWidget {
                   ),
                   hintText: Translations.of(context).post.foodNameInputField,
                   hintStyle: TextStyle(
-                    color: labelColor,
+                    color: scheme.onSurfaceVariant,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -188,7 +184,7 @@ class AppFoodTextField extends StatelessWidget {
                 autocorrect: false,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: fgColor,
+                  color: scheme.onSurface,
                   fontSize: 15,
                 ),
               ),
@@ -210,17 +206,13 @@ class AppCommentTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = isDark ? Colors.black : null;
-    final borderColor = isDark ? Colors.white54 : Colors.black87;
-    final fgColor = isDark ? Colors.white : Colors.black;
-    final labelColor = isDark ? Colors.white70 : Colors.grey;
+    final scheme = Theme.of(context).colorScheme;
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: bgColor,
+        color: scheme.surface,
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: borderColor),
+        border: Border.all(color: scheme.outlineVariant),
       ),
       child: TextField(
         contextMenuBuilder: (context, state) {
@@ -245,7 +237,7 @@ class AppCommentTextField extends StatelessWidget {
           ),
           hintText: Translations.of(context).post.comment,
           hintStyle: TextStyle(
-            color: labelColor,
+            color: scheme.onSurfaceVariant,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -256,7 +248,7 @@ class AppCommentTextField extends StatelessWidget {
         autocorrect: false,
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          color: fgColor,
+          color: scheme.onSurface,
           fontSize: 15,
         ),
       ),
@@ -274,8 +266,7 @@ class AppNameTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fgColor = Theme.of(context).colorScheme.onSurface;
-    final labelColor = Theme.of(context).colorScheme.onSurfaceVariant;
+    final scheme = Theme.of(context).colorScheme;
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -284,32 +275,44 @@ class AppNameTextField extends StatelessWidget {
           Expanded(
             child: Semantics(
               label: 'nameField',
-              child: TextField(
-                contextMenuBuilder: (context, state) {
-                  if (SystemContextMenu.isSupported(context)) {
-                    return SystemContextMenu.editableText(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: scheme.surface,
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: scheme.outlineVariant),
+                ),
+                child: TextField(
+                  contextMenuBuilder: (context, state) {
+                    if (SystemContextMenu.isSupported(context)) {
+                      return SystemContextMenu.editableText(
+                        editableTextState: state,
+                      );
+                    }
+                    return AdaptiveTextSelectionToolbar.editableText(
                       editableTextState: state,
                     );
-                  }
-                  return AdaptiveTextSelectionToolbar.editableText(
-                    editableTextState: state,
-                  );
-                },
-                selectionHeightStyle: BoxHeightStyle.strut,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: Translations.of(context).newAccount.userName,
-                  label: Text(
-                    Translations.of(context).newAccount.userNameInputField,
-                    style: TextStyle(color: labelColor),
+                  },
+                  selectionHeightStyle: BoxHeightStyle.strut,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+                    hintText: Translations.of(context).newAccount.userName,
+                    hintStyle: TextStyle(color: scheme.onSurfaceVariant),
+                    label: Text(
+                      Translations.of(context).newAccount.userNameInputField,
+                      style: TextStyle(color: scheme.onSurfaceVariant),
+                    ),
                   ),
-                ),
-                controller: controller,
-                autocorrect: false,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: fgColor,
-                  fontSize: 16,
+                  controller: controller,
+                  autocorrect: false,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: scheme.onSurface,
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ),
@@ -330,8 +333,7 @@ class AppSelfIntroductionTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fgColor = Theme.of(context).colorScheme.onSurface;
-    final labelColor = Theme.of(context).colorScheme.onSurfaceVariant;
+    final scheme = Theme.of(context).colorScheme;
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -341,34 +343,46 @@ class AppSelfIntroductionTextField extends StatelessWidget {
           Expanded(
             child: Semantics(
               label: 'selfIntroductionField',
-              child: TextField(
-                contextMenuBuilder: (context, state) {
-                  if (SystemContextMenu.isSupported(context)) {
-                    return SystemContextMenu.editableText(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: scheme.surface,
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: scheme.outlineVariant),
+                ),
+                child: TextField(
+                  contextMenuBuilder: (context, state) {
+                    if (SystemContextMenu.isSupported(context)) {
+                      return SystemContextMenu.editableText(
+                        editableTextState: state,
+                      );
+                    }
+                    return AdaptiveTextSelectionToolbar.editableText(
                       editableTextState: state,
                     );
-                  }
-                  return AdaptiveTextSelectionToolbar.editableText(
-                    editableTextState: state,
-                  );
-                },
-                selectionHeightStyle: BoxHeightStyle.strut,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  border: InputBorder.none,
-                  hintText: Translations.of(context).edit.bioInputField,
-                  label: Text(
-                    Translations.of(context).edit.bio,
-                    style: TextStyle(color: labelColor),
+                  },
+                  selectionHeightStyle: BoxHeightStyle.strut,
+                  decoration: InputDecoration(
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+                    hintText: Translations.of(context).edit.bioInputField,
+                    hintStyle: TextStyle(color: scheme.onSurfaceVariant),
+                    label: Text(
+                      Translations.of(context).edit.bio,
+                      style: TextStyle(color: scheme.onSurfaceVariant),
+                    ),
                   ),
-                ),
-                controller: controller,
-                maxLines: 5,
-                autocorrect: false,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: fgColor,
-                  fontSize: 17,
+                  controller: controller,
+                  maxLines: 5,
+                  autocorrect: false,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: scheme.onSurface,
+                    fontSize: 17,
+                  ),
                 ),
               ),
             ),
@@ -389,8 +403,7 @@ class AppUserNameTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fgColor = Theme.of(context).colorScheme.onSurface;
-    final labelColor = Theme.of(context).colorScheme.onSurfaceVariant;
+    final scheme = Theme.of(context).colorScheme;
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -399,37 +412,49 @@ class AppUserNameTextField extends StatelessWidget {
           Expanded(
             child: Semantics(
               label: 'userNameField',
-              child: TextField(
-                contextMenuBuilder: (context, state) {
-                  if (SystemContextMenu.isSupported(context)) {
-                    return SystemContextMenu.editableText(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: scheme.surface,
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: scheme.outlineVariant),
+                ),
+                child: TextField(
+                  contextMenuBuilder: (context, state) {
+                    if (SystemContextMenu.isSupported(context)) {
+                      return SystemContextMenu.editableText(
+                        editableTextState: state,
+                      );
+                    }
+                    return AdaptiveTextSelectionToolbar.editableText(
                       editableTextState: state,
                     );
-                  }
-                  return AdaptiveTextSelectionToolbar.editableText(
-                    editableTextState: state,
-                  );
-                },
-                selectionHeightStyle: BoxHeightStyle.strut,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: Translations.of(context).newAccount.userId,
-                  label: Text(
-                    Translations.of(context).newAccount.userIdInputField,
-                    style: TextStyle(color: labelColor),
+                  },
+                  selectionHeightStyle: BoxHeightStyle.strut,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+                    hintText: Translations.of(context).newAccount.userId,
+                    hintStyle: TextStyle(color: scheme.onSurfaceVariant),
+                    label: Text(
+                      Translations.of(context).newAccount.userIdInputField,
+                      style: TextStyle(color: scheme.onSurfaceVariant),
+                    ),
                   ),
-                ),
-                controller: controller,
-                autocorrect: false,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(
-                    RegExp('[a-zA-Z0-9@_.-]'),
+                  controller: controller,
+                  autocorrect: false,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp('[a-zA-Z0-9@_.-]'),
+                    ),
+                  ],
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: scheme.onSurface,
+                    fontSize: 17,
                   ),
-                ],
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: fgColor,
-                  fontSize: 17,
                 ),
               ),
             ),

@@ -366,14 +366,7 @@ class EditPostScreen extends HookConsumerWidget {
                     const Gap(12),
                     Builder(
                       builder: (context) {
-                        final isDark =
-                            Theme.of(context).brightness == Brightness.dark;
-                        final rowBg = isDark ? Colors.black : null;
-                        final rowBorder =
-                            isDark ? Colors.white54 : Colors.black87;
-                        final iconColor = isDark
-                            ? Colors.white
-                            : Colors.black;
+                        final scheme = Theme.of(context).colorScheme;
                         return GestureDetector(
                           onTap: () async {
                             primaryFocus?.unfocus();
@@ -394,30 +387,32 @@ class EditPostScreen extends HookConsumerWidget {
                                 Icon(
                                   Icons.place,
                                   size: 28,
-                                  color: iconColor,
+                                  color: scheme.onSurface,
                                 ),
                                 const Gap(10),
                                 Expanded(
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: rowBg,
+                                      color: scheme.surface,
                                       borderRadius: BorderRadius.circular(6),
-                                      border: Border.all(color: rowBorder),
+                                      border: Border.all(
+                                        color: scheme.outlineVariant,
+                                      ),
                                     ),
                                     child: ListTile(
                                       dense: true,
                                       contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
+                                        horizontal: 12,
                                         vertical: 0,
                                       ),
                                       title: Row(
                                         children: [
                                           Expanded(
-                                        child: Text(
-                                          restaurantName,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: EditPostStyle.restaurant(context),
-                                        ),
+                                            child: Text(
+                                              restaurantName,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: EditPostStyle.restaurant(context),
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -433,21 +428,19 @@ class EditPostScreen extends HookConsumerWidget {
                     const Gap(6),
                     Builder(
                       builder: (context) {
-                        final isDark =
-                            Theme.of(context).brightness == Brightness.dark;
+                        final scheme = Theme.of(context).colorScheme;
                         return SizedBox(
                           width: double.infinity,
+                          height: 50,
                           child: Row(
                             children: [
                               const Gap(5),
                               Icon(
                                 Icons.label,
                                 size: 28,
-                                color: isDark
-                                    ? Colors.white
-                                    : Colors.black,
+                                color: scheme.onSurface,
                               ),
-                              const Gap(5),
+                              const Gap(10),
                               Expanded(
                                 child: AppFoodTag(
                                   foodTags: foodTags.value,

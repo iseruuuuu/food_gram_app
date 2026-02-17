@@ -38,7 +38,9 @@ class NotificationsScreen extends ConsumerWidget {
         error: (e, __) => Center(
           child: Text(
             Translations.of(context).notification.loadFailed,
-            style: const TextStyle(color: Colors.black54),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ),
         data: (notifications) {

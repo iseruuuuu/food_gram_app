@@ -121,8 +121,11 @@ class PostScreen extends HookConsumerWidget {
                     );
                     context.pop();
                   },
-                  icon: Icon(Icons.close,
-                      size: 28, color: Theme.of(context).colorScheme.onSurface),
+                  icon: Icon(
+                    Icons.close,
+                    size: 28,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 )
               : const SizedBox(),
         ),
@@ -272,14 +275,7 @@ class PostScreen extends HookConsumerWidget {
                     const Gap(12),
                     Builder(
                       builder: (context) {
-                        final isDark =
-                            Theme.of(context).brightness == Brightness.dark;
-                        final rowBg = isDark ? Colors.black : null;
-                        final rowBorder =
-                            isDark ? Colors.white54 : Colors.black87;
-                        final iconColor = isDark
-                            ? Colors.white
-                            : Colors.black;
+                        final scheme = Theme.of(context).colorScheme;
                         return SizedBox(
                           width: double.infinity,
                           height: 50,
@@ -289,7 +285,7 @@ class PostScreen extends HookConsumerWidget {
                               Icon(
                                 Icons.place,
                                 size: 28,
-                                color: iconColor,
+                                color: scheme.onSurface,
                               ),
                               const Gap(10),
                               Expanded(
@@ -300,33 +296,39 @@ class PostScreen extends HookConsumerWidget {
                                         await context.pushNamed(routerPath);
                                     if (result != null) {
                                       ref
-                                          .read(postViewModelProvider().notifier)
+                                          .read(
+                                            postViewModelProvider().notifier,
+                                          )
                                           .getPlace(result as Restaurant);
                                     }
                                   },
-                                  child: Container(
+                                  child: DecoratedBox(
                                     decoration: BoxDecoration(
-                                      color: rowBg,
+                                      color: scheme.surface,
                                       borderRadius: BorderRadius.circular(6),
-                                      border: Border.all(color: rowBorder),
+                                      border: Border.all(
+                                        color: scheme.outlineVariant,
+                                      ),
                                     ),
                                     child: ListTile(
                                       dense: true,
-                                      contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 0,
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                        horizontal: 12,
                                       ),
                                       title: Row(
                                         children: [
                                           Expanded(
                                             child: Text(
                                               restaurantName == '場所を追加'
-                                                  ? t.post.restaurantNameInputField
+                                                  ? t.post
+                                                      .restaurantNameInputField
                                                   : restaurantName,
                                               overflow: TextOverflow.ellipsis,
                                               style: PostStyle.restaurant(
                                                 context,
-                                                value: restaurantName == '場所を追加',
+                                                value:
+                                                    restaurantName == '場所を追加',
                                               ),
                                             ),
                                           ),
@@ -334,7 +336,7 @@ class PostScreen extends HookConsumerWidget {
                                             Icon(
                                               Icons.arrow_forward_ios,
                                               size: 20,
-                                              color: iconColor,
+                                              color: scheme.onSurface,
                                             ),
                                         ],
                                       ),
@@ -347,28 +349,26 @@ class PostScreen extends HookConsumerWidget {
                         );
                       },
                     ),
-                    const Gap(6),
+                    const Gap(12),
                     Builder(
                       builder: (context) {
-                        final isDark =
-                            Theme.of(context).brightness == Brightness.dark;
+                        final scheme = Theme.of(context).colorScheme;
                         return SizedBox(
                           width: double.infinity,
+                          height: 50,
                           child: Row(
                             children: [
                               const Gap(5),
                               Icon(
                                 Icons.label,
                                 size: 28,
-                                color: isDark
-                                    ? Colors.white
-                                    : Colors.black,
+                                color: scheme.onSurface,
                               ),
-                              const Gap(5),
+                              const Gap(10),
                               Expanded(
                                 child: AppFoodTag(
-                              foodTags: foodTags.value,
-                              foodTexts: foodTexts,
+                                  foodTags: foodTags.value,
+                                  foodTexts: foodTexts,
                                   onTagSelected: (tags) {
                                     foodTags.value = tags;
                                   },

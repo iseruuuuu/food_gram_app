@@ -67,8 +67,7 @@ class AppFoodTag extends HookWidget {
             },
             [searchController],
           );
-          final isDark =
-              Theme.of(context).brightness == Brightness.dark;
+          final isDark = Theme.of(context).brightness == Brightness.dark;
           final sheetBg = isDark ? Colors.black : Colors.white;
           final sheetFg = isDark ? Colors.white : Colors.black;
           final sheetFgMuted = isDark ? Colors.white70 : Colors.grey;
@@ -122,9 +121,8 @@ class AppFoodTag extends HookWidget {
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: isDark
-                                  ? Colors.white
-                                  : AppTheme.primaryBlue,
+                              color:
+                                  isDark ? Colors.white : AppTheme.primaryBlue,
                             ),
                           ),
                         ),
@@ -307,19 +305,16 @@ class AppFoodTag extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useValueListenable(foodTexts);
+    final scheme = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = isDark ? Colors.black : Colors.white;
-    final borderColor = isDark ? Colors.white54 : Colors.black;
-    final textColor = isDark ? Colors.white : Colors.grey;
-    final iconColor = isDark ? Colors.white : null;
     return GestureDetector(
       onTap: () => _showTagSelector(context, foodTexts),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 8),
+        padding: EdgeInsets.zero,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: bgColor,
-            border: Border.all(color: borderColor),
+            color: scheme.surface,
+            border: Border.all(color: scheme.outlineVariant),
             borderRadius: BorderRadius.circular(6),
           ),
           child: Column(
@@ -328,7 +323,7 @@ class AppFoodTag extends HookWidget {
                 height: 50,
                 child: Row(
                   children: [
-                    const Gap(16),
+                    const Gap(12),
                     Expanded(
                       child: foodTags.isEmpty
                           ? Text(
@@ -336,7 +331,7 @@ class AppFoodTag extends HookWidget {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: textColor,
+                                color: scheme.onSurfaceVariant,
                               ),
                             )
                           : Row(
@@ -361,7 +356,10 @@ class AppFoodTag extends HookWidget {
                                       children: [
                                         Text(
                                           foodTags.first,
-                                          style: const TextStyle(fontSize: 18),
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: scheme.onSurface,
+                                          ),
                                         ),
                                         const Gap(2),
                                         Text(
@@ -402,8 +400,10 @@ class AppFoodTag extends HookWidget {
                                         children: [
                                           Text(
                                             foodTags[1],
-                                            style:
-                                                const TextStyle(fontSize: 18),
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: scheme.onSurface,
+                                            ),
                                           ),
                                           const Gap(2),
                                           Text(
@@ -446,7 +446,7 @@ class AppFoodTag extends HookWidget {
                         child: Icon(
                           Icons.arrow_forward_ios,
                           size: 20,
-                          color: iconColor,
+                          color: scheme.onSurface,
                         ),
                       ),
                     const Gap(2),
@@ -721,51 +721,50 @@ class AppCountryTag extends HookWidget {
         ),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
         child: Row(
-            children: [
-              Expanded(
-                child: countryTag.isEmpty
-                    ? Text(
-                        Translations.of(context).post.selectCountryTag,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: labelColor,
-                        ),
-                      )
-                    : Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            countryTag,
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                          const Gap(4),
-                          Flexible(
-                            child: Text(
-                              getLocalizedCountryName(
-                                countryTag,
-                                context,
-                              ),
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: isDark
-                                    ? Colors.white
-                                    : AppTheme.primaryBlue,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
+          children: [
+            Expanded(
+              child: countryTag.isEmpty
+                  ? Text(
+                      Translations.of(context).post.selectCountryTag,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: labelColor,
                       ),
+                    )
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          countryTag,
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                        const Gap(4),
+                        Flexible(
+                          child: Text(
+                            getLocalizedCountryName(
+                              countryTag,
+                              context,
+                            ),
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  isDark ? Colors.white : AppTheme.primaryBlue,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
+            if (countryTag.isEmpty)
+              Icon(
+                Icons.arrow_forward_ios,
+                size: 20,
+                color: fgColor,
               ),
-              if (countryTag.isEmpty)
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 20,
-                  color: fgColor,
-                ),
-            ],
+          ],
         ),
       ),
     );

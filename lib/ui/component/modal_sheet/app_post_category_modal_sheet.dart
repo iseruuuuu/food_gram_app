@@ -19,13 +19,14 @@ class AppPostCountryCategoryModalSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final scheme = Theme.of(context).colorScheme;
     return Container(
       height: MediaQuery.of(context).size.height * 0.7,
       width: double.infinity,
       padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: scheme.surface,
+        borderRadius: const BorderRadius.only(
           topRight: Radius.circular(30),
           topLeft: Radius.circular(30),
         ),
@@ -49,7 +50,7 @@ class AppPostCountryCategoryModalSheet extends ConsumerWidget {
                     height: 60,
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: tagValue == emoji ? AppTheme.primaryBlue : Colors.grey,
+                        color: tagValue == emoji ? AppTheme.primaryBlue : scheme.outlineVariant,
                         width: tagValue == emoji ? 2 : 1,
                       ),
                       borderRadius: BorderRadius.circular(8),
@@ -84,13 +85,14 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Container(
       height: MediaQuery.of(context).size.height * 0.7,
       width: double.infinity,
       padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: scheme.surface,
+        borderRadius: const BorderRadius.only(
           topRight: Radius.circular(30),
           topLeft: Radius.circular(30),
         ),
@@ -108,9 +110,10 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Text(
                       entry.key,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: scheme.onSurface,
                       ),
                     ),
                   ),
@@ -129,7 +132,7 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
                           decoration: BoxDecoration(
                             border: Border.all(
                               color:
-                                  tagValue == food ? AppTheme.primaryBlue : Colors.grey,
+                                  tagValue == food ? AppTheme.primaryBlue : scheme.outlineVariant,
                               width: tagValue == food ? 2 : 1,
                             ),
                             borderRadius: BorderRadius.circular(8),

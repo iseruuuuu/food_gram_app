@@ -15,12 +15,13 @@ class AppShareModalSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return SizedBox(
       height: MediaQuery.of(context).size.height / 3.5,
       child: DecoratedBox(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: scheme.surface,
+          borderRadius: const BorderRadius.only(
             topRight: Radius.circular(30),
             topLeft: Radius.circular(30),
           ),
@@ -72,10 +73,10 @@ class AppShareModalSheet extends StatelessWidget {
                 onPressed: () => context.pop(),
                 child: Text(
                   Translations.of(context).close,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
-                    color: Colors.red,
+                    color: scheme.error,
                   ),
                 ),
               ),
