@@ -275,8 +275,12 @@ class $AssetsSplashGen {
   AssetGenImage get splashPng =>
       const AssetGenImage('assets/splash/splash.png');
 
+  /// File path: assets/splash/splash_dark.gif
+  AssetGenImage get splashDark =>
+      const AssetGenImage('assets/splash/splash_dark.gif');
+
   /// List of all assets
-  List<AssetGenImage> get values => [splashGif, splashPng];
+  List<AssetGenImage> get values => [splashGif, splashPng, splashDark];
 }
 
 class $AssetsTrophyGen {

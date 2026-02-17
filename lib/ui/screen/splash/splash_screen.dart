@@ -54,11 +54,17 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
         alignment: Alignment.center,
         children: <Widget>[
           Center(
-            child: Assets.splash.splashGif.image(
-              fit: BoxFit.cover,
-              width: MediaQuery.sizeOf(context).width / 2,
-              height: MediaQuery.sizeOf(context).width / 2,
-            ),
+            child: Theme.of(context).brightness == Brightness.dark
+                ? Assets.splash.splashDark.image(
+                    fit: BoxFit.cover,
+                    width: MediaQuery.sizeOf(context).width / 2,
+                    height: MediaQuery.sizeOf(context).width / 2,
+                  )
+                : Assets.splash.splashGif.image(
+                    fit: BoxFit.cover,
+                    width: MediaQuery.sizeOf(context).width / 2,
+                    height: MediaQuery.sizeOf(context).width / 2,
+                  ),
           ),
           Positioned.fill(
             child: AnimatedOpacity(
