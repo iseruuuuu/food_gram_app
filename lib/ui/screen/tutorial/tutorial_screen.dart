@@ -79,12 +79,12 @@ class TutorialScreen extends HookConsumerWidget {
                   const Gap(24),
                   Text(
                     t.tutorial.firstPageTitle,
-                    style: TutorialStyle.title(),
+                    style: TutorialStyle.title(context),
                   ),
                   const Gap(12),
                   Text(
                     t.tutorial.firstPageSubTitle,
-                    style: TutorialStyle.subTitle(),
+                    style: TutorialStyle.subTitle(context),
                     textAlign: TextAlign.center,
                   ),
                   const Gap(120),
@@ -102,12 +102,12 @@ class TutorialScreen extends HookConsumerWidget {
                   const Gap(24),
                   Text(
                     t.tutorial.discoverTitle,
-                    style: TutorialStyle.title(),
+                    style: TutorialStyle.title(context),
                   ),
                   const Gap(12),
                   Text(
                     t.tutorial.discoverSubTitle,
-                    style: TutorialStyle.subTitle(),
+                    style: TutorialStyle.subTitle(context),
                     textAlign: TextAlign.center,
                   ),
                   const Gap(120),
@@ -125,12 +125,12 @@ class TutorialScreen extends HookConsumerWidget {
                   const Gap(24),
                   Text(
                     t.tutorial.secondPageTitle,
-                    style: TutorialStyle.title(),
+                    style: TutorialStyle.title(context),
                   ),
                   const Gap(12),
                   Text(
                     t.tutorial.secondPageSubTitle,
-                    style: TutorialStyle.subTitle(),
+                    style: TutorialStyle.subTitle(context),
                     textAlign: TextAlign.center,
                   ),
                   const Gap(24),
@@ -148,12 +148,12 @@ class TutorialScreen extends HookConsumerWidget {
                   const Gap(56),
                   Text(
                     t.tutorial.locationTitle,
-                    style: TutorialStyle.title(),
+                    style: TutorialStyle.title(context),
                   ),
                   const Gap(12),
                   Text(
                     t.app.requestReason,
-                    style: TutorialStyle.subTitle(),
+                    style: TutorialStyle.subTitle(context),
                     textAlign: TextAlign.center,
                   ),
                   const Gap(36),
@@ -170,7 +170,12 @@ class TutorialScreen extends HookConsumerWidget {
                   const Gap(12),
                   TextButton(
                     onPressed: goToNextPage,
-                    child: Text(t.maybeNotFoodDialog.confirm),
+                    child: Text(
+                      t.maybeNotFoodDialog.confirm,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -186,12 +191,12 @@ class TutorialScreen extends HookConsumerWidget {
                   const Gap(48),
                   Text(
                     t.tutorial.discoverTitle,
-                    style: TutorialStyle.title(),
+                    style: TutorialStyle.title(context),
                   ),
                   const Gap(12),
                   Text(
                     t.tutorial.discoverSubTitle,
-                    style: TutorialStyle.subTitle(),
+                    style: TutorialStyle.subTitle(context),
                     textAlign: TextAlign.center,
                   ),
                   const Gap(36),
@@ -205,7 +210,12 @@ class TutorialScreen extends HookConsumerWidget {
                   const Gap(12),
                   TextButton(
                     onPressed: goToNextPage,
-                    child: Text(t.maybeNotFoodDialog.confirm),
+                    child: Text(
+                      t.maybeNotFoodDialog.confirm,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -229,7 +239,7 @@ class TutorialScreen extends HookConsumerWidget {
                           Assets.gif.tutorial1.image(width: 50),
                           Text(
                             t.tutorial.thirdPageTitle,
-                            style: TutorialStyle.thirdTitle(),
+                            style: TutorialStyle.thirdTitle(context),
                           ),
                           Assets.gif.tutorial1.image(width: 50),
                           const Gap(10),
@@ -240,7 +250,7 @@ class TutorialScreen extends HookConsumerWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Text(
                           t.tutorial.thirdPageSubTitle,
-                          style: TutorialStyle.thirdSubTitle(),
+                          style: TutorialStyle.thirdSubTitle(context),
                         ),
                       ),
                       const Gap(30),
@@ -249,12 +259,12 @@ class TutorialScreen extends HookConsumerWidget {
                         children: [
                           Text(
                             t.tutorial.thirdPageButton,
-                            style: TutorialStyle.accept(),
+                            style: TutorialStyle.accept(context),
                           ),
                           const Gap(10),
                           Checkbox(
-                            checkColor: Colors.white,
-                            activeColor: Colors.black,
+                            checkColor: Theme.of(context).colorScheme.onPrimary,
+                            activeColor: Theme.of(context).colorScheme.primary,
                             value: isAccept.value,
                             onChanged: (value) {
                               isAccept.value = value ?? false;
@@ -266,7 +276,7 @@ class TutorialScreen extends HookConsumerWidget {
                       SizedBox(
                         width: 200,
                         child: ElevatedButton(
-                          style: TutorialStyle.button(),
+                          style: TutorialStyle.button(context),
                           onPressed: isAccept.value
                               ? () async {
                                   if (!isFinishedTutorial.value) {
@@ -281,7 +291,7 @@ class TutorialScreen extends HookConsumerWidget {
                               : null,
                           child: Text(
                             t.tutorial.thirdPageClose,
-                            style: TutorialStyle.close(),
+                            style: TutorialStyle.close(context),
                           ),
                         ),
                       ),
@@ -298,7 +308,10 @@ class TutorialScreen extends HookConsumerWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_forward_ios),
+                  icon: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                   onPressed: () {
                     final currentPage = pageController.page?.toInt() ?? 0;
                     if (currentPage == totalPages - 1 && !isAccept.value) {
@@ -340,76 +353,84 @@ class SlidingTutorial extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
     return Stack(
       children: [
-        // Base soft white gradient
-        const Positioned.fill(
+        // Base background（ライト: パステルグラデーション / ダーク: surface）
+        Positioned.fill(
           child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFFEBF4FF), // lighter blue
-                  Color(0xFFF2E9FF), // lighter purple
-                  Color(0xFFFFF3DA), // lighter yellow
-                  Color(0xFFECFFF3), // lighter mint
-                  Color(0xFFFFEAF2), // lighter pink
-                ],
-                stops: [0.0, 0.3, 0.55, 0.8, 1.0],
-              ),
+            decoration: isDark
+                ? BoxDecoration(
+                    color: colorScheme.surface,
+                  )
+                : const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xFFEBF4FF), // lighter blue
+                        Color(0xFFF2E9FF), // lighter purple
+                        Color(0xFFFFF3DA), // lighter yellow
+                        Color(0xFFECFFF3), // lighter mint
+                        Color(0xFFFFEAF2), // lighter pink
+                      ],
+                      stops: [0.0, 0.3, 0.55, 0.8, 1.0],
+                    ),
+                  ),
+          ),
+        ),
+        // Translucent pastel blobs (blurred) - ライトモードのみ
+        if (!isDark) ...[
+          const Positioned(
+            top: -80,
+            left: -60,
+            child: _PastelBlob(
+              size: 280,
+              color: Color(0xFFCBE7FF), // softer blue
             ),
           ),
-        ),
-        // Translucent pastel blobs (blurred)
-        const Positioned(
-          top: -80,
-          left: -60,
-          child: _PastelBlob(
-            size: 280,
-            color: Color(0xFFCBE7FF), // softer blue
+          const Positioned(
+            top: -40,
+            right: -40,
+            child: _PastelBlob(
+              size: 240,
+              color: Color(0xFFEBDFFF), // softer purple
+            ),
           ),
-        ),
-        const Positioned(
-          top: -40,
-          right: -40,
-          child: _PastelBlob(
-            size: 240,
-            color: Color(0xFFEBDFFF), // softer purple
+          const Positioned(
+            bottom: -60,
+            left: -40,
+            child: _PastelBlob(
+              size: 260,
+              color: Color(0xFFD6F7E5), // softer mint
+            ),
           ),
-        ),
-        const Positioned(
-          bottom: -60,
-          left: -40,
-          child: _PastelBlob(
-            size: 260,
-            color: Color(0xFFD6F7E5), // softer mint
+          const Positioned(
+            bottom: -120,
+            right: -60,
+            child: _PastelBlob(
+              size: 320,
+              color: Color(0xFFFFE8BC), // softer yellow
+            ),
           ),
-        ),
-        const Positioned(
-          bottom: -120,
-          right: -60,
-          child: _PastelBlob(
-            size: 320,
-            color: Color(0xFFFFE8BC), // softer yellow
+          const Positioned(
+            top: -70,
+            left: 120,
+            child: _PastelBlob(
+              size: 220,
+              color: Color(0xFFFFE0EA), // softer pink
+            ),
           ),
-        ),
-        const Positioned(
-          top: -70,
-          left: 120,
-          child: _PastelBlob(
-            size: 220,
-            color: Color(0xFFFFE0EA), // softer pink
+          const Positioned(
+            bottom: -100,
+            left: 80,
+            child: _PastelBlob(
+              size: 240,
+              color: Color(0xFFEDFFCC), // softer green-yellow
+            ),
           ),
-        ),
-        const Positioned(
-          bottom: -100,
-          left: 80,
-          child: _PastelBlob(
-            size: 240,
-            color: Color(0xFFEDFFCC), // softer green-yellow
-          ),
-        ),
+        ],
         // Content
         Positioned.fill(
           child: PageView(

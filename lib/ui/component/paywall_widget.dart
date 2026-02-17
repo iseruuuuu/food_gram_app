@@ -251,7 +251,7 @@ class PaywallContent extends StatelessWidget {
                     onPressed: onSkip,
                     child: Text(
                       t.paywall.skip,
-                      style: TutorialStyle.subTitle(),
+                      style: TutorialStyle.subTitle(context),
                     ),
                   ),
               ],

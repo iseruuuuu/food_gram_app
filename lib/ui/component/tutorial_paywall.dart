@@ -44,7 +44,7 @@ class TutorialPaywall extends ConsumerWidget {
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(0),
             child: AppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).colorScheme.surface,
               elevation: 0,
             ),
           ),
