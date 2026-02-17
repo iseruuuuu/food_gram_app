@@ -10,7 +10,8 @@ class AppProfileHeaderSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final skeletonPrimary = isDark ? Colors.grey.shade700 : Colors.grey.shade300;
+    final skeletonPrimary =
+        isDark ? Colors.grey.shade700 : Colors.grey.shade300;
     final skeletonSecondary =
         isDark ? Colors.grey.shade800 : Colors.grey.shade200;
     return Skeletonizer(
@@ -200,7 +201,7 @@ class AppSearchListViewSkeleton extends StatelessWidget {
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: Container(
+            child: DecoratedBox(
               decoration: BoxDecoration(
                 color: placeholderColor,
                 borderRadius: BorderRadius.circular(10),
@@ -228,8 +229,7 @@ class AppNearbyRestaurantsSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final skeletonColor =
-        isDark ? Colors.grey.shade800 : Colors.grey.shade200;
+    final skeletonColor = isDark ? Colors.grey.shade800 : Colors.grey.shade200;
     return ListView.builder(
       itemCount: 6,
       itemBuilder: (context, index) {

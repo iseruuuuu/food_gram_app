@@ -32,7 +32,7 @@ class MyMapScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final fabBg = isDark ? Colors.black : Colors.white;
     const fabFg = Color(0xFF1A73E8);
-    final fabBorder = isDark ? Colors.white : Colors.white;
+    final fabBorder = isDark ? Colors.white54 : Colors.grey.shade300;
 
     return Scaffold(
       body: Stack(

@@ -53,8 +53,8 @@ class AppTheme {
       scaffoldBackgroundColor: const Color(0xFF1E1E1E),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.black,
-          foregroundColor: Colors.white,
+          backgroundColor: baseScheme.primaryContainer,
+          foregroundColor: baseScheme.onPrimaryContainer,
         ),
       ),
       inputDecorationTheme: const InputDecorationTheme(

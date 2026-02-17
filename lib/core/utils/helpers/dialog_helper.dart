@@ -19,7 +19,7 @@ class DialogHelper {
       title: t.forceUpdate.title,
       text: t.forceUpdate.text,
       confirmBtnText: t.forceUpdate.buttonTitle,
-      confirmBtnColor: Colors.black,
+      confirmBtnColor: colorScheme.primary,
       backgroundColor: colorScheme.surface,
       titleColor: colorScheme.onSurface,
       textColor: colorScheme.onSurface,
