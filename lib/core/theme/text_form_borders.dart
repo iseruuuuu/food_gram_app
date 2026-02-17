@@ -7,8 +7,8 @@ class TextFormBorders {
   static const double _borderRadius = 15;
   static const double _borderWidth = 2;
 
-  static final textFormFocusedBorder = OutlineInputBorder(
-    borderRadius: const BorderRadius.all(Radius.circular(_borderRadius)),
+  static const textFormFocusedBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
     borderSide: BorderSide(
       color: AppTheme.primaryBlue,
       width: _borderWidth,
@@ -31,8 +31,8 @@ class TextFormBorders {
   );
 
   /// ダークモード用（明るい色で視認性を確保）
-  static final textFormFocusedBorderDark = OutlineInputBorder(
-    borderRadius: const BorderRadius.all(Radius.circular(_borderRadius)),
+  static const textFormFocusedBorderDark = OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
     borderSide: BorderSide(
       color: AppTheme.primaryBlue,
       width: _borderWidth,

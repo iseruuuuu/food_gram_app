@@ -41,12 +41,18 @@ class TabScreen extends ConsumerWidget {
                       state.selectedIndex == 0
                           ? CupertinoIcons.map_fill
                           : CupertinoIcons.map,
-                      color: TabStyle.tabColor(context, selected: state.selectedIndex == 0),
+                      color: TabStyle.tabColor(
+                        context,
+                        selected: state.selectedIndex == 0,
+                      ),
                     ),
                     const Gap(6),
                     Text(
                       t.tab.map,
-                      style: TabStyle.tab(context, value: state.selectedIndex == 0),
+                      style: TabStyle.tab(
+                        context,
+                        value: state.selectedIndex == 0,
+                      ),
                     ),
                     const Gap(10),
                   ],
@@ -61,12 +67,18 @@ class TabScreen extends ConsumerWidget {
                       state.selectedIndex == 1
                           ? Icons.fastfood
                           : Icons.fastfood_outlined,
-                      color: TabStyle.tabColor(context, selected: state.selectedIndex == 1),
+                      color: TabStyle.tabColor(
+                        context,
+                        selected: state.selectedIndex == 1,
+                      ),
                     ),
                     const Gap(6),
                     Text(
                       t.tab.home,
-                      style: TabStyle.tab(context, value: state.selectedIndex == 1),
+                      style: TabStyle.tab(
+                        context,
+                        value: state.selectedIndex == 1,
+                      ),
                     ),
                     const Gap(10),
                   ],
@@ -82,12 +94,18 @@ class TabScreen extends ConsumerWidget {
                           ? CupertinoIcons.map_pin_ellipse
                           : CupertinoIcons.map_pin,
                       size: 30,
-                      color: TabStyle.tabColor(context, selected: state.selectedIndex == 2),
+                      color: TabStyle.tabColor(
+                        context,
+                        selected: state.selectedIndex == 2,
+                      ),
                     ),
                     const Gap(6),
                     Text(
                       t.tab.myMap,
-                      style: TabStyle.tab(context, value: state.selectedIndex == 2),
+                      style: TabStyle.tab(
+                        context,
+                        value: state.selectedIndex == 2,
+                      ),
                     ),
                     const Gap(10),
                   ],
@@ -103,12 +121,18 @@ class TabScreen extends ConsumerWidget {
                           ? CupertinoIcons.person_circle_fill
                           : CupertinoIcons.person_circle,
                       size: 30,
-                      color: TabStyle.tabColor(context, selected: state.selectedIndex == 3),
+                      color: TabStyle.tabColor(
+                        context,
+                        selected: state.selectedIndex == 3,
+                      ),
                     ),
                     const Gap(6),
                     Text(
                       t.tab.myPage,
-                      style: TabStyle.tab(context, value: state.selectedIndex == 3),
+                      style: TabStyle.tab(
+                        context,
+                        value: state.selectedIndex == 3,
+                      ),
                     ),
                     const Gap(10),
                   ],
@@ -123,12 +147,18 @@ class TabScreen extends ConsumerWidget {
                       state.selectedIndex == 4
                           ? Icons.settings
                           : Icons.settings_outlined,
-                      color: TabStyle.tabColor(context, selected: state.selectedIndex == 4),
+                      color: TabStyle.tabColor(
+                        context,
+                        selected: state.selectedIndex == 4,
+                      ),
                     ),
                     const Gap(6),
                     Text(
                       t.tab.setting,
-                      style: TabStyle.tab(context, value: state.selectedIndex == 4),
+                      style: TabStyle.tab(
+                        context,
+                        value: state.selectedIndex == 4,
+                      ),
                     ),
                     const Gap(10),
                   ],

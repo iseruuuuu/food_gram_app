@@ -50,7 +50,6 @@ class MyApp extends ConsumerWidget {
         debugShowCheckedModeBanner: kReleaseMode,
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
-        themeMode: ThemeMode.system,
       ),
     );
   }

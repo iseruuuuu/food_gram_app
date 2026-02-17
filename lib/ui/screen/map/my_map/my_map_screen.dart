@@ -132,7 +132,7 @@ class MyMapScreen extends HookConsumerWidget {
                                         elevation: 10,
                                         onPressed:
                                             controller.moveToCurrentLocation,
-                                        child: Icon(
+                                        child: const Icon(
                                           CupertinoIcons.location,
                                           color: fabFg,
                                           size: 28,
@@ -166,7 +166,7 @@ class MyMapScreen extends HookConsumerWidget {
                                       hoverColor: fabBg,
                                       elevation: 10,
                                       onPressed: controller.resetBearing,
-                                      child: Icon(
+                                      child: const Icon(
                                         CupertinoIcons.compass,
                                         color: fabFg,
                                         size: 30,

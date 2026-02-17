@@ -11,7 +11,6 @@ class AppTheme {
   static ThemeData get light {
     final baseScheme = ColorScheme.fromSeed(
       seedColor: primaryBlue,
-      brightness: Brightness.light,
       surface: Colors.white,
     );
     return ThemeData(
@@ -28,8 +27,8 @@ class AppTheme {
           foregroundColor: Colors.white,
         ),
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        contentPadding: const EdgeInsets.all(15),
+      inputDecorationTheme: const InputDecorationTheme(
+        contentPadding: EdgeInsets.all(15),
         focusedBorder: TextFormBorders.textFormFocusedBorder,
         enabledBorder: TextFormBorders.textFormEnabledBorder,
         focusedErrorBorder: TextFormBorders.textFormErrorBorder,
@@ -58,8 +57,8 @@ class AppTheme {
           foregroundColor: Colors.white,
         ),
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        contentPadding: const EdgeInsets.all(15),
+      inputDecorationTheme: const InputDecorationTheme(
+        contentPadding: EdgeInsets.all(15),
         focusedBorder: TextFormBorders.textFormFocusedBorderDark,
         enabledBorder: TextFormBorders.textFormEnabledBorderDark,
         focusedErrorBorder: TextFormBorders.textFormErrorBorder,

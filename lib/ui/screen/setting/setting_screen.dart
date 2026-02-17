@@ -277,7 +277,9 @@ class SettingScreen extends HookConsumerWidget {
                             ListTile(
                               leading: Icon(
                                 Icons.settings,
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
                               ),
                               title: Text(
                                 t.setting.appVersion,

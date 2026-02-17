@@ -21,9 +21,10 @@ class AppEmpty extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          Theme.of(context).brightness == Brightness.dark
-              ? Assets.image.emptyDark.image(width: 110, height: 110)
-              : Assets.image.empty.image(width: 110, height: 110),
+          if (Theme.of(context).brightness == Brightness.dark)
+            Assets.image.emptyDark.image(width: 110, height: 110)
+          else
+            Assets.image.empty.image(width: 110, height: 110),
         ],
       ),
     );

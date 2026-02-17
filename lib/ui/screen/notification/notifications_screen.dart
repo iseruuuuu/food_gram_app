@@ -30,7 +30,11 @@ class NotificationsScreen extends ConsumerWidget {
         elevation: 0.5,
         leading: IconButton(
           onPressed: () => context.pop(),
-          icon: Icon(Icons.close, size: 32, color: Theme.of(context).colorScheme.onSurface),
+          icon: Icon(
+            Icons.close,
+            size: 32,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
       ),
       body: async.when(

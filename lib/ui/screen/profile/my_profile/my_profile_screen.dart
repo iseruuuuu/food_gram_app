@@ -135,7 +135,9 @@ class MyProfileScreen extends HookConsumerWidget {
                                             Icon(
                                               Icons.bookmark,
                                               size: 20,
-                                              color: Theme.of(context).colorScheme.onSurface,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
                                             ),
                                             const SizedBox(width: 6),
                                             Text(
@@ -145,7 +147,9 @@ class MyProfileScreen extends HookConsumerWidget {
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
-                                                color: Theme.of(context).colorScheme.onSurface,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface,
                                               ),
                                             ),
                                           ],
@@ -220,14 +224,14 @@ class MyProfileScreen extends HookConsumerWidget {
                   ),
                 ),
                 onPressed: () async {
-              await context
-                  .pushNamed(RouterPath.myProfilePost)
-                  .then((value) async {
-                if (value != null) {
-                  ref.invalidate(myPostStreamProvider);
-                }
-              });
-            },
+                  await context
+                      .pushNamed(RouterPath.myProfilePost)
+                      .then((value) async {
+                    if (value != null) {
+                      ref.invalidate(myPostStreamProvider);
+                    }
+                  });
+                },
                 child: const Icon(
                   Icons.add,
                   color: Colors.white,

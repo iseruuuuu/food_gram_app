@@ -27,7 +27,9 @@ class AppElevatedButton extends StatelessWidget {
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            side: isDark ? const BorderSide(color: Colors.white54) : BorderSide.none,
+            side: isDark
+                ? const BorderSide(color: Colors.white54)
+                : BorderSide.none,
           ),
         ),
         onPressed: onPressed,
@@ -71,7 +73,9 @@ class AppDetailElevatedButton extends StatelessWidget {
           foregroundColor: fgColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
-            side: isDark ? const BorderSide(color: Colors.white54) : BorderSide.none,
+            side: isDark
+                ? const BorderSide(color: Colors.white54)
+                : BorderSide.none,
           ),
         ),
         onPressed: onPressed,

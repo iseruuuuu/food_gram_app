@@ -123,7 +123,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                 fit: BoxFit.cover,
                                 width: double.infinity,
                                 height: double.infinity,
-                                placeholder: (context, url) => Container(
+                                placeholder: (context, url) => ColoredBox(
                                   color: colorScheme.surfaceContainerHighest,
                                   child: const Center(
                                     child: CircularProgressIndicator(),
@@ -352,7 +352,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                               fit: BoxFit.cover,
                                               width: double.infinity,
                                               placeholder: (context, url) =>
-                                                  Container(
+                                                  ColoredBox(
                                                 color: colorScheme
                                                     .surfaceContainerHighest,
                                                 child: const Center(

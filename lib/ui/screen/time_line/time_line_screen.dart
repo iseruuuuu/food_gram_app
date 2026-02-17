@@ -61,7 +61,8 @@ class TimeLineScreen extends HookConsumerWidget {
                     indicatorWeight: 3,
                     isScrollable: true,
                     automaticIndicatorColorAdjustment: false,
-                    unselectedLabelColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                    unselectedLabelColor:
+                        Theme.of(context).colorScheme.onSurfaceVariant,
                     labelColor: Theme.of(context).colorScheme.onSurface,
                     indicatorColor: Theme.of(context).colorScheme.onSurface,
                     indicatorSize: TabBarIndicatorSize.tab,

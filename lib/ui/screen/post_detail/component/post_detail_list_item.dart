@@ -488,7 +488,8 @@ class PostDetailListItem extends HookConsumerWidget {
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).colorScheme.onSurface,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
                                   ),
                                 ),
                               ],
@@ -520,7 +521,8 @@ class PostDetailListItem extends HookConsumerWidget {
                         if (posts.foodTag.isNotEmpty)
                           ...posts.foodTag.split(',').map(
                                 (tag) => Chip(
-                                  backgroundColor: Theme.of(context).colorScheme.surface,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.surface,
                                   padding: const EdgeInsets.all(2),
                                   label: Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -538,7 +540,9 @@ class PostDetailListItem extends HookConsumerWidget {
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).colorScheme.onSurface,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
                                         ),
                                       ),
                                     ],

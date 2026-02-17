@@ -129,7 +129,8 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
                                         .notification
                                         .loadFailed,
                                     style: TextStyle(
-                                      color: Theme.of(context).brightness == Brightness.dark
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
                                           ? Colors.white
                                           : null,
                                     ),
@@ -198,7 +199,8 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).brightness == Brightness.dark
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
                                               ? Colors.white
                                               : Colors.black,
                                         ),
@@ -232,7 +234,9 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
                                             avg.toStringAsFixed(1),
                                             style: TextStyle(
                                               fontSize: 16,
-                                              color: Theme.of(context).brightness == Brightness.dark
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.dark
                                                   ? Colors.white
                                                   : Colors.black87,
                                               fontWeight: FontWeight.w600,

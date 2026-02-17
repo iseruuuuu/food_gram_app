@@ -336,13 +336,15 @@ class EditPostScreen extends HookConsumerWidget {
                                   decoration: BoxDecoration(
                                     color: placeholderBg,
                                     borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(color: placeholderBorder),
+                                    border:
+                                        Border.all(color: placeholderBorder),
                                   ),
                                   width: deviceWidth,
                                   height: deviceWidth / 1.7,
                                   child: foodImageUrl.isNotEmpty
                                       ? ClipRRect(
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                           child: CachedNetworkImage(
                                             imageUrl: foodImageUrl,
                                             fit: BoxFit.cover,
@@ -391,7 +393,7 @@ class EditPostScreen extends HookConsumerWidget {
                                 ),
                                 const Gap(10),
                                 Expanded(
-                                  child: Container(
+                                  child: DecoratedBox(
                                     decoration: BoxDecoration(
                                       color: scheme.surface,
                                       borderRadius: BorderRadius.circular(6),
@@ -401,9 +403,9 @@ class EditPostScreen extends HookConsumerWidget {
                                     ),
                                     child: ListTile(
                                       dense: true,
-                                      contentPadding: const EdgeInsets.symmetric(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
                                         horizontal: 12,
-                                        vertical: 0,
                                       ),
                                       title: Row(
                                         children: [
@@ -411,7 +413,9 @@ class EditPostScreen extends HookConsumerWidget {
                                             child: Text(
                                               restaurantName,
                                               overflow: TextOverflow.ellipsis,
-                                              style: EditPostStyle.restaurant(context),
+                                              style: EditPostStyle.restaurant(
+                                                context,
+                                              ),
                                             ),
                                           ),
                                         ],

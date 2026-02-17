@@ -56,8 +56,8 @@ class AppSearchTextField extends HookWidget {
                     .textTheme
                     .bodyMedium!
                     .copyWith(color: scheme.onSurface),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: const BorderRadius.only(
+                enabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8),
                     bottomLeft: Radius.circular(8),
                   ),
@@ -66,8 +66,8 @@ class AppSearchTextField extends HookWidget {
                     width: 2,
                   ),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: const BorderRadius.only(
+                focusedBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8),
                     bottomLeft: Radius.circular(8),
                   ),
@@ -275,7 +275,7 @@ class AppNameTextField extends StatelessWidget {
           Expanded(
             child: Semantics(
               label: 'nameField',
-              child: Container(
+              child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: scheme.surface,
                   borderRadius: BorderRadius.circular(6),
@@ -343,7 +343,7 @@ class AppSelfIntroductionTextField extends StatelessWidget {
           Expanded(
             child: Semantics(
               label: 'selfIntroductionField',
-              child: Container(
+              child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: scheme.surface,
                   borderRadius: BorderRadius.circular(6),
@@ -412,7 +412,7 @@ class AppUserNameTextField extends StatelessWidget {
           Expanded(
             child: Semantics(
               label: 'userNameField',
-              child: Container(
+              child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: scheme.surface,
                   borderRadius: BorderRadius.circular(6),

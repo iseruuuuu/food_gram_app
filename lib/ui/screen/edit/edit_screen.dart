@@ -213,11 +213,13 @@ class EditScreen extends HookConsumerWidget {
                                   Icon(
                                     Icons.tag,
                                     size: 20,
-                                    color: Theme.of(context).colorScheme.onSurface,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
                                   ),
                                   Text(
                                     Translations.of(context)
-                                        .edit.favoriteTagTitle,
+                                        .edit
+                                        .favoriteTagTitle,
                                     style: EditStyle.tag(context),
                                   ),
                                 ],
