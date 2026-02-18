@@ -117,35 +117,28 @@ class TimeLineScreen extends HookConsumerWidget {
           ],
         ),
       ),
-      floatingActionButton: Builder(
-        builder: (context) {
-          final isDark = Theme.of(context).brightness == Brightness.dark;
-          final scheme = Theme.of(context).colorScheme;
-          return SizedBox(
-            width: 70,
-            height: 70,
-            child: FloatingActionButton(
-              heroTag: null,
-              foregroundColor: Colors.white,
-              backgroundColor:
-                  isDark ? Colors.black : scheme.primary,
-              elevation: 10,
-              shape: const CircleBorder(side: BorderSide()),
-              onPressed: () async {
-                await context
-                    .pushNamed(RouterPath.timeLinePost)
-                    .then((value) async {
-                  if (value != null) {
-                    ref
-                      ..invalidate(postsStreamProvider)
-                      ..invalidate(blockListProvider);
-                  }
-                });
-              },
-              child: const Icon(Icons.add, size: 35),
-            ),
-          );
-        },
+      floatingActionButton: SizedBox(
+        width: 70,
+        height: 70,
+        child: FloatingActionButton(
+          heroTag: null,
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.black,
+          elevation: 10,
+          shape: const CircleBorder(side: BorderSide()),
+          onPressed: () async {
+            await context
+                .pushNamed(RouterPath.timeLinePost)
+                .then((value) async {
+              if (value != null) {
+                ref
+                  ..invalidate(postsStreamProvider)
+                  ..invalidate(blockListProvider);
+              }
+            });
+          },
+          child: const Icon(Icons.add, size: 35),
+        ),
       ),
     );
   }

@@ -20,13 +20,11 @@ class PostStyle {
   }
 
   static TextStyle restaurant(BuildContext context, {required bool value}) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final scheme = Theme.of(context).colorScheme;
     return TextStyle(
       fontSize: 15,
       fontWeight: FontWeight.bold,
-      color: value
-          ? (isDark ? Colors.white70 : Colors.grey)
-          : Theme.of(context).colorScheme.onSurface,
+      color: value ? scheme.onSurfaceVariant : scheme.onSurface,
     );
   }
 
