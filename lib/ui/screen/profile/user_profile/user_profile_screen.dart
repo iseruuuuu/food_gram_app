@@ -33,20 +33,22 @@ class UserProfileScreen extends HookConsumerWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
+          surfaceTintColor: Colors.transparent,
           elevation: 0,
           centerTitle: false,
           title: Text('@${users.userName}', style: ProfileStyle.userName()),
           leading: GestureDetector(
             onTap: context.pop,
-            child: const Icon(Icons.close, size: 30),
+            child: Icon(
+              Icons.close,
+              size: 30,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
         ),
         body: RefreshIndicator(
-          color: Colors.black,
+          color: Theme.of(context).colorScheme.primary,
           onRefresh: () async {
             await Future<void>.delayed(const Duration(seconds: 1));
             ref.invalidate(profileRepositoryProvider(userId: users.userId));

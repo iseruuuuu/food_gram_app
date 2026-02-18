@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:toastification/toastification.dart';
 
 class SnackBarHelper {
@@ -100,7 +101,7 @@ class SnackBarHelper {
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: backgroundColor ?? Colors.blue,
+            color: backgroundColor ?? AppTheme.primaryBlue,
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(

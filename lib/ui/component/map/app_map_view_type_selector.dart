@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 
 class AppMapViewTypeSelector extends StatelessWidget {
@@ -15,10 +16,13 @@ class AppMapViewTypeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? Colors.black : Colors.white;
+    final unselectedTextColor = isDark ? Colors.white : Colors.black87;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: bgColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -38,7 +42,7 @@ class AppMapViewTypeSelector extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
                   color:
-                      isSelected ? const Color(0xFF1A73E8) : Colors.transparent,
+                      isSelected ? AppTheme.primaryBlue : Colors.transparent,
                   borderRadius: BorderRadius.horizontal(
                     left: type == MapViewType.detail
                         ? const Radius.circular(12)
@@ -52,7 +56,7 @@ class AppMapViewTypeSelector extends StatelessWidget {
                   _getLabel(type, t),
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: isSelected ? Colors.white : Colors.black87,
+                    color: isSelected ? Colors.white : unselectedTextColor,
                     fontWeight:
                         isSelected ? FontWeight.bold : FontWeight.normal,
                     fontSize: 14,

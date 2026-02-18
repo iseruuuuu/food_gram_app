@@ -8,6 +8,12 @@ class AppProfileHeaderSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final skeletonPrimary =
+        isDark ? Colors.grey.shade700 : Colors.grey.shade300;
+    final skeletonSecondary =
+        isDark ? Colors.grey.shade800 : Colors.grey.shade200;
     return Skeletonizer(
       child: Stack(
         clipBehavior: Clip.none,
@@ -17,10 +23,10 @@ class AppProfileHeaderSkeleton extends StatelessWidget {
               Container(
                 height: 150,
                 width: double.infinity,
-                color: Colors.grey.shade300,
+                color: skeletonPrimary,
               ),
               Container(
-                color: Colors.white,
+                color: scheme.surface,
                 padding: const EdgeInsets.only(top: 50, bottom: 10),
                 child: Column(
                   children: [
@@ -28,14 +34,14 @@ class AppProfileHeaderSkeleton extends StatelessWidget {
                     Container(
                       width: 120,
                       height: 20,
-                      color: Colors.grey.shade300,
+                      color: skeletonPrimary,
                     ),
                     const Gap(8),
                     Container(
                       width: 80,
                       height: 24,
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: skeletonSecondary,
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
@@ -43,15 +49,23 @@ class AppProfileHeaderSkeleton extends StatelessWidget {
                     Container(
                       width: 200,
                       height: 16,
-                      color: Colors.grey.shade200,
+                      color: skeletonSecondary,
                     ),
-                    const Gap(8),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _ColumnSkeleton(),
-                        _ColumnSkeleton(),
-                        _ColumnSkeleton(),
+                        _ColumnSkeleton(
+                          primary: skeletonPrimary,
+                          secondary: skeletonSecondary,
+                        ),
+                        _ColumnSkeleton(
+                          primary: skeletonPrimary,
+                          secondary: skeletonSecondary,
+                        ),
+                        _ColumnSkeleton(
+                          primary: skeletonPrimary,
+                          secondary: skeletonSecondary,
+                        ),
                       ],
                     ),
                     const Gap(16),
@@ -60,7 +74,7 @@ class AppProfileHeaderSkeleton extends StatelessWidget {
                       height: 40,
                       margin: const EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: skeletonSecondary,
                         borderRadius: BorderRadius.circular(6),
                       ),
                     ),
@@ -70,7 +84,7 @@ class AppProfileHeaderSkeleton extends StatelessWidget {
                       height: 40,
                       margin: const EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: skeletonSecondary,
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
@@ -88,10 +102,10 @@ class AppProfileHeaderSkeleton extends StatelessWidget {
                 width: 96,
                 height: 96,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
+                  color: skeletonPrimary,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: Colors.white,
+                    color: scheme.surface,
                     width: 4,
                   ),
                 ),
@@ -105,7 +119,13 @@ class AppProfileHeaderSkeleton extends StatelessWidget {
 }
 
 class _ColumnSkeleton extends StatelessWidget {
-  const _ColumnSkeleton();
+  const _ColumnSkeleton({
+    required this.primary,
+    required this.secondary,
+  });
+
+  final Color primary;
+  final Color secondary;
 
   @override
   Widget build(BuildContext context) {
@@ -116,13 +136,13 @@ class _ColumnSkeleton extends StatelessWidget {
           Container(
             width: 32,
             height: 18,
-            color: Colors.grey.shade300,
+            color: primary,
           ),
           const Gap(4),
           Container(
             width: 40,
             height: 12,
-            color: Colors.grey.shade200,
+            color: secondary,
           ),
         ],
       ),
@@ -136,6 +156,9 @@ class AppListViewSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width / 3;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final placeholderColor =
+        isDark ? Colors.grey.shade800 : Colors.grey.shade200;
     return Skeletonizer(
       child: Column(
         children: List.generate(5, (index) {
@@ -146,6 +169,7 @@ class AppListViewSkeleton extends StatelessWidget {
                   margin: const EdgeInsets.all(2),
                   height: screenWidth,
                   decoration: BoxDecoration(
+                    color: placeholderColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ClipRRect(
@@ -167,6 +191,9 @@ class AppSearchListViewSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final placeholderColor =
+        isDark ? Colors.grey.shade800 : Colors.grey.shade200;
     return Skeletonizer(
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -174,12 +201,18 @@ class AppSearchListViewSkeleton extends StatelessWidget {
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Assets.image.food.image(
-                width: 100,
-                height: 100,
-                fit: BoxFit.cover,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: placeholderColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Assets.image.food.image(
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           );
@@ -195,6 +228,8 @@ class AppNearbyRestaurantsSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final skeletonColor = isDark ? Colors.grey.shade800 : Colors.grey.shade200;
     return ListView.builder(
       itemCount: 6,
       itemBuilder: (context, index) {
@@ -207,7 +242,7 @@ class AppNearbyRestaurantsSkeleton extends StatelessWidget {
                 width: 180,
                 height: 16,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
+                  color: skeletonColor,
                   borderRadius: BorderRadius.circular(6),
                 ),
               ),
@@ -219,7 +254,7 @@ class AppNearbyRestaurantsSkeleton extends StatelessWidget {
                       height: 90,
                       margin: EdgeInsets.only(right: i == 2 ? 0 : 8),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: skeletonColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
@@ -239,7 +274,11 @@ class AppPostDetailSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     final screenWidth = MediaQuery.sizeOf(context).width / 1.2;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final skeletonColor = isDark ? Colors.grey.shade700 : Colors.grey.shade300;
+    final textMuted = scheme.onSurfaceVariant;
     return Skeletonizer(
       child: Column(
         children: [
@@ -249,14 +288,20 @@ class AppPostDetailSkeleton extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 child: CircleAvatar(
                   radius: 26,
-                  backgroundColor: Colors.grey.shade300,
+                  backgroundColor: skeletonColor,
                 ),
               ),
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('usernameeeeee', style: TextStyle(color: Colors.grey)),
-                  Text('@username'),
+                  Text(
+                    'usernameeeeee',
+                    style: TextStyle(color: textMuted),
+                  ),
+                  Text(
+                    '@username',
+                    style: TextStyle(color: textMuted),
+                  ),
                 ],
               ),
             ],
@@ -265,7 +310,7 @@ class AppPostDetailSkeleton extends StatelessWidget {
             height: screenWidth,
             width: screenWidth,
             decoration: BoxDecoration(
-              color: Colors.grey.shade300,
+              color: skeletonColor,
               borderRadius: BorderRadius.circular(12),
             ),
           ),
@@ -281,27 +326,27 @@ class AppPostDetailSkeleton extends StatelessWidget {
           ),
           SizedBox(
             width: screenWidth,
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'foodName',
                   style: TextStyle(
-                    color: Colors.grey,
+                    color: textMuted,
                     fontSize: 20,
                   ),
                 ),
                 Text(
                   'In レストラン',
                   style: TextStyle(
-                    color: Colors.grey,
+                    color: textMuted,
                     fontSize: 16,
                   ),
                 ),
                 Text(
                   'すごく美味しかったよぉぉぉぉ',
                   style: TextStyle(
-                    color: Colors.grey,
+                    color: textMuted,
                     fontSize: 15,
                   ),
                 ),

@@ -11,6 +11,7 @@ Future<void> showMaybeNotFoodDialog({
   String? text,
 }) async {
   final t = Translations.of(context);
+  final colorScheme = Theme.of(context).colorScheme;
   final resolvedTitle = title ?? t.maybeNotFoodDialog.title;
   final resolvedText = text ?? t.maybeNotFoodDialog.text;
   final resolvedConfirmText = t.maybeNotFoodDialog.confirm;
@@ -21,7 +22,7 @@ Future<void> showMaybeNotFoodDialog({
     title: resolvedTitle,
     text: resolvedText,
     confirmBtnText: resolvedConfirmText,
-    confirmBtnColor: Colors.black,
+    confirmBtnColor: colorScheme.primary,
     onConfirmBtnTap: () {
       Navigator.of(context).pop();
       onContinue();
@@ -32,14 +33,18 @@ Future<void> showMaybeNotFoodDialog({
       Navigator.of(context).pop();
       onDelete();
     },
-    confirmBtnTextStyle: const TextStyle(
+    confirmBtnTextStyle: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
-      color: Colors.white,
+      color: colorScheme.onPrimary,
     ),
-    cancelBtnTextStyle: const TextStyle(
+    cancelBtnTextStyle: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
+      color: colorScheme.onSurface,
     ),
+    backgroundColor: colorScheme.surface,
+    titleColor: colorScheme.onSurface,
+    textColor: colorScheme.onSurface,
   );
 }

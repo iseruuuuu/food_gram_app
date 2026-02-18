@@ -4,18 +4,19 @@ import 'package:flutter/material.dart';
 class AuthenticationStyle {
   AuthenticationStyle._();
 
-  static TextStyle foodGram() {
-    return const TextStyle(
+  static TextStyle foodGram(BuildContext context) {
+    return TextStyle(
       fontSize: 28,
       fontWeight: FontWeight.bold,
-      color: Colors.black,
+      color: Theme.of(context).colorScheme.onSurface,
     );
   }
 
-  static ButtonStyle signMail() {
+  static ButtonStyle signMail(BuildContext context) {
     return ElevatedButton.styleFrom(
       elevation: 0,
       backgroundColor: Colors.black,
+      foregroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(12),
@@ -24,41 +25,43 @@ class AuthenticationStyle {
     );
   }
 
-  static TextStyle signMailText() {
+  static TextStyle signMailText(BuildContext context) {
     return const TextStyle(
       fontSize: 16,
       color: Colors.white,
     );
   }
 
-  static AuthButtonStyle authButtonStyle(double width) {
+  static AuthButtonStyle authButtonStyle(BuildContext context, double width) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AuthButtonStyle(
-      shadowColor: Colors.grey,
+      shadowColor: isDark ? Colors.transparent : Colors.grey,
       height: 50,
-      elevation: 3,
+      elevation: isDark ? 0 : 3,
       borderRadius: 10,
       width: width,
-      textStyle: const TextStyle(
+      textStyle: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
+        color: Theme.of(context).colorScheme.onSurface,
       ),
     );
   }
 
-  static TextStyle authTitleStyle() {
-    return const TextStyle(
+  static TextStyle authTitleStyle(BuildContext context) {
+    return TextStyle(
       fontSize: 32,
       fontWeight: FontWeight.bold,
-      color: Colors.black,
+      color: Theme.of(context).colorScheme.onSurface,
       letterSpacing: 2,
     );
   }
 
-  static TextStyle authSubTitleStyle() {
-    return const TextStyle(
+  static TextStyle authSubTitleStyle(BuildContext context) {
+    return TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
-      color: Colors.black,
+      color: Theme.of(context).colorScheme.onSurface,
       letterSpacing: 2,
     );
   }

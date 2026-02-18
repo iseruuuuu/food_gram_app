@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
@@ -77,8 +78,12 @@ class MapScreen extends HookConsumerWidget {
       [mapService, state.mapController],
     );
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final fabBg = isDark ? Colors.black : Colors.white;
+    const fabFg = AppTheme.primaryBlue;
+    final fabBorder = isDark ? Colors.white54 : Colors.grey.shade300;
+
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Stack(
         children: [
           AsyncValueSwitcher(
@@ -164,21 +169,22 @@ class MapScreen extends HookConsumerWidget {
                                   width: 60,
                                   height: 60,
                                   child: Theme(
-                                    data: Theme.of(context)
-                                        .copyWith(highlightColor: Colors.white),
+                                    data: Theme.of(context).copyWith(
+                                      highlightColor: fabBg,
+                                    ),
                                     child: FloatingActionButton(
                                       heroTag: 'style_toggle',
-                                      shape: const RoundedRectangleBorder(
-                                        side: BorderSide(color: Colors.white),
-                                        borderRadius: BorderRadius.all(
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(color: fabBorder),
+                                        borderRadius: const BorderRadius.all(
                                           Radius.circular(20),
                                         ),
                                       ),
-                                      foregroundColor: Colors.white,
-                                      backgroundColor: Colors.white,
-                                      focusColor: Colors.white,
-                                      splashColor: Colors.white,
-                                      hoverColor: Colors.white,
+                                      foregroundColor: fabBg,
+                                      backgroundColor: fabBg,
+                                      focusColor: fabBg,
+                                      splashColor: fabBg,
+                                      hoverColor: fabBg,
                                       elevation: 10,
                                       onPressed: () async {
                                         if (!isSubscribed) {
@@ -203,7 +209,7 @@ class MapScreen extends HookConsumerWidget {
                                         isEarthStyle.value
                                             ? CupertinoIcons.globe
                                             : CupertinoIcons.map,
-                                        color: const Color(0xFF1A73E8),
+                                        color: fabFg,
                                         size: 28,
                                       ),
                                     ),
@@ -219,27 +225,27 @@ class MapScreen extends HookConsumerWidget {
                                     height: 60,
                                     child: Theme(
                                       data: Theme.of(context).copyWith(
-                                        highlightColor: Colors.white,
+                                        highlightColor: fabBg,
                                       ),
                                       child: FloatingActionButton(
                                         heroTag: null,
-                                        shape: const RoundedRectangleBorder(
-                                          side: BorderSide(color: Colors.white),
-                                          borderRadius: BorderRadius.all(
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(color: fabBorder),
+                                          borderRadius: const BorderRadius.all(
                                             Radius.circular(20),
                                           ),
                                         ),
-                                        foregroundColor: Colors.white,
-                                        backgroundColor: Colors.white,
-                                        focusColor: Colors.white,
-                                        splashColor: Colors.white,
-                                        hoverColor: Colors.white,
+                                        foregroundColor: fabBg,
+                                        backgroundColor: fabBg,
+                                        focusColor: fabBg,
+                                        splashColor: fabBg,
+                                        hoverColor: fabBg,
                                         elevation: 10,
                                         onPressed:
                                             controller.moveToCurrentLocation,
                                         child: const Icon(
                                           CupertinoIcons.location,
-                                          color: Color(0xFF1A73E8),
+                                          color: fabFg,
                                           size: 28,
                                         ),
                                       ),
@@ -255,26 +261,26 @@ class MapScreen extends HookConsumerWidget {
                                   height: 60,
                                   child: Theme(
                                     data: Theme.of(context).copyWith(
-                                      highlightColor: Colors.white,
+                                      highlightColor: fabBg,
                                     ),
                                     child: FloatingActionButton(
                                       heroTag: 'compass',
-                                      shape: const RoundedRectangleBorder(
-                                        side: BorderSide(color: Colors.white),
-                                        borderRadius: BorderRadius.all(
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(color: fabBorder),
+                                        borderRadius: const BorderRadius.all(
                                           Radius.circular(20),
                                         ),
                                       ),
-                                      foregroundColor: Colors.white,
-                                      backgroundColor: Colors.white,
-                                      focusColor: Colors.white,
-                                      splashColor: Colors.white,
-                                      hoverColor: Colors.white,
+                                      foregroundColor: fabBg,
+                                      backgroundColor: fabBg,
+                                      focusColor: fabBg,
+                                      splashColor: fabBg,
+                                      hoverColor: fabBg,
                                       elevation: 10,
                                       onPressed: controller.resetBearing,
                                       child: const Icon(
                                         CupertinoIcons.compass,
-                                        color: Color.fromRGBO(26, 115, 232, 1),
+                                        color: fabFg,
                                         size: 30,
                                       ),
                                     ),

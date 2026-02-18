@@ -47,24 +47,31 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.surface,
       body: Stack(
         alignment: Alignment.center,
         children: <Widget>[
           Center(
-            child: Assets.splash.splashGif.image(
-              fit: BoxFit.cover,
-              width: MediaQuery.sizeOf(context).width / 2,
-              height: MediaQuery.sizeOf(context).width / 2,
-            ),
+            child: Theme.of(context).brightness == Brightness.dark
+                ? Assets.splash.splashDark.image(
+                    fit: BoxFit.cover,
+                    width: MediaQuery.sizeOf(context).width / 2,
+                    height: MediaQuery.sizeOf(context).width / 2,
+                  )
+                : Assets.splash.splashGif.image(
+                    fit: BoxFit.cover,
+                    width: MediaQuery.sizeOf(context).width / 2,
+                    height: MediaQuery.sizeOf(context).width / 2,
+                  ),
           ),
           Positioned.fill(
             child: AnimatedOpacity(
               opacity: showBranding ? 1.0 : 0.0,
               duration: const Duration(milliseconds: 300),
               child: ColoredBox(
-                color: Colors.white,
+                color: colorScheme.surface,
                 child: Stack(
                   alignment: Alignment.center,
                   children: <Widget>[
@@ -96,7 +103,9 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
                         final style = TextStyle(
                           fontSize: 44,
                           fontWeight: FontWeight.w700,
-                          color: Colors.black,
+                          color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black,
                           letterSpacing: letterSpacing,
                         );
                         return Align(

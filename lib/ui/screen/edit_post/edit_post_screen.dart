@@ -34,6 +34,7 @@ class EditPostScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final deviceWidth = MediaQuery.of(context).size.width;
     final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
     final previewWidth = (deviceWidth * 0.85 * devicePixelRatio).round();
@@ -114,13 +115,12 @@ class EditPostScreen extends HookConsumerWidget {
     return GestureDetector(
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           surfaceTintColor: Colors.transparent,
-          backgroundColor: !loading ? Colors.white : Colors.transparent,
+          backgroundColor: loading ? Colors.transparent : null,
           title: Text(
             t.edit.editTitle,
-            style: EditPostStyle.editTitle(),
+            style: EditPostStyle.editTitle(context),
           ),
           centerTitle: true,
           leading: !loading
@@ -132,10 +132,10 @@ class EditPostScreen extends HookConsumerWidget {
                     );
                     context.pop();
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.close,
                     size: 28,
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 )
               : const SizedBox(),
@@ -296,143 +296,174 @@ class EditPostScreen extends HookConsumerWidget {
                           ),
                         // 画像追加ボタン（画像がない場合のみ表示）
                         if (existingImagePaths.isEmpty && foodImages.isEmpty)
-                          GestureDetector(
-                            onTap: () async {
-                              primaryFocus?.unfocus();
-                              await showModalBottomSheet<void>(
-                                context: context,
-                                builder: (context) {
-                                  return AppPostImageModalSheet(
-                                    camera: () async {
-                                      await ref
-                                          .read(
-                                            editPostViewModelProvider()
-                                                .notifier,
-                                          )
-                                          .camera();
-                                    },
-                                    album: () async {
-                                      await ref
-                                          .read(
-                                            editPostViewModelProvider()
-                                                .notifier,
-                                          )
-                                          .album();
+                          Builder(
+                            builder: (context) {
+                              final isDark = Theme.of(context).brightness ==
+                                  Brightness.dark;
+                              final placeholderBg =
+                                  isDark ? Colors.black : Colors.white;
+                              final placeholderBorder =
+                                  isDark ? Colors.white54 : Colors.black87;
+                              final plusIconColor =
+                                  isDark ? Colors.white : Colors.black;
+                              return GestureDetector(
+                                onTap: () async {
+                                  primaryFocus?.unfocus();
+                                  await showModalBottomSheet<void>(
+                                    context: context,
+                                    builder: (context) {
+                                      return AppPostImageModalSheet(
+                                        camera: () async {
+                                          await ref
+                                              .read(
+                                                editPostViewModelProvider()
+                                                    .notifier,
+                                              )
+                                              .camera();
+                                        },
+                                        album: () async {
+                                          await ref
+                                              .read(
+                                                editPostViewModelProvider()
+                                                    .notifier,
+                                              )
+                                              .album();
+                                        },
+                                      );
                                     },
                                   );
                                 },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: placeholderBg,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border:
+                                        Border.all(color: placeholderBorder),
+                                  ),
+                                  width: deviceWidth,
+                                  height: deviceWidth / 1.7,
+                                  child: foodImageUrl.isNotEmpty
+                                      ? ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: CachedNetworkImage(
+                                            imageUrl: foodImageUrl,
+                                            fit: BoxFit.cover,
+                                            memCacheWidth: previewWidth,
+                                            memCacheHeight: previewHeight,
+                                          ),
+                                        )
+                                      : Icon(
+                                          Icons.add,
+                                          size: 40,
+                                          color: plusIconColor,
+                                        ),
+                                ),
                               );
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: Colors.black87),
-                              ),
-                              width: deviceWidth,
-                              height: deviceWidth / 1.7,
-                              child: foodImageUrl.isNotEmpty
-                                  ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: CachedNetworkImage(
-                                        imageUrl: foodImageUrl,
-                                        fit: BoxFit.cover,
-                                        memCacheWidth: previewWidth,
-                                        memCacheHeight: previewHeight,
-                                      ),
-                                    )
-                                  : const Icon(
-                                      Icons.add,
-                                      size: 40,
-                                      color: Colors.black,
-                                    ),
-                            ),
                           ),
                       ],
                     ),
                     const Gap(20),
                     AppFoodTextField(controller: viewModel.foodController),
                     const Gap(12),
-                    GestureDetector(
-                      onTap: () async {
-                        primaryFocus?.unfocus();
-                        final result = await context
-                            .pushNamed(RouterPath.timeLineRestaurant);
-                        if (result != null) {
-                          ref
-                              .read(editPostViewModelProvider().notifier)
-                              .getPlace(result as Restaurant);
-                        }
-                      },
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Row(
-                          children: [
-                            const Gap(5),
-                            const Icon(
-                              Icons.place,
-                              size: 28,
-                              color: Colors.black,
-                            ),
-                            const Gap(10),
-                            Expanded(
-                              child: SizedBox(
-                                height: 50,
-                                child: ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.zero,
-                                  shape: RoundedRectangleBorder(
-                                    side:
-                                        const BorderSide(color: Colors.black87),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  title: Row(
-                                    children: [
-                                      const Gap(16),
-                                      Expanded(
-                                        child: Text(
-                                          restaurantName,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: EditPostStyle.restaurant(),
-                                        ),
+                    Builder(
+                      builder: (context) {
+                        final scheme = Theme.of(context).colorScheme;
+                        return GestureDetector(
+                          onTap: () async {
+                            primaryFocus?.unfocus();
+                            final result = await context
+                                .pushNamed(RouterPath.timeLineRestaurant);
+                            if (result != null) {
+                              ref
+                                  .read(editPostViewModelProvider().notifier)
+                                  .getPlace(result as Restaurant);
+                            }
+                          },
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: Row(
+                              children: [
+                                const Gap(5),
+                                Icon(
+                                  Icons.place,
+                                  size: 28,
+                                  color: scheme.onSurface,
+                                ),
+                                const Gap(10),
+                                Expanded(
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      color: scheme.surface,
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(
+                                        color: scheme.outlineVariant,
                                       ),
-                                    ],
+                                    ),
+                                    child: ListTile(
+                                      dense: true,
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                      ),
+                                      title: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              restaurantName,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: EditPostStyle.restaurant(
+                                                context,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
+                          ),
+                        );
+                      },
                     ),
                     const Gap(6),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Row(
-                        children: [
-                          const Gap(5),
-                          const Icon(
-                            Icons.label,
-                            size: 28,
-                            color: Colors.black,
+                    Builder(
+                      builder: (context) {
+                        final scheme = Theme.of(context).colorScheme;
+                        return SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: Row(
+                            children: [
+                              const Gap(5),
+                              Icon(
+                                Icons.label,
+                                size: 28,
+                                color: scheme.onSurface,
+                              ),
+                              const Gap(10),
+                              Expanded(
+                                child: AppFoodTag(
+                                  foodTags: foodTags.value,
+                                  foodTexts: foodTexts,
+                                  onTagSelected: (tags) {
+                                    foodTags.value = tags;
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                          const Gap(5),
-                          Expanded(
-                            child: AppFoodTag(
-                              foodTags: foodTags.value,
-                              foodTexts: foodTexts,
-                              onTagSelected: (tags) {
-                                foodTags.value = tags;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                     const Gap(6),
                     Text(
                       t.post.ratingLabel,
-                      style: EditPostStyle.category(),
+                      style: EditPostStyle.category(context),
                     ),
                     const Gap(6),
                     Padding(
@@ -444,7 +475,9 @@ class EditPostScreen extends HookConsumerWidget {
                             allowHalfRating: true,
                             itemPadding:
                                 const EdgeInsets.symmetric(horizontal: 2),
-                            unratedColor: Colors.grey.shade300,
+                            unratedColor: isDark
+                                ? Colors.grey.shade700
+                                : Colors.grey.shade300,
                             itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color: Colors.amber,
@@ -458,9 +491,10 @@ class EditPostScreen extends HookConsumerWidget {
                           const Spacer(),
                           Text(
                             star.toStringAsFixed(1),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                         ],
@@ -475,29 +509,33 @@ class EditPostScreen extends HookConsumerWidget {
                       dense: true,
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 10),
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.visibility_off,
                         size: 28,
-                        color: Colors.black,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                       title: Text(
                         t.anonymous.post,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       subtitle: Text(
                         t.anonymous.postDescription,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
-                          color: Colors.grey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                       trailing: Switch(
                         value: isAnonymous,
-                        activeThumbColor: Colors.blue[600],
-                        activeTrackColor: Colors.blue[100],
+                        activeThumbColor: Theme.of(context).colorScheme.primary,
+                        activeTrackColor: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withValues(alpha: 0.3),
                         inactiveTrackColor: Colors.grey[300],
                         inactiveThumbColor: Colors.white,
                         onChanged: (value) {

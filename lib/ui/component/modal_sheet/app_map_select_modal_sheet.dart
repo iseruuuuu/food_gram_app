@@ -14,12 +14,16 @@ class AppMapSelectModalSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    final handleColor = Theme.of(context).brightness == Brightness.dark
+        ? Colors.grey[600]
+        : Colors.grey[300];
     return SizedBox(
       height: MediaQuery.of(context).size.height / 2.1,
       child: DecoratedBox(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: scheme.surface,
+          borderRadius: const BorderRadius.only(
             topRight: Radius.circular(30),
             topLeft: Radius.circular(30),
           ),
@@ -32,7 +36,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey[300],
+                  color: handleColor,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -45,7 +49,7 @@ class AppMapSelectModalSheet extends StatelessWidget {
                   Icon(
                     Icons.map_outlined,
                     size: 20,
-                    color: Colors.grey[700],
+                    color: scheme.onSurfaceVariant,
                   ),
                   const SizedBox(width: 8),
                   Text(
@@ -53,13 +57,13 @@ class AppMapSelectModalSheet extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey[900],
+                      color: scheme.onSurface,
                     ),
                   ),
                 ],
               ),
             ),
-            const Divider(height: 1),
+            Divider(height: 1, color: scheme.outlineVariant),
             Expanded(
               child: Column(
                 children: [
@@ -128,17 +132,17 @@ class AppMapSelectModalSheet extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  const Divider(),
+                  Divider(color: scheme.outlineVariant),
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width,
                     child: TextButton(
                       onPressed: () => context.pop(),
                       child: Text(
                         t.close,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
-                          color: Colors.red,
+                          color: scheme.error,
                         ),
                       ),
                     ),
@@ -166,9 +170,13 @@ class _MapOptionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final cardColor = Theme.of(context).brightness == Brightness.dark
+        ? scheme.surfaceContainerHighest
+        : Colors.grey[100]!;
     return Card(
       elevation: 0,
-      color: Colors.grey[100],
+      color: cardColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -179,10 +187,10 @@ class _MapOptionItem extends StatelessWidget {
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 13,
-              color: Colors.black,
+              color: scheme.onSurface,
             ),
           ),
         ),

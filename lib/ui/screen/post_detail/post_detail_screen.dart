@@ -79,18 +79,17 @@ class PostDetailScreen extends HookConsumerWidget {
     return PopScope(
       canPop: !(loading || isInitialLoading),
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
           automaticallyImplyLeading: !(loading || isInitialLoading),
           surfaceTintColor: Colors.transparent,
           leading: loading || menuLoading.value || isInitialLoading
               ? const SizedBox.shrink()
               : GestureDetector(
                   onTap: () => context.pop(),
-                  child: const Icon(
+                  child: Icon(
                     Icons.close,
                     size: 30,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
           actions: [
@@ -144,9 +143,9 @@ class PostDetailScreen extends HookConsumerWidget {
                     },
                   );
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.menu,
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
           ],

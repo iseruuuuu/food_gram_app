@@ -59,7 +59,6 @@ class MyProfileScreen extends HookConsumerWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(0),
           child: AppBar(
@@ -77,8 +76,11 @@ class MyProfileScreen extends HookConsumerWidget {
             ref.read(myProfileViewModelProvider().notifier).getData();
           },
           onData: (value) {
+            final isDark = Theme.of(context).brightness == Brightness.dark;
+            final surfaceColor = isDark ? Colors.black : Colors.white;
             return RefreshIndicator(
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.surface,
               onRefresh: () async {
                 await Future<void>.delayed(const Duration(seconds: 1));
                 ref.invalidate(myPostStreamProvider);
@@ -115,7 +117,7 @@ class MyProfileScreen extends HookConsumerWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Material(
-                                    color: Colors.white,
+                                    color: surfaceColor,
                                     elevation: 4,
                                     borderRadius: BorderRadius.circular(20),
                                     child: InkWell(
@@ -130,18 +132,24 @@ class MyProfileScreen extends HookConsumerWidget {
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            const Icon(
+                                            Icon(
                                               Icons.bookmark,
                                               size: 20,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
                                             ),
                                             const SizedBox(width: 6),
                                             Text(
                                               Translations.of(context)
                                                   .stored
                                                   .savedPosts,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface,
                                               ),
                                             ),
                                           ],
@@ -151,7 +159,7 @@ class MyProfileScreen extends HookConsumerWidget {
                                   ),
                                   const SizedBox(width: 8),
                                   Material(
-                                    color: Colors.white,
+                                    color: surfaceColor,
                                     shape: const CircleBorder(),
                                     elevation: 4,
                                     child: IconButton(
@@ -199,30 +207,39 @@ class MyProfileScreen extends HookConsumerWidget {
             );
           },
         ),
-        floatingActionButton: SizedBox(
-          width: 70,
-          height: 70,
-          child: FloatingActionButton(
-            heroTag: null,
-            foregroundColor: Colors.black,
-            backgroundColor: Colors.black,
-            elevation: 10,
-            shape: const CircleBorder(side: BorderSide()),
-            onPressed: () async {
-              await context
-                  .pushNamed(RouterPath.myProfilePost)
-                  .then((value) async {
-                if (value != null) {
-                  ref.invalidate(myPostStreamProvider);
-                }
-              });
-            },
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-              size: 35,
-            ),
-          ),
+        floatingActionButton: Builder(
+          builder: (context) {
+            final isDark = Theme.of(context).brightness == Brightness.dark;
+            return SizedBox(
+              width: 70,
+              height: 70,
+              child: FloatingActionButton(
+                heroTag: null,
+                backgroundColor: Colors.black,
+                foregroundColor: Colors.white,
+                elevation: 10,
+                shape: CircleBorder(
+                  side: BorderSide(
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                ),
+                onPressed: () async {
+                  await context
+                      .pushNamed(RouterPath.myProfilePost)
+                      .then((value) async {
+                    if (value != null) {
+                      ref.invalidate(myPostStreamProvider);
+                    }
+                  });
+                },
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 35,
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

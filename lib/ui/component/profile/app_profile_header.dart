@@ -34,6 +34,10 @@ class AppProfileHeader extends ConsumerWidget {
     final point =
         (heartAmount - users.exchangedPoint) * conversion + postlengthPoint;
     final trophyAsset = _getTrophyAsset(length);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final headerBg = Theme.of(context).colorScheme.surface;
+    final textColor = isDark ? Colors.white : Colors.black;
+    final textColor87 = isDark ? Colors.white70 : Colors.black87;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -50,7 +54,7 @@ class AppProfileHeader extends ConsumerWidget {
               ),
             ),
             Container(
-              color: Colors.white,
+              color: headerBg,
               padding: const EdgeInsets.only(top: 50, bottom: 10),
               child: Column(
                 children: [
@@ -61,9 +65,10 @@ class AppProfileHeader extends ConsumerWidget {
                         const Gap(8),
                         Text(
                           users.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
+                            color: textColor,
                           ),
                         ),
                         if (users.isSubscribe)
@@ -140,9 +145,9 @@ class AppProfileHeader extends ConsumerWidget {
                       child: Text(
                         users.selfIntroduce,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
-                          color: Colors.black87,
+                          color: textColor87,
                         ),
                       ),
                     ),
@@ -154,15 +159,18 @@ class AppProfileHeader extends ConsumerWidget {
                       BuildStatColumn(
                         count: length.toString(),
                         label: t.profile.postCount,
+                        isDark: isDark,
                       ),
                       BuildStatColumn(
                         count: heartAmount.toString(),
                         label: t.likeButton,
+                        isDark: isDark,
                       ),
                       if (currentUser == users.userId)
                         BuildStatColumn(
                           count: point.toStringAsFixed(2),
                           label: t.profile.pointCount,
+                          isDark: isDark,
                         ),
                     ],
                   ),
@@ -186,7 +194,9 @@ class AppProfileHeader extends ConsumerWidget {
                             });
                           },
                           style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Colors.grey),
+                            side: BorderSide(
+                              color: isDark ? Colors.white54 : Colors.grey,
+                            ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(6),
                             ),
@@ -194,8 +204,8 @@ class AppProfileHeader extends ConsumerWidget {
                           ),
                           child: Text(
                             t.profile.editButton,
-                            style: const TextStyle(
-                              color: Colors.black87,
+                            style: TextStyle(
+                              color: textColor87,
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                             ),
@@ -396,30 +406,35 @@ class BuildStatColumn extends StatelessWidget {
   const BuildStatColumn({
     required this.count,
     required this.label,
+    this.isDark = false,
     super.key,
   });
 
   final String count;
   final String label;
+  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
+    final textColor = isDark ? Colors.white : Colors.black;
+    final labelColor = isDark ? Colors.white70 : Colors.black87;
     return SizedBox(
       width: MediaQuery.sizeOf(context).width / 3,
       child: Column(
         children: [
           Text(
             count,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
+              color: textColor,
             ),
           ),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
-              color: Colors.black87,
+              color: labelColor,
             ),
           ),
         ],

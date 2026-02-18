@@ -105,6 +105,10 @@ class $AssetsImageGen {
   /// File path: assets/image/empty.png
   AssetGenImage get empty => const AssetGenImage('assets/image/empty.png');
 
+  /// File path: assets/image/empty_dark.png
+  AssetGenImage get emptyDark =>
+      const AssetGenImage('assets/image/empty_dark.png');
+
   /// File path: assets/image/error.png
   AssetGenImage get error => const AssetGenImage('assets/image/error.png');
 
@@ -167,6 +171,7 @@ class $AssetsImageGen {
         appIcon,
         authImage,
         empty,
+        emptyDark,
         error,
         food,
         foodgramer,
@@ -270,8 +275,12 @@ class $AssetsSplashGen {
   AssetGenImage get splashPng =>
       const AssetGenImage('assets/splash/splash.png');
 
+  /// File path: assets/splash/splash_dark.gif
+  AssetGenImage get splashDark =>
+      const AssetGenImage('assets/splash/splash_dark.gif');
+
   /// List of all assets
-  List<AssetGenImage> get values => [splashGif, splashPng];
+  List<AssetGenImage> get values => [splashGif, splashPng, splashDark];
 }
 
 class $AssetsTrophyGen {

@@ -32,6 +32,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
       ),
     );
     final t = Translations.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
     final animationController =
         useAnimationController(duration: const Duration(seconds: 2));
     useEffect(
@@ -51,10 +52,8 @@ class RestaurantReviewScreen extends HookConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
         leading: GestureDetector(
           onTap: context.pop,
           child: const Icon(Icons.close, size: 30),
@@ -62,7 +61,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
         title: FittedBox(
           child: Text(
             posts.restaurant,
-            style: RestaurantReviewStyle.restaurant(),
+            style: RestaurantReviewStyle.restaurant(colorScheme.onSurface),
           ),
         ),
       ),
@@ -92,7 +91,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                       height: 400,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
-                        color: Colors.grey[100],
+                        color: colorScheme.surfaceContainerHighest,
                       ),
                       child: Stack(
                         children: [
@@ -105,7 +104,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                 builder: (context) => Container(
                                   width: deviceWidth,
                                   height: deviceWidth,
-                                  color: Colors.white,
+                                  color: colorScheme.surface,
                                   child: CachedNetworkImage(
                                     imageUrl: getImageUrl(
                                       data.first.posts.firstFoodImage,
@@ -124,8 +123,8 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                 fit: BoxFit.cover,
                                 width: double.infinity,
                                 height: double.infinity,
-                                placeholder: (context, url) => Container(
-                                  color: Colors.grey[300],
+                                placeholder: (context, url) => ColoredBox(
+                                  color: colorScheme.surfaceContainerHighest,
                                   child: const Center(
                                     child: CircularProgressIndicator(),
                                   ),
@@ -172,7 +171,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                       borderRadius: BorderRadius.circular(12),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.black
+                                          color: colorScheme.shadow
                                               .withValues(alpha: 0.3),
                                           blurRadius: 8,
                                           offset: const Offset(0, 2),
@@ -242,8 +241,8 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                               BorderRadius.circular(8),
                                         ),
                                         elevation: 4,
-                                        shadowColor:
-                                            Colors.black.withValues(alpha: 0.3),
+                                        shadowColor: colorScheme.shadow
+                                            .withValues(alpha: 0.3),
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
@@ -276,17 +275,17 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                               width: 4,
                               height: 20,
                               decoration: BoxDecoration(
-                                color: Colors.black,
+                                color: colorScheme.primary,
                                 borderRadius: BorderRadius.circular(2),
                               ),
                             ),
                             const Gap(8),
                             Text(
                               t.restaurantReview.otherPosts,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color: colorScheme.onSurface,
                               ),
                             ),
                           ],
@@ -313,21 +312,21 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                 margin: const EdgeInsets.only(right: 12),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
-                                  color: Colors.white,
+                                  color: colorScheme.surface,
                                   border: Border.all(
-                                    color: Colors.black.withValues(alpha: 0.1),
+                                    color: colorScheme.outlineVariant,
                                     width: 2,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color:
-                                          Colors.black.withValues(alpha: 0.1),
+                                      color: colorScheme.shadow
+                                          .withValues(alpha: 0.1),
                                       blurRadius: 10,
                                       offset: const Offset(0, 4),
                                     ),
                                     BoxShadow(
-                                      color:
-                                          Colors.black.withValues(alpha: 0.05),
+                                      color: colorScheme.shadow
+                                          .withValues(alpha: 0.05),
                                       blurRadius: 10,
                                       offset: const Offset(0, -4),
                                     ),
@@ -353,8 +352,9 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                               fit: BoxFit.cover,
                                               width: double.infinity,
                                               placeholder: (context, url) =>
-                                                  Container(
-                                                color: Colors.grey[300],
+                                                  ColoredBox(
+                                                color: colorScheme
+                                                    .surfaceContainerHighest,
                                                 child: const Center(
                                                   child:
                                                       CircularProgressIndicator(
@@ -393,9 +393,10 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                       child: FittedBox(
                                         child: Text(
                                           model.posts.foodName,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
+                                            color: colorScheme.onSurface,
                                           ),
                                         ),
                                       ),
@@ -417,17 +418,17 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                             width: 4,
                             height: 20,
                             decoration: BoxDecoration(
-                              color: Colors.black,
+                              color: colorScheme.primary,
                               borderRadius: BorderRadius.circular(2),
                             ),
                           ),
                           const Gap(8),
                           Text(
                             t.restaurantReview.reviewList,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                              color: colorScheme.onSurface,
                             ),
                           ),
                         ],
@@ -448,17 +449,19 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: Colors.black.withValues(alpha: 0.1),
+                              color: colorScheme.outlineVariant,
                               width: 2,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.1),
+                                color:
+                                    colorScheme.shadow.withValues(alpha: 0.1),
                                 blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.05),
+                                color:
+                                    colorScheme.shadow.withValues(alpha: 0.05),
                                 blurRadius: 10,
                                 offset: const Offset(0, -4),
                               ),
@@ -466,7 +469,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                           ),
                           child: Card(
                             elevation: 0,
-                            color: Colors.white,
+                            color: colorScheme.surface,
                             margin: EdgeInsets.zero,
                             child: Padding(
                               padding: const EdgeInsets.all(8),
@@ -480,9 +483,10 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                         height: 48,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: Colors.grey[300],
+                                          color: colorScheme
+                                              .surfaceContainerHighest,
                                           border: Border.all(
-                                            color: Colors.white,
+                                            color: colorScheme.surface,
                                             width: 2,
                                           ),
                                         ),
@@ -507,9 +511,10 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                             model.posts.isAnonymous
                                                 ? t.anonymous.poster
                                                 : model.users.name,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18,
+                                              color: colorScheme.onSurface,
                                             ),
                                           ),
                                         ],
@@ -519,9 +524,10 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                   const Gap(8),
                                   Text(
                                     model.posts.foodName,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
+                                      color: colorScheme.onSurface,
                                     ),
                                   ),
                                   if (model.posts.comment.isNotEmpty) ...[
@@ -532,9 +538,10 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                       ),
                                       child: Text(
                                         model.posts.comment,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.normal,
+                                          color: colorScheme.onSurface,
                                         ),
                                       ),
                                     ),
@@ -552,7 +559,12 @@ class RestaurantReviewScreen extends HookConsumerWidget {
               );
             },
             failure: (_) {
-              return Center(child: Text(t.restaurantReview.error));
+              return Center(
+                child: Text(
+                  t.restaurantReview.error,
+                  style: TextStyle(color: colorScheme.onSurface),
+                ),
+              );
             },
           ),
         ),

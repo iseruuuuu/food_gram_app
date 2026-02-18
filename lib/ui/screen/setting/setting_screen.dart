@@ -34,7 +34,6 @@ class SettingScreen extends HookConsumerWidget {
     final hasUser = ref.watch(currentUserProvider) != null;
     final t = Translations.of(context);
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(0),
         child: AppBar(
@@ -158,10 +157,10 @@ class SettingScreen extends HookConsumerWidget {
                             const Gap(8),
                             Text(
                               t.setting.accountManagement,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.black87,
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
                           ],
@@ -276,17 +275,19 @@ class SettingScreen extends HookConsumerWidget {
                         child: Column(
                           children: [
                             ListTile(
-                              leading: const Icon(
+                              leading: Icon(
                                 Icons.settings,
-                                color: Colors.grey,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
                               ),
                               title: Text(
                                 t.setting.appVersion,
-                                style: SettingStyle.appVersion(),
+                                style: SettingStyle.appVersion(context),
                               ),
                               trailing: Text(
                                 state.version,
-                                style: SettingStyle.version(),
+                                style: SettingStyle.version(context),
                               ),
                             ),
                           ],

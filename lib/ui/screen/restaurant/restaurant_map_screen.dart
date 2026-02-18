@@ -68,25 +68,23 @@ class _RestaurantMapScreenState extends State<RestaurantMapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        surfaceTintColor: Colors.white,
-        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           onPressed: context.pop,
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios,
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         title: Text(
           widget.restaurant.name,
-          style: const TextStyle(
-            color: Colors.black,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
-      backgroundColor: Colors.white,
       body: Stack(
         children: [
           MapLibreMap(
@@ -114,8 +112,13 @@ class _RestaurantMapScreenState extends State<RestaurantMapScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(12),
+                  border: Theme.of(context).brightness == Brightness.dark
+                      ? Border.all(
+                          color: Theme.of(context).colorScheme.outlineVariant,
+                        )
+                      : null,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.1),
@@ -129,16 +132,16 @@ class _RestaurantMapScreenState extends State<RestaurantMapScreen> {
                   children: [
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.restaurant,
                           size: 20,
-                          color: Colors.black,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             widget.restaurant.name,
-                            style: RestaurantStyle.name(),
+                            style: RestaurantStyle.name(context),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -150,18 +153,16 @@ class _RestaurantMapScreenState extends State<RestaurantMapScreen> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.place,
                             size: 16,
-                            color: Colors.black,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
                               widget.restaurant.address,
-                              style: RestaurantStyle.address().copyWith(
-                                color: Colors.black,
-                              ),
+                              style: RestaurantStyle.address(context),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),

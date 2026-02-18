@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
@@ -29,6 +30,7 @@ Future<void> showStreakDialog({
     context: context,
     builder: (context) {
       final deviceWidth = MediaQuery.of(context).size.width;
+      final colorScheme = Theme.of(context).colorScheme;
       return SizedBox(
         width: deviceWidth * 0.85,
         child: GiffyDialog.image(
@@ -38,7 +40,7 @@ Future<void> showStreakDialog({
             errorBuilder: (context, error, stackTrace) {
               return Container(
                 height: 250,
-                color: Colors.grey[200],
+                color: colorScheme.surfaceContainerHighest,
                 child: const Icon(
                   Icons.celebration,
                   size: 100,
@@ -50,16 +52,18 @@ Future<void> showStreakDialog({
           title: Text(
             '✨$title✨',
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
+              color: colorScheme.onSurface,
             ),
           ),
           content: Text(
             content,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
+              color: colorScheme.onSurface,
             ),
           ),
           actions: [
@@ -67,20 +71,20 @@ Future<void> showStreakDialog({
               child: TextButton(
                 onPressed: () => Navigator.of(context).pop(),
                 style: TextButton.styleFrom(
-                  foregroundColor: Colors.blue,
+                  foregroundColor: AppTheme.primaryBlue,
                 ),
                 child: Text(
                   t.close,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: AppTheme.primaryBlue,
                   ),
                 ),
               ),
             ),
           ],
-          backgroundColor: Colors.white,
+          backgroundColor: colorScheme.surface,
         ),
       );
     },

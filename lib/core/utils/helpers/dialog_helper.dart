@@ -11,6 +11,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 class DialogHelper {
   void forceUpdateDialog(BuildContext context) {
     final t = Translations.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
     QuickAlert.show(
       disableBackBtn: true,
       context: context,
@@ -18,7 +19,15 @@ class DialogHelper {
       title: t.forceUpdate.title,
       text: t.forceUpdate.text,
       confirmBtnText: t.forceUpdate.buttonTitle,
-      confirmBtnColor: Colors.black,
+      confirmBtnColor: colorScheme.primary,
+      confirmBtnTextStyle: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: colorScheme.onPrimary,
+      ),
+      backgroundColor: colorScheme.surface,
+      titleColor: colorScheme.onSurface,
+      textColor: colorScheme.onSurface,
       onConfirmBtnTap: () {
         if (Platform.isIOS) {
           LaunchUrlHelper().openSNSUrl(URL.appleStore);
@@ -36,24 +45,29 @@ class DialogHelper {
     required BuildContext context,
   }) {
     final t = Translations.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
     QuickAlert.show(
       context: context,
       type: QuickAlertType.warning,
       title: title,
       text: text,
       confirmBtnText: t.dialog.yesButton,
+      backgroundColor: colorScheme.surface,
+      titleColor: colorScheme.onSurface,
+      textColor: colorScheme.onSurface,
       onConfirmBtnTap: onTap,
-      confirmBtnTextStyle: const TextStyle(
+      confirmBtnTextStyle: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        color: Colors.white,
+        color: colorScheme.onPrimary,
       ),
       showCancelBtn: true,
       cancelBtnText: t.dialog.noButton,
       onCancelBtnTap: () => context.pop(),
-      cancelBtnTextStyle: const TextStyle(
+      cancelBtnTextStyle: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
+        color: colorScheme.onSurface,
       ),
     );
   }
@@ -65,6 +79,7 @@ class DialogHelper {
     required BuildContext context,
   }) {
     final t = Translations.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
     QuickAlert.show(
       context: context,
       type: QuickAlertType.warning,
@@ -73,17 +88,21 @@ class DialogHelper {
       confirmBtnText: t.dialog.logoutButton,
       onConfirmBtnTap: onTap,
       confirmBtnColor: Colors.red,
-      confirmBtnTextStyle: const TextStyle(
+      backgroundColor: colorScheme.surface,
+      titleColor: colorScheme.onSurface,
+      textColor: colorScheme.onSurface,
+      confirmBtnTextStyle: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        color: Colors.white,
+        color: colorScheme.onPrimary,
       ),
       showCancelBtn: true,
       cancelBtnText: t.cancel,
       onCancelBtnTap: () => context.pop(),
-      cancelBtnTextStyle: const TextStyle(
+      cancelBtnTextStyle: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
+        color: colorScheme.onSurface,
       ),
     );
   }

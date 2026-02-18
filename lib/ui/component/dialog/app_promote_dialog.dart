@@ -11,8 +11,9 @@ class AppPromoteDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
     return Dialog(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -23,28 +24,33 @@ class AppPromoteDialog extends ConsumerWidget {
           children: [
             Text(
               t.promoteDialog.title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
+                color: colorScheme.onSurface,
               ),
             ),
             const Gap(20),
             _buildFeatureItem(
+              context: context,
               icon: Icons.emoji_events,
               title: t.promoteDialog.trophyTitle,
               description: t.promoteDialog.trophyDesc,
             ),
             _buildFeatureItem(
+              context: context,
               icon: Icons.label,
               title: t.promoteDialog.tagTitle,
               description: t.promoteDialog.tagDesc,
             ),
             _buildFeatureItem(
+              context: context,
               icon: Icons.account_circle,
               title: t.promoteDialog.iconTitle,
               description: t.promoteDialog.iconDesc,
             ),
             _buildFeatureItem(
+              context: context,
               icon: Icons.block,
               title: t.promoteDialog.adTitle,
               description: t.promoteDialog.adDesc,
@@ -85,9 +91,9 @@ class AppPromoteDialog extends ConsumerWidget {
               ),
               child: Text(
                 t.promoteDialog.later,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
-                  color: Colors.black,
+                  color: colorScheme.onSurface,
                 ),
               ),
             ),
@@ -98,10 +104,12 @@ class AppPromoteDialog extends ConsumerWidget {
   }
 
   Widget _buildFeatureItem({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required String description,
   }) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Row(
@@ -115,16 +123,17 @@ class AppPromoteDialog extends ConsumerWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface,
                   ),
                 ),
                 Text(
                   description,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],

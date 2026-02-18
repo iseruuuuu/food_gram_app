@@ -34,6 +34,11 @@ class AppShareDialog extends HookConsumerWidget {
       },
       [adInterstitial],
     );
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final overlayFg = isDark ? colorScheme.onSurface : Colors.white;
+    final overlayBtnBg = colorScheme.surface;
+    final overlayBtnFg = colorScheme.onSurface;
     return Scaffold(
       backgroundColor: Colors.black.withValues(alpha: 0.8),
       body: Stack(
@@ -47,16 +52,16 @@ class AppShareDialog extends HookConsumerWidget {
                   centerTitle: true,
                   leading: IconButton(
                     onPressed: context.pop,
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.close,
-                      color: Colors.white,
+                      color: overlayFg,
                       size: 30,
                     ),
                   ),
                   title: Text(
                     t.app.shareTitle,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: overlayFg,
                       fontSize: 20,
                     ),
                   ),
@@ -71,8 +76,8 @@ class AppShareDialog extends HookConsumerWidget {
                         height: 48,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.white,
+                            backgroundColor: overlayBtnBg,
+                            foregroundColor: overlayBtnFg,
                           ),
                           onPressed: () async {
                             await adInterstitial.showAd(
@@ -94,17 +99,17 @@ class AppShareDialog extends HookConsumerWidget {
                           },
                           child: Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.ios_share,
                                 size: 25,
-                                color: Colors.black,
+                                color: overlayBtnFg,
                               ),
                               const Gap(15),
                               Text(
                                 t.share.textAndImage,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 16,
-                                  color: Colors.black,
+                                  color: overlayBtnFg,
                                   fontWeight: FontWeight.w300,
                                 ),
                               ),
@@ -117,8 +122,8 @@ class AppShareDialog extends HookConsumerWidget {
                         height: 48,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.white,
+                            backgroundColor: overlayBtnBg,
+                            foregroundColor: overlayBtnFg,
                           ),
                           onPressed: () async {
                             await adInterstitial.showAd(
@@ -136,17 +141,17 @@ class AppShareDialog extends HookConsumerWidget {
                           },
                           child: Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.photo_outlined,
                                 size: 25,
-                                color: Colors.black,
+                                color: overlayBtnFg,
                               ),
                               const Gap(15),
                               Text(
                                 t.share.imageOnly,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 16,
-                                  color: Colors.black,
+                                  color: overlayBtnFg,
                                   fontWeight: FontWeight.w300,
                                 ),
                               ),

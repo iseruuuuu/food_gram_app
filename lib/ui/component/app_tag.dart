@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/tag.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/search_utils.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
@@ -66,13 +67,17 @@ class AppFoodTag extends HookWidget {
             },
             [searchController],
           );
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+          final sheetBg = isDark ? Colors.black : Colors.white;
+          final sheetFg = isDark ? Colors.white : Colors.black;
+          final sheetFgMuted = isDark ? Colors.white70 : Colors.grey;
           return GestureDetector(
             onTap: () => primaryFocus?.unfocus(),
             child: Container(
               height: MediaQuery.of(context).size.height * 0.7,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: sheetBg,
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
                 ),
@@ -97,9 +102,10 @@ class AppFoodTag extends HookWidget {
                         const Spacer(),
                         Text(
                           Translations.of(context).post.selectFoodTag,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
+                            color: sheetFg,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -112,10 +118,11 @@ class AppFoodTag extends HookWidget {
                           },
                           child: Text(
                             Translations.of(context).save,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF0168B7),
+                              color:
+                                  isDark ? Colors.white : AppTheme.primaryBlue,
                             ),
                           ),
                         ),
@@ -129,17 +136,26 @@ class AppFoodTag extends HookWidget {
                     ),
                     child: TextField(
                       controller: searchController,
+                      style: TextStyle(color: sheetFg),
                       decoration: InputDecoration(
                         hintText: Translations.of(context).searchFood,
-                        prefixIcon: const Icon(Icons.search),
+                        hintStyle: TextStyle(color: sheetFgMuted),
+                        prefixIcon: Icon(Icons.search, color: sheetFg),
                         suffixIcon: searchQuery.value.isNotEmpty
                             ? IconButton(
-                                icon: const Icon(Icons.clear),
+                                icon: Icon(Icons.clear, color: sheetFg),
                                 onPressed: searchController.clear,
                               )
                             : null,
+                        filled: isDark,
+                        fillColor: isDark ? Colors.grey[900] : null,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: sheetFgMuted),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: sheetFgMuted),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -157,17 +173,17 @@ class AppFoodTag extends HookWidget {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.search_off,
                                     size: 64,
-                                    color: Colors.grey,
+                                    color: sheetFgMuted,
                                   ),
                                   const Gap(16),
                                   Text(
                                     Translations.of(context).noResultsFound,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.grey,
+                                      color: sheetFgMuted,
                                     ),
                                   ),
                                 ],
@@ -188,9 +204,10 @@ class AppFoodTag extends HookWidget {
                                           entry.key,
                                           context,
                                         ),
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
+                                          color: sheetFg,
                                         ),
                                       ),
                                     ),
@@ -232,14 +249,16 @@ class AppFoodTag extends HookWidget {
                                             ),
                                             decoration: BoxDecoration(
                                               color: isSelected
-                                                  ? Colors.blue
-                                                  : Colors.white,
+                                                  ? AppTheme.primaryBlue
+                                                  : sheetBg,
                                               borderRadius:
                                                   BorderRadius.circular(20),
                                               border: Border.all(
                                                 color: isSelected
-                                                    ? Colors.blue
-                                                    : Colors.grey[300]!,
+                                                    ? AppTheme.primaryBlue
+                                                    : (isDark
+                                                        ? Colors.white54
+                                                        : Colors.grey[300]!),
                                               ),
                                             ),
                                             child: Row(
@@ -258,7 +277,7 @@ class AppFoodTag extends HookWidget {
                                                     fontSize: 14,
                                                     color: isSelected
                                                         ? Colors.white
-                                                        : Colors.black87,
+                                                        : sheetFg,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
@@ -286,14 +305,16 @@ class AppFoodTag extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useValueListenable(foodTexts);
+    final scheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () => _showTagSelector(context, foodTexts),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 8),
+        padding: EdgeInsets.zero,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(),
+            color: scheme.surface,
+            border: Border.all(color: scheme.outlineVariant),
             borderRadius: BorderRadius.circular(6),
           ),
           child: Column(
@@ -302,15 +323,15 @@ class AppFoodTag extends HookWidget {
                 height: 50,
                 child: Row(
                   children: [
-                    const Gap(16),
+                    const Gap(12),
                     Expanded(
                       child: foodTags.isEmpty
                           ? Text(
                               Translations.of(context).post.categoryTitle,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey,
+                                color: scheme.onSurfaceVariant,
                               ),
                             )
                           : Row(
@@ -322,11 +343,12 @@ class AppFoodTag extends HookWidget {
                                       vertical: 4,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: Colors.blue.withValues(alpha: 0.1),
+                                      color: AppTheme.primaryBlue
+                                          .withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
-                                        color:
-                                            Colors.blue.withValues(alpha: 0.3),
+                                        color: AppTheme.primaryBlue
+                                            .withValues(alpha: 0.3),
                                       ),
                                     ),
                                     child: Row(
@@ -334,7 +356,10 @@ class AppFoodTag extends HookWidget {
                                       children: [
                                         Text(
                                           foodTags.first,
-                                          style: const TextStyle(fontSize: 18),
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: scheme.onSurface,
+                                          ),
                                         ),
                                         const Gap(2),
                                         Text(
@@ -342,10 +367,12 @@ class AppFoodTag extends HookWidget {
                                             foodTags.first,
                                             context,
                                           ),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
-                                            color: Color(0xFF0168B7),
+                                            color: isDark
+                                                ? Colors.white
+                                                : AppTheme.primaryBlue,
                                           ),
                                         ),
                                       ],
@@ -360,11 +387,11 @@ class AppFoodTag extends HookWidget {
                                         vertical: 4,
                                       ),
                                       decoration: BoxDecoration(
-                                        color:
-                                            Colors.blue.withValues(alpha: 0.1),
+                                        color: AppTheme.primaryBlue
+                                            .withValues(alpha: 0.1),
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
-                                          color: Colors.blue
+                                          color: AppTheme.primaryBlue
                                               .withValues(alpha: 0.3),
                                         ),
                                       ),
@@ -373,8 +400,10 @@ class AppFoodTag extends HookWidget {
                                         children: [
                                           Text(
                                             foodTags[1],
-                                            style:
-                                                const TextStyle(fontSize: 18),
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: scheme.onSurface,
+                                            ),
                                           ),
                                           const Gap(2),
                                           Text(
@@ -382,10 +411,12 @@ class AppFoodTag extends HookWidget {
                                               foodTags[1],
                                               context,
                                             ),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.bold,
-                                              color: Color(0xFF0168B7),
+                                              color: isDark
+                                                  ? Colors.white
+                                                  : AppTheme.primaryBlue,
                                             ),
                                           ),
                                         ],
@@ -397,10 +428,12 @@ class AppFoodTag extends HookWidget {
                                     padding: const EdgeInsets.only(left: 8),
                                     child: Text(
                                       '+${foodTags.length - 2}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: Color(0xFF0168B7),
+                                        color: isDark
+                                            ? Colors.white
+                                            : AppTheme.primaryBlue,
                                       ),
                                     ),
                                   ),
@@ -408,11 +441,12 @@ class AppFoodTag extends HookWidget {
                             ),
                     ),
                     if (foodTags.isEmpty)
-                      const Padding(
-                        padding: EdgeInsets.only(right: 5),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5),
                         child: Icon(
                           Icons.arrow_forward_ios,
                           size: 20,
+                          color: scheme.onSurface,
                         ),
                       ),
                     const Gap(2),
@@ -526,7 +560,7 @@ class AppCountryTag extends HookWidget {
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF0168B7),
+                              color: AppTheme.primaryBlue,
                             ),
                           ),
                         ),
@@ -610,13 +644,13 @@ class AppCountryTag extends HookWidget {
                                         ),
                                         decoration: BoxDecoration(
                                           color: isSelected
-                                              ? Colors.blue
+                                              ? AppTheme.primaryBlue
                                               : Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(20),
                                           border: Border.all(
                                             color: isSelected
-                                                ? Colors.blue
+                                                ? AppTheme.primaryBlue
                                                 : Colors.grey[300]!,
                                           ),
                                         ),
@@ -670,85 +704,67 @@ class AppCountryTag extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useValueListenable(countryText);
+    final scheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? Colors.black : null;
+    final borderColor = isDark ? Colors.white54 : Colors.black87;
+    final fgColor = scheme.onSurface;
+    final labelColor = scheme.onSurfaceVariant;
     return GestureDetector(
       onTap: () => _showTagSelector(context, countryText),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 50,
-                child: Row(
-                  children: [
-                    const Gap(16),
-                    Expanded(
-                      child: countryTag.isEmpty
-                          ? Text(
-                              Translations.of(context).post.selectCountryTag,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                              ),
-                            )
-                          : Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue.withValues(alpha: 0.1),
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: Colors.blue.withValues(alpha: 0.3),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        countryTag,
-                                        style: const TextStyle(fontSize: 18),
-                                      ),
-                                      const Gap(2),
-                                      Text(
-                                        getLocalizedCountryName(
-                                          countryTag,
-                                          context,
-                                        ),
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xFF0168B7),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                    ),
-                    if (countryTag.isEmpty)
-                      const Padding(
-                        padding: EdgeInsets.only(right: 8),
-                        child: Icon(
-                          Icons.chevron_right,
-                          size: 30,
-                        ),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: borderColor),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        child: Row(
+          children: [
+            Expanded(
+              child: countryTag.isEmpty
+                  ? Text(
+                      Translations.of(context).post.selectCountryTag,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: labelColor,
                       ),
-                  ],
-                ),
+                    )
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          countryTag,
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                        const Gap(4),
+                        Flexible(
+                          child: Text(
+                            getLocalizedCountryName(
+                              countryTag,
+                              context,
+                            ),
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  isDark ? Colors.white : AppTheme.primaryBlue,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
+            if (countryTag.isEmpty)
+              Icon(
+                Icons.arrow_forward_ios,
+                size: 20,
+                color: fgColor,
               ),
-            ],
-          ),
+          ],
         ),
       ),
     );

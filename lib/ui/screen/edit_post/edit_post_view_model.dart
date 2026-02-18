@@ -8,6 +8,7 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/vision/food_image_labeler.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_state.dart';
@@ -32,7 +33,7 @@ class EditPostViewModel extends _$EditPostViewModel {
 
   // UI設定
   final _androidSettings = AndroidUiSettings(
-    toolbarColor: Colors.blue,
+    toolbarColor: AppTheme.primaryBlue,
     toolbarWidgetColor: Colors.white,
     initAspectRatio: CropAspectRatioPreset.original,
     lockAspectRatio: false,
