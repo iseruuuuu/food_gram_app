@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
@@ -79,7 +80,7 @@ class MapScreen extends HookConsumerWidget {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final fabBg = isDark ? Colors.black : Colors.white;
-    const fabFg = Color(0xFF1A73E8);
+    const fabFg = AppTheme.primaryBlue;
     final fabBorder = isDark ? Colors.white54 : Colors.grey.shade300;
 
     return Scaffold(

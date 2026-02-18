@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 
@@ -94,7 +95,7 @@ class AppMapStatsCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1A73E8),
+                  color: AppTheme.primaryBlue,
                 ),
               ),
               const Gap(4),
@@ -175,7 +176,7 @@ class AppMapStatsCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1A73E8),
+                  color: AppTheme.primaryBlue,
                 ),
               ),
               const Gap(4),
@@ -256,7 +257,7 @@ class AppMapStatsCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1A73E8),
+                  color: AppTheme.primaryBlue,
                 ),
               ),
               const Gap(4),

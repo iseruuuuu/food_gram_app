@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 
 class AppMapViewTypeSelector extends StatelessWidget {
@@ -41,7 +42,7 @@ class AppMapViewTypeSelector extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
                   color:
-                      isSelected ? const Color(0xFF1A73E8) : Colors.transparent,
+                      isSelected ? AppTheme.primaryBlue : Colors.transparent,
                   borderRadius: BorderRadius.horizontal(
                     left: type == MapViewType.detail
                         ? const Radius.circular(12)

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
@@ -31,7 +32,7 @@ class MyMapScreen extends HookConsumerWidget {
     final isEarthStyle = useState(false);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final fabBg = isDark ? Colors.black : Colors.white;
-    const fabFg = Color(0xFF1A73E8);
+    const fabFg = AppTheme.primaryBlue;
     final fabBorder = isDark ? Colors.white54 : Colors.grey.shade300;
 
     return Scaffold(

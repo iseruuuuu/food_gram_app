@@ -20,6 +20,11 @@ class DialogHelper {
       text: t.forceUpdate.text,
       confirmBtnText: t.forceUpdate.buttonTitle,
       confirmBtnColor: colorScheme.primary,
+      confirmBtnTextStyle: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: colorScheme.onPrimary,
+      ),
       backgroundColor: colorScheme.surface,
       titleColor: colorScheme.onSurface,
       textColor: colorScheme.onSurface,
@@ -51,10 +56,10 @@ class DialogHelper {
       titleColor: colorScheme.onSurface,
       textColor: colorScheme.onSurface,
       onConfirmBtnTap: onTap,
-      confirmBtnTextStyle: const TextStyle(
+      confirmBtnTextStyle: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        color: Colors.white,
+        color: colorScheme.onPrimary,
       ),
       showCancelBtn: true,
       cancelBtnText: t.dialog.noButton,
@@ -86,10 +91,10 @@ class DialogHelper {
       backgroundColor: colorScheme.surface,
       titleColor: colorScheme.onSurface,
       textColor: colorScheme.onSurface,
-      confirmBtnTextStyle: const TextStyle(
+      confirmBtnTextStyle: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        color: Colors.white,
+        color: colorScheme.onPrimary,
       ),
       showCancelBtn: true,
       cancelBtnText: t.cancel,

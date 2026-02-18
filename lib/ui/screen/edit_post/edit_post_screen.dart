@@ -34,6 +34,7 @@ class EditPostScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final deviceWidth = MediaQuery.of(context).size.width;
     final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
     final previewWidth = (deviceWidth * 0.85 * devicePixelRatio).round();
@@ -474,7 +475,9 @@ class EditPostScreen extends HookConsumerWidget {
                             allowHalfRating: true,
                             itemPadding:
                                 const EdgeInsets.symmetric(horizontal: 2),
-                            unratedColor: Colors.grey.shade300,
+                            unratedColor: isDark
+                                ? Colors.grey.shade700
+                                : Colors.grey.shade300,
                             itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color: Colors.amber,

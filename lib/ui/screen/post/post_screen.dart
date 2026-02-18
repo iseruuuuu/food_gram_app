@@ -35,6 +35,7 @@ class PostScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final deviceWidth = MediaQuery.of(context).size.width;
     final status = ref.watch(postViewModelProvider().select((s) => s.status));
     final foodImages =
@@ -394,7 +395,9 @@ class PostScreen extends HookConsumerWidget {
                             allowHalfRating: true,
                             itemPadding:
                                 const EdgeInsets.symmetric(horizontal: 2),
-                            unratedColor: Colors.grey.shade300,
+                            unratedColor: isDark
+                                ? Colors.grey.shade700
+                                : Colors.grey.shade300,
                             itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color: Colors.amber,
@@ -450,8 +453,11 @@ class PostScreen extends HookConsumerWidget {
                       ),
                       trailing: Switch(
                         value: isAnonymous,
-                        activeThumbColor: Colors.blue[600],
-                        activeTrackColor: Colors.blue[100],
+                        activeThumbColor: Theme.of(context).colorScheme.primary,
+                        activeTrackColor: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withValues(alpha: 0.3),
                         inactiveTrackColor: Colors.grey[300],
                         inactiveThumbColor: Colors.white,
                         onChanged: (value) {

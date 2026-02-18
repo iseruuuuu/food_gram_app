@@ -22,7 +22,7 @@ Future<void> showMaybeNotFoodDialog({
     title: resolvedTitle,
     text: resolvedText,
     confirmBtnText: resolvedConfirmText,
-    confirmBtnColor: Colors.black,
+    confirmBtnColor: colorScheme.primary,
     onConfirmBtnTap: () {
       Navigator.of(context).pop();
       onContinue();
@@ -33,10 +33,10 @@ Future<void> showMaybeNotFoodDialog({
       Navigator.of(context).pop();
       onDelete();
     },
-    confirmBtnTextStyle: const TextStyle(
+    confirmBtnTextStyle: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
-      color: Colors.white,
+      color: colorScheme.onPrimary,
     ),
     cancelBtnTextStyle: TextStyle(
       fontSize: 16,
