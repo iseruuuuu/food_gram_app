@@ -33,6 +33,8 @@ class EditPostScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // 複数画像編集で2枚目以降も開くため、常に有効な context（build の context）を渡す
+    final navigatorContext = context;
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -55,6 +57,8 @@ class EditPostScreen extends HookConsumerWidget {
     final foodTags = useState<List<String>>(
       posts.foodTag.isNotEmpty ? posts.foodTag.split(',') : [],
     );
+    // 削除タップ時にそのスロットを即プレースホルダー表示にするため
+    final removingPaths = ref.watch(editPostRemovingPathsProvider);
     final foodTexts = useMemoized(
       () => ValueNotifier<List<String>>(
         foodTags.value
@@ -72,6 +76,23 @@ class EditPostScreen extends HookConsumerWidget {
         return null;
       },
       [posts],
+    );
+    // リストから消えたパスを removingPaths から削除（ビルド外で更新するため遅延）
+    useEffect(
+      () {
+        final current = ref.read(editPostRemovingPathsProvider);
+        final next = current
+            .where((p) =>
+                existingImagePaths.contains(p) || foodImages.contains(p))
+            .toSet();
+        if (next.length != current.length) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            ref.read(editPostRemovingPathsProvider.notifier).state = next;
+          });
+        }
+        return null;
+      },
+      [existingImagePaths, foodImages],
     );
     useEffect(
       () {
@@ -154,6 +175,7 @@ class EditPostScreen extends HookConsumerWidget {
                         // 既存の画像（サーバーから読み込んだもの）
                         if (existingImagePaths.isNotEmpty)
                           SizedBox(
+                            key: ValueKey(existingImagePaths),
                             height: deviceWidth / 1.7,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
@@ -163,7 +185,10 @@ class EditPostScreen extends HookConsumerWidget {
                                 final existingImageUrl = supabase.storage
                                     .from('food')
                                     .getPublicUrl(imagePath);
+                                final isRemoving =
+                                    removingPaths.contains(imagePath);
                                 return Padding(
+                                  key: ValueKey(imagePath),
                                   padding: EdgeInsets.only(
                                     right: index < existingImagePaths.length - 1
                                         ? 12
@@ -173,7 +198,9 @@ class EditPostScreen extends HookConsumerWidget {
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
-                                          color: Colors.white,
+                                          color: isRemoving
+                                              ? Colors.grey.shade300
+                                              : Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(8),
                                           border:
@@ -184,12 +211,22 @@ class EditPostScreen extends HookConsumerWidget {
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(8),
-                                          child: CachedNetworkImage(
-                                            imageUrl: existingImageUrl,
-                                            fit: BoxFit.cover,
-                                            memCacheWidth: previewWidth,
-                                            memCacheHeight: previewHeight,
-                                          ),
+                                          child: isRemoving
+                                              ? Center(
+                                                  child: Icon(
+                                                    Icons.delete_outline,
+                                                    size: 48,
+                                                    color:
+                                                        Colors.grey.shade600,
+                                                  ),
+                                                )
+                                              : CachedNetworkImage(
+                                                  imageUrl: existingImageUrl,
+                                                  fit: BoxFit.cover,
+                                                  memCacheWidth: previewWidth,
+                                                  memCacheHeight:
+                                                      previewHeight,
+                                                ),
                                         ),
                                       ),
                                       Positioned(
@@ -197,6 +234,17 @@ class EditPostScreen extends HookConsumerWidget {
                                         right: 8,
                                         child: GestureDetector(
                                           onTap: () {
+                                            ref
+                                                .read(
+                                                  editPostRemovingPathsProvider
+                                                      .notifier,
+                                                )
+                                                .state = {
+                                              ...ref.read(
+                                                editPostRemovingPathsProvider,
+                                              ),
+                                              imagePath,
+                                            };
                                             ref
                                                 .read(
                                                   editPostViewModelProvider()
@@ -227,13 +275,17 @@ class EditPostScreen extends HookConsumerWidget {
                         // 新しく追加した画像
                         if (foodImages.isNotEmpty)
                           SizedBox(
+                            key: ValueKey(foodImages),
                             height: deviceWidth / 1.7,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: foodImages.length,
                               itemBuilder: (context, index) {
                                 final imagePath = foodImages[index];
+                                final isRemoving =
+                                    removingPaths.contains(imagePath);
                                 return Padding(
+                                  key: ValueKey(imagePath),
                                   padding: EdgeInsets.only(
                                     right:
                                         index < foodImages.length - 1 ? 12 : 0,
@@ -242,7 +294,9 @@ class EditPostScreen extends HookConsumerWidget {
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
-                                          color: Colors.white,
+                                          color: isRemoving
+                                              ? Colors.grey.shade300
+                                              : Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(8),
                                           border:
@@ -253,13 +307,23 @@ class EditPostScreen extends HookConsumerWidget {
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(8),
-                                          child: Image.file(
-                                            File(imagePath),
-                                            fit: BoxFit.cover,
-                                            cacheWidth: previewWidth,
-                                            cacheHeight: previewHeight,
-                                            filterQuality: FilterQuality.high,
-                                          ),
+                                          child: isRemoving
+                                              ? Center(
+                                                  child: Icon(
+                                                    Icons.delete_outline,
+                                                    size: 48,
+                                                    color:
+                                                        Colors.grey.shade600,
+                                                  ),
+                                                )
+                                              : Image.file(
+                                                  File(imagePath),
+                                                  fit: BoxFit.cover,
+                                                  cacheWidth: previewWidth,
+                                                  cacheHeight: previewHeight,
+                                                  filterQuality:
+                                                      FilterQuality.high,
+                                                ),
                                         ),
                                       ),
                                       Positioned(
@@ -267,6 +331,17 @@ class EditPostScreen extends HookConsumerWidget {
                                         right: 8,
                                         child: GestureDetector(
                                           onTap: () {
+                                            ref
+                                                .read(
+                                                  editPostRemovingPathsProvider
+                                                      .notifier,
+                                                )
+                                                .state = {
+                                              ...ref.read(
+                                                editPostRemovingPathsProvider,
+                                              ),
+                                              imagePath,
+                                            };
                                             ref
                                                 .read(
                                                   editPostViewModelProvider()
@@ -310,8 +385,8 @@ class EditPostScreen extends HookConsumerWidget {
                                 onTap: () async {
                                   primaryFocus?.unfocus();
                                   await showModalBottomSheet<void>(
-                                    context: context,
-                                    builder: (context) {
+                                    context: navigatorContext,
+                                    builder: (_) {
                                       return AppPostImageModalSheet(
                                         camera: () async {
                                           await ref
@@ -319,7 +394,7 @@ class EditPostScreen extends HookConsumerWidget {
                                                 editPostViewModelProvider()
                                                     .notifier,
                                               )
-                                              .camera();
+                                              .camera(navigatorContext);
                                         },
                                         album: () async {
                                           await ref
@@ -327,7 +402,7 @@ class EditPostScreen extends HookConsumerWidget {
                                                 editPostViewModelProvider()
                                                     .notifier,
                                               )
-                                              .album();
+                                              .album(navigatorContext);
                                         },
                                       );
                                     },

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/model/posts.dart';
@@ -8,14 +9,15 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
-import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/vision/food_image_labeler.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_state.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
-import 'package:image_cropper/image_cropper.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'edit_post_view_model.g.dart';
@@ -29,22 +31,6 @@ class EditPostViewModel extends _$EditPostViewModel {
   static const _imageConfig = (
     maxSize: 960.0,
     quality: 100,
-  );
-
-  // UI設定
-  final _androidSettings = AndroidUiSettings(
-    toolbarColor: AppTheme.primaryBlue,
-    toolbarWidgetColor: Colors.white,
-    initAspectRatio: CropAspectRatioPreset.original,
-    lockAspectRatio: false,
-    hideBottomControls: false,
-  );
-
-  final _iosSettings = IOSUiSettings(
-    cancelButtonTitle: 'Cancel',
-    doneButtonTitle: 'Done',
-    hidesNavigationBar: false,
-    showCancelConfirmationDialog: true,
   );
 
   // コントローラーとプロパティ
@@ -72,6 +58,10 @@ class EditPostViewModel extends _$EditPostViewModel {
   }
 
   void initializeWithPosts(Posts posts) {
+    // ビルド中にプロバイダを更新しないよう遅延
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(editPostRemovingPathsProvider.notifier).state = {};
+    });
     _posts = posts;
     _foodController.text = posts.foodName;
     _commentController.text = posts.comment;
@@ -108,15 +98,16 @@ class EditPostViewModel extends _$EditPostViewModel {
     }
   }
 
-  Future<bool> camera() async {
+  Future<bool> camera(BuildContext context) async {
     return _pickImage(
+      context,
       ImageSource.camera,
       EditStatus.cameraPermission.name,
     );
   }
 
-  Future<bool> album() async {
-    return _pickMultiImage(EditStatus.albumPermission.name);
+  Future<bool> album(BuildContext context) async {
+    return _pickMultiImage(context, EditStatus.albumPermission.name);
   }
 
   Future<void> _updatePost(String foodTag) async {
@@ -173,7 +164,11 @@ class EditPostViewModel extends _$EditPostViewModel {
     );
   }
 
-  Future<bool> _pickImage(ImageSource source, String errorMessage) async {
+  Future<bool> _pickImage(
+    BuildContext context,
+    ImageSource source,
+    String errorMessage,
+  ) async {
     try {
       final image = await _picker.pickImage(
         source: source,
@@ -184,11 +179,11 @@ class EditPostViewModel extends _$EditPostViewModel {
       if (image == null) {
         return false;
       }
-      final cropImage = await _cropImage(image);
-      if (cropImage == null) {
+      final bytes = await _openImageEditor(context, image.path);
+      if (bytes == null) {
         return false;
       }
-      await _processImage(cropImage);
+      await _processImageFromBytes(bytes);
       return true;
     } on PlatformException catch (error) {
       logger.e('Failed to pick image: ${error.message}');
@@ -197,7 +192,10 @@ class EditPostViewModel extends _$EditPostViewModel {
     }
   }
 
-  Future<bool> _pickMultiImage(String errorMessage) async {
+  Future<bool> _pickMultiImage(
+    BuildContext context,
+    String errorMessage,
+  ) async {
     try {
       final images = await _picker.pickMultiImage(
         maxHeight: _imageConfig.maxSize,
@@ -208,28 +206,33 @@ class EditPostViewModel extends _$EditPostViewModel {
         return false;
       }
 
-      // 選択した画像を順番にトリミング
-      final croppedImages = <File>[];
       for (final image in images) {
-        final cropImage = await _cropImage(image);
-        if (cropImage != null) {
-          croppedImages.add(cropImage);
+        final bytes = await _openImageEditor(context, image.path);
+        if (bytes != null) {
+          await _processImageFromBytes(bytes);
         }
       }
-
-      // すべてのトリミングが完了したら、すべての画像を追加
-      if (croppedImages.isNotEmpty) {
-        for (final cropImage in croppedImages) {
-          await _processImage(cropImage);
-        }
-        return true;
-      }
-      return false;
+      return state.foodImages.isNotEmpty;
     } on PlatformException catch (error) {
       logger.e('Failed to pick images: ${error.message}');
       state = state.copyWith(status: errorMessage);
       return false;
     }
+  }
+
+  Future<Uint8List?> _openImageEditor(BuildContext context, String imagePath) async {
+    final result = await context.pushNamed<Uint8List?>(
+      RouterPath.imageEditor,
+      extra: imagePath,
+    );
+    return result;
+  }
+
+  Future<void> _processImageFromBytes(Uint8List bytes) async {
+    final dir = await getTemporaryDirectory();
+    final file = File('${dir.path}/food_gram_edit_${DateTime.now().millisecondsSinceEpoch}.jpg');
+    await file.writeAsBytes(bytes);
+    await _processImage(file);
   }
 
   Future<void> _processImage(File cropImage) async {
@@ -253,20 +256,11 @@ class EditPostViewModel extends _$EditPostViewModel {
   }
 
   void removeExistingImage(String imagePath) {
-    final updatedExisting =
-        state.existingImagePaths.where((path) => path != imagePath).toList();
+    final idx = state.existingImagePaths.indexOf(imagePath);
+    if (idx < 0) return;
+    final updatedExisting = List<String>.from(state.existingImagePaths)
+      ..removeAt(idx);
     state = state.copyWith(existingImagePaths: updatedExisting);
-  }
-
-  Future<File?> _cropImage(XFile image) async {
-    final croppedFile = await ImageCropper().cropImage(
-      sourcePath: image.path,
-      uiSettings: [_androidSettings, _iosSettings],
-    );
-    if (croppedFile == null) {
-      return null;
-    }
-    return File(croppedFile.path);
   }
 
   void getPlace(Restaurant restaurant) {
@@ -289,6 +283,9 @@ class EditPostViewModel extends _$EditPostViewModel {
     state = state.copyWith(status: EditStatus.initial.name);
   }
 }
+
+/// 削除タップ時にそのスロットをプレースホルダー表示にするためのパス一覧
+final editPostRemovingPathsProvider = StateProvider<Set<String>>((ref) => {});
 
 enum EditStatus {
   missingInfo,
