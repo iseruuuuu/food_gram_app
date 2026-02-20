@@ -158,13 +158,6 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2"/>
-        <!-- Add UCropActivity for image_cropper -->
-        <activity
-            android:name="com.yalantis.ucrop.UCropActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Ucrop.CropTheme"/>
-        <!-- Updated theme -->
-        
         <!-- 通知関連のreceiver -->
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
