@@ -6,10 +6,12 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/vision/food_image_labeler.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/screen/post/post_state.dart';
-import 'package:image_cropper/image_cropper.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'post_view_model.g.dart';
@@ -65,15 +67,16 @@ class PostViewModel extends _$PostViewModel {
     return state.isSuccess;
   }
 
-  Future<bool> camera() async {
+  Future<bool> camera(BuildContext context) async {
     return _pickImage(
+      context,
       ImageSource.camera,
       PostStatus.cameraPermission.name,
     );
   }
 
-  Future<bool> album() async {
-    return _pickMultiImage(PostStatus.albumPermission.name);
+  Future<bool> album(BuildContext context) async {
+    return _pickMultiImage(context, PostStatus.albumPermission.name);
   }
 
   void loadRestaurant(Restaurant? restaurant) {
@@ -133,7 +136,11 @@ class PostViewModel extends _$PostViewModel {
     return false;
   }
 
-  Future<bool> _pickImage(ImageSource source, String errorPickerImage) async {
+  Future<bool> _pickImage(
+    BuildContext context,
+    ImageSource source,
+    String errorPickerImage,
+  ) async {
     try {
       final image = await _picker.pickImage(
         source: source,
@@ -144,11 +151,11 @@ class PostViewModel extends _$PostViewModel {
       if (image == null) {
         return false;
       }
-      final cropImage = await _cropImage(image);
-      if (cropImage == null) {
+      final bytes = await _openImageEditor(context, image.path);
+      if (bytes == null) {
         return false;
       }
-      await _processImage(cropImage);
+      await _processImageFromBytes(bytes);
       return true;
     } on PlatformException catch (error) {
       logger.e(error.message);
@@ -157,7 +164,10 @@ class PostViewModel extends _$PostViewModel {
     }
   }
 
-  Future<bool> _pickMultiImage(String errorPickerImage) async {
+  Future<bool> _pickMultiImage(
+    BuildContext context,
+    String errorPickerImage,
+  ) async {
     try {
       final images = await _picker.pickMultiImage(
         maxHeight: _imageConfig.maxSize,
@@ -168,33 +178,36 @@ class PostViewModel extends _$PostViewModel {
         return false;
       }
 
-      // 選択した画像を順番にトリミング
-      final croppedImages = <File>[];
       for (final image in images) {
-        final cropImage = await _cropImage(image);
-        if (cropImage != null) {
-          croppedImages.add(cropImage);
-        }
-      }
-
-      // すべてのトリミングが完了したら、すべての画像を追加
-      if (croppedImages.isNotEmpty) {
-        for (final cropImage in croppedImages) {
-          await _processImage(cropImage);
-          // 食べ物ではない判定が出た場合は、ユーザーの応答（続行/削除）で
-          // ステータスがリセットされるまで待機してから次へ進む
+        final bytes = await _openImageEditor(context, image.path);
+        if (bytes != null) {
+          await _processImageFromBytes(bytes);
           if (state.status == PostStatus.maybeNotFood.name) {
             await _waitMaybeNotFoodHandled();
           }
         }
-        return true;
       }
-      return false;
+      return state.foodImages.isNotEmpty;
     } on PlatformException catch (error) {
       logger.e(error.message);
       state = state.copyWith(status: errorPickerImage);
       return false;
     }
+  }
+
+  Future<Uint8List?> _openImageEditor(BuildContext context, String imagePath) async {
+    final result = await context.pushNamed<Uint8List?>(
+      RouterPath.imageEditor,
+      extra: imagePath,
+    );
+    return result;
+  }
+
+  Future<void> _processImageFromBytes(Uint8List bytes) async {
+    final dir = await getTemporaryDirectory();
+    final file = File('${dir.path}/food_gram_${DateTime.now().millisecondsSinceEpoch}.jpg');
+    await file.writeAsBytes(bytes);
+    await _processImage(file);
   }
 
   Future<void> _waitMaybeNotFoodHandled() async {
@@ -226,41 +239,12 @@ class PostViewModel extends _$PostViewModel {
     state = state.copyWith(foodImages: updatedImages);
   }
 
-  Future<File?> _cropImage(XFile image) async {
-    final croppedFile = await ImageCropper().cropImage(
-      sourcePath: image.path,
-      uiSettings: _getCropperSettings(),
-    );
-    if (croppedFile == null) {
-      return null;
-    }
-    return File(croppedFile.path);
-  }
-
   void _updateRestaurantState(Restaurant restaurant) {
     state = state.copyWith(
       restaurant: restaurant.name,
       lat: restaurant.lat,
       lng: restaurant.lng,
     );
-  }
-
-  List<PlatformUiSettings> _getCropperSettings() {
-    return [
-      AndroidUiSettings(
-        toolbarColor: Colors.blue,
-        toolbarWidgetColor: Colors.white,
-        initAspectRatio: CropAspectRatioPreset.original,
-        lockAspectRatio: false,
-        hideBottomControls: false,
-      ),
-      IOSUiSettings(
-        cancelButtonTitle: 'Cancel',
-        doneButtonTitle: 'Done',
-        hidesNavigationBar: false,
-        showCancelConfirmationDialog: true,
-      ),
-    ];
   }
 
   void setAnonymous({required bool value}) {

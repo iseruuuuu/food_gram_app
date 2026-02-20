@@ -34,6 +34,8 @@ class PostScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // 複数画像編集で2枚目以降も開くため、常に有効な context（build の context）を渡す
+    final navigatorContext = context;
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -224,8 +226,8 @@ class PostScreen extends HookConsumerWidget {
                                 onTap: () async {
                                   primaryFocus?.unfocus();
                                   await showModalBottomSheet<void>(
-                                    context: context,
-                                    builder: (context) {
+                                    context: navigatorContext,
+                                    builder: (_) {
                                       return AppPostImageModalSheet(
                                         camera: () async {
                                           await ref
@@ -233,7 +235,7 @@ class PostScreen extends HookConsumerWidget {
                                                 postViewModelProvider()
                                                     .notifier,
                                               )
-                                              .camera();
+                                              .camera(navigatorContext);
                                         },
                                         album: () async {
                                           await ref
@@ -241,7 +243,7 @@ class PostScreen extends HookConsumerWidget {
                                                 postViewModelProvider()
                                                     .notifier,
                                               )
-                                              .album();
+                                              .album(navigatorContext);
                                         },
                                       );
                                     },
