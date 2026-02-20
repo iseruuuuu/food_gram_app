@@ -1,6 +1,7 @@
 export 'package:food_gram_app/ui/screen/authentication/authentication_screen.dart';
 export 'package:food_gram_app/ui/screen/edit/edit_screen.dart';
 export 'package:food_gram_app/ui/screen/edit_post/edit_post_screen.dart';
+export 'package:food_gram_app/ui/screen/image_editor/image_editor_screen.dart';
 export 'package:food_gram_app/ui/screen/map/map_screen.dart';
 export 'package:food_gram_app/ui/screen/new_account/new_account_screen.dart';
 export 'package:food_gram_app/ui/screen/notification/notifications_screen.dart';
