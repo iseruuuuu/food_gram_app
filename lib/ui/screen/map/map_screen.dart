@@ -123,7 +123,7 @@ class MapScreen extends HookConsumerWidget {
                       );
                     },
                     onStyleLoadedCallback: controller.onStyleLoaded,
-                    onCameraIdle: controller.updateVisibleMealsCount,
+                    onCameraIdle: controller.scheduleUpdateAfterCameraIdle,
                     annotationOrder: const [AnnotationType.symbol],
                     key: const ValueKey('mapWidget'),
                     myLocationEnabled: isLocationEnabled,

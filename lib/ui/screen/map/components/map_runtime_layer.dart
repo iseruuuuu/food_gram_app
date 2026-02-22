@@ -22,7 +22,10 @@ class MapRuntimeLayer {
         final imageType = MapPinData.imageTypeFor(post);
         return {
           'type': 'Feature',
-          'geometry': {'type': 'Point', 'coordinates': [post.lng, post.lat]},
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [post.lng, post.lat],
+          },
           'properties': {
             'icon': imageKeys[imageType],
             'lat': post.lat,
@@ -37,12 +40,14 @@ class MapRuntimeLayer {
         'data': {'type': 'FeatureCollection', 'features': features},
       };
 
-      final layerJson = await rootBundle.loadString(Assets.map.overlayPostsLayer);
+      final layerJson =
+          await rootBundle.loadString(Assets.map.overlayPostsLayer);
       final layer = jsonDecode(layerJson) as Map<String, dynamic>
         ..['id'] = MapOverlayConstants.runtimeLayerId
         ..['source'] = MapOverlayConstants.runtimeSourceId;
 
-      final selectedJson = await rootBundle.loadString(Assets.map.overlayPostsSelectedLayer);
+      final selectedJson =
+          await rootBundle.loadString(Assets.map.overlayPostsSelectedLayer);
       final selectedLayer = jsonDecode(selectedJson) as Map<String, dynamic>
         ..['id'] = '${MapOverlayConstants.runtimeLayerId}_selected'
         ..['source'] = MapOverlayConstants.runtimeSourceId;
