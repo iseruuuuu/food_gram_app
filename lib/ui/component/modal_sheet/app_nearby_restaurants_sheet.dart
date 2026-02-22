@@ -30,7 +30,8 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selection = ref.watch(mapModalSelectionProvider);
-    final nearbyAsync = ref.watch(getNearByPostsProvider);
+    final cameraCenter = ref.watch(mapViewModelProvider).cameraCenterLatLng;
+    final nearbyAsync = ref.watch(getNearByPostsProvider(cameraCenter));
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: 0.24,

@@ -10,5 +10,6 @@ class MapState with _$MapState {
     @Default(false) bool isLoading,
     @Default(false) bool hasError,
     int? visibleMealsCount,
+    LatLng? cameraCenterLatLng,
   }) = _MapState;
 }

@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
+import 'package:food_gram_app/core/utils/geo_distance.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_heatmap_layer.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_pin_data.dart';
@@ -33,14 +36,24 @@ class MapViewModel extends _$MapViewModel {
   List<Posts>? _cachedPosts;
   Map<String, String>? _cachedImageKeys;
   double? _currentZoom;
+  LatLng? _lastCameraCenterLatLng;
   bool _heatmapLayerAdded = false;
   bool _symbolTapHandlerRegistered = false;
+
+  /// カメラ中心をこの距離以上動いたときだけ state を更新
+  static const double _cameraCenterUpdateThresholdMeters = 150;
+
+  /// マップ移動後、この時間経過してから中心座標・近くの投稿を更新
+  static const Duration _cameraIdleDebounceDuration = Duration(seconds: 1);
+  Timer? _cameraIdleDebounceTimer;
 
   Future<void> setMapController(
     MapLibreMapController controller, {
     required void Function(List<Posts> posts) onPinTap,
     required double iconSize,
   }) async {
+    _cameraIdleDebounceTimer?.cancel();
+    _cameraIdleDebounceTimer = null;
     state = state.copyWith(mapController: controller);
     await setPin(onPinTap: onPinTap, iconSize: iconSize);
     await updateVisibleMealsCount();
@@ -149,12 +162,40 @@ class MapViewModel extends _$MapViewModel {
     updateVisibleMealsCount();
   }
 
+  /// 1秒待ってから中心座標・近くの投稿を更新し、DB呼び出しを抑える
+  void scheduleUpdateAfterCameraIdle() {
+    _cameraIdleDebounceTimer?.cancel();
+    _cameraIdleDebounceTimer = Timer(_cameraIdleDebounceDuration, () {
+      _cameraIdleDebounceTimer = null;
+      updateVisibleMealsCount();
+    });
+  }
+
   Future<void> updateVisibleMealsCount() async {
     final ctrl = state.mapController;
     if (ctrl == null) {
       return;
     }
-    final zoom = ctrl.cameraPosition?.zoom ?? 14.0;
+    final position = ctrl.cameraPosition;
+    final zoom = position?.zoom ?? 14.0;
+    final center = position?.target;
+
+    // カメラ中心を 150m 以上動いたときだけstateを更新
+    if (center != null) {
+      final shouldUpdateCenter = _lastCameraCenterLatLng == null ||
+          geoMeters(
+                lat1: _lastCameraCenterLatLng!.latitude,
+                lon1: _lastCameraCenterLatLng!.longitude,
+                lat2: center.latitude,
+                lon2: center.longitude,
+              ) >=
+              _cameraCenterUpdateThresholdMeters;
+      if (shouldUpdateCenter) {
+        _lastCameraCenterLatLng = center;
+        state = state.copyWith(cameraCenterLatLng: center);
+      }
+    }
+
     const heat = MapOverlayConstants.heatmapZoomThreshold;
     const dot = MapOverlayConstants.smallDotZoomThreshold;
     final zoomChanged = _currentZoom == null ||

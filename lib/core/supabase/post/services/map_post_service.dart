@@ -87,17 +87,37 @@ class MapPostService extends _$MapPostService {
     );
   }
 
-  /// 現在地から近い投稿を20件取得
-  Future<List<Map<String, dynamic>>> getNearbyPosts() async {
-    final currentLocation = await ref.read(locationProvider.future);
-    if (currentLocation == const maplibre.LatLng(0, 0)) {
-      return [];
+  /// 指定座標（または現在地・日本中心）から近い投稿を20件取得
+  /// [centerLatLng] null の場合は現在地、現在地が (0,0) の場合は日本中心を使用
+  Future<List<Map<String, dynamic>>> getNearbyPosts({
+    maplibre.LatLng? centerLatLng,
+  }) async {
+    double lat;
+    double lng;
+    if (centerLatLng != null &&
+        (centerLatLng.latitude != 0 || centerLatLng.longitude != 0)) {
+      lat = centerLatLng.latitude;
+      lng = centerLatLng.longitude;
+    } else {
+      final currentLocation = await ref.read(locationProvider.future);
+      if (currentLocation == const maplibre.LatLng(0, 0)) {
+        lat = 36.2048;
+        lng = 137.9777;
+      } else {
+        lat = currentLocation.latitude;
+        lng = currentLocation.longitude;
+      }
     }
-    final lat = currentLocation.latitude;
-    final lng = currentLocation.longitude;
+
+    // キャッシュキーを小数点4桁に丸めてヒット率を上げる
+    final latRounded = (lat * 10000).round() / 10000;
+    final lngRounded = (lng * 10000).round() / 10000;
+    final cacheKey =
+        'nearby_posts_${latRounded.toStringAsFixed(4)}_'
+        '${lngRounded.toStringAsFixed(4)}';
 
     return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'nearby_posts_${lat}_$lng',
+      key: cacheKey,
       fetcher: () async {
         final posts = await supabase
             .from('posts')
