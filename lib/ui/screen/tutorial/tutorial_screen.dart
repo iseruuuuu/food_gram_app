@@ -136,7 +136,7 @@ class TutorialScreen extends HookConsumerWidget {
                   const Gap(24),
                 ],
               ),
-              // 4ページ目
+              // 4ページ目(位置情報の許可)
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -165,21 +165,11 @@ class TutorialScreen extends HookConsumerWidget {
                       }
                       goToNextPage();
                     },
-                    title: t.tutorial.locationButton,
-                  ),
-                  const Gap(12),
-                  TextButton(
-                    onPressed: goToNextPage,
-                    child: Text(
-                      t.maybeNotFoodDialog.confirm,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
+                    title: t.maybeNotFoodDialog.confirm,
                   ),
                 ],
               ),
-              // 5ページ目
+              // 5ページ目（通知の許可）
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -205,18 +195,9 @@ class TutorialScreen extends HookConsumerWidget {
                       await initializeNotifications();
                       goToNextPage();
                     },
-                    title: t.tutorial.notificationButton,
+                    title: t.maybeNotFoodDialog.confirm,
                   ),
-                  const Gap(12),
-                  TextButton(
-                    onPressed: goToNextPage,
-                    child: Text(
-                      t.maybeNotFoodDialog.confirm,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                  ),
+              
                 ],
               ),
               // 6ページ目
