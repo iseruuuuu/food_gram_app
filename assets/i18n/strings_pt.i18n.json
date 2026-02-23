@@ -176,7 +176,8 @@
     "loadingError": "Ocorreu um erro",
     "loadingRestaurant": "Obtendo informações do restaurante...",
     "visibleAreaMeals": "📍 Esta área tem {count} refeições",
-    "visibleAreaLoading": "Carregando..."
+    "visibleAreaLoading": "Carregando...",
+    "areaPopularLabel": "Principais gêneros"
   },
   "app": {
     "shareTitle": "Compartilhar",

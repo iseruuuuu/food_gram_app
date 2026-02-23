@@ -176,7 +176,8 @@
     "loadingError": "エラーが発生しました",
     "loadingRestaurant": "店舗情報を取得中...",
     "visibleAreaMeals": "📍 このエリアに{count}件の投稿があります",
-    "visibleAreaLoading": "読み込み中…"
+    "visibleAreaLoading": "読み込み中…",
+    "areaPopularLabel": "主なジャンル"
   },
   "app": {
     "shareTitle": "共有",

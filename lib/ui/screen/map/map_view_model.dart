@@ -210,15 +210,45 @@ class MapViewModel extends _$MapViewModel {
 
     final posts = ref.read(mapRepositoryProvider).whenOrNull(data: (v) => v);
     if (posts == null || posts.isEmpty) {
-      state = state.copyWith(visibleMealsCount: 0);
+      state = state.copyWith(
+        visibleMealsCount: 0,
+        visibleAreaTopTags: [],
+      );
       return;
     }
     try {
       final bounds = await ctrl.getVisibleRegion();
-      final count =
-          posts.where((p) => bounds.contains(LatLng(p.lat, p.lng))).length;
-      state = state.copyWith(visibleMealsCount: count);
+      final visiblePosts =
+          posts.where((p) => bounds.contains(LatLng(p.lat, p.lng))).toList();
+      final count = visiblePosts.length;
+      // 3件未満のエリアではタグ表示を出さない
+      final topTags =
+          count >= 3 ? _topTagCounts(visiblePosts, 3) : <VisibleAreaTagCount>[];
+      state = state.copyWith(
+        visibleMealsCount: count,
+        visibleAreaTopTags: topTags,
+      );
     } on Exception catch (_) {}
+  }
+
+  // 投稿リストから人気タグ（絵文字）の上位 [limit] 件を返す
+  static List<VisibleAreaTagCount> _topTagCounts(
+    List<Posts> posts,
+    int limit,
+  ) {
+    final counts = posts
+        .map((p) => p.foodTag)
+        .where((tag) => tag.isNotEmpty)
+        .fold<Map<String, int>>(<String, int>{}, (acc, tag) {
+      acc[tag] = (acc[tag] ?? 0) + 1;
+      return acc;
+    });
+    final entries = counts.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+    return entries
+        .take(limit)
+        .map((e) => (emoji: e.key, count: e.value))
+        .toList();
   }
 
   Future<void> _updateDisplayMode(double zoom) async {

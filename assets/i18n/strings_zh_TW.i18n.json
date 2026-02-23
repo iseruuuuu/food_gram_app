@@ -176,7 +176,8 @@
     "loadingError": "發生錯誤",
     "loadingRestaurant": "正在取得餐廳資訊...",
     "visibleAreaMeals": "📍 此區域有{count}筆餐點",
-    "visibleAreaLoading": "載入中..."
+    "visibleAreaLoading": "載入中...",
+    "areaPopularLabel": "主要類型"
   },
   "app": {
     "shareTitle": "分享",

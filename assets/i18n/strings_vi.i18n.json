@@ -176,7 +176,8 @@
     "loadingError": "Đã xảy ra lỗi",
     "loadingRestaurant": "Đang lấy thông tin nhà hàng...",
     "visibleAreaMeals": "📍 Khu vực này có {count} món ăn",
-    "visibleAreaLoading": "Đang tải..."
+    "visibleAreaLoading": "Đang tải...",
+    "areaPopularLabel": "Thể loại chính"
   },
   "app": {
     "shareTitle": "Chia sẻ",

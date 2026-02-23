@@ -176,7 +176,8 @@
     "loadingError": "เกิดข้อผิดพลาด",
     "loadingRestaurant": "กำลังดึงข้อมูลร้านอาหาร...",
     "visibleAreaMeals": "📍 บริเวณนี้มี {count} เมนู",
-    "visibleAreaLoading": "กำลังโหลด..."
+    "visibleAreaLoading": "กำลังโหลด...",
+    "areaPopularLabel": "ประเภทหลัก"
   },
   "app": {
     "shareTitle": "แชร์",
