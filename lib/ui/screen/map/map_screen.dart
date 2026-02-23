@@ -140,21 +140,15 @@ class MapScreen extends HookConsumerWidget {
                     top: _calculateTopPosition(context),
                     left: 0,
                     right: 0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            right: 10,
-                            left: 16,
-                            bottom: 8,
-                          ),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: AppAreaMealsBadge(
-                              count: state.visibleMealsCount,
-                              topTags: state.visibleAreaTopTags,
-                            ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: AppAreaMealsBadge(
+                            count: state.visibleMealsCount,
+                            topTags: state.visibleAreaTopTags,
                           ),
                         ),
                         Padding(

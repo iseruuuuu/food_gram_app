@@ -142,7 +142,8 @@ class _MapModalCardItem extends HookConsumerWidget {
                 Container(
                   color: cardBg,
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   child: Row(
                     children: [
                       AppProfileImage(
@@ -169,7 +170,7 @@ class _MapModalCardItem extends HookConsumerWidget {
                               Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.star,
                                     color: Colors.amber,
                                     size: 16,
