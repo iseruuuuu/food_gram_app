@@ -75,6 +75,7 @@ class _MapModalCardItem extends HookConsumerWidget {
     final subtitleColor = isDark ? Colors.white70 : Colors.grey.shade600;
     final t = Translations.of(context);
 
+    final pageController = usePageController();
     final userFuture = useMemoized(
       () => ref
           .read(userRepositoryProvider.notifier)
@@ -203,7 +204,7 @@ class _MapModalCardItem extends HookConsumerWidget {
                           )
                         : PageView.builder(
                             itemCount: imageUrls.length,
-                            controller: PageController(),
+                            controller: pageController,
                             itemBuilder: (context, pageIndex) {
                               return CachedNetworkImage(
                                 imageUrl: imageUrls[pageIndex],
