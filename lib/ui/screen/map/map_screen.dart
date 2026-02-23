@@ -155,6 +155,7 @@ class MapScreen extends HookConsumerWidget {
                             alignment: Alignment.centerLeft,
                             child: AppAreaMealsBadge(
                               count: state.visibleMealsCount,
+                              topTags: state.visibleAreaTopTags,
                             ),
                           ),
                         ),
