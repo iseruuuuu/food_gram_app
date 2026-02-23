@@ -74,7 +74,6 @@ class _MapModalCardItem extends HookConsumerWidget {
     final titleColor = isDark ? Colors.white : Colors.black;
     final subtitleColor = isDark ? Colors.white70 : Colors.grey.shade600;
     final t = Translations.of(context);
-
     final pageController = usePageController();
     final userFuture = useMemoized(
       () => ref
@@ -84,11 +83,9 @@ class _MapModalCardItem extends HookConsumerWidget {
       [post.userId],
     );
     final snapshot = useFuture(userFuture);
-
     final imageUrls = post.foodImageList
         .map((path) => supabase.storage.from('food').getPublicUrl(path))
         .toList();
-
     final isLoading = snapshot.connectionState == ConnectionState.waiting;
     final displayName = isLoading
         ? '...'
@@ -98,7 +95,6 @@ class _MapModalCardItem extends HookConsumerWidget {
     final imagePath = post.isAnonymous
         ? 'assets/icon/icon1.png'
         : (snapshot.data?.image ?? 'assets/icon/icon1.png');
-
     return GestureDetector(
       onTap: () {
         EasyDebounce.debounce(
