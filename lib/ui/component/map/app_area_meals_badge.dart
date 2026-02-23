@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/screen/map/map_state.dart';
+import 'package:gap/gap.dart';
 
 class AppAreaMealsBadge extends StatelessWidget {
   const AppAreaMealsBadge({
@@ -21,12 +22,12 @@ class AppAreaMealsBadge extends StatelessWidget {
         ? t.map.visibleAreaLoading
         : t.map.visibleAreaMeals.replaceAll('{count}', count.toString());
     final textStyle = TextStyle(
-      fontSize: 14,
+      fontSize: 15,
       fontWeight: FontWeight.w600,
       color: textColor,
     );
     final tagStyle = TextStyle(
-      fontSize: 14,
+      fontSize: 15,
       fontWeight: FontWeight.w500,
       color: textColor,
     );
@@ -49,6 +50,7 @@ class AppAreaMealsBadge extends StatelessWidget {
         children: [
           Text(line1, style: textStyle),
           if (topTags.isNotEmpty) ...[
+            const Gap(4),
             Text(
               '${t.map.areaPopularLabel}：'
               '${topTags.map((tag) => '${tag.emoji} ×${tag.count}').join('　')}',
