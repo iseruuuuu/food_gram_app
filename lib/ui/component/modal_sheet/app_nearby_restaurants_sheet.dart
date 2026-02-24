@@ -572,19 +572,24 @@ class _MapSheetPostListItem extends HookConsumerWidget {
                                   separatorBuilder: (_, __) =>
                                       const SizedBox(width: 8),
                                   itemBuilder: (context, i) {
-                                    return ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: CachedNetworkImage(
-                                        imageUrl: imageUrls[i],
-                                        height: 90,
-                                        width: 90,
-                                        fit: BoxFit.cover,
-                                        errorWidget: (_, __, ___) =>
-                                            Image.asset(
-                                          isDark
-                                              ? Assets.image.emptyDark.path
-                                              : Assets.image.empty.path,
+                                    const size = 150.0;
+                                    return SizedBox(
+                                      height: size,
+                                      width: size,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: CachedNetworkImage(
+                                          imageUrl: imageUrls[i],
+                                          height: size,
+                                          width: size,
                                           fit: BoxFit.cover,
+                                          errorWidget: (_, __, ___) =>
+                                              Image.asset(
+                                            isDark
+                                                ? Assets.image.emptyDark.path
+                                                : Assets.image.empty.path,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                     );
