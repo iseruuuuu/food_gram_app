@@ -95,7 +95,9 @@ class AppSearchTextField extends HookWidget {
                 elevation: 0,
                 padding: EdgeInsets.zero,
                 foregroundColor: Colors.white,
-                backgroundColor: Colors.black,
+                backgroundColor: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.black
+                    : AppTheme.primaryBlue,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(8),
