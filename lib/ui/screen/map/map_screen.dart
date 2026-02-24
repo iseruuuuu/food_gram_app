@@ -140,11 +140,11 @@ class MapScreen extends HookConsumerWidget {
                   const AppNearbyRestaurantsSheet(),
                   Positioned(
                     top: _calculateTopPosition(context),
-                    left: 0,
+                    left: 10,
                     right: 0,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
@@ -154,7 +154,7 @@ class MapScreen extends HookConsumerWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(right: 10),
+                          padding: const EdgeInsets.only(right: 8),
                           child: Column(
                             children: [
                               Padding(

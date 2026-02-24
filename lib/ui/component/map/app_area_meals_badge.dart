@@ -22,12 +22,12 @@ class AppAreaMealsBadge extends StatelessWidget {
         ? t.map.visibleAreaLoading
         : t.map.visibleAreaMeals.replaceAll('{count}', count.toString());
     final textStyle = TextStyle(
-      fontSize: 14,
+      fontSize: 15,
       fontWeight: FontWeight.w600,
       color: textColor,
     );
     final tagStyle = TextStyle(
-      fontSize: 13,
+      fontSize: 15,
       fontWeight: FontWeight.w500,
       color: textColor,
     );

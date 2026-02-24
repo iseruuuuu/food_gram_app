@@ -231,15 +231,21 @@ class MapViewModel extends _$MapViewModel {
     } on Exception catch (_) {}
   }
 
-  // 投稿リストから人気タグ（絵文字）の上位 [limit] 件を返す
+  // 投稿リストから人気タグの上位 [limit] 件を返す（1投稿からは先頭1タグのみ採用）
   static List<VisibleAreaTagCount> _topTagCounts(
     List<Posts> posts,
     int limit,
   ) {
-    final counts = posts
-        .map((p) => p.foodTag)
-        .where((tag) => tag.isNotEmpty)
-        .fold<Map<String, int>>(<String, int>{}, (acc, tag) {
+    final oneTagPerPost = <String>[];
+    for (final p in posts) {
+      final tags =
+          p.foodTag.split(',').map((s) => s.trim()).where((s) => s.isNotEmpty);
+      if (tags.isNotEmpty) {
+        oneTagPerPost.add(tags.first);
+      }
+    }
+    final counts =
+        oneTagPerPost.fold<Map<String, int>>(<String, int>{}, (acc, tag) {
       acc[tag] = (acc[tag] ?? 0) + 1;
       return acc;
     });
