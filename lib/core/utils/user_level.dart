@@ -23,11 +23,12 @@ class UserLevel {
   static const int maxLevel = 150;
 
   /// 累計投稿数から現在のレベルを算出（1始まり）
+  /// ループは _thresholds.length から開始し、index 149 で Lv150 が返るようにする
   static int levelFromPostCount(int postCount) {
     if (postCount < 0) {
       return 1;
     }
-    for (var l = _thresholds.length - 1; l >= 1; l--) {
+    for (var l = _thresholds.length; l >= 1; l--) {
       if (postCount >= _thresholds[l - 1]) {
         return l;
       }
