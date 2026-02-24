@@ -27,7 +27,7 @@ class AppAreaMealsBadge extends StatelessWidget {
       color: textColor,
     );
     final tagStyle = TextStyle(
-      fontSize: 15,
+      fontSize: 14.5,
       fontWeight: FontWeight.w500,
       color: textColor,
     );
