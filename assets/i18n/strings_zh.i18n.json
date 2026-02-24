@@ -134,7 +134,11 @@
     "pointCount": "积分",
     "editButton": "编辑个人资料",
     "exchangePointsButton": "兑换积分",
-    "favoriteGenre": "收藏类型"
+    "favoriteGenre": "收藏类型",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "距下一级还需 {count} 篇帖子",
+    "nextLevelBanner": "距下一级还需 {count} 篇帖子",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "关于此帖子",
@@ -171,6 +175,10 @@
     "description2": "请检查网络连接并重试。",
     "refreshButton": "重新加载",
     "message": "发生错误"
+  },
+  "levelUp": {
+    "title": "升级！",
+    "message": "你已达到 Lv.{level}"
   },
   "map": {
     "loadingError": "发生错误",
@@ -211,6 +219,7 @@
   "mapStats": {
     "visitedArea": "已访问的地点",
     "posts": "帖子",
+    "level": "等级",
     "activityDays": "活动天数",
     "prefectures": "访问的都道府县",
     "achievementRate": "达成率",

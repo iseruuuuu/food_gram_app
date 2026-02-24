@@ -134,7 +134,11 @@
     "pointCount": "포인트",
     "editButton": "프로필 편집",
     "exchangePointsButton": "포인트 교환",
-    "favoriteGenre": "즐겨찾기 장르"
+    "favoriteGenre": "즐겨찾기 장르",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "다음 Lv까지 {count}개 게시물",
+    "nextLevelBanner": "다음 Lv까지 {count}개 게시물 남음",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "이 게시물에 대해",
@@ -171,6 +175,10 @@
     "description2": "네트워크 연결을 확인하고 다시 시도해 주세요.",
     "refreshButton": "새로고침",
     "message": "오류가 발생했습니다"
+  },
+  "levelUp": {
+    "title": "레벨 업!",
+    "message": "Lv.{level}에 도달했습니다"
   },
   "map": {
     "loadingError": "오류가 발생했습니다",
@@ -211,6 +219,7 @@
   "mapStats": {
     "visitedArea": "방문한 장소",
     "posts": "게시물",
+    "level": "레벨",
     "activityDays": "활동 일수",
     "prefectures": "방문한 도도부현",
     "achievementRate": "달성률",

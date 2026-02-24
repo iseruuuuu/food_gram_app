@@ -134,7 +134,11 @@
     "pointCount": "คะแนน",
     "editButton": "แก้ไขโปรไฟล์",
     "exchangePointsButton": "แลกคะแนน",
-    "favoriteGenre": "ประเภทที่ชื่นชอบ"
+    "favoriteGenre": "ประเภทที่ชื่นชอบ",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "อีก {count} โพสต์ถึง Lv ถัดไป",
+    "nextLevelBanner": "อีก {count} โพสต์ถึง Lv ถัดไป",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "เกี่ยวกับโพสต์นี้",
@@ -171,6 +175,10 @@
     "description2": "ตรวจสอบการเชื่อมต่อเครือข่ายและลองอีกครั้ง",
     "refreshButton": "โหลดใหม่",
     "message": "เกิดข้อผิดพลาด"
+  },
+  "levelUp": {
+    "title": "เลเวลอัพ!",
+    "message": "คุณถึง Lv.{level} แล้ว"
   },
   "map": {
     "loadingError": "เกิดข้อผิดพลาด",
@@ -211,6 +219,7 @@
   "mapStats": {
     "visitedArea": "สถานที่ที่ไปมา",
     "posts": "โพสต์",
+    "level": "เลเวล",
     "activityDays": "จำนวนวันใช้งาน",
     "prefectures": "จังหวัดที่ไปมา",
     "achievementRate": "อัตรา",

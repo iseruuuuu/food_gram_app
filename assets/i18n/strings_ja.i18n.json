@@ -134,7 +134,11 @@
     "pointCount": "ポイント",
     "editButton": "プロフィールを編集",
     "exchangePointsButton": "ポイントを交換する",
-    "favoriteGenre": "好きなジャンル"
+    "favoriteGenre": "好きなジャンル",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "次Lvまで {count} 投稿",
+    "nextLevelBanner": "次のLvまであと {count} 投稿",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "この投稿について",
@@ -171,6 +175,10 @@
     "description2": "ネットワーク接続を確認し、もう一度試してください",
     "refreshButton": "再読み込み",
     "message": "エラーが発生しました"
+  },
+  "levelUp": {
+    "title": "レベルアップ！",
+    "message": "Lv.{level} に到達しました"
   },
   "map": {
     "loadingError": "エラーが発生しました",
@@ -211,6 +219,7 @@
   "mapStats": {
     "visitedArea": "訪れた場所",
     "posts": "投稿",
+    "level": "レベル",
     "activityDays": "活動日数",
     "prefectures": "行った都道府県",
     "achievementRate": "達成率",
