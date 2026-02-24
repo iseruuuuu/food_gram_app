@@ -11,7 +11,9 @@ import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/map/app_map_stats_card.dart';
 import 'package:food_gram_app/ui/component/map/app_map_view_type_selector.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/screen/map/my_map/my_map_view_model.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -34,7 +36,6 @@ class MyMapScreen extends HookConsumerWidget {
     final fabBg = isDark ? Colors.black : Colors.white;
     const fabFg = AppTheme.primaryBlue;
     final fabBorder = isDark ? Colors.white54 : Colors.grey.shade300;
-
     return Scaffold(
       body: Stack(
         children: [
@@ -191,6 +192,31 @@ class MyMapScreen extends HookConsumerWidget {
             hasError: state.hasError,
           ),
         ],
+      ),
+      floatingActionButton: SizedBox(
+        width: 70,
+        height: 70,
+        child: FloatingActionButton(
+          heroTag: null,
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
+          elevation: 10,
+          shape: CircleBorder(
+            side: BorderSide(
+              color: isDark ? Colors.white : Colors.black,
+            ),
+          ),
+          onPressed: () async {
+            await context
+                .pushNamed(RouterPath.timeLinePost)
+                .then((value) async {
+              if (value != null) {
+                ref.invalidate(myMapRepositoryProvider);
+              }
+            });
+          },
+          child: const Icon(Icons.add, size: 35),
+        ),
       ),
     );
   }
