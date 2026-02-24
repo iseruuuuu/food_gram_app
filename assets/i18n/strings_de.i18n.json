@@ -134,7 +134,11 @@
     "pointCount": "Punkte",
     "editButton": "Profil bearbeiten",
     "exchangePointsButton": "Punkte einlösen",
-    "favoriteGenre": "Lieblingsgenre"
+    "favoriteGenre": "Lieblingsgenre",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "Noch {count} Beiträge bis zum nächsten Lv",
+    "nextLevelBanner": "Noch {count} Beiträge bis zum nächsten Lv",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "Über diesen Beitrag",
@@ -171,6 +175,10 @@
     "description2": "Überprüfen Sie Ihre Netzwerkverbindung und versuchen Sie es erneut.",
     "refreshButton": "Neu laden",
     "message": "Fehler sind aufgetreten"
+  },
+  "levelUp": {
+    "title": "Level Up!",
+    "message": "Du hast Lv.{level} erreicht"
   },
   "map": {
     "loadingError": "Ein Fehler ist aufgetreten",
@@ -211,6 +219,7 @@
   "mapStats": {
     "visitedArea": "Besuchte Orte",
     "posts": "Beiträge",
+    "level": "Level",
     "activityDays": "Aktive Tage",
     "prefectures": "Besuchte Präfekturen",
     "achievementRate": "Rate",

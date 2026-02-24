@@ -134,7 +134,11 @@
     "pointCount": "Điểm",
     "editButton": "Chỉnh sửa hồ sơ",
     "exchangePointsButton": "Đổi điểm",
-    "favoriteGenre": "Thể loại yêu thích"
+    "favoriteGenre": "Thể loại yêu thích",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "Còn {count} bài đăng đến Lv tiếp theo",
+    "nextLevelBanner": "Còn {count} bài đăng đến Lv tiếp theo",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "Về bài đăng này",
@@ -171,6 +175,10 @@
     "description2": "Kiểm tra kết nối mạng và thử lại.",
     "refreshButton": "Tải lại",
     "message": "Đã xảy ra lỗi"
+  },
+  "levelUp": {
+    "title": "Lên cấp!",
+    "message": "Bạn đã đạt Lv.{level}"
   },
   "map": {
     "loadingError": "Đã xảy ra lỗi",
@@ -211,6 +219,7 @@
   "mapStats": {
     "visitedArea": "Địa điểm đã đến",
     "posts": "Bài đăng",
+    "level": "Cấp độ",
     "activityDays": "Ngày hoạt động",
     "prefectures": "Tỉnh đã đến",
     "achievementRate": "Tỷ lệ",

@@ -134,7 +134,11 @@
     "pointCount": "積分",
     "editButton": "編輯個人資料",
     "exchangePointsButton": "兌換積分",
-    "favoriteGenre": "收藏類型"
+    "favoriteGenre": "收藏類型",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "距下一級還需 {count} 篇貼文",
+    "nextLevelBanner": "距下一級還需 {count} 篇貼文",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "關於此貼文",
@@ -171,6 +175,10 @@
     "description2": "請檢查網路連線並重試。",
     "refreshButton": "重新載入",
     "message": "發生錯誤"
+  },
+  "levelUp": {
+    "title": "升級！",
+    "message": "你已達到 Lv.{level}"
   },
   "map": {
     "loadingError": "發生錯誤",
@@ -211,6 +219,7 @@
   "mapStats": {
     "visitedArea": "造訪過的地點",
     "posts": "貼文",
+    "level": "等級",
     "activityDays": "活動天數",
     "prefectures": "造訪過的都道府縣",
     "achievementRate": "達成率",

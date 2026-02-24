@@ -134,7 +134,11 @@
     "pointCount": "Pontos",
     "editButton": "Editar Perfil",
     "exchangePointsButton": "Trocar Pontos",
-    "favoriteGenre": "Gênero Favorito"
+    "favoriteGenre": "Gênero Favorito",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "{count} publicações para o próximo Lv",
+    "nextLevelBanner": "Faltam {count} publicações para o próximo Lv",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "Sobre esta publicação",
@@ -171,6 +175,10 @@
     "description2": "Verifique sua conexão de rede e tente novamente.",
     "refreshButton": "Recarregar",
     "message": "Ocorreram erros"
+  },
+  "levelUp": {
+    "title": "Subiu de nível!",
+    "message": "Você alcançou o Lv.{level}"
   },
   "map": {
     "loadingError": "Ocorreu um erro",
@@ -211,6 +219,7 @@
   "mapStats": {
     "visitedArea": "Locais visitados",
     "posts": "Publicações",
+    "level": "Nível",
     "activityDays": "Dias ativos",
     "prefectures": "Prefeituras visitadas",
     "achievementRate": "Taxa",
