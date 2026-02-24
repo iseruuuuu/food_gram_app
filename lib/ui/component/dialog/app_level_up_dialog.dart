@@ -9,7 +9,6 @@ Future<void> showLevelUpDialog({
 }) async {
   final t = Translations.of(context);
   final message = t.levelUp.message.replaceAll('{level}', level.toString());
-
   await showDialog<void>(
     context: context,
     builder: (context) {
