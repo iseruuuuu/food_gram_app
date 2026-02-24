@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/utils/user_level.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_premium_membership_card.dart';
@@ -11,6 +12,7 @@ import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
+import 'package:food_gram_app/ui/component/dialog/app_level_up_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/app_promote_dialog.dart';
 import 'package:food_gram_app/ui/component/profile/app_profile_header.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
@@ -224,13 +226,28 @@ class MyProfileScreen extends HookConsumerWidget {
                   ),
                 ),
                 onPressed: () async {
-                  await context
-                      .pushNamed(RouterPath.myProfilePost)
-                      .then((value) async {
-                    if (value != null) {
-                      ref.invalidate(myPostStreamProvider);
+                  final vm = ref.read(myProfileViewModelProvider().notifier);
+                  final oldPostCount = ref
+                      .read(myProfileViewModelProvider())
+                      .whenOrNull(data: (_, length, __) => length) ?? 0;
+                  final result =
+                      await context.pushNamed(RouterPath.myProfilePost);
+                  if (result != null) {
+                    ref.invalidate(myPostStreamProvider);
+                    await vm.getData();
+                    final newPostCount = ref
+                        .read(myProfileViewModelProvider())
+                        .whenOrNull(data: (_, length, __) => length) ?? 0;
+                    final oldLevel = UserLevel.levelFromPostCount(oldPostCount);
+                    final newLevel =
+                        UserLevel.levelFromPostCount(newPostCount);
+                    if (newLevel > oldLevel && context.mounted) {
+                      await showLevelUpDialog(
+                        context: context,
+                        level: newLevel,
+                      );
                     }
-                  });
+                  }
                 },
                 child: const Icon(
                   Icons.add,
