@@ -229,7 +229,7 @@ class MyProfileScreen extends HookConsumerWidget {
                   final vm = ref.read(myProfileViewModelProvider().notifier);
                   final oldPostCount = ref
                       .read(myProfileViewModelProvider())
-                      .whenOrNull(data: (_, length, __) => length) ?? 0;
+                      .whenOrNull(data: (_, length, __) => length);
                   final result =
                       await context.pushNamed(RouterPath.myProfilePost);
                   if (result != null) {
@@ -237,14 +237,17 @@ class MyProfileScreen extends HookConsumerWidget {
                     await vm.getData();
                     final newPostCount = ref
                         .read(myProfileViewModelProvider())
-                        .whenOrNull(data: (_, length, __) => length) ?? 0;
-                    final oldLevel = UserLevel.levelFromPostCount(oldPostCount);
-                    final newLevel =
-                        UserLevel.levelFromPostCount(newPostCount);
-                    if (newLevel > oldLevel && context.mounted) {
+                        .whenOrNull(data: (_, length, __) => length);
+                    final old = oldPostCount;
+                    final newCount = newPostCount;
+                    if (old != null &&
+                        newCount != null &&
+                        UserLevel.levelFromPostCount(newCount) >
+                            UserLevel.levelFromPostCount(old) &&
+                        context.mounted) {
                       await showLevelUpDialog(
                         context: context,
-                        level: newLevel,
+                        level: UserLevel.levelFromPostCount(newCount),
                       );
                     }
                   }
