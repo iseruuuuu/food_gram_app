@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
-import 'package:food_gram_app/core/utils/geo_distance.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_heatmap_layer.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_pin_data.dart';
@@ -36,14 +35,10 @@ class MapViewModel extends _$MapViewModel {
   List<Posts>? _cachedPosts;
   Map<String, String>? _cachedImageKeys;
   double? _currentZoom;
-  LatLng? _lastCameraCenterLatLng;
   bool _heatmapLayerAdded = false;
   bool _symbolTapHandlerRegistered = false;
 
-  /// カメラ中心をこの距離以上動いたときだけ state を更新
-  static const double _cameraCenterUpdateThresholdMeters = 150;
-
-  /// マップ移動後、この時間経過してから中心座標・近くの投稿を更新
+  /// マップ移動後、この時間経過してから表示を更新
   static const Duration _cameraIdleDebounceDuration = Duration(seconds: 1);
   Timer? _cameraIdleDebounceTimer;
 
@@ -51,10 +46,14 @@ class MapViewModel extends _$MapViewModel {
     MapLibreMapController controller, {
     required void Function(List<Posts> posts) onPinTap,
     required double iconSize,
+    LatLng? initialCenter,
   }) async {
     _cameraIdleDebounceTimer?.cancel();
     _cameraIdleDebounceTimer = null;
-    state = state.copyWith(mapController: controller);
+    state = state.copyWith(
+      mapController: controller,
+      cameraCenterLatLng: initialCenter ?? state.cameraCenterLatLng,
+    );
     await setPin(onPinTap: onPinTap, iconSize: iconSize);
     await updateVisibleMealsCount();
   }
@@ -112,6 +111,19 @@ class MapViewModel extends _$MapViewModel {
             CameraUpdate.newLatLngZoom(LatLng(loc.latitude, loc.longitude), 16),
           ),
         );
+  }
+
+  /// 現在のカメラ中心を「近くの場所を検索」の基準にし、APIを1回だけ呼ぶ
+  void setNearbySearchCenterFromCamera() {
+    final ctrl = state.mapController;
+    if (ctrl == null) {
+      return;
+    }
+    final target = ctrl.cameraPosition?.target;
+    if (target == null) {
+      return;
+    }
+    state = state.copyWith(cameraCenterLatLng: target);
   }
 
   Future<void> animateToLatLng({
@@ -178,24 +190,6 @@ class MapViewModel extends _$MapViewModel {
     }
     final position = ctrl.cameraPosition;
     final zoom = position?.zoom ?? 14.0;
-    final center = position?.target;
-
-    // カメラ中心を 150m 以上動いたときだけstateを更新
-    if (center != null) {
-      final shouldUpdateCenter = _lastCameraCenterLatLng == null ||
-          geoMeters(
-                lat1: _lastCameraCenterLatLng!.latitude,
-                lon1: _lastCameraCenterLatLng!.longitude,
-                lat2: center.latitude,
-                lon2: center.longitude,
-              ) >=
-              _cameraCenterUpdateThresholdMeters;
-      if (shouldUpdateCenter) {
-        _lastCameraCenterLatLng = center;
-        state = state.copyWith(cameraCenterLatLng: center);
-      }
-    }
-
     const heat = MapOverlayConstants.heatmapZoomThreshold;
     const dot = MapOverlayConstants.smallDotZoomThreshold;
     final zoomChanged = _currentZoom == null ||

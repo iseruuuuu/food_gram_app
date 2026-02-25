@@ -102,6 +102,8 @@ class MapScreen extends HookConsumerWidget {
                 children: [
                   MapLibreMap(
                     onMapCreated: (mapLibre) async {
+                      final initialCenter =
+                          isLocationEnabled ? value.$1 : defaultLocation;
                       await controller.setMapController(
                         mapLibre,
                         onPinTap: (posts) async {
@@ -121,6 +123,7 @@ class MapScreen extends HookConsumerWidget {
                           );
                         },
                         iconSize: _calculateIconSize(context),
+                        initialCenter: initialCenter,
                       );
                     },
                     onStyleLoadedCallback: controller.onStyleLoaded,

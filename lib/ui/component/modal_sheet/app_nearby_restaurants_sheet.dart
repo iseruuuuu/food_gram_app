@@ -39,29 +39,24 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selection = ref.watch(mapModalSelectionProvider);
     final cameraCenter = ref.watch(mapViewModelProvider).cameraCenterLatLng;
-    final nearbyAsync = ref.watch(getNearByPostsProvider(cameraCenter));
+    final nearbyAsync = cameraCenter == null
+        ? null
+        : ref.watch(getNearByPostsProvider(cameraCenter));
     return DraggableScrollableSheet(
       expand: false,
-      initialChildSize: 0.24,
+      initialChildSize: 0.35,
       minChildSize: 0.15,
       maxChildSize: 0.95,
-      builder: (context, controller) {
+      builder: (context, scrollController) {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         final sheetBg = isDark ? Colors.black : Colors.white;
         final sheetFg = isDark ? Colors.white : Colors.black;
         final handleColor = isDark ? Colors.white54 : Colors.grey[300];
-        return DecoratedBox(
-          decoration: BoxDecoration(
-            color: sheetBg,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(24),
-              topRight: Radius.circular(24),
-            ),
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 6, bottom: 8),
+        final slivers = <Widget>[
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 6, bottom: 10),
+              child: Center(
                 child: Container(
                   width: 36,
                   height: 4,
@@ -71,105 +66,142 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
                   ),
                 ),
               ),
-              Expanded(
-                child: nearbyAsync.when(
-                  data: (posts) {
-                    if (posts.isEmpty) {
-                      return const _EmptyNearby();
-                    }
-                    final grouped = _groupByRestaurantName(posts);
-                    if (selection != null) {
-                      final postsAsync = ref.watch(
-                        AppNearbyRestaurantsSheet
-                            .postsByNameFromRepositoryProvider(
-                          selection.name,
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: SizedBox(
+                width: double.infinity,
+                child: FilledButton.icon(
+                  onPressed: () => ref
+                      .read(mapViewModelProvider.notifier)
+                      .setNearbySearchCenterFromCamera(),
+                  icon: const Icon(Icons.search, size: 20),
+                  label: Text(
+                    Translations.of(context).searchNearbyPlaces,
+                  ),
+                  style: FilledButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          if (nearbyAsync == null)
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(24),
+                child: Center(child: CircularProgressIndicator()),
+              ),
+            )
+          else
+            nearbyAsync.when(
+              data: (posts) {
+                if (posts.isEmpty) {
+                  return const SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.all(24),
+                      child: _EmptyNearby(),
+                    ),
+                  );
+                }
+                final grouped = _groupByRestaurantName(posts);
+                if (selection != null) {
+                  final postsAsync = ref.watch(
+                    AppNearbyRestaurantsSheet.postsByNameFromRepositoryProvider(
+                      selection.name,
+                    ),
+                  );
+                  return SliverMainAxisGroup(slivers: [
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 4, 8, 8),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                selection.name,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: sheetFg,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () => ref
+                                  .read(
+                                    mapModalSelectionProvider.notifier,
+                                  )
+                                  .state = null,
+                              icon: Icon(Icons.close, color: sheetFg),
+                            ),
+                          ],
                         ),
-                      );
-                      return CustomScrollView(
-                        controller: controller,
-                        slivers: [
-                          SliverToBoxAdapter(
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 4, 8, 8),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      selection.name,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: sheetFg,
-                                      ),
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () => ref
-                                        .read(
-                                          mapModalSelectionProvider.notifier,
-                                        )
-                                        .state = null,
-                                    icon: Icon(Icons.close, color: sheetFg),
-                                  ),
-                                ],
+                      ),
+                    ),
+                    postsAsync.when(
+                      data: (posts) => SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) => _MapSheetPostListItem(
+                            post: posts[index],
+                            onRefresh: () {
+                              ref.invalidate(
+                                AppNearbyRestaurantsSheet
+                                    .postsByNameFromRepositoryProvider(
+                                  selection.name,
+                                ),
+                              );
+                              ref.invalidate(postsStreamProvider);
+                              ref.invalidate(blockListProvider);
+                            },
+                          ),
+                          childCount: posts.length,
+                        ),
+                      ),
+                      loading: () => const SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
+                      ),
+                      error: (_, __) => SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Center(
+                            child: Text(
+                              Translations.of(context).notification.loadFailed,
+                              style: TextStyle(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? Colors.white
+                                    : null,
                               ),
                             ),
                           ),
-                          postsAsync.when(
-                            data: (posts) => SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) => _MapSheetPostListItem(
-                                  post: posts[index],
-                                  onRefresh: () {
-                                    ref.invalidate(
-                                      AppNearbyRestaurantsSheet
-                                          .postsByNameFromRepositoryProvider(
-                                        selection.name,
-                                      ),
-                                    );
-                                    ref.invalidate(postsStreamProvider);
-                                    ref.invalidate(blockListProvider);
-                                  },
-                                ),
-                                childCount: posts.length,
-                              ),
-                            ),
-                            loading: () => const SliverToBoxAdapter(
-                              child: Padding(
-                                padding: EdgeInsets.all(16),
-                                child:
-                                    Center(child: CircularProgressIndicator()),
-                              ),
-                            ),
-                            error: (_, __) => SliverToBoxAdapter(
-                              child: Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Center(
-                                  child: Text(
-                                    Translations.of(context)
-                                        .notification
-                                        .loadFailed,
-                                    style: TextStyle(
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? Colors.white
-                                          : null,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                    return ListView.separated(
-                      controller: controller,
-                      padding: const EdgeInsets.only(bottom: 16),
-                      itemCount: grouped.length,
-                      separatorBuilder: (_, __) => const Divider(height: 1),
-                      itemBuilder: (context, index) {
-                        final group = grouped[index];
+                        ),
+                      ),
+                    ),
+                  ]);
+                }
+                if (grouped.isEmpty) {
+                  return SliverToBoxAdapter(
+                    child: const Padding(
+                      padding: EdgeInsets.all(24),
+                      child: _EmptyNearby(),
+                    ),
+                  );
+                }
+                return SliverPadding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        if (index.isOdd) {
+                          return const Divider(height: 1);
+                        }
+                        final group = grouped[index ~/ 2];
                         final supabase = ref.watch(supabaseProvider);
                         final postsByNameAsync = ref.watch(
                           AppNearbyRestaurantsSheet
@@ -394,13 +426,37 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
                           ),
                         );
                       },
-                    );
-                  },
-                  loading: () => const AppNearbyRestaurantsSkeleton(),
-                  error: (_, __) => const _EmptyNearby(),
+                      childCount: grouped.length * 2 - 1,
+                    ),
+                  ),
+                );
+              },
+              loading: () => SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 400,
+                  child: AppNearbyRestaurantsSkeleton(),
                 ),
               ),
-            ],
+              error: (_, __) => SliverToBoxAdapter(
+                child: const Padding(
+                  padding: EdgeInsets.all(24),
+                  child: _EmptyNearby(),
+                ),
+              ),
+            ),
+        ];
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            color: sheetBg,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(24),
+              topRight: Radius.circular(24),
+            ),
+          ),
+          child: CustomScrollView(
+            controller: scrollController,
+            primary: false,
+            slivers: slivers,
           ),
         );
       },
@@ -458,7 +514,7 @@ class _MapSheetPostListItem extends HookConsumerWidget {
     final displayName = isLoading
         ? '...'
         : (snapshot.data != null && !post.isAnonymous
-            ? snapshot.data!.name
+            ? (snapshot.data?.name ?? t.anonymous.poster)
             : t.anonymous.poster);
     final imagePath = post.isAnonymous
         ? 'assets/icon/icon1.png'
