@@ -161,8 +161,8 @@ class MapScreen extends HookConsumerWidget {
                                 padding:
                                     const EdgeInsets.only(left: 8, bottom: 8),
                                 child: SizedBox(
-                                  width: 60,
-                                  height: 60,
+                                  width: 50,
+                                  height: 50,
                                   child: Theme(
                                     data: Theme.of(context).copyWith(
                                       highlightColor: fabBg,
@@ -172,7 +172,7 @@ class MapScreen extends HookConsumerWidget {
                                       shape: RoundedRectangleBorder(
                                         side: BorderSide(color: fabBorder),
                                         borderRadius: const BorderRadius.all(
-                                          Radius.circular(20),
+                                          Radius.circular(10),
                                         ),
                                       ),
                                       foregroundColor: fabBg,
@@ -205,7 +205,7 @@ class MapScreen extends HookConsumerWidget {
                                             ? CupertinoIcons.globe
                                             : CupertinoIcons.map,
                                         color: fabFg,
-                                        size: 28,
+                                        size: 24,
                                       ),
                                     ),
                                   ),
@@ -216,8 +216,8 @@ class MapScreen extends HookConsumerWidget {
                                   padding:
                                       const EdgeInsets.only(top: 2, left: 8),
                                   child: SizedBox(
-                                    width: 60,
-                                    height: 60,
+                                    width: 50,
+                                    height: 50,
                                     child: Theme(
                                       data: Theme.of(context).copyWith(
                                         highlightColor: fabBg,
@@ -227,7 +227,7 @@ class MapScreen extends HookConsumerWidget {
                                         shape: RoundedRectangleBorder(
                                           side: BorderSide(color: fabBorder),
                                           borderRadius: const BorderRadius.all(
-                                            Radius.circular(20),
+                                            Radius.circular(10),
                                           ),
                                         ),
                                         foregroundColor: fabBg,
@@ -241,7 +241,7 @@ class MapScreen extends HookConsumerWidget {
                                         child: const Icon(
                                           CupertinoIcons.location,
                                           color: fabFg,
-                                          size: 28,
+                                          size: 24,
                                         ),
                                       ),
                                     ),
@@ -252,8 +252,8 @@ class MapScreen extends HookConsumerWidget {
                                 padding:
                                     const EdgeInsets.only(top: 12, left: 8),
                                 child: SizedBox(
-                                  width: 60,
-                                  height: 60,
+                                  width: 50,
+                                  height: 50,
                                   child: Theme(
                                     data: Theme.of(context).copyWith(
                                       highlightColor: fabBg,
@@ -263,7 +263,7 @@ class MapScreen extends HookConsumerWidget {
                                       shape: RoundedRectangleBorder(
                                         side: BorderSide(color: fabBorder),
                                         borderRadius: const BorderRadius.all(
-                                          Radius.circular(20),
+                                          Radius.circular(10),
                                         ),
                                       ),
                                       foregroundColor: fabBg,
@@ -276,7 +276,7 @@ class MapScreen extends HookConsumerWidget {
                                       child: const Icon(
                                         CupertinoIcons.compass,
                                         color: fabFg,
-                                        size: 30,
+                                        size: 28,
                                       ),
                                     ),
                                   ),
