@@ -68,26 +68,27 @@ class AppNearbyRestaurantsSheet extends HookConsumerWidget {
               ),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton.icon(
-                  onPressed: () => ref
-                      .read(mapViewModelProvider.notifier)
-                      .setNearbySearchCenterFromCamera(),
-                  icon: const Icon(Icons.search, size: 20),
-                  label: Text(
-                    Translations.of(context).searchNearbyPlaces,
-                  ),
-                  style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+          if (selection == null)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                    onPressed: () => ref
+                        .read(mapViewModelProvider.notifier)
+                        .setNearbySearchCenterFromCamera(),
+                    icon: const Icon(Icons.search, size: 20),
+                    label: Text(
+                      Translations.of(context).searchNearbyPlaces,
+                    ),
+                    style: FilledButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
           if (nearbyAsync == null)
             const SliverToBoxAdapter(
               child: Padding(
