@@ -13,6 +13,7 @@
   "save": "Lưu",
   "searchFood": "Tìm kiếm món ăn",
   "noResultsFound": "Không tìm thấy kết quả",
+  "searchNearbyPlaces": "Tìm kiếm địa điểm gần đây",
   "searchCountry": "Tìm kiếm quốc gia",
   "searchEmptyTitle": "Nhập tên nhà hàng để tìm kiếm",
   "userInfoFetchError": "Không thể lấy thông tin người dùng",

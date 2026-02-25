@@ -13,6 +13,7 @@
   "save": "保存",
   "searchFood": "搜索食物",
   "noResultsFound": "未找到搜索结果",
+  "searchNearbyPlaces": "搜索附近地点",
   "searchCountry": "搜索国家",
   "searchEmptyTitle": "输入餐厅名称进行搜索",
   "userInfoFetchError": "获取用户信息失败",
