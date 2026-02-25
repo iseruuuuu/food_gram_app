@@ -13,6 +13,7 @@
   "save": "저장",
   "searchFood": "음식 검색",
   "noResultsFound": "검색 결과를 찾을 수 없습니다",
+  "searchNearbyPlaces": "주변 장소 검색",
   "searchCountry": "국가 검색",
   "searchEmptyTitle": "레스토랑 이름을 입력하여 검색하세요",
   "userInfoFetchError": "사용자 정보를 가져오는데 실패했습니다",

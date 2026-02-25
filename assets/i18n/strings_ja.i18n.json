@@ -13,6 +13,7 @@
   "save": "保存",
   "searchFood": "料理を検索",
   "noResultsFound": "検索結果が見つかりませんでした",
+  "searchNearbyPlaces": "近くの場所を検索",
   "searchCountry": "国を検索",
   "searchEmptyTitle": "店舗名を入力して検索してください",
   "userInfoFetchError": "ユーザー情報の取得に失敗しました",

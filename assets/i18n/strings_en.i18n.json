@@ -13,6 +13,7 @@
   "save": "Save",
   "searchFood": "Search food",
   "noResultsFound": "No results found",
+  "searchNearbyPlaces": "Search nearby places",
   "searchCountry": "Search country",
   "searchEmptyTitle": "Enter restaurant name to search",
   "userInfoFetchError": "Failed to fetch user information",

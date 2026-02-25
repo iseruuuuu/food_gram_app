@@ -13,6 +13,7 @@
   "save": "Salvar",
   "searchFood": "Pesquisar comida",
   "noResultsFound": "Nenhum resultado encontrado",
+  "searchNearbyPlaces": "Pesquisar lugares próximos",
   "searchCountry": "Pesquisar país",
   "searchEmptyTitle": "Digite o nome do restaurante para pesquisar",
   "userInfoFetchError": "Falha ao buscar informações do usuário",

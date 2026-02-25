@@ -13,6 +13,7 @@
   "save": "บันทึก",
   "searchFood": "ค้นหาอาหาร",
   "noResultsFound": "ไม่พบผลลัพธ์",
+  "searchNearbyPlaces": "ค้นหาสถานที่ใกล้เคียง",
   "searchCountry": "ค้นหาประเทศ",
   "searchEmptyTitle": "กรอกชื่อร้านอาหารเพื่อค้นหา",
   "userInfoFetchError": "ดึงข้อมูลผู้ใช้ล้มเหลว",
