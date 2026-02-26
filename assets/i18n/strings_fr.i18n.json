@@ -235,6 +235,21 @@
     "japan": "Japon",
     "world": "Monde"
   },
+  "myMapShare": {
+    "title": "Partager ma carte",
+    "shareButton": "Partager",
+    "inviteMessage": "Partage tes bons plats sur FoodGram !",
+    "japanChallengeLine": "Défi 47 préfectures : {count} / 47",
+    "worldChallengeLine": "Défi monde : {count} / 195 pays",
+    "japanChallengeTitle": "Défi 47 préfectures",
+    "worldChallengeTitle": "Défi monde",
+    "japanQuestion": "Le Japon : combien de préfectures peux-tu visiter ?",
+    "worldQuestion": "Le monde : combien de pays peux-tu visiter ?",
+    "japanChallengeInProgress": "Défi 47 préfectures en cours.",
+    "worldChallengeInProgress": "Défi monde en cours.",
+    "currentProgress": "Actuellement {count} / {total}.",
+    "yourTurn": "Et toi ?"
+  },
   "tutorial": {
     "firstPageTitle": "Partage tes moments",
     "firstPageSubTitle": "Avec FoodGram, chaque repas devient spécial.",

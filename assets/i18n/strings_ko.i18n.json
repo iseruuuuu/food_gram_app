@@ -235,6 +235,21 @@
     "japan": "일본",
     "world": "세계"
   },
+  "myMapShare": {
+    "title": "내 지도 공유",
+    "shareButton": "공유",
+    "inviteMessage": "FoodGram에서 맛있는 음식을 공유해 보세요!",
+    "japanChallengeLine": "47개 도도부현 챌린지: {count} / 47",
+    "worldChallengeLine": "세계 챌린지: {count} / 195개국",
+    "japanChallengeTitle": "47개 도도부현 챌린지",
+    "worldChallengeTitle": "세계 챌린지",
+    "japanQuestion": "일본, 몇 개 도도부현 갈 수 있나요?",
+    "worldQuestion": "세계, 몇 개국 갈 수 있나요?",
+    "japanChallengeInProgress": "47개 도도부현 챌린지 진행 중.",
+    "worldChallengeInProgress": "세계 챌린지 진행 중.",
+    "currentProgress": "지금 {count} / {total}.",
+    "yourTurn": "당신은요?"
+  },
   "tutorial": {
     "firstPageTitle": "맛있는 순간을 공유하세요",
     "firstPageSubTitle": "FoodGram으로 매 식사가 더욱 특별해집니다.\n새로운 맛을 발견하는 즐거움을 경험하세요!",

@@ -235,6 +235,21 @@
     "japan": "Nhật Bản",
     "world": "Thế giới"
   },
+  "myMapShare": {
+    "title": "Chia sẻ bản đồ của tôi",
+    "shareButton": "Chia sẻ",
+    "inviteMessage": "Chia sẻ món ngon trên FoodGram!",
+    "japanChallengeLine": "Thử thách 47 tỉnh: {count} / 47",
+    "worldChallengeLine": "Thử thách thế giới: {count} / 195 quốc gia",
+    "japanChallengeTitle": "Thử thách 47 tỉnh",
+    "worldChallengeTitle": "Thử thách thế giới",
+    "japanQuestion": "Nhật Bản: bạn có thể đến bao nhiêu tỉnh?",
+    "worldQuestion": "Thế giới: bạn có thể đến bao nhiêu quốc gia?",
+    "japanChallengeInProgress": "Thử thách 47 tỉnh đang thực hiện.",
+    "worldChallengeInProgress": "Thử thách thế giới đang thực hiện.",
+    "currentProgress": "Hiện tại {count} / {total}.",
+    "yourTurn": "Còn bạn?"
+  },
   "tutorial": {
     "firstPageTitle": "Khoảnh khắc ngon miệng",
     "firstPageSubTitle": "Mỗi bữa ăn đặc biệt hơn.\nKhám phá hương vị mới!",
