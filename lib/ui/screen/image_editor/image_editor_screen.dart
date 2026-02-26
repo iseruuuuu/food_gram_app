@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,10 @@ import 'package:pro_image_editor/pro_image_editor.dart';
 /// [imagePath] で画像ファイルパスを受け取り、完了時に編集後の [Uint8List] を pop する。
 /// キャンセル時は null を pop する。
 class ImageEditorScreen extends StatefulWidget {
-  const ImageEditorScreen({super.key, required this.imagePath});
+  const ImageEditorScreen({
+    required this.imagePath,
+    super.key,
+  });
 
   final String imagePath;
 
@@ -22,9 +24,13 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
   bool _hasPopped = false;
 
   void _popOnce([Uint8List? bytes]) {
-    if (_hasPopped) return;
+    if (_hasPopped) {
+      return;
+    }
     _hasPopped = true;
-    if (!context.mounted) return;
+    if (!context.mounted) {
+      return;
+    }
     if (bytes != null) {
       context.pop<Uint8List>(bytes);
     } else {
@@ -40,7 +46,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
           title: const Text('画像編集'),
           leading: IconButton(
             icon: const Icon(Icons.close),
-            onPressed: () => _popOnce(),
+            onPressed: _popOnce,
           ),
         ),
         body: const Center(
@@ -56,7 +62,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
           title: const Text('画像編集'),
           leading: IconButton(
             icon: const Icon(Icons.close),
-            onPressed: () => _popOnce(),
+            onPressed: _popOnce,
           ),
         ),
         body: const Center(child: Text('画像ファイルが見つかりません。')),
@@ -66,7 +72,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
     return ProImageEditor.file(
       file,
       callbacks: ProImageEditorCallbacks(
-        onImageEditingComplete: (Uint8List bytes) async {
+        onImageEditingComplete: (bytes) async {
           _popOnce(bytes);
         },
         onCloseEditor: (_) {
@@ -75,7 +81,6 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
           _popOnce();
         },
       ),
-      configs: const ProImageEditorConfigs(),
     );
   }
 }

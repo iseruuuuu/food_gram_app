@@ -82,8 +82,9 @@ class EditPostScreen extends HookConsumerWidget {
       () {
         final current = ref.read(editPostRemovingPathsProvider);
         final next = current
-            .where((p) =>
-                existingImagePaths.contains(p) || foodImages.contains(p))
+            .where(
+              (p) => existingImagePaths.contains(p) || foodImages.contains(p),
+            )
             .toSet();
         if (next.length != current.length) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -175,7 +176,9 @@ class EditPostScreen extends HookConsumerWidget {
                         // 既存の画像（サーバーから読み込んだもの）
                         if (existingImagePaths.isNotEmpty)
                           SizedBox(
-                            key: ValueKey(existingImagePaths),
+                            key: ValueKey(
+                              'existing_${existingImagePaths.join('|')}',
+                            ),
                             height: deviceWidth / 1.7,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
@@ -216,16 +219,14 @@ class EditPostScreen extends HookConsumerWidget {
                                                   child: Icon(
                                                     Icons.delete_outline,
                                                     size: 48,
-                                                    color:
-                                                        Colors.grey.shade600,
+                                                    color: Colors.grey.shade600,
                                                   ),
                                                 )
                                               : CachedNetworkImage(
                                                   imageUrl: existingImageUrl,
                                                   fit: BoxFit.cover,
                                                   memCacheWidth: previewWidth,
-                                                  memCacheHeight:
-                                                      previewHeight,
+                                                  memCacheHeight: previewHeight,
                                                 ),
                                         ),
                                       ),
@@ -275,7 +276,7 @@ class EditPostScreen extends HookConsumerWidget {
                         // 新しく追加した画像
                         if (foodImages.isNotEmpty)
                           SizedBox(
-                            key: ValueKey(foodImages),
+                            key: ValueKey('food_${foodImages.join('|')}'),
                             height: deviceWidth / 1.7,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
@@ -312,8 +313,7 @@ class EditPostScreen extends HookConsumerWidget {
                                                   child: Icon(
                                                     Icons.delete_outline,
                                                     size: 48,
-                                                    color:
-                                                        Colors.grey.shade600,
+                                                    color: Colors.grey.shade600,
                                                   ),
                                                 )
                                               : Image.file(

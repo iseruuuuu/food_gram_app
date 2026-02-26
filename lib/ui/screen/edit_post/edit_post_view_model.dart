@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
@@ -220,7 +220,10 @@ class EditPostViewModel extends _$EditPostViewModel {
     }
   }
 
-  Future<Uint8List?> _openImageEditor(BuildContext context, String imagePath) async {
+  Future<Uint8List?> _openImageEditor(
+    BuildContext context,
+    String imagePath,
+  ) async {
     final result = await context.pushNamed<Uint8List?>(
       RouterPath.imageEditor,
       extra: imagePath,
@@ -230,7 +233,9 @@ class EditPostViewModel extends _$EditPostViewModel {
 
   Future<void> _processImageFromBytes(Uint8List bytes) async {
     final dir = await getTemporaryDirectory();
-    final file = File('${dir.path}/food_gram_edit_${DateTime.now().millisecondsSinceEpoch}.jpg');
+    final file = File(
+      '${dir.path}/food_gram_edit_${DateTime.now().millisecondsSinceEpoch}.jpg',
+    );
     await file.writeAsBytes(bytes);
     await _processImage(file);
   }
@@ -257,7 +262,9 @@ class EditPostViewModel extends _$EditPostViewModel {
 
   void removeExistingImage(String imagePath) {
     final idx = state.existingImagePaths.indexOf(imagePath);
-    if (idx < 0) return;
+    if (idx < 0) {
+      return;
+    }
     final updatedExisting = List<String>.from(state.existingImagePaths)
       ..removeAt(idx);
     state = state.copyWith(existingImagePaths: updatedExisting);

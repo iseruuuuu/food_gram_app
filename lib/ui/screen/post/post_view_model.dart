@@ -195,7 +195,13 @@ class PostViewModel extends _$PostViewModel {
     }
   }
 
-  Future<Uint8List?> _openImageEditor(BuildContext context, String imagePath) async {
+  Future<Uint8List?> _openImageEditor(
+    BuildContext context,
+    String imagePath,
+  ) async {
+    if (!context.mounted) {
+      return null;
+    }
     final result = await context.pushNamed<Uint8List?>(
       RouterPath.imageEditor,
       extra: imagePath,
@@ -205,7 +211,9 @@ class PostViewModel extends _$PostViewModel {
 
   Future<void> _processImageFromBytes(Uint8List bytes) async {
     final dir = await getTemporaryDirectory();
-    final file = File('${dir.path}/food_gram_${DateTime.now().millisecondsSinceEpoch}.jpg');
+    final file = File(
+      '${dir.path}/food_gram_${DateTime.now().millisecondsSinceEpoch}.jpg',
+    );
     await file.writeAsBytes(bytes);
     await _processImage(file);
   }

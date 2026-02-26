@@ -45,7 +45,6 @@ dependencies:
   google_sign_in: ^6.1.4
   hooks_riverpod: ^2.4.9
   image_picker: ^1.0.4
-  pro_image_editor: ^12.0.1
   in_app_review: ^2.0.8
   intl: ^0.20.2
   json_annotation: ^4.9.0
@@ -60,6 +59,7 @@ dependencies:
   path_provider: ^2.1.5
   permission_handler: ^11.3.1
   photo_viewer: ^0.0.3
+  pro_image_editor: ^12.0.1
   purchases_flutter: ^9.9.10
   purchases_ui_flutter: ^9.9.10
   quickalert: ^1.1.0
