@@ -9,6 +9,7 @@ import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/dialog/app_map_stats_share_dialog.dart';
 import 'package:food_gram_app/ui/component/map/app_map_stats_card.dart';
 import 'package:food_gram_app/ui/component/map/app_map_view_type_selector.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
@@ -170,6 +171,53 @@ class MyMapScreen extends HookConsumerWidget {
                                       onPressed: controller.resetBearing,
                                       child: const Icon(
                                         CupertinoIcons.compass,
+                                        color: fabFg,
+                                        size: 24,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 12, left: 8),
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: Theme(
+                                    data: Theme.of(context).copyWith(
+                                      highlightColor: fabBg,
+                                    ),
+                                    child: FloatingActionButton(
+                                      heroTag: 'shareMapStats',
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(color: fabBorder),
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(10),
+                                        ),
+                                      ),
+                                      foregroundColor: fabBg,
+                                      backgroundColor: fabBg,
+                                      focusColor: fabBg,
+                                      splashColor: fabBg,
+                                      hoverColor: fabBg,
+                                      elevation: 10,
+                                      onPressed: () {
+                                        showGeneralDialog<void>(
+                                          context: context,
+                                          pageBuilder: (_, __, ___) {
+                                            return AppMapStatsShareDialog(
+                                              postsCount: state.postsCount,
+                                              visitedPrefecturesCount:
+                                                  state.visitedPrefecturesCount,
+                                              visitedCountriesCount:
+                                                  state.visitedCountriesCount,
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: const Icon(
+                                        Icons.ios_share,
                                         color: fabFg,
                                         size: 24,
                                       ),
