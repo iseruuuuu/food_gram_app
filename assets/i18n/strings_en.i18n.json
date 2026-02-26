@@ -13,6 +13,7 @@
   "save": "Save",
   "searchFood": "Search food",
   "noResultsFound": "No results found",
+  "searchNearbyPlaces": "Search nearby places",
   "searchCountry": "Search country",
   "searchEmptyTitle": "Enter restaurant name to search",
   "userInfoFetchError": "Failed to fetch user information",
@@ -134,7 +135,11 @@
     "pointCount": "Points",
     "editButton": "Edit Profile",
     "exchangePointsButton": "Exchange Points",
-    "favoriteGenre": "Favorite Genre"
+    "favoriteGenre": "Favorite Genre",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "{count} posts to next Lv",
+    "nextLevelBanner": "Next Lv in {count} posts",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "About this post",
@@ -172,11 +177,16 @@
     "refreshButton": "Reload",
     "message": "Errors have occurred"
   },
+  "levelUp": {
+    "title": "Level Up!",
+    "message": "You reached Lv.{level}"
+  },
   "map": {
     "loadingError": "An error occurred",
     "loadingRestaurant": "Getting restaurant information...",
     "visibleAreaMeals": "📍 This area has {count} meals",
-    "visibleAreaLoading": "Loading..."
+    "visibleAreaLoading": "Loading...",
+    "areaPopularLabel": "Main genres"
   },
   "app": {
     "shareTitle": "Share",
@@ -210,6 +220,7 @@
   "mapStats": {
     "visitedArea": "Visited places",
     "posts": "Posts",
+    "level": "Level",
     "activityDays": "Active days",
     "prefectures": "Visited prefectures",
     "achievementRate": "Rate",
@@ -223,6 +234,21 @@
     "record": "Record",
     "japan": "Japan",
     "world": "World"
+  },
+  "myMapShare": {
+    "title": "Share My Map",
+    "shareButton": "Share",
+    "inviteMessage": "Share delicious food on FoodGram!",
+    "japanChallengeLine": "47 Prefectures Challenge: {count} / 47",
+    "worldChallengeLine": "World Challenge: {count} / 195 countries",
+    "japanChallengeTitle": "47 Prefectures Challenge",
+    "worldChallengeTitle": "World Challenge",
+    "japanQuestion": "Japan, how many prefectures can you visit?",
+    "worldQuestion": "World, how many countries can you go to?",
+    "japanChallengeInProgress": "47 Prefectures Challenge in progress.",
+    "worldChallengeInProgress": "World Challenge in progress.",
+    "currentProgress": "Currently {count} / {total}.",
+    "yourTurn": "How about you?"
   },
   "tutorial": {
     "firstPageTitle": "Share your delicious moments",

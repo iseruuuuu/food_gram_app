@@ -13,6 +13,7 @@
   "save": "Speichern",
   "searchFood": "Essen suchen",
   "noResultsFound": "Keine Ergebnisse gefunden",
+  "searchNearbyPlaces": "Orte in der Nähe suchen",
   "searchCountry": "Land suchen",
   "searchEmptyTitle": "Geben Sie den Restaurantnamen ein, um zu suchen",
   "userInfoFetchError": "Fehler beim Abrufen der Benutzerinformationen",
@@ -134,7 +135,11 @@
     "pointCount": "Punkte",
     "editButton": "Profil bearbeiten",
     "exchangePointsButton": "Punkte einlösen",
-    "favoriteGenre": "Lieblingsgenre"
+    "favoriteGenre": "Lieblingsgenre",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "Noch {count} Beiträge bis zum nächsten Lv",
+    "nextLevelBanner": "Noch {count} Beiträge bis zum nächsten Lv",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "Über diesen Beitrag",
@@ -172,11 +177,16 @@
     "refreshButton": "Neu laden",
     "message": "Fehler sind aufgetreten"
   },
+  "levelUp": {
+    "title": "Level Up!",
+    "message": "Du hast Lv.{level} erreicht"
+  },
   "map": {
     "loadingError": "Ein Fehler ist aufgetreten",
     "loadingRestaurant": "Restaurant-Informationen werden abgerufen...",
     "visibleAreaMeals": "📍 In diesem Bereich gibt es {count} Gerichte",
-    "visibleAreaLoading": "Wird geladen..."
+    "visibleAreaLoading": "Wird geladen...",
+    "areaPopularLabel": "Hauptgenres"
   },
   "app": {
     "shareTitle": "Teilen",
@@ -210,6 +220,7 @@
   "mapStats": {
     "visitedArea": "Besuchte Orte",
     "posts": "Beiträge",
+    "level": "Level",
     "activityDays": "Aktive Tage",
     "prefectures": "Besuchte Präfekturen",
     "achievementRate": "Rate",
@@ -223,6 +234,21 @@
     "record": "Aufzeichnung",
     "japan": "Japan",
     "world": "Welt"
+  },
+  "myMapShare": {
+    "title": "Meine Karte teilen",
+    "shareButton": "Teilen",
+    "inviteMessage": "Teile leckeres Essen auf FoodGram!",
+    "japanChallengeLine": "47 Präfekturen-Challenge: {count} / 47",
+    "worldChallengeLine": "Welt-Challenge: {count} / 195 Länder",
+    "japanChallengeTitle": "47 Präfekturen-Challenge",
+    "worldChallengeTitle": "Welt-Challenge",
+    "japanQuestion": "Japan – wie viele Präfekturen schaffst du?",
+    "worldQuestion": "Welt – wie viele Länder schaffst du?",
+    "japanChallengeInProgress": "47 Präfekturen-Challenge läuft.",
+    "worldChallengeInProgress": "Welt-Challenge läuft.",
+    "currentProgress": "Aktuell {count} / {total}.",
+    "yourTurn": "Und du?"
   },
   "tutorial": {
     "firstPageTitle": "Köstliche Momente teilen",

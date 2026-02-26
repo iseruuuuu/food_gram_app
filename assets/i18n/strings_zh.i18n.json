@@ -13,6 +13,7 @@
   "save": "保存",
   "searchFood": "搜索食物",
   "noResultsFound": "未找到搜索结果",
+  "searchNearbyPlaces": "搜索附近地点",
   "searchCountry": "搜索国家",
   "searchEmptyTitle": "输入餐厅名称进行搜索",
   "userInfoFetchError": "获取用户信息失败",
@@ -134,7 +135,11 @@
     "pointCount": "积分",
     "editButton": "编辑个人资料",
     "exchangePointsButton": "兑换积分",
-    "favoriteGenre": "收藏类型"
+    "favoriteGenre": "收藏类型",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "距下一级还需 {count} 篇帖子",
+    "nextLevelBanner": "距下一级还需 {count} 篇帖子",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "关于此帖子",
@@ -172,11 +177,16 @@
     "refreshButton": "重新加载",
     "message": "发生错误"
   },
+  "levelUp": {
+    "title": "升级！",
+    "message": "你已达到 Lv.{level}"
+  },
   "map": {
     "loadingError": "发生错误",
     "loadingRestaurant": "正在获取餐厅信息...",
     "visibleAreaMeals": "📍 此区域有{count}条美食",
-    "visibleAreaLoading": "加载中..."
+    "visibleAreaLoading": "加载中...",
+    "areaPopularLabel": "主要类型"
   },
   "app": {
     "shareTitle": "分享",
@@ -210,6 +220,7 @@
   "mapStats": {
     "visitedArea": "已访问的地点",
     "posts": "帖子",
+    "level": "等级",
     "activityDays": "活动天数",
     "prefectures": "访问的都道府县",
     "achievementRate": "达成率",
@@ -223,6 +234,21 @@
     "record": "记录",
     "japan": "日本",
     "world": "世界"
+  },
+  "myMapShare": {
+    "title": "分享我的地图",
+    "shareButton": "分享",
+    "inviteMessage": "在FoodGram分享美味食物！",
+    "japanChallengeLine": "47都道府县挑战：{count} / 47",
+    "worldChallengeLine": "世界挑战：{count} / 195国",
+    "japanChallengeTitle": "47都道府县挑战",
+    "worldChallengeTitle": "世界挑战",
+    "japanQuestion": "日本，你能去多少个都道府县？",
+    "worldQuestion": "世界，你能去多少个国家？",
+    "japanChallengeInProgress": "47都道府县挑战进行中。",
+    "worldChallengeInProgress": "世界挑战进行中。",
+    "currentProgress": "现在是 {count} / {total}。",
+    "yourTurn": "你呢？"
   },
   "tutorial": {
     "firstPageTitle": "分享您的美味时刻",

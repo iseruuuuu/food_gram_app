@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/utils/user_level.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -38,6 +39,7 @@ class AppProfileHeader extends ConsumerWidget {
     final headerBg = Theme.of(context).colorScheme.surface;
     final textColor = isDark ? Colors.white : Colors.black;
     final textColor87 = isDark ? Colors.white70 : Colors.black87;
+    const avatarRadius = 48.0;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -61,6 +63,7 @@ class AppProfileHeader extends ConsumerWidget {
                   Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         const Gap(8),
                         Text(
@@ -71,8 +74,41 @@ class AppProfileHeader extends ConsumerWidget {
                             color: textColor,
                           ),
                         ),
+                        if (currentUser == users.userId) ...[
+                          const Gap(8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: isDark
+                                  ? Colors.grey.shade700
+                                  : Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Text(
+                              UserLevel.levelFromPostCount(length) >=
+                                      UserLevel.maxLevel
+                                  ? t.profile.levelMax
+                                  : t.profile.levelLabel.replaceAll(
+                                      '{level}',
+                                      UserLevel.levelFromPostCount(length)
+                                          .toString(),
+                                    ),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: isDark
+                                    ? Colors.white
+                                    : Colors.grey.shade800,
+                              ),
+                            ),
+                          ),
+                        ],
                         if (users.isSubscribe)
                           Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               const Gap(8),
                               Assets.image.profileIcon.image(
@@ -152,27 +188,170 @@ class AppProfileHeader extends ConsumerWidget {
                       ),
                     ),
                   ],
-                  const Gap(8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      BuildStatColumn(
-                        count: length.toString(),
-                        label: t.profile.postCount,
-                        isDark: isDark,
-                      ),
-                      BuildStatColumn(
-                        count: heartAmount.toString(),
-                        label: t.likeButton,
-                        isDark: isDark,
-                      ),
-                      if (currentUser == users.userId)
-                        BuildStatColumn(
-                          count: point.toStringAsFixed(2),
-                          label: t.profile.pointCount,
-                          isDark: isDark,
+                  if (currentUser == users.userId) ...[
+                    const Gap(8),
+                    if (UserLevel.levelFromPostCount(length) <
+                        UserLevel.maxLevel)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Builder(
+                              builder: (context) {
+                                final parts =
+                                    t.profile.nextLevelBanner.split('{count}');
+                                final count =
+                                    UserLevel.postsNeededForNextLevel(length) ??
+                                        0;
+                                final nextLevelColor =
+                                    isDark ? Colors.white70 : Colors.black54;
+                                if (parts.length != 2) {
+                                  return Text(
+                                    t.profile.nextLevelBanner.replaceAll(
+                                      '{count}',
+                                      count.toString(),
+                                    ),
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: nextLevelColor,
+                                    ),
+                                  );
+                                }
+                                return RichText(
+                                  text: TextSpan(
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: nextLevelColor,
+                                    ),
+                                    children: [
+                                      TextSpan(text: parts[0]),
+                                      TextSpan(
+                                        text: count.toString(),
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          color: isDark
+                                              ? Colors.orange.shade200
+                                              : Colors.orange.shade800,
+                                        ),
+                                      ),
+                                      TextSpan(text: parts[1]),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                            const Gap(8),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: LinearProgressIndicator(
+                                value: UserLevel.progressToNextLevel(length),
+                                minHeight: 6,
+                                backgroundColor: isDark
+                                    ? Colors.white12
+                                    : Colors.grey.shade200,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  isDark
+                                      ? Colors.grey.shade500
+                                      : Colors.grey.shade700,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                    ],
+                      ),
+                  ],
+                  const Gap(8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Text(
+                                length.toString(),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor,
+                                ),
+                              ),
+                              const Gap(4),
+                              Text(
+                                t.profile.postCount,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color:
+                                      isDark ? Colors.white70 : Colors.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: 1,
+                          height: 36,
+                          color: isDark ? Colors.white24 : Colors.grey.shade300,
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Text(
+                                heartAmount.toString(),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor,
+                                ),
+                              ),
+                              const Gap(4),
+                              Text(
+                                t.likeButton,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color:
+                                      isDark ? Colors.white70 : Colors.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (currentUser == users.userId) ...[
+                          Container(
+                            width: 1,
+                            height: 36,
+                            color:
+                                isDark ? Colors.white24 : Colors.grey.shade300,
+                          ),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Text(
+                                  point.toStringAsFixed(2),
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: textColor,
+                                  ),
+                                ),
+                                const Gap(4),
+                                Text(
+                                  t.profile.pointCount,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: isDark
+                                        ? Colors.white70
+                                        : Colors.black54,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
                   ),
                   if (currentUser == users.userId)
                     const Gap(16)
@@ -358,8 +537,9 @@ class AppProfileHeader extends ConsumerWidget {
               },
               child: AppProfileImage(
                 imagePath: users.image,
-                radius: 48,
+                radius: avatarRadius,
                 borderWidth: 4,
+                borderColor: headerBg,
               ),
             ),
           ),
@@ -399,46 +579,5 @@ class AppProfileHeader extends ConsumerWidget {
       return Assets.trophy.trophySilver.path;
     }
     return Assets.trophy.trophyBronze.path;
-  }
-}
-
-class BuildStatColumn extends StatelessWidget {
-  const BuildStatColumn({
-    required this.count,
-    required this.label,
-    this.isDark = false,
-    super.key,
-  });
-
-  final String count;
-  final String label;
-  final bool isDark;
-
-  @override
-  Widget build(BuildContext context) {
-    final textColor = isDark ? Colors.white : Colors.black;
-    final labelColor = isDark ? Colors.white70 : Colors.black87;
-    return SizedBox(
-      width: MediaQuery.sizeOf(context).width / 3,
-      child: Column(
-        children: [
-          Text(
-            count,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: textColor,
-            ),
-          ),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 14,
-              color: labelColor,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

@@ -13,6 +13,7 @@
   "save": "保存",
   "searchFood": "料理を検索",
   "noResultsFound": "検索結果が見つかりませんでした",
+  "searchNearbyPlaces": "近くの場所を検索",
   "searchCountry": "国を検索",
   "searchEmptyTitle": "店舗名を入力して検索してください",
   "userInfoFetchError": "ユーザー情報の取得に失敗しました",
@@ -134,7 +135,11 @@
     "pointCount": "ポイント",
     "editButton": "プロフィールを編集",
     "exchangePointsButton": "ポイントを交換する",
-    "favoriteGenre": "好きなジャンル"
+    "favoriteGenre": "好きなジャンル",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "次Lvまで {count} 投稿",
+    "nextLevelBanner": "次のLvまであと {count} 投稿",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "この投稿について",
@@ -172,11 +177,16 @@
     "refreshButton": "再読み込み",
     "message": "エラーが発生しました"
   },
+  "levelUp": {
+    "title": "レベルアップ！",
+    "message": "Lv.{level} に到達しました"
+  },
   "map": {
     "loadingError": "エラーが発生しました",
     "loadingRestaurant": "店舗情報を取得中...",
     "visibleAreaMeals": "📍 このエリアに{count}件の投稿があります",
-    "visibleAreaLoading": "読み込み中…"
+    "visibleAreaLoading": "読み込み中…",
+    "areaPopularLabel": "主なジャンル"
   },
   "app": {
     "shareTitle": "共有",
@@ -210,6 +220,7 @@
   "mapStats": {
     "visitedArea": "訪れた場所",
     "posts": "投稿",
+    "level": "レベル",
     "activityDays": "活動日数",
     "prefectures": "行った都道府県",
     "achievementRate": "達成率",
@@ -223,6 +234,21 @@
     "record": "記録",
     "japan": "日本",
     "world": "世界"
+  },
+  "myMapShare": {
+    "title": "マイマップをシェア",
+    "shareButton": "シェア",
+    "inviteMessage": "FoodGramで美味しいごはんをシェアしよう！",
+    "japanChallengeLine": "47都道府県チャレンジ：{count} / 47",
+    "worldChallengeLine": "世界チャレンジ：{count} / 195カ国",
+    "japanChallengeTitle": "47都道府県チャレンジ",
+    "worldChallengeTitle": "世界チャレンジ",
+    "japanQuestion": "日本、何都道府県いける？",
+    "worldQuestion": "世界、何カ国いける？",
+    "japanChallengeInProgress": "47都道府県チャレンジ中。",
+    "worldChallengeInProgress": "世界チャレンジ中。",
+    "currentProgress": "今は {count} / {total}。",
+    "yourTurn": "あなたは？"
   },
   "tutorial": {
     "firstPageTitle": "美味しい瞬間、シェアしよう",

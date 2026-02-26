@@ -13,6 +13,7 @@
   "save": "Guardar",
   "searchFood": "Buscar comida",
   "noResultsFound": "No se encontraron resultados",
+  "searchNearbyPlaces": "Buscar lugares cercanos",
   "searchCountry": "Buscar país",
   "searchEmptyTitle": "Ingrese nombre del restaurante para buscar",
   "userInfoFetchError": "Error al obtener información del usuario",
@@ -134,7 +135,11 @@
     "pointCount": "Puntos",
     "editButton": "Editar Perfil",
     "exchangePointsButton": "Canjear Puntos",
-    "favoriteGenre": "Género Favorito"
+    "favoriteGenre": "Género Favorito",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "{count} publicaciones para el siguiente Lv",
+    "nextLevelBanner": "Faltan {count} publicaciones para el siguiente Lv",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "Acerca de esta publicación",
@@ -172,11 +177,16 @@
     "refreshButton": "Recargar",
     "message": "Han ocurrido errores"
   },
+  "levelUp": {
+    "title": "¡Subiste de nivel!",
+    "message": "Has alcanzado el Lv.{level}"
+  },
   "map": {
     "loadingError": "Ha ocurrido un error",
     "loadingRestaurant": "Obteniendo información del restaurante...",
     "visibleAreaMeals": "📍 Esta área tiene {count} comidas",
-    "visibleAreaLoading": "Cargando..."
+    "visibleAreaLoading": "Cargando...",
+    "areaPopularLabel": "Principales géneros"
   },
   "app": {
     "shareTitle": "Compartir",
@@ -210,6 +220,7 @@
   "mapStats": {
     "visitedArea": "Lugares visitados",
     "posts": "Publicaciones",
+    "level": "Nivel",
     "activityDays": "Días activos",
     "prefectures": "Prefecturas visitadas",
     "achievementRate": "Tasa",
@@ -223,6 +234,21 @@
     "record": "Registro",
     "japan": "Japón",
     "world": "Mundo"
+  },
+  "myMapShare": {
+    "title": "Compartir mi mapa",
+    "shareButton": "Compartir",
+    "inviteMessage": "¡Comparte comida deliciosa en FoodGram!",
+    "japanChallengeLine": "Desafío 47 prefecturas: {count} / 47",
+    "worldChallengeLine": "Desafío mundial: {count} / 195 países",
+    "japanChallengeTitle": "Desafío 47 prefecturas",
+    "worldChallengeTitle": "Desafío mundial",
+    "japanQuestion": "¿Cuántas prefecturas de Japón puedes visitar?",
+    "worldQuestion": "¿Cuántos países del mundo puedes visitar?",
+    "japanChallengeInProgress": "Desafío 47 prefecturas en curso.",
+    "worldChallengeInProgress": "Desafío mundial en curso.",
+    "currentProgress": "Ahora {count} / {total}.",
+    "yourTurn": "¿Y tú?"
   },
   "tutorial": {
     "firstPageTitle": "Comparte tus momentos deliciosos",

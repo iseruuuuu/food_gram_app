@@ -221,6 +221,50 @@ class AppFoodTagPinWidget extends StatelessWidget {
   }
 }
 
+/// 小さな赤ドットのピンウィジェット（ズーム13以下用）
+/// 丸い赤の外に白色の円
+class AppSmallRedDotWidget extends StatelessWidget {
+  const AppSmallRedDotWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    const size = 21.0;
+    const innerSize = 16.8;
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: size,
+            height: size,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 1.5,
+                  offset: Offset(0, 1),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: innerSize,
+            height: innerSize,
+            decoration: const BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class TriangleClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {

@@ -4,6 +4,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/services/map_post_service.dart';
+import 'package:maplibre_gl/maplibre_gl.dart' show LatLng;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -47,12 +48,14 @@ Future<List<Posts>> mapRepository(Ref ref) async {
   return response.map(Posts.fromJson).toList();
 }
 
-/// 現在地から近い投稿を20件取得するProvider
+/// 指定座標（または現在地・日本中心）から近い投稿を20件取得するProvider
+/// [centerLatLng] null の場合は現在地で取得（fetch_post 等で使用）
 @riverpod
-Future<List<Posts>> getNearByPosts(Ref ref) async {
+Future<List<Posts>> getNearByPosts(Ref ref, LatLng? centerLatLng) async {
   try {
-    final data =
-        await ref.read(mapPostServiceProvider.notifier).getNearbyPosts();
+    final data = await ref
+        .read(mapPostServiceProvider.notifier)
+        .getNearbyPosts(centerLatLng: centerLatLng);
     final posts = data.map(Posts.fromJson).toList();
     return posts;
   } on PostgrestException catch (_) {

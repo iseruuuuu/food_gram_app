@@ -6,12 +6,15 @@ import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/dialog/app_map_stats_share_dialog.dart';
 import 'package:food_gram_app/ui/component/map/app_map_stats_card.dart';
 import 'package:food_gram_app/ui/component/map/app_map_view_type_selector.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/my_map/my_map_view_model.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -34,7 +37,6 @@ class MyMapScreen extends HookConsumerWidget {
     final fabBg = isDark ? Colors.black : Colors.white;
     const fabFg = AppTheme.primaryBlue;
     final fabBorder = isDark ? Colors.white54 : Colors.grey.shade300;
-
     return Scaffold(
       body: Stack(
         children: [
@@ -111,8 +113,8 @@ class MyMapScreen extends HookConsumerWidget {
                                   padding:
                                       const EdgeInsets.only(top: 2, left: 8),
                                   child: SizedBox(
-                                    width: 60,
-                                    height: 60,
+                                    width: 50,
+                                    height: 50,
                                     child: Theme(
                                       data: Theme.of(context).copyWith(
                                         highlightColor: fabBg,
@@ -122,7 +124,7 @@ class MyMapScreen extends HookConsumerWidget {
                                         shape: RoundedRectangleBorder(
                                           side: BorderSide(color: fabBorder),
                                           borderRadius: const BorderRadius.all(
-                                            Radius.circular(20),
+                                            Radius.circular(10),
                                           ),
                                         ),
                                         foregroundColor: fabBg,
@@ -136,7 +138,7 @@ class MyMapScreen extends HookConsumerWidget {
                                         child: const Icon(
                                           CupertinoIcons.location,
                                           color: fabFg,
-                                          size: 28,
+                                          size: 24,
                                         ),
                                       ),
                                     ),
@@ -146,8 +148,8 @@ class MyMapScreen extends HookConsumerWidget {
                                 padding:
                                     const EdgeInsets.only(top: 12, left: 8),
                                 child: SizedBox(
-                                  width: 60,
-                                  height: 60,
+                                  width: 50,
+                                  height: 50,
                                   child: Theme(
                                     data: Theme.of(context).copyWith(
                                       highlightColor: fabBg,
@@ -157,7 +159,7 @@ class MyMapScreen extends HookConsumerWidget {
                                       shape: RoundedRectangleBorder(
                                         side: BorderSide(color: fabBorder),
                                         borderRadius: const BorderRadius.all(
-                                          Radius.circular(20),
+                                          Radius.circular(10),
                                         ),
                                       ),
                                       foregroundColor: fabBg,
@@ -170,7 +172,54 @@ class MyMapScreen extends HookConsumerWidget {
                                       child: const Icon(
                                         CupertinoIcons.compass,
                                         color: fabFg,
-                                        size: 30,
+                                        size: 24,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 12, left: 8),
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: Theme(
+                                    data: Theme.of(context).copyWith(
+                                      highlightColor: fabBg,
+                                    ),
+                                    child: FloatingActionButton(
+                                      heroTag: 'shareMapStats',
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(color: fabBorder),
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(10),
+                                        ),
+                                      ),
+                                      foregroundColor: fabBg,
+                                      backgroundColor: fabBg,
+                                      focusColor: fabBg,
+                                      splashColor: fabBg,
+                                      hoverColor: fabBg,
+                                      elevation: 10,
+                                      onPressed: () {
+                                        showGeneralDialog<void>(
+                                          context: context,
+                                          pageBuilder: (_, __, ___) {
+                                            return AppMapStatsShareDialog(
+                                              postsCount: state.postsCount,
+                                              visitedPrefecturesCount:
+                                                  state.visitedPrefecturesCount,
+                                              visitedCountriesCount:
+                                                  state.visitedCountriesCount,
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: const Icon(
+                                        Icons.ios_share,
+                                        color: fabFg,
+                                        size: 24,
                                       ),
                                     ),
                                   ),
@@ -191,6 +240,31 @@ class MyMapScreen extends HookConsumerWidget {
             hasError: state.hasError,
           ),
         ],
+      ),
+      floatingActionButton: SizedBox(
+        width: 70,
+        height: 70,
+        child: FloatingActionButton(
+          heroTag: null,
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
+          elevation: 10,
+          shape: CircleBorder(
+            side: BorderSide(
+              color: isDark ? Colors.white : Colors.black,
+            ),
+          ),
+          onPressed: () async {
+            await context
+                .pushNamed(RouterPath.timeLinePost)
+                .then((value) async {
+              if (value != null) {
+                ref.invalidate(myMapRepositoryProvider);
+              }
+            });
+          },
+          child: const Icon(Icons.add, size: 35),
+        ),
       ),
     );
   }

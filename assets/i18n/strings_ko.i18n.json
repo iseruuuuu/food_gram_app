@@ -13,6 +13,7 @@
   "save": "저장",
   "searchFood": "음식 검색",
   "noResultsFound": "검색 결과를 찾을 수 없습니다",
+  "searchNearbyPlaces": "주변 장소 검색",
   "searchCountry": "국가 검색",
   "searchEmptyTitle": "레스토랑 이름을 입력하여 검색하세요",
   "userInfoFetchError": "사용자 정보를 가져오는데 실패했습니다",
@@ -134,7 +135,11 @@
     "pointCount": "포인트",
     "editButton": "프로필 편집",
     "exchangePointsButton": "포인트 교환",
-    "favoriteGenre": "즐겨찾기 장르"
+    "favoriteGenre": "즐겨찾기 장르",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "다음 Lv까지 {count}개 게시물",
+    "nextLevelBanner": "다음 Lv까지 {count}개 게시물 남음",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "이 게시물에 대해",
@@ -172,11 +177,16 @@
     "refreshButton": "새로고침",
     "message": "오류가 발생했습니다"
   },
+  "levelUp": {
+    "title": "레벨 업!",
+    "message": "Lv.{level}에 도달했습니다"
+  },
   "map": {
     "loadingError": "오류가 발생했습니다",
     "loadingRestaurant": "레스토랑 정보를 가져오는 중...",
     "visibleAreaMeals": "📍 이 지역에는 {count}개의 식사가 있습니다",
-    "visibleAreaLoading": "불러오는 중..."
+    "visibleAreaLoading": "불러오는 중...",
+    "areaPopularLabel": "주요 장르"
   },
   "app": {
     "shareTitle": "공유",
@@ -210,6 +220,7 @@
   "mapStats": {
     "visitedArea": "방문한 장소",
     "posts": "게시물",
+    "level": "레벨",
     "activityDays": "활동 일수",
     "prefectures": "방문한 도도부현",
     "achievementRate": "달성률",
@@ -223,6 +234,21 @@
     "record": "기록",
     "japan": "일본",
     "world": "세계"
+  },
+  "myMapShare": {
+    "title": "내 지도 공유",
+    "shareButton": "공유",
+    "inviteMessage": "FoodGram에서 맛있는 음식을 공유해 보세요!",
+    "japanChallengeLine": "47개 도도부현 챌린지: {count} / 47",
+    "worldChallengeLine": "세계 챌린지: {count} / 195개국",
+    "japanChallengeTitle": "47개 도도부현 챌린지",
+    "worldChallengeTitle": "세계 챌린지",
+    "japanQuestion": "일본, 몇 개 도도부현 갈 수 있나요?",
+    "worldQuestion": "세계, 몇 개국 갈 수 있나요?",
+    "japanChallengeInProgress": "47개 도도부현 챌린지 진행 중.",
+    "worldChallengeInProgress": "세계 챌린지 진행 중.",
+    "currentProgress": "지금 {count} / {total}.",
+    "yourTurn": "당신은요?"
   },
   "tutorial": {
     "firstPageTitle": "맛있는 순간을 공유하세요",

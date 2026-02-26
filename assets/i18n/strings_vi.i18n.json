@@ -13,6 +13,7 @@
   "save": "Lưu",
   "searchFood": "Tìm kiếm món ăn",
   "noResultsFound": "Không tìm thấy kết quả",
+  "searchNearbyPlaces": "Tìm kiếm địa điểm gần đây",
   "searchCountry": "Tìm kiếm quốc gia",
   "searchEmptyTitle": "Nhập tên nhà hàng để tìm kiếm",
   "userInfoFetchError": "Không thể lấy thông tin người dùng",
@@ -134,7 +135,11 @@
     "pointCount": "Điểm",
     "editButton": "Chỉnh sửa hồ sơ",
     "exchangePointsButton": "Đổi điểm",
-    "favoriteGenre": "Thể loại yêu thích"
+    "favoriteGenre": "Thể loại yêu thích",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "Còn {count} bài đăng đến Lv tiếp theo",
+    "nextLevelBanner": "Còn {count} bài đăng đến Lv tiếp theo",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "Về bài đăng này",
@@ -172,11 +177,16 @@
     "refreshButton": "Tải lại",
     "message": "Đã xảy ra lỗi"
   },
+  "levelUp": {
+    "title": "Lên cấp!",
+    "message": "Bạn đã đạt Lv.{level}"
+  },
   "map": {
     "loadingError": "Đã xảy ra lỗi",
     "loadingRestaurant": "Đang lấy thông tin nhà hàng...",
     "visibleAreaMeals": "📍 Khu vực này có {count} món ăn",
-    "visibleAreaLoading": "Đang tải..."
+    "visibleAreaLoading": "Đang tải...",
+    "areaPopularLabel": "Thể loại chính"
   },
   "app": {
     "shareTitle": "Chia sẻ",
@@ -210,6 +220,7 @@
   "mapStats": {
     "visitedArea": "Địa điểm đã đến",
     "posts": "Bài đăng",
+    "level": "Cấp độ",
     "activityDays": "Ngày hoạt động",
     "prefectures": "Tỉnh đã đến",
     "achievementRate": "Tỷ lệ",
@@ -223,6 +234,21 @@
     "record": "Ghi chép",
     "japan": "Nhật Bản",
     "world": "Thế giới"
+  },
+  "myMapShare": {
+    "title": "Chia sẻ bản đồ của tôi",
+    "shareButton": "Chia sẻ",
+    "inviteMessage": "Chia sẻ món ngon trên FoodGram!",
+    "japanChallengeLine": "Thử thách 47 tỉnh: {count} / 47",
+    "worldChallengeLine": "Thử thách thế giới: {count} / 195 quốc gia",
+    "japanChallengeTitle": "Thử thách 47 tỉnh",
+    "worldChallengeTitle": "Thử thách thế giới",
+    "japanQuestion": "Nhật Bản: bạn có thể đến bao nhiêu tỉnh?",
+    "worldQuestion": "Thế giới: bạn có thể đến bao nhiêu quốc gia?",
+    "japanChallengeInProgress": "Thử thách 47 tỉnh đang thực hiện.",
+    "worldChallengeInProgress": "Thử thách thế giới đang thực hiện.",
+    "currentProgress": "Hiện tại {count} / {total}.",
+    "yourTurn": "Còn bạn?"
   },
   "tutorial": {
     "firstPageTitle": "Khoảnh khắc ngon miệng",

@@ -13,6 +13,7 @@
   "save": "Salvar",
   "searchFood": "Pesquisar comida",
   "noResultsFound": "Nenhum resultado encontrado",
+  "searchNearbyPlaces": "Pesquisar lugares próximos",
   "searchCountry": "Pesquisar país",
   "searchEmptyTitle": "Digite o nome do restaurante para pesquisar",
   "userInfoFetchError": "Falha ao buscar informações do usuário",
@@ -134,7 +135,11 @@
     "pointCount": "Pontos",
     "editButton": "Editar Perfil",
     "exchangePointsButton": "Trocar Pontos",
-    "favoriteGenre": "Gênero Favorito"
+    "favoriteGenre": "Gênero Favorito",
+    "levelLabel": "Lv.{level}",
+    "nextLevelPosts": "{count} publicações para o próximo Lv",
+    "nextLevelBanner": "Faltam {count} publicações para o próximo Lv",
+    "levelMax": "Lv.MAX"
   },
   "postDetailSheet": {
     "title": "Sobre esta publicação",
@@ -172,11 +177,16 @@
     "refreshButton": "Recarregar",
     "message": "Ocorreram erros"
   },
+  "levelUp": {
+    "title": "Subiu de nível!",
+    "message": "Você alcançou o Lv.{level}"
+  },
   "map": {
     "loadingError": "Ocorreu um erro",
     "loadingRestaurant": "Obtendo informações do restaurante...",
     "visibleAreaMeals": "📍 Esta área tem {count} refeições",
-    "visibleAreaLoading": "Carregando..."
+    "visibleAreaLoading": "Carregando...",
+    "areaPopularLabel": "Principais gêneros"
   },
   "app": {
     "shareTitle": "Compartilhar",
@@ -210,6 +220,7 @@
   "mapStats": {
     "visitedArea": "Locais visitados",
     "posts": "Publicações",
+    "level": "Nível",
     "activityDays": "Dias ativos",
     "prefectures": "Prefeituras visitadas",
     "achievementRate": "Taxa",
@@ -223,6 +234,21 @@
     "record": "Registro",
     "japan": "Japão",
     "world": "Mundo"
+  },
+  "myMapShare": {
+    "title": "Compartilhar meu mapa",
+    "shareButton": "Compartilhar",
+    "inviteMessage": "Compartilhe comidas deliciosas no FoodGram!",
+    "japanChallengeLine": "Desafio 47 prefeituras: {count} / 47",
+    "worldChallengeLine": "Desafio mundial: {count} / 195 países",
+    "japanChallengeTitle": "Desafio 47 prefeituras",
+    "worldChallengeTitle": "Desafio mundial",
+    "japanQuestion": "Japão: quantas prefeituras você consegue visitar?",
+    "worldQuestion": "Mundo: quantos países você consegue visitar?",
+    "japanChallengeInProgress": "Desafio 47 prefeituras em andamento.",
+    "worldChallengeInProgress": "Desafio mundial em andamento.",
+    "currentProgress": "Agora {count} / {total}.",
+    "yourTurn": "E você?"
   },
   "tutorial": {
     "firstPageTitle": "Momentos deliciosos",
