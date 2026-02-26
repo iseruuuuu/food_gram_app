@@ -235,6 +235,21 @@
     "japan": "ญี่ปุ่น",
     "world": "โลก"
   },
+  "myMapShare": {
+    "title": "แชร์แผนที่ของฉัน",
+    "shareButton": "แชร์",
+    "inviteMessage": "แชร์อาหารอร่อยบน FoodGram!",
+    "japanChallengeLine": "ท้าทาย 47 จังหวัด: {count} / 47",
+    "worldChallengeLine": "ท้าทายโลก: {count} / 195 ประเทศ",
+    "japanChallengeTitle": "ท้าทาย 47 จังหวัด",
+    "worldChallengeTitle": "ท้าทายโลก",
+    "japanQuestion": "ญี่ปุ่น ไปได้กี่จังหวัด?",
+    "worldQuestion": "โลก ไปได้กี่ประเทศ?",
+    "japanChallengeInProgress": "ท้าทาย 47 จังหวัด กำลังทำอยู่",
+    "worldChallengeInProgress": "ท้าทายโลก กำลังทำอยู่",
+    "currentProgress": "ตอนนี้ {count} / {total}",
+    "yourTurn": "คุณล่ะ?"
+  },
   "tutorial": {
     "firstPageTitle": "แชร์ช่วงเวลาอร่อยๆ ของคุณ",
     "firstPageSubTitle": "ด้วย FoodGram ทำให้ทุกมื้อพิเศษขึ้น\nสนุกกับการค้นพบรสชาติใหม่!",

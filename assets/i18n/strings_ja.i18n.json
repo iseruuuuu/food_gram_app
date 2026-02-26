@@ -235,6 +235,21 @@
     "japan": "日本",
     "world": "世界"
   },
+  "myMapShare": {
+    "title": "マイマップをシェア",
+    "shareButton": "シェア",
+    "inviteMessage": "FoodGramで美味しいごはんをシェアしよう！",
+    "japanChallengeLine": "47都道府県チャレンジ：{count} / 47",
+    "worldChallengeLine": "世界チャレンジ：{count} / 195カ国",
+    "japanChallengeTitle": "47都道府県チャレンジ",
+    "worldChallengeTitle": "世界チャレンジ",
+    "japanQuestion": "日本、何都道府県いける？",
+    "worldQuestion": "世界、何カ国いける？",
+    "japanChallengeInProgress": "47都道府県チャレンジ中。",
+    "worldChallengeInProgress": "世界チャレンジ中。",
+    "currentProgress": "今は {count} / {total}。",
+    "yourTurn": "あなたは？"
+  },
   "tutorial": {
     "firstPageTitle": "美味しい瞬間、シェアしよう",
     "firstPageSubTitle": "FoodGramで、毎日の食事がもっと特別に\n新しい味との出会いを楽しもう",
