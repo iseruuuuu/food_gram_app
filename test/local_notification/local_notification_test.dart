@@ -48,7 +48,8 @@ void main() {
       });
 
       test('月末をまたいでも正しく明日の12時になる', () {
-        final now = DateTime(2024, 6, 30, 12);
+        // 12時ちょうどだと isBefore(now) が false になるため、12時以降で検証する
+        final now = DateTime(2024, 6, 30, 12, 1);
         final scheduled = computeNextLunchScheduledTime(now);
         expect(scheduled, DateTime(2024, 7, 1, 12));
       });
