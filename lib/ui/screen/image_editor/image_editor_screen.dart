@@ -40,21 +40,6 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (kIsWeb) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('画像編集'),
-          leading: IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: _popOnce,
-          ),
-        ),
-        body: const Center(
-          child: Text('画像編集はモバイルアプリでご利用ください。'),
-        ),
-      );
-    }
-
     final file = File(widget.imagePath);
     if (!file.existsSync()) {
       return Scaffold(
@@ -68,7 +53,6 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
         body: const Center(child: Text('画像ファイルが見つかりません。')),
       );
     }
-
     return ProImageEditor.file(
       file,
       callbacks: ProImageEditorCallbacks(
