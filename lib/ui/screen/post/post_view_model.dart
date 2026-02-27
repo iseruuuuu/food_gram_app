@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/vision/food_image_labeler.dart';
+import 'package:food_gram_app/router/image_editor_args.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/screen/post/post_state.dart';
 import 'package:go_router/go_router.dart';
@@ -27,6 +29,7 @@ class PostViewModel extends _$PostViewModel {
   final Map<String, Uint8List> _imageBytesMap = {};
   final logger = Logger();
   final _foodLabeler = FoodImageLabeler();
+  Completer<void>? _maybeNotFoodCompleter;
 
   TextEditingController get foodController => _foodController;
 
@@ -49,6 +52,7 @@ class PostViewModel extends _$PostViewModel {
     ref.onDispose(() {
       _foodController.dispose();
       _commentController.dispose();
+      _imageBytesMap.clear();
     });
   }
 
@@ -63,6 +67,9 @@ class PostViewModel extends _$PostViewModel {
       return false;
     }
     await _submitPost(foodTag);
+    if (state.isSuccess) {
+      _imageBytesMap.clear();
+    }
     loading.state = false;
     return state.isSuccess;
   }
@@ -204,7 +211,7 @@ class PostViewModel extends _$PostViewModel {
     }
     final result = await context.pushNamed<Uint8List?>(
       RouterPath.imageEditor,
-      extra: imagePath,
+      extra: ImageEditorArgs(imagePath),
     );
     return result;
   }
@@ -214,16 +221,25 @@ class PostViewModel extends _$PostViewModel {
     final file = File(
       '${dir.path}/food_gram_${DateTime.now().millisecondsSinceEpoch}.jpg',
     );
-    await file.writeAsBytes(bytes);
-    await _processImage(file);
+    try {
+      await file.writeAsBytes(bytes);
+      await _processImage(file);
+    } catch (e) {
+      logger.e('Failed to process image from bytes: $e');
+      state = state.copyWith(status: PostStatus.errorPickImage.name);
+      rethrow;
+    } finally {
+      if (await file.exists()) {
+        await file.delete();
+      }
+    }
   }
 
   Future<void> _waitMaybeNotFoodHandled() async {
     // UI側のダイアログで「続行」または「削除」によって
-    // resetStatus() が呼ばれ、status が initial 等に戻るまで待機
-    while (state.status == PostStatus.maybeNotFood.name) {
-      await Future<void>.delayed(const Duration(milliseconds: 100));
-    }
+    // resetStatus() が呼ばれ、Completer が完了するまで待機
+    _maybeNotFoodCompleter = Completer<void>();
+    return _maybeNotFoodCompleter!.future;
   }
 
   Future<void> _processImage(File cropImage) async {
@@ -265,6 +281,8 @@ class PostViewModel extends _$PostViewModel {
 
   void resetStatus() {
     state = state.copyWith(status: PostStatus.initial.name);
+    _maybeNotFoodCompleter?.complete();
+    _maybeNotFoodCompleter = null;
   }
 }
 

@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/supabase/post/services/detail_post_service.da
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/vision/food_image_labeler.dart';
+import 'package:food_gram_app/router/image_editor_args.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_state.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
@@ -53,6 +54,7 @@ class EditPostViewModel extends _$EditPostViewModel {
     ref.onDispose(() {
       _foodController.dispose();
       _commentController.dispose();
+      _imageBytesMap.clear();
     });
     return initState ?? const EditPostState();
   }
@@ -92,6 +94,9 @@ class EditPostViewModel extends _$EditPostViewModel {
     }
     try {
       await _updatePost(foodTag);
+      if (state.isSuccess) {
+        _imageBytesMap.clear();
+      }
       return state.isSuccess;
     } finally {
       loading.state = false;
@@ -224,9 +229,12 @@ class EditPostViewModel extends _$EditPostViewModel {
     BuildContext context,
     String imagePath,
   ) async {
+    if (!context.mounted) {
+      return null;
+    }
     final result = await context.pushNamed<Uint8List?>(
       RouterPath.imageEditor,
-      extra: imagePath,
+      extra: ImageEditorArgs(imagePath),
     );
     return result;
   }
@@ -236,8 +244,18 @@ class EditPostViewModel extends _$EditPostViewModel {
     final file = File(
       '${dir.path}/food_gram_edit_${DateTime.now().millisecondsSinceEpoch}.jpg',
     );
-    await file.writeAsBytes(bytes);
-    await _processImage(file);
+    try {
+      await file.writeAsBytes(bytes);
+      await _processImage(file);
+    } catch (e) {
+      logger.e('Failed to process image from bytes: $e');
+      state = state.copyWith(status: EditStatus.error.name);
+      rethrow;
+    } finally {
+      if (await file.exists()) {
+        await file.delete();
+      }
+    }
   }
 
   Future<void> _processImage(File cropImage) async {
