@@ -30,6 +30,8 @@ class TutorialScreen extends HookConsumerWidget {
     final isFinishedTutorial = useState(false);
     final notifier = useValueNotifier<double>(0);
     final pageController = usePageController();
+    final currentPageIndex = useState(0);
+    useListenable(currentPageIndex);
     final preference = useMemoized(Preference.new);
     final controller = useMemoized(
       () => ConfettiController(duration: const Duration(seconds: 2)),
@@ -49,6 +51,26 @@ class TutorialScreen extends HookConsumerWidget {
         return null;
       },
       [],
+    );
+
+    // PageController.page は PageView ビルド後でないと参照できないため、
+    // リスナーと addPostFrameCallback で現在ページを更新する
+    useEffect(
+      () {
+        void updatePageIndex() {
+          try {
+            final page = pageController.page;
+            if (page != null) {
+              currentPageIndex.value = page.round();
+            }
+          } catch (_) {}
+        }
+
+        pageController.addListener(updatePageIndex);
+        WidgetsBinding.instance.addPostFrameCallback((_) => updatePageIndex());
+        return () => pageController.removeListener(updatePageIndex);
+      },
+      [pageController],
     );
 
     void goToNextPage() {
@@ -282,36 +304,41 @@ class TutorialScreen extends HookConsumerWidget {
               ),
             ],
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const SizedBox(height: 16),
-              Align(
-                alignment: Alignment.centerRight,
-                child: IconButton(
-                  icon: Icon(
-                    Icons.arrow_forward_ios,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                  onPressed: () {
-                    final currentPage = pageController.page?.toInt() ?? 0;
-                    if (currentPage == totalPages - 1 && !isAccept.value) {
-                      SnackBarHelper().openSimpleSnackBar(
-                        context,
-                        Translations.of(context).tutorial.agreeToTheTermsOfUse,
-                      );
-                    } else if (currentPage < totalPages - 1) {
-                      pageController.nextPage(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeInOut,
-                      );
-                    }
-                  },
-                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  const SizedBox(height: 16),
+                  // 4ページ目（位置情報）・5ページ目（通知）の許可説明では矢印を表示しない（App Store Guideline 5.1.1 対応）
+                  if (currentPageIndex.value != 3 && currentPageIndex.value != 4)
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.arrow_forward_ios,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        onPressed: () async {
+                          final currentPage = pageController.page?.toInt() ?? 0;
+
+                          if (currentPage == totalPages - 1 && !isAccept.value) {
+                            SnackBarHelper().openSimpleSnackBar(
+                              context,
+                              Translations.of(context)
+                                  .tutorial
+                                  .agreeToTheTermsOfUse,
+                            );
+                          } else if (currentPage < totalPages - 1) {
+                            pageController.nextPage(
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut,
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  const SizedBox(height: 20),
+                ],
               ),
-              const SizedBox(height: 20),
-            ],
-          ),
         ],
       ),
     );
