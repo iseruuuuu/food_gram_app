@@ -6,7 +6,7 @@ version: 1.34.0+68
 
 environment:
   sdk: '>=3.1.5 <4.0.0'
-  flutter: ^3.38.2
+  flutter: ^3.41.0
 dependencies:
   app_tracking_transparency: ^2.0.6
   auth_buttons: ^3.0.0
@@ -44,7 +44,6 @@ dependencies:
   google_mobile_ads: ^5.2.0
   google_sign_in: ^6.1.4
   hooks_riverpod: ^2.4.9
-  image_cropper: ^11.0.0
   image_picker: ^1.0.4
   in_app_review: ^2.0.8
   intl: ^0.20.2
@@ -60,6 +59,7 @@ dependencies:
   path_provider: ^2.1.5
   permission_handler: ^11.3.1
   photo_viewer: ^0.0.3
+  pro_image_editor: ^12.0.1
   purchases_flutter: ^9.9.10
   purchases_ui_flutter: ^9.9.10
   quickalert: ^1.1.0

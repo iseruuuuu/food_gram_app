@@ -76,6 +76,7 @@ GoRouter router(Ref ref) {
           return blackOut(const TabScreen());
         },
         routes: <RouteBase>[
+          imageEditorRoute,
           timeLineRouter,
           mapRouter,
           myProfileRouter,
@@ -85,6 +86,17 @@ GoRouter router(Ref ref) {
     ],
   );
 }
+
+final imageEditorRoute = GoRoute(
+  path: RouterPath.imageEditor,
+  name: RouterPath.imageEditor,
+  pageBuilder: (context, state) {
+    final imagePath = state.extra as String? ?? '';
+    return MaterialPage(
+      child: ImageEditorScreen(imagePath: imagePath),
+    );
+  },
+);
 
 final timeLineRouter = GoRoute(
   path: RouterPath.timeLine,
@@ -520,4 +532,5 @@ final class RouterPath {
   static const String storedPostDetail = 'stored_post_detail';
   static const String restaurantMap = 'restaurant_map';
   static const String restaurantMapMyProfile = 'restaurant_map_myProfile';
+  static const String imageEditor = 'image_editor';
 }
