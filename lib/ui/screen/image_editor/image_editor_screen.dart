@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logger/logger.dart';
 import 'package:pro_image_editor/pro_image_editor.dart';
 
 /// 画像編集画面（トリミング・回転・モザイクなど）
@@ -23,7 +22,6 @@ class ImageEditorScreen extends StatefulWidget {
 
 class _ImageEditorScreenState extends State<ImageEditorScreen> {
   bool _hasPopped = false;
-  static final _logger = Logger();
 
   void _popOnce([Uint8List? bytes]) {
     if (_hasPopped) {
@@ -59,22 +57,12 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
       file,
       callbacks: ProImageEditorCallbacks(
         onImageEditingComplete: (bytes) async {
-          try {
-            _popOnce(bytes);
-          } catch (e, st) {
-            _logger.e('ProImageEditor onImageEditingComplete error: $e\n$st');
-            _popOnce();
-          }
+          _popOnce(bytes);
         },
         onCloseEditor: (_) {
-          try {
-            // OK押下時は onImageEditingComplete が先に呼ばれ、続けて onCloseEditor も呼ばれるため、
-            // 二重に pop しないよう _popOnce で1回だけ閉じる（投稿画面まで閉じる不具合を防止）
-            _popOnce();
-          } catch (e, st) {
-            _logger.e('ProImageEditor onCloseEditor error: $e\n$st');
-            _popOnce();
-          }
+          // OK押下時は onImageEditingComplete が先に呼ばれ、続けて onCloseEditor も呼ばれるため、
+          // 二重に pop しないよう _popOnce で1回だけ閉じる（投稿画面まで閉じる不具合を防止）
+          _popOnce();
         },
       ),
     );

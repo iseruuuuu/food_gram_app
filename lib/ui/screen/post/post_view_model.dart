@@ -7,7 +7,6 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/vision/food_image_labeler.dart';
-import 'package:food_gram_app/router/image_editor_args.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/screen/post/post_state.dart';
 import 'package:go_router/go_router.dart';
@@ -52,6 +51,10 @@ class PostViewModel extends _$PostViewModel {
     ref.onDispose(() {
       _foodController.dispose();
       _commentController.dispose();
+      if (!(_maybeNotFoodCompleter?.isCompleted ?? true)) {
+        _maybeNotFoodCompleter!.complete();
+      }
+      _maybeNotFoodCompleter = null;
       _imageBytesMap.clear();
     });
   }
@@ -211,7 +214,7 @@ class PostViewModel extends _$PostViewModel {
     }
     final result = await context.pushNamed<Uint8List?>(
       RouterPath.imageEditor,
-      extra: ImageEditorArgs(imagePath),
+      extra: imagePath,
     );
     return result;
   }
@@ -221,18 +224,8 @@ class PostViewModel extends _$PostViewModel {
     final file = File(
       '${dir.path}/food_gram_${DateTime.now().millisecondsSinceEpoch}.jpg',
     );
-    try {
-      await file.writeAsBytes(bytes);
-      await _processImage(file);
-    } catch (e) {
-      logger.e('Failed to process image from bytes: $e');
-      state = state.copyWith(status: PostStatus.errorPickImage.name);
-      rethrow;
-    } finally {
-      if (await file.exists()) {
-        await file.delete();
-      }
-    }
+    await file.writeAsBytes(bytes);
+    await _processImage(file);
   }
 
   Future<void> _waitMaybeNotFoodHandled() async {

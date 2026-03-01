@@ -5,7 +5,6 @@ import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/timeline_detail_extra.dart';
-import 'package:food_gram_app/router/image_editor_args.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/auth/providers/auth_state_provider.dart';
 import 'package:food_gram_app/router/amination.dart';
@@ -92,8 +91,7 @@ final imageEditorRoute = GoRoute(
   path: RouterPath.imageEditor,
   name: RouterPath.imageEditor,
   pageBuilder: (context, state) {
-    final args = state.extra as ImageEditorArgs?;
-    final imagePath = args?.imagePath ?? '';
+    final imagePath = state.extra as String? ?? '';
     return MaterialPage(
       child: ImageEditorScreen(imagePath: imagePath),
     );

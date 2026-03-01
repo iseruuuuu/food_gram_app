@@ -11,7 +11,6 @@ import 'package:food_gram_app/core/supabase/post/services/detail_post_service.da
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/vision/food_image_labeler.dart';
-import 'package:food_gram_app/router/image_editor_args.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_state.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
@@ -234,7 +233,7 @@ class EditPostViewModel extends _$EditPostViewModel {
     }
     final result = await context.pushNamed<Uint8List?>(
       RouterPath.imageEditor,
-      extra: ImageEditorArgs(imagePath),
+      extra: imagePath,
     );
     return result;
   }
@@ -244,18 +243,8 @@ class EditPostViewModel extends _$EditPostViewModel {
     final file = File(
       '${dir.path}/food_gram_edit_${DateTime.now().millisecondsSinceEpoch}.jpg',
     );
-    try {
-      await file.writeAsBytes(bytes);
-      await _processImage(file);
-    } catch (e) {
-      logger.e('Failed to process image from bytes: $e');
-      state = state.copyWith(status: EditStatus.error.name);
-      rethrow;
-    } finally {
-      if (await file.exists()) {
-        await file.delete();
-      }
-    }
+    await file.writeAsBytes(bytes);
+    await _processImage(file);
   }
 
   Future<void> _processImage(File cropImage) async {
