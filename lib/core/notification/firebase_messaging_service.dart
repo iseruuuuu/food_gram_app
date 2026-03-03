@@ -217,9 +217,6 @@ class FirebaseMessagingService {
         'ユーザーID=${currentUser.id}, '
         'トークン=${token.substring(0, 20)}...',
       );
-
-      // upsertを使用してトークンを保存（user_idとfcm_tokenの組み合わせでユニーク）
-      // データベースのスキーマに応じてonConflictを調整する必要がある
       try {
         await supabase.from('user_fcm_tokens').upsert(
           {
@@ -227,35 +224,47 @@ class FirebaseMessagingService {
             'fcm_token': token,
             'updated_at': DateTime.now().toIso8601String(),
           },
-          onConflict: 'user_id,fcm_token',
+          onConflict: 'user_id',
         );
         _logger.i('FCMトークンをSupabaseに保存しました（upsert成功）');
       } on Exception catch (e) {
-        // onConflictがサポートされていない場合、手動でチェック
+        // onConflictがサポートされていない場合、手動でチェックしつつ
+        // 「user_id につき1レコード」に正規化する
         _logger.w('upsertに失敗しました。手動でチェックします: $e');
-
         final existingTokens = await supabase
             .from('user_fcm_tokens')
             .select()
-            .eq('user_id', currentUser.id)
-            .eq('fcm_token', token);
-
-        if (existingTokens.isEmpty || (existingTokens as List).isEmpty) {
+            .eq('user_id', currentUser.id);
+        if (existingTokens.length > 1) {
+          // 重複がある場合は全削除 → クリーンな1レコードだけ作り直す
+          await supabase
+              .from('user_fcm_tokens')
+              .delete()
+              .eq('user_id', currentUser.id);
+          _logger.i(
+            'user_id=${currentUser.id} の重複FCMトークンレコードを全削除しました （重複クリーンアップ）',
+          );
           await supabase.from('user_fcm_tokens').insert({
             'user_id': currentUser.id,
             'fcm_token': token,
             'updated_at': DateTime.now().toIso8601String(),
           });
-          _logger.i('FCMトークンをSupabaseに新規保存しました');
+          _logger.i('FCMトークンをSupabaseに新規保存しました（フォールバック・重複あり）');
+        } else if (existingTokens.length == 1) {
+          // 1件だけ存在する場合は更新
+          await supabase.from('user_fcm_tokens').update({
+            'fcm_token': token,
+            'updated_at': DateTime.now().toIso8601String(),
+          }).eq('user_id', currentUser.id);
+          _logger.i('既存のFCMトークンを更新しました（フォールバック・1件）');
         } else {
-          await supabase
-              .from('user_fcm_tokens')
-              .update({
-                'updated_at': DateTime.now().toIso8601String(),
-              })
-              .eq('user_id', currentUser.id)
-              .eq('fcm_token', token);
-          _logger.i('FCMトークンをSupabaseで更新しました');
+          // 0件の場合は新規作成
+          await supabase.from('user_fcm_tokens').insert({
+            'user_id': currentUser.id,
+            'fcm_token': token,
+            'updated_at': DateTime.now().toIso8601String(),
+          });
+          _logger.i('FCMトークンをSupabaseに新規保存しました（フォールバック・0件）');
         }
       }
     } on Exception catch (e) {
