@@ -217,9 +217,6 @@ class FirebaseMessagingService {
         'ユーザーID=${currentUser.id}, '
         'トークン=${token.substring(0, 20)}...',
       );
-
-      // upsertを使用してトークンを保存（user_idとfcm_tokenの組み合わせでユニーク）
-      // データベースのスキーマに応じてonConflictを調整する必要がある
       try {
         await supabase.from('user_fcm_tokens').upsert(
           {
@@ -227,35 +224,32 @@ class FirebaseMessagingService {
             'fcm_token': token,
             'updated_at': DateTime.now().toIso8601String(),
           },
-          onConflict: 'user_id,fcm_token',
+          onConflict: 'user_id',
         );
         _logger.i('FCMトークンをSupabaseに保存しました（upsert成功）');
       } on Exception catch (e) {
         // onConflictがサポートされていない場合、手動でチェック
         _logger.w('upsertに失敗しました。手動でチェックします: $e');
-
+        // user_id で1レコードに統一する
         final existingTokens = await supabase
             .from('user_fcm_tokens')
             .select()
-            .eq('user_id', currentUser.id)
-            .eq('fcm_token', token);
-
-        if (existingTokens.isEmpty || (existingTokens as List).isEmpty) {
+            .eq('user_id', currentUser.id);
+        if (existingTokens.isNotEmpty) {
+          // 既存レコードがある場合はトークンを上書き更新
+          await supabase.from('user_fcm_tokens').update({
+            'fcm_token': token,
+            'updated_at': DateTime.now().toIso8601String(),
+          }).eq('user_id', currentUser.id);
+          _logger.i('既存のFCMトークンを更新しました');
+        } else {
+          // 既存レコードがない場合のみ新規作成
           await supabase.from('user_fcm_tokens').insert({
             'user_id': currentUser.id,
             'fcm_token': token,
             'updated_at': DateTime.now().toIso8601String(),
           });
           _logger.i('FCMトークンをSupabaseに新規保存しました');
-        } else {
-          await supabase
-              .from('user_fcm_tokens')
-              .update({
-                'updated_at': DateTime.now().toIso8601String(),
-              })
-              .eq('user_id', currentUser.id)
-              .eq('fcm_token', token);
-          _logger.i('FCMトークンをSupabaseで更新しました');
         }
       }
     } on Exception catch (e) {
