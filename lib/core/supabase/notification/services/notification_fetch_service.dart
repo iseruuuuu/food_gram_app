@@ -123,13 +123,13 @@ class _TokenRow {
       final updatedAt = updatedRaw is String
           ? DateTime.tryParse(updatedRaw)
           : (updatedRaw is DateTime ? updatedRaw : null);
-      // いいねを送ったユーザーIDを取得する優先順位:
-      // like_id → liker_id → likerUserId → liker_user_id
-      // テーブルの id は行の主キーであってユーザーIDではないため除外する
-      final rawLikerId = map['like_id'] ??
-          map['liker_id'] ??
+      // いいねを送ったユーザーの「ユーザーID」を取得する優先順位:
+      // liker_user_id → likerUserId → liker_id → like_id
+      // like_id はレコードID（主キー）である可能性が高いため、最後のフォールバックとしてのみ使用する
+      final rawLikerId = map['liker_user_id'] ??
           map['likerUserId'] ??
-          map['liker_user_id'];
+          map['liker_id'] ??
+          map['like_id'];
       final likerId = rawLikerId is String
           ? rawLikerId
           : (rawLikerId is int ? rawLikerId.toString() : null);
