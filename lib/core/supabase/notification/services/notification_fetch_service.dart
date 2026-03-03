@@ -23,14 +23,25 @@ class NotificationFetchService {
     if (_currentUserId == null) {
       return [];
     }
-    final edgeRows = await _edgeClient.fetchUserFcmTokenRows(_currentUserId!);
-    final edgeTokenRows = edgeRows
-        .where((m) => m['user_id'] == _currentUserId && m['post_id'] != null)
-        .map<_TokenRow>(_TokenRow.fromDynamic)
-        .toList();
-    final tokenRows = edgeTokenRows.isNotEmpty
-        ? edgeTokenRows
-        : await _fetchLikeRowsFromTable(_currentUserId!);
+    // 新テーブル like_notifications から取得（優先）
+    final likeRows = await _fetchLikeRowsFromLikeNotifications(_currentUserId!);
+    // それでも空なら、Edge Function / user_fcm_tokens から取得（後方互換用）
+    List<_TokenRow> tokenRows;
+    if (likeRows.isNotEmpty) {
+      tokenRows = likeRows;
+    } else {
+      final edgeRows = await _edgeClient.fetchUserFcmTokenRows(_currentUserId!);
+      final edgeTokenRows = edgeRows
+          .where(
+            (m) => m['user_id'] == _currentUserId && m['post_id'] != null,
+          )
+          .map<_TokenRow>(_TokenRow.fromDynamic)
+          .toList();
+      tokenRows = edgeTokenRows.isNotEmpty
+          ? edgeTokenRows
+          : await _fetchLikeRowsFromTable(_currentUserId!);
+    }
+
     final latestByPostId = <int, _LatestLike>{};
     for (final row in tokenRows) {
       if (row.postId == null) {
@@ -57,6 +68,22 @@ class NotificationFetchService {
         .toList();
     keys.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
     return keys;
+  }
+
+  /// いいね通知履歴: like_notifications テーブルから取得
+  Future<List<_TokenRow>> _fetchLikeRowsFromLikeNotifications(
+    String userId,
+  ) async {
+    try {
+      final rows = await _supabase
+          .from('like_notifications')
+          .select('post_id, liker_user_id, created_at')
+          .eq('user_id', userId);
+      return rows.map<_TokenRow>(_TokenRow.fromDynamic).toList();
+    } on Exception catch (e) {
+      _logger.e('like_notifications の取得に失敗: $e');
+      return [];
+    }
   }
 
   /// エッジ未対応/失敗時のフォールバック: user_fcm_tokens を直接参照
@@ -91,15 +118,18 @@ class _TokenRow {
       final pid = pidRaw is int
           ? pidRaw
           : (pidRaw is String ? int.tryParse(pidRaw) : null);
-      final updatedRaw = map['updated_at'];
+      // updated_at（user_fcm_tokens） or created_at（like_notifications）
+      final updatedRaw = map['updated_at'] ?? map['created_at'];
       final updatedAt = updatedRaw is String
           ? DateTime.tryParse(updatedRaw)
           : (updatedRaw is DateTime ? updatedRaw : null);
       // いいねを送ったユーザーIDを取得する優先順位:
-      // like_id → liker_id → likerUserId
+      // like_id → liker_id → likerUserId → liker_user_id
       // テーブルの id は行の主キーであってユーザーIDではないため除外する
-      final rawLikerId =
-          map['like_id'] ?? map['liker_id'] ?? map['likerUserId'];
+      final rawLikerId = map['like_id'] ??
+          map['liker_id'] ??
+          map['likerUserId'] ??
+          map['liker_user_id'];
       final likerId = rawLikerId is String
           ? rawLikerId
           : (rawLikerId is int ? rawLikerId.toString() : null);
