@@ -64,17 +64,20 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     }
 
     final postId = posts.id.toString();
-    final currentHeart = state.heart;
     final supabase = ref.read(supabaseProvider);
+    final isThisPostHearted = state.heartList.contains(postId);
 
-    if (state.isHeart) {
-      // いいねを外す場合は制限チェック不要
-      await supabase.from('posts').update({
-        'heart': currentHeart - 1,
-      }).match({'id': posts.id});
+    if (isThisPostHearted) {
+      // いいねを外す（RLS を避けるため RPC で更新）
+      try {
+        await supabase.rpc<void>(
+          'decrement_post_heart',
+          params: {'post_id': posts.id},
+        );
+      } on Exception catch (e) {
+        logger.e('いいねの減算に失敗しました: $e');
+      }
       state = state.copyWith(
-        heart: currentHeart - 1,
-        isHeart: false,
         isAppearHeart: false,
         heartList: List.from(state.heartList)..remove(postId),
       );
@@ -85,12 +88,15 @@ class PostDetailViewModel extends _$PostDetailViewModel {
         onHeartLimitReached?.call();
         return;
       }
-      await supabase.from('posts').update({
-        'heart': currentHeart + 1,
-      }).match({'id': posts.id});
+      try {
+        await supabase.rpc<void>(
+          'increment_post_heart',
+          params: {'post_id': posts.id},
+        );
+      } on Exception catch (e) {
+        logger.e('いいねの加算に失敗しました: $e');
+      }
       state = state.copyWith(
-        heart: currentHeart + 1,
-        isHeart: true,
         isAppearHeart: true,
         heartList: List.from(state.heartList)..add(postId),
       );
