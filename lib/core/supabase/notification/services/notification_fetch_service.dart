@@ -23,24 +23,25 @@ class NotificationFetchService {
     if (_currentUserId == null) {
       return [];
     }
-    // 新テーブル like_notifications から取得（優先）
+
+    // 新テーブル like_notifications / Edge Function / user_fcm_tokens
+    // すべてのソースをマージして最新を選ぶ（バックフィル中の古い行も残す）
     final likeRows = await _fetchLikeRowsFromLikeNotifications(_currentUserId!);
-    // それでも空なら、Edge Function / user_fcm_tokens から取得（後方互換用）
-    List<_TokenRow> tokenRows;
-    if (likeRows.isNotEmpty) {
-      tokenRows = likeRows;
-    } else {
-      final edgeRows = await _edgeClient.fetchUserFcmTokenRows(_currentUserId!);
-      final edgeTokenRows = edgeRows
-          .where(
-            (m) => m['user_id'] == _currentUserId && m['post_id'] != null,
-          )
-          .map<_TokenRow>(_TokenRow.fromDynamic)
-          .toList();
-      tokenRows = edgeTokenRows.isNotEmpty
-          ? edgeTokenRows
-          : await _fetchLikeRowsFromTable(_currentUserId!);
-    }
+    final edgeRows = await _edgeClient.fetchUserFcmTokenRows(_currentUserId!);
+    final edgeTokenRows = edgeRows
+        .where(
+          (m) => m['user_id'] == _currentUserId && m['post_id'] != null,
+        )
+        .map<_TokenRow>(_TokenRow.fromDynamic)
+        .toList();
+
+    final tableRows = await _fetchLikeRowsFromTable(_currentUserId!);
+
+    final tokenRows = <_TokenRow>[
+      ...likeRows,
+      ...edgeTokenRows,
+      ...tableRows,
+    ];
 
     final latestByPostId = <int, _LatestLike>{};
     for (final row in tokenRows) {
