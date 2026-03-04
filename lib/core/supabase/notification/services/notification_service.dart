@@ -42,7 +42,10 @@ class NotificationService {
         }
         final postId = item['postId'];
         final updatedAtRaw = item['updatedAt'];
-        final likerUserId = item['likerUserId'] as String?;
+        final likerUserIdRaw = item['likerUserId'];
+        final likerUserId = likerUserIdRaw is String
+            ? likerUserIdRaw
+            : (likerUserIdRaw is int ? likerUserIdRaw.toString() : null);
         if (postId is! int) {
           continue;
         }
