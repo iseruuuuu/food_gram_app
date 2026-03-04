@@ -13,7 +13,6 @@ import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
-import 'package:food_gram_app/ui/component/tutorial_paywall.dart';
 import 'package:gap/gap.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
@@ -33,7 +32,7 @@ class TutorialScreen extends HookConsumerWidget {
     final currentPageIndex = useState(0);
     useListenable(currentPageIndex);
     final preference = useMemoized(Preference.new);
-    final controller = useMemoized(
+    useMemoized(
       () => ConfettiController(duration: const Duration(seconds: 2)),
     );
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
@@ -63,7 +62,7 @@ class TutorialScreen extends HookConsumerWidget {
             if (page != null) {
               currentPageIndex.value = page.round();
             }
-          } catch (_) {}
+          } on Object catch (_) {}
         }
 
         pageController.addListener(updatePageIndex);
@@ -80,7 +79,7 @@ class TutorialScreen extends HookConsumerWidget {
       );
     }
 
-    final totalPages = isSubscribed ? 6 : 7;
+    final totalPages = isSubscribed ? 8 : 9;
     return Scaffold(
       body: Stack(
         children: [
@@ -89,10 +88,11 @@ class TutorialScreen extends HookConsumerWidget {
             notifier: notifier,
             pageCount: totalPages,
             pages: [
-              // 1ページ目
+              // 1ページ目 コンセプト
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const Spacer(),
                   Lottie.asset(
                     Assets.lottie.tutorial1,
                     width: 250,
@@ -102,83 +102,275 @@ class TutorialScreen extends HookConsumerWidget {
                   Text(
                     t.tutorial.firstPageTitle,
                     style: TutorialStyle.title(context),
+                    textAlign: TextAlign.center,
                   ),
-                  const Gap(12),
+                  const Gap(18),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 4,
+                    runSpacing: 8,
+                    children: [
+                      _FeaturePill(
+                        icon: '📸',
+                        label: t.tutorial.pillPost,
+                      ),
+                      const Gap(4),
+                      _FeaturePill(
+                        icon: '🌎',
+                        label: t.tutorial.pillShareWorld,
+                      ),
+                      const Gap(4),
+                      _FeaturePill(
+                        icon: '📍',
+                        label: t.tutorial.pillMapRecord,
+                      ),
+                    ],
+                  ),
+                  const Gap(18),
                   Text(
-                    t.tutorial.firstPageSubTitle,
+                    t.tutorial.firstPageSubTitle1,
                     style: TutorialStyle.subTitle(context),
                     textAlign: TextAlign.center,
                   ),
-                  const Gap(120),
+                  const Gap(12),
+                  Text(
+                    t.tutorial.firstPageSubTitle2,
+                    style: TutorialStyle.subTitle(context),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Spacer(flex: 2),
                 ],
               ),
-              // 2ページ目
+              // 2ページ目 探索
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const Spacer(),
                   Lottie.asset(
                     Assets.lottie.tutorial2,
                     width: 250,
                     height: 250,
                   ),
-                  const Gap(24),
+                  const Gap(40),
                   Text(
                     t.tutorial.discoverTitle,
                     style: TutorialStyle.title(context),
+                    textAlign: TextAlign.center,
                   ),
-                  const Gap(12),
+                  const Gap(18),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _FeaturePill(
+                        icon: '🍣',
+                        label: t.tutorial.pillSushi,
+                      ),
+                      const Gap(8),
+                      _FeaturePill(
+                        icon: '🍔',
+                        label: t.tutorial.pillBurger,
+                      ),
+                      const Gap(8),
+                      _FeaturePill(
+                        icon: '🍜',
+                        label: t.tutorial.pillRamen,
+                      ),
+                    ],
+                  ),
+                  const Gap(18),
                   Text(
-                    t.tutorial.discoverSubTitle,
+                    t.tutorial.discoverSubTitle1,
                     style: TutorialStyle.subTitle(context),
                     textAlign: TextAlign.center,
                   ),
-                  const Gap(120),
+                  const Gap(12),
+                  Text(
+                    t.tutorial.discoverSubTitle2,
+                    style: TutorialStyle.subTitle(context),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Spacer(flex: 3),
                 ],
               ),
-              // 3ページ目
+              // 3ページ目 世界マップ
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const Spacer(),
                   Lottie.asset(
                     Assets.lottie.tutorial3,
                     width: 400,
-                    height: 150,
+                    height: 250,
                   ),
-                  const Gap(24),
+                  const Gap(32),
                   Text(
                     t.tutorial.secondPageTitle,
                     style: TutorialStyle.title(context),
+                    textAlign: TextAlign.center,
                   ),
-                  const Gap(12),
+                  const Gap(18),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 4,
+                    runSpacing: 8,
+                    children: [
+                      _FeaturePill(
+                        icon: '🇯🇵',
+                        label: t.tutorial.pillJapan,
+                      ),
+                      const Gap(8),
+                      _FeaturePill(
+                        icon: '🇺🇸',
+                        label: t.tutorial.pillUSA,
+                      ),
+                      const Gap(8),
+                      _FeaturePill(
+                        icon: '🇩🇪',
+                        label: t.tutorial.pillGermany,
+                      ),
+                      const Gap(8),
+                      _FeaturePill(
+                        icon: '🇹🇼',
+                        label: t.tutorial.pillTaiwan,
+                      ),
+                      const Gap(8),
+                      _FeaturePill(
+                        icon: '',
+                        label: t.tutorial.pillMoreCountries,
+                      ),
+                    ],
+                  ),
+                  const Gap(18),
                   Text(
-                    t.tutorial.secondPageSubTitle,
+                    t.tutorial.secondPageSubTitle1,
                     style: TutorialStyle.subTitle(context),
                     textAlign: TextAlign.center,
                   ),
-                  const Gap(24),
+                  const Gap(12),
+                  Text(
+                    t.tutorial.secondPageSubTitle2,
+                    style: TutorialStyle.subTitle(context),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Spacer(flex: 2),
                 ],
               ),
-              // 4ページ目(位置情報の許可)
+              // 4ページ目 投稿しよう
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const Spacer(),
                   Lottie.asset(
-                    Assets.lottie.permission,
-                    width: 400,
-                    height: 180,
+                    Assets.lottie.tutorial4,
+                    width: 250,
+                    height: 250,
                   ),
-                  const Gap(56),
+                  const Gap(20),
                   Text(
-                    t.tutorial.locationTitle,
+                    t.tutorial.postPageTitle,
                     style: TutorialStyle.title(context),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Gap(18),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _FeaturePill(
+                        icon: '☕',
+                        label: t.tutorial.pillCafe,
+                      ),
+                      const Gap(8),
+                      _FeaturePill(
+                        icon: '🍜',
+                        label: t.tutorial.pillRamen,
+                      ),
+                      const Gap(8),
+                      _FeaturePill(
+                        icon: '🍱',
+                        label: t.tutorial.pillBento,
+                      ),
+                      const Gap(8),
+                      _FeaturePill(
+                        icon: '🍰',
+                        label: t.tutorial.pillCake,
+                      ),
+                    ],
+                  ),
+                  const Gap(18),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(
+                      t.tutorial.postPageMain,
+                      style: TutorialStyle.subTitle(context),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   const Gap(12),
                   Text(
-                    t.app.requestReason,
+                    t.tutorial.postPagePastPhotoOk,
                     style: TutorialStyle.subTitle(context),
                     textAlign: TextAlign.center,
                   ),
-                  const Gap(36),
+                  const Gap(18),
+                  const Spacer(flex: 2),
+                ],
+              ),
+              // 5ページ目(位置情報の許可)
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  Lottie.asset(
+                    Assets.lottie.location,
+                    width: 400,
+                    height: 250,
+                  ),
+                  const Gap(24),
+                  Text(
+                    t.tutorial.locationTitle,
+                    style: TutorialStyle.title(context),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Gap(12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: Text(
+                      t.tutorial.locationSubTitle,
+                      style: TutorialStyle.subTitle(context),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const Gap(18),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _FeaturePill(
+                        icon: '📍',
+                        label: t.tutorial.pillNearbyPosts,
+                      ),
+                      const Gap(4),
+                      _FeaturePill(
+                        icon: '🔥',
+                        label: t.tutorial.pillPopularSpots,
+                      ),
+                    ],
+                  ),
+                  const Gap(12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _FeaturePill(
+                        icon: '🗺',
+                        label: t.tutorial.pillMapDisplay,
+                      ),
+                      const Gap(4),
+                      _FeaturePill(
+                        icon: '🍜',
+                        label: t.tutorial.pillDiscoverWorldFood,
+                      ),
+                    ],
+                  ),
+                  const Gap(32),
                   AppElevatedButton(
                     onPressed: () async {
                       final permission = await Geolocator.checkPermission();
@@ -189,27 +381,43 @@ class TutorialScreen extends HookConsumerWidget {
                     },
                     title: t.maybeNotFoodDialog.confirm,
                   ),
+                  const Spacer(),
                 ],
               ),
-              // 5ページ目（通知の許可）
+              // 6ページ目（通知の許可）
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const Spacer(),
                   Lottie.asset(
                     Assets.lottie.notification,
                     width: 400,
-                    height: 180,
+                    height: 250,
                   ),
-                  const Gap(48),
+                  const Gap(40),
                   Text(
-                    t.tutorial.discoverTitle,
+                    t.tutorial.notificationTitle,
                     style: TutorialStyle.title(context),
+                    textAlign: TextAlign.center,
                   ),
                   const Gap(12),
-                  Text(
-                    t.tutorial.discoverSubTitle,
-                    style: TutorialStyle.subTitle(context),
-                    textAlign: TextAlign.center,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: Text(
+                      t.tutorial.notificationSubTitle,
+                      style: TutorialStyle.subTitle(context),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const Gap(12),
+                  _FeaturePill(
+                    icon: '👍️ ',
+                    label: t.tutorial.pillReactions,
+                  ),
+                  const Gap(12),
+                  _FeaturePill(
+                    icon: '🍱 ',
+                    label: t.tutorial.pillMealReminder,
                   ),
                   const Gap(36),
                   AppElevatedButton(
@@ -219,16 +427,46 @@ class TutorialScreen extends HookConsumerWidget {
                     },
                     title: t.maybeNotFoodDialog.confirm,
                   ),
-              
+                  const Spacer(),
                 ],
               ),
-              // 6ページ目
-              if (!isSubscribed)
-                TutorialPaywall(
-                  onNextPage: goToNextPage,
-                  confettiController: controller,
-                ),
-              // 7ページ目　利用規約
+              // 8ページ目 アプリ開始（モチベーション）
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  Text(
+                    t.tutorial.welcomePageTitle,
+                    style: TutorialStyle.title(context),
+                  ),
+                  Lottie.asset(
+                    Assets.lottie.welcome,
+                    width: 400,
+                    height: 250,
+                  ),
+                  const Gap(12),
+                  Text(
+                    t.tutorial.welcomePageSubTitle,
+                    style: TutorialStyle.subTitle(context),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Gap(12),
+                  Text(
+                    t.tutorial.welcomePageBody,
+                    style: TutorialStyle.subTitle(context),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Gap(32),
+                  AppElevatedButton(
+                    onPressed: () async {
+                      goToNextPage();
+                    },
+                    title: t.maybeNotFoodDialog.confirm,
+                  ),
+                  const Spacer(),
+                ],
+              ),
+              // 最終ページ 利用規約
               SingleChildScrollView(
                 child: Center(
                   child: Column(
@@ -304,41 +542,41 @@ class TutorialScreen extends HookConsumerWidget {
               ),
             ],
           ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const SizedBox(height: 16),
-                  // 4ページ目（位置情報）・5ページ目（通知）の許可説明では矢印を表示しない（App Store Guideline 5.1.1 対応）
-                  if (currentPageIndex.value != 3 && currentPageIndex.value != 4)
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.arrow_forward_ios,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                        onPressed: () async {
-                          final currentPage = pageController.page?.toInt() ?? 0;
-
-                          if (currentPage == totalPages - 1 && !isAccept.value) {
-                            SnackBarHelper().openSimpleSnackBar(
-                              context,
-                              Translations.of(context)
-                                  .tutorial
-                                  .agreeToTheTermsOfUse,
-                            );
-                          } else if (currentPage < totalPages - 1) {
-                            pageController.nextPage(
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeInOut,
-                            );
-                          }
-                        },
-                      ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const SizedBox(height: 16),
+              // 4ページ目（位置情報）・5ページ目（通知）の許可説明では矢印を表示しない
+              if (currentPageIndex.value != 4 && currentPageIndex.value != 5)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.arrow_forward_ios,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
-                  const SizedBox(height: 20),
-                ],
-              ),
+                    onPressed: () async {
+                      final currentPage = pageController.page?.toInt() ?? 0;
+
+                      if (currentPage == totalPages - 1 && !isAccept.value) {
+                        SnackBarHelper().openSimpleSnackBar(
+                          context,
+                          Translations.of(context)
+                              .tutorial
+                              .agreeToTheTermsOfUse,
+                        );
+                      } else if (currentPage < totalPages - 1) {
+                        await pageController.nextPage(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    },
+                  ),
+                ),
+              const SizedBox(height: 20),
+            ],
+          ),
         ],
       ),
     );
@@ -480,6 +718,43 @@ class _PastelBlob extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _FeaturePill extends StatelessWidget {
+  const _FeaturePill({
+    required this.icon,
+    required this.label,
+  });
+
+  final String icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: colorScheme.surface.withValues(alpha: 0.8),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(icon, style: const TextStyle(fontSize: 14)),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: colorScheme.onSurface,
+            ),
+          ),
+        ],
       ),
     );
   }
