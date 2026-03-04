@@ -218,10 +218,19 @@ class FirebaseMessagingService {
         body: {'action': 'register', 'fcm_token': token},
       );
       final data = res.data;
-      if (data is Map<String, dynamic> && data['error'] != null) {
+      final isSuccess =
+          data is Map<String, dynamic> && identical(data['success'], true);
+      if (!isSuccess) {
+        final errorMsg = data is Map<String, dynamic>
+            ? '${data['error'] ?? 'Unknown'}'
+            : 'unexpected response';
+        final details = data is Map<String, dynamic>
+            ? data['details']?.toString() ?? ''
+            : '';
         _logger.e(
-          'FCMトークン登録に失敗: ${data['error']}, '
-          'details: ${data['details']}',
+          'FCMトークン登録に失敗: $errorMsg'
+          '${details.isNotEmpty ? ', details: $details' : ''}'
+          ' (status: ${res.status})',
         );
         return;
       }
@@ -245,14 +254,26 @@ class FirebaseMessagingService {
           body: {'action': 'delete'},
         );
         final data = res.data;
-        if (data is Map<String, dynamic> && data['error'] != null) {
+        final isSuccess =
+            data is Map<String, dynamic> && identical(data['success'], true);
+        if (!isSuccess) {
+          final errorMsg = data is Map<String, dynamic>
+              ? '${data['error'] ?? 'Unknown'}'
+              : 'unexpected response';
+          final details = data is Map<String, dynamic>
+              ? data['details']?.toString() ?? ''
+              : '';
           _logger.e(
-            'FCMトークン削除に失敗: ${data['error']}, details: ${data['details']}',
+            'FCMトークン削除に失敗: $errorMsg'
+            '${details.isNotEmpty ? ', details: $details' : ''}'
+            ' (status: ${res.status})',
           );
+        } else {
+          _logger.i('FCMトークンを削除しました');
         }
+      } else {
+        _logger.i('FCMトークンを削除しました');
       }
-
-      _logger.i('FCMトークンを削除しました');
     } on Exception catch (e) {
       _logger.e('FCMトークンの削除に失敗しました: $e');
     }
