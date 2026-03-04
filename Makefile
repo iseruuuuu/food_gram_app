@@ -1,14 +1,14 @@
 .PHONY: setup
 setup:
 	fvm flutter pub get
-	fvm flutter pub run build_runner build --delete-conflicting-outputs
+	fvm dart run build_runner build --delete-conflicting-outputs
 	fvm dart run flutter_launcher_icons
 	fvm dart run slang
-    dart run flutter_native_splash:create
+	fvm dart run flutter_native_splash:create
 
 gen:
 	fvm flutter pub get
-	fvm flutter pub run build_runner build --delete-conflicting-outputs
+	fvm dart run build_runner build --delete-conflicting-outputs
 
 submit_android:
 	flutter clean
