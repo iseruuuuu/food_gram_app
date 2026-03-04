@@ -55,7 +55,7 @@ class FirebaseMessagingService {
       // トークン更新のリスナーを設定
       _firebaseMessaging.onTokenRefresh.listen((newToken) async {
         _fcmToken = newToken;
-        _logger.i('FCMトークンが更新されました: $newToken');
+        _logger.i('FCMトークンが更新されました');
         // Supabaseにトークンを保存
         await _saveFCMTokenToSupabase(newToken);
       });
@@ -183,7 +183,7 @@ class FirebaseMessagingService {
       }
 
       _fcmToken = await _firebaseMessaging.getToken();
-      _logger.i('FCMトークンを取得しました: $_fcmToken');
+      _logger.i('FCMトークンを取得しました');
 
       // Supabaseにトークンを保存
       if (_fcmToken != null) {
@@ -211,8 +211,7 @@ class FirebaseMessagingService {
       }
       _logger.i(
         'FCMトークンをSupabaseに保存します（Edge Function）: '
-        'ユーザーID=${currentUser.id}, '
-        'トークン=${token.substring(0, 20)}...',
+        'ユーザーID=${currentUser.id}',
       );
       final res = await supabase.functions.invoke(
         'fcm-token',
