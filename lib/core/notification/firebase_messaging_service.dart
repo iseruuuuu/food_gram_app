@@ -23,12 +23,10 @@ class FirebaseMessagingService {
   FirebaseMessagingService._internal();
   static final FirebaseMessagingService _instance =
       FirebaseMessagingService._internal();
-
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final Logger _logger = Logger();
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
   String? _fcmToken;
   WidgetRef? _ref;
 
@@ -201,7 +199,7 @@ class FirebaseMessagingService {
     }
   }
 
-  /// FCMトークンをSupabaseに保存
+  /// FCMトークンをSupabaseに保存 （Edge Function経由でサーバー側に登録）
   Future<void> _saveFCMTokenToSupabase(String token) async {
     try {
       final supabase = Supabase.instance.client;
@@ -211,83 +209,48 @@ class FirebaseMessagingService {
         _logger.w('ユーザーがログインしていないため、FCMトークンを保存できません');
         return;
       }
-
       _logger.i(
-        'FCMトークンをSupabaseに保存します: '
+        'FCMトークンをSupabaseに保存します（Edge Function）: '
         'ユーザーID=${currentUser.id}, '
         'トークン=${token.substring(0, 20)}...',
       );
-      try {
-        await supabase.from('user_fcm_tokens').upsert(
-          {
-            'user_id': currentUser.id,
-            'fcm_token': token,
-            'updated_at': DateTime.now().toIso8601String(),
-          },
-          onConflict: 'user_id',
+      final res = await supabase.functions.invoke(
+        'fcm-token',
+        body: {'action': 'register', 'fcm_token': token},
+      );
+      final data = res.data;
+      if (data is Map<String, dynamic> && data['error'] != null) {
+        _logger.e(
+          'FCMトークン登録に失敗: ${data['error']}, '
+          'details: ${data['details']}',
         );
-        _logger.i('FCMトークンをSupabaseに保存しました（upsert成功）');
-      } on Exception catch (e) {
-        // onConflictがサポートされていない場合、手動でチェックしつつ
-        // 「user_id につき1レコード」に正規化する
-        _logger.w('upsertに失敗しました。手動でチェックします: $e');
-        final existingTokens = await supabase
-            .from('user_fcm_tokens')
-            .select()
-            .eq('user_id', currentUser.id);
-        if (existingTokens.length > 1) {
-          // 重複がある場合は全削除 → クリーンな1レコードだけ作り直す
-          await supabase
-              .from('user_fcm_tokens')
-              .delete()
-              .eq('user_id', currentUser.id);
-          _logger.i(
-            'user_id=${currentUser.id} の重複FCMトークンレコードを全削除しました （重複クリーンアップ）',
-          );
-          await supabase.from('user_fcm_tokens').insert({
-            'user_id': currentUser.id,
-            'fcm_token': token,
-            'updated_at': DateTime.now().toIso8601String(),
-          });
-          _logger.i('FCMトークンをSupabaseに新規保存しました（フォールバック・重複あり）');
-        } else if (existingTokens.length == 1) {
-          // 1件だけ存在する場合は更新
-          await supabase.from('user_fcm_tokens').update({
-            'fcm_token': token,
-            'updated_at': DateTime.now().toIso8601String(),
-          }).eq('user_id', currentUser.id);
-          _logger.i('既存のFCMトークンを更新しました（フォールバック・1件）');
-        } else {
-          // 0件の場合は新規作成
-          await supabase.from('user_fcm_tokens').insert({
-            'user_id': currentUser.id,
-            'fcm_token': token,
-            'updated_at': DateTime.now().toIso8601String(),
-          });
-          _logger.i('FCMトークンをSupabaseに新規保存しました（フォールバック・0件）');
-        }
+        return;
       }
+      _logger.i('FCMトークンをSupabaseに保存しました（Edge Function）');
     } on Exception catch (e) {
       _logger.e('FCMトークンのSupabase保存に失敗しました: $e');
       // エラーが発生してもアプリの動作は続行
     }
   }
 
-  /// FCMトークンを削除（ログアウト時などに使用）
+  /// FCMトークンを削除（ログアウト時などに使用・Edge Function経由）
   Future<void> deleteFCMToken() async {
     try {
       await _firebaseMessaging.deleteToken();
       _fcmToken = null;
-
-      // Supabaseからもトークンを削除
       final supabase = Supabase.instance.client;
       final currentUser = supabase.auth.currentUser;
-
       if (currentUser != null) {
-        await supabase
-            .from('user_fcm_tokens')
-            .delete()
-            .eq('user_id', currentUser.id);
+        final res = await supabase.functions.invoke(
+          'fcm-token',
+          body: {'action': 'delete'},
+        );
+        final data = res.data;
+        if (data is Map<String, dynamic> && data['error'] != null) {
+          _logger.e(
+            'FCMトークン削除に失敗: ${data['error']}, details: ${data['details']}',
+          );
+        }
       }
 
       _logger.i('FCMトークンを削除しました');
