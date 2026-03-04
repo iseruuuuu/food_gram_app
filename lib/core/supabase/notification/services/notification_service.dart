@@ -5,16 +5,19 @@ import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-part 'notification_fetch_service.g.dart';
+part 'notification_service.g.dart';
 
-class NotificationFetchService {
-  NotificationFetchService(this._ref);
+/// いいね通知のキー一覧を Edge Function 経由で取得するサービス
+/// クライアントから DB へ直接アクセスしないため、テーブル構造の露出を防ぐ
+class NotificationService {
+  NotificationService(this._ref);
   final Ref _ref;
   final Logger _logger = Logger();
   SupabaseClient get _supabase => _ref.read(supabaseProvider);
   String? get _currentUserId => _supabase.auth.currentUser?.id;
 
-  /// 自分の投稿についた最新の「いいね通知」キーを返す
+  /// 自分の投稿についた最新の「いいね通知」キー（postId / updatedAt / likerUserId）を返す
+  /// 取得は `fetch-like-notification` Edge Function に委譲する
   Future<List<NotificationKey>> fetchMyLikeNotificationKeys() async {
     if (_currentUserId == null) {
       return [];
@@ -66,8 +69,6 @@ class NotificationFetchService {
 }
 
 @riverpod
-NotificationFetchService notificationFetchService(
-  Ref ref,
-) {
-  return NotificationFetchService(ref);
+NotificationService notificationService(Ref ref) {
+  return NotificationService(ref);
 }

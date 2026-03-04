@@ -2,23 +2,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/notification.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
-import 'package:food_gram_app/core/supabase/notification/services/notification_fetch_service.dart';
+import 'package:food_gram_app/core/supabase/notification/services/notification_service.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'notification_repository.g.dart';
 
+/// いいね通知キーと投稿を組み合わせ、通知一覧を返す Repository
 class NotificationRepository {
   NotificationRepository(this._ref);
   final Ref _ref;
   final Logger _logger = Logger();
-
   SupabaseClient get _supabase => _ref.read(supabaseProvider);
-  NotificationFetchService get _service =>
-      _ref.read(notificationFetchServiceProvider);
+  NotificationService get _service => _ref.read(notificationServiceProvider);
 
-  /// 自分の投稿に届いた「いいね」通知（投稿＋最新時刻）を取得
+  /// 自分の投稿に届いた「いいね」通知の一覧を返す
   Future<List<Notification>> getMyLikeNotifications() async {
     final keys = await _service.fetchMyLikeNotificationKeys();
     if (keys.isEmpty) {
