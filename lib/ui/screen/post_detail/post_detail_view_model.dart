@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,11 +65,9 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     if (userId == currentUser) {
       return;
     }
-
     final postId = posts.id.toString();
     final heartRepo = ref.read(heartRepositoryProvider.notifier);
     final isThisPostHearted = state.heartList.contains(postId);
-
     if (isThisPostHearted) {
       final result = await heartRepo.decrementHeart(posts);
       if (result is Success) {
@@ -91,23 +91,27 @@ class PostDetailViewModel extends _$PostDetailViewModel {
           heartList: List.from(state.heartList)..add(postId),
         );
         await preference.incrementHeartCount();
-        try {
-          final currentUserData = await getUserData(currentUser);
-          final likerName = currentUserData['name'] as String? ?? '誰か';
-          final firebaseMessagingService = FirebaseMessagingService();
-          await firebaseMessagingService.sendHeartNotification(
-            postOwnerId: userId,
-            postId: posts.id,
-            likerName: likerName,
-            likerUserId: currentUser,
-          );
-          logger.i(
-            'いいね通知を送信しました: '
-            '投稿者ID=$userId, 投稿ID=${posts.id}, いいねした人=$likerName',
-          );
-        } on Exception catch (e) {
-          logger.e('いいね通知の送信に失敗しました: $e');
-        }
+        unawaited(
+          () async {
+            try {
+              final currentUserData = await getUserData(currentUser);
+              final likerName = currentUserData['name'] as String? ?? '誰か';
+              final firebaseMessagingService = FirebaseMessagingService();
+              await firebaseMessagingService.sendHeartNotification(
+                postOwnerId: userId,
+                postId: posts.id,
+                likerName: likerName,
+                likerUserId: currentUser,
+              );
+              logger.i(
+                'いいね通知を送信しました: '
+                '投稿者ID=$userId, 投稿ID=${posts.id}, いいねした人=$likerName',
+              );
+            } on Exception catch (e) {
+              logger.e('いいね通知の送信に失敗しました: $e');
+            }
+          }(),
+        );
       } else {
         logger.e('いいねの加算に失敗しました: ${(result as Failure).error}');
       }
