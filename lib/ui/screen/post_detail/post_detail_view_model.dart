@@ -104,7 +104,8 @@ class PostDetailViewModel extends _$PostDetailViewModel {
         () async {
           try {
             final currentUserData = await getUserData(currentUser);
-            final likerName = currentUserData['name'] as String? ?? '誰か';
+            final name = currentUserData['name'];
+            final likerName = (name is String ? name : null) ?? '誰か';
             final firebaseMessagingService = FirebaseMessagingService();
             await firebaseMessagingService.sendHeartNotification(
               postOwnerId: userId,
@@ -116,8 +117,8 @@ class PostDetailViewModel extends _$PostDetailViewModel {
               'いいね通知を送信しました: '
               '投稿者ID=$userId, 投稿ID=${posts.id}, いいねした人=$likerName',
             );
-          } on Exception catch (e) {
-            logger.e('いいね通知の送信に失敗しました: $e');
+          } on Exception catch (e, s) {
+            logger.e('いいね通知の送信に失敗しました: $e\n$s');
           }
         }(),
       );
