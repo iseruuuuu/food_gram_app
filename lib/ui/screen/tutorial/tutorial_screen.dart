@@ -416,7 +416,7 @@ class TutorialScreen extends HookConsumerWidget {
                   const Spacer(),
                 ],
               ),
-              // 8ページ目 アプリ開始（モチベーション）
+              // 7ページ目 アプリ開始（モチベーション）
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
