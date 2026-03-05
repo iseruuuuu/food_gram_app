@@ -41,6 +41,24 @@ class UserRepository extends _$UserRepository {
     });
   }
 
+  /// 現在のユーザーのいいね数合計を取得
+  Future<Result<int, Exception>> getCurrentUserHeartAmount() async {
+    return _handleDatabaseOperation(() async {
+      return ref
+          .read(userServiceProvider.notifier)
+          .getCurrentUserHeartAmount();
+    });
+  }
+
+  /// 特定ユーザーのいいね数合計を取得
+  Future<Result<int, Exception>> getOtherUserHeartAmount(String userId) async {
+    return _handleDatabaseOperation(() async {
+      return ref
+          .read(userServiceProvider.notifier)
+          .getOtherUserHeartAmount(userId);
+    });
+  }
+
   /// 投稿からユーザー情報を取得
   Future<Result<Users, Exception>> getUserFromPost(Posts post) async {
     return _handleDatabaseOperation(() async {
