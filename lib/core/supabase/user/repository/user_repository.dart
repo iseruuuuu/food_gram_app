@@ -76,14 +76,6 @@ class UserRepository extends _$UserRepository {
     });
   }
 
-  /// ユーザー情報と投稿数を含むデータを取得
-  Future<Result<List<Map<String, dynamic>>, Exception>>
-      getUsersWithPostCount() async {
-    return _handleDatabaseOperation(() async {
-      return ref.read(userServiceProvider.notifier).getUsersWithPostCount();
-    });
-  }
-
   /// エラーハンドリング用のヘルパーメソッド
   Future<Result<T, Exception>> _handleDatabaseOperation<T>(
     Future<T> Function() operation,
@@ -99,15 +91,4 @@ class UserRepository extends _$UserRepository {
       return Failure(e);
     }
   }
-}
-
-/// ユーザー検索用のプロバイダー
-@riverpod
-Future<List<Map<String, dynamic>>> usersWithPostCountProvider(Ref ref) async {
-  final result =
-      await ref.read(userRepositoryProvider.notifier).getUsersWithPostCount();
-  return result.when(
-    success: (data) => data,
-    failure: (error) => throw Exception(error.toString()),
-  );
 }
