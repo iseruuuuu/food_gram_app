@@ -175,17 +175,7 @@ class PostService extends _$PostService {
       final payload = {'post_id': posts.id, ...updates};
       final res = await supabase.functions.invoke('post-update', body: payload);
       final data = res.data;
-      final isHttpSuccess = res.status >= 200 && res.status < 300;
-      var ok = false;
-      if (data is Map<String, dynamic>) {
-        if (data.containsKey('ok')) {
-          ok = data['ok'] == true;
-        } else {
-          ok = isHttpSuccess;
-        }
-      } else {
-        ok = isHttpSuccess;
-      }
+      final ok = data is Map<String, dynamic> && data['ok'] == true;
       if (!ok) {
         final errorMsg = data is Map<String, dynamic>
             ? (data['error']?.toString() ?? 'status: ${res.status}')
