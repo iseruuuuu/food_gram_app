@@ -96,24 +96,6 @@ class UserService extends _$UserService {
     );
   }
 
-  /// 特定ユーザーの投稿数を取得
-  Future<int> getOtherUserPostCount(
-    String userId, {
-    bool includeAnonymous = false,
-  }) async {
-    return _cacheManager.get<int>(
-      key: 'post_count_$userId',
-      fetcher: () async {
-        final stats = await getUserStats(
-          userId: userId,
-          includeAnonymous: includeAnonymous,
-        );
-        return stats['postCount'] as int? ?? 0;
-      },
-      duration: const Duration(minutes: 2),
-    );
-  }
-
   /// 特定ユーザーの投稿のいいねの合計数を取得
   Future<int> getOtherUserHeartAmount(String userId) async {
     return _cacheManager.get<int>(
