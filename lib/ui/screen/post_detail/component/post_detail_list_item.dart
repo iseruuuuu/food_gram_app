@@ -177,7 +177,14 @@ class PostDetailListItem extends HookConsumerWidget {
                                 currentUser == users.userId) {
                               return;
                             }
-                            await ref
+                            final wasHearted = isHearted.value;
+                            isHearted.value = !wasHearted;
+                            heartCount.value = wasHearted
+                                ? (heartCount.value > 0
+                                    ? heartCount.value - 1
+                                    : 0)
+                                : heartCount.value + 1;
+                            final ok = await ref
                                 .read(postDetailViewModelProvider().notifier)
                                 .handleHeart(
                                   posts: posts,
@@ -185,14 +192,13 @@ class PostDetailListItem extends HookConsumerWidget {
                                   userId: users.userId,
                                   onHeartLimitReached: onHeartLimitReached,
                                 );
-                            if (isHearted.value) {
-                              isHearted.value = false;
-                              heartCount.value = heartCount.value > 0
-                                  ? heartCount.value - 1
-                                  : 0;
-                            } else {
-                              isHearted.value = true;
-                              heartCount.value = heartCount.value + 1;
+                            if (!ok) {
+                              isHearted.value = wasHearted;
+                              heartCount.value = wasHearted
+                                  ? heartCount.value + 1
+                                  : (heartCount.value > 0
+                                      ? heartCount.value - 1
+                                      : 0);
                             }
                           },
                           child: Container(
@@ -279,7 +285,14 @@ class PostDetailListItem extends HookConsumerWidget {
                       if (currentUser == null || currentUser == users.userId) {
                         return;
                       }
-                      await ref
+                      final wasHearted = isHearted.value;
+                      isHearted.value = !wasHearted;
+                      heartCount.value = wasHearted
+                          ? (heartCount.value > 0
+                              ? heartCount.value - 1
+                              : 0)
+                          : heartCount.value + 1;
+                      final ok = await ref
                           .read(postDetailViewModelProvider().notifier)
                           .handleHeart(
                             posts: posts,
@@ -287,13 +300,13 @@ class PostDetailListItem extends HookConsumerWidget {
                             userId: users.userId,
                             onHeartLimitReached: onHeartLimitReached,
                           );
-                      if (isHearted.value) {
-                        isHearted.value = false;
-                        heartCount.value =
-                            heartCount.value > 0 ? heartCount.value - 1 : 0;
-                      } else {
-                        isHearted.value = true;
-                        heartCount.value = heartCount.value + 1;
+                      if (!ok) {
+                        isHearted.value = wasHearted;
+                        heartCount.value = wasHearted
+                            ? heartCount.value + 1
+                            : (heartCount.value > 0
+                                ? heartCount.value - 1
+                                : 0);
                       }
                     },
                     icon: Icon(

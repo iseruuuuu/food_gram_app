@@ -55,15 +55,15 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     );
   }
 
-  /// いいね処理
-  Future<void> handleHeart({
+  /// いいね処理。成功で true、 revert すべき時は false。
+  Future<bool> handleHeart({
     required Posts posts,
     required String currentUser,
     required String userId,
     required VoidCallback? onHeartLimitReached,
   }) async {
     if (userId == currentUser) {
-      return;
+      return false;
     }
     final postId = posts.id.toString();
     final heartRepo = ref.read(heartRepositoryProvider.notifier);
@@ -75,52 +75,56 @@ class PostDetailViewModel extends _$PostDetailViewModel {
           isAppearHeart: false,
           heartList: List.from(state.heartList)..remove(postId),
         );
-      } else {
-        logger.e('いいねの減算に失敗しました: ${(result as Failure).error}');
-      }
-    } else {
-      final canLike = await preference.canLike();
-      if (!canLike) {
-        onHeartLimitReached?.call();
-        return;
-      }
-      final result = await heartRepo.incrementHeart(posts);
-      if (result is Success) {
-        state = state.copyWith(
-          isAppearHeart: true,
-          heartList: List.from(state.heartList)..add(postId),
+        await preference.setStringList(
+          PreferenceKey.heartList,
+          state.heartList,
         );
-        await preference.incrementHeartCount();
-        unawaited(
-          () async {
-            try {
-              final currentUserData = await getUserData(currentUser);
-              final likerName = currentUserData['name'] as String? ?? '誰か';
-              final firebaseMessagingService = FirebaseMessagingService();
-              await firebaseMessagingService.sendHeartNotification(
-                postOwnerId: userId,
-                postId: posts.id,
-                likerName: likerName,
-                likerUserId: currentUser,
-              );
-              logger.i(
-                'いいね通知を送信しました: '
-                '投稿者ID=$userId, 投稿ID=${posts.id}, いいねした人=$likerName',
-              );
-            } on Exception catch (e) {
-              logger.e('いいね通知の送信に失敗しました: $e');
-            }
-          }(),
-        );
-      } else {
-        logger.e('いいねの加算に失敗しました: ${(result as Failure).error}');
+        return true;
       }
+      logger.e('いいねの減算に失敗しました: ${(result as Failure).error}');
+      return false;
     }
-
-    await preference.setStringList(
-      PreferenceKey.heartList,
-      state.heartList,
-    );
+    final canLike = await preference.canLike();
+    if (!canLike) {
+      onHeartLimitReached?.call();
+      return false;
+    }
+    final result = await heartRepo.incrementHeart(posts);
+    if (result is Success) {
+      state = state.copyWith(
+        isAppearHeart: true,
+        heartList: List.from(state.heartList)..add(postId),
+      );
+      await preference.incrementHeartCount();
+      await preference.setStringList(
+        PreferenceKey.heartList,
+        state.heartList,
+      );
+      unawaited(
+        () async {
+          try {
+            final currentUserData = await getUserData(currentUser);
+            final likerName = currentUserData['name'] as String? ?? '誰か';
+            final firebaseMessagingService = FirebaseMessagingService();
+            await firebaseMessagingService.sendHeartNotification(
+              postOwnerId: userId,
+              postId: posts.id,
+              likerName: likerName,
+              likerUserId: currentUser,
+            );
+            logger.i(
+              'いいね通知を送信しました: '
+              '投稿者ID=$userId, 投稿ID=${posts.id}, いいねした人=$likerName',
+            );
+          } on Exception catch (e) {
+            logger.e('いいね通知の送信に失敗しました: $e');
+          }
+        }(),
+      );
+      return true;
+    }
+    logger.e('いいねの加算に失敗しました: ${(result as Failure).error}');
+    return false;
   }
 
   Future<bool> delete(Posts posts) async {
