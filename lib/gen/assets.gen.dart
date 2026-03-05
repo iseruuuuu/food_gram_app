@@ -200,6 +200,9 @@ class $AssetsLottieGen {
   /// File path: assets/lottie/loading.json
   String get loading => 'assets/lottie/loading.json';
 
+  /// File path: assets/lottie/location.json
+  String get location => 'assets/lottie/location.json';
+
   /// File path: assets/lottie/notification.json
   String get notification => 'assets/lottie/notification.json';
 
@@ -215,15 +218,24 @@ class $AssetsLottieGen {
   /// File path: assets/lottie/tutorial3.json
   String get tutorial3 => 'assets/lottie/tutorial3.json';
 
+  /// File path: assets/lottie/tutorial4.json
+  String get tutorial4 => 'assets/lottie/tutorial4.json';
+
+  /// File path: assets/lottie/welcome.json
+  String get welcome => 'assets/lottie/welcome.json';
+
   /// List of all assets
   List<String> get values => [
         heart,
         loading,
+        location,
         notification,
         permission,
         tutorial1,
         tutorial2,
-        tutorial3
+        tutorial3,
+        tutorial4,
+        welcome
       ];
 }
 
