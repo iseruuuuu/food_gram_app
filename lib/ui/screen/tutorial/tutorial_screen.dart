@@ -1,12 +1,9 @@
-import 'dart:async';
 import 'dart:ui';
 
-import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
-import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/style/tutorial_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
@@ -32,11 +29,6 @@ class TutorialScreen extends HookConsumerWidget {
     final currentPageIndex = useState(0);
     useListenable(currentPageIndex);
     final preference = useMemoized(Preference.new);
-    useMemoized(
-      () => ConfettiController(duration: const Duration(seconds: 2)),
-    );
-    final isSubscribeAsync = ref.watch(isSubscribeProvider);
-    final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
     useEffect(
       () {
         Future<void> loadPreference() async {
@@ -51,9 +43,6 @@ class TutorialScreen extends HookConsumerWidget {
       },
       [],
     );
-
-    // PageController.page は PageView ビルド後でないと参照できないため、
-    // リスナーと addPostFrameCallback で現在ページを更新する
     useEffect(
       () {
         void updatePageIndex() {
@@ -79,7 +68,7 @@ class TutorialScreen extends HookConsumerWidget {
       );
     }
 
-    final totalPages = isSubscribed ? 8 : 9;
+    const totalPages = 8;
     return Scaffold(
       body: Stack(
         children: [
