@@ -16,32 +16,26 @@ class DeleteService extends _$DeleteService {
   @override
   Future<void> build() async {}
 
-  /// 投稿を削除（データ処理）
+  /// 投稿を削除（Edge Function 経由）
   Future<Result<void, Exception>> deletePost(Posts post) async {
     try {
-      await _deletePostImage(post.foodImage);
-      await _deletePostData(post.id);
-      return const Success(null);
-    } on PostgrestException catch (e) {
-      logger.e('Failed to delete post: ${e.message}');
-      return Failure(e);
-    } on StorageException catch (e) {
-      logger.e('Failed to delete image: ${e.message}');
+      final res = await supabase.functions.invoke(
+        'post-delete',
+        body: {'post_id': post.id},
+      );
+      final data = res.data;
+      final ok = data is Map<String, dynamic> && data['ok'] == true;
+      if (ok) {
+        return const Success(null);
+      }
+      final errorMsg = data is Map<String, dynamic>
+          ? (data['error']?.toString() ?? 'status: ${res.status}')
+          : 'status: ${res.status}';
+      logger.e('Failed to delete post via function: $errorMsg');
+      return Failure(Exception(errorMsg));
+    } on Exception catch (e) {
+      logger.e('Failed to delete post via function: $e');
       return Failure(e);
     }
-  }
-
-  /// 投稿画像を削除
-  Future<void> _deletePostImage(String foodImage) async {
-    /// 先頭の'/'を削除し、二重スラッシュを単一スラッシュに置換
-    final imagePath = foodImage.substring(1).replaceAll('//', '/');
-    await supabase.storage.from('food').remove([imagePath]);
-    //TODO おそらく、管理者が消そうとすると、ストレージの削除ができていない気がする
-    //TODO 理由としては、Policiesの問題
-  }
-
-  /// 投稿データを削除
-  Future<void> _deletePostData(int postId) async {
-    await supabase.from('posts').delete().eq('id', postId);
   }
 }
