@@ -21,7 +21,7 @@ class FetchPostRepository extends _$FetchPostRepository {
   Future<Result<int, Exception>> getHeartAmount() async {
     try {
       final amount =
-          await ref.read(fetchPostServiceProvider.notifier).getHeartAmount();
+          await ref.read(fetchPostServiceProvider.notifier).getMyHeartAmount();
       return Success(amount);
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
