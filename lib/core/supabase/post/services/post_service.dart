@@ -153,7 +153,7 @@ class PostService extends _$PostService {
       final foodImage = allImagePaths.join(',');
       updates['food_image'] = foodImage;
 
-      // 旧画像を削除（既存画像から削除されたもの）
+      // 旧画像（DB 上の元の food_image）から、今回の更新で不要になるパスを計算
       final oldImagePaths = posts.foodImage.isNotEmpty
           ? posts.foodImage.split(',').where((path) => path.isNotEmpty).toList()
           : <String>[];
@@ -163,20 +163,45 @@ class PostService extends _$PostService {
           .where((path) => path.isNotEmpty)
           .toList();
 
+      // Edge Function 経由で投稿データを更新
+      final payload = {'post_id': posts.id, ...updates};
+      final res = await supabase.functions.invoke('post-update', body: payload);
+      final data = res.data;
+      final ok = data is Map<String, dynamic> && data['ok'] == true;
+      if (!ok) {
+        // DB 更新に失敗した場合は、新しくアップロードした画像をロールバック
+        final rollbackPaths = newUploadedPaths
+            .map((path) => path.startsWith('/') ? path.substring(1) : path)
+            .where((path) => path.isNotEmpty)
+            .toList();
+        if (rollbackPaths.isNotEmpty) {
+          try {
+            await supabase.storage.from('food').remove(rollbackPaths);
+          } on StorageException catch (e) {
+            logger.e('Failed to rollback new images: ${e.message}');
+          }
+        }
+
+        final errorMsg = data is Map<String, dynamic>
+            ? (data['error']?.toString() ?? 'status: ${res.status}')
+            : 'status: ${res.status}';
+        logger.e('Failed to update post via function: $errorMsg');
+        return Failure(Exception(errorMsg));
+      }
+
+      // DB 更新が成功したあとに、不要になった旧画像を削除
       if (imagesToDelete.isNotEmpty) {
         try {
           await supabase.storage.from('food').remove(imagesToDelete);
         } on StorageException catch (e) {
           logger.e('Failed to delete old images: ${e.message}');
-          // 削除に失敗しても続行
+          // 削除に失敗しても処理は継続（DB とストレージの整合性は保たれている）
         }
       }
 
-      // 投稿データを更新
-      await supabase.from('posts').update(updates).eq('id', posts.id);
       return const Success(null);
-    } on PostgrestException catch (e) {
-      logger.e('Failed to update post: ${e.message}');
+    } on Exception catch (e) {
+      logger.e('Failed to update post: $e');
       return Failure(e);
     }
   }
