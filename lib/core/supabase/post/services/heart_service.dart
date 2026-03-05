@@ -22,13 +22,15 @@ class HeartService extends _$HeartService {
         'post-heart',
         body: {'action': 'increment', 'post_id': postId},
       );
-      final data = res.data as Map<String, dynamic>?;
-      if (data?['ok'] == true) {
+      final data = res.data;
+      final ok = data is Map<String, dynamic> && data['ok'] == true;
+      if (ok) {
         return const Success(null);
       }
-      return Failure(
-        Exception(data?['error']?.toString() ?? 'status: ${res.status}'),
-      );
+      final errorMsg = data is Map<String, dynamic>
+          ? (data['error']?.toString() ?? 'status: ${res.status}')
+          : 'status: ${res.status}';
+      return Failure(Exception(errorMsg));
     } on Exception catch (e) {
       _logger.e('incrementHeart failed: $e');
       return Failure(e);
@@ -42,13 +44,15 @@ class HeartService extends _$HeartService {
         'post-heart',
         body: {'action': 'decrement', 'post_id': postId},
       );
-      final data = res.data as Map<String, dynamic>?;
-      if (data?['ok'] == true) {
+      final data = res.data;
+      final ok = data is Map<String, dynamic> && data['ok'] == true;
+      if (ok) {
         return const Success(null);
       }
-      return Failure(
-        Exception(data?['error']?.toString() ?? 'status: ${res.status}'),
-      );
+      final errorMsg = data is Map<String, dynamic>
+          ? (data['error']?.toString() ?? 'status: ${res.status}')
+          : 'status: ${res.status}';
+      return Failure(Exception(errorMsg));
     } on Exception catch (e) {
       _logger.e('decrementHeart failed: $e');
       return Failure(e);
