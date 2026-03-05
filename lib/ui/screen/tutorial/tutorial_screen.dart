@@ -46,14 +46,11 @@ class TutorialScreen extends HookConsumerWidget {
     useEffect(
       () {
         void updatePageIndex() {
-          try {
-            final page = pageController.page;
-            if (page != null) {
-              currentPageIndex.value = page.round();
-            }
-          } on Object catch (_) {}
+          final page = pageController.page;
+          if (page != null) {
+            currentPageIndex.value = page.round();
+          }
         }
-
         pageController.addListener(updatePageIndex);
         WidgetsBinding.instance.addPostFrameCallback((_) => updatePageIndex());
         return () => pageController.removeListener(updatePageIndex);
