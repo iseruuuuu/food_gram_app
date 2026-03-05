@@ -35,7 +35,7 @@ class UserService extends _$UserService {
     );
   }
 
-  /// 他のユーザー情報を取得
+  /// 特定のユーザー情報を取得
   Future<Map<String, dynamic>> getOtherUser(String userId) async {
     return _cacheManager.get<Map<String, dynamic>>(
       key: 'user_$userId',
@@ -44,17 +44,87 @@ class UserService extends _$UserService {
     );
   }
 
+  /// ユーザーの統計情報を取得(Edge Function 経由)
+  Future<Map<String, dynamic>> getUserStats({
+    required String userId,
+    required bool includeAnonymous,
+    int latestLimit = 0,
+  }) async {
+    final res = await supabase.functions.invoke(
+      'user-stats',
+      body: {
+        'user_id': userId,
+        'include_anonymous': includeAnonymous,
+        'latest_limit': latestLimit,
+      },
+    );
+    final data = res.data;
+    if (data is! Map<String, dynamic> || data['ok'] != true) {
+      throw Exception('user-stats failed: $data');
+    }
+    return data;
+  }
+
   /// 自分のユーザーの投稿数を取得
   Future<int> getCurrentUserPostCount() async {
     return _cacheManager.get<int>(
       key: 'post_count_$_currentUserId',
       fetcher: () async {
-        final response =
-            await supabase.from('posts').select().eq('user_id', _currentUserId);
-        return response.length;
+        final stats = await getUserStats(
+          userId: _currentUserId,
+          includeAnonymous: true,
+        );
+        return stats['postCount'] as int? ?? 0;
       },
+      // 投稿数は頻繁に変わる可能性があるため、短めの期間を設定
+      duration: const Duration(minutes: 2),
+    );
+  }
 
-      /// 投稿数は頻繁に変わる可能性があるため、短めの期間を設定
+  /// 自分の全投稿に対するいいね数の合計を取得
+  Future<int> getCurrentUserHeartAmount() async {
+    return _cacheManager.get<int>(
+      key: 'heart_amount_$_currentUserId',
+      fetcher: () async {
+        final stats = await getUserStats(
+          userId: _currentUserId,
+          includeAnonymous: true,
+        );
+        return stats['heartTotal'] as int? ?? 0;
+      },
+      duration: const Duration(minutes: 2),
+    );
+  }
+
+  /// 特定ユーザーの投稿数を取得
+  Future<int> getOtherUserPostCount(
+    String userId, {
+    bool includeAnonymous = false,
+  }) async {
+    return _cacheManager.get<int>(
+      key: 'post_count_$userId',
+      fetcher: () async {
+        final stats = await getUserStats(
+          userId: userId,
+          includeAnonymous: includeAnonymous,
+        );
+        return stats['postCount'] as int? ?? 0;
+      },
+      duration: const Duration(minutes: 2),
+    );
+  }
+
+  /// 特定ユーザーの投稿のいいねの合計数を取得
+  Future<int> getOtherUserHeartAmount(String userId) async {
+    return _cacheManager.get<int>(
+      key: 'heart_amount_$userId',
+      fetcher: () async {
+        final stats = await getUserStats(
+          userId: userId,
+          includeAnonymous: false,
+        );
+        return stats['heartTotal'] as int? ?? 0;
+      },
       duration: const Duration(minutes: 2),
     );
   }
