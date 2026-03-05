@@ -171,12 +171,31 @@ class PostService extends _$PostService {
           // 削除に失敗しても続行
         }
       }
-
-      // 投稿データを更新
-      await supabase.from('posts').update(updates).eq('id', posts.id);
+      // Edge Function 経由で投稿データを更新
+      final payload = {'post_id': posts.id, ...updates};
+      final res = await supabase.functions.invoke('post-update', body: payload);
+      final data = res.data;
+      final isHttpSuccess = res.status >= 200 && res.status < 300;
+      var ok = false;
+      if (data is Map<String, dynamic>) {
+        if (data.containsKey('ok')) {
+          ok = data['ok'] == true;
+        } else {
+          ok = isHttpSuccess;
+        }
+      } else {
+        ok = isHttpSuccess;
+      }
+      if (!ok) {
+        final errorMsg = data is Map<String, dynamic>
+            ? (data['error']?.toString() ?? 'status: ${res.status}')
+            : 'status: ${res.status}';
+        logger.e('Failed to update post via function: $errorMsg');
+        return Failure(Exception(errorMsg));
+      }
       return const Success(null);
-    } on PostgrestException catch (e) {
-      logger.e('Failed to update post: ${e.message}');
+    } on Exception catch (e) {
+      logger.e('Failed to update post: $e');
       return Failure(e);
     }
   }
