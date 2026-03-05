@@ -69,13 +69,28 @@ class PostService extends _$PostService {
         'star': star,
         'is_anonymous': isAnonymous,
       };
-      await supabase.from('posts').insert(post);
+
+      // 投稿の insert は Edge Function 経由で行う
+      final res = await supabase.functions.invoke(
+        'post-create',
+        body: post,
+      );
+      final data = res.data;
+      final ok = data is Map<String, dynamic> && data['ok'] == true;
+      if (!ok) {
+        final errorMsg = data is Map<String, dynamic>
+            ? (data['error']?.toString() ?? 'status: ${res.status}')
+            : 'status: ${res.status}';
+        logger.e('Failed to create post via function: $errorMsg');
+        return Failure(Exception(errorMsg));
+      }
+
       return const Success(null);
-    } on PostgrestException catch (e) {
-      logger.e('Failed to create post: ${e.message}');
-      return Failure(e);
     } on StorageException catch (e) {
       logger.e('Failed to upload images: ${e.message}');
+      return Failure(e);
+    } on Exception catch (e) {
+      logger.e('Failed to create post: $e');
       return Failure(e);
     }
   }
@@ -108,7 +123,7 @@ class PostService extends _$PostService {
         'star': star,
         'is_anonymous': isAnonymous,
       };
-      
+
       // 新しい画像をアップロード
       final newUploadedPaths = <String>[];
       for (final imagePath in newImagePaths) {
@@ -132,12 +147,12 @@ class PostService extends _$PostService {
           }
         }
       }
-      
+
       // 既存の画像パスと新しい画像パスを結合
       final allImagePaths = [...existingImagePaths, ...newUploadedPaths];
       final foodImage = allImagePaths.join(',');
       updates['food_image'] = foodImage;
-      
+
       // 旧画像を削除（既存画像から削除されたもの）
       final oldImagePaths = posts.foodImage.isNotEmpty
           ? posts.foodImage.split(',').where((path) => path.isNotEmpty).toList()
@@ -147,7 +162,7 @@ class PostService extends _$PostService {
           .map((path) => path.startsWith('/') ? path.substring(1) : path)
           .where((path) => path.isNotEmpty)
           .toList();
-      
+
       if (imagesToDelete.isNotEmpty) {
         try {
           await supabase.storage.from('food').remove(imagesToDelete);
@@ -156,7 +171,7 @@ class PostService extends _$PostService {
           // 削除に失敗しても続行
         }
       }
-      
+
       // 投稿データを更新
       await supabase.from('posts').update(updates).eq('id', posts.id);
       return const Success(null);
