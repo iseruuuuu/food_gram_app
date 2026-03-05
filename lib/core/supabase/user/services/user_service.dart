@@ -65,22 +65,6 @@ class UserService extends _$UserService {
     return data;
   }
 
-  /// 自分のユーザーの投稿数を取得
-  Future<int> getCurrentUserPostCount() async {
-    return _cacheManager.get<int>(
-      key: 'post_count_$_currentUserId',
-      fetcher: () async {
-        final stats = await getUserStats(
-          userId: _currentUserId,
-          includeAnonymous: true,
-        );
-        return stats['postCount'] as int? ?? 0;
-      },
-      // 投稿数は頻繁に変わる可能性があるため、短めの期間を設定
-      duration: const Duration(minutes: 2),
-    );
-  }
-
   /// 自分の全投稿に対するいいね数の合計を取得
   Future<int> getCurrentUserHeartAmount() async {
     return _cacheManager.get<int>(

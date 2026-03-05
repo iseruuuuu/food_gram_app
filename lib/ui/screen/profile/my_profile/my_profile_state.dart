@@ -10,7 +10,6 @@ abstract class MyProfileState with _$MyProfileState {
 
   const factory MyProfileState.data({
     required Users users,
-    required int length,
     required int heartAmount,
   }) = _MyProfileStateData;
 

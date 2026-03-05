@@ -34,13 +34,6 @@ class UserRepository extends _$UserRepository {
     });
   }
 
-  /// 自分のユーザーの投稿数を取得
-  Future<Result<int, Exception>> getCurrentUserPostCount() async {
-    return _handleDatabaseOperation(() async {
-      return ref.read(userServiceProvider.notifier).getCurrentUserPostCount();
-    });
-  }
-
   /// 自分のユーザーのいいね数合計を取得
   Future<Result<int, Exception>> getCurrentUserHeartAmount() async {
     return _handleDatabaseOperation(() async {

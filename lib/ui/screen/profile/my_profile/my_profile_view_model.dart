@@ -24,23 +24,17 @@ class MyProfileViewModel extends _$MyProfileViewModel {
     try {
       final results = await Future.wait([
         ref.read(userRepositoryProvider.notifier).getCurrentUser(),
-        ref.read(userRepositoryProvider.notifier).getCurrentUserPostCount(),
         ref.read(userRepositoryProvider.notifier).getCurrentUserHeartAmount(),
       ]);
 
       final userResult = results[0] as Result<Users, Exception>;
-      final postCountResult = results[1] as Result<int, Exception>;
-      final heartAmountResult = results[2] as Result<int, Exception>;
+      final heartAmountResult = results[1] as Result<int, Exception>;
 
       userResult.when(
-        success: (users) => postCountResult.when(
-          success: (length) => heartAmountResult.when(
-            success: (heartAmount) => state = MyProfileState.data(
-              users: users,
-              length: length,
-              heartAmount: heartAmount,
-            ),
-            failure: (_) => state = const MyProfileStateError(),
+        success: (users) => heartAmountResult.when(
+          success: (heartAmount) => state = MyProfileState.data(
+            users: users,
+            heartAmount: heartAmount,
           ),
           failure: (_) => state = const MyProfileStateError(),
         ),
@@ -54,10 +48,9 @@ class MyProfileViewModel extends _$MyProfileViewModel {
 
   void setUser(Users user) {
     state.whenOrNull(
-      data: (_, length, heartAmount) {
+      data: (_, heartAmount) {
         state = MyProfileState.data(
           users: user,
-          length: length,
           heartAmount: heartAmount,
         );
       },

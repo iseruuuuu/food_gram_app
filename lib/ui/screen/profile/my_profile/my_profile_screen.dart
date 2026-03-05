@@ -27,10 +27,11 @@ class MyProfileScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(myPostStreamProvider);
+    final postList = ref.watch(myPostStreamProvider);
+    final postCount = postList.valueOrNull?.length ?? 0;
     final users = ref.watch(myProfileViewModelProvider());
     final scrollController = useScrollController();
-    final hasData = state.valueOrNull != null;
+    final hasData = postList.valueOrNull != null;
     useScrollToTopOnTabTrigger(
       ref: ref,
       scrollController: scrollController,
@@ -41,7 +42,7 @@ class MyProfileScreen extends HookConsumerWidget {
     final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
     useEffect(() {
       users.whenOrNull(
-        data: (users, __, ___) {
+        data: (users, ___) {
           if (users.isSubscribe) {
             return;
           }
@@ -70,7 +71,7 @@ class MyProfileScreen extends HookConsumerWidget {
           ),
         ),
         body: AsyncValueSwitcher(
-          asyncValue: state,
+          asyncValue: postList,
           onErrorTap: () {
             ref
               ..invalidate(myPostStreamProvider)
@@ -95,13 +96,13 @@ class MyProfileScreen extends HookConsumerWidget {
                 slivers: [
                   SliverToBoxAdapter(
                     child: users.when(
-                      data: (users, length, heartAmount) {
+                      data: (users, heartAmount) {
                         return Stack(
                           clipBehavior: Clip.none,
                           children: [
                             AppProfileHeader(
                               users: users,
-                              length: length,
+                              length: postCount,
                               heartAmount: heartAmount,
                             ),
                             if (!isSubscribed)
@@ -226,28 +227,21 @@ class MyProfileScreen extends HookConsumerWidget {
                   ),
                 ),
                 onPressed: () async {
-                  final vm = ref.read(myProfileViewModelProvider().notifier);
-                  final oldPostCount = ref
-                      .read(myProfileViewModelProvider())
-                      .whenOrNull(data: (_, length, __) => length);
+                  final oldPostCount =
+                      ref.read(myPostStreamProvider).valueOrNull?.length ?? 0;
                   final result =
                       await context.pushNamed(RouterPath.myProfilePost);
                   if (result != null) {
                     ref.invalidate(myPostStreamProvider);
-                    await vm.getData();
-                    final newPostCount = ref
-                        .read(myProfileViewModelProvider())
-                        .whenOrNull(data: (_, length, __) => length);
-                    final old = oldPostCount;
-                    final newCount = newPostCount;
-                    if (old != null &&
-                        newCount != null &&
-                        UserLevel.levelFromPostCount(newCount) >
-                            UserLevel.levelFromPostCount(old) &&
+                    await ref.read(myPostStreamProvider.future);
+                    final newPostCount =
+                        ref.read(myPostStreamProvider).valueOrNull?.length ?? 0;
+                    if (UserLevel.levelFromPostCount(newPostCount) >
+                            UserLevel.levelFromPostCount(oldPostCount) &&
                         context.mounted) {
                       await showLevelUpDialog(
                         context: context,
-                        level: UserLevel.levelFromPostCount(newCount),
+                        level: UserLevel.levelFromPostCount(newPostCount),
                       );
                     }
                   }
