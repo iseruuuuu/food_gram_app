@@ -6,11 +6,12 @@ import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/post_deail_list_mode.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/notification/firebase_messaging_service.dart';
-import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/post/repository/delete_repository.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
+import 'package:food_gram_app/core/supabase/post/repository/heart_repository.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_select_modal_sheet.dart';
@@ -64,66 +65,51 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     }
 
     final postId = posts.id.toString();
-    final supabase = ref.read(supabaseProvider);
+    final heartRepo = ref.read(heartRepositoryProvider.notifier);
     final isThisPostHearted = state.heartList.contains(postId);
 
     if (isThisPostHearted) {
-      // いいねを外す（RLS を避けるため RPC で更新）
-      try {
-        await supabase.rpc<void>(
-          'decrement_post_heart',
-          params: {'post_id': posts.id},
+      final result = await heartRepo.decrementHeart(posts);
+      if (result is Success) {
+        state = state.copyWith(
+          isAppearHeart: false,
+          heartList: List.from(state.heartList)..remove(postId),
         );
-      } on Exception catch (e) {
-        logger.e('いいねの減算に失敗しました: $e');
+      } else {
+        logger.e('いいねの減算に失敗しました: ${(result as Failure).error}');
       }
-      state = state.copyWith(
-        isAppearHeart: false,
-        heartList: List.from(state.heartList)..remove(postId),
-      );
     } else {
-      // 10回以上いいねした場合は制限
       final canLike = await preference.canLike();
       if (!canLike) {
         onHeartLimitReached?.call();
         return;
       }
-      try {
-        await supabase.rpc<void>(
-          'increment_post_heart',
-          params: {'post_id': posts.id},
+      final result = await heartRepo.incrementHeart(posts);
+      if (result is Success) {
+        state = state.copyWith(
+          isAppearHeart: true,
+          heartList: List.from(state.heartList)..add(postId),
         );
-      } on Exception catch (e) {
-        logger.e('いいねの加算に失敗しました: $e');
-      }
-      state = state.copyWith(
-        isAppearHeart: true,
-        heartList: List.from(state.heartList)..add(postId),
-      );
-      // いいねカウントを増加
-      await preference.incrementHeartCount();
-
-      // 通知を送信（投稿者に通知）
-      try {
-        // 現在のユーザー名を取得
-        final currentUserData = await getUserData(currentUser);
-        final likerName = currentUserData['name'] as String? ?? '誰か';
-
-        // 通知を送信
-        final firebaseMessagingService = FirebaseMessagingService();
-        await firebaseMessagingService.sendHeartNotification(
-          postOwnerId: userId,
-          postId: posts.id,
-          likerName: likerName,
-          likerUserId: currentUser,
-        );
-        logger.i(
-          'いいね通知を送信しました: '
-          '投稿者ID=$userId, 投稿ID=${posts.id}, いいねした人=$likerName',
-        );
-      } on Exception catch (e) {
-        logger.e('いいね通知の送信に失敗しました: $e');
-        // 通知の送信に失敗してもいいね処理は続行
+        await preference.incrementHeartCount();
+        try {
+          final currentUserData = await getUserData(currentUser);
+          final likerName = currentUserData['name'] as String? ?? '誰か';
+          final firebaseMessagingService = FirebaseMessagingService();
+          await firebaseMessagingService.sendHeartNotification(
+            postOwnerId: userId,
+            postId: posts.id,
+            likerName: likerName,
+            likerUserId: currentUser,
+          );
+          logger.i(
+            'いいね通知を送信しました: '
+            '投稿者ID=$userId, 投稿ID=${posts.id}, いいねした人=$likerName',
+          );
+        } on Exception catch (e) {
+          logger.e('いいね通知の送信に失敗しました: $e');
+        }
+      } else {
+        logger.e('いいねの加算に失敗しました: ${(result as Failure).error}');
       }
     }
 
