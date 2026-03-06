@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
@@ -34,10 +33,19 @@ class UserRepository extends _$UserRepository {
     });
   }
 
-  /// 現在のユーザーの投稿数を取得
-  Future<Result<int, Exception>> getCurrentUserPostCount() async {
+  /// 自分のユーザーのいいね数合計を取得
+  Future<Result<int, Exception>> getCurrentUserHeartAmount() async {
     return _handleDatabaseOperation(() async {
-      return ref.read(userServiceProvider.notifier).getCurrentUserPostCount();
+      return ref.read(userServiceProvider.notifier).getCurrentUserHeartAmount();
+    });
+  }
+
+  /// 特定のユーザーのいいね数合計を取得
+  Future<Result<int, Exception>> getOtherUserHeartAmount(String userId) async {
+    return _handleDatabaseOperation(() async {
+      return ref
+          .read(userServiceProvider.notifier)
+          .getOtherUserHeartAmount(userId);
     });
   }
 
@@ -47,22 +55,6 @@ class UserRepository extends _$UserRepository {
       final data =
           await ref.read(userServiceProvider.notifier).getUserFromPost(post);
       return Users.fromJson(data);
-    });
-  }
-
-  /// 全ユーザー情報を取得
-  Future<Result<List<Users>, Exception>> getAllUsers() async {
-    return _handleDatabaseOperation(() async {
-      final data = await ref.read(userServiceProvider.notifier).getAllUsers();
-      return data.map(Users.fromJson).toList();
-    });
-  }
-
-  /// ユーザー情報と投稿数を含むデータを取得
-  Future<Result<List<Map<String, dynamic>>, Exception>>
-      getUsersWithPostCount() async {
-    return _handleDatabaseOperation(() async {
-      return ref.read(userServiceProvider.notifier).getUsersWithPostCount();
     });
   }
 
@@ -81,15 +73,4 @@ class UserRepository extends _$UserRepository {
       return Failure(e);
     }
   }
-}
-
-/// ユーザー検索用のプロバイダー
-@riverpod
-Future<List<Map<String, dynamic>>> usersWithPostCountProvider(Ref ref) async {
-  final result =
-      await ref.read(userRepositoryProvider.notifier).getUsersWithPostCount();
-  return result.when(
-    success: (data) => data,
-    failure: (error) => throw Exception(error.toString()),
-  );
 }

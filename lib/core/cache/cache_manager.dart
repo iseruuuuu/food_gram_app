@@ -77,7 +77,8 @@ class CacheManager {
   void invalidateUserCache(String userId) {
     invalidate('user_posts_$userId');
     invalidate('user_data_$userId');
-    invalidate('heart_amount_$userId');
+    invalidate('heart_amount_${userId}_incl_anon');
+    invalidate('heart_amount_${userId}_excl_anon');
     invalidate('post_count_$userId');
   }
 
@@ -96,7 +97,8 @@ class CacheManager {
   /// 現在のユーザーのハート数キャッシュを無効化
   void invalidateCurrentUserHeartCache(String? currentUserId) {
     if (currentUserId != null) {
-      invalidate('heart_amount_$currentUserId');
+      invalidate('heart_amount_${currentUserId}_incl_anon');
+      invalidate('heart_amount_${currentUserId}_excl_anon');
     }
   }
 

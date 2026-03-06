@@ -1,6 +1,5 @@
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
-import 'package:food_gram_app/core/supabase/post/repository/fetch_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_state.dart';
 import 'package:logger/logger.dart';
@@ -25,23 +24,17 @@ class MyProfileViewModel extends _$MyProfileViewModel {
     try {
       final results = await Future.wait([
         ref.read(userRepositoryProvider.notifier).getCurrentUser(),
-        ref.read(userRepositoryProvider.notifier).getCurrentUserPostCount(),
-        ref.read(fetchPostRepositoryProvider.notifier).getHeartAmount(),
+        ref.read(userRepositoryProvider.notifier).getCurrentUserHeartAmount(),
       ]);
 
       final userResult = results[0] as Result<Users, Exception>;
-      final postCountResult = results[1] as Result<int, Exception>;
-      final heartAmountResult = results[2] as Result<int, Exception>;
+      final heartAmountResult = results[1] as Result<int, Exception>;
 
       userResult.when(
-        success: (users) => postCountResult.when(
-          success: (length) => heartAmountResult.when(
-            success: (heartAmount) => state = MyProfileState.data(
-              users: users,
-              length: length,
-              heartAmount: heartAmount,
-            ),
-            failure: (_) => state = const MyProfileStateError(),
+        success: (users) => heartAmountResult.when(
+          success: (heartAmount) => state = MyProfileState.data(
+            users: users,
+            heartAmount: heartAmount,
           ),
           failure: (_) => state = const MyProfileStateError(),
         ),
@@ -55,10 +48,9 @@ class MyProfileViewModel extends _$MyProfileViewModel {
 
   void setUser(Users user) {
     state.whenOrNull(
-      data: (_, length, heartAmount) {
+      data: (_, heartAmount) {
         state = MyProfileState.data(
           users: user,
-          length: length,
           heartAmount: heartAmount,
         );
       },

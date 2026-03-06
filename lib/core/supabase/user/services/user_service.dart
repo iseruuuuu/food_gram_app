@@ -35,7 +35,7 @@ class UserService extends _$UserService {
     );
   }
 
-  /// 他のユーザー情報を取得
+  /// 特定のユーザー情報を取得
   Future<Map<String, dynamic>> getOtherUser(String userId) async {
     return _cacheManager.get<Map<String, dynamic>>(
       key: 'user_$userId',
@@ -44,17 +44,53 @@ class UserService extends _$UserService {
     );
   }
 
-  /// 自分のユーザーの投稿数を取得
-  Future<int> getCurrentUserPostCount() async {
-    return _cacheManager.get<int>(
-      key: 'post_count_$_currentUserId',
-      fetcher: () async {
-        final response =
-            await supabase.from('posts').select().eq('user_id', _currentUserId);
-        return response.length;
+  /// ユーザーの統計情報を取得(Edge Function 経由)
+  Future<Map<String, dynamic>> getUserStats({
+    required String userId,
+    required bool includeAnonymous,
+    int latestLimit = 0,
+  }) async {
+    final res = await supabase.functions.invoke(
+      'user-stats',
+      body: {
+        'user_id': userId,
+        'include_anonymous': includeAnonymous,
+        'latest_limit': latestLimit,
       },
+    );
+    final data = res.data;
+    if (data is! Map<String, dynamic> || data['ok'] != true) {
+      throw Exception('user-stats failed: $data');
+    }
+    return data;
+  }
 
-      /// 投稿数は頻繁に変わる可能性があるため、短めの期間を設定
+  /// 自分の全投稿に対するいいね数の合計を取得（匿名投稿含む）
+  Future<int> getCurrentUserHeartAmount() async {
+    return _cacheManager.get<int>(
+      key: 'heart_amount_${_currentUserId}_incl_anon',
+      fetcher: () async {
+        final stats = await getUserStats(
+          userId: _currentUserId,
+          includeAnonymous: true,
+        );
+        return stats['heartTotal'] as int? ?? 0;
+      },
+      duration: const Duration(minutes: 2),
+    );
+  }
+
+  /// 特定ユーザーの投稿のいいねの合計数を取得（匿名投稿除く）
+  Future<int> getOtherUserHeartAmount(String userId) async {
+    return _cacheManager.get<int>(
+      key: 'heart_amount_${userId}_excl_anon',
+      fetcher: () async {
+        final stats = await getUserStats(
+          userId: userId,
+          includeAnonymous: false,
+        );
+        return stats['heartTotal'] as int? ?? 0;
+      },
       duration: const Duration(minutes: 2),
     );
   }
@@ -67,102 +103,5 @@ class UserService extends _$UserService {
   /// キャッシュを無効化するメソッド
   void invalidateUserCache(String userId) {
     _cacheManager.invalidate('user_$userId');
-  }
-
-  void invalidatePostCountCache(String userId) {
-    _cacheManager.invalidate('post_count_$userId');
-  }
-
-  /// 全ユーザー情報を取得
-  Future<List<Map<String, dynamic>>> getAllUsers() async {
-    return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'all_users',
-      fetcher: () async {
-        final response = await supabase
-            .from('users')
-            .select()
-            .order('created_at', ascending: false);
-        return response;
-      },
-      duration: const Duration(minutes: 5),
-    );
-  }
-
-  /// ユーザーの最新投稿を取得(匿名ユーザーを除く)
-  Future<List<Map<String, dynamic>>> getUserLatestPosts(String userId) async {
-    return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'user_latest_posts_$userId',
-      fetcher: () async {
-        final response = await supabase
-            .from('posts')
-            .select()
-            .eq('user_id', userId)
-            .eq('is_anonymous', false)
-            .order('created_at', ascending: false);
-        return response;
-      },
-      duration: const Duration(minutes: 2),
-    );
-  }
-
-  /// ユーザー情報と投稿数を含むデータを取得
-  Future<List<Map<String, dynamic>>> getUsersWithPostCount() async {
-    return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'users_with_post_count_optimized',
-      fetcher: () async {
-        final postsResponse = await supabase
-            .from('posts')
-            .select('id, user_id, food_image, created_at')
-            .eq('is_anonymous', false)
-            .order('created_at', ascending: false)
-            .limit(2500);
-        if (postsResponse.isNotEmpty) {}
-        final userIds = <String>{};
-        final userPostCounts = <String, int>{};
-        final userLatestPosts = <String, List<Map<String, dynamic>>>{};
-        for (final post in postsResponse) {
-          final userId = post['user_id'] as String;
-          userIds.add(userId);
-          userPostCounts[userId] = (userPostCounts[userId] ?? 0) + 1;
-          // 最新投稿を保存（最大4件まで）
-          if (!userLatestPosts.containsKey(userId)) {
-            userLatestPosts[userId] = [];
-          }
-          if (userLatestPosts[userId]!.length < 4) {
-            userLatestPosts[userId]!.add({
-              'id': post['id'],
-              'food_image': post['food_image'] ?? '',
-              'created_at': post['created_at'],
-            });
-          }
-        }
-
-        if (userIds.isEmpty) {
-          return [];
-        }
-        final usersResponse = await supabase
-            .from('users')
-            .select()
-            .inFilter('user_id', userIds.toList());
-        final usersWithCount = <Map<String, dynamic>>[];
-        for (final user in usersResponse) {
-          final userId = user['user_id'] as String;
-          final postCount = userPostCounts[userId] ?? 0;
-          final latestPosts = userLatestPosts[userId] ?? [];
-          if (postCount > 0) {
-            usersWithCount.add({
-              ...user,
-              'post_count': postCount,
-              'latest_posts': latestPosts,
-            });
-          }
-        }
-        usersWithCount.sort(
-          (a, b) => (b['post_count'] as int).compareTo(a['post_count'] as int),
-        );
-        return usersWithCount.take(50).toList();
-      },
-      duration: const Duration(minutes: 3),
-    );
   }
 }

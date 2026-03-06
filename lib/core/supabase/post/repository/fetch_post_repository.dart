@@ -17,31 +17,6 @@ class FetchPostRepository extends _$FetchPostRepository {
 
   final logger = Logger();
 
-  /// 自分の全投稿に対するいいね数の合計を取得
-  Future<Result<int, Exception>> getHeartAmount() async {
-    try {
-      final amount =
-          await ref.read(fetchPostServiceProvider.notifier).getHeartAmount();
-      return Success(amount);
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
-  }
-
-  /// 特定ユーザーの投稿のいいねの合計数を取得
-  Future<Result<int, Exception>> getOtherHeartAmount(String userId) async {
-    try {
-      final amount = await ref
-          .read(fetchPostServiceProvider.notifier)
-          .getOtherHeartAmount(userId);
-      return Success(amount);
-    } on PostgrestException catch (e) {
-      logger.e('Database error: ${e.message}');
-      return Failure(e);
-    }
-  }
-
   /// 近い順（初期投稿の緯度経度から距離昇順）
   Future<Result<List<Posts>, Exception>> getNearbyFromInitial({
     required Posts initialPost,
