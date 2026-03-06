@@ -87,6 +87,7 @@ class MyProfileScreen extends HookConsumerWidget {
               onRefresh: () async {
                 await Future<void>.delayed(const Duration(seconds: 1));
                 ref.invalidate(myPostStreamProvider);
+                await ref.read(myProfileViewModelProvider().notifier).getData();
               },
               child: CustomScrollView(
                 controller: scrollController,
