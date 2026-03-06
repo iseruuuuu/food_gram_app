@@ -104,40 +104,4 @@ class UserService extends _$UserService {
   void invalidateUserCache(String userId) {
     _cacheManager.invalidate('user_$userId');
   }
-
-  void invalidatePostCountCache(String userId) {
-    _cacheManager.invalidate('post_count_$userId');
-  }
-
-  /// 全ユーザー情報を取得
-  Future<List<Map<String, dynamic>>> getAllUsers() async {
-    return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'all_users',
-      fetcher: () async {
-        final response = await supabase
-            .from('users')
-            .select()
-            .order('created_at', ascending: false);
-        return response;
-      },
-      duration: const Duration(minutes: 5),
-    );
-  }
-
-  /// ユーザーの最新投稿を取得(匿名ユーザーを除く)
-  Future<List<Map<String, dynamic>>> getUserLatestPosts(String userId) async {
-    return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'user_latest_posts_$userId',
-      fetcher: () async {
-        final response = await supabase
-            .from('posts')
-            .select()
-            .eq('user_id', userId)
-            .eq('is_anonymous', false)
-            .order('created_at', ascending: false);
-        return response;
-      },
-      duration: const Duration(minutes: 2),
-    );
-  }
 }

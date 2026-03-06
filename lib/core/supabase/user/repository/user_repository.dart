@@ -59,14 +59,6 @@ class UserRepository extends _$UserRepository {
     });
   }
 
-  /// 全ユーザー情報を取得
-  Future<Result<List<Users>, Exception>> getAllUsers() async {
-    return _handleDatabaseOperation(() async {
-      final data = await ref.read(userServiceProvider.notifier).getAllUsers();
-      return data.map(Users.fromJson).toList();
-    });
-  }
-
   /// エラーハンドリング用のヘルパーメソッド
   Future<Result<T, Exception>> _handleDatabaseOperation<T>(
     Future<T> Function() operation,
