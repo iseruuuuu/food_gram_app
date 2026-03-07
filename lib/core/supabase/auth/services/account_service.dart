@@ -65,6 +65,7 @@ class AccountService {
       return Failure(Exception('User not authenticated'));
     }
 
+    String? uploadedAvatarPath;
     try {
       final userData = await _getCurrentUserData();
       final updates = _createBaseUpdates(
@@ -73,23 +74,50 @@ class AccountService {
         selfIntroduce: selfIntroduce,
         favoriteTags: favoriteTags,
       );
-
-      await _handleImageUpdateIfNeeded(
+      uploadedAvatarPath = await _handleImageUpdateIfNeeded(
         updates: updates,
         userData: userData,
         image: image,
         imageBytes: imageBytes,
         uploadImage: uploadImage,
       );
-
-      await supabase
-          .from('users')
-          .update(updates)
-          .match({'user_id': _currentUserId!});
+      final payload = <String, dynamic>{
+        'user_id': _currentUserId,
+        'name': updates['name'],
+        'user_name': updates['user_name'],
+        'self_introduce': updates['self_introduce'],
+        'tag': updates['tag'],
+      };
+      if (updates.containsKey('image')) {
+        payload['image'] = updates['image'];
+      }
+      final res = await supabase.functions.invoke(
+        'account-update',
+        body: payload,
+      );
+      final data = res.data;
+      final ok = data is Map<String, dynamic> && data['ok'] == true;
+      if (!ok) {
+        final errorMsg = data is Map<String, dynamic>
+            ? (data['error']?.toString() ?? 'status: ${res.status}')
+            : 'status: ${res.status}';
+        await _rollbackUploadedAvatar(uploadedAvatarPath);
+        logger.e('Failed to update user via function: $errorMsg');
+        return Failure(Exception(errorMsg));
+      }
       return const Success(null);
     } on PostgrestException catch (error) {
       logger.e('Failed to update user: ${error.message}');
       return Failure(error);
+    } on FunctionException catch (error) {
+      final msg = error.reasonPhrase ?? error.details ?? error;
+      logger.e('Failed to invoke account-update: $msg');
+      // 502/504 等でサーバーは更新済みの可能性があるため、DB を確認してからロールバック
+      final applied = await _didServerApplyAvatarUpdate(uploadedAvatarPath);
+      if (!applied) {
+        await _rollbackUploadedAvatar(uploadedAvatarPath);
+      }
+      return Failure(Exception(msg.toString()));
     }
   }
 
@@ -117,7 +145,9 @@ class AccountService {
     };
   }
 
-  Future<void> _handleImageUpdateIfNeeded({
+  /// 新規アップロードしたアバターのストレージパス（先頭スラッシュなし）を返す。
+  /// 関数失敗時のロールバック用。アップロードしていなければ null。
+  Future<String?> _handleImageUpdateIfNeeded({
     required Map<String, dynamic> updates,
     required Map<String, dynamic> userData,
     required String image,
@@ -130,10 +160,43 @@ class AccountService {
     if (_shouldUpdateWithUploadedImage(uploadImage, imageBytes)) {
       await _handleImageUpdate(uploadImage!, imageBytes!);
       updates['image'] = '/$_currentUserId/$uploadImage';
-    } else if (_shouldUpdateWithIcon(image, currentImage)) {
+      return '$_currentUserId/$uploadImage';
+    }
+    if (_shouldUpdateWithIcon(image, currentImage)) {
       updates['image'] = 'assets/icon/icon$image.png';
     } else if (!isSubscribe) {
       updates['image'] = 'assets/icon/icon$image.png';
+    }
+    return null;
+  }
+
+  /// FunctionException 時、サーバー側で更新が適用済みかどうかを DB の image で判定する。
+  /// 適用済みなら true（ロールバックしない）、未適用なら false（ロールバックしてよい）。
+  Future<bool> _didServerApplyAvatarUpdate(String? uploadedAvatarPath) async {
+    if (uploadedAvatarPath == null || uploadedAvatarPath.isEmpty) {
+      return false;
+    }
+    try {
+      final row = await supabase
+          .from('users')
+          .select('image')
+          .eq('user_id', _currentUserId!)
+          .maybeSingle();
+      final currentImage = row?['image'] as String?;
+      return currentImage == '/$uploadedAvatarPath';
+    } on PostgrestException catch (_) {
+      return false;
+    }
+  }
+
+  Future<void> _rollbackUploadedAvatar(String? storagePath) async {
+    if (storagePath == null || storagePath.isEmpty) {
+      return;
+    }
+    try {
+      await supabase.storage.from('user').remove([storagePath]);
+    } on StorageException catch (e) {
+      logger.e('Failed to rollback uploaded avatar: ${e.message}');
     }
   }
 
