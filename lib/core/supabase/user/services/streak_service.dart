@@ -15,7 +15,7 @@ class StreakService extends _$StreakService {
   @override
   Future<void> build() async {}
 
-  /// ストリークを更新し、新しいストリーク週数を返す
+  /// ストリークを更新し、新しいストリーク週数を返す（Edge Function 経由）
   /// 戻り値: (新しいストリーク週数, ストリークが更新されたか)
   Future<({int newStreakWeeks, bool isUpdated})> updateStreak() async {
     if (_currentUserId == null) {
@@ -24,54 +24,23 @@ class StreakService extends _$StreakService {
     }
 
     try {
-      // 現在のユーザー情報を取得
-      final userData = await supabase
-          .from('users')
-          .select('last_post_date, streak_weeks')
-          .eq('user_id', _currentUserId!)
-          .single();
-
-      final lastPostDateStr = userData['last_post_date'] as String?;
-      final currentStreakWeeks = (userData['streak_weeks'] as int?) ?? 0;
-      final now = DateTime.now();
-
-      int newStreakWeeks;
-      bool isUpdated;
-
-      if (lastPostDateStr == null) {
-        // 初回投稿
-        newStreakWeeks = 1;
-        isUpdated = true;
-      } else {
-        final lastPostDate = DateTime.parse(lastPostDateStr);
-        final daysDifference = now.difference(lastPostDate).inDays;
-
-        if (daysDifference < 7) {
-          // 1週間以内：ストリークは更新しない
-          newStreakWeeks = currentStreakWeeks;
-          isUpdated = false;
-        } else if (daysDifference >= 7 && daysDifference <= 14) {
-          // 1週間後〜2週間以内：ストリークを継続
-          newStreakWeeks = currentStreakWeeks + 1;
-          isUpdated = true;
-        } else {
-          // 2週間以上経過：ストリークをリセット
-          newStreakWeeks = 1;
-          isUpdated = true;
-        }
+      final res = await supabase.functions.invoke(
+        'streak-update',
+        body: <String, dynamic>{},
+      );
+      final data = res.data;
+      if (data is! Map<String, dynamic> || data['ok'] != true) {
+        final errorMsg = data is Map<String, dynamic>
+            ? (data['error']?.toString() ?? 'status: ${res.status}')
+            : 'status: ${res.status}';
+        logger.e('Failed to update streak via function: $errorMsg');
+        return (newStreakWeeks: 0, isUpdated: false);
       }
-
-      // データベースを更新
-      if (isUpdated) {
-        await supabase.from('users').update({
-          'last_post_date': now.toIso8601String(),
-          'streak_weeks': newStreakWeeks,
-        }).eq('user_id', _currentUserId!);
-      }
-
+      final newStreakWeeks = (data['new_streak_weeks'] as num?)?.toInt() ?? 0;
+      final isUpdated = data['is_updated'] as bool? ?? false;
       return (newStreakWeeks: newStreakWeeks, isUpdated: isUpdated);
-    } on PostgrestException catch (e) {
-      logger.e('Failed to update streak: ${e.message}');
+    } on Exception catch (e) {
+      logger.e('Failed to update streak: $e');
       return (newStreakWeeks: 0, isUpdated: false);
     }
   }
