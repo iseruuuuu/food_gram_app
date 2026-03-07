@@ -73,7 +73,6 @@ class AccountService {
         selfIntroduce: selfIntroduce,
         favoriteTags: favoriteTags,
       );
-
       await _handleImageUpdateIfNeeded(
         updates: updates,
         userData: userData,
@@ -81,14 +80,35 @@ class AccountService {
         imageBytes: imageBytes,
         uploadImage: uploadImage,
       );
-
-      await supabase
-          .from('users')
-          .update(updates)
-          .match({'user_id': _currentUserId!});
+      final payload = <String, dynamic>{
+        'name': updates['name'],
+        'user_name': updates['user_name'],
+        'self_introduce': updates['self_introduce'],
+        'tag': updates['tag'],
+      };
+      if (updates.containsKey('image')) {
+        payload['image'] = updates['image'];
+      }
+      final res = await supabase.functions.invoke(
+        'account-update',
+        body: payload,
+      );
+      final data = res.data;
+      final ok = data is Map<String, dynamic> && data['ok'] == true;
+      if (!ok) {
+        final errorMsg = data is Map<String, dynamic>
+            ? (data['error']?.toString() ?? 'status: ${res.status}')
+            : 'status: ${res.status}';
+        logger.e('Failed to update user via function: $errorMsg');
+        return Failure(Exception(errorMsg));
+      }
       return const Success(null);
     } on PostgrestException catch (error) {
       logger.e('Failed to update user: ${error.message}');
+      return Failure(error);
+    } on FunctionException catch (error) {
+      final msg = error.reasonPhrase ?? error.details ?? error;
+      logger.e('Failed to invoke account-update: $msg');
       return Failure(error);
     }
   }
