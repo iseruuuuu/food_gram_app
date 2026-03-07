@@ -111,7 +111,11 @@ class AccountService {
     } on FunctionException catch (error) {
       final msg = error.reasonPhrase ?? error.details ?? error;
       logger.e('Failed to invoke account-update: $msg');
-      await _rollbackUploadedAvatar(uploadedAvatarPath);
+      // 502/504 等でサーバーは更新済みの可能性があるため、DB を確認してからロールバック
+      final applied = await _didServerApplyAvatarUpdate(uploadedAvatarPath);
+      if (!applied) {
+        await _rollbackUploadedAvatar(uploadedAvatarPath);
+      }
       return Failure(Exception(msg.toString()));
     }
   }
@@ -163,6 +167,25 @@ class AccountService {
       updates['image'] = 'assets/icon/icon$image.png';
     }
     return null;
+  }
+
+  /// FunctionException 時、サーバー側で更新が適用済みかどうかを DB の image で判定する。
+  /// 適用済みなら true（ロールバックしない）、未適用なら false（ロールバックしてよい）。
+  Future<bool> _didServerApplyAvatarUpdate(String? uploadedAvatarPath) async {
+    if (uploadedAvatarPath == null || uploadedAvatarPath.isEmpty) {
+      return false;
+    }
+    try {
+      final row = await supabase
+          .from('users')
+          .select('image')
+          .eq('user_id', _currentUserId!)
+          .maybeSingle();
+      final currentImage = row?['image'] as String?;
+      return currentImage == '/$uploadedAvatarPath';
+    } on PostgrestException catch (_) {
+      return false;
+    }
   }
 
   Future<void> _rollbackUploadedAvatar(String? storagePath) async {
