@@ -65,6 +65,7 @@ class AccountService {
       return Failure(Exception('User not authenticated'));
     }
 
+    String? uploadedAvatarPath;
     try {
       final userData = await _getCurrentUserData();
       final updates = _createBaseUpdates(
@@ -73,7 +74,7 @@ class AccountService {
         selfIntroduce: selfIntroduce,
         favoriteTags: favoriteTags,
       );
-      await _handleImageUpdateIfNeeded(
+      uploadedAvatarPath = await _handleImageUpdateIfNeeded(
         updates: updates,
         userData: userData,
         image: image,
@@ -99,6 +100,7 @@ class AccountService {
         final errorMsg = data is Map<String, dynamic>
             ? (data['error']?.toString() ?? 'status: ${res.status}')
             : 'status: ${res.status}';
+        await _rollbackUploadedAvatar(uploadedAvatarPath);
         logger.e('Failed to update user via function: $errorMsg');
         return Failure(Exception(errorMsg));
       }
@@ -109,7 +111,8 @@ class AccountService {
     } on FunctionException catch (error) {
       final msg = error.reasonPhrase ?? error.details ?? error;
       logger.e('Failed to invoke account-update: $msg');
-      return Failure(error);
+      await _rollbackUploadedAvatar(uploadedAvatarPath);
+      return Failure(Exception(msg.toString()));
     }
   }
 
@@ -137,7 +140,9 @@ class AccountService {
     };
   }
 
-  Future<void> _handleImageUpdateIfNeeded({
+  /// 新規アップロードしたアバターのストレージパス（先頭スラッシュなし）を返す。
+  /// 関数失敗時のロールバック用。アップロードしていなければ null。
+  Future<String?> _handleImageUpdateIfNeeded({
     required Map<String, dynamic> updates,
     required Map<String, dynamic> userData,
     required String image,
@@ -150,10 +155,24 @@ class AccountService {
     if (_shouldUpdateWithUploadedImage(uploadImage, imageBytes)) {
       await _handleImageUpdate(uploadImage!, imageBytes!);
       updates['image'] = '/$_currentUserId/$uploadImage';
-    } else if (_shouldUpdateWithIcon(image, currentImage)) {
+      return '$_currentUserId/$uploadImage';
+    }
+    if (_shouldUpdateWithIcon(image, currentImage)) {
       updates['image'] = 'assets/icon/icon$image.png';
     } else if (!isSubscribe) {
       updates['image'] = 'assets/icon/icon$image.png';
+    }
+    return null;
+  }
+
+  Future<void> _rollbackUploadedAvatar(String? storagePath) async {
+    if (storagePath == null || storagePath.isEmpty) {
+      return;
+    }
+    try {
+      await supabase.storage.from('user').remove([storagePath]);
+    } on StorageException catch (e) {
+      logger.e('Failed to rollback uploaded avatar: ${e.message}');
     }
   }
 
