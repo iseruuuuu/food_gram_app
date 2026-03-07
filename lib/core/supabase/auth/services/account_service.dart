@@ -82,6 +82,7 @@ class AccountService {
         uploadImage: uploadImage,
       );
       final payload = <String, dynamic>{
+        'user_id': _currentUserId,
         'name': updates['name'],
         'user_name': updates['user_name'],
         'self_introduce': updates['self_introduce'],
