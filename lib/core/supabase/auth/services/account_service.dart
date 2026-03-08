@@ -28,7 +28,8 @@ class AccountService {
     required String userName,
     required int image,
   }) async {
-    if (_currentUserId == null) {
+    final userId = supabase.auth.currentUser?.id;
+    if (userId == null) {
       return Failure(Exception('User not authenticated'));
     }
 
