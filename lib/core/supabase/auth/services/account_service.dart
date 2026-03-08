@@ -28,27 +28,33 @@ class AccountService {
     required String userName,
     required int image,
   }) async {
-    final updates = {
-      'user_id': _currentUserId,
-      'name': name,
-      'user_name': userName,
-      'self_introduce': '',
-      'image': 'assets/icon/icon$image.png',
-      'created_at': DateTime.now().toIso8601String(),
-      'updated_at': DateTime.now().toIso8601String(),
-      'exchanged_point': 0,
-      'is_subscribe': false,
-      'tag': '',
-      'last_post_date': null,
-      'streak_weeks': 0,
-    };
+    if (_currentUserId == null) {
+      return Failure(Exception('User not authenticated'));
+    }
 
     try {
-      await supabase.from('users').insert(updates);
+      final res = await supabase.functions.invoke(
+        'user-create',
+        body: {
+          'name': name,
+          'user_name': userName,
+          'image': image,
+        },
+      );
+      final data = res.data;
+      final ok = data is Map<String, dynamic> && data['ok'] == true;
+      if (!ok) {
+        final errorMsg = data is Map<String, dynamic>
+            ? (data['error']?.toString() ?? 'status: ${res.status}')
+            : 'status: ${res.status}';
+        logger.e('Failed to create user via function: $errorMsg');
+        return Failure(Exception(errorMsg));
+      }
       return const Success(null);
-    } on PostgrestException catch (error) {
-      logger.e('Failed to create user: ${error.message}');
-      return Failure(error);
+    } on FunctionException catch (error) {
+      final msg = error.reasonPhrase ?? error.details ?? error;
+      logger.e('Failed to invoke user-create: $msg');
+      return Failure(Exception(msg.toString()));
     }
   }
 
