@@ -75,6 +75,7 @@ class CacheManager {
 
   /// ユーザー関連のキャッシュを無効化
   void invalidateUserCache(String userId) {
+    invalidate('user_$userId');
     invalidate('user_posts_$userId');
     invalidate('user_data_$userId');
     invalidate('heart_amount_${userId}_incl_anon');
