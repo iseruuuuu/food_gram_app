@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/utils/user_level.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_premium_membership_card.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
+import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/dialog/app_level_up_dialog.dart';
@@ -40,6 +42,7 @@ class MyProfileScreen extends HookConsumerWidget {
     );
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
+    final loading = ref.watch(loadingProvider);
     useEffect(() {
       users.whenOrNull(
         data: (users, ___) {
@@ -59,10 +62,12 @@ class MyProfileScreen extends HookConsumerWidget {
       );
       return null;
     });
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: PreferredSize(
+    return Stack(
+      children: [
+        DefaultTabController(
+          length: 2,
+          child: Scaffold(
+            appBar: PreferredSize(
           preferredSize: const Size.fromHeight(0),
           child: AppBar(
             surfaceTintColor: Colors.transparent,
@@ -257,6 +262,12 @@ class MyProfileScreen extends HookConsumerWidget {
           },
         ),
       ),
+    ),
+        AppProcessLoading(
+          loading: loading,
+          status: 'Loading...',
+        ),
+      ],
     );
   }
 }

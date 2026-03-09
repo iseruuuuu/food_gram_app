@@ -247,17 +247,25 @@ class AccountService {
   }
 
   Future<Result<void, Exception>> updateIsSubscribe() async {
-    if (_currentUserId == null) {
+    if (supabase.auth.currentUser?.id == null) {
       return Failure(Exception('User not authenticated'));
     }
     try {
-      await supabase
-          .from('users')
-          .update({'is_subscribe': true}).match({'user_id': _currentUserId!});
+      final res = await supabase.functions.invoke('user-subscribe');
+      final data = res.data;
+      final ok = data is Map<String, dynamic> && data['ok'] == true;
+      if (!ok) {
+        final errorMsg = data is Map<String, dynamic>
+            ? (data['error']?.toString() ?? 'status: ${res.status}')
+            : 'status: ${res.status}';
+        logger.e('Failed to update subscription via function: $errorMsg');
+        return Failure(Exception(errorMsg));
+      }
       return const Success(null);
-    } on PostgrestException catch (error) {
-      logger.e('Failed to update subscription: ${error.message}');
-      return Failure(error);
+    } on FunctionException catch (error) {
+      final msg = error.reasonPhrase ?? error.details ?? error;
+      logger.e('Failed to invoke user-subscribe: $msg');
+      return Failure(Exception(msg.toString()));
     }
   }
 
