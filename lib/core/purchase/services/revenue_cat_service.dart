@@ -101,7 +101,8 @@ class RevenueCatService extends _$RevenueCatService {
   }
 
   /// RevenueCat の購入状態を再取得
-  /// 購入状態が有効なら、DBを更新し、UI側の購読フラグを再評価する
+  /// 購入状態が有効なら、DBを更新し、UI側の購読フラグを再評価する。
+  /// updateIsSubscribe() が失敗した場合は false を返し、購読済み扱いにしない。
   Future<bool> syncAfterPaywall() async {
     try {
       final info = await Purchases.getCustomerInfo();
@@ -109,15 +110,23 @@ class RevenueCatService extends _$RevenueCatService {
       if (active) {
         final result =
             await ref.read(accountServiceProvider).updateIsSubscribe();
-        result.when(
+        final ok = result.when(
           success: (_) {
             final userId = ref.read(currentUserProvider);
             if (userId != null) {
               CacheManager().invalidateUserCache(userId);
             }
+            return true;
           },
-          failure: (e) => logger.e('updateIsSubscribe failed: $e'),
+          failure: (e) {
+            logger.e('updateIsSubscribe failed: $e');
+            return false;
+          },
         );
+        if (!ok) {
+          await ref.read(isSubscribeProvider.notifier).refresh();
+          return false;
+        }
       }
       await ref.read(isSubscribeProvider.notifier).refresh();
       return active;
@@ -128,7 +137,8 @@ class RevenueCatService extends _$RevenueCatService {
   }
 
   /// 購入の復元
-  /// iosの場合は、購入の復元（以前の購入履歴を復元する）を実装することが必要
+  /// iosの場合は、購入の復元（以前の購入履歴を復元する）を実装することが必要。
+  /// updateIsSubscribe() が失敗した場合は false を返す。
   Future<bool> restorePurchase() async {
     try {
       final customerInfo = await Purchases.restorePurchases();
@@ -136,22 +146,29 @@ class RevenueCatService extends _$RevenueCatService {
       if (!isActive) {
         logger.w('購入情報なし');
         return false;
-      } else {
-        await _getPurchaserInfo(customerInfo);
-        final result =
-            await ref.read(accountServiceProvider).updateIsSubscribe();
-        result.when(
-          success: (_) {
-            final userId = ref.read(currentUserProvider);
-            if (userId != null) {
-              CacheManager().invalidateUserCache(userId);
-            }
-          },
-          failure: (e) => logger.e('updateIsSubscribe failed: $e'),
-        );
-        await ref.read(isSubscribeProvider.notifier).refresh();
-        return true;
       }
+      await _getPurchaserInfo(customerInfo);
+      final result =
+          await ref.read(accountServiceProvider).updateIsSubscribe();
+      final ok = result.when(
+        success: (_) {
+          final userId = ref.read(currentUserProvider);
+          if (userId != null) {
+            CacheManager().invalidateUserCache(userId);
+          }
+          return true;
+        },
+        failure: (e) {
+          logger.e('updateIsSubscribe failed: $e');
+          return false;
+        },
+      );
+      if (!ok) {
+        await ref.read(isSubscribeProvider.notifier).refresh();
+        return false;
+      }
+      await ref.read(isSubscribeProvider.notifier).refresh();
+      return true;
     } on PlatformException catch (e) {
       logger.e('purchase repo  restorePurchase error $e');
       return false;
