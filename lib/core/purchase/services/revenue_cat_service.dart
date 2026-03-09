@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:logger/logger.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -63,7 +65,9 @@ class RevenueCatService extends _$RevenueCatService {
   }
 
   /// Paywall表示の前後でエンタイトルメントを比較し、
-  /// 非アクティブ→アクティブに変化した時のみ同期処理を行う
+  /// 非アクティブ→アクティブに変化した時は同期処理を行う。
+  /// 年間プランなどで反映が遅れる場合に備え、閉じた直後と少し遅れて2回同期を試す。
+  /// 反映中はグローバル Loading でオーバーレイ表示する。
   Future<bool> presentPaywallGuarded() async {
     final beforeInfo = await Purchases.getCustomerInfo();
     final wasActive =
@@ -72,11 +76,28 @@ class RevenueCatService extends _$RevenueCatService {
     final afterInfo = await Purchases.getCustomerInfo();
     final isActiveNow =
         afterInfo.entitlements.all[_entitlementId]?.isActive ?? false;
-    if (isActiveNow && !wasActive) {
+
+    final loading = ref.read(loadingProvider.notifier);
+    try {
+      loading.isLoading(value: true);
+      if (isActiveNow && !wasActive) {
+        await syncAfterPaywall();
+        return true;
+      }
+      // 即時には有効になっていなくても、年間プランなどで遅れて反映されることがあるため1回同期
       await syncAfterPaywall();
-      return true;
+      if (!isActiveNow) {
+        // まだ有効でなければ少し待って再取得してからもう1回同期
+        await Future<void>.delayed(const Duration(seconds: 2));
+        final retryActive = await syncAfterPaywall();
+        if (retryActive) {
+          return true;
+        }
+      }
+      return isActiveNow;
+    } finally {
+      loading.isLoading(value: false);
     }
-    return false;
   }
 
   /// RevenueCat の購入状態を再取得
@@ -86,7 +107,17 @@ class RevenueCatService extends _$RevenueCatService {
       final info = await Purchases.getCustomerInfo();
       final active = info.entitlements.all[_entitlementId]?.isActive ?? false;
       if (active) {
-        await ref.read(accountServiceProvider).updateIsSubscribe();
+        final result =
+            await ref.read(accountServiceProvider).updateIsSubscribe();
+        result.when(
+          success: (_) {
+            final userId = ref.read(currentUserProvider);
+            if (userId != null) {
+              CacheManager().invalidateUserCache(userId);
+            }
+          },
+          failure: (e) => logger.e('updateIsSubscribe failed: $e'),
+        );
       }
       await ref.read(isSubscribeProvider.notifier).refresh();
       return active;
@@ -107,7 +138,17 @@ class RevenueCatService extends _$RevenueCatService {
         return false;
       } else {
         await _getPurchaserInfo(customerInfo);
-        await ref.read(accountServiceProvider).updateIsSubscribe();
+        final result =
+            await ref.read(accountServiceProvider).updateIsSubscribe();
+        result.when(
+          success: (_) {
+            final userId = ref.read(currentUserProvider);
+            if (userId != null) {
+              CacheManager().invalidateUserCache(userId);
+            }
+          },
+          failure: (e) => logger.e('updateIsSubscribe failed: $e'),
+        );
         await ref.read(isSubscribeProvider.notifier).refresh();
         return true;
       }

@@ -13,6 +13,7 @@ import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
+import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -41,6 +42,7 @@ class MapScreen extends HookConsumerWidget {
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final adLoadAttempted = useRef(false);
     final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
+    final loading = ref.watch(loadingProvider);
     useEffect(
       () {
         // トラッキング許可を取得
@@ -298,6 +300,10 @@ class MapScreen extends HookConsumerWidget {
           AppMapLoading(
             loading: state.isLoading,
             hasError: state.hasError,
+          ),
+          AppProcessLoading(
+            loading: loading,
+            status: 'Loading...',
           ),
         ],
       ),
