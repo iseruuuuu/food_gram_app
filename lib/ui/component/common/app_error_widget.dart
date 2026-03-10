@@ -30,7 +30,7 @@ class AppErrorWidget extends StatelessWidget {
       description1 = t.error.description1;
       description2 = t.error.description2;
       refreshButton = t.error.refreshButton;
-    } catch (_) {
+    } on Object catch (_) {
       title = _fallbackTitle;
       description1 = _fallbackDescription1;
       description2 = _fallbackDescription2;

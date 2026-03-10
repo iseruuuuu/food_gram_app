@@ -24,7 +24,7 @@ Stream<List<Posts>> postsStream(
       for (final e in events) {
         try {
           mapped.add(Posts.fromJson(e));
-        } catch (err, st) {
+        } on Object catch (err, st) {
           Logger().w(
             'postsStream: skip invalid post (fromJson failed)',
             error: err,
@@ -51,8 +51,12 @@ Stream<List<Posts>> postsStream(
     },
   );
   return stream.handleError((Object err, StackTrace st) {
-    Logger().e('postsStream error (category: "$categoryName")', error: err, stackTrace: st);
-    throw err;
+    Logger().e(
+      'postsStream error (category: "$categoryName")',
+      error: err,
+      stackTrace: st,
+    );
+    throw Exception(err.toString());
   });
 }
 
