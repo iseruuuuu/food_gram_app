@@ -20,9 +20,29 @@ allprojects {
 }
 
 rootProject.buildDir = '../build'
+
+def applyJava17ToPluginProjects = { subproject ->
+    if (subproject.name == 'app') return
+    if (!subproject.plugins.hasPlugin('com.android.library')) return
+    subproject.android.compileOptions.sourceCompatibility = JavaVersion.VERSION_17
+    subproject.android.compileOptions.targetCompatibility = JavaVersion.VERSION_17
+    try {
+        subproject.android.kotlinOptions.jvmTarget = '17'
+    } catch (Exception ignored) { /* Kotlin 未使用のライブラリでは kotlinOptions がない */ }
+    subproject.tasks.withType(JavaCompile).configureEach {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
     project.evaluationDependsOn(':app')
+    if (project.state.executed) {
+        applyJava17ToPluginProjects(project)
+    } else {
+        project.afterEvaluate { applyJava17ToPluginProjects(project) }
+    }
 }
 
 tasks.register("clean", Delete) {
