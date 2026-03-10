@@ -18,9 +18,20 @@ Stream<List<Posts>> postsStream(
   final supabase = ref.read(supabaseProvider);
   final query =
       supabase.from('posts').stream(primaryKey: ['id']).order('created_at');
-  return query.asyncMap(
+  final stream = query.asyncMap(
     (events) {
-      final mapped = events.map(Posts.fromJson).toList();
+      final mapped = <Posts>[];
+      for (final e in events) {
+        try {
+          mapped.add(Posts.fromJson(e));
+        } catch (err, st) {
+          Logger().w(
+            'postsStream: skip invalid post (fromJson failed)',
+            error: err,
+            stackTrace: st,
+          );
+        }
+      }
       final filtered =
           mapped.where((post) => !blockList.contains(post.userId)).toList();
       if (categoryName.isNotEmpty) {
@@ -39,6 +50,10 @@ Stream<List<Posts>> postsStream(
       return filtered;
     },
   );
+  return stream.handleError((Object err, StackTrace st) {
+    Logger().e('postsStream error (category: "$categoryName")', error: err, stackTrace: st);
+    throw err;
+  });
 }
 
 /// 自分の投稿の取得のためのStreamProvider
