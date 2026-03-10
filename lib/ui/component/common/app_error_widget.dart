@@ -11,9 +11,31 @@ class AppErrorWidget extends StatelessWidget {
 
   final VoidCallback onTap;
 
+  /// 多言語化時などで [Translations.of] が失敗した場合のフォールバック。
+  static const _fallbackTitle = 'Communication Error';
+  static const _fallbackDescription1 = 'A connection error has occurred.';
+  static const _fallbackDescription2 =
+      'Check your network connection and try again.';
+  static const _fallbackRefreshButton = 'Reload';
+
   @override
   Widget build(BuildContext context) {
-    final t = Translations.of(context);
+    String title;
+    String description1;
+    String description2;
+    String refreshButton;
+    try {
+      final t = Translations.of(context);
+      title = t.error.title;
+      description1 = t.error.description1;
+      description2 = t.error.description2;
+      refreshButton = t.error.refreshButton;
+    } catch (_) {
+      title = _fallbackTitle;
+      description1 = _fallbackDescription1;
+      description2 = _fallbackDescription2;
+      refreshButton = _fallbackRefreshButton;
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Center(
@@ -21,7 +43,7 @@ class AppErrorWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              t.error.title,
+              title,
               style: const TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
@@ -29,9 +51,7 @@ class AppErrorWidget extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              '${t.error.description1}'
-              '\n'
-              '${t.error.description2}',
+              '$description1\n$description2',
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 15,
@@ -46,7 +66,7 @@ class AppErrorWidget extends StatelessWidget {
             const SizedBox(height: 50),
             AppElevatedButton(
               onPressed: onTap,
-              title: t.error.refreshButton,
+              title: refreshButton,
             ),
           ],
         ),
