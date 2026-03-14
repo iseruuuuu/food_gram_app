@@ -50,13 +50,13 @@ class PostDetailListItem extends HookConsumerWidget {
     useAutomaticKeepAlive();
     useEffect(
       () {
-        // 保存状態の初期化
-        Preference().getStringList(PreferenceKey.storeList).then((storeList) {
-          isStored.value = storeList.contains(posts.id.toString());
-        });
-        // いいね状態の初期化
-        Preference().getStringList(PreferenceKey.heartList).then((heartList) {
-          isHearted.value = heartList.contains(posts.id.toString());
+        final postIdStr = posts.id.toString();
+        Future.wait([
+          Preference().getStringList(PreferenceKey.storeList),
+          Preference().getStringList(PreferenceKey.heartList),
+        ]).then((results) {
+          isStored.value = results[0].contains(postIdStr);
+          isHearted.value = results[1].contains(postIdStr);
         });
         return null;
       },
