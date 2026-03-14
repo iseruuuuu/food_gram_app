@@ -14,8 +14,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Firebase Messaging ServiceにRefを設定（ディープリンク用）
-    final firebaseMessagingService = FirebaseMessagingService();
-    firebaseMessagingService.setRef(ref);
+    ref.read(firebaseMessagingServiceProvider).setRef(ref);
 
     return ToastificationWrapper(
       child: MaterialApp.router(
