@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -22,4 +23,16 @@ class SubscribedUsers extends _$SubscribedUsers {
         .map((user) => (user as Map<String, dynamic>)['user_id'] as String)
         .toList();
   }
+}
+
+/// 指定した userId がサブスクユーザーに含まれるかどうか。
+/// 行単位で watch することで、サブスク一覧更新時に該当行だけ再ビルドされる。
+@riverpod
+bool isSubscribed(Ref ref, String? userId) {
+  final subscribed = ref.watch(subscribedUsersProvider);
+  return subscribed.when(
+    data: (list) => userId != null && list.contains(userId),
+    loading: () => false,
+    error: (_, __) => false,
+  );
 }
