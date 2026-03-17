@@ -311,8 +311,8 @@ class MapScreen extends HookConsumerWidget {
         builder: (context) {
           final isDark = Theme.of(context).brightness == Brightness.dark;
           return SizedBox(
-            width: 70,
-            height: 70,
+            width: 60,
+            height: 60,
             child: FloatingActionButton(
               heroTag: null,
               backgroundColor: Colors.black,
