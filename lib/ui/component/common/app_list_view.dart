@@ -2,6 +2,7 @@ import 'package:auto_animated/auto_animated.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_rectangle_banner.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/timeline_detail_extra.dart';
@@ -34,6 +35,8 @@ class AppListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final fallbackScrollController = useScrollController();
+    final effectiveController = controller ?? fallbackScrollController;
     final screenWidth = MediaQuery.of(context).size.width / 3;
     final supabase = ref.watch(supabaseProvider);
     final subscribedUsersAsync = ref.watch(subscribedUsersProvider);
@@ -50,7 +53,7 @@ class AppListView extends HookConsumerWidget {
     );
     return LiveSliverList.options(
       options: options,
-      controller: controller ?? ScrollController(),
+      controller: effectiveController,
       itemCount: rowCount + (rowCount ~/ adRowInterval),
       itemBuilder: (context, index, animation) {
         final isAdRow = (index + 1) % (adRowInterval + 1) == 0;
