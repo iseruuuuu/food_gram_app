@@ -192,3 +192,20 @@ class AppFavoritePostEmpty extends StatelessWidget {
     );
   }
 }
+
+class MapEmptyNearby extends StatelessWidget {
+  const MapEmptyNearby({super.key});
+  @override
+  Widget build(BuildContext context) {
+    final t = Translations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Center(
+      child: Text(
+        t.noResultsFound,
+        style: TextStyle(
+          color: isDark ? Colors.white70 : Colors.black54,
+        ),
+      ),
+    );
+  }
+}
