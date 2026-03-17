@@ -20,7 +20,8 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/map/app_area_meals_badge.dart';
-import 'package:food_gram_app/ui/component/modal_sheet/app_nearby_restaurants_sheet.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_overview_modal_sheet.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_detail_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -113,12 +114,8 @@ class MapScreen extends HookConsumerWidget {
                             return;
                           }
                           final first = posts.first;
-                          ref
-                              .read(
-                                AppNearbyRestaurantsSheet
-                                    .mapModalSelectionProvider.notifier,
-                              )
-                              .state = MapModalSelection(
+                          ref.read(mapModalSelectionProvider.notifier).state =
+                              MapModalSelection(
                             name: first.restaurant,
                             lat: first.lat,
                             lng: first.lng,
@@ -142,7 +139,8 @@ class MapScreen extends HookConsumerWidget {
                     styleString:
                         _localizedStyleAsset(context, isEarthStyle.value),
                   ),
-                  const AppNearbyRestaurantsSheet(),
+                  // selection の状態に応じて Overview / Detail を内部で切り替える
+                  const MapRestaurantDetailSheet(),
                   Positioned(
                     top: _calculateTopPosition(context),
                     left: 10,
