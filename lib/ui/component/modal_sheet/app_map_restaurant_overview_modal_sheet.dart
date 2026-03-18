@@ -368,8 +368,6 @@ class _RestaurantThumbnail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasMultiple = thumbUrls.length > 1;
-
     Widget buildImageContent() {
       if (thumbUrls.isEmpty) {
         return Image.asset(
@@ -425,23 +423,6 @@ class _RestaurantThumbnail extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(child: buildImageContent()),
-          if (hasMultiple)
-            Positioned(
-              right: 8,
-              top: 6,
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.6),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(
-                  Icons.collections,
-                  color: Colors.white,
-                  size: 16,
-                ),
-              ),
-            ),
         ],
       ),
     );
