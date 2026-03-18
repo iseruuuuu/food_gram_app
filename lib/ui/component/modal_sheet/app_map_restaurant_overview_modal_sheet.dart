@@ -101,7 +101,7 @@ class AppMapRestaurantOverviewModalSheet extends HookConsumerWidget {
                   return const SliverToBoxAdapter(
                     child: Padding(
                       padding: EdgeInsets.all(24),
-                      child: MapEmptyNearby(),
+                      child: MapEmpty(),
                     ),
                   );
                 }
@@ -110,7 +110,7 @@ class AppMapRestaurantOverviewModalSheet extends HookConsumerWidget {
                   return const SliverToBoxAdapter(
                     child: Padding(
                       padding: EdgeInsets.all(24),
-                      child: MapEmptyNearby(),
+                      child: MapEmpty(),
                     ),
                   );
                 }

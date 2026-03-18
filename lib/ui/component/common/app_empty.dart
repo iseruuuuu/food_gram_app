@@ -193,8 +193,8 @@ class AppFavoritePostEmpty extends StatelessWidget {
   }
 }
 
-class MapEmptyNearby extends StatelessWidget {
-  const MapEmptyNearby({super.key});
+class MapEmpty extends StatelessWidget {
+  const MapEmpty({super.key});
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);

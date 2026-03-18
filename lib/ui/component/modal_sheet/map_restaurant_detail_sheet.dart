@@ -128,15 +128,14 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                 return const SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.all(24),
-                    child: MapEmptyNearby(),
+                    child: MapEmpty(),
                   ),
                 );
               }
               return SliverPadding(
                 padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
                 sliver: SliverGrid(
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     mainAxisSpacing: 4,
                     crossAxisSpacing: 4,
@@ -144,8 +143,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       final postItem = postsByRestaurant[index];
-                      final firstImage =
-                          postItem.firstFoodImage; // 拡張から取得
+                      final firstImage = postItem.firstFoodImage; // 拡張から取得
                       final imageUrl = firstImage.isEmpty
                           ? null
                           : supabase.storage
