@@ -75,8 +75,7 @@ class AppErrorWidget extends StatelessWidget {
   }
 }
 
-/// マップ周りで使うエラー表示用ウィジェット。
-/// 「読み込み失敗」メッセージ＋リトライボタンだけのシンプルな UI。
+/// マップ周りで使うエラー表示用ウィジェット
 class MapErrorWidget extends StatelessWidget {
   const MapErrorWidget({
     required this.onRetry,
