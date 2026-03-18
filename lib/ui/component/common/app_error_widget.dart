@@ -88,7 +88,6 @@ class MapErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
