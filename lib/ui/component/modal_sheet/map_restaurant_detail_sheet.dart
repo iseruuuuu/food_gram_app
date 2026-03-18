@@ -70,9 +70,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
           ),
         );
         final supabase = ref.watch(supabaseProvider);
-
         final slivers = <Widget>[
-          // ドラッグハンドル
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(top: 6, bottom: 10),
@@ -88,7 +86,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
               ),
             ),
           ),
-          // レストラン名 + 右上バツボタン（常に表示）
+          // レストラン名 + 右上バツボタン
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 4, 8, 8),
@@ -121,7 +119,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
               ),
             ),
           ),
-          // 投稿一覧（selection + restaurantPostsProvider にのみ依存）
+          // 投稿一覧
           postsAsync.when(
             data: (postsByRestaurant) {
               if (postsByRestaurant.isEmpty) {
@@ -143,7 +141,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       final postItem = postsByRestaurant[index];
-                      final firstImage = postItem.firstFoodImage; // 拡張から取得
+                      final firstImage = postItem.firstFoodImage;
                       final imageUrl = firstImage.isEmpty
                           ? null
                           : supabase.storage

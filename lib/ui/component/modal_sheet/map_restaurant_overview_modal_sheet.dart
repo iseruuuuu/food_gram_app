@@ -332,7 +332,6 @@ List<RestaurantGroup> _groupByRestaurantName(List<Posts> posts) {
           (p.lng - g.lng).abs() <= threshold,
     );
     if (existingIndex == -1) {
-      // 見つからなければ新しくグループを作成
       groups.add(
         RestaurantGroup(
           name: name,
@@ -342,7 +341,6 @@ List<RestaurantGroup> _groupByRestaurantName(List<Posts> posts) {
         ),
       );
     } else {
-      // 既存グループに投稿を追加（不変オブジェクトなので新しく作り直す）
       final existing = groups[existingIndex];
       final updatedPosts = [...existing.posts, p];
       groups[existingIndex] = RestaurantGroup(
