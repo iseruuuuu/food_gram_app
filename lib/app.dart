@@ -8,15 +8,23 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:toastification/toastification.dart';
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // Firebase Messaging ServiceにRefを設定（ディープリンク用）
-    final firebaseMessagingService = FirebaseMessagingService();
-    firebaseMessagingService.setRef(ref);
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
 
+class _MyAppState extends ConsumerState<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Firebase Messaging ServiceにRefを設定（ディープリンク用）
+    ref.read(firebaseMessagingServiceProvider).setRef(ref);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return ToastificationWrapper(
       child: MaterialApp.router(
         // TranslationProviderをロケールにセット

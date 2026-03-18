@@ -438,7 +438,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: data.length,
+                      itemCount: min<int>(data.length, 50),
                       itemBuilder: (context, index) {
                         final model = data[index];
                         return Container(
