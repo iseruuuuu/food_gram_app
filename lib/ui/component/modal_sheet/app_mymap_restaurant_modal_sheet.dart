@@ -16,8 +16,8 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AppMapRestaurantModalSheet extends ConsumerWidget {
-  const AppMapRestaurantModalSheet({
+class AppMyMapRestaurantModalSheet extends ConsumerWidget {
+  const AppMyMapRestaurantModalSheet({
     required this.post,
     super.key,
   });
