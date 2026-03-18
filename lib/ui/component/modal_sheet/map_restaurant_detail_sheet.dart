@@ -14,7 +14,7 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
-import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_overview_modal_sheet.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_overview_modal_sheet.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -52,7 +52,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selection = ref.watch(mapModalSelectionProvider);
     if (selection == null) {
-      return const AppMapRestaurantOverviewModalSheet();
+      return const MapRestaurantOverviewModalSheet();
     }
     return DraggableScrollableSheet(
       expand: false,

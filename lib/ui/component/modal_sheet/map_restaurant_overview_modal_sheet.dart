@@ -7,8 +7,8 @@ import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.
     as map_repo;
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
-import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
+import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -18,8 +18,8 @@ final mapModalSelectionProvider =
     StateProvider<MapModalSelection?>((ref) => null);
 
 /// マップ画面の「最初のモーダル」（近くのレストラン一覧）を表示するシート。
-class AppMapRestaurantOverviewModalSheet extends HookConsumerWidget {
-  const AppMapRestaurantOverviewModalSheet({super.key});
+class MapRestaurantOverviewModalSheet extends HookConsumerWidget {
+  const MapRestaurantOverviewModalSheet({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

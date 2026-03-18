@@ -20,7 +20,7 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/map/app_area_meals_badge.dart';
-import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_overview_modal_sheet.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_overview_modal_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_detail_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:go_router/go_router.dart';
