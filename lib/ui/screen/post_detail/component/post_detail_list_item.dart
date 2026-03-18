@@ -50,15 +50,27 @@ class PostDetailListItem extends HookConsumerWidget {
     useAutomaticKeepAlive();
     useEffect(
       () {
+        var cancelled = false;
         final postIdStr = posts.id.toString();
         Future.wait([
           Preference().getStringList(PreferenceKey.storeList),
           Preference().getStringList(PreferenceKey.heartList),
         ]).then((results) {
+          if (cancelled) {
+            return;
+          }
           isStored.value = results[0].contains(postIdStr);
           isHearted.value = results[1].contains(postIdStr);
+        }).catchError((_) {
+          if (cancelled) {
+            return;
+          }
+          isStored.value = false;
+          isHearted.value = false;
         });
-        return null;
+        return () {
+          cancelled = true;
+        };
       },
       [posts.id],
     );
@@ -288,9 +300,7 @@ class PostDetailListItem extends HookConsumerWidget {
                       final wasHearted = isHearted.value;
                       isHearted.value = !wasHearted;
                       heartCount.value = wasHearted
-                          ? (heartCount.value > 0
-                              ? heartCount.value - 1
-                              : 0)
+                          ? (heartCount.value > 0 ? heartCount.value - 1 : 0)
                           : heartCount.value + 1;
                       final ok = await ref
                           .read(postDetailViewModelProvider().notifier)
@@ -304,9 +314,7 @@ class PostDetailListItem extends HookConsumerWidget {
                         isHearted.value = wasHearted;
                         heartCount.value = wasHearted
                             ? heartCount.value + 1
-                            : (heartCount.value > 0
-                                ? heartCount.value - 1
-                                : 0);
+                            : (heartCount.value > 0 ? heartCount.value - 1 : 0);
                       }
                     },
                     icon: Icon(
