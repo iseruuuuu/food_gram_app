@@ -12,6 +12,7 @@ import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
+import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_restaurant_overview_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
@@ -253,10 +254,18 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                   child: AppNearbyRestaurantsSkeleton(),
                 ),
               ),
-              error: (_, __) => const SliverToBoxAdapter(
+              error: (_, __) => SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.all(24),
-                  child: MapEmptyNearby(),
+                  padding: const EdgeInsets.all(24),
+                  child: MapErrorWidget(
+                    onRetry: () async {
+                      if (cameraCenter != null) {
+                        final _ = ref.refresh(
+                          getNearByPostsProvider(cameraCenter),
+                        );
+                      }
+                    },
+                  ),
                 ),
               ),
             ),

@@ -74,3 +74,40 @@ class AppErrorWidget extends StatelessWidget {
     );
   }
 }
+
+/// マップ周りで使うエラー表示用ウィジェット。
+/// 「読み込み失敗」メッセージ＋リトライボタンだけのシンプルな UI。
+class MapErrorWidget extends StatelessWidget {
+  const MapErrorWidget({
+    required this.onRetry,
+    super.key,
+  });
+
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          t.notification.loadFailed,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: isDark ? Colors.white : Colors.black87,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 12),
+        OutlinedButton.icon(
+          onPressed: onRetry,
+          icon: const Icon(Icons.refresh),
+          label: Text(t.error.refreshButton),
+        ),
+      ],
+    );
+  }
+}

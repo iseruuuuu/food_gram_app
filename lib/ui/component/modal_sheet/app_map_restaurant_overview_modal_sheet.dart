@@ -7,6 +7,7 @@ import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.
     as map_repo;
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
@@ -282,10 +283,18 @@ class AppMapRestaurantOverviewModalSheet extends HookConsumerWidget {
                   child: AppNearbyRestaurantsSkeleton(),
                 ),
               ),
-              error: (_, __) => const SliverToBoxAdapter(
+              error: (_, __) => SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.all(24),
-                  child: MapEmptyNearby(),
+                  padding: const EdgeInsets.all(24),
+                  child: MapErrorWidget(
+                    onRetry: () async {
+                      if (cameraCenter != null) {
+                        final _ = ref.refresh(
+                          map_repo.getNearByPostsProvider(cameraCenter),
+                        );
+                      }
+                    },
+                  ),
                 ),
               ),
             ),
