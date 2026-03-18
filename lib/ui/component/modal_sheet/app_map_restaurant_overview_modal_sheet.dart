@@ -318,20 +318,24 @@ class AppMapRestaurantOverviewModalSheet extends HookConsumerWidget {
   }
 }
 
-/// レストラン名でグループ化
+/// レストラン名 + 座標でグループ化
 List<RestaurantGroup> _groupByRestaurantName(List<Posts> posts) {
   final map = <String, List<Posts>>{};
   for (final p in posts) {
-    final key = p.restaurant.trim();
+    final name = p.restaurant.trim();
+    final lat = p.lat;
+    final lng = p.lng;
+    // 同名でも座標が違う店舗は別グループにする
+    final key = '$name|$lat|$lng';
     map.putIfAbsent(key, () => []).add(p);
   }
   return map.entries.map((entry) {
     final list = entry.value;
-    // 代表座標は最初の投稿を使用
+    final first = list.first;
     return RestaurantGroup(
-      name: entry.key,
-      lat: list.first.lat,
-      lng: list.first.lng,
+      name: first.restaurant.trim(),
+      lat: first.lat,
+      lng: first.lng,
       posts: list,
     );
   }).toList();
