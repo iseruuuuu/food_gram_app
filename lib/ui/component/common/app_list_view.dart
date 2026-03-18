@@ -2,7 +2,6 @@ import 'package:auto_animated/auto_animated.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_rectangle_banner.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/timeline_detail_extra.dart';
@@ -21,7 +20,7 @@ class AppListView extends HookConsumerWidget {
     required this.routerPath,
     required this.refresh,
     required this.type,
-    this.controller,
+    required this.controller,
     this.categoryName,
     super.key,
   });
@@ -30,13 +29,11 @@ class AppListView extends HookConsumerWidget {
   final String routerPath;
   final VoidCallback refresh;
   final AppListViewType type;
-  final ScrollController? controller;
+  final ScrollController controller;
   final String? categoryName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fallbackScrollController = useScrollController();
-    final effectiveController = controller ?? fallbackScrollController;
     final screenWidth = MediaQuery.of(context).size.width / 3;
     final supabase = ref.watch(supabaseProvider);
     if (posts.isEmpty) {
@@ -52,7 +49,7 @@ class AppListView extends HookConsumerWidget {
     );
     return LiveSliverList.options(
       options: options,
-      controller: effectiveController,
+      controller: controller,
       itemCount: rowCount + (rowCount ~/ adRowInterval),
       itemBuilder: (context, index, animation) {
         final isAdRow = (index + 1) % (adRowInterval + 1) == 0;
@@ -78,8 +75,7 @@ class AppListView extends HookConsumerWidget {
               final itemImageUrl =
                   supabase.storage.from('food').getPublicUrl(firstImage);
               final postUserId = posts[itemIndex].userId as String?;
-              final isSubscribed =
-                  ref.watch(isSubscribedProvider(postUserId));
+              final isSubscribed = ref.watch(isSubscribedProvider(postUserId));
               final hasMultipleImages =
                   posts[itemIndex].foodImageList.length > 1;
               return Expanded(
@@ -159,8 +155,7 @@ class AppListView extends HookConsumerWidget {
                               child: Container(
                                 padding: const EdgeInsets.all(4),
                                 decoration: BoxDecoration(
-                                  color:
-                                      Colors.black.withValues(alpha: 0.6),
+                                  color: Colors.black.withValues(alpha: 0.6),
                                   shape: BoxShape.circle,
                                 ),
                                 child: const Icon(
