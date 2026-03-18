@@ -3,6 +3,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/restaurant_group.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
@@ -23,20 +24,27 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class MapRestaurantDetailSheet extends HookConsumerWidget {
   const MapRestaurantDetailSheet({super.key});
 
-  /// Repository経由で店名の投稿を取得
+  /// Repository経由で特定店舗（位置）の投稿を取得
   static final restaurantPostsProvider =
-      FutureProvider.family<List<Posts>, String>(
-    (ref, name) async {
+      FutureProvider.family<List<Posts>, (String, double, double)>(
+    (ref, key) async {
+      final (_, lat, lng) = key;
       final repo = ref.read(mapPostRepositoryProvider.notifier);
-      return repo.getPostsByRestaurantName(name: name);
+      final result = await repo.getRestaurantPosts(lat: lat, lng: lng);
+      return result.when(
+        success: (data) => data,
+        failure: (_) => <Posts>[],
+      );
     },
   );
 
-  /// 店名に紐づく投稿と関連ストリームをまとめてリフレッシュ
-  void _refreshRestaurantPosts(WidgetRef ref, String restaurantName) {
+  /// 選択中店舗に紐づく投稿と関連ストリームをまとめてリフレッシュ
+  void _refreshRestaurantPosts(WidgetRef ref, MapModalSelection selection) {
     ref
       ..invalidate(
-        MapRestaurantDetailSheet.restaurantPostsProvider(restaurantName),
+        MapRestaurantDetailSheet.restaurantPostsProvider(
+          (selection.name, selection.lat, selection.lng),
+        ),
       )
       ..invalidate(postsStreamProvider)
       ..invalidate(blockListProvider);
@@ -98,7 +106,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                 }
                 final postsAsync = ref.watch(
                   MapRestaurantDetailSheet.restaurantPostsProvider(
-                    selection.name,
+                    (selection.name, selection.lat, selection.lng),
                   ),
                 );
                 final supabase = ref.watch(supabaseProvider);
@@ -183,7 +191,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                                               if (value != null) {
                                                 _refreshRestaurantPosts(
                                                   ref,
-                                                  selection.name,
+                                                  selection,
                                                 );
                                               }
                                             });
