@@ -35,6 +35,9 @@ class FirebaseMessagingService {
 
   /// Refを設定（ナビゲーション用）
   void setRef(WidgetRef ref) {
+    if (identical(_ref, ref)) {
+      return;
+    }
     _ref = ref;
   }
 
