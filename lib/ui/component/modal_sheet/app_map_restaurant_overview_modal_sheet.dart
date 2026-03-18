@@ -318,27 +318,43 @@ class AppMapRestaurantOverviewModalSheet extends HookConsumerWidget {
   }
 }
 
-/// レストラン名 + 座標でグループ化
+/// 「同じレストラン」とみなすために、店名と座標の近さでグループ化する。
 List<RestaurantGroup> _groupByRestaurantName(List<Posts> posts) {
-  final map = <String, List<Posts>>{};
+  const threshold = 0.0003; // 約 30m 前後を想定
+  final groups = <RestaurantGroup>[];
   for (final p in posts) {
     final name = p.restaurant.trim();
-    final lat = p.lat;
-    final lng = p.lng;
-    // 同名でも座標が違う店舗は別グループにする
-    final key = '$name|$lat|$lng';
-    map.putIfAbsent(key, () => []).add(p);
-  }
-  return map.entries.map((entry) {
-    final list = entry.value;
-    final first = list.first;
-    return RestaurantGroup(
-      name: first.restaurant.trim(),
-      lat: first.lat,
-      lng: first.lng,
-      posts: list,
+    // 既存グループの中から「同じ店」とみなせるものを探す
+    final existingIndex = groups.indexWhere(
+      (g) =>
+          g.name.trim() == name &&
+          (p.lat - g.lat).abs() <= threshold &&
+          (p.lng - g.lng).abs() <= threshold,
     );
-  }).toList();
+    if (existingIndex == -1) {
+      // 見つからなければ新しくグループを作成
+      groups.add(
+        RestaurantGroup(
+          name: name,
+          lat: p.lat,
+          lng: p.lng,
+          posts: [p],
+        ),
+      );
+    } else {
+      // 既存グループに投稿を追加（不変オブジェクトなので新しく作り直す）
+      final existing = groups[existingIndex];
+      final updatedPosts = [...existing.posts, p];
+      groups[existingIndex] = RestaurantGroup(
+        name: existing.name,
+        lat: existing.lat,
+        lng: existing.lng,
+        posts: updatedPosts,
+      );
+    }
+  }
+
+  return groups;
 }
 
 class _RestaurantThumbnail extends StatelessWidget {
@@ -383,7 +399,6 @@ class _RestaurantThumbnail extends StatelessWidget {
       // 2枚以上 → PageView でスワイプ
       return PageView.builder(
         itemCount: thumbUrls.length,
-        controller: PageController(),
         itemBuilder: (context, pageIndex) {
           final url = thumbUrls[pageIndex];
           if (url == null) {
