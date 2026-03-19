@@ -8,7 +8,7 @@ final mapRouter = GoRoute(
   },
   routes: <RouteBase>[
     GoRoute(
-      path: '${RouterPath.map}/${RouterPath.mapDetail}',
+      path: RouterPath.mapDetail,
       name: RouterPath.mapDetail,
       pageBuilder: (context, state) {
         final extra = state.extra;
@@ -31,7 +31,7 @@ final mapRouter = GoRoute(
     ),
     GoRoute(
       path:
-          '${RouterPath.map}/${RouterPath.mapDetail}/${RouterPath.mapEditPost}',
+          '${RouterPath.mapDetail}/${RouterPath.mapEditPost}',
       name: RouterPath.mapEditPost,
       pageBuilder: (context, state) {
         final extra = state.extra;
@@ -52,7 +52,7 @@ final mapRouter = GoRoute(
     ),
     GoRoute(
       path:
-          '${RouterPath.map}/${RouterPath.mapDetail}/${RouterPath.mapProfile}',
+          '${RouterPath.mapDetail}/${RouterPath.mapProfile}',
       name: RouterPath.mapProfile,
       pageBuilder: (context, state) {
         final extra = state.extra;
@@ -74,7 +74,7 @@ final mapRouter = GoRoute(
     ),
     GoRoute(
       path:
-          '${RouterPath.map}/${RouterPath.mapDetail}/${RouterPath.mapProfile}/${RouterPath.mapProfileDetail}',
+          '${RouterPath.mapDetail}/${RouterPath.mapProfile}/${RouterPath.mapProfileDetail}',
       name: RouterPath.mapProfileDetail,
       pageBuilder: (context, state) {
         final extra = state.extra;
@@ -97,7 +97,7 @@ final mapRouter = GoRoute(
     ),
     GoRoute(
       path:
-          '${RouterPath.map}/${RouterPath.mapDetail}/${RouterPath.mapDetailPost}',
+          '${RouterPath.mapDetail}/${RouterPath.mapDetailPost}',
       name: RouterPath.mapDetailPost,
       pageBuilder: (context, state) {
         final extra = state.extra;
@@ -119,7 +119,7 @@ final mapRouter = GoRoute(
     ),
     GoRoute(
       path:
-          '${RouterPath.map}/${RouterPath.mapDetail}/${RouterPath.mapDetailPost}/${RouterPath.mapRestaurantReview}',
+          '${RouterPath.mapDetail}/${RouterPath.mapDetailPost}/${RouterPath.mapRestaurantReview}',
       name: RouterPath.mapRestaurantReview,
       pageBuilder: (context, state) {
         final extra = state.extra;
