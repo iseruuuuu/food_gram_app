@@ -111,7 +111,7 @@ final mapRouter = GoRoute(
         }
         return whiteOut(
           PostScreen(
-            routerPath: RouterPath.myProfileRestaurant,
+            routerPath: RouterPath.timeLineRestaurant,
             restaurant: model,
           ),
         );
