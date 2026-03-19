@@ -15,7 +15,7 @@ final settingRouter = GoRoute(
       },
     ),
     GoRoute(
-      path: '${RouterPath.setting}/${RouterPath.settingTutorial}',
+      path: RouterPath.settingTutorial,
       name: RouterPath.settingTutorial,
       builder: (context, state) {
         return const TutorialScreen();
