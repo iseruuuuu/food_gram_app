@@ -29,18 +29,13 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
-      path:
-          '${RouterPath.storedPost}/${RouterPath.storedPostDetail}',
+      path: '${RouterPath.storedPost}/${RouterPath.storedPostDetail}',
       name: RouterPath.storedPostDetail,
       pageBuilder: (context, state) {
         final extra = state.extra;
         final model = extra is Model ? extra : null;
         if (model == null) {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
         return slideUpTransition(
           PostDetailScreen(
@@ -74,15 +69,9 @@ final myProfileRouter = GoRoute(
             final extra = state.extra;
             final restaurant = extra is Restaurant ? extra : null;
             if (restaurant == null) {
-              return slideIn(
-                const Scaffold(
-                  body: RouterErrorWidget(),
-                ),
-              );
+              return slideIn(const Scaffold(body: RouterErrorWidget()));
             }
-            return slideIn(
-              RestaurantMapScreen(restaurant: restaurant),
-            );
+            return slideIn(RestaurantMapScreen(restaurant: restaurant));
           },
         ),
       ],
@@ -94,11 +83,7 @@ final myProfileRouter = GoRoute(
         final extra = state.extra;
         final model = extra is Model ? extra : null;
         if (model == null) {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
         return slideUpTransition(
           PostDetailScreen(
@@ -110,39 +95,25 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
-      path:
-          '${RouterPath.myProfileDetail}/${RouterPath.myProfileEditPost}',
+      path: '${RouterPath.myProfileDetail}/${RouterPath.myProfileEditPost}',
       name: RouterPath.myProfileEditPost,
       pageBuilder: (context, state) {
         final extra = state.extra;
         final posts = extra is Posts ? extra : null;
         if (posts == null) {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
-        return slideUpTransition(
-          EditPostScreen(
-            posts: posts,
-          ),
-        );
+        return slideUpTransition(EditPostScreen(posts: posts));
       },
     ),
     GoRoute(
-      path:
-          '${RouterPath.myProfileDetail}/${RouterPath.myProfileDetailPost}',
+      path: '${RouterPath.myProfileDetail}/${RouterPath.myProfileDetailPost}',
       name: RouterPath.myProfileDetailPost,
       pageBuilder: (context, state) {
         final extra = state.extra;
         final model = extra is Restaurant ? extra : null;
         if (model == null) {
-          return whiteOut(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return whiteOut(const Scaffold(body: RouterErrorWidget()));
         }
         return whiteOut(
           PostScreen(
@@ -160,17 +131,9 @@ final myProfileRouter = GoRoute(
         final extra = state.extra;
         final posts = extra is Posts ? extra : null;
         if (posts == null) {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
-        return slideUpTransition(
-          RestaurantReviewScreen(
-            posts: posts,
-          ),
-        );
+        return slideUpTransition(RestaurantReviewScreen(posts: posts));
       },
     ),
   ],

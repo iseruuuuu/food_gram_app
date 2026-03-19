@@ -30,16 +30,9 @@ final timeLineRouter = GoRoute(
             final extra = state.extra;
             final restaurant = extra is Restaurant ? extra : null;
             if (restaurant == null) {
-              return slideIn(
-                const Scaffold(
-                  body: RouterErrorWidget(
-                  ),
-                ),
-              );
+              return slideIn(const Scaffold(body: RouterErrorWidget()));
             }
-            return slideIn(
-              RestaurantMapScreen(restaurant: restaurant),
-            );
+            return slideIn(RestaurantMapScreen(restaurant: restaurant));
           },
         ),
       ],
@@ -50,11 +43,7 @@ final timeLineRouter = GoRoute(
       pageBuilder: (context, state) {
         final extra = state.extra;
         if (extra == null) {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
         final Model model;
         final String? categoryName;
@@ -65,13 +54,8 @@ final timeLineRouter = GoRoute(
           model = extra;
           categoryName = null;
         } else {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
-
         return slideUpTransition(
           PostDetailScreen(
             posts: model.posts,
@@ -83,39 +67,25 @@ final timeLineRouter = GoRoute(
       },
     ),
     GoRoute(
-      path:
-          RouterPath.timeLineEditPost,
+      path: RouterPath.timeLineEditPost,
       name: RouterPath.timeLineEditPost,
       pageBuilder: (context, state) {
         final extra = state.extra;
         final posts = extra is Posts ? extra : null;
         if (posts == null) {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
-        return slideUpTransition(
-          EditPostScreen(
-            posts: posts,
-          ),
-        );
+        return slideUpTransition(EditPostScreen(posts: posts));
       },
     ),
     GoRoute(
-      path:
-          RouterPath.timeLineProfile,
+      path: RouterPath.timeLineProfile,
       name: RouterPath.timeLineProfile,
       pageBuilder: (context, state) {
         final extra = state.extra;
         final users = extra is Users ? extra : null;
         if (users == null) {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
         return slideUpTransition(
           UserProfileScreen(
@@ -132,11 +102,7 @@ final timeLineRouter = GoRoute(
         final extra = state.extra;
         final model = extra is Model ? extra : null;
         if (model == null) {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
         return slideUpTransition(
           PostDetailScreen(
@@ -154,11 +120,7 @@ final timeLineRouter = GoRoute(
         final extra = state.extra;
         final model = extra is Restaurant ? extra : null;
         if (model == null) {
-          return whiteOut(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return whiteOut(const Scaffold(body: RouterErrorWidget()));
         }
         return whiteOut(
           PostScreen(
@@ -175,17 +137,9 @@ final timeLineRouter = GoRoute(
         final extra = state.extra;
         final posts = extra is Posts ? extra : null;
         if (posts == null) {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
-        return slideUpTransition(
-          RestaurantReviewScreen(
-            posts: posts,
-          ),
-        );
+        return slideUpTransition(RestaurantReviewScreen(posts: posts));
       },
     ),
     GoRoute(
@@ -195,11 +149,7 @@ final timeLineRouter = GoRoute(
         final extra = state.extra;
         final model = extra is Model ? extra : null;
         if (model == null) {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
         return slideUpTransition(
           PostDetailScreen(

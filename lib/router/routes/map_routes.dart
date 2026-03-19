@@ -14,11 +14,7 @@ final mapRouter = GoRoute(
         final extra = state.extra;
         final model = extra is Model ? extra : null;
         if (model == null) {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
         return slideUpTransition(
           PostDetailScreen(
@@ -30,39 +26,25 @@ final mapRouter = GoRoute(
       },
     ),
     GoRoute(
-      path:
-          '${RouterPath.mapDetail}/${RouterPath.mapEditPost}',
+      path: '${RouterPath.mapDetail}/${RouterPath.mapEditPost}',
       name: RouterPath.mapEditPost,
       pageBuilder: (context, state) {
         final extra = state.extra;
         final posts = extra is Posts ? extra : null;
         if (posts == null) {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
-        return slideUpTransition(
-          EditPostScreen(
-            posts: posts,
-          ),
-        );
+        return slideUpTransition(EditPostScreen(posts: posts));
       },
     ),
     GoRoute(
-      path:
-          '${RouterPath.mapDetail}/${RouterPath.mapProfile}',
+      path: '${RouterPath.mapDetail}/${RouterPath.mapProfile}',
       name: RouterPath.mapProfile,
       pageBuilder: (context, state) {
         final extra = state.extra;
         final users = extra is Users ? extra : null;
         if (users == null) {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
         return slideUpTransition(
           UserProfileScreen(
@@ -80,11 +62,7 @@ final mapRouter = GoRoute(
         final extra = state.extra;
         final model = extra is Model ? extra : null;
         if (model == null) {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
         return slideUpTransition(
           PostDetailScreen(
@@ -96,18 +74,13 @@ final mapRouter = GoRoute(
       },
     ),
     GoRoute(
-      path:
-          '${RouterPath.mapDetail}/${RouterPath.mapDetailPost}',
+      path: '${RouterPath.mapDetail}/${RouterPath.mapDetailPost}',
       name: RouterPath.mapDetailPost,
       pageBuilder: (context, state) {
         final extra = state.extra;
         final model = extra is Restaurant ? extra : null;
         if (model == null) {
-          return whiteOut(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return whiteOut(const Scaffold(body: RouterErrorWidget()));
         }
         return whiteOut(
           PostScreen(
@@ -125,17 +98,9 @@ final mapRouter = GoRoute(
         final extra = state.extra;
         final posts = extra is Posts ? extra : null;
         if (posts == null) {
-          return slideUpTransition(
-            const Scaffold(
-              body: RouterErrorWidget(),
-            ),
-          );
+          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
         }
-        return slideUpTransition(
-          RestaurantReviewScreen(
-            posts: posts,
-          ),
-        );
+        return slideUpTransition(RestaurantReviewScreen(posts: posts));
       },
     ),
   ],
