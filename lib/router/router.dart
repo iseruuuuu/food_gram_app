@@ -124,7 +124,6 @@ final class RouterPath {
   static const String settingTutorial = 'setting_tutorial';
   static const String map = 'map';
   static const String mapDetail = 'map_detail';
-  static const String storyPage = 'story';
   static const String timeLineDetailPost = 'time_line_detail_post';
   static const String myProfileDetailPost = 'my_profile_detail_post';
   static const String mapDetailPost = 'map_detail_post';
