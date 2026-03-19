@@ -16,7 +16,7 @@ final mapRouter = GoRoute(
         if (model == null) {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: No map detail data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -39,7 +39,7 @@ final mapRouter = GoRoute(
         if (posts == null) {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: No edit post data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -60,7 +60,7 @@ final mapRouter = GoRoute(
         if (users == null) {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: No user data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -82,7 +82,7 @@ final mapRouter = GoRoute(
         if (model == null) {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: No profile detail data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -105,7 +105,7 @@ final mapRouter = GoRoute(
         if (model == null) {
           return whiteOut(
             const Scaffold(
-              body: Center(child: Text('Error: No restaurant data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -127,7 +127,7 @@ final mapRouter = GoRoute(
         if (posts == null) {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: No review data')),
+              body: RouterErrorWidget(),
             ),
           );
         }

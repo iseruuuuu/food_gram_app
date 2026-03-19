@@ -38,7 +38,7 @@ final myProfileRouter = GoRoute(
         if (model == null) {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: No stored post data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -76,7 +76,7 @@ final myProfileRouter = GoRoute(
             if (restaurant == null) {
               return slideIn(
                 const Scaffold(
-                  body: Center(child: Text('Error: No restaurant data')),
+                  body: RouterErrorWidget(),
                 ),
               );
             }
@@ -96,7 +96,7 @@ final myProfileRouter = GoRoute(
         if (model == null) {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: No profile detail data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -119,7 +119,7 @@ final myProfileRouter = GoRoute(
         if (posts == null) {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: No edit post data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -140,7 +140,7 @@ final myProfileRouter = GoRoute(
         if (model == null) {
           return whiteOut(
             const Scaffold(
-              body: Center(child: Text('Error: No restaurant data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -162,7 +162,7 @@ final myProfileRouter = GoRoute(
         if (posts == null) {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: No review data')),
+              body: RouterErrorWidget(),
             ),
           );
         }

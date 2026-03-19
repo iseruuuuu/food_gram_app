@@ -109,3 +109,53 @@ class MapErrorWidget extends StatelessWidget {
     );
   }
 }
+
+/// Router（GoRouter）で `extra` が不正/不足だった場合などに表示するエラーUI。
+class RouterErrorWidget extends StatelessWidget {
+  const RouterErrorWidget({
+    this.onBack,
+    super.key,
+  });
+
+  static const String _title = 'ルートエラー';
+  static const String _message = 'Error: Invalid route data';
+  final VoidCallback? onBack;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              _title,
+              style: textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              _message,
+              style: textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            if (onBack != null) ...[
+              const SizedBox(height: 24),
+              OutlinedButton.icon(
+                onPressed: onBack,
+                icon: const Icon(Icons.arrow_back),
+                label: const Text('戻る'),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -32,7 +32,8 @@ final timeLineRouter = GoRoute(
             if (restaurant == null) {
               return slideIn(
                 const Scaffold(
-                  body: Center(child: Text('Error: No restaurant data')),
+                  body: RouterErrorWidget(
+                  ),
                 ),
               );
             }
@@ -51,7 +52,7 @@ final timeLineRouter = GoRoute(
         if (extra == null) {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: No detail data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -66,7 +67,7 @@ final timeLineRouter = GoRoute(
         } else {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: Invalid detail data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -91,7 +92,7 @@ final timeLineRouter = GoRoute(
         if (posts == null) {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: No post edit data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -112,7 +113,7 @@ final timeLineRouter = GoRoute(
         if (users == null) {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: No user data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -134,7 +135,7 @@ final timeLineRouter = GoRoute(
         if (model == null) {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: No profile detail data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -157,7 +158,7 @@ final timeLineRouter = GoRoute(
         if (model == null) {
           return whiteOut(
             const Scaffold(
-              body: Center(child: Text('Error: No restaurant data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -179,7 +180,7 @@ final timeLineRouter = GoRoute(
         if (posts == null) {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: No review data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
@@ -200,7 +201,7 @@ final timeLineRouter = GoRoute(
         if (model == null) {
           return slideUpTransition(
             const Scaffold(
-              body: Center(child: Text('Error: No search data')),
+              body: RouterErrorWidget(),
             ),
           );
         }
