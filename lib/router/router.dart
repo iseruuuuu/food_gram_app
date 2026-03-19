@@ -104,44 +104,50 @@ final imageEditorRoute = GoRoute(
 );
 
 final class RouterPath {
-  static const String tab = 'tab';
-  static const String authentication = 'authentication';
-  static const String newAccount = 'new_account';
-  static const String license = 'license';
-  static const String notifications = 'notifications';
-  static const String edit = 'edit';
-  static const String myProfile = 'my_profile';
-  static const String myProfilePost = 'my_profile_post';
-  static const String myProfileDetail = 'my_profile_detail';
-  static const String myProfileRestaurant = 'my_profile_restaurant';
-  static const String timeLinePost = 'time_line_post';
-  static const String timeLineDetail = 'time_line_detail';
-  static const String timeLineRestaurant = 'time_line_restaurant';
-  static const String setting = 'setting';
-  static const String timeLine = 'time_line';
+  //　root（先頭 `/`）
   static const String splash = 'splash';
   static const String tutorial = 'introduction';
-  static const String settingTutorial = 'setting_tutorial';
+  static const String authentication = 'authentication';
+  static const String newAccount = 'new_account';
+  static const String tab = 'tab';
+  // /tab（main tabs & 共通）
+  static const String imageEditor = 'image_editor';
+  static const String timeLine = 'time_line';
   static const String map = 'map';
-  static const String mapDetail = 'map_detail';
-  static const String timeLineDetailPost = 'time_line_detail_post';
+  static const String myProfile = 'my_profile';
+  static const String setting = 'setting';
+  // /tab/setting
+  static const String license = 'license';
+  static const String settingTutorial = 'setting_tutorial';
+  // /tab/my_profile
+  static const String notifications = 'notifications';
+  static const String storedPost = 'stored_post';
+  static const String storedPostDetail = 'stored_post_detail';
+  static const String myProfilePost = 'my_profile_post';
+  static const String edit = 'edit';
+  static const String myProfileDetail = 'my_profile_detail';
+  static const String myProfileEditPost = 'my_profile_edit_post';
   static const String myProfileDetailPost = 'my_profile_detail_post';
-  static const String mapDetailPost = 'map_detail_post';
-  static const String mapProfile = 'map_profile';
-  static const String mapProfileDetail = 'map_profile_detail';
-  static const String timeLineProfile = 'time_line_profile';
-  static const String timeLineProfileDetail = 'time_line_profile_detail';
-  static const String timeLineRestaurantReview = 'time_line_restaurant_review';
-  static const String mapRestaurantReview = 'map_restaurant_review';
+  static const String myProfileRestaurant = 'my_profile_restaurant';
   static const String myProfileRestaurantReview =
       'my_profile_restaurant_review';
-  static const String timeLineEditPost = 'time_line_edit_post';
-  static const String mapEditPost = 'map_edit_post';
-  static const String myProfileEditPost = 'my_profile_edit_post';
-  static const String storedPost = 'stored_post';
-  static const String searchDetailPost = 'search_detail_post';
-  static const String storedPostDetail = 'stored_post_detail';
-  static const String restaurantMap = 'restaurant_map';
   static const String restaurantMapMyProfile = 'restaurant_map_myProfile';
-  static const String imageEditor = 'image_editor';
+  // /tab/time_line
+  static const String timeLinePost = 'time_line_post';
+  static const String timeLineDetail = 'time_line_detail';
+  static const String timeLineDetailPost = 'time_line_detail_post';
+  static const String timeLineEditPost = 'time_line_edit_post';
+  static const String timeLineRestaurant = 'time_line_restaurant';
+  static const String timeLineRestaurantReview = 'time_line_restaurant_review';
+  static const String searchDetailPost = 'search_detail_post';
+  static const String timeLineProfile = 'time_line_profile';
+  static const String timeLineProfileDetail = 'time_line_profile_detail';
+  static const String restaurantMap = 'restaurant_map';
+  // /tab /map
+  static const String mapDetail = 'map_detail';
+  static const String mapEditPost = 'map_edit_post';
+  static const String mapProfile = 'map_profile';
+  static const String mapProfileDetail = 'map_profile_detail';
+  static const String mapDetailPost = 'map_detail_post';
+  static const String mapRestaurantReview = 'map_restaurant_review';
 }
