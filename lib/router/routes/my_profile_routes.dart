@@ -8,7 +8,7 @@ final myProfileRouter = GoRoute(
   },
   routes: <RouteBase>[
     GoRoute(
-      path: '${RouterPath.myProfile}/${RouterPath.notifications}',
+      path: RouterPath.notifications,
       name: RouterPath.notifications,
       pageBuilder: (context, state) {
         return whiteOut(const NotificationsScreen());
@@ -22,7 +22,7 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
-      path: '${RouterPath.myProfile}/${RouterPath.storedPost}',
+      path: RouterPath.storedPost,
       name: RouterPath.storedPost,
       pageBuilder: (context, state) {
         return whiteOut(const StoredPostScreen());
@@ -30,7 +30,7 @@ final myProfileRouter = GoRoute(
     ),
     GoRoute(
       path:
-          '${RouterPath.myProfile}/${RouterPath.storedPost}/${RouterPath.storedPostDetail}',
+          '${RouterPath.storedPost}/${RouterPath.storedPostDetail}',
       name: RouterPath.storedPostDetail,
       pageBuilder: (context, state) {
         final extra = state.extra;
@@ -52,7 +52,7 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
-      path: '${RouterPath.myProfile}/${RouterPath.myProfilePost}',
+      path: RouterPath.myProfilePost,
       name: RouterPath.myProfilePost,
       pageBuilder: (context, state) {
         return whiteOut(
@@ -61,7 +61,7 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
-      path: '${RouterPath.myProfile}/${RouterPath.myProfileRestaurant}',
+      path: RouterPath.myProfileRestaurant,
       name: RouterPath.myProfileRestaurant,
       builder: (context, state) {
         return const RestaurantScreen();
@@ -88,7 +88,7 @@ final myProfileRouter = GoRoute(
       ],
     ),
     GoRoute(
-      path: '${RouterPath.myProfile}/${RouterPath.myProfileDetail}',
+      path: RouterPath.myProfileDetail,
       name: RouterPath.myProfileDetail,
       pageBuilder: (context, state) {
         final extra = state.extra;
@@ -111,7 +111,7 @@ final myProfileRouter = GoRoute(
     ),
     GoRoute(
       path:
-          '${RouterPath.myProfile}/${RouterPath.myProfileDetail}/${RouterPath.myProfileEditPost}',
+          '${RouterPath.myProfileDetail}/${RouterPath.myProfileEditPost}',
       name: RouterPath.myProfileEditPost,
       pageBuilder: (context, state) {
         final extra = state.extra;
@@ -132,7 +132,7 @@ final myProfileRouter = GoRoute(
     ),
     GoRoute(
       path:
-          '${RouterPath.myProfile}/${RouterPath.myProfileDetail}/${RouterPath.myProfileDetailPost}',
+          '${RouterPath.myProfileDetail}/${RouterPath.myProfileDetailPost}',
       name: RouterPath.myProfileDetailPost,
       pageBuilder: (context, state) {
         final extra = state.extra;
@@ -154,7 +154,7 @@ final myProfileRouter = GoRoute(
     ),
     GoRoute(
       path:
-          '${RouterPath.myProfile}/${RouterPath.myProfileDetail}/${RouterPath.myProfileRestaurantReview}',
+          '${RouterPath.myProfileDetail}/${RouterPath.myProfileRestaurantReview}',
       name: RouterPath.myProfileRestaurantReview,
       pageBuilder: (context, state) {
         final extra = state.extra;
