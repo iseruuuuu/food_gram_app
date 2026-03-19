@@ -8,7 +8,7 @@ final timeLineRouter = GoRoute(
   },
   routes: <RouteBase>[
     GoRoute(
-      path: '${RouterPath.timeLine}/${RouterPath.timeLinePost}',
+      path: RouterPath.timeLinePost,
       name: RouterPath.timeLinePost,
       pageBuilder: (context, state) {
         return whiteOut(
@@ -17,7 +17,7 @@ final timeLineRouter = GoRoute(
       },
     ),
     GoRoute(
-      path: '${RouterPath.timeLine}/${RouterPath.timeLineRestaurant}',
+      path: RouterPath.timeLineRestaurant,
       name: RouterPath.timeLineRestaurant,
       pageBuilder: (context, state) {
         return slideIn(const RestaurantScreen());
@@ -45,7 +45,7 @@ final timeLineRouter = GoRoute(
       ],
     ),
     GoRoute(
-      path: '${RouterPath.timeLine}/${RouterPath.timeLineDetail}',
+      path: RouterPath.timeLineDetail,
       name: RouterPath.timeLineDetail,
       pageBuilder: (context, state) {
         final extra = state.extra;
@@ -84,7 +84,7 @@ final timeLineRouter = GoRoute(
     ),
     GoRoute(
       path:
-          '${RouterPath.timeLine}/${RouterPath.timeLineDetail}/${RouterPath.timeLineEditPost}',
+          RouterPath.timeLineEditPost,
       name: RouterPath.timeLineEditPost,
       pageBuilder: (context, state) {
         final extra = state.extra;
@@ -105,7 +105,7 @@ final timeLineRouter = GoRoute(
     ),
     GoRoute(
       path:
-          '${RouterPath.timeLine}/${RouterPath.timeLineDetail}/${RouterPath.timeLineProfile}',
+          RouterPath.timeLineProfile,
       name: RouterPath.timeLineProfile,
       pageBuilder: (context, state) {
         final extra = state.extra;
@@ -126,8 +126,7 @@ final timeLineRouter = GoRoute(
       },
     ),
     GoRoute(
-      path:
-          '${RouterPath.timeLine}/${RouterPath.timeLineDetail}/${RouterPath.timeLineProfile}/${RouterPath.timeLineProfileDetail}',
+      path: RouterPath.timeLineProfileDetail,
       name: RouterPath.timeLineProfileDetail,
       pageBuilder: (context, state) {
         final extra = state.extra;
@@ -149,8 +148,7 @@ final timeLineRouter = GoRoute(
       },
     ),
     GoRoute(
-      path:
-          '${RouterPath.timeLine}/${RouterPath.timeLineDetail}/${RouterPath.timeLineDetailPost}',
+      path: RouterPath.timeLineDetailPost,
       name: RouterPath.timeLineDetailPost,
       pageBuilder: (context, state) {
         final extra = state.extra;
@@ -171,8 +169,7 @@ final timeLineRouter = GoRoute(
       },
     ),
     GoRoute(
-      path:
-          '${RouterPath.timeLine}/${RouterPath.timeLineDetail}/${RouterPath.timeLineRestaurantReview}',
+      path: RouterPath.timeLineRestaurantReview,
       name: RouterPath.timeLineRestaurantReview,
       pageBuilder: (context, state) {
         final extra = state.extra;
@@ -192,8 +189,7 @@ final timeLineRouter = GoRoute(
       },
     ),
     GoRoute(
-      path:
-          '${RouterPath.timeLine}/${RouterPath.timeLineDetail}/${RouterPath.searchDetailPost}',
+      path: RouterPath.searchDetailPost,
       name: RouterPath.searchDetailPost,
       pageBuilder: (context, state) {
         final extra = state.extra;
