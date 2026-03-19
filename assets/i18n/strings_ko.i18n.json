@@ -175,7 +175,10 @@
     "description1": "연결 오류가 발생했습니다.",
     "description2": "네트워크 연결을 확인하고 다시 시도해 주세요.",
     "refreshButton": "새로고침",
-    "message": "오류가 발생했습니다"
+    "message": "오류가 발생했습니다",
+    "routerErrorTitle": "경로 오류",
+    "routerErrorMessage": "오류: 잘못된 경로 데이터",
+    "routerErrorBack": "뒤로"
   },
   "levelUp": {
     "title": "레벨 업!",

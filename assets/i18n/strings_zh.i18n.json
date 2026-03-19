@@ -175,7 +175,10 @@
     "description1": "发生连接错误。",
     "description2": "请检查网络连接并重试。",
     "refreshButton": "重新加载",
-    "message": "发生错误"
+    "message": "发生错误",
+    "routerErrorTitle": "路由错误",
+    "routerErrorMessage": "错误：无效的路由数据",
+    "routerErrorBack": "返回"
   },
   "levelUp": {
     "title": "升级！",

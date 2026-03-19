@@ -175,7 +175,10 @@
     "description1": "Ein Verbindungsfehler ist aufgetreten.",
     "description2": "Überprüfen Sie Ihre Netzwerkverbindung und versuchen Sie es erneut.",
     "refreshButton": "Neu laden",
-    "message": "Fehler sind aufgetreten"
+    "message": "Fehler sind aufgetreten",
+    "routerErrorTitle": "Routenfehler",
+    "routerErrorMessage": "Fehler: Ungültige Routendaten",
+    "routerErrorBack": "Zurück"
   },
   "levelUp": {
     "title": "Level Up!",

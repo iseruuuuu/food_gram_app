@@ -175,7 +175,10 @@
     "description1": "Đã xảy ra lỗi kết nối.",
     "description2": "Kiểm tra kết nối mạng và thử lại.",
     "refreshButton": "Tải lại",
-    "message": "Đã xảy ra lỗi"
+    "message": "Đã xảy ra lỗi",
+    "routerErrorTitle": "Lỗi định tuyến",
+    "routerErrorMessage": "Lỗi: Dữ liệu định tuyến không hợp lệ",
+    "routerErrorBack": "Quay lại"
   },
   "levelUp": {
     "title": "Lên cấp!",

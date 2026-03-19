@@ -175,7 +175,10 @@
     "description1": "เกิดข้อผิดพลาดในการเชื่อมต่อ",
     "description2": "ตรวจสอบการเชื่อมต่อเครือข่ายและลองอีกครั้ง",
     "refreshButton": "โหลดใหม่",
-    "message": "เกิดข้อผิดพลาด"
+    "message": "เกิดข้อผิดพลาด",
+    "routerErrorTitle": "ข้อผิดพลาดของเส้นทาง",
+    "routerErrorMessage": "ข้อผิดพลาด: ข้อมูลเส้นทางไม่ถูกต้อง",
+    "routerErrorBack": "กลับ"
   },
   "levelUp": {
     "title": "เลเวลอัพ!",

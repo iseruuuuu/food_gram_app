@@ -175,7 +175,10 @@
     "description1": "Ocorreu um erro de conexão.",
     "description2": "Verifique sua conexão de rede e tente novamente.",
     "refreshButton": "Recarregar",
-    "message": "Ocorreram erros"
+    "message": "Ocorreram erros",
+    "routerErrorTitle": "Erro de rota",
+    "routerErrorMessage": "Erro: Dados de rota inválidos",
+    "routerErrorBack": "Voltar"
   },
   "levelUp": {
     "title": "Subiu de nível!",

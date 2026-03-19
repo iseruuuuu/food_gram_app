@@ -175,7 +175,10 @@
     "description1": "Ha ocurrido un error de conexión.",
     "description2": "Verifique su conexión de red e intente de nuevo.",
     "refreshButton": "Recargar",
-    "message": "Han ocurrido errores"
+    "message": "Han ocurrido errores",
+    "routerErrorTitle": "Error de ruta",
+    "routerErrorMessage": "Error: Datos de ruta inválidos",
+    "routerErrorBack": "Atrás"
   },
   "levelUp": {
     "title": "¡Subiste de nivel!",

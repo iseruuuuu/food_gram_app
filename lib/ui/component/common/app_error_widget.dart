@@ -117,12 +117,11 @@ class RouterErrorWidget extends StatelessWidget {
     super.key,
   });
 
-  static const String _title = 'ルートエラー';
-  static const String _message = 'Error: Invalid route data';
   final VoidCallback? onBack;
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
     final textTheme = Theme.of(context).textTheme;
     return Center(
       child: Padding(
@@ -131,7 +130,7 @@ class RouterErrorWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              _title,
+              t.error.routerErrorTitle,
               style: textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
@@ -139,7 +138,7 @@ class RouterErrorWidget extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              _message,
+              t.error.routerErrorMessage,
               style: textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
@@ -150,7 +149,7 @@ class RouterErrorWidget extends StatelessWidget {
               OutlinedButton.icon(
                 onPressed: onBack,
                 icon: const Icon(Icons.arrow_back),
-                label: const Text('戻る'),
+                label: Text(t.error.routerErrorBack),
               ),
             ],
           ],

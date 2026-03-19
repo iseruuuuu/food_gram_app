@@ -175,7 +175,10 @@
     "description1": "A connection error has occurred.",
     "description2": "Check your network connection and try again.",
     "refreshButton": "Reload",
-    "message": "Errors have occurred"
+    "message": "Errors have occurred",
+    "routerErrorTitle": "Route Error",
+    "routerErrorMessage": "Error: Invalid route data",
+    "routerErrorBack": "Back"
   },
   "levelUp": {
     "title": "Level Up!",
