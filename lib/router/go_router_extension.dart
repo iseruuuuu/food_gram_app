@@ -7,18 +7,22 @@ extension GoRouterExtension on GoRouter {
     final matchList = lastMatch is ImperativeRouteMatch
         ? lastMatch.matches
         : routerDelegate.currentConfiguration;
-    final leafMatch = matchList.last;
-    final route = leafMatch.route;
-    final currentRouteName = route is GoRoute ? route.name : null;
-    switch (currentRouteName) {
-      case RouterPath.timeLineDetail:
-        return RouterPath.timeLineDetailPost;
-      case RouterPath.myProfileDetail:
-        return RouterPath.myProfileDetailPost;
-      case RouterPath.mapDetail:
-        return RouterPath.mapDetailPost;
-      default:
-        return null;
+    final matches = matchList.matches;
+    for (var i = matches.length - 1; i >= 0; i--) {
+      final route = matches[i].route;
+      final currentRouteName = route is GoRoute ? route.name : null;
+      switch (currentRouteName) {
+        case RouterPath.timeLineDetail:
+          return RouterPath.timeLineDetailPost;
+        case RouterPath.myProfileDetail:
+          return RouterPath.myProfileDetailPost;
+        case RouterPath.mapDetail:
+          return RouterPath.mapDetailPost;
+        default:
+          continue;
+      }
     }
+
+    return null;
   }
 }
