@@ -175,7 +175,10 @@
     "description1": "Une erreur de connexion s'est produite.",
     "description2": "Vérifiez votre connexion réseau et réessayez.",
     "refreshButton": "Recharger",
-    "message": "Des erreurs se sont produites"
+    "message": "Des erreurs se sont produites",
+    "routerErrorTitle": "Erreur de routage",
+    "routerErrorMessage": "Erreur : Données de route invalides",
+    "routerErrorBack": "Retour"
   },
   "levelUp": {
     "title": "Level Up !",

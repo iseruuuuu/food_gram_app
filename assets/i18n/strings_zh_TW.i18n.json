@@ -175,7 +175,10 @@
     "description1": "發生連線錯誤。",
     "description2": "請檢查網路連線並重試。",
     "refreshButton": "重新載入",
-    "message": "發生錯誤"
+    "message": "發生錯誤",
+    "routerErrorTitle": "路由錯誤",
+    "routerErrorMessage": "錯誤：無效的路由資料",
+    "routerErrorBack": "返回"
   },
   "levelUp": {
     "title": "升級！",

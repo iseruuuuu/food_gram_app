@@ -175,7 +175,10 @@
     "description1": "接続エラーが発生しました",
     "description2": "ネットワーク接続を確認し、もう一度試してください",
     "refreshButton": "再読み込み",
-    "message": "エラーが発生しました"
+    "message": "エラーが発生しました",
+    "routerErrorTitle": "ルートエラー",
+    "routerErrorMessage": "Error: 不正なルートデータ",
+    "routerErrorBack": "戻る"
   },
   "levelUp": {
     "title": "レベルアップ！",

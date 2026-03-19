@@ -409,9 +409,12 @@ class PostDetailListItem extends HookConsumerWidget {
                           onPressed: () async {
                             final currentPath =
                                 GoRouter.of(context).isCurrentLocation();
+                            if (currentPath == null || currentPath.isEmpty) {
+                              return;
+                            }
                             await context
                                 .pushNamed(
-                              currentPath,
+                                  currentPath,
                               extra: Restaurant(
                                 name: posts.restaurant,
                                 lat: posts.lat,
