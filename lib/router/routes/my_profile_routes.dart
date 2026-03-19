@@ -1,0 +1,129 @@
+part of '../router.dart';
+
+final myProfileRouter = GoRoute(
+  path: RouterPath.myProfile,
+  name: RouterPath.myProfile,
+  builder: (context, state) {
+    return const MyProfileScreen();
+  },
+  routes: <RouteBase>[
+    GoRoute(
+      path: '${RouterPath.myProfile}/${RouterPath.notifications}',
+      name: RouterPath.notifications,
+      pageBuilder: (context, state) {
+        return whiteOut(const NotificationsScreen());
+      },
+    ),
+    GoRoute(
+      path: RouterPath.edit,
+      name: RouterPath.edit,
+      pageBuilder: (context, state) {
+        return slideIn(const EditScreen());
+      },
+    ),
+    GoRoute(
+      path: '${RouterPath.myProfile}/${RouterPath.storedPost}',
+      name: RouterPath.storedPost,
+      pageBuilder: (context, state) {
+        return whiteOut(const StoredPostScreen());
+      },
+    ),
+    GoRoute(
+      path:
+          '${RouterPath.myProfile}/${RouterPath.storedPost}/${RouterPath.storedPostDetail}',
+      name: RouterPath.storedPostDetail,
+      pageBuilder: (context, state) {
+        final model = state.extra! as Model;
+        return slideUpTransition(
+          PostDetailScreen(
+            posts: model.posts,
+            users: model.users,
+            type: PostDetailScreenType.stored,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '${RouterPath.myProfile}/${RouterPath.myProfilePost}',
+      name: RouterPath.myProfilePost,
+      pageBuilder: (context, state) {
+        return whiteOut(
+          const PostScreen(routerPath: RouterPath.myProfileRestaurant),
+        );
+      },
+    ),
+    GoRoute(
+      path: '${RouterPath.myProfile}/${RouterPath.myProfileRestaurant}',
+      name: RouterPath.myProfileRestaurant,
+      builder: (context, state) {
+        return const RestaurantScreen();
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: RouterPath.restaurantMap,
+          name: RouterPath.restaurantMapMyProfile,
+          pageBuilder: (context, state) {
+            final restaurant = state.extra! as Restaurant;
+            return slideIn(
+              RestaurantMapScreen(restaurant: restaurant),
+            );
+          },
+        ),
+      ],
+    ),
+    GoRoute(
+      path: '${RouterPath.myProfile}/${RouterPath.myProfileDetail}',
+      name: RouterPath.myProfileDetail,
+      pageBuilder: (context, state) {
+        final model = state.extra! as Model;
+        return slideUpTransition(
+          PostDetailScreen(
+            posts: model.posts,
+            users: model.users,
+            type: PostDetailScreenType.myprofile,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path:
+          '${RouterPath.myProfile}/${RouterPath.myProfileDetail}/${RouterPath.myProfileEditPost}',
+      name: RouterPath.myProfileEditPost,
+      pageBuilder: (context, state) {
+        final posts = state.extra! as Posts;
+        return slideUpTransition(
+          EditPostScreen(
+            posts: posts,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path:
+          '${RouterPath.myProfile}/${RouterPath.myProfileDetail}/${RouterPath.myProfileDetailPost}',
+      name: RouterPath.myProfileDetailPost,
+      pageBuilder: (context, state) {
+        final model = state.extra! as Restaurant;
+        return whiteOut(
+          PostScreen(
+            routerPath: RouterPath.myProfileRestaurant,
+            restaurant: model,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path:
+          '${RouterPath.myProfile}/${RouterPath.myProfileDetail}/${RouterPath.myProfileRestaurantReview}',
+      name: RouterPath.myProfileRestaurantReview,
+      pageBuilder: (context, state) {
+        final posts = state.extra! as Posts;
+        return slideUpTransition(
+          RestaurantReviewScreen(
+            posts: posts,
+          ),
+        );
+      },
+    ),
+  ],
+);
