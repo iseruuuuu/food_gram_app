@@ -13,7 +13,6 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'router.g.dart';
-part 'routes/image_editor_route.dart';
 part 'routes/time_line_routes.dart';
 part 'routes/my_profile_routes.dart';
 part 'routes/setting_routes.dart';
@@ -91,6 +90,17 @@ GoRouter router(Ref ref) {
     ],
   );
 }
+
+final imageEditorRoute = GoRoute(
+  path: RouterPath.imageEditor,
+  name: RouterPath.imageEditor,
+  pageBuilder: (context, state) {
+    final imagePath = state.extra as String? ?? '';
+    return MaterialPage(
+      child: ImageEditorScreen(imagePath: imagePath),
+    );
+  },
+);
 
 final class RouterPath {
   static const String tab = 'tab';
