@@ -33,7 +33,15 @@ final myProfileRouter = GoRoute(
           '${RouterPath.myProfile}/${RouterPath.storedPost}/${RouterPath.storedPostDetail}',
       name: RouterPath.storedPostDetail,
       pageBuilder: (context, state) {
-        final model = state.extra! as Model;
+        final extra = state.extra;
+        final model = extra is Model ? extra : null;
+        if (model == null) {
+          return slideUpTransition(
+            const Scaffold(
+              body: Center(child: Text('Error: No stored post data')),
+            ),
+          );
+        }
         return slideUpTransition(
           PostDetailScreen(
             posts: model.posts,
@@ -63,7 +71,15 @@ final myProfileRouter = GoRoute(
           path: RouterPath.restaurantMap,
           name: RouterPath.restaurantMapMyProfile,
           pageBuilder: (context, state) {
-            final restaurant = state.extra! as Restaurant;
+            final extra = state.extra;
+            final restaurant = extra is Restaurant ? extra : null;
+            if (restaurant == null) {
+              return slideIn(
+                const Scaffold(
+                  body: Center(child: Text('Error: No restaurant data')),
+                ),
+              );
+            }
             return slideIn(
               RestaurantMapScreen(restaurant: restaurant),
             );
@@ -75,7 +91,15 @@ final myProfileRouter = GoRoute(
       path: '${RouterPath.myProfile}/${RouterPath.myProfileDetail}',
       name: RouterPath.myProfileDetail,
       pageBuilder: (context, state) {
-        final model = state.extra! as Model;
+        final extra = state.extra;
+        final model = extra is Model ? extra : null;
+        if (model == null) {
+          return slideUpTransition(
+            const Scaffold(
+              body: Center(child: Text('Error: No profile detail data')),
+            ),
+          );
+        }
         return slideUpTransition(
           PostDetailScreen(
             posts: model.posts,
@@ -90,7 +114,15 @@ final myProfileRouter = GoRoute(
           '${RouterPath.myProfile}/${RouterPath.myProfileDetail}/${RouterPath.myProfileEditPost}',
       name: RouterPath.myProfileEditPost,
       pageBuilder: (context, state) {
-        final posts = state.extra! as Posts;
+        final extra = state.extra;
+        final posts = extra is Posts ? extra : null;
+        if (posts == null) {
+          return slideUpTransition(
+            const Scaffold(
+              body: Center(child: Text('Error: No edit post data')),
+            ),
+          );
+        }
         return slideUpTransition(
           EditPostScreen(
             posts: posts,
@@ -103,7 +135,15 @@ final myProfileRouter = GoRoute(
           '${RouterPath.myProfile}/${RouterPath.myProfileDetail}/${RouterPath.myProfileDetailPost}',
       name: RouterPath.myProfileDetailPost,
       pageBuilder: (context, state) {
-        final model = state.extra! as Restaurant;
+        final extra = state.extra;
+        final model = extra is Restaurant ? extra : null;
+        if (model == null) {
+          return whiteOut(
+            const Scaffold(
+              body: Center(child: Text('Error: No restaurant data')),
+            ),
+          );
+        }
         return whiteOut(
           PostScreen(
             routerPath: RouterPath.myProfileRestaurant,
@@ -117,7 +157,15 @@ final myProfileRouter = GoRoute(
           '${RouterPath.myProfile}/${RouterPath.myProfileDetail}/${RouterPath.myProfileRestaurantReview}',
       name: RouterPath.myProfileRestaurantReview,
       pageBuilder: (context, state) {
-        final posts = state.extra! as Posts;
+        final extra = state.extra;
+        final posts = extra is Posts ? extra : null;
+        if (posts == null) {
+          return slideUpTransition(
+            const Scaffold(
+              body: Center(child: Text('Error: No review data')),
+            ),
+          );
+        }
         return slideUpTransition(
           RestaurantReviewScreen(
             posts: posts,
