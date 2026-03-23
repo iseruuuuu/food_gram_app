@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 /// ISO 4217 通貨コード（カンマ区切り・アルファベット順）。記号未定義はコードそのものを表示。
 const String _kSupportedPostPriceCurrencyCsv =
@@ -459,6 +460,123 @@ double _canonicalPostPriceAmount(double amount, String currencyCode) {
   return double.parse(amount.toStringAsFixed(2));
 }
 
+Iterable<String> _localeTagsForNumberFormat(Locale locale) sync* {
+  final full = locale.toString();
+  if (full.isNotEmpty) {
+    yield full;
+  }
+  if (locale.countryCode != null && locale.countryCode!.isNotEmpty) {
+    yield '${locale.languageCode}_${locale.countryCode}';
+  }
+  yield locale.languageCode;
+}
+
+const List<String> _kDecimalPatternFallbackLocales = [
+  'de_DE',
+  'fr_FR',
+  'es_ES',
+  'it_IT',
+  'pt_PT',
+  'nl_NL',
+  'en_US',
+];
+
+double? _tryParseDecimalWithIntl(String input, Locale locale) {
+  final tried = <String>{};
+  for (final tag in [
+    ..._localeTagsForNumberFormat(locale),
+    ..._kDecimalPatternFallbackLocales,
+  ]) {
+    if (!tried.add(tag)) {
+      continue;
+    }
+    try {
+      return NumberFormat.decimalPattern(tag).parse(input) as double;
+    } catch (_) {
+      continue;
+    }
+  }
+  return null;
+}
+
+/// 桁区切りと小数点を `.` 小数に正規化（例: `12,50`→`12.50`, `1.234,56`→`1234.56`）。
+/// 解釈不能なら null。
+String? _heuristicNormalizeSeparatorsToDot(String s) {
+  final commaCount = ','.allMatches(s).length;
+  final dotCount = '.'.allMatches(s).length;
+
+  if (commaCount == 0 && dotCount == 0) {
+    return s;
+  }
+  if (commaCount == 0 && dotCount == 1) {
+    return s;
+  }
+  if (commaCount == 1 && dotCount == 0) {
+    final afterComma = s.substring(s.indexOf(',') + 1);
+    if (afterComma.length == 3 && RegExp(r'^\d{3}$').hasMatch(afterComma)) {
+      return s.replaceAll(',', '');
+    }
+    return s.replaceFirst(',', '.');
+  }
+  if (commaCount > 1 && dotCount == 0) {
+    return s.replaceAll(',', '');
+  }
+  if (commaCount == 0 && dotCount > 1) {
+    final lastDot = s.lastIndexOf('.');
+    final intPart = s.substring(0, lastDot).replaceAll('.', '');
+    final frac = s.substring(lastDot + 1);
+    if (frac.isEmpty) {
+      return intPart;
+    }
+    return '$intPart.$frac';
+  }
+  if (commaCount >= 1 && dotCount >= 1) {
+    final lastC = s.lastIndexOf(',');
+    final lastD = s.lastIndexOf('.');
+    if (lastC > lastD) {
+      final intPart =
+          s.substring(0, lastC).replaceAll('.', '').replaceAll(',', '');
+      final frac = s.substring(lastC + 1);
+      if (frac.isEmpty) {
+        return intPart;
+      }
+      return '$intPart.$frac';
+    }
+    final intPart = s.substring(0, lastD).replaceAll(',', '');
+    final frac = s.substring(lastD + 1);
+    if (frac.isEmpty) {
+      return intPart;
+    }
+    return '$intPart.$frac';
+  }
+  return null;
+}
+
+bool _fractionScaleInvalidForDouble(double value, String currencyCode) {
+  final code = currencyCode.toUpperCase();
+  if (_isIntegerStyleCurrency(code)) {
+    return value != value.roundToDouble();
+  }
+  return value != double.parse(value.toStringAsFixed(2));
+}
+
+/// intl とヒューリスティックが食い違うとき、後者を優先してよいパターン。
+/// - `12,50` のような欧州式小数（英語 intl は 1250 になり得る）
+/// - `1,234` のような英語式千区切り（独語 intl は 1.234 になり得る）
+bool _trustHeuristicOverIntlDisagreement(String s) {
+  if (','.allMatches(s).length != 1 || s.contains('.')) {
+    return false;
+  }
+  final after = s.substring(s.indexOf(',') + 1);
+  if (!RegExp(r'^\d+$').hasMatch(after)) {
+    return false;
+  }
+  if (after.length <= 2) {
+    return true;
+  }
+  return after.length == 3;
+}
+
 /// カンマ除去後の [normalized]（`.` が小数点）が通貨の許容桁を超えていれば true。
 bool _hasDisallowedFractionalScale(String normalized, String currencyCode) {
   final code = currencyCode.toUpperCase();
@@ -532,18 +650,53 @@ class PostPriceParseResult {
 PostPriceParseResult parsePostPriceInput({
   required String rawAmount,
   required String currencyCode,
+  Locale? locale,
 }) {
   final trimmed = rawAmount.trim();
   if (trimmed.isEmpty) {
     return const PostPriceParseResult.empty();
   }
   final code = currencyCode.toUpperCase();
-  final normalized = trimmed.replaceAll(',', '');
-  if (_hasDisallowedFractionalScale(normalized, code)) {
+  final loc = locale ?? ui.PlatformDispatcher.instance.locale;
+  final s =
+      trimmed.replaceAll(RegExp(r'[\s\u00A0\u202F]'), ''); // space, NBSP, NNBSP
+  if (s.isEmpty || !RegExp(r'^[0-9.,]+$').hasMatch(s)) {
     return const PostPriceParseResult.invalid();
   }
-  final value = double.tryParse(normalized);
-  if (value == null || value < 0 || value > 999999999) {
+
+  final heuristicNorm = _heuristicNormalizeSeparatorsToDot(s);
+  final intlVal = _tryParseDecimalWithIntl(s, loc);
+
+  double? value;
+  String? dotNormalizedForScale;
+
+  if (heuristicNorm != null) {
+    final hv = double.tryParse(heuristicNorm);
+    if (hv == null) {
+      return const PostPriceParseResult.invalid();
+    }
+    final disagree = intlVal != null && (hv - intlVal).abs() > 1e-6;
+    if (disagree && !_trustHeuristicOverIntlDisagreement(s)) {
+      return const PostPriceParseResult.invalid();
+    }
+    dotNormalizedForScale = heuristicNorm;
+    value = hv;
+  } else if (intlVal != null) {
+    value = intlVal;
+    dotNormalizedForScale = null;
+  } else {
+    return const PostPriceParseResult.invalid();
+  }
+
+  if (dotNormalizedForScale != null) {
+    if (_hasDisallowedFractionalScale(dotNormalizedForScale, code)) {
+      return const PostPriceParseResult.invalid();
+    }
+  } else if (_fractionScaleInvalidForDouble(value, code)) {
+    return const PostPriceParseResult.invalid();
+  }
+
+  if (value < 0 || value > 999999999) {
     return const PostPriceParseResult.invalid();
   }
   final canonical = _canonicalPostPriceAmount(value, code);
