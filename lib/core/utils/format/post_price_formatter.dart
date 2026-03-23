@@ -418,24 +418,30 @@ String defaultPostPriceCurrencyFromPlatform() {
   );
 }
 
+/// ISO 4217 の **minor unit exponent = 0** の通貨（公式テーブルに基づく）。
+/// [_kSupportedPostPriceCurrencyCsv] に載るコードのうち指数 0 のものをすべて含める。
+/// CSV に通貨を追加したら、SIX / ISO 4217 の指数に合わせてこの集合を更新すること。
+const Set<String> _kIso4217ZeroMinorUnitCodes = {
+  'BIF', // Burundi Franc
+  'CLP', // Chilean Peso
+  'DJF', // Djibouti Franc
+  'GNF', // Guinean Franc
+  'ISK', // Iceland Krona
+  'JPY', // Yen
+  'KMF', // Comorian Franc
+  'KRW', // Won
+  'PYG', // Guarani
+  'RWF', // Rwanda Franc
+  'UGX', // Uganda Shilling
+  'VND', // Dong
+  'VUV', // Vatu
+  'XAF', // CFA Franc BEAC
+  'XOF', // CFA Franc BCEAO
+  'XPF', // CFP Franc
+};
+
 bool _isIntegerStyleCurrency(String code) {
-  switch (code.toUpperCase()) {
-    case 'JPY':
-    case 'KRW':
-    case 'VND':
-    case 'CLP':
-    case 'UGX':
-    case 'VUV':
-    case 'XAF':
-    case 'XOF':
-    case 'XPF':
-    case 'PYG':
-    case 'ISK':
-    case 'COP':
-      return true;
-    default:
-      return false;
-  }
+  return _kIso4217ZeroMinorUnitCodes.contains(code.toUpperCase());
 }
 
 String _formatThousandsInt(int n) {
@@ -499,56 +505,134 @@ double? _tryParseDecimalWithIntl(String input, Locale locale) {
   return null;
 }
 
-/// 桁区切りと小数点を `.` 小数に正規化（例: `12,50`→`12.50`, `1.234,56`→`1234.56`）。
-/// 解釈不能なら null。
+/// 先頭グループ 1〜3 桁・以降 `sep` 区切りで各 3 桁（英 `1,234,567` / 独 `1.234.567`）。
+bool _validThousandGroups(String part, String sep) {
+  if (part.isEmpty) {
+    return false;
+  }
+  if (!part.contains(sep)) {
+    return RegExp(r'^\d+$').hasMatch(part);
+  }
+  final groups = part.split(sep);
+  for (final g in groups) {
+    if (g.isEmpty || !RegExp(r'^\d+$').hasMatch(g)) {
+      return false;
+    }
+  }
+  if (!RegExp(r'^\d{1,3}$').hasMatch(groups.first)) {
+    return false;
+  }
+  for (var i = 1; i < groups.length; i++) {
+    if (groups[i].length != 3) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/// 桁区切りと小数点を `.` 小数に正規化。千の位が不正なら null（書き換えない）。
 String? _heuristicNormalizeSeparatorsToDot(String s) {
   final commaCount = ','.allMatches(s).length;
   final dotCount = '.'.allMatches(s).length;
 
   if (commaCount == 0 && dotCount == 0) {
-    return s;
+    return RegExp(r'^\d+$').hasMatch(s) ? s : null;
   }
+
+  // 単一 `.` → `1.234` 型は欧州の千区切り（整数）、それ以外は米式小数
   if (commaCount == 0 && dotCount == 1) {
+    final idx = s.indexOf('.');
+    final intPart = s.substring(0, idx);
+    final frac = s.substring(idx + 1);
+    if (intPart.isEmpty && frac.isEmpty) {
+      return null;
+    }
+    if (!RegExp(r'^\d*$').hasMatch(intPart) || !RegExp(r'^\d*$').hasMatch(frac)) {
+      return null;
+    }
+    if (intPart.isEmpty) {
+      return null;
+    }
+    if (frac.length == 3 &&
+        RegExp(r'^\d{3}$').hasMatch(frac) &&
+        RegExp(r'^[1-9]\d{0,2}$').hasMatch(intPart)) {
+      return '$intPart$frac';
+    }
     return s;
   }
-  if (commaCount == 1 && dotCount == 0) {
-    final afterComma = s.substring(s.indexOf(',') + 1);
-    if (afterComma.length == 3 && RegExp(r'^\d{3}$').hasMatch(afterComma)) {
-      return s.replaceAll(',', '');
-    }
-    return s.replaceFirst(',', '.');
-  }
+
+  // カンマのみ複数 → 千の位がすべて有効なときだけ桁を落とす
   if (commaCount > 1 && dotCount == 0) {
+    if (!_validThousandGroups(s, ',')) {
+      return null;
+    }
     return s.replaceAll(',', '');
   }
+
+  // ドットのみ複数 → 欧州式整数（小数点はカンマ側）。最後の `.` を小数にしない。
   if (commaCount == 0 && dotCount > 1) {
-    final lastDot = s.lastIndexOf('.');
-    final intPart = s.substring(0, lastDot).replaceAll('.', '');
-    final frac = s.substring(lastDot + 1);
-    if (frac.isEmpty) {
-      return intPart;
+    if (!_validThousandGroups(s, '.')) {
+      return null;
     }
-    return '$intPart.$frac';
+    return s.replaceAll('.', '');
   }
+
+  // カンマ1つのみ
+  if (commaCount == 1 && dotCount == 0) {
+    final idx = s.indexOf(',');
+    final before = s.substring(0, idx);
+    final after = s.substring(idx + 1);
+    if (!RegExp(r'^\d+$').hasMatch(before) ||
+        after.isEmpty ||
+        !RegExp(r'^\d+$').hasMatch(after)) {
+      return null;
+    }
+    if (after.length <= 2) {
+      return '$before.$after';
+    }
+    if (after.length == 3) {
+      if (_validThousandGroups(s, ',')) {
+        return s.replaceAll(',', '');
+      }
+      return null;
+    }
+    return null;
+  }
+
+  // カンマとドットの両方
   if (commaCount >= 1 && dotCount >= 1) {
     final lastC = s.lastIndexOf(',');
     final lastD = s.lastIndexOf('.');
     if (lastC > lastD) {
-      final intPart =
-          s.substring(0, lastC).replaceAll('.', '').replaceAll(',', '');
+      final intPart = s.substring(0, lastC);
       final frac = s.substring(lastC + 1);
-      if (frac.isEmpty) {
-        return intPart;
+      if (!_validThousandGroups(intPart, '.')) {
+        return null;
       }
-      return '$intPart.$frac';
+      if (!RegExp(r'^\d*$').hasMatch(frac)) {
+        return null;
+      }
+      final digits = intPart.replaceAll('.', '');
+      if (frac.isEmpty) {
+        return digits;
+      }
+      return '$digits.$frac';
     }
-    final intPart = s.substring(0, lastD).replaceAll(',', '');
+    final intPart = s.substring(0, lastD);
     final frac = s.substring(lastD + 1);
-    if (frac.isEmpty) {
-      return intPart;
+    if (!_validThousandGroups(intPart, ',')) {
+      return null;
     }
-    return '$intPart.$frac';
+    if (!RegExp(r'^\d*$').hasMatch(frac)) {
+      return null;
+    }
+    final digits = intPart.replaceAll(',', '');
+    if (frac.isEmpty) {
+      return digits;
+    }
+    return '$digits.$frac';
   }
+
   return null;
 }
 
@@ -560,21 +644,34 @@ bool _fractionScaleInvalidForDouble(double value, String currencyCode) {
   return value != double.parse(value.toStringAsFixed(2));
 }
 
+/// `1.234` を千単位と解釈する曖昧ケース（米 intl は小数 1.234 になり得る）。
+bool _isSingleDotEuThousandsAmbiguity(String s) {
+  if (s.contains(',') || '.'.allMatches(s).length != 1) {
+    return false;
+  }
+  final idx = s.indexOf('.');
+  final before = s.substring(0, idx);
+  final after = s.substring(idx + 1);
+  return after.length == 3 &&
+      RegExp(r'^\d{3}$').hasMatch(after) &&
+      RegExp(r'^[1-9]\d{0,2}$').hasMatch(before);
+}
+
 /// intl とヒューリスティックが食い違うとき、後者を優先してよいパターン。
-/// - `12,50` のような欧州式小数（英語 intl は 1250 になり得る）
-/// - `1,234` のような英語式千区切り（独語 intl は 1.234 になり得る）
+/// - `12,50` / `1,234`（カンマ1つ）
+/// - `1.234`（ドット1つ・欧州千区切り）
 bool _trustHeuristicOverIntlDisagreement(String s) {
-  if (','.allMatches(s).length != 1 || s.contains('.')) {
-    return false;
+  if (','.allMatches(s).length == 1 && !s.contains('.')) {
+    final after = s.substring(s.indexOf(',') + 1);
+    if (!RegExp(r'^\d+$').hasMatch(after)) {
+      return false;
+    }
+    if (after.length <= 2) {
+      return true;
+    }
+    return after.length == 3;
   }
-  final after = s.substring(s.indexOf(',') + 1);
-  if (!RegExp(r'^\d+$').hasMatch(after)) {
-    return false;
-  }
-  if (after.length <= 2) {
-    return true;
-  }
-  return after.length == 3;
+  return _isSingleDotEuThousandsAmbiguity(s);
 }
 
 /// カンマ除去後の [normalized]（`.` が小数点）が通貨の許容桁を超えていれば true。
@@ -660,7 +757,9 @@ PostPriceParseResult parsePostPriceInput({
   final loc = locale ?? ui.PlatformDispatcher.instance.locale;
   final s =
       trimmed.replaceAll(RegExp(r'[\s\u00A0\u202F]'), ''); // space, NBSP, NNBSP
-  if (s.isEmpty || !RegExp(r'^[0-9.,]+$').hasMatch(s)) {
+  if (s.isEmpty ||
+      !RegExp(r'^[0-9.,]+$').hasMatch(s) ||
+      !RegExp(r'^[0-9]').hasMatch(s)) {
     return const PostPriceParseResult.invalid();
   }
 
