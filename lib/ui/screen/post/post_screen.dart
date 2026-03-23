@@ -11,7 +11,6 @@ import 'package:food_gram_app/core/theme/style/post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
-import 'package:food_gram_app/ui/component/app_post_price_field.dart';
 import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
@@ -282,7 +281,7 @@ class PostScreen extends HookConsumerWidget {
                           .read(postViewModelProvider().notifier)
                           .foodController,
                     ),
-                    const Gap(12),
+                    const Gap(8),
                     Builder(
                       builder: (context) {
                         final scheme = Theme.of(context).colorScheme;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
+import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 
@@ -463,6 +464,167 @@ class AppUserNameTextField extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// 投稿・編集で共通。アイコン＋金額入力＋通貨ピッカー（Bottom sheet）。
+class AppPostPriceInputRow extends StatelessWidget {
+  const AppPostPriceInputRow({
+    required this.controller,
+    required this.currencyCode,
+    required this.onCurrencyChanged,
+    super.key,
+  });
+
+  final TextEditingController controller;
+  final String currencyCode;
+  final ValueChanged<String> onCurrencyChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final t = Translations.of(context);
+    final code = currencyCode.isEmpty
+        ? defaultPostPriceCurrencyFromPlatform()
+        : currencyCode;
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Gap(5),
+          Icon(
+            Icons.payments,
+            color: scheme.onSurface,
+            size: 28,
+          ),
+          const Gap(10),
+          Expanded(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: scheme.surface,
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: scheme.outlineVariant),
+              ),
+              child: TextField(
+                controller: controller,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
+                ],
+                contextMenuBuilder: (context, state) {
+                  if (SystemContextMenu.isSupported(context)) {
+                    return SystemContextMenu.editableText(
+                      editableTextState: state,
+                    );
+                  }
+                  return AdaptiveTextSelectionToolbar.editableText(
+                    editableTextState: state,
+                  );
+                },
+                selectionHeightStyle: BoxHeightStyle.strut,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 12,
+                  ),
+                  hintText: t.post.priceHint,
+                  hintStyle: TextStyle(
+                    color: scheme.onSurfaceVariant,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                autocorrect: false,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: scheme.onSurface,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+          ),
+          const Gap(8),
+          Material(
+            color: scheme.surface,
+            borderRadius: BorderRadius.circular(6),
+            child: InkWell(
+              onTap: () {
+                primaryFocus?.unfocus();
+                _openCurrencySheet(context, code);
+              },
+              borderRadius: BorderRadius.circular(6),
+              child: Container(
+                width: 88,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: scheme.outlineVariant),
+                ),
+                child: Text(
+                  code,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: scheme.onSurface,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _openCurrencySheet(BuildContext context, String selected) {
+    final t = Translations.of(context);
+    final theme = Theme.of(context);
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      backgroundColor: theme.brightness == Brightness.light
+          ? Colors.white
+          : theme.colorScheme.surface,
+      builder: (sheetContext) {
+        return SafeArea(
+          child: ListView.builder(
+            itemCount: kSupportedPostPriceCurrencies.length + 1,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                  child: Text(
+                    t.post.selectCurrency,
+                    style: Theme.of(sheetContext).textTheme.titleMedium,
+                  ),
+                );
+              }
+              final c = kSupportedPostPriceCurrencies[index - 1];
+              final sym = postPriceCurrencySymbol(c);
+              return ListTile(
+                title: Text('$sym  $c'),
+                trailing: c == selected
+                    ? Icon(
+                        Icons.check,
+                        color: Theme.of(context).colorScheme.primary,
+                      )
+                    : null,
+                onTap: () {
+                  onCurrencyChanged(c);
+                  Navigator.of(sheetContext).pop();
+                },
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
