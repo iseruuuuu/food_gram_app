@@ -162,7 +162,6 @@ class PostDetailListItem extends HookConsumerWidget {
                         final imageUrl = supabase.storage
                             .from('food')
                             .getPublicUrl(imagePath);
-
                         return GestureDetector(
                           onTap: () {
                             showPhotoViewer(
@@ -213,30 +212,9 @@ class PostDetailListItem extends HookConsumerWidget {
                                       : 0);
                             }
                           },
-                          child: Container(
+                          child: SizedBox(
                             width: deviceWidth,
                             height: deviceWidth,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                              borderRadius: BorderRadius.zero,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.3),
-                                  blurRadius: 24,
-                                  offset: const Offset(0, 12),
-                                ),
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.2),
-                                  blurRadius: 12,
-                                  offset: const Offset(0, 6),
-                                ),
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.1),
-                                  blurRadius: 6,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                            ),
                             child: ClipRRect(
                               child: Stack(
                                 children: [
