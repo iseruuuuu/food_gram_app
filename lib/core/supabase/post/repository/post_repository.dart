@@ -34,6 +34,8 @@ class PostRepository extends _$PostRepository {
     required String foodTag,
     required double star,
     required bool isAnonymous,
+    double? priceAmount,
+    String? priceCurrency,
   }) async {
     try {
       final result = await _postService.createPost(
@@ -47,6 +49,8 @@ class PostRepository extends _$PostRepository {
         foodTag: foodTag,
         star: star,
         isAnonymous: isAnonymous,
+        priceAmount: priceAmount,
+        priceCurrency: priceCurrency,
       );
       if (result is Success) {
         // キャッシュの無効化
@@ -76,6 +80,8 @@ class PostRepository extends _$PostRepository {
     required List<String> newImagePaths,
     required Map<String, Uint8List> imageBytesMap,
     required List<String> existingImagePaths,
+    double? priceAmount,
+    String? priceCurrency,
   }) async {
     try {
       final result = await _postService.updatePost(
@@ -91,6 +97,8 @@ class PostRepository extends _$PostRepository {
         newImagePaths: newImagePaths,
         imageBytesMap: imageBytesMap,
         existingImagePaths: existingImagePaths,
+        priceAmount: priceAmount,
+        priceCurrency: priceCurrency,
       );
       if (result is Success) {
         // キャッシュの無効化
