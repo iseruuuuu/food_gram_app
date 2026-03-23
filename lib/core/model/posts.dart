@@ -1,3 +1,4 @@
+import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'posts.freezed.dart';
@@ -19,6 +20,8 @@ abstract class Posts with _$Posts {
     @JsonKey(defaultValue: 0.0) required double star,
     required String foodTag,
     required bool isAnonymous,
+    @JsonKey(fromJson: nullableDoubleFromJson) double? priceAmount,
+    String? priceCurrency,
   }) = _Posts;
 
   factory Posts.fromJson(Map<String, dynamic> json) => _$PostsFromJson(json);
@@ -37,5 +40,15 @@ extension PostsExtension on Posts {
   String get firstFoodImage {
     final images = foodImageList;
     return images.isNotEmpty ? images.first : '';
+  }
+
+  /// 参考価格の表示文字列。未設定なら空。
+  String get formattedPriceDisplay {
+    final amount = priceAmount;
+    final code = priceCurrency?.trim();
+    if (amount == null || code == null || code.isEmpty) {
+      return '';
+    }
+    return formatPostPriceDisplay(amount: amount, currencyCode: code);
   }
 }
