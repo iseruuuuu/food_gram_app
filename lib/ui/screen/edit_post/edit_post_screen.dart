@@ -9,10 +9,12 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/theme/style/edit_post_style.dart';
+import 'package:food_gram_app/core/theme/style/post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/app_post_price_field.dart';
 import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
@@ -53,6 +55,8 @@ class EditPostScreen extends HookConsumerWidget {
     final isAnonymous =
         ref.watch(editPostViewModelProvider().select((s) => s.isAnonymous));
     final star = ref.watch(editPostViewModelProvider().select((s) => s.star));
+    final priceCurrency =
+        ref.watch(editPostViewModelProvider().select((s) => s.priceCurrency));
     final viewModel = ref.watch(editPostViewModelProvider().notifier);
     final foodTags = useState<List<String>>(
       posts.foodTag.isNotEmpty ? posts.foodTag.split(',') : [],
@@ -505,7 +509,12 @@ class EditPostScreen extends HookConsumerWidget {
                         );
                       },
                     ),
-                    const Gap(6),
+                    const Gap(12),
+                    Text(
+                      t.post.optionalExtrasTitle,
+                      style: PostStyle.categoryTitle(context),
+                    ),
+                    const Gap(12),
                     Builder(
                       builder: (context) {
                         final scheme = Theme.of(context).colorScheme;
@@ -535,10 +544,20 @@ class EditPostScreen extends HookConsumerWidget {
                         );
                       },
                     ),
-                    const Gap(6),
+                    const Gap(8),
+                    AppPostPriceInputRow(
+                      controller: viewModel.priceController,
+                      currencyCode: priceCurrency,
+                      onCurrencyChanged: (code) {
+                        ref
+                            .read(editPostViewModelProvider().notifier)
+                            .setPriceCurrency(code);
+                      },
+                    ),
+                    const Gap(12),
                     Text(
                       t.post.ratingLabel,
-                      style: EditPostStyle.category(context),
+                      style: PostStyle.categoryTitle(context),
                     ),
                     const Gap(6),
                     Padding(
@@ -712,6 +731,8 @@ class EditPostScreen extends HookConsumerWidget {
         return '';
       case EditStatus.maybeNotFood:
         return Translations.of(context).maybeNotFoodDialog.title;
+      case EditStatus.invalidPrice:
+        return Translations.of(context).post.priceInvalid;
     }
   }
 }
