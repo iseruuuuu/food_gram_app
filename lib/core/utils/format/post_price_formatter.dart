@@ -173,7 +173,6 @@ const Map<String, String> _kCurrencySymbols = {
   'UGX': 'USh',
   'USD': r'$',
   'UYU': r'$U',
-  'UZS': 'лв',
   'VES': 'Bs.',
   'VND': '₫',
   'VUV': 'Vt',
@@ -451,6 +450,36 @@ String _formatThousandsInt(int n) {
   return n < 0 ? '-$core' : core;
 }
 
+/// 保存・表示で同じ桁になるよう [amount] を丸める。
+double _canonicalPostPriceAmount(double amount, String currencyCode) {
+  final code = currencyCode.toUpperCase();
+  if (_isIntegerStyleCurrency(code)) {
+    return amount.roundToDouble();
+  }
+  return double.parse(amount.toStringAsFixed(2));
+}
+
+/// カンマ除去後の [normalized]（`.` が小数点）が通貨の許容桁を超えていれば true。
+bool _hasDisallowedFractionalScale(String normalized, String currencyCode) {
+  final code = currencyCode.toUpperCase();
+  final dot = normalized.indexOf('.');
+  if (dot < 0) {
+    return false;
+  }
+  final frac = normalized.substring(dot + 1);
+  if (_isIntegerStyleCurrency(code)) {
+    if (frac.isEmpty) {
+      return false;
+    }
+    final v = int.tryParse(frac);
+    if (v == null) {
+      return true;
+    }
+    return v != 0;
+  }
+  return frac.length > 2;
+}
+
 /// 表示用（例: ¥1,200 / $15 / €10）。換算はしない。
 String formatPostPriceDisplay({
   required double amount,
@@ -458,10 +487,11 @@ String formatPostPriceDisplay({
 }) {
   final code = currencyCode.toUpperCase();
   final sym = postPriceCurrencySymbol(code);
+  final a = _canonicalPostPriceAmount(amount, code);
   if (_isIntegerStyleCurrency(code)) {
-    return '$sym${_formatThousandsInt(amount.round())}';
+    return '$sym${_formatThousandsInt(a.round())}';
   }
-  var s = amount.toStringAsFixed(2);
+  var s = a.toStringAsFixed(2);
   if (s.endsWith('.00')) {
     s = s.substring(0, s.length - 3);
   } else {
@@ -507,27 +537,36 @@ PostPriceParseResult parsePostPriceInput({
   if (trimmed.isEmpty) {
     return const PostPriceParseResult.empty();
   }
+  final code = currencyCode.toUpperCase();
   final normalized = trimmed.replaceAll(',', '');
+  if (_hasDisallowedFractionalScale(normalized, code)) {
+    return const PostPriceParseResult.invalid();
+  }
   final value = double.tryParse(normalized);
   if (value == null || value < 0 || value > 999999999) {
     return const PostPriceParseResult.invalid();
   }
+  final canonical = _canonicalPostPriceAmount(value, code);
+  if (canonical != value) {
+    return const PostPriceParseResult.invalid();
+  }
   return PostPriceParseResult.value(
-    amount: value,
-    currency: currencyCode.toUpperCase(),
+    amount: canonical,
+    currency: code,
   );
 }
 
-/// 編集画面の初期表示用（桁はそのまま、小数は末尾ゼロを落とす程度）
+/// 編集画面の初期表示用（保存・一覧表示と同じ桁に揃える）
 String formatPostPriceForEditing(double? amount, String? currencyCode) {
   if (amount == null) {
     return '';
   }
   final code = (currencyCode ?? 'JPY').toUpperCase();
+  final a = _canonicalPostPriceAmount(amount, code);
   if (_isIntegerStyleCurrency(code)) {
-    return amount.round().toString();
+    return a.round().toString();
   }
-  final s = amount.toStringAsFixed(2);
+  final s = a.toStringAsFixed(2);
   if (s.endsWith('.00')) {
     return s.substring(0, s.length - 3);
   }
