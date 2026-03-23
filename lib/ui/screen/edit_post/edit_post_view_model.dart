@@ -93,6 +93,7 @@ class EditPostViewModel extends _$EditPostViewModel {
 
   Future<bool> update({
     required String foodTag,
+    Locale? locale,
   }) async {
     primaryFocus?.unfocus();
     loading.state = true;
@@ -108,6 +109,7 @@ class EditPostViewModel extends _$EditPostViewModel {
     final parsed = parsePostPriceInput(
       rawAmount: _priceController.text,
       currencyCode: currency,
+      locale: locale,
     );
     if (parsed.isInvalid) {
       loading.state = false;

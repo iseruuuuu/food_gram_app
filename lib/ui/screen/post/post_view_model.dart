@@ -72,6 +72,7 @@ class PostViewModel extends _$PostViewModel {
 
   Future<bool> post({
     required String foodTag,
+    Locale? locale,
   }) async {
     primaryFocus?.unfocus();
     loading.state = true;
@@ -86,6 +87,7 @@ class PostViewModel extends _$PostViewModel {
     final parsed = parsePostPriceInput(
       rawAmount: _priceController.text,
       currencyCode: currency,
+      locale: locale,
     );
     if (parsed.isInvalid) {
       loading.state = false;

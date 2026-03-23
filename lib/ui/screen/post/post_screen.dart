@@ -517,6 +517,7 @@ class PostScreen extends HookConsumerWidget {
                       final result =
                           await ref.read(postViewModelProvider().notifier).post(
                                 foodTag: foodTagString,
+                                locale: Localizations.localeOf(context),
                               );
                       if (result) {
                         // ストリークを更新
@@ -554,10 +555,12 @@ class PostScreen extends HookConsumerWidget {
                           context.pop(true);
                         }
                       } else {
+                        final latestStatus =
+                            ref.read(postViewModelProvider()).status;
                         SnackBarHelper().openErrorSnackBar(
                           context,
                           t.post.error,
-                          _getLocalizedStatus(context, postState.status),
+                          _getLocalizedStatus(context, latestStatus),
                         );
                       }
                     },

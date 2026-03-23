@@ -664,6 +664,7 @@ class EditPostScreen extends HookConsumerWidget {
                           .read(editPostViewModelProvider().notifier)
                           .update(
                             foodTag: foodTagString,
+                            locale: Localizations.localeOf(context),
                           );
                       if (isSuccess) {
                         while (loading) {
@@ -677,10 +678,12 @@ class EditPostScreen extends HookConsumerWidget {
                           context.pop(updatePosts);
                         }
                       } else {
+                        final latestStatus =
+                            ref.read(editPostViewModelProvider()).status;
                         SnackBarHelper().openErrorSnackBar(
                           context,
                           t.post.error,
-                          _getLocalizedStatus(context, status),
+                          _getLocalizedStatus(context, latestStatus),
                         );
                       }
                     },
