@@ -9,6 +9,7 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
+import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/vision/food_image_labeler.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -36,6 +37,7 @@ class EditPostViewModel extends _$EditPostViewModel {
   // コントローラーとプロパティ
   final _foodController = TextEditingController();
   final _commentController = TextEditingController();
+  final _priceController = TextEditingController();
   final _picker = ImagePicker();
   final Map<String, Uint8List> _imageBytesMap = {};
   late Posts _posts;
@@ -43,6 +45,8 @@ class EditPostViewModel extends _$EditPostViewModel {
   TextEditingController get foodController => _foodController;
 
   TextEditingController get commentController => _commentController;
+
+  TextEditingController get priceController => _priceController;
 
   Loading get loading => ref.read(loadingProvider.notifier);
 
@@ -53,6 +57,7 @@ class EditPostViewModel extends _$EditPostViewModel {
     ref.onDispose(() {
       _foodController.dispose();
       _commentController.dispose();
+      _priceController.dispose();
       _imageBytesMap.clear();
     });
     return initState ?? const EditPostState();
@@ -66,10 +71,13 @@ class EditPostViewModel extends _$EditPostViewModel {
     _posts = posts;
     _foodController.text = posts.foodName;
     _commentController.text = posts.comment;
+    _priceController.text =
+        formatPostPriceForEditing(posts.priceAmount, posts.priceCurrency);
     // 既存の画像パスをカンマ区切りからリストに変換
     final existingImages = posts.foodImage.isNotEmpty
         ? posts.foodImage.split(',').where((path) => path.isNotEmpty).toList()
         : <String>[];
+    final currency = posts.priceCurrency?.trim();
     state = state.copyWith(
       restaurant: posts.restaurant,
       lat: posts.lat,
@@ -77,11 +85,15 @@ class EditPostViewModel extends _$EditPostViewModel {
       star: posts.star,
       isAnonymous: posts.isAnonymous,
       existingImagePaths: existingImages,
+      priceCurrency: (currency != null && currency.isNotEmpty)
+          ? currency.toUpperCase()
+          : defaultPostPriceCurrencyFromPlatform(),
     );
   }
 
   Future<bool> update({
     required String foodTag,
+    Locale? locale,
   }) async {
     primaryFocus?.unfocus();
     loading.state = true;
@@ -91,8 +103,21 @@ class EditPostViewModel extends _$EditPostViewModel {
       state = state.copyWith(status: EditStatus.missingInfo.name);
       return false;
     }
+    final currency = state.priceCurrency.isEmpty
+        ? defaultPostPriceCurrencyFromPlatform()
+        : state.priceCurrency;
+    final parsed = parsePostPriceInput(
+      rawAmount: _priceController.text,
+      currencyCode: currency,
+      locale: locale,
+    );
+    if (parsed.isInvalid) {
+      loading.state = false;
+      state = state.copyWith(status: EditStatus.invalidPrice.name);
+      return false;
+    }
     try {
-      await _updatePost(foodTag);
+      await _updatePost(foodTag, parsed);
       if (state.isSuccess) {
         _imageBytesMap.clear();
       }
@@ -114,7 +139,10 @@ class EditPostViewModel extends _$EditPostViewModel {
     return _pickMultiImage(context, EditStatus.albumPermission.name);
   }
 
-  Future<void> _updatePost(String foodTag) async {
+  Future<void> _updatePost(
+    String foodTag,
+    PostPriceParseResult priceParse,
+  ) async {
     final result = await ref.read(postServiceProvider.notifier).updatePost(
           posts: _posts,
           foodName: _foodController.text,
@@ -128,6 +156,8 @@ class EditPostViewModel extends _$EditPostViewModel {
           newImagePaths: state.foodImages,
           imageBytesMap: _imageBytesMap,
           existingImagePaths: state.existingImagePaths,
+          priceAmount: priceParse.isEmpty ? null : priceParse.amount,
+          priceCurrency: priceParse.isEmpty ? null : priceParse.currency,
         );
 
     await result.when(
@@ -293,6 +323,10 @@ class EditPostViewModel extends _$EditPostViewModel {
     state = state.copyWith(isAnonymous: value);
   }
 
+  void setPriceCurrency(String code) {
+    state = state.copyWith(priceCurrency: code.toUpperCase());
+  }
+
   void resetStatus() {
     state = state.copyWith(status: EditStatus.initial.name);
   }
@@ -311,4 +345,5 @@ enum EditStatus {
   loading,
   initial,
   maybeNotFood,
+  invalidPrice,
 }

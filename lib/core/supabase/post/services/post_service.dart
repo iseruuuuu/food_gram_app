@@ -31,6 +31,8 @@ class PostService extends _$PostService {
     required String foodTag,
     required double star,
     required bool isAnonymous,
+    double? priceAmount,
+    String? priceCurrency,
   }) async {
     try {
       // 複数画像をアップロード
@@ -69,6 +71,10 @@ class PostService extends _$PostService {
         'star': star,
         'is_anonymous': isAnonymous,
       };
+      if (priceAmount != null) {
+        post['price_amount'] = priceAmount;
+        post['price_currency'] = priceCurrency ?? 'JPY';
+      }
 
       // 投稿の insert は Edge Function 経由で行う
       final res = await supabase.functions.invoke(
@@ -109,6 +115,8 @@ class PostService extends _$PostService {
     required List<String> newImagePaths,
     required Map<String, Uint8List> imageBytesMap,
     required List<String> existingImagePaths,
+    double? priceAmount,
+    String? priceCurrency,
   }) async {
     try {
       // 変更がある場合は更新用のマップを作成
@@ -122,6 +130,8 @@ class PostService extends _$PostService {
         'lng': lng,
         'star': star,
         'is_anonymous': isAnonymous,
+        'price_amount': priceAmount,
+        'price_currency': priceCurrency,
       };
 
       // 新しい画像をアップロード

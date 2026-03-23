@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
+import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/vision/food_image_labeler.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -24,6 +25,7 @@ class PostViewModel extends _$PostViewModel {
 
   late final TextEditingController _foodController;
   late final TextEditingController _commentController;
+  late final TextEditingController _priceController;
   final _picker = ImagePicker();
   final Map<String, Uint8List> _imageBytesMap = {};
   final logger = Logger();
@@ -34,6 +36,8 @@ class PostViewModel extends _$PostViewModel {
 
   TextEditingController get commentController => _commentController;
 
+  TextEditingController get priceController => _priceController;
+
   Loading get loading => ref.read(loadingProvider.notifier);
 
   Map<String, Uint8List> get imageBytesMap => _imageBytesMap;
@@ -41,16 +45,23 @@ class PostViewModel extends _$PostViewModel {
   @override
   PostState build({PostState initState = const PostState()}) {
     _initializeControllers();
-    return initState;
+    final withCurrency = initState.priceCurrency.isEmpty
+        ? initState.copyWith(
+            priceCurrency: defaultPostPriceCurrencyFromPlatform(),
+          )
+        : initState;
+    return withCurrency;
   }
 
   void _initializeControllers() {
     _foodController = TextEditingController();
     _commentController = TextEditingController();
+    _priceController = TextEditingController();
 
     ref.onDispose(() {
       _foodController.dispose();
       _commentController.dispose();
+      _priceController.dispose();
       if (!(_maybeNotFoodCompleter?.isCompleted ?? true)) {
         _maybeNotFoodCompleter!.complete();
       }
@@ -61,6 +72,7 @@ class PostViewModel extends _$PostViewModel {
 
   Future<bool> post({
     required String foodTag,
+    Locale? locale,
   }) async {
     primaryFocus?.unfocus();
     loading.state = true;
@@ -69,7 +81,20 @@ class PostViewModel extends _$PostViewModel {
       loading.state = false;
       return false;
     }
-    await _submitPost(foodTag);
+    final currency = state.priceCurrency.isEmpty
+        ? defaultPostPriceCurrencyFromPlatform()
+        : state.priceCurrency;
+    final parsed = parsePostPriceInput(
+      rawAmount: _priceController.text,
+      currencyCode: currency,
+      locale: locale,
+    );
+    if (parsed.isInvalid) {
+      loading.state = false;
+      state = state.copyWith(status: PostStatus.invalidPrice.name);
+      return false;
+    }
+    await _submitPost(foodTag, parsed);
     if (state.isSuccess) {
       _imageBytesMap.clear();
     }
@@ -100,7 +125,10 @@ class PostViewModel extends _$PostViewModel {
     _updateRestaurantState(restaurant);
   }
 
-  Future<void> _submitPost(String foodTag) async {
+  Future<void> _submitPost(
+    String foodTag,
+    PostPriceParseResult priceParse,
+  ) async {
     final result = await ref.read(postRepositoryProvider.notifier).createPost(
           foodName: foodController.text,
           comment: commentController.text,
@@ -112,6 +140,8 @@ class PostViewModel extends _$PostViewModel {
           foodTag: foodTag,
           star: state.star,
           isAnonymous: state.isAnonymous,
+          priceAmount: priceParse.isEmpty ? null : priceParse.amount,
+          priceCurrency: priceParse.isEmpty ? null : priceParse.currency,
         );
     await result.when(
       success: (_) async {
@@ -272,6 +302,10 @@ class PostViewModel extends _$PostViewModel {
     state = state.copyWith(star: value);
   }
 
+  void setPriceCurrency(String code) {
+    state = state.copyWith(priceCurrency: code.toUpperCase());
+  }
+
   void resetStatus() {
     state = state.copyWith(status: PostStatus.initial.name);
     _maybeNotFoodCompleter?.complete();
@@ -292,4 +326,5 @@ enum PostStatus {
   missingFoodName,
   missingRestaurant,
   maybeNotFood,
+  invalidPrice,
 }

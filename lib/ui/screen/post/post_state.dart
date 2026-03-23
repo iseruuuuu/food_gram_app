@@ -13,5 +13,6 @@ class PostState with _$PostState {
     @Default(0.0) double lng,
     @Default(0.0) double star,
     @Default(false) bool isAnonymous,
+    @Default('') String priceCurrency,
   }) = _PostState;
 }

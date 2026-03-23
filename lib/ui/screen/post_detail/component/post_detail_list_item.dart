@@ -162,7 +162,6 @@ class PostDetailListItem extends HookConsumerWidget {
                         final imageUrl = supabase.storage
                             .from('food')
                             .getPublicUrl(imagePath);
-
                         return GestureDetector(
                           onTap: () {
                             showPhotoViewer(
@@ -213,30 +212,9 @@ class PostDetailListItem extends HookConsumerWidget {
                                       : 0);
                             }
                           },
-                          child: Container(
+                          child: SizedBox(
                             width: deviceWidth,
                             height: deviceWidth,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                              borderRadius: BorderRadius.zero,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.3),
-                                  blurRadius: 24,
-                                  offset: const Offset(0, 12),
-                                ),
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.2),
-                                  blurRadius: 12,
-                                  offset: const Offset(0, 6),
-                                ),
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.1),
-                                  blurRadius: 6,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                            ),
                             child: ClipRRect(
                               child: Stack(
                                 children: [
@@ -391,21 +369,6 @@ class PostDetailListItem extends HookConsumerWidget {
                     child: Row(
                       children: [
                         AppDetailElevatedButton(
-                          onPressed: () {
-                            showGeneralDialog(
-                              context: context,
-                              pageBuilder: (_, __, ___) {
-                                return AppShareDialog(
-                                  posts: posts,
-                                  users: users,
-                                );
-                              },
-                            );
-                          },
-                          title: t.detailMenu.share,
-                          icon: Icons.share,
-                        ),
-                        AppDetailElevatedButton(
                           onPressed: () async {
                             final currentPath =
                                 GoRouter.of(context).isCurrentLocation();
@@ -414,7 +377,7 @@ class PostDetailListItem extends HookConsumerWidget {
                             }
                             await context
                                 .pushNamed(
-                                  currentPath,
+                              currentPath,
                               extra: Restaurant(
                                 name: posts.restaurant,
                                 lat: posts.lat,
@@ -433,6 +396,7 @@ class PostDetailListItem extends HookConsumerWidget {
                           title: t.detailMenu.post,
                           icon: Icons.restaurant,
                         ),
+                        const Gap(4),
                         AppDetailElevatedButton(
                           onPressed: () => ref
                               .read(postDetailViewModelProvider().notifier)
@@ -440,6 +404,7 @@ class PostDetailListItem extends HookConsumerWidget {
                           title: t.detailMenu.search,
                           icon: Icons.search,
                         ),
+                        const Gap(4),
                         AppDetailElevatedButton(
                           onPressed: () {
                             ref
@@ -468,72 +433,80 @@ class PostDetailListItem extends HookConsumerWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 4,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Gap(12),
                     AppTranslatableText(
                       posts.foodName,
                       style: DetailPostStyle.foodName(context),
                     ),
                     const Gap(4),
-                    GestureDetector(
-                      onTap: () {
-                        context.pushNamed(
-                          RouterPath.myProfileRestaurantReview,
-                          extra: posts,
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          Expanded(
+                    Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              context.pushNamed(
+                                RouterPath.myProfileRestaurantReview,
+                                extra: posts,
+                              );
+                            },
                             child: Text(
                               'In ${posts.restaurant}',
                               style: DetailPostStyle.restaurant(context),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          if (posts.star > 0) ...[
-                            const Gap(8),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                  size: 28,
-                                ),
-                                const Gap(4),
-                                Text(
-                                  posts.star.toStringAsFixed(1),
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                        Theme.of(context).colorScheme.onSurface,
-                                  ),
-                                ),
-                              ],
+                        ),
+                      ],
+                    ),
+                    const Gap(8),
+                    Row(
+                      children: [
+                        if (posts.formattedPriceDisplay.isNotEmpty) ...[
+                          Text(
+                            posts.formattedPriceDisplay,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
-                          ],
+                          ),
+                          const Spacer(),
                         ],
-                      ),
+                        if (posts.star > 0) ...[
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                                size: 28,
+                              ),
+                              const Gap(4),
+                              Text(
+                                posts.star.toStringAsFixed(1),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ],
                     ),
                     const Gap(8),
                     if (posts.comment.isNotEmpty)
-                      Column(
-                        children: [
-                          AppTranslatableText(
-                            posts.comment,
-                            style: DetailPostStyle.comment(context),
-                          ),
-                          const Gap(12),
-                        ],
+                      AppTranslatableText(
+                        posts.comment,
+                        style: DetailPostStyle.comment(context),
                       ),
-                    const Gap(4),
+                    const Gap(8),
                     Text(
                       '${_formatDateTime(posts.createdAt)} ${t.posted}',
                       style: DetailPostStyle.comment(context),

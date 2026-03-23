@@ -47,6 +47,7 @@ class PostScreen extends HookConsumerWidget {
           restaurant: s.restaurant,
           isAnonymous: s.isAnonymous,
           star: s.star,
+          priceCurrency: s.priceCurrency,
         ),
       ),
     );
@@ -280,7 +281,7 @@ class PostScreen extends HookConsumerWidget {
                           .read(postViewModelProvider().notifier)
                           .foodController,
                     ),
-                    const Gap(12),
+                    const Gap(8),
                     Builder(
                       builder: (context) {
                         final scheme = Theme.of(context).colorScheme;
@@ -358,6 +359,11 @@ class PostScreen extends HookConsumerWidget {
                       },
                     ),
                     const Gap(12),
+                    Text(
+                      t.post.optionalExtrasTitle,
+                      style: PostStyle.categoryTitle(context),
+                    ),
+                    const Gap(12),
                     Builder(
                       builder: (context) {
                         final scheme = Theme.of(context).colorScheme;
@@ -387,7 +393,19 @@ class PostScreen extends HookConsumerWidget {
                         );
                       },
                     ),
-                    const Gap(6),
+                    const Gap(8),
+                    AppPostPriceInputRow(
+                      controller: ref
+                          .read(postViewModelProvider().notifier)
+                          .priceController,
+                      currencyCode: postState.priceCurrency,
+                      onCurrencyChanged: (code) {
+                        ref
+                            .read(postViewModelProvider().notifier)
+                            .setPriceCurrency(code);
+                      },
+                    ),
+                    const Gap(12),
                     Text(
                       t.post.ratingLabel,
                       style: PostStyle.categoryTitle(context),
@@ -499,6 +517,7 @@ class PostScreen extends HookConsumerWidget {
                       final result =
                           await ref.read(postViewModelProvider().notifier).post(
                                 foodTag: foodTagString,
+                                locale: Localizations.localeOf(context),
                               );
                       if (result) {
                         // ストリークを更新
@@ -536,10 +555,12 @@ class PostScreen extends HookConsumerWidget {
                           context.pop(true);
                         }
                       } else {
+                        final latestStatus =
+                            ref.read(postViewModelProvider()).status;
                         SnackBarHelper().openErrorSnackBar(
                           context,
                           t.post.error,
-                          _getLocalizedStatus(context, postState.status),
+                          _getLocalizedStatus(context, latestStatus),
                         );
                       }
                     },
@@ -598,6 +619,8 @@ class PostScreen extends HookConsumerWidget {
         return t.post.missingRestaurant;
       case PostStatus.maybeNotFood:
         return t.maybeNotFoodDialog.title;
+      case PostStatus.invalidPrice:
+        return t.post.priceInvalid;
       case PostStatus.initial:
         return 'Loading...';
     }
