@@ -443,20 +443,24 @@ class PostDetailListItem extends HookConsumerWidget {
                       style: DetailPostStyle.foodName(context),
                     ),
                     const Gap(4),
-                    GestureDetector(
-                      onTap: () {
-                        context.pushNamed(
-                          RouterPath.myProfileRestaurantReview,
-                          extra: posts,
-                        );
-                      },
-                      child: Expanded(
-                        child: Text(
-                          'In ${posts.restaurant}',
-                          style: DetailPostStyle.restaurant(context),
-                          overflow: TextOverflow.ellipsis,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              context.pushNamed(
+                                RouterPath.myProfileRestaurantReview,
+                                extra: posts,
+                              );
+                            },
+                            child: Text(
+                              'In ${posts.restaurant}',
+                              style: DetailPostStyle.restaurant(context),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                     const Gap(8),
                     Row(
