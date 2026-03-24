@@ -30,6 +30,9 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 flutter_ios_podfile_setup
 
 target 'Runner' do
+  # ML Kit（Translate 等）は vendored xcframework 前提。:linkage => :static だと
+  # MLKitTranslate.framework にバイナリが載らず「Framework 'MLKitTranslate' not found」になることがある。
+  # firebase_firestore 未使用のため invertase の Firestore Pod も入れない（Firebase Core/Messaging は static_framework で共存可）。
   use_frameworks!
   use_modular_headers!
 
@@ -56,8 +59,4 @@ post_install do |installer|
       end
     end
   end
-
-  # 既存ワークアラウンド（Firestore frameworks）
-  pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '11.13.0'
-  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
