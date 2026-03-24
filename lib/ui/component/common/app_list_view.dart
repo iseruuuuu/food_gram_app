@@ -153,46 +153,21 @@ class AppListView extends HookConsumerWidget {
                               right: 0,
                               bottom: 0,
                               child: IgnorePointer(
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.vertical(
-                                      bottom: Radius.circular(
-                                        isSubscribed ? 0 : 10,
-                                      ),
-                                    ),
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        Colors.transparent,
-                                        Colors.black.withValues(alpha: 0.72),
-                                      ],
-                                    ),
+                                child: Container(
+                                  color: Colors.black.withValues(alpha: 0.55),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 4,
+                                    vertical: 3,
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                      4,
-                                      14,
-                                      4,
-                                      5,
-                                    ),
-                                    child: Text(
-                                      posts[itemIndex].restaurant,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 9,
-                                        height: 1.1,
-                                        fontWeight: FontWeight.w600,
-                                        shadows: [
-                                          Shadow(
-                                            blurRadius: 3,
-                                            color: Colors.black54,
-                                          ),
-                                        ],
-                                      ),
+                                  child: Text(
+                                    posts[itemIndex].restaurant,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
