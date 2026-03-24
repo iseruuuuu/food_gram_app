@@ -33,18 +33,18 @@ class SettingScreen extends HookConsumerWidget {
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final hasUser = ref.watch(currentUserProvider) != null;
     final t = Translations.of(context);
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(0),
-            child: AppBar(
-              surfaceTintColor: Colors.transparent,
-              forceMaterialTransparency: true,
-              elevation: 0,
-            ),
-          ),
-          body: Column(
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(0),
+        child: AppBar(
+          surfaceTintColor: Colors.transparent,
+          forceMaterialTransparency: true,
+          elevation: 0,
+        ),
+      ),
+      body: Stack(
+        children: [
+          Column(
             children: [
               Expanded(
                 child: SingleChildScrollView(
@@ -300,12 +300,12 @@ class SettingScreen extends HookConsumerWidget {
               const AdmobBanner(id: 'setting'),
             ],
           ),
-        ),
-        AppProcessLoading(
-          loading: loading,
-          status: 'Loading...',
-        ),
-      ],
+          AppProcessLoading(
+            loading: loading,
+            status: 'Loading...',
+          ),
+        ],
+      ),
     );
   }
 }
