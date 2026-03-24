@@ -155,7 +155,7 @@ class AppListView extends HookConsumerWidget {
                               child: Container(
                                 color: Colors.black.withValues(alpha: 0.55),
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 4,
+                                  horizontal: 8,
                                   vertical: 3,
                                 ),
                                 child: Text(
