@@ -81,7 +81,12 @@ class PostDetailScreen extends HookConsumerWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: !(loading || isInitialLoading),
-          surfaceTintColor: Colors.transparent,
+          backgroundColor: Theme.of(context).brightness == Brightness.light
+              ? Colors.white
+              : Theme.of(context).colorScheme.surface,
+          surfaceTintColor: Theme.of(context).brightness == Brightness.light
+              ? Colors.white
+              : Theme.of(context).colorScheme.surface,
           leading: loading || menuLoading.value || isInitialLoading
               ? const SizedBox.shrink()
               : GestureDetector(
