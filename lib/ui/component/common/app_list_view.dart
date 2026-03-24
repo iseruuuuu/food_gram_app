@@ -152,23 +152,21 @@ class AppListView extends HookConsumerWidget {
                               left: 0,
                               right: 0,
                               bottom: 0,
-                              child: IgnorePointer(
-                                child: Container(
-                                  color: Colors.black.withValues(alpha: 0.55),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 4,
-                                    vertical: 3,
-                                  ),
-                                  child: Text(
-                                    posts[itemIndex].restaurant,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                              child: Container(
+                                color: Colors.black.withValues(alpha: 0.55),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 4,
+                                  vertical: 3,
+                                ),
+                                child: Text(
+                                  posts[itemIndex].restaurant,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
