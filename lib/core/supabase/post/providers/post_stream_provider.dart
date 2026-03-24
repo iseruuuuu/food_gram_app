@@ -8,6 +8,39 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'post_stream_provider.g.dart';
 
+final _postsStreamLog = Logger();
+
+/// Realtime が一瞬切れただけで [StreamProvider] が error になりエラー画面に飛ぶのを防ぐ。
+/// 失敗時は指数バックオフで購読し直し、Riverpod にはエラーを流さない（直前の data は維持されやすい）。
+Stream<List<Posts>> _postsStreamWithReconnect({
+  required String categoryName,
+  required Stream<List<Posts>> Function() createStream,
+}) async* {
+  const initialBackoff = Duration(seconds: 1);
+  const maxBackoff = Duration(seconds: 30);
+  var backoff = initialBackoff;
+  while (true) {
+    try {
+      await for (final posts in createStream()) {
+        backoff = initialBackoff;
+        yield posts;
+      }
+      return;
+    } on Object catch (err, st) {
+      _postsStreamLog.e(
+        'postsStream error (category: "$categoryName"), '
+        'reconnecting in ${backoff.inSeconds}s',
+        error: err,
+        stackTrace: st,
+      );
+      await Future<void>.delayed(backoff);
+      final nextSeconds =
+          (backoff.inSeconds * 2).clamp(1, maxBackoff.inSeconds);
+      backoff = Duration(seconds: nextSeconds);
+    }
+  }
+}
+
 /// 全取得・カテゴリーごとの取得のためのStreamProvider
 @riverpod
 Stream<List<Posts>> postsStream(
@@ -16,48 +49,48 @@ Stream<List<Posts>> postsStream(
 ) {
   final blockList = ref.watch(blockListProvider).asData?.value ?? [];
   final supabase = ref.read(supabaseProvider);
-  final query =
-      supabase.from('posts').stream(primaryKey: ['id']).order('created_at');
-  final stream = query.asyncMap(
-    (events) {
-      final mapped = <Posts>[];
-      for (final e in events) {
-        try {
-          mapped.add(Posts.fromJson(e));
-        } on Object catch (err, st) {
-          Logger().w(
-            'postsStream: skip invalid post (fromJson failed)',
-            error: err,
-            stackTrace: st,
-          );
+
+  Stream<List<Posts>> createMappedStream() {
+    final query =
+        supabase.from('posts').stream(primaryKey: ['id']).order('created_at');
+    return query.asyncMap(
+      (events) {
+        final mapped = <Posts>[];
+        for (final e in events) {
+          try {
+            mapped.add(Posts.fromJson(e));
+          } on Object catch (err, st) {
+            _postsStreamLog.w(
+              'postsStream: skip invalid post (fromJson failed)',
+              error: err,
+              stackTrace: st,
+            );
+          }
         }
-      }
-      final filtered =
-          mapped.where((post) => !blockList.contains(post.userId)).toList();
-      if (categoryName.isNotEmpty) {
-        final foodEmojis = foodCategory[categoryName];
-        if (foodEmojis == null) {
-          Logger().w(
-            'Unknown category passed to postsStream: "$categoryName". '
-            'No posts will match.',
-          );
+        final filtered =
+            mapped.where((post) => !blockList.contains(post.userId)).toList();
+        if (categoryName.isNotEmpty) {
+          final foodEmojis = foodCategory[categoryName];
+          if (foodEmojis == null) {
+            _postsStreamLog.w(
+              'Unknown category passed to postsStream: "$categoryName". '
+              'No posts will match.',
+            );
+          }
+          final emojis = foodEmojis ?? <String>[];
+          final result =
+              filtered.where((post) => emojis.contains(post.foodTag)).toList();
+          return result;
         }
-        final emojis = foodEmojis ?? <String>[];
-        final result =
-            filtered.where((post) => emojis.contains(post.foodTag)).toList();
-        return result;
-      }
-      return filtered;
-    },
-  );
-  return stream.handleError((Object err, StackTrace st) {
-    Logger().e(
-      'postsStream error (category: "$categoryName")',
-      error: err,
-      stackTrace: st,
+        return filtered;
+      },
     );
-    throw Exception(err.toString());
-  });
+  }
+
+  return _postsStreamWithReconnect(
+    categoryName: categoryName,
+    createStream: createMappedStream,
+  );
 }
 
 /// 自分の投稿の取得のためのStreamProvider
