@@ -147,6 +147,30 @@ class AppListView extends HookConsumerWidget {
                                 ),
                               ),
                             ),
+                          if (posts[itemIndex].restaurant.isNotEmpty)
+                            Positioned(
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              child: Container(
+                                color: Colors.black.withValues(alpha: 0.55),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 3,
+                                ),
+                                child: Text(
+                                  posts[itemIndex].restaurant,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
                           // 複数画像がある場合のアイコン
                           if (hasMultipleImages)
                             Positioned(
