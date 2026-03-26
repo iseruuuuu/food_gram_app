@@ -4,12 +4,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/model/restaurant_group.dart';
-import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_place_search_modal_sheet.dart';
-import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_overview_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -133,63 +130,11 @@ class AppMapPlaceSearchTextField extends ConsumerWidget {
         }
         FocusManager.instance.primaryFocus?.unfocus();
         unawaited(
-          showModalBottomSheet<void>(
+          showMapPlaceSearchModalSheet(
             context: context,
-            isScrollControlled: true,
-            showDragHandle: true,
-            builder: (sheetContext) => SizedBox(
-              height: MediaQuery.of(sheetContext).size.height * 0.8,
-              child: MapPlaceSearchModalSheet(
-                initialQuery: keyword,
-                onRestaurantSelected: (restaurant) async {
-                  final postsResult = await ref
-                      .read(mapPostRepositoryProvider.notifier)
-                      .getRestaurantPosts(
-                        lat: restaurant.lat,
-                        lng: restaurant.lng,
-                      );
-                  final hasPostsOrNull = postsResult.when(
-                    success: (posts) => posts.isNotEmpty,
-                    failure: (_) => null,
-                  );
-                  if (hasPostsOrNull == null) {
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('投稿の取得に失敗しました。もう一度お試しください。'),
-                        ),
-                      );
-                    }
-                    return;
-                  }
-                  final hasPosts = hasPostsOrNull;
-                  await mapController.animateToLatLng(
-                    lat: restaurant.lat,
-                    lng: restaurant.lng,
-                  );
-                  mapController.setNearbySearchCenterFromLatLng(
-                    lat: restaurant.lat,
-                    lng: restaurant.lng,
-                  );
-                  ref.read(mapModalSelectionProvider.notifier).state =
-                      MapModalSelection(
-                    name: restaurant.name,
-                    lat: restaurant.lat,
-                    lng: restaurant.lng,
-                    placeSearchRestaurant: restaurant,
-                  );
-                  // 投稿がある地点ではマーカーは出さない（投稿グリッドで十分なため）
-                  if (hasPosts) {
-                    await mapController.clearSearchResultPin();
-                  } else {
-                    await mapController.setSearchResultPin(
-                      restaurant.lat,
-                      restaurant.lng,
-                    );
-                  }
-                },
-              ),
-            ),
+            ref: ref,
+            keyword: keyword,
+            mapController: mapController,
           ),
         );
       },
