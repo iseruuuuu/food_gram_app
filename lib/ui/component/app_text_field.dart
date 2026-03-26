@@ -100,7 +100,7 @@ class AppSearchTextField extends HookWidget {
                 autocorrect: false,
                 controller: controller,
                 onSubmitted: (_) {
-                  onSubmitted!(controller.text);
+                  onSubmitted?.call(controller.text);
                 },
                 onChanged: (text) {
                   searchText.value = text;
