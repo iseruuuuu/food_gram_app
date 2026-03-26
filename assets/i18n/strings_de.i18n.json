@@ -196,7 +196,9 @@
     "loadingRestaurant": "Restaurant-Informationen werden abgerufen...",
     "visibleAreaMeals": "📍 In diesem Bereich gibt es {count} Gerichte",
     "visibleAreaLoading": "Wird geladen...",
-    "areaPopularLabel": "Hauptgenres"
+    "areaPopularLabel": "Hauptgenres",
+    "noPostsAtPlace": "Hier gibt es noch keine Beiträge. Möchtest du der Erste sein?",
+    "firstPostCta": "Beitrag erstellen"
   },
   "app": {
     "shareTitle": "Teilen",

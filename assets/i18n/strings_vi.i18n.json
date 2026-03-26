@@ -196,7 +196,9 @@
     "loadingRestaurant": "Đang lấy thông tin nhà hàng...",
     "visibleAreaMeals": "📍 Khu vực này có {count} món ăn",
     "visibleAreaLoading": "Đang tải...",
-    "areaPopularLabel": "Thể loại chính"
+    "areaPopularLabel": "Thể loại chính",
+    "noPostsAtPlace": "Chưa có bài đăng tại đây. Bạn muốn là người đầu tiên?",
+    "firstPostCta": "Đăng bài"
   },
   "app": {
     "shareTitle": "Chia sẻ",

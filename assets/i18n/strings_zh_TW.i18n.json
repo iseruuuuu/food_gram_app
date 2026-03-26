@@ -196,7 +196,9 @@
     "loadingRestaurant": "正在取得餐廳資訊...",
     "visibleAreaMeals": "📍 此區域有{count}筆餐點",
     "visibleAreaLoading": "載入中...",
-    "areaPopularLabel": "主要類型"
+    "areaPopularLabel": "主要類型",
+    "noPostsAtPlace": "這裡還沒有貼文，要不要當第一個發文？",
+    "firstPostCta": "發文"
   },
   "app": {
     "shareTitle": "分享",
