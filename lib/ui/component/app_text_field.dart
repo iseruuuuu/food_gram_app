@@ -148,10 +148,21 @@ class AppMapPlaceSearchTextField extends ConsumerWidget {
                         lat: restaurant.lat,
                         lng: restaurant.lng,
                       );
-                  final hasPosts = postsResult.whenOrNull(
-                        success: (posts) => posts.isNotEmpty,
-                      ) ??
-                      false;
+                  final hasPostsOrNull = postsResult.when(
+                    success: (posts) => posts.isNotEmpty,
+                    failure: (_) => null,
+                  );
+                  if (hasPostsOrNull == null) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('投稿の取得に失敗しました。もう一度お試しください。'),
+                        ),
+                      );
+                    }
+                    return;
+                  }
+                  final hasPosts = hasPostsOrNull;
 
                   await mapController.animateToLatLng(
                     lat: restaurant.lat,
