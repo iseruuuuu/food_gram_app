@@ -1,127 +1,143 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/map_place_search_modal_sheet.dart';
+import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 typedef OnSubmitted = void Function(String value);
 
 class AppSearchTextField extends HookWidget {
   const AppSearchTextField({
     required this.onSubmitted,
+    this.initialText = '',
     super.key,
   });
 
   final OnSubmitted? onSubmitted;
+  final String initialText;
 
   @override
   Widget build(BuildContext context) {
-    final searchText = useState('');
-    final scheme = Theme.of(context).colorScheme;
+    final searchText = useState<String>(initialText);
+    final controller = useTextEditingController(text: initialText);
+    useEffect(
+      () {
+        controller.text = initialText;
+        searchText.value = initialText;
+        return null;
+      },
+      [initialText],
+    );
+    const bgColor = Colors.white;
+    const textColor = Colors.black87;
+    const hintColor = Colors.black54;
     return SizedBox(
-      height: 50,
+      height: 48,
       child: Row(
         children: [
           Expanded(
-            child: TextField(
-              contextMenuBuilder: (context, state) {
-                if (SystemContextMenu.isSupported(context)) {
-                  return SystemContextMenu.editableText(
+            child: Material(
+              elevation: 10,
+              shadowColor: Colors.black38,
+              color: Colors.transparent,
+              borderRadius: const BorderRadius.all(Radius.circular(18)),
+              child: TextField(
+                contextMenuBuilder: (context, state) {
+                  if (SystemContextMenu.isSupported(context)) {
+                    return SystemContextMenu.editableText(
+                      editableTextState: state,
+                    );
+                  }
+                  return AdaptiveTextSelectionToolbar.editableText(
                     editableTextState: state,
                   );
-                }
-                return AdaptiveTextSelectionToolbar.editableText(
-                  editableTextState: state,
-                );
-              },
-              selectionHeightStyle: BoxHeightStyle.strut,
-              style: TextStyle(color: scheme.onSurface),
-              decoration: InputDecoration(
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Icon(
-                    Icons.search,
-                    color: scheme.onSurface,
+                },
+                selectionHeightStyle: BoxHeightStyle.strut,
+                textAlignVertical: TextAlignVertical.center,
+                style: const TextStyle(color: textColor),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: bgColor,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 11,
+                    horizontal: 10,
+                  ),
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 3),
+                    child: Icon(Icons.search, color: textColor, size: 24),
+                  ),
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(color: hintColor),
+                  label: Text(Translations.of(context).app.restaurantLabel),
+                  labelStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(color: textColor),
+                  enabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(18)),
+                    borderSide: BorderSide(color: Color(0xFFD0D0D0)),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(18)),
+                    borderSide: BorderSide(color: Color(0xFFD0D0D0)),
                   ),
                 ),
-                hintStyle: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(color: scheme.onSurfaceVariant),
-                label: Text(Translations.of(context).app.restaurantLabel),
-                labelStyle: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(color: scheme.onSurface),
-                enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    bottomLeft: Radius.circular(8),
-                  ),
-                  borderSide: BorderSide(
-                    color: AppTheme.primaryBlue,
-                    width: 2,
-                  ),
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    bottomLeft: Radius.circular(8),
-                  ),
-                  borderSide: BorderSide(
-                    color: AppTheme.primaryBlue,
-                    width: 2,
-                  ),
-                ),
-              ),
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.search,
-              autocorrect: false,
-              onSubmitted: (_) {
-                onSubmitted!(searchText.value);
-              },
-              onChanged: (text) {
-                searchText.value = text;
-              },
-            ),
-          ),
-          SizedBox(
-            height: 50,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                padding: EdgeInsets.zero,
-                foregroundColor: Colors.white,
-                backgroundColor: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.black
-                    : AppTheme.primaryBlue,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(8),
-                    bottomRight: Radius.circular(8),
-                  ),
-                ),
-              ),
-              onPressed: () {
-                primaryFocus?.unfocus();
-                onSubmitted!(searchText.value);
-              },
-              child: Text(
-                Translations.of(context).search.button,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.search,
+                autocorrect: false,
+                controller: controller,
+                onSubmitted: (_) {
+                  onSubmitted?.call(controller.text);
+                },
+                onChanged: (text) {
+                  searchText.value = text;
+                },
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Map 画面用: 検索バー→検索モーダル→タップでカメラ移動 & ModalSheet更新
+class AppMapPlaceSearchTextField extends ConsumerWidget {
+  const AppMapPlaceSearchTextField({
+    required this.mapController,
+    super.key,
+  });
+
+  final MapViewModel mapController;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AppSearchTextField(
+      onSubmitted: (value) async {
+        final keyword = value.trim();
+        if (keyword.isEmpty) {
+          return;
+        }
+        FocusManager.instance.primaryFocus?.unfocus();
+        unawaited(
+          showMapPlaceSearchModalSheet(
+            context: context,
+            ref: ref,
+            keyword: keyword,
+            mapController: mapController,
+          ),
+        );
+      },
     );
   }
 }

@@ -15,8 +15,12 @@ Future<PaginationList<Restaurant>> googleRestaurantServices(
   Ref ref,
   String keyword,
 ) async {
+  final trimmed = keyword.trim();
+  if (trimmed.isEmpty) {
+    return <Restaurant>[];
+  }
   final restaurants = <Restaurant>[];
-  final googleRestaurants = await _search(ref, keyword);
+  final googleRestaurants = await _search(ref, trimmed);
   restaurants.addAll(googleRestaurants);
   return restaurants;
 }

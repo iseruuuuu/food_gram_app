@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
@@ -91,6 +94,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 4, 8, 8),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: Text(
@@ -100,7 +104,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                         fontWeight: FontWeight.bold,
                         color: sheetFg,
                       ),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -123,6 +127,40 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
           postsAsync.when(
             data: (postsByRestaurant) {
               if (postsByRestaurant.isEmpty) {
+                final forNewPost = selection.placeSearchRestaurant;
+                if (forNewPost != null) {
+                  final t = Translations.of(context);
+                  return SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                      child: Column(
+                        children: [
+                          Text(
+                            t.map.noPostsAtPlace,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15,
+                              height: 1.45,
+                              color: sheetFg,
+                            ),
+                          ),
+                          const SizedBox(height: 18),
+                          FilledButton(
+                            onPressed: () {
+                              unawaited(
+                                context.pushNamed(
+                                  RouterPath.mapDetailPost,
+                                  extra: forNewPost,
+                                ),
+                              );
+                            },
+                            child: Text(t.map.firstPostCta),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
                 return const SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.all(24),

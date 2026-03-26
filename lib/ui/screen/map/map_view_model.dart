@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
@@ -37,6 +38,9 @@ class MapViewModel extends _$MapViewModel {
   double? _currentZoom;
   bool _heatmapLayerAdded = false;
   bool _symbolTapHandlerRegistered = false;
+
+  /// 地名検索で選んだ地点（スタイル標準の marker_11 を重ねる）
+  LatLng? _searchResultPinLatLng;
 
   /// マップ移動後、この時間経過してから表示を更新
   static const Duration _cameraIdleDebounceDuration = Duration(seconds: 1);
@@ -126,6 +130,14 @@ class MapViewModel extends _$MapViewModel {
     state = state.copyWith(cameraCenterLatLng: target);
   }
 
+  /// 外部（例: 検索結果タップ）から指定座標を「近くの場所を検索」の基準にする
+  void setNearbySearchCenterFromLatLng({
+    required double lat,
+    required double lng,
+  }) {
+    state = state.copyWith(cameraCenterLatLng: LatLng(lat, lng));
+  }
+
   Future<void> animateToLatLng({
     required double lat,
     required double lng,
@@ -159,6 +171,57 @@ class MapViewModel extends _$MapViewModel {
     state.mapController?.clearSymbols();
     _pinLoader.clearRegisteredKeys();
     _symbolTapHandlerRegistered = false;
+    _searchResultPinLatLng = null;
+  }
+
+  /// 検索で選んだ場所に一時ピン（スプライト `marker_11`）を表示
+  Future<void> setSearchResultPin(double lat, double lng) async {
+    _searchResultPinLatLng = LatLng(lat, lng);
+    await _refreshPinsKeepingZoom();
+  }
+
+  /// 検索ピンを消す（モーダルを閉じた・ピン選択に切り替えたときなど）
+  Future<void> clearSearchResultPin() async {
+    if (_searchResultPinLatLng == null) {
+      return;
+    }
+    _searchResultPinLatLng = null;
+    await _refreshPinsKeepingZoom();
+  }
+
+  SymbolOptions? _searchHighlightSymbolOptions(double zoom) {
+    final g = _searchResultPinLatLng;
+    if (g == null) {
+      return null;
+    }
+    return SymbolOptions(
+      geometry: g,
+      iconImage: MapOverlayConstants.styleDefaultMarkerIconId,
+      iconSize: math.max(1.2, MapPinStyle.interpolatedIconSize(zoom) * 2.6),
+      iconAnchor: 'bottom',
+    );
+  }
+
+  Future<void> _refreshPinsKeepingZoom() async {
+    final zoom = state.mapController?.cameraPosition?.zoom ?? 14.0;
+    await _updateDisplayMode(zoom);
+  }
+
+  Future<void> _showSearchHighlightOnly() async {
+    final ctrl = state.mapController;
+    if (ctrl == null) {
+      return;
+    }
+    final zoom = ctrl.cameraPosition?.zoom ?? 14.0;
+    final opt = _searchHighlightSymbolOptions(zoom);
+    if (opt == null) {
+      await ctrl.clearSymbols();
+      return;
+    }
+    await ctrl.clearSymbols();
+    await ctrl.addSymbol(opt);
+    await ctrl.setSymbolIconIgnorePlacement(true);
+    await ctrl.setSymbolIconAllowOverlap(true);
   }
 
   void onStyleLoaded() {
@@ -201,58 +264,14 @@ class MapViewModel extends _$MapViewModel {
     if (zoomChanged) {
       await _updateDisplayMode(zoom);
     }
-
-    final posts = ref.read(mapRepositoryProvider).whenOrNull(data: (v) => v);
-    if (posts == null || posts.isEmpty) {
-      state = state.copyWith(
-        visibleMealsCount: 0,
-        visibleAreaTopTags: [],
-      );
-      return;
-    }
-    try {
-      final bounds = await ctrl.getVisibleRegion();
-      final visiblePosts =
-          posts.where((p) => bounds.contains(LatLng(p.lat, p.lng))).toList();
-      final count = visiblePosts.length;
-      // 3件未満のエリアではタグ表示を出さない
-      final topTags =
-          count >= 3 ? _topTagCounts(visiblePosts, 3) : <VisibleAreaTagCount>[];
-      state = state.copyWith(
-        visibleMealsCount: count,
-        visibleAreaTopTags: topTags,
-      );
-    } on Exception catch (_) {}
-  }
-
-  // 投稿リストから人気タグの上位 [limit] 件を返す（1投稿からは先頭1タグのみ採用）
-  static List<VisibleAreaTagCount> _topTagCounts(
-    List<Posts> posts,
-    int limit,
-  ) {
-    final oneTagPerPost = <String>[];
-    for (final p in posts) {
-      final tags =
-          p.foodTag.split(',').map((s) => s.trim()).where((s) => s.isNotEmpty);
-      if (tags.isNotEmpty) {
-        oneTagPerPost.add(tags.first);
-      }
-    }
-    final counts =
-        oneTagPerPost.fold<Map<String, int>>(<String, int>{}, (acc, tag) {
-      acc[tag] = (acc[tag] ?? 0) + 1;
-      return acc;
-    });
-    final entries = counts.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
-    return entries
-        .take(limit)
-        .map((e) => (emoji: e.key, count: e.value))
-        .toList();
   }
 
   Future<void> _updateDisplayMode(double zoom) async {
-    if (state.mapController == null || _cachedPosts == null) {
+    if (state.mapController == null) {
+      return;
+    }
+    if (_cachedPosts == null || _cachedPosts!.isEmpty) {
+      await _showSearchHighlightOnly();
       return;
     }
     try {
@@ -283,6 +302,13 @@ class MapViewModel extends _$MapViewModel {
       await state.mapController!.clearSymbols();
       if (await MapHeatmapLayer.add(state.mapController!, _cachedPosts!)) {
         _heatmapLayerAdded = true;
+      }
+      final heatZoom = state.mapController!.cameraPosition?.zoom ?? 10.0;
+      final highlight = _searchHighlightSymbolOptions(heatZoom);
+      if (highlight != null) {
+        await state.mapController!.addSymbol(highlight);
+        await state.mapController!.setSymbolIconIgnorePlacement(true);
+        await state.mapController!.setSymbolIconAllowOverlap(true);
       }
     } on Exception catch (_) {}
   }
@@ -316,8 +342,14 @@ class MapViewModel extends _$MapViewModel {
         );
       }
       final symbols = MapPinStyle.smallRedDotSymbols(_cachedPosts!);
-      if (symbols.isNotEmpty) {
-        await MapPinStyle.addSymbolsToMap(state.mapController!, symbols);
+      final zoom = state.mapController!.cameraPosition?.zoom ?? 14.0;
+      final append = _searchHighlightSymbolOptions(zoom);
+      if (symbols.isNotEmpty || append != null) {
+        await MapPinStyle.addSymbolsToMap(
+          state.mapController!,
+          symbols,
+          appendSymbol: append,
+        );
       }
     } on Exception catch (_) {
       await _showNormalPins();
@@ -333,8 +365,13 @@ class MapViewModel extends _$MapViewModel {
     final zoom = state.mapController?.cameraPosition?.zoom ?? 14.0;
     final symbols =
         MapPinStyle.normalPinSymbols(_cachedPosts!, _cachedImageKeys!, zoom);
-    if (symbols.isNotEmpty) {
-      await MapPinStyle.addSymbolsToMap(state.mapController!, symbols);
+    final append = _searchHighlightSymbolOptions(zoom);
+    if (symbols.isNotEmpty || append != null) {
+      await MapPinStyle.addSymbolsToMap(
+        state.mapController!,
+        symbols,
+        appendSymbol: append,
+      );
     }
   }
 
@@ -392,8 +429,13 @@ class MapViewModel extends _$MapViewModel {
   ) async {
     final zoom = controller.cameraPosition?.zoom ?? 14.0;
     final symbols = MapPinStyle.normalPinSymbols(posts, imageKeys, zoom);
-    if (symbols.isNotEmpty) {
-      await MapPinStyle.addSymbolsToMap(controller, symbols);
+    final append = _searchHighlightSymbolOptions(zoom);
+    if (symbols.isNotEmpty || append != null) {
+      await MapPinStyle.addSymbolsToMap(
+        controller,
+        symbols,
+        appendSymbol: append,
+      );
     }
   }
 }

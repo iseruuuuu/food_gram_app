@@ -196,7 +196,9 @@
     "loadingRestaurant": "Obtention des informations du restaurant...",
     "visibleAreaMeals": "📍 Cette zone compte {count} plats",
     "visibleAreaLoading": "Chargement...",
-    "areaPopularLabel": "Genres principaux"
+    "areaPopularLabel": "Genres principaux",
+    "noPostsAtPlace": "Pas encore de publication ici. Publier en premier ?",
+    "firstPostCta": "Publier"
   },
   "app": {
     "shareTitle": "Partager",

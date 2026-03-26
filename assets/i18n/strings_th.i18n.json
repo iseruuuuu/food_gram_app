@@ -196,7 +196,9 @@
     "loadingRestaurant": "กำลังดึงข้อมูลร้านอาหาร...",
     "visibleAreaMeals": "📍 บริเวณนี้มี {count} เมนู",
     "visibleAreaLoading": "กำลังโหลด...",
-    "areaPopularLabel": "ประเภทหลัก"
+    "areaPopularLabel": "ประเภทหลัก",
+    "noPostsAtPlace": "ยังไม่มีโพสต์ที่นี่ ลองโพสต์เป็นคนแรกไหม?",
+    "firstPostCta": "โพสต์"
   },
   "app": {
     "shareTitle": "แชร์",

@@ -196,7 +196,9 @@
     "loadingRestaurant": "Obteniendo información del restaurante...",
     "visibleAreaMeals": "📍 Esta área tiene {count} comidas",
     "visibleAreaLoading": "Cargando...",
-    "areaPopularLabel": "Principales géneros"
+    "areaPopularLabel": "Principales géneros",
+    "noPostsAtPlace": "Aún no hay publicaciones aquí. ¿Quieres ser el primero?",
+    "firstPostCta": "Publicar"
   },
   "app": {
     "shareTitle": "Compartir",

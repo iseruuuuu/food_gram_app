@@ -196,7 +196,9 @@
     "loadingRestaurant": "레스토랑 정보를 가져오는 중...",
     "visibleAreaMeals": "📍 이 지역에는 {count}개의 식사가 있습니다",
     "visibleAreaLoading": "불러오는 중...",
-    "areaPopularLabel": "주요 장르"
+    "areaPopularLabel": "주요 장르",
+    "noPostsAtPlace": "아직 이곳에 게시물이 없어요. 첫 게시물을 남겨볼까요?",
+    "firstPostCta": "게시하기"
   },
   "app": {
     "shareTitle": "공유",

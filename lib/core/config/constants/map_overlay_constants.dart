@@ -18,4 +18,7 @@ class MapOverlayConstants {
 
   /// 小さな赤ドットの iconSize（マップ上）
   static const double smallRedDotIconSize = 0.39;
+
+  /// OSM Bright スプライトの標準マーカー（local / earth 共通 sprite URL）
+  static const String styleDefaultMarkerIconId = 'marker_11';
 }

@@ -26,7 +26,12 @@ class RestaurantScreen extends HookConsumerWidget {
         ref.watch(kakaoRestaurantRepositoryProvider(keyword.value));
     return Scaffold(
       appBar: AppBar(
-        surfaceTintColor: Colors.transparent,
+        backgroundColor: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Theme.of(context).colorScheme.surface,
+        surfaceTintColor: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Theme.of(context).colorScheme.surface,
         actions: [
           TextButton(
             onPressed: () {
