@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
@@ -17,12 +18,13 @@ import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
-import 'package:food_gram_app/ui/component/map/app_area_meals_badge.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_detail_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_overview_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -74,19 +76,15 @@ class MapScreen extends HookConsumerWidget {
       },
       [],
     );
-    useEffect(
-      () {
-        controller.updateVisibleMealsCount();
-        return null;
-      },
-      [mapService, state.mapController],
-    );
-
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final fabBg = isDark ? Colors.black : Colors.white;
     const fabFg = AppTheme.primaryBlue;
     final fabBorder = isDark ? Colors.white54 : Colors.grey.shade300;
-
+    ref.listen<MapModalSelection?>(mapModalSelectionProvider, (_, next) {
+      if (next == null || next.placeSearchRestaurant == null) {
+        unawaited(controller.clearSearchResultPin());
+      }
+    });
     return Scaffold(
       body: Stack(
         children: [
@@ -143,147 +141,163 @@ class MapScreen extends HookConsumerWidget {
                   const MapRestaurantDetailSheet(),
                   Positioned(
                     top: _calculateTopPosition(context),
-                    left: 10,
+                    left: 0,
                     right: 0,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: AppAreaMealsBadge(
-                            count: state.visibleMealsCount,
-                            topTags: state.visibleAreaTopTags,
+                        // 1) 一番上：検索バー（横幅いっぱい）
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: AppMapPlaceSearchTextField(
+                            mapController: controller,
                           ),
                         ),
+                        const Gap(8),
                         Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: Column(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 8, bottom: 8),
-                                child: SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: Theme(
-                                    data: Theme.of(context).copyWith(
-                                      highlightColor: fabBg,
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 8,
+                                      bottom: 8,
                                     ),
-                                    child: FloatingActionButton(
-                                      heroTag: 'style_toggle',
-                                      shape: RoundedRectangleBorder(
-                                        side: BorderSide(color: fabBorder),
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(10),
+                                    child: SizedBox(
+                                      width: 50,
+                                      height: 50,
+                                      child: Theme(
+                                        data: Theme.of(context).copyWith(
+                                          highlightColor: fabBg,
                                         ),
-                                      ),
-                                      foregroundColor: fabBg,
-                                      backgroundColor: fabBg,
-                                      focusColor: fabBg,
-                                      splashColor: fabBg,
-                                      hoverColor: fabBg,
-                                      elevation: 10,
-                                      onPressed: () async {
-                                        if (!isSubscribed) {
-                                          try {
-                                            await ref
-                                                .read(
-                                                  revenueCatServiceProvider
-                                                      .notifier,
-                                                )
-                                                .presentPaywallGuarded();
-                                          } on Exception catch (_) {
-                                            return;
-                                          }
-                                        } else {
-                                          isEarthStyle.value =
-                                              !isEarthStyle.value;
-                                          // スタイル切り替え時にピンを再表示
-                                          controller.handleStyleChange();
-                                        }
-                                      },
-                                      child: Icon(
-                                        isEarthStyle.value
-                                            ? CupertinoIcons.globe
-                                            : CupertinoIcons.map,
-                                        color: fabFg,
-                                        size: 24,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              if (isLocationEnabled)
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 2, left: 8),
-                                  child: SizedBox(
-                                    width: 50,
-                                    height: 50,
-                                    child: Theme(
-                                      data: Theme.of(context).copyWith(
-                                        highlightColor: fabBg,
-                                      ),
-                                      child: FloatingActionButton(
-                                        heroTag: null,
-                                        shape: RoundedRectangleBorder(
-                                          side: BorderSide(color: fabBorder),
-                                          borderRadius: const BorderRadius.all(
-                                            Radius.circular(10),
+                                        child: FloatingActionButton(
+                                          heroTag: 'style_toggle',
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(color: fabBorder),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                          ),
+                                          foregroundColor: fabBg,
+                                          backgroundColor: fabBg,
+                                          focusColor: fabBg,
+                                          splashColor: fabBg,
+                                          hoverColor: fabBg,
+                                          elevation: 10,
+                                          onPressed: () async {
+                                            if (!isSubscribed) {
+                                              try {
+                                                await ref
+                                                    .read(
+                                                      revenueCatServiceProvider
+                                                          .notifier,
+                                                    )
+                                                    .presentPaywallGuarded();
+                                              } on Exception catch (_) {
+                                                return;
+                                              }
+                                            } else {
+                                              isEarthStyle.value =
+                                                  !isEarthStyle.value;
+                                              // スタイル切り替え時にピンを再表示
+                                              controller.handleStyleChange();
+                                            }
+                                          },
+                                          child: Icon(
+                                            isEarthStyle.value
+                                                ? CupertinoIcons.globe
+                                                : CupertinoIcons.map,
+                                            color: fabFg,
+                                            size: 24,
                                           ),
                                         ),
-                                        foregroundColor: fabBg,
-                                        backgroundColor: fabBg,
-                                        focusColor: fabBg,
-                                        splashColor: fabBg,
-                                        hoverColor: fabBg,
-                                        elevation: 10,
-                                        onPressed:
-                                            controller.moveToCurrentLocation,
-                                        child: const Icon(
-                                          CupertinoIcons.location,
-                                          color: fabFg,
-                                          size: 24,
+                                      ),
+                                    ),
+                                  ),
+                                  if (isLocationEnabled)
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        top: 2,
+                                        left: 8,
+                                      ),
+                                      child: SizedBox(
+                                        width: 50,
+                                        height: 50,
+                                        child: Theme(
+                                          data: Theme.of(context).copyWith(
+                                            highlightColor: fabBg,
+                                          ),
+                                          child: FloatingActionButton(
+                                            heroTag: null,
+                                            shape: RoundedRectangleBorder(
+                                              side:
+                                                  BorderSide(color: fabBorder),
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                            foregroundColor: fabBg,
+                                            backgroundColor: fabBg,
+                                            focusColor: fabBg,
+                                            splashColor: fabBg,
+                                            hoverColor: fabBg,
+                                            elevation: 10,
+                                            onPressed: controller
+                                                .moveToCurrentLocation,
+                                            child: const Icon(
+                                              CupertinoIcons.location,
+                                              color: fabFg,
+                                              size: 24,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  // 方位調整ボタン
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 12,
+                                      left: 8,
+                                    ),
+                                    child: SizedBox(
+                                      width: 50,
+                                      height: 50,
+                                      child: Theme(
+                                        data: Theme.of(context).copyWith(
+                                          highlightColor: fabBg,
+                                        ),
+                                        child: FloatingActionButton(
+                                          heroTag: 'compass',
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(color: fabBorder),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                          ),
+                                          foregroundColor: fabBg,
+                                          backgroundColor: fabBg,
+                                          focusColor: fabBg,
+                                          splashColor: fabBg,
+                                          hoverColor: fabBg,
+                                          elevation: 10,
+                                          onPressed: controller.resetBearing,
+                                          child: const Icon(
+                                            CupertinoIcons.compass,
+                                            color: fabFg,
+                                            size: 28,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              // 方位調整ボタン
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 12, left: 8),
-                                child: SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: Theme(
-                                    data: Theme.of(context).copyWith(
-                                      highlightColor: fabBg,
-                                    ),
-                                    child: FloatingActionButton(
-                                      heroTag: 'compass',
-                                      shape: RoundedRectangleBorder(
-                                        side: BorderSide(color: fabBorder),
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(10),
-                                        ),
-                                      ),
-                                      foregroundColor: fabBg,
-                                      backgroundColor: fabBg,
-                                      focusColor: fabBg,
-                                      splashColor: fabBg,
-                                      hoverColor: fabBg,
-                                      elevation: 10,
-                                      onPressed: controller.resetBearing,
-                                      child: const Icon(
-                                        CupertinoIcons.compass,
-                                        color: fabFg,
-                                        size: 28,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                ],
                               ),
                             ],
                           ),
@@ -353,11 +367,11 @@ double _calculateIconSize(BuildContext context) {
 double _calculateTopPosition(BuildContext context) {
   final screenWidth = MediaQuery.of(context).size.width;
   if (screenWidth <= 375) {
-    return 25;
-  } else if (screenWidth < 720) {
-    return 50;
-  } else {
     return 30;
+  } else if (screenWidth < 720) {
+    return 55;
+  } else {
+    return 35;
   }
 }
 
