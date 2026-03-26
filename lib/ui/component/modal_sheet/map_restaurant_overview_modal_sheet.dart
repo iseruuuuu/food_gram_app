@@ -36,7 +36,7 @@ class MapRestaurantOverviewModalSheet extends HookConsumerWidget {
     return DraggableScrollableSheet(
       expand: false,
       // 初期のModalSheetの高さ
-      initialChildSize: 0.42,
+      initialChildSize: 0.25,
       minChildSize: 0.15,
       maxChildSize: 0.95,
       builder: (context, scrollController) {
