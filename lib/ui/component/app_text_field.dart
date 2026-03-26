@@ -163,7 +163,6 @@ class AppMapPlaceSearchTextField extends ConsumerWidget {
                     return;
                   }
                   final hasPosts = hasPostsOrNull;
-
                   await mapController.animateToLatLng(
                     lat: restaurant.lat,
                     lng: restaurant.lng,
@@ -172,7 +171,6 @@ class AppMapPlaceSearchTextField extends ConsumerWidget {
                     lat: restaurant.lat,
                     lng: restaurant.lng,
                   );
-
                   ref.read(mapModalSelectionProvider.notifier).state =
                       MapModalSelection(
                     name: restaurant.name,
@@ -180,7 +178,6 @@ class AppMapPlaceSearchTextField extends ConsumerWidget {
                     lng: restaurant.lng,
                     placeSearchRestaurant: restaurant,
                   );
-
                   // 投稿がある地点ではマーカーは出さない（投稿グリッドで十分なため）
                   if (hasPosts) {
                     await mapController.clearSearchResultPin();
