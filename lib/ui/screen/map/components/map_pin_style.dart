@@ -70,20 +70,26 @@ class MapPinStyle {
     }).toList();
   }
 
-  /// シンボルをマップに追加（クリア→チャンク追加→オーバーラップ設定）
+  /// シンボルをマップに追加（クリア→チャンク追加→[appendSymbol]→オーバーラップ設定）
   static Future<void> addSymbolsToMap(
     MapLibreMapController controller,
     List<SymbolOptions> symbols, {
     int chunkSize = 250,
+    SymbolOptions? appendSymbol,
   }) async {
-    if (symbols.isEmpty) {
+    if (symbols.isEmpty && appendSymbol == null) {
       return;
     }
     await controller.clearSymbols();
-    final total = symbols.length;
-    for (var start = 0; start < total; start += chunkSize) {
-      final end = math.min(start + chunkSize, total);
-      await controller.addSymbols(symbols.sublist(start, end));
+    if (symbols.isNotEmpty) {
+      final total = symbols.length;
+      for (var start = 0; start < total; start += chunkSize) {
+        final end = math.min(start + chunkSize, total);
+        await controller.addSymbols(symbols.sublist(start, end));
+      }
+    }
+    if (appendSymbol != null) {
+      await controller.addSymbol(appendSymbol);
     }
     await controller.setSymbolIconIgnorePlacement(true);
     await controller.setSymbolIconAllowOverlap(true);
