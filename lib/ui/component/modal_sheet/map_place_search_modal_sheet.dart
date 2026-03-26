@@ -21,12 +21,9 @@ class MapPlaceSearchModalSheet extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
     final searchQuery = useState<String>(initialQuery.trim());
-
     final restaurantsAsync =
         ref.watch(googleRestaurantServicesProvider(searchQuery.value));
-
     return SafeArea(
       child: DecoratedBox(
         decoration: BoxDecoration(
