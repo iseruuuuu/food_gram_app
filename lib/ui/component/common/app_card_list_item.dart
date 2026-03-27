@@ -20,13 +20,15 @@ class AppCardListItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    // 複数画像がある場合は最初の画像のみ表示
-    final firstImage = post.firstFoodImage;
-    final itemImageUrl = ref
-        .read(supabaseProvider)
-        .storage
-        .from('food')
-        .getPublicUrl(firstImage);
+    // 複数画像がある場合は最初の画像のみ表示（Storage キーは [Posts.firstFoodImage] で正規化済み）
+    final storageKey = post.firstFoodImage;
+    final itemImageUrl = storageKey.isEmpty
+        ? ''
+        : ref
+            .read(supabaseProvider)
+            .storage
+            .from('food')
+            .getPublicUrl(storageKey);
     final restaurantName = post.restaurant;
     final hasMultipleImages = post.foodImageList.length > 1;
     return GestureDetector(
@@ -37,7 +39,7 @@ class AppCardListItem extends ConsumerWidget {
             elevation: 10,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: firstImage.isEmpty
+              child: storageKey.isEmpty
                   ? ColoredBox(
                       color: isDark
                           ? Colors.grey.shade900

@@ -71,10 +71,11 @@ class AppListView extends HookConsumerWidget {
               if (itemIndex >= posts.length) {
                 return const Expanded(child: SizedBox());
               }
-              // 複数画像がある場合は最初の画像のみ表示
-              final firstImage = posts[itemIndex].firstFoodImage;
-              final itemImageUrl =
-                  supabase.storage.from('food').getPublicUrl(firstImage);
+              // 複数画像がある場合は最初の画像のみ表示（Storage キーは正規化済み）
+              final storageKey = posts[itemIndex].firstFoodImage;
+              final itemImageUrl = storageKey.isEmpty
+                  ? ''
+                  : supabase.storage.from('food').getPublicUrl(storageKey);
               final postUserId = posts[itemIndex].userId as String?;
               final isSubscribed = ref.watch(isSubscribedProvider(postUserId));
               final hasMultipleImages =
@@ -126,7 +127,7 @@ class AppListView extends HookConsumerWidget {
                                 borderRadius: BorderRadius.circular(
                                   isSubscribed ? 0 : 10,
                                 ),
-                                child: firstImage.isEmpty
+                                child: storageKey.isEmpty
                                     ? ColoredBox(
                                         color: isDark
                                             ? Colors.grey.shade900
