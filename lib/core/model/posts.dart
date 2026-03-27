@@ -27,34 +27,30 @@ abstract class Posts with _$Posts {
   factory Posts.fromJson(Map<String, dynamic> json) => _$PostsFromJson(json);
 }
 
+bool _looksLikeLocalFilePath(String normalized) {
+  final p = normalized.toLowerCase();
+  return p.startsWith('file://') ||
+      p.startsWith('content://') ||
+      p.startsWith('/private/var/') ||
+      p.startsWith('/var/mobile/') ||
+      p.startsWith('/data/user/0/') ||
+      p.contains('image_cropper') ||
+      p.contains('containers/data') ||
+      p.contains('data/application');
+}
+
 /// Supabase Storage のオブジェクトキーとしてそのまま使える文字列か
 /// （ローカル一時パスなどは false）。
 bool isSupabaseFoodStorageObjectPath(String path) {
-  if (path.trim().isEmpty) {
+  final normalized = path.trim();
+  if (normalized.isEmpty) {
     return false;
   }
-  final p = path.toLowerCase();
-  if (p.contains('private/var')) {
-    return false;
-  }
-  if (p.contains('image_cropper')) {
-    return false;
-  }
-  if (p.contains('containers/data')) {
-    return false;
-  }
-  if (p.contains('data/application')) {
-    return false;
-  }
-  return true;
+  return !_looksLikeLocalFilePath(normalized);
 }
 
 bool _looksLikeLegacyLocalFoodPath(String normalized) {
-  final p = normalized.toLowerCase();
-  return p.contains('private/var') ||
-      p.contains('image_cropper') ||
-      p.contains('containers/data') ||
-      (p.contains('data/application') && p.contains('tmp'));
+  return _looksLikeLocalFilePath(normalized);
 }
 
 String? _legacyImageFileName(String normalized) {
