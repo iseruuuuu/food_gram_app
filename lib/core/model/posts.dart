@@ -77,7 +77,8 @@ String? _legacyImageFileName(String normalized) {
 }
 
 /// 表示用に Storage オブジェクトキーへ落とし込む。
-/// 通常は [normalized] をそのまま返し、レガシー（ローカルパス混入）のみ
+/// [normalized] は先頭 `/` を含まない想定（[normalizeFoodImageObjectKeyForDisplay] 経由）。
+/// 通常はそのまま返し、レガシー（ローカルパス混入）のみ
 /// `投稿の userId` + 末尾ファイル名 で再構成する（当時アップロードされたキーと一致しやすい）。
 String resolveFoodImagePathForDisplay(String normalized, String postUserId) {
   if (normalized.isEmpty) {
@@ -100,36 +101,46 @@ String resolveFoodImagePathForDisplay(String normalized, String postUserId) {
   return '$uid/$fileName';
 }
 
+/// 生の `food_image` セグメント1つを、`getPublicUrl` 用の Storage キーへ正規化する。
+/// 先頭 `/` を剥がしてから [resolveFoodImagePathForDisplay] する（カード・一覧で共有）。
+String normalizeFoodImageObjectKeyForDisplay(
+  String rawSegment,
+  String postUserId,
+) {
+  var p = rawSegment.trim();
+  while (p.startsWith('/')) {
+    p = p.substring(1);
+  }
+  if (p.isEmpty) {
+    return '';
+  }
+  return resolveFoodImagePathForDisplay(p, postUserId);
+}
+
 extension PostsExtension on Posts {
   /// カンマ区切りのfoodImageから画像パスのリストを取得
   List<String> get foodImageList {
     if (foodImage.isEmpty) {
       return [];
     }
-    // Supabase Storage の `getPublicUrl` は先頭 `/` 付きだと
-    // `.../public/<bucket>//<path>` のように二重スラッシュになり得るため、
-    // ストレージパスとして正規化して返す。
     return foodImage
         .split(',')
         .map((path) => path.trim())
         .where((path) => path.isNotEmpty)
-        .map((path) {
-          var p = path;
-          while (p.startsWith('/')) {
-            p = p.substring(1);
-          }
-          return p;
-        })
-        .where((path) => path.isNotEmpty)
-        .map((path) => resolveFoodImagePathForDisplay(path, userId))
+        .map((path) => normalizeFoodImageObjectKeyForDisplay(path, userId))
         .where((path) => path.isNotEmpty)
         .toList();
   }
 
-  /// 最初の画像パスを取得
+  /// 最初の画像の Storage オブジェクトキー（`getPublicUrl` 用・先頭 `/` なし）
   String get firstFoodImage {
-    final images = foodImageList;
-    return images.isNotEmpty ? images.first : '';
+    if (foodImage.isEmpty) {
+      return '';
+    }
+    return normalizeFoodImageObjectKeyForDisplay(
+      foodImage.split(',').first,
+      userId,
+    );
   }
 
   /// 参考価格の表示文字列。未設定なら空。

@@ -139,6 +139,11 @@ class PostService extends _$PostService {
     String? priceCurrency,
   }) async {
     try {
+      final uid = _currentUserId;
+      if (uid == null || uid.isEmpty) {
+        logger.e('updatePost: no current user (not signed in?)');
+        return Failure(Exception('Not signed in'));
+      }
       // 変更がある場合は更新用のマップを作成
       final updates = {
         'food_name': foodName,
@@ -158,7 +163,7 @@ class PostService extends _$PostService {
       final newUploadedPaths = <String>[];
       for (final imagePath in newImagePaths) {
         final fileName = imagePath.split('/').last;
-        final storagePath = '$_currentUserId/$fileName';
+        final storagePath = '$uid/$fileName';
         final imageBytes = imageBytesMap[imagePath];
         if (imageBytes != null) {
           try {
