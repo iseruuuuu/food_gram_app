@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 
 class AppCardListItem extends ConsumerWidget {
   const AppCardListItem({
@@ -18,13 +19,16 @@ class AppCardListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // 複数画像がある場合は最初の画像のみ表示
-    final firstImage = post.firstFoodImage;
-    final itemImageUrl = ref
-        .read(supabaseProvider)
-        .storage
-        .from('food')
-        .getPublicUrl(firstImage);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    // 複数画像がある場合は最初の画像のみ表示（Storage キーは [Posts.firstFoodImage] で正規化済み）
+    final storageKey = post.firstFoodImage;
+    final itemImageUrl = storageKey.isEmpty
+        ? ''
+        : ref
+            .read(supabaseProvider)
+            .storage
+            .from('food')
+            .getPublicUrl(storageKey);
     final restaurantName = post.restaurant;
     final hasMultipleImages = post.foodImageList.length > 1;
     return GestureDetector(
@@ -35,15 +39,29 @@ class AppCardListItem extends ConsumerWidget {
             elevation: 10,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: CachedNetworkImage(
-                imageUrl: itemImageUrl,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: index.isEven ? 200 : 300,
-                placeholder: (context, url) => Container(
-                  color: Colors.white,
-                ),
-              ),
+              child: storageKey.isEmpty
+                  ? ColoredBox(
+                      color: isDark
+                          ? Colors.grey.shade900
+                          : Colors.grey.shade200,
+                    )
+                  : CachedNetworkImage(
+                      imageUrl: itemImageUrl,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: index.isEven ? 200 : 300,
+                      placeholder: (context, url) => Container(
+                        color: Colors.white,
+                      ),
+                      errorWidget: (context, url, error) => Image.asset(
+                        isDark
+                            ? Assets.image.emptyDark.path
+                            : Assets.image.empty.path,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: index.isEven ? 200 : 300,
+                      ),
+                    ),
             ),
           ),
           // 複数画像がある場合のアイコン

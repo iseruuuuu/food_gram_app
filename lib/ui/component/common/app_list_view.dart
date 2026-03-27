@@ -35,6 +35,7 @@ class AppListView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenWidth = MediaQuery.of(context).size.width / 3;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final supabase = ref.watch(supabaseProvider);
     if (posts.isEmpty) {
       return const SliverToBoxAdapter(child: AppEmpty());
@@ -70,10 +71,11 @@ class AppListView extends HookConsumerWidget {
               if (itemIndex >= posts.length) {
                 return const Expanded(child: SizedBox());
               }
-              // 複数画像がある場合は最初の画像のみ表示
-              final firstImage = posts[itemIndex].firstFoodImage;
-              final itemImageUrl =
-                  supabase.storage.from('food').getPublicUrl(firstImage);
+              // 複数画像がある場合は最初の画像のみ表示（Storage キーは正規化済み）
+              final storageKey = posts[itemIndex].firstFoodImage;
+              final itemImageUrl = storageKey.isEmpty
+                  ? ''
+                  : supabase.storage.from('food').getPublicUrl(storageKey);
               final postUserId = posts[itemIndex].userId as String?;
               final isSubscribed = ref.watch(isSubscribedProvider(postUserId));
               final hasMultipleImages =
@@ -125,15 +127,30 @@ class AppListView extends HookConsumerWidget {
                                 borderRadius: BorderRadius.circular(
                                   isSubscribed ? 0 : 10,
                                 ),
-                                child: CachedNetworkImage(
-                                  imageUrl: itemImageUrl,
-                                  fit: BoxFit.cover,
-                                  width: screenWidth,
-                                  height: screenWidth,
-                                  placeholder: (context, url) => Container(
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                child: storageKey.isEmpty
+                                    ? ColoredBox(
+                                        color: isDark
+                                            ? Colors.grey.shade900
+                                            : Colors.grey.shade200,
+                                      )
+                                    : CachedNetworkImage(
+                                        imageUrl: itemImageUrl,
+                                        fit: BoxFit.cover,
+                                        width: screenWidth,
+                                        height: screenWidth,
+                                        placeholder: (context, url) => Container(
+                                          color: Colors.white,
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Image.asset(
+                                          isDark
+                                              ? Assets.image.emptyDark.path
+                                              : Assets.image.empty.path,
+                                          fit: BoxFit.cover,
+                                          width: screenWidth,
+                                          height: screenWidth,
+                                        ),
+                                      ),
                               ),
                             ),
                           ),

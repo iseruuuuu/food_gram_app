@@ -135,7 +135,9 @@ class EditPostScreen extends HookConsumerWidget {
     final firstImagePath =
         posts.foodImage.isNotEmpty ? posts.foodImage.split(',').first : '';
     final foodImageUrl = firstImagePath.isNotEmpty
-        ? supabase.storage.from('food').getPublicUrl(firstImagePath)
+        ? supabase.storage.from('food').getPublicUrl(
+              firstImagePath.startsWith('/') ? firstImagePath.substring(1) : firstImagePath,
+            )
         : '';
     return GestureDetector(
       onTap: () => primaryFocus?.unfocus(),
@@ -188,9 +190,13 @@ class EditPostScreen extends HookConsumerWidget {
                               itemCount: existingImagePaths.length,
                               itemBuilder: (context, index) {
                                 final imagePath = existingImagePaths[index];
+                                final normalizedImagePath =
+                                    imagePath.startsWith('/')
+                                        ? imagePath.substring(1)
+                                        : imagePath;
                                 final existingImageUrl = supabase.storage
                                     .from('food')
-                                    .getPublicUrl(imagePath);
+                                    .getPublicUrl(normalizedImagePath);
                                 final isRemoving =
                                     removingPaths.contains(imagePath);
                                 return Padding(

@@ -73,10 +73,8 @@ class EditPostViewModel extends _$EditPostViewModel {
     _commentController.text = posts.comment;
     _priceController.text =
         formatPostPriceForEditing(posts.priceAmount, posts.priceCurrency);
-    // 既存の画像パスをカンマ区切りからリストに変換
-    final existingImages = posts.foodImage.isNotEmpty
-        ? posts.foodImage.split(',').where((path) => path.isNotEmpty).toList()
-        : <String>[];
+    // 既存の画像パス（表示・Storage 用。ローカル一時パス等は [Posts.foodImageList] で除外）
+    final existingImages = posts.foodImageList;
     final currency = posts.priceCurrency?.trim();
     state = state.copyWith(
       restaurant: posts.restaurant,
