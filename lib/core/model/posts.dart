@@ -130,13 +130,8 @@ extension PostsExtension on Posts {
 
   /// 最初の画像の Storage オブジェクトキー（`getPublicUrl` 用・先頭 `/` なし）
   String get firstFoodImage {
-    if (foodImage.isEmpty) {
-      return '';
-    }
-    return normalizeFoodImageObjectKeyForDisplay(
-      foodImage.split(',').first,
-      userId,
-    );
+    final images = foodImageList;
+    return images.isNotEmpty ? images.first : '';
   }
 
   /// 参考価格の表示文字列。未設定なら空。
