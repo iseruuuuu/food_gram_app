@@ -183,8 +183,13 @@ class PostService extends _$PostService {
         }
       }
 
-      // 既存の画像パスと新しい画像パスを結合
-      final allImagePaths = [...existingImagePaths, ...newUploadedPaths];
+      // 既存パスを正規化してから新規アップロード分と結合
+      // （/uid/file.jpg やレガシーのローカルパス混入をここで治癒する）
+      final retainedImagePaths = existingImagePaths
+          .map((path) => normalizeFoodImageObjectKeyForDisplay(path, posts.userId))
+          .where((path) => path.isNotEmpty)
+          .toList();
+      final allImagePaths = [...retainedImagePaths, ...newUploadedPaths];
       final foodImage = allImagePaths.join(',');
       updates['food_image'] = foodImage;
 
