@@ -9,6 +9,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'post_service.g.dart';
 
+String _normalizeFoodImageStoragePath(String path) {
+  var p = path.trim();
+  while (p.startsWith('/')) {
+    p = p.substring(1);
+  }
+  return p;
+}
+
 @riverpod
 class PostService extends _$PostService {
   final logger = Logger();
@@ -35,11 +43,17 @@ class PostService extends _$PostService {
     String? priceCurrency,
   }) async {
     try {
+      final uid = _currentUserId;
+      if (uid == null || uid.isEmpty) {
+        logger.e('createPost: no current user (not signed in?)');
+        return Failure(Exception('Not signed in'));
+      }
       // 複数画像をアップロード
       final imagePaths = <String>[];
       for (final uploadImage in uploadImages) {
         final fileName = uploadImage.split('/').last;
-        final imagePath = '/$_currentUserId/$fileName';
+        // 先頭 `/` は付けない（DB・getPublicUrl とオブジェクトキーを一致させる）
+        final imagePath = '$uid/$fileName';
         final imageBytes = imageBytesMap[uploadImage];
         if (imageBytes != null) {
           await supabase.storage.from('food').uploadBinary(
@@ -53,11 +67,17 @@ class PostService extends _$PostService {
           imagePaths.add(imagePath);
         }
       }
+      if (imagePaths.isEmpty) {
+        logger.e(
+          'createPost: no images uploaded (bytes missing for paths?)',
+        );
+        return Failure(Exception('No image data to upload'));
+      }
       // カンマ区切りで保存
       final foodImage = imagePaths.join(',');
       // 投稿データを作成
       final post = {
-        'user_id': _currentUserId,
+        'user_id': uid,
         'food_name': foodName,
         'comment': comment,
         'created_at': DateTime.now().toIso8601String(),
@@ -138,7 +158,7 @@ class PostService extends _$PostService {
       final newUploadedPaths = <String>[];
       for (final imagePath in newImagePaths) {
         final fileName = imagePath.split('/').last;
-        final storagePath = '/$_currentUserId/$fileName';
+        final storagePath = '$_currentUserId/$fileName';
         final imageBytes = imageBytesMap[imagePath];
         if (imageBytes != null) {
           try {
@@ -167,9 +187,13 @@ class PostService extends _$PostService {
       final oldImagePaths = posts.foodImage.isNotEmpty
           ? posts.foodImage.split(',').where((path) => path.isNotEmpty).toList()
           : <String>[];
+      final existingNormalized = existingImagePaths
+          .map(_normalizeFoodImageStoragePath)
+          .toSet();
       final imagesToDelete = oldImagePaths
-          .where((oldPath) => !existingImagePaths.contains(oldPath))
-          .map((path) => path.startsWith('/') ? path.substring(1) : path)
+          .map(_normalizeFoodImageStoragePath)
+          .where((oldPath) => !existingNormalized.contains(oldPath))
+          .where(isSupabaseFoodStorageObjectPath)
           .where((path) => path.isNotEmpty)
           .toList();
 
