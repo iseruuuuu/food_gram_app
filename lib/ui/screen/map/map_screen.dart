@@ -23,6 +23,7 @@ import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_detail_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_overview_modal_sheet.dart';
+import 'package:food_gram_app/ui/screen/map/components/map_category_chip_bar.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -152,6 +153,11 @@ class MapScreen extends HookConsumerWidget {
                           child: AppMapPlaceSearchTextField(
                             mapController: controller,
                           ),
+                        ),
+                        const Gap(8),
+                        MapCategoryChipBar(
+                          onCategoryChanged:
+                              controller.refreshPinsForCategoryFilter,
                         ),
                         const Gap(8),
                         Padding(
