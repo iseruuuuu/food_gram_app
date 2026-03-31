@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_heatmap_layer.dart';
@@ -38,6 +39,7 @@ class MapViewModel extends _$MapViewModel {
   double? _currentZoom;
   bool _heatmapLayerAdded = false;
   bool _symbolTapHandlerRegistered = false;
+  void Function(List<Posts> posts)? _onPinTapHandler;
 
   /// 地名検索で選んだ地点（スタイル標準の marker_11 を重ねる）
   LatLng? _searchResultPinLatLng;
@@ -58,17 +60,21 @@ class MapViewModel extends _$MapViewModel {
       mapController: controller,
       cameraCenterLatLng: initialCenter ?? state.cameraCenterLatLng,
     );
-    await setPin(onPinTap: onPinTap, iconSize: iconSize);
+    _onPinTapHandler = onPinTap;
+    await setPin();
     await updateVisibleMealsCount();
   }
 
-  Future<void> setPin({
-    required void Function(List<Posts> posts) onPinTap,
-    required double iconSize,
-  }) async {
+  Future<void> setPin() async {
     try {
-      final posts = ref.read(mapRepositoryProvider).whenOrNull(data: (v) => v);
-      if (posts == null || posts.isEmpty) {
+      final posts =
+          ref.read(filteredMapPostsProvider).whenOrNull(data: (v) => v) ??
+              const <Posts>[];
+
+      if (posts.isEmpty) {
+        _cachedPosts = const <Posts>[];
+        _cachedImageKeys = const <String, String>{};
+        await _refreshPinsKeepingZoom();
         return;
       }
       final unique = MapPinData.dedupeByLatLng(posts);
@@ -95,7 +101,10 @@ class MapViewModel extends _$MapViewModel {
           final result = await ref
               .read(mapPostRepositoryProvider.notifier)
               .getRestaurantPosts(lat: latLng.latitude, lng: latLng.longitude);
-          result.whenOrNull(success: onPinTap);
+          final handler = _onPinTapHandler;
+          if (handler != null) {
+            result.whenOrNull(success: handler);
+          }
           await state.mapController?.animateCamera(
             CameraUpdate.newLatLngZoom(latLng, 16),
             duration: const Duration(seconds: 1),
@@ -405,8 +414,13 @@ class MapViewModel extends _$MapViewModel {
     if (ctrl == null) {
       return;
     }
-    final posts = ref.read(mapRepositoryProvider).whenOrNull(data: (v) => v);
-    if (posts == null || posts.isEmpty) {
+    final posts =
+        ref.read(filteredMapPostsProvider).whenOrNull(data: (v) => v) ??
+            const <Posts>[];
+    if (posts.isEmpty) {
+      _cachedPosts = const <Posts>[];
+      _cachedImageKeys = const <String, String>{};
+      await _showSearchHighlightOnly();
       return;
     }
 
@@ -420,6 +434,18 @@ class MapViewModel extends _$MapViewModel {
     if (!ok) {
       await _addNormalPinSymbols(ctrl, unique, _cachedImageKeys!);
     }
+  }
+
+  /// カテゴリーフィルター変更時に、カメラ状態を維持したままピンのみ更新する
+  Future<void> refreshPinsForCategoryFilter() async {
+    if (state.mapController == null) {
+      return;
+    }
+    _pinLoader.clearRegisteredKeys();
+    _symbolTapHandlerRegistered = false;
+    _heatmapLayerAdded = false;
+    await setPin();
+    await updateVisibleMealsCount();
   }
 
   Future<void> _addNormalPinSymbols(
