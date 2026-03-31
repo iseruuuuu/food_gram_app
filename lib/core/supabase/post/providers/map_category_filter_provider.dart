@@ -26,7 +26,6 @@ bool _postMatchesCategory(Posts post, String selectedCategory) {
   if (post.foodTag.trim().isEmpty) {
     return false;
   }
-
   final tags =
       post.foodTag.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty);
   for (final tag in tags) {
