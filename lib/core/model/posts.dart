@@ -66,10 +66,67 @@ String? _legacyImageFileName(String normalized) {
   if (lower.endsWith('.jpg') ||
       lower.endsWith('.jpeg') ||
       lower.endsWith('.png') ||
-      lower.endsWith('.webp')) {
+      lower.endsWith('.webp') ||
+      lower.endsWith('.heic') ||
+      lower.endsWith('.gif')) {
     return last;
   }
   return null;
+}
+
+/// DB にフルの公開 URL が入っている旧データ向け。
+/// `getPublicUrl` はオブジェクトキー（バケット名なし）を想定するため、
+/// ここで `uid/file.jpg` 形式へ落とす。
+String? _objectKeyFromSupabaseFoodPublicUrl(String raw) {
+  final t = raw.trim();
+  if (!t.startsWith('http://') && !t.startsWith('https://')) {
+    return null;
+  }
+  final uri = Uri.tryParse(t);
+  if (uri == null) {
+    return null;
+  }
+  final path = uri.path;
+  const marker = '/object/public/food/';
+  final i = path.indexOf(marker);
+  if (i == -1) {
+    return null;
+  }
+  final encoded = path.substring(i + marker.length);
+  if (encoded.isEmpty) {
+    return null;
+  }
+  return Uri.decodeComponent(encoded);
+}
+
+/// `food_image` にバケット名まで含めて保存されていた場合の二重プレフィックス防止。
+String _stripFoodBucketPrefixIfPresent(String normalized) {
+  const prefix = 'food/';
+  if (normalized.startsWith(prefix)) {
+    return normalized.substring(prefix.length);
+  }
+  return normalized;
+}
+
+/// 旧バグ: `/uid//private/var/.../image_cropper_xxx.jpg` のように
+/// UUID とローカル一時パスが連結されていた場合、先頭の UUID をフォルダとして使う。
+String? _legacyUidFromUuidThenLocalPath(String normalized) {
+  final idx = normalized.indexOf('//');
+  if (idx <= 0) {
+    return null;
+  }
+  final prefix = normalized.substring(0, idx).trim();
+  final rest = normalized.substring(idx + 2);
+  if (rest.isEmpty || !_looksLikeLocalFilePath(rest)) {
+    return null;
+  }
+  final uuidRe = RegExp(
+    r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+  );
+  if (!uuidRe.hasMatch(prefix)) {
+    return null;
+  }
+  return prefix;
 }
 
 /// 表示用に Storage オブジェクトキーへ落とし込む。
@@ -80,8 +137,25 @@ String resolveFoodImagePathForDisplay(String normalized, String postUserId) {
   if (normalized.isEmpty) {
     return '';
   }
-  if (isSupabaseFoodStorageObjectPath(normalized)) {
-    return normalized;
+  final fromPublicUrl = _objectKeyFromSupabaseFoodPublicUrl(normalized);
+  if (fromPublicUrl != null && fromPublicUrl.isNotEmpty) {
+    return _stripFoodBucketPrefixIfPresent(fromPublicUrl);
+  }
+  var key = _stripFoodBucketPrefixIfPresent(normalized);
+
+  // 旧データの中には、Storage にもローカル一時パスを含んだまま
+  // （例: `uid//private/var/mobile/.../tmp/image_cropper_....jpg`）
+  // 保存されているものがあります。
+  // この場合は「uid/filename へ縮退」しないで、Storage 側のキーと一致させる必要があります。
+  final legacyUuidThenDoubleSlashLocalPath = RegExp(
+    r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}//'
+    r'(private/var/mobile/Containers/Data/Application|private/var/|var/mobile/|containers/data|data/application|data/user/0/)',
+  );
+  if (legacyUuidThenDoubleSlashLocalPath.hasMatch(key)) {
+    return key;
+  }
+  if (isSupabaseFoodStorageObjectPath(key)) {
+    return key;
   }
   if (!_looksLikeLegacyLocalFoodPath(normalized)) {
     return '';
@@ -90,7 +164,8 @@ String resolveFoodImagePathForDisplay(String normalized, String postUserId) {
   if (fileName == null) {
     return '';
   }
-  final uid = postUserId.trim();
+  final fromPath = _legacyUidFromUuidThenLocalPath(normalized);
+  final uid = (fromPath ?? postUserId).trim();
   if (uid.isEmpty) {
     return '';
   }
