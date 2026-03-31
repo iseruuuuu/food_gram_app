@@ -121,7 +121,13 @@ String? _legacyUidFromUuidThenLocalPath(String normalized) {
     return null;
   }
   final uuidRe = RegExp(
-    r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+    '^'
+    '[0-9a-fA-F]{8}-'
+    '[0-9a-fA-F]{4}-'
+    '[0-9a-fA-F]{4}-'
+    '[0-9a-fA-F]{4}-'
+    '[0-9a-fA-F]{12}'
+    r'$',
   );
   if (!uuidRe.hasMatch(prefix)) {
     return null;
@@ -141,15 +147,15 @@ String resolveFoodImagePathForDisplay(String normalized, String postUserId) {
   if (fromPublicUrl != null && fromPublicUrl.isNotEmpty) {
     return _stripFoodBucketPrefixIfPresent(fromPublicUrl);
   }
-  var key = _stripFoodBucketPrefixIfPresent(normalized);
+  final key = _stripFoodBucketPrefixIfPresent(normalized);
 
   // 旧データの中には、Storage にもローカル一時パスを含んだまま
   // （例: `uid//private/var/mobile/.../tmp/image_cropper_....jpg`）
   // 保存されているものがあります。
   // この場合は「uid/filename へ縮退」しないで、Storage 側のキーと一致させる必要があります。
   final legacyUuidThenDoubleSlashLocalPath = RegExp(
-    r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}//'
-    r'(private/var/mobile/Containers/Data/Application|private/var/|var/mobile/|containers/data|data/application|data/user/0/)',
+    '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}//'
+    '(private/var/mobile/Containers/Data/Application|private/var/|var/mobile/|containers/data|data/application|data/user/0/)',
   );
   if (legacyUuidThenDoubleSlashLocalPath.hasMatch(key)) {
     return key;
