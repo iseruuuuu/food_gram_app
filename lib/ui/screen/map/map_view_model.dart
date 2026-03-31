@@ -70,7 +70,6 @@ class MapViewModel extends _$MapViewModel {
       final posts =
           ref.read(filteredMapPostsProvider).whenOrNull(data: (v) => v) ??
               const <Posts>[];
-
       if (posts.isEmpty) {
         _cachedPosts = const <Posts>[];
         _cachedImageKeys = const <String, String>{};
