@@ -442,7 +442,6 @@ class MapViewModel extends _$MapViewModel {
       return;
     }
     _pinLoader.clearRegisteredKeys();
-    _symbolTapHandlerRegistered = false;
     _heatmapLayerAdded = false;
     await setPin();
     await updateVisibleMealsCount();
