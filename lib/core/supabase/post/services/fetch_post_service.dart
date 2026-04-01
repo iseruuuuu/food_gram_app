@@ -1,6 +1,7 @@
 import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
+import 'package:food_gram_app/core/supabase/post/stored_posts_remote.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -48,23 +49,7 @@ class FetchPostService extends _$FetchPostService {
   Future<List<Map<String, dynamic>>> getStoredPosts(
     List<String> postIds,
   ) async {
-    if (postIds.isEmpty) {
-      return [];
-    }
-    final intIds =
-        postIds.map(int.tryParse).whereType<int>().toList(growable: false);
-    if (intIds.isEmpty) {
-      return [];
-    }
-    return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'saved_posts_${intIds.join('_')}',
-      fetcher: () => supabase
-          .from('posts')
-          .select()
-          .inFilter('id', intIds)
-          .order('created_at', ascending: false),
-      duration: const Duration(minutes: 5),
-    );
+    return fetchStoredPostRowsForIds(supabase, postIds);
   }
 
   /// レストラン名で投稿を取得（新しい順）
