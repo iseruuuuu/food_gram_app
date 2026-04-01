@@ -93,6 +93,7 @@ class _CreateAlbumAlertDialog extends ConsumerStatefulWidget {
 class _CreateAlbumAlertDialogState
     extends ConsumerState<_CreateAlbumAlertDialog> {
   late final TextEditingController _controller;
+  bool _isSubmitting = false;
 
   @override
   void initState() {
@@ -127,30 +128,33 @@ class _CreateAlbumAlertDialogState
           child: Text(t.cancel),
         ),
         TextButton(
-          onPressed: () async {
+          onPressed: _isSubmitting
+              ? null
+              : () async {
+                  setState(() => _isSubmitting = true);
             FocusScope.of(context).unfocus();
-            final issue = await ref
-                .read(saveAlbumNotifierProvider.notifier)
-                .createAlbum(_controller.text);
-            if (!context.mounted) {
-              return;
-            }
-            if (issue != null) {
-              Navigator.of(context).pop();
-              if (!widget.parentContext.mounted) {
-                return;
-              }
-              await showSaveAlbumIssueDialog(widget.parentContext, issue);
-              return;
-            }
-            Navigator.of(context).pop();
-            if (widget.parentContext.mounted) {
-              SnackBarHelper().openSimpleSnackBar(
-                widget.parentContext,
-                t.stored.albumCreated,
-              );
-            }
-          },
+                  final issue = await ref
+                      .read(saveAlbumNotifierProvider.notifier)
+                      .createAlbum(_controller.text);
+                  if (!context.mounted) {
+                    return;
+                  }
+                  if (issue != null) {
+                    Navigator.of(context).pop();
+                    if (!widget.parentContext.mounted) {
+                      return;
+                    }
+                    await showSaveAlbumIssueDialog(widget.parentContext, issue);
+                    return;
+                  }
+                  Navigator.of(context).pop();
+                  if (widget.parentContext.mounted) {
+                    SnackBarHelper().openSimpleSnackBar(
+                      widget.parentContext,
+                      t.stored.albumCreated,
+                    );
+                  }
+                },
           child: Text(t.done),
         ),
       ],
@@ -196,16 +200,18 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
     final t = Translations.of(context);
     final albumsAsync = ref.watch(saveAlbumNotifierProvider);
     final selected = useState<Set<String>>({});
+    final didUserEditSelection = useRef(false);
     final newNameController = useTextEditingController();
     final isSaving = useState(false);
 
     useEffect(
       () {
         var active = true;
+        didUserEditSelection.value = false;
         () async {
           final initial =
               await SaveAlbumLocalRepository().albumIdsContainingPost(postId);
-          if (active) {
+          if (active && !didUserEditSelection.value) {
             selected.value = Set<String>.from(initial);
           }
         }();
@@ -258,6 +264,7 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
                               } else {
                                 next.remove(a.id);
                               }
+                            didUserEditSelection.value = true;
                               selected.value = next;
                             },
                             title: Text(a.name),
@@ -295,10 +302,10 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
                         final issue = await ref
                             .read(saveAlbumNotifierProvider.notifier)
                             .createAlbum(newNameController.text);
-                        isSaving.value = false;
                         if (!context.mounted) {
                           return;
                         }
+                        isSaving.value = false;
                         if (issue != null) {
                           await showSaveAlbumIssueDialog(context, issue);
                           return;
@@ -323,10 +330,10 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
                               postId: postId,
                               albumIds: selected.value,
                             );
-                        isSaving.value = false;
                         if (!context.mounted) {
                           return;
                         }
+                        isSaving.value = false;
                         if (issue != null) {
                           await showSaveAlbumIssueDialog(context, issue);
                           return;
