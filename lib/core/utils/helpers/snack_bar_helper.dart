@@ -100,7 +100,7 @@ class SnackBarHelper {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {
-                        toastification.dismissAll();
+                        toastification.dismissById(holder.id);
                         onAddToAlbum();
                       },
                       child: Text(
