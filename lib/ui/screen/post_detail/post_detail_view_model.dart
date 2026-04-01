@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
+import 'package:food_gram_app/core/local/save_album_local_repository.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/post_deail_list_mode.dart';
 import 'package:food_gram_app/core/model/posts.dart';
@@ -168,6 +169,7 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     if (isCurrentlyStored) {
       storeList.remove(parsePostId);
       await preference.setStringList(PreferenceKey.storeList, storeList);
+      await SaveAlbumLocalRepository().removePostFromAllAlbums(postId);
       state = state.copyWith(isStore: false);
     } else {
       storeList.add(parsePostId);
