@@ -33,7 +33,22 @@
     "saved": "Đã lưu",
     "savedPosts": "Bài đăng đã lưu",
     "postSaved": "Bài đăng đã được lưu",
-    "postSavedMessage": "Xem bài đăng đã lưu trong Trang của tôi"
+    "postSavedMessage": "Xem bài đăng đã lưu trong Trang của tôi",
+    "albumAll": "All",
+    "albumNew": "New album",
+    "albumNameHint": "e.g. Want to visit",
+    "albumAddTo": "Add to album",
+    "albumPickerTitle": "Add to albums",
+    "albumCreateFieldLabel": "New album name",
+    "albumLimitTitle": "Limit reached",
+    "albumLimitBody": "Free plan: up to 5 albums. Subscribe for unlimited albums.",
+    "albumPostLimitBody": "Free plan: up to 100 posts per album.",
+    "albumPremiumCta": "View plans",
+    "albumEmptyName": "Please enter an album name.",
+    "albumNotSavedPost": "Save the post first, then add it to albums.",
+    "albumLoadError": "Could not load albums.",
+    "albumEmptyListHint": "Create an album below, then select it.",
+    "albumCreated": "Album created"
   },
   "maybeNotFoodDialog": {
     "title": "Kiểm tra nhanh 🍽️",
