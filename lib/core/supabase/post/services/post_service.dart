@@ -186,7 +186,9 @@ class PostService extends _$PostService {
       // 既存パスを正規化してから新規アップロード分と結合
       // （/uid/file.jpg やレガシーのローカルパス混入をここで治癒する）
       final retainedImagePaths = existingImagePaths
-          .map((path) => normalizeFoodImageObjectKeyForDisplay(path, posts.userId))
+          .map(
+            (path) => normalizeFoodImageObjectKeyForDisplay(path, posts.userId),
+          )
           .where((path) => path.isNotEmpty)
           .toList();
       final allImagePaths = [...retainedImagePaths, ...newUploadedPaths];
@@ -197,9 +199,8 @@ class PostService extends _$PostService {
       final oldImagePaths = posts.foodImage.isNotEmpty
           ? posts.foodImage.split(',').where((path) => path.isNotEmpty).toList()
           : <String>[];
-      final existingNormalized = existingImagePaths
-          .map(_normalizeFoodImageStoragePath)
-          .toSet();
+      final existingNormalized =
+          existingImagePaths.map(_normalizeFoodImageStoragePath).toSet();
       final imagesToDelete = oldImagePaths
           .map(_normalizeFoodImageStoragePath)
           .where((oldPath) => !existingNormalized.contains(oldPath))

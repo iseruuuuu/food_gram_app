@@ -55,7 +55,8 @@ Future<void> showMapPlaceSearchModalSheet({
             lat: restaurant.lat,
             lng: restaurant.lng,
           );
-          ref.read(mapModalSelectionProvider.notifier).state = MapModalSelection(
+          ref.read(mapModalSelectionProvider.notifier).state =
+              MapModalSelection(
             name: restaurant.name,
             lat: restaurant.lat,
             lng: restaurant.lng,

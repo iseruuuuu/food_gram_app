@@ -138,7 +138,8 @@ class AppListView extends HookConsumerWidget {
                                         fit: BoxFit.cover,
                                         width: screenWidth,
                                         height: screenWidth,
-                                        placeholder: (context, url) => Container(
+                                        placeholder: (context, url) =>
+                                            Container(
                                           color: Colors.white,
                                         ),
                                         errorWidget: (context, url, error) =>
