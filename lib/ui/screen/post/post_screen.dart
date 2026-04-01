@@ -115,8 +115,12 @@ class PostScreen extends HookConsumerWidget {
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          surfaceTintColor: Colors.transparent,
-          backgroundColor: loading ? Colors.transparent : null,
+          backgroundColor: Theme.of(context).brightness == Brightness.light
+              ? Colors.white
+              : Theme.of(context).colorScheme.surface,
+          surfaceTintColor: Theme.of(context).brightness == Brightness.light
+              ? Colors.white
+              : Theme.of(context).colorScheme.surface,
           title: Text(t.post.title, style: PostStyle.title(context)),
           centerTitle: true,
           leading: !loading
