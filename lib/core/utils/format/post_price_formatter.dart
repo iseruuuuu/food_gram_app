@@ -498,7 +498,7 @@ double? _tryParseDecimalWithIntl(String input, Locale locale) {
     }
     try {
       return NumberFormat.decimalPattern(tag).parse(input) as double;
-    } catch (_) {
+    } on FormatException {
       continue;
     }
   }
@@ -547,7 +547,8 @@ String? _heuristicNormalizeSeparatorsToDot(String s) {
     if (intPart.isEmpty && frac.isEmpty) {
       return null;
     }
-    if (!RegExp(r'^\d*$').hasMatch(intPart) || !RegExp(r'^\d*$').hasMatch(frac)) {
+    if (!RegExp(r'^\d*$').hasMatch(intPart) ||
+        !RegExp(r'^\d*$').hasMatch(frac)) {
       return null;
     }
     if (intPart.isEmpty) {
@@ -759,7 +760,7 @@ PostPriceParseResult parsePostPriceInput({
       trimmed.replaceAll(RegExp(r'[\s\u00A0\u202F]'), ''); // space, NBSP, NNBSP
   if (s.isEmpty ||
       !RegExp(r'^[0-9.,]+$').hasMatch(s) ||
-      !RegExp(r'^[0-9]').hasMatch(s)) {
+      !RegExp('^[0-9]').hasMatch(s)) {
     return const PostPriceParseResult.invalid();
   }
 
