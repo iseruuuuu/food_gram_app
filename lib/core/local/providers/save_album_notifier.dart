@@ -12,16 +12,14 @@ class SaveAlbumNotifier extends _$SaveAlbumNotifier {
   @override
   Future<List<SaveAlbum>> build() async => _repo.loadAlbums();
 
-  bool get _isPremium => ref.read(isSubscribeProvider).value ?? false;
-
   /// 明示的に [AsyncLoading] にしない（チップ行が消えてダイアログ表示中のツリーが壊れやすいため）
   Future<void> reload() async {
     state = await AsyncValue.guard(_repo.loadAlbums);
   }
 
   Future<SaveAlbumIssue?> createAlbum(String rawName) async {
-    final issue =
-        await _repo.createAlbum(name: rawName, isPremium: _isPremium);
+    final isPremium = await ref.read(isSubscribeProvider.future);
+    final issue = await _repo.createAlbum(name: rawName, isPremium: isPremium);
     if (issue == null) {
       await reload();
     }
@@ -32,10 +30,11 @@ class SaveAlbumNotifier extends _$SaveAlbumNotifier {
     required int postId,
     required Set<String> albumIds,
   }) async {
+    final isPremium = await ref.read(isSubscribeProvider.future);
     final issue = await _repo.setPostAlbumMembership(
       postId: postId,
       desiredAlbumIds: albumIds,
-      isPremium: _isPremium,
+      isPremium: isPremium,
     );
     if (issue == null) {
       await reload();
