@@ -335,6 +335,9 @@ class PostDetailListItem extends HookConsumerWidget {
                       ref.read(postDetailViewModelProvider().notifier).store(
                             postId: posts.id,
                             openSnackBar: () {
+                              if (!context.mounted) {
+                                return;
+                              }
                               final t = Translations.of(context);
                               SnackBarHelper().openSavedPostWithAlbumAction(
                                 context,
@@ -342,6 +345,9 @@ class PostDetailListItem extends HookConsumerWidget {
                                 subtitle: t.stored.postSavedMessage,
                                 addToAlbumLabel: t.stored.albumAddTo,
                                 onAddToAlbum: () {
+                                  if (!context.mounted) {
+                                    return;
+                                  }
                                   showSaveAlbumPickerSheet(
                                     context: context,
                                     ref: ref,
