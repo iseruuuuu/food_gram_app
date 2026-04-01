@@ -18,6 +18,12 @@ class NotificationsScreen extends ConsumerWidget {
     final async = ref.watch(myLikeNotificationsProvider);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Theme.of(context).colorScheme.surface,
+        surfaceTintColor: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Theme.of(context).colorScheme.surface,
         title: Text(
           Translations.of(context).notification.likeNotificationsTitle,
           style: const TextStyle(
@@ -26,7 +32,6 @@ class NotificationsScreen extends ConsumerWidget {
           ),
         ),
         centerTitle: true,
-        surfaceTintColor: Colors.transparent,
         elevation: 0.5,
         leading: IconButton(
           onPressed: () => context.pop(),
