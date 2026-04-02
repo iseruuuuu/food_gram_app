@@ -7,11 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'fetch_post_service.g.dart';
 
-/// 保存した投稿 ID 列から `posts` 行を取得する（メモリキャッシュ付き）。
-///
-/// [FetchPostService.getStoredPosts] と **同一のキャッシュキー・クエリ**を使う。
-/// 保存一覧の ViewModel からは **AutoDispose の Repository / Service を経由せず**
-/// [supabaseProvider] とこの関数を直接使う（await 中にプロバイダが破棄されるのを避ける）。
+/// 保存した投稿 ID 列から `posts` 行を取得する
 Future<List<Map<String, dynamic>>> fetchStoredPostRowsForIds(
   SupabaseClient supabase,
   List<String> postIds,
