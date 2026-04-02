@@ -136,32 +136,41 @@ class _CreateAlbumAlertDialogState
               : () async {
                   setState(() => _isSubmitting = true);
                   FocusScope.of(context).unfocus();
-                  final issue = await ref
-                      .read(saveAlbumNotifierProvider.notifier)
-                      .createAlbum(_controller.text);
-                  if (!context.mounted) {
-                    return;
-                  }
-                  if (issue != null) {
-                    Navigator.of(context).pop();
-                    if (!widget.parentContext.mounted) {
+                  try {
+                    final issue = await ref
+                        .read(saveAlbumNotifierProvider.notifier)
+                        .createAlbum(_controller.text);
+                    if (!context.mounted) {
                       return;
                     }
-                    final isPremium =
-                        await ref.read(isSubscribeProvider.future);
-                    await showSaveAlbumIssueDialog(
-                      widget.parentContext,
-                      issue,
-                      isPremium,
-                    );
-                    return;
-                  }
-                  Navigator.of(context).pop();
-                  if (widget.parentContext.mounted) {
-                    SnackBarHelper().openSimpleSnackBar(
-                      widget.parentContext,
-                      t.stored.albumCreated,
-                    );
+                    if (issue != null) {
+                      Navigator.of(context).pop();
+                      if (!widget.parentContext.mounted) {
+                        return;
+                      }
+                      final isPremium =
+                          await ref.read(isSubscribeProvider.future);
+                      if (!widget.parentContext.mounted) {
+                        return;
+                      }
+                      await showSaveAlbumIssueDialog(
+                        widget.parentContext,
+                        issue,
+                        isPremium,
+                      );
+                      return;
+                    }
+                    Navigator.of(context).pop();
+                    if (widget.parentContext.mounted) {
+                      SnackBarHelper().openSimpleSnackBar(
+                        widget.parentContext,
+                        t.stored.albumCreated,
+                      );
+                    }
+                  } finally {
+                    if (context.mounted) {
+                      setState(() => _isSubmitting = false);
+                    }
                   }
                 },
           child: Text(t.done),
@@ -239,143 +248,162 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
       [postId],
     );
 
-    return SafeArea(
-      child: SingleChildScrollView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                t.stored.albumPickerTitle,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              const Gap(12),
-              albumsAsync.when(
-                data: (albums) {
-                  if (albums.isEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Text(
-                        t.stored.albumEmptyListHint,
-                        style: Theme.of(context).textTheme.bodyMedium,
+    return PopScope(
+      canPop: !isSaving.value,
+      child: SafeArea(
+        child: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  t.stored.albumPickerTitle,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const Gap(12),
+                albumsAsync.when(
+                  data: (albums) {
+                    if (albums.isEmpty) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: Text(
+                          t.stored.albumEmptyListHint,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      );
+                    }
+                    return SizedBox(
+                      height: 220,
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          for (final a in albums)
+                            CheckboxListTile(
+                              value: selected.value.contains(a.id),
+                              onChanged:
+                                  isHydratingSelection.value || isSaving.value
+                                      ? null
+                                      : (on) {
+                                          final next =
+                                              Set<String>.from(selected.value);
+                                          if (on ?? false) {
+                                            next.add(a.id);
+                                          } else {
+                                            next.remove(a.id);
+                                          }
+                                          didUserEditSelection.value = true;
+                                          selected.value = next;
+                                        },
+                              title: Text(a.name),
+                              controlAffinity: ListTileControlAffinity.leading,
+                            ),
+                        ],
                       ),
                     );
-                  }
-                  return SizedBox(
-                    height: 220,
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        for (final a in albums)
-                          CheckboxListTile(
-                            value: selected.value.contains(a.id),
-                            onChanged: isHydratingSelection.value ||
-                                    isSaving.value
-                                ? null
-                                : (on) {
-                              final next = Set<String>.from(selected.value);
-                              if (on ?? false) {
-                                next.add(a.id);
-                              } else {
-                                next.remove(a.id);
+                  },
+                  loading: () => const Padding(
+                    padding: EdgeInsets.all(24),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                  error: (_, __) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Text(t.stored.albumLoadError),
+                  ),
+                ),
+                const Gap(8),
+                TextField(
+                  controller: newNameController,
+                  decoration: InputDecoration(
+                    labelText: t.stored.albumCreateFieldLabel,
+                    hintText: t.stored.albumNameHint,
+                    border: const OutlineInputBorder(),
+                  ),
+                  textInputAction: TextInputAction.done,
+                ),
+                const Gap(8),
+                OutlinedButton(
+                  onPressed: isSaving.value
+                      ? null
+                      : () async {
+                          try {
+                            isSaving.value = true;
+                            final issue = await ref
+                                .read(saveAlbumNotifierProvider.notifier)
+                                .createAlbum(newNameController.text);
+                            if (!context.mounted) {
+                              return;
+                            }
+                            if (issue != null) {
+                              final isPremium =
+                                  await ref.read(isSubscribeProvider.future);
+                              if (!context.mounted) {
+                                return;
                               }
-                              didUserEditSelection.value = true;
-                              selected.value = next;
-                            },
-                            title: Text(a.name),
-                            controlAffinity: ListTileControlAffinity.leading,
-                          ),
-                      ],
-                    ),
-                  );
-                },
-                loading: () => const Padding(
-                  padding: EdgeInsets.all(24),
-                  child: Center(child: CircularProgressIndicator()),
-                ),
-                error: (_, __) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Text(t.stored.albumLoadError),
-                ),
-              ),
-              const Gap(8),
-              TextField(
-                controller: newNameController,
-                decoration: InputDecoration(
-                  labelText: t.stored.albumCreateFieldLabel,
-                  hintText: t.stored.albumNameHint,
-                  border: const OutlineInputBorder(),
-                ),
-                textInputAction: TextInputAction.done,
-              ),
-              const Gap(8),
-              OutlinedButton(
-                onPressed: isSaving.value
-                    ? null
-                    : () async {
-                        isSaving.value = true;
-                        final issue = await ref
-                            .read(saveAlbumNotifierProvider.notifier)
-                            .createAlbum(newNameController.text);
-                        if (!context.mounted) {
-                          return;
-                        }
-                        isSaving.value = false;
-                        if (issue != null) {
-                          final isPremium =
-                              await ref.read(isSubscribeProvider.future);
-                          await showSaveAlbumIssueDialog(
-                            context,
-                            issue,
-                            isPremium,
-                          );
-                          return;
-                        }
-                        newNameController.clear();
-                        SnackBarHelper().openSimpleSnackBar(
-                          context,
-                          t.stored.albumCreated,
-                        );
-                      },
-                child: Text(t.stored.albumNew),
-              ),
-              const Gap(16),
-              FilledButton(
-                onPressed: isSaving.value
-                        || isHydratingSelection.value
-                    ? null
-                    : () async {
-                        isSaving.value = true;
-                        final issue = await ref
-                            .read(saveAlbumNotifierProvider.notifier)
-                            .applyMembership(
-                              postId: postId,
-                              albumIds: selected.value,
+                              await showSaveAlbumIssueDialog(
+                                context,
+                                issue,
+                                isPremium,
+                              );
+                              return;
+                            }
+                            newNameController.clear();
+                            SnackBarHelper().openSimpleSnackBar(
+                              context,
+                              t.stored.albumCreated,
                             );
-                        if (!context.mounted) {
-                          return;
-                        }
-                        isSaving.value = false;
-                        if (issue != null) {
-                          final isPremium =
-                              await ref.read(isSubscribeProvider.future);
-                          await showSaveAlbumIssueDialog(
-                            context,
-                            issue,
-                            isPremium,
-                          );
-                          return;
-                        }
-                        Navigator.of(context).pop();
-                      },
-                child: Text(t.done),
-              ),
-            ],
+                          } finally {
+                            if (context.mounted) {
+                              isSaving.value = false;
+                            }
+                          }
+                        },
+                  child: Text(t.stored.albumNew),
+                ),
+                const Gap(16),
+                FilledButton(
+                  onPressed: isSaving.value || isHydratingSelection.value
+                      ? null
+                      : () async {
+                          try {
+                            isSaving.value = true;
+                            final issue = await ref
+                                .read(saveAlbumNotifierProvider.notifier)
+                                .applyMembership(
+                                  postId: postId,
+                                  albumIds: selected.value,
+                                );
+                            if (!context.mounted) {
+                              return;
+                            }
+                            if (issue != null) {
+                              final isPremium =
+                                  await ref.read(isSubscribeProvider.future);
+                              if (!context.mounted) {
+                                return;
+                              }
+                              await showSaveAlbumIssueDialog(
+                                context,
+                                issue,
+                                isPremium,
+                              );
+                              return;
+                            }
+                            Navigator.of(context).pop();
+                          } finally {
+                            if (context.mounted) {
+                              isSaving.value = false;
+                            }
+                          }
+                        },
+                  child: Text(t.done),
+                ),
+              ],
+            ),
           ),
         ),
       ),
