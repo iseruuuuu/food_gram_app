@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
+import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
 
 class SnackBarHelper {
@@ -88,7 +89,7 @@ class SnackBarHelper {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  const Gap(6),
                   Text(
                     subtitle,
                     style: TextStyle(
