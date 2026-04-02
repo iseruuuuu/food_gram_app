@@ -5,7 +5,7 @@ import 'package:food_gram_app/core/local/save_album_local_repository.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
-import 'package:food_gram_app/core/supabase/post/stored_posts_remote.dart';
+import 'package:food_gram_app/core/supabase/post/services/fetch_post_service.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
