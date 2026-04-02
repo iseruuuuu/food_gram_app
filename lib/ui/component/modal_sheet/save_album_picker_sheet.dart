@@ -6,6 +6,7 @@ import 'package:food_gram_app/core/local/providers/save_album_notifier.dart';
 import 'package:food_gram_app/core/local/save_album_local_repository.dart';
 import 'package:food_gram_app/core/model/save_album.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
@@ -29,6 +30,7 @@ Future<void> openSaveAlbumPaywall(BuildContext context) async {
 Future<void> showSaveAlbumIssueDialog(
   BuildContext context,
   SaveAlbumIssue issue,
+  bool isPremium,
 ) async {
   final t = Translations.of(context);
   final title = t.stored.albumLimitTitle;
@@ -38,8 +40,9 @@ Future<void> showSaveAlbumIssueDialog(
     SaveAlbumIssue.emptyName => t.stored.albumEmptyName,
     SaveAlbumIssue.postNotInSavedList => t.stored.albumNotSavedPost,
   };
-  final showPremium = issue == SaveAlbumIssue.albumLimitFree ||
-      issue == SaveAlbumIssue.postLimitFree;
+  final showPremium = !isPremium &&
+      (issue == SaveAlbumIssue.albumLimitFree ||
+          issue == SaveAlbumIssue.postLimitFree);
   if (!context.mounted) {
     return;
   }
@@ -124,7 +127,7 @@ class _CreateAlbumAlertDialogState
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: _isSubmitting ? null : () => Navigator.of(context).pop(),
           child: Text(t.cancel),
         ),
         TextButton(
@@ -132,7 +135,7 @@ class _CreateAlbumAlertDialogState
               ? null
               : () async {
                   setState(() => _isSubmitting = true);
-            FocusScope.of(context).unfocus();
+                  FocusScope.of(context).unfocus();
                   final issue = await ref
                       .read(saveAlbumNotifierProvider.notifier)
                       .createAlbum(_controller.text);
@@ -144,7 +147,13 @@ class _CreateAlbumAlertDialogState
                     if (!widget.parentContext.mounted) {
                       return;
                     }
-                    await showSaveAlbumIssueDialog(widget.parentContext, issue);
+                    final isPremium =
+                        await ref.read(isSubscribeProvider.future);
+                    await showSaveAlbumIssueDialog(
+                      widget.parentContext,
+                      issue,
+                      isPremium,
+                    );
                     return;
                   }
                   Navigator.of(context).pop();
@@ -201,6 +210,7 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
     final albumsAsync = ref.watch(saveAlbumNotifierProvider);
     final selected = useState<Set<String>>({});
     final didUserEditSelection = useRef(false);
+    final isHydratingSelection = useState(true);
     final newNameController = useTextEditingController();
     final isSaving = useState(false);
 
@@ -208,11 +218,18 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
       () {
         var active = true;
         didUserEditSelection.value = false;
+        isHydratingSelection.value = true;
         () async {
-          final initial =
-              await SaveAlbumLocalRepository().albumIdsContainingPost(postId);
-          if (active && !didUserEditSelection.value) {
-            selected.value = Set<String>.from(initial);
+          try {
+            final initial =
+                await SaveAlbumLocalRepository().albumIdsContainingPost(postId);
+            if (active && !didUserEditSelection.value) {
+              selected.value = Set<String>.from(initial);
+            }
+          } finally {
+            if (active) {
+              isHydratingSelection.value = false;
+            }
           }
         }();
         return () {
@@ -257,14 +274,17 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
                         for (final a in albums)
                           CheckboxListTile(
                             value: selected.value.contains(a.id),
-                            onChanged: (on) {
+                            onChanged: isHydratingSelection.value ||
+                                    isSaving.value
+                                ? null
+                                : (on) {
                               final next = Set<String>.from(selected.value);
                               if (on ?? false) {
                                 next.add(a.id);
                               } else {
                                 next.remove(a.id);
                               }
-                            didUserEditSelection.value = true;
+                              didUserEditSelection.value = true;
                               selected.value = next;
                             },
                             title: Text(a.name),
@@ -307,7 +327,13 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
                         }
                         isSaving.value = false;
                         if (issue != null) {
-                          await showSaveAlbumIssueDialog(context, issue);
+                          final isPremium =
+                              await ref.read(isSubscribeProvider.future);
+                          await showSaveAlbumIssueDialog(
+                            context,
+                            issue,
+                            isPremium,
+                          );
                           return;
                         }
                         newNameController.clear();
@@ -321,6 +347,7 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
               const Gap(16),
               FilledButton(
                 onPressed: isSaving.value
+                        || isHydratingSelection.value
                     ? null
                     : () async {
                         isSaving.value = true;
@@ -335,7 +362,13 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
                         }
                         isSaving.value = false;
                         if (issue != null) {
-                          await showSaveAlbumIssueDialog(context, issue);
+                          final isPremium =
+                              await ref.read(isSubscribeProvider.future);
+                          await showSaveAlbumIssueDialog(
+                            context,
+                            issue,
+                            isPremium,
+                          );
                           return;
                         }
                         Navigator.of(context).pop();
