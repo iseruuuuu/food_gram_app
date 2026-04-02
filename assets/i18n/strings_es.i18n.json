@@ -33,7 +33,22 @@
     "saved": "Guardado",
     "savedPosts": "Publicaciones guardadas",
     "postSaved": "Publicación guardada",
-    "postSavedMessage": "Puedes ver las publicaciones guardadas en Mi página"
+    "postSavedMessage": "Puedes ver las publicaciones guardadas en Mi página",
+    "albumAll": "Todos",
+    "albumNew": "Nuevo álbum",
+    "albumNameHint": "ej.: Quiero visitar",
+    "albumAddTo": "Añadir al álbum",
+    "albumPickerTitle": "Añadir a álbumes",
+    "albumCreateFieldLabel": "Nombre del nuevo álbum",
+    "albumLimitTitle": "Límite alcanzado",
+    "albumLimitBody": "Plan gratuito: hasta 5 álbumes. Suscríbete para tener álbumes ilimitados.",
+    "albumPostLimitBody": "Plan gratuito: hasta 100 publicaciones por álbum.",
+    "albumPremiumCta": "Ver planes",
+    "albumEmptyName": "Introduce un nombre para el álbum.",
+    "albumNotSavedPost": "Primero guarda la publicación y luego añádela a álbumes.",
+    "albumLoadError": "No se pudieron cargar los álbumes.",
+    "albumEmptyListHint": "Crea un álbum abajo y luego selecciónalo.",
+    "albumCreated": "Álbum creado"
   },
   "maybeNotFoodDialog": {
     "title": "Una pequeña confirmación 🍽️",

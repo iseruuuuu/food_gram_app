@@ -17,6 +17,7 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/app_translatable_text.dart';
 import 'package:food_gram_app/ui/component/dialog/app_share_dialog.dart';
+import 'package:food_gram_app/ui/component/modal_sheet/save_album_picker_sheet.dart';
 import 'package:food_gram_app/ui/component/profile/app_profile_image.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
 import 'package:gap/gap.dart';
@@ -334,15 +335,25 @@ class PostDetailListItem extends HookConsumerWidget {
                       ref.read(postDetailViewModelProvider().notifier).store(
                             postId: posts.id,
                             openSnackBar: () {
+                              if (!context.mounted) {
+                                return;
+                              }
                               final t = Translations.of(context);
-                              SnackBarHelper().openInfoSnackBar(
+                              SnackBarHelper().openSavedPostWithAlbumAction(
                                 context,
-                                Column(
-                                  children: [
-                                    Text(t.stored.postSaved),
-                                    Text(t.stored.postSavedMessage),
-                                  ],
-                                ),
+                                title: t.stored.postSaved,
+                                subtitle: t.stored.postSavedMessage,
+                                addToAlbumLabel: t.stored.albumAddTo,
+                                onAddToAlbum: () {
+                                  if (!context.mounted) {
+                                    return;
+                                  }
+                                  showSaveAlbumPickerSheet(
+                                    context: context,
+                                    ref: ref,
+                                    postId: posts.id,
+                                  );
+                                },
                               );
                             },
                           );

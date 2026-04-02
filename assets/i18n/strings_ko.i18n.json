@@ -33,7 +33,22 @@
     "saved": "저장됨",
     "savedPosts": "저장된 게시물",
     "postSaved": "게시물이 저장되었습니다",
-    "postSavedMessage": "마이페이지에서 저장된 게시물을 확인할 수 있습니다"
+    "postSavedMessage": "마이페이지에서 저장된 게시물을 확인할 수 있습니다",
+    "albumAll": "전체",
+    "albumNew": "새 앨범",
+    "albumNameHint": "예: 가보고 싶은 곳",
+    "albumAddTo": "앨범에 추가",
+    "albumPickerTitle": "앨범에 추가",
+    "albumCreateFieldLabel": "새 앨범 이름",
+    "albumLimitTitle": "한도에 도달했습니다",
+    "albumLimitBody": "무료 플랜은 최대 5개 앨범까지 만들 수 있습니다. 무제한 앨범은 구독이 필요합니다.",
+    "albumPostLimitBody": "무료 플랜은 앨범당 최대 100개 게시물까지 저장할 수 있습니다.",
+    "albumPremiumCta": "요금제 보기",
+    "albumEmptyName": "앨범 이름을 입력해 주세요.",
+    "albumNotSavedPost": "먼저 게시물을 저장한 후 앨범에 추가해 주세요.",
+    "albumLoadError": "앨범을 불러오지 못했습니다.",
+    "albumEmptyListHint": "아래에서 앨범을 만든 다음 선택해 주세요.",
+    "albumCreated": "앨범이 생성되었습니다"
   },
   "maybeNotFoodDialog": {
     "title": "잠깐 확인 🍽️",

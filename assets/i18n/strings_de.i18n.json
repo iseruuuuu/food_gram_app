@@ -33,7 +33,22 @@
     "saved": "Gespeichert",
     "savedPosts": "Gespeicherte Beiträge",
     "postSaved": "Beitrag gespeichert",
-    "postSavedMessage": "Sie können gespeicherte Beiträge auf der Meine Seite anzeigen"
+    "postSavedMessage": "Sie können gespeicherte Beiträge auf der Meine Seite anzeigen",
+    "albumAll": "Alle",
+    "albumNew": "Neues Album",
+    "albumNameHint": "z. B. Möchte besuchen",
+    "albumAddTo": "Zum Album hinzufügen",
+    "albumPickerTitle": "Zu Alben hinzufügen",
+    "albumCreateFieldLabel": "Neuer Albumname",
+    "albumLimitTitle": "Limit erreicht",
+    "albumLimitBody": "Kostenloser Plan: bis zu 5 Alben. Mit Premium sind Alben unbegrenzt.",
+    "albumPostLimitBody": "Kostenloser Plan: bis zu 100 Beiträge pro Album.",
+    "albumPremiumCta": "Pläne ansehen",
+    "albumEmptyName": "Bitte gib einen Albumnamen ein.",
+    "albumNotSavedPost": "Speichere den Beitrag zuerst und füge ihn dann zu Alben hinzu.",
+    "albumLoadError": "Alben konnten nicht geladen werden.",
+    "albumEmptyListHint": "Erstelle unten ein Album und wähle es dann aus.",
+    "albumCreated": "Album erstellt"
   },
   "maybeNotFoodDialog": {
     "title": "Kurze Bestätigung 🍽️",

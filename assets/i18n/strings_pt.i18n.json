@@ -33,7 +33,22 @@
     "saved": "Salvo",
     "savedPosts": "Postagens salvas",
     "postSaved": "Postagem salva",
-    "postSavedMessage": "Você pode ver as postagens salvas na Minha página"
+    "postSavedMessage": "Você pode ver as postagens salvas na Minha página",
+    "albumAll": "Todos",
+    "albumNew": "Novo álbum",
+    "albumNameHint": "ex.: Quero visitar",
+    "albumAddTo": "Adicionar ao álbum",
+    "albumPickerTitle": "Adicionar aos álbuns",
+    "albumCreateFieldLabel": "Nome do novo álbum",
+    "albumLimitTitle": "Limite atingido",
+    "albumLimitBody": "Plano gratuito: até 5 álbuns. Assine para ter álbuns ilimitados.",
+    "albumPostLimitBody": "Plano gratuito: até 100 publicações por álbum.",
+    "albumPremiumCta": "Ver planos",
+    "albumEmptyName": "Digite um nome para o álbum.",
+    "albumNotSavedPost": "Salve a publicação primeiro e depois adicione-a aos álbuns.",
+    "albumLoadError": "Não foi possível carregar os álbuns.",
+    "albumEmptyListHint": "Crie um álbum abaixo e depois selecione-o.",
+    "albumCreated": "Álbum criado"
   },
   "maybeNotFoodDialog": {
     "title": "Só conferindo 🍽️",

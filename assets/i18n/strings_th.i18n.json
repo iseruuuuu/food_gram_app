@@ -33,7 +33,22 @@
     "saved": "บันทึกแล้ว",
     "savedPosts": "โพสต์ที่บันทึกไว้",
     "postSaved": "บันทึกโพสต์แล้ว",
-    "postSavedMessage": "ดูโพสต์ที่บันทึกไว้ในหน้าของฉัน"
+    "postSavedMessage": "ดูโพสต์ที่บันทึกไว้ในหน้าของฉัน",
+    "albumAll": "ทั้งหมด",
+    "albumNew": "อัลบั้มใหม่",
+    "albumNameHint": "เช่น อยากไป",
+    "albumAddTo": "เพิ่มไปยังอัลบั้ม",
+    "albumPickerTitle": "เพิ่มไปยังอัลบั้ม",
+    "albumCreateFieldLabel": "ชื่ออัลบั้มใหม่",
+    "albumLimitTitle": "ถึงขีดจำกัดแล้ว",
+    "albumLimitBody": "แพ็กเกจฟรีสร้างได้สูงสุด 5 อัลบั้ม สมัครสมาชิกเพื่อใช้งานอัลบั้มไม่จำกัด",
+    "albumPostLimitBody": "แพ็กเกจฟรีบันทึกได้สูงสุด 100 โพสต์ต่ออัลบั้ม",
+    "albumPremiumCta": "ดูแพ็กเกจ",
+    "albumEmptyName": "กรุณากรอกชื่ออัลบั้ม",
+    "albumNotSavedPost": "กรุณาบันทึกโพสต์ก่อน แล้วจึงเพิ่มลงอัลบั้ม",
+    "albumLoadError": "ไม่สามารถโหลดอัลบั้มได้",
+    "albumEmptyListHint": "สร้างอัลบั้มด้านล่าง แล้วเลือกอัลบั้มนั้น",
+    "albumCreated": "สร้างอัลบั้มแล้ว"
   },
   "maybeNotFoodDialog": {
     "title": "ขอตรวจสอบสักครู่ 🍽️",

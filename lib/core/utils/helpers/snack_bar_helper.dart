@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
+import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
 
 class SnackBarHelper {
@@ -53,6 +54,71 @@ class SnackBarHelper {
       title: Text(message),
       autoCloseDuration: duration ?? const Duration(seconds: 3),
       alignment: Alignment.topRight,
+    );
+  }
+
+  /// 投稿保存直後: 説明＋「アルバムに追加」導線
+  void openSavedPostWithAlbumAction(
+    BuildContext? context, {
+    required String title,
+    required String subtitle,
+    required String addToAlbumLabel,
+    required VoidCallback onAddToAlbum,
+  }) {
+    toastification.showCustom(
+      context: context,
+      autoCloseDuration: const Duration(seconds: 5),
+      alignment: Alignment.topRight,
+      builder: (context, holder) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Material(
+            color: AppTheme.primaryBlue,
+            borderRadius: BorderRadius.circular(12),
+            elevation: 4,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const Gap(6),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.9),
+                      fontSize: 13,
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        toastification.dismissById(holder.id);
+                        onAddToAlbum();
+                      },
+                      child: Text(
+                        addToAlbumLabel,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
