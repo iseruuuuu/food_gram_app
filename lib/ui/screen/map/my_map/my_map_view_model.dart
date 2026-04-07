@@ -2,7 +2,9 @@ import 'dart:math' as math;
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
+import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/core/utils/location/prefecture_detector.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
@@ -13,6 +15,23 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:screenshot/screenshot.dart';
 
 part 'my_map_view_model.g.dart';
+
+/// `streak-update` と同様、最終投稿から14日を超えるとストリークは途切れたものとして表示しない。
+int effectivePostingStreakWeeks({
+  required DateTime? lastPostDate,
+  required int streakWeeks,
+  DateTime? now,
+}) {
+  if (streakWeeks <= 0) {
+    return 0;
+  }
+  final last = lastPostDate;
+  final n = now ?? DateTime.now();
+  if (last != null && n.difference(last).inDays > 14) {
+    return 0;
+  }
+  return streakWeeks;
+}
 
 @riverpod
 class MyMapViewModel extends _$MyMapViewModel {
@@ -74,6 +93,7 @@ class MyMapViewModel extends _$MyMapViewModel {
 
       // 統計情報を計算
       final stats = _calculateStats(posts);
+      final postingStreakWeeks = await _fetchPostingStreakWeeks();
       state = state.copyWith(
         visitedCitiesCount: stats.visitedCitiesCount,
         postsCount: stats.postsCount,
@@ -82,7 +102,7 @@ class MyMapViewModel extends _$MyMapViewModel {
         visitedCountriesCount: stats.visitedCountriesCount,
         visitedAreasCount: stats.visitedAreasCount,
         activityDays: stats.activityDays,
-        consecutivePostingDays: stats.consecutivePostingDays,
+        postingStreakWeeks: postingStreakWeeks,
       );
 
       // ピン情報をキャッシュ
@@ -341,6 +361,18 @@ class MyMapViewModel extends _$MyMapViewModel {
     }
   }
 
+  Future<int> _fetchPostingStreakWeeks() async {
+    final result =
+        await ref.read(userRepositoryProvider.notifier).getCurrentUser();
+    return result.when(
+      success: (user) => effectivePostingStreakWeeks(
+        lastPostDate: user.lastPostDate,
+        streakWeeks: user.streakWeeks,
+      ),
+      failure: (_) => 0,
+    );
+  }
+
   /// 統計情報を計算
   _MapStats _calculateStats(List<Posts> posts) {
     // 緯度経度が0の投稿を除外
@@ -392,8 +424,6 @@ class MyMapViewModel extends _$MyMapViewModel {
       activityDays = lastPostDate.difference(firstPostDate).inDays;
     }
 
-    final consecutivePostingDays = _consecutivePostingStreakDays(validPosts);
-
     return _MapStats(
       visitedCitiesCount: uniqueLocations.length,
       postsCount: posts.length,
@@ -402,34 +432,8 @@ class MyMapViewModel extends _$MyMapViewModel {
       visitedCountriesCount: visitedCountries.length,
       visitedAreasCount: visitedAreas.length,
       activityDays: activityDays,
-      consecutivePostingDays: consecutivePostingDays,
     );
   }
-}
-
-/// 最終投稿日から連続して投稿があったローカル暦日数（同日複数投稿は1日とみなす）
-int _consecutivePostingStreakDays(List<Posts> validPosts) {
-  if (validPosts.isEmpty) {
-    return 0;
-  }
-  final daySet = <DateTime>{};
-  for (final post in validPosts) {
-    final d = post.createdAt.toLocal();
-    daySet.add(DateTime(d.year, d.month, d.day));
-  }
-  final sorted = daySet.toList()..sort();
-  var anchor = sorted.last;
-  var streak = 1;
-  for (var i = sorted.length - 2; i >= 0; i--) {
-    final prev = sorted[i];
-    if (anchor.difference(prev).inDays == 1) {
-      streak++;
-      anchor = prev;
-    } else {
-      break;
-    }
-  }
-  return streak;
 }
 
 /// 統計情報を保持するクラス
@@ -442,7 +446,6 @@ class _MapStats {
     required this.visitedCountriesCount,
     required this.visitedAreasCount,
     required this.activityDays,
-    required this.consecutivePostingDays,
   });
 
   final int visitedCitiesCount;
@@ -452,5 +455,5 @@ class _MapStats {
   final int visitedCountriesCount;
   final int visitedAreasCount;
   final int activityDays;
-  final int consecutivePostingDays;
 }
+
