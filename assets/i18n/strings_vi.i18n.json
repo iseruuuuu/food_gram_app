@@ -255,7 +255,13 @@
     "visitedCountries": "Quốc gia đã đến",
     "recordSummary": "Bữa ăn của bạn được lưu lại {days} ngày ✨",
     "japanSummary": "Tại Nhật, bữa ăn của bạn có ở {prefectures} tỉnh ✨",
-    "worldSummary": "Trên thế giới, bữa ăn của bạn có ở {countries} quốc gia ✨"
+    "worldSummary": "Trên thế giới, bữa ăn của bạn có ở {countries} quốc gia ✨",
+    "recordStreakWithGoal": "🔥 Chuỗi {streak} ngày｜còn {remaining} ngày để đạt {milestone}",
+    "recordStreakKeepGoing": "🔥 Chuỗi {streak} ngày｜Tiếp tục nhé",
+    "japanStatsEncouragement": "🗾 {current}/47｜còn {remaining} tỉnh đến mục tiêu tiếp theo",
+    "japanStatsComplete": "🗾 47/47｜Đủ 47 tỉnh thành!",
+    "worldStatsEncouragement": "🌍 {current} quốc gia｜còn {remaining} quốc gia để đạt {next}",
+    "worldStatsComplete": "🌍 {current} quốc gia｜Hoàn thành thế giới!"
   },
   "mapViewType": {
     "record": "Ghi chép",

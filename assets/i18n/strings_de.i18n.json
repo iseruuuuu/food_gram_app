@@ -255,7 +255,13 @@
     "visitedCountries": "Besuchte Länder",
     "recordSummary": "Deine Mahlzeiten sind seit {days} Tagen festgehalten ✨",
     "japanSummary": "In Japan sind deine Mahlzeiten in {prefectures} Präfekturen festgehalten ✨",
-    "worldSummary": "Weltweit sind deine Mahlzeiten in {countries} Ländern festgehalten ✨"
+    "worldSummary": "Weltweit sind deine Mahlzeiten in {countries} Ländern festgehalten ✨",
+    "recordStreakWithGoal": "🔥 {streak}-Tage-Serie｜noch {remaining} Tage bis {milestone}",
+    "recordStreakKeepGoing": "🔥 {streak}-Tage-Serie｜Weiter so",
+    "japanStatsEncouragement": "🗾 {current}/47｜noch {remaining} Präfekturen bis zum nächsten Ziel",
+    "japanStatsComplete": "🗾 47/47｜Alle Präfekturen geschafft!",
+    "worldStatsEncouragement": "🌍 {current} Länder｜noch {remaining} bis {next}",
+    "worldStatsComplete": "🌍 {current} Länder｜Welt komplett!"
   },
   "mapViewType": {
     "record": "Aufzeichnung",

@@ -255,7 +255,13 @@
     "visitedCountries": "造訪過的國家",
     "recordSummary": "你的餐點已記錄了 {days} 天✨",
     "japanSummary": "在日本，你的餐點遍佈 {prefectures} 個都道府縣✨",
-    "worldSummary": "在世界，你的餐點遍佈 {countries} 個國家✨"
+    "worldSummary": "在世界，你的餐點遍佈 {countries} 個國家✨",
+    "recordStreakWithGoal": "🔥 連續記錄 {streak} 天｜還差 {remaining} 天達到 {milestone} 天",
+    "recordStreakKeepGoing": "🔥 連續記錄 {streak} 天｜繼續保持",
+    "japanStatsEncouragement": "🗾 {current}/47｜還差 {remaining} 縣到下一個目標",
+    "japanStatsComplete": "🗾 47/47｜全國達成！",
+    "worldStatsEncouragement": "🌍 {current} 國｜還差 {remaining} 國達到 {next} 國",
+    "worldStatsComplete": "🌍 {current} 國｜世界達成！"
   },
   "mapViewType": {
     "record": "記錄",
