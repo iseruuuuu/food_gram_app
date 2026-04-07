@@ -82,6 +82,7 @@ class MyMapViewModel extends _$MyMapViewModel {
         visitedCountriesCount: stats.visitedCountriesCount,
         visitedAreasCount: stats.visitedAreasCount,
         activityDays: stats.activityDays,
+        consecutivePostingDays: stats.consecutivePostingDays,
       );
 
       // ピン情報をキャッシュ
@@ -113,8 +114,8 @@ class MyMapViewModel extends _$MyMapViewModel {
       }).toList();
       if (symbols.isNotEmpty) {
         await _addSymbolsInChunks(symbols);
-        await state.mapController?.setSymbolIconIgnorePlacement(false);
-        await state.mapController?.setSymbolIconAllowOverlap(false);
+        await state.mapController?.setSymbolIconIgnorePlacement(true);
+        await state.mapController?.setSymbolIconAllowOverlap(true);
       }
 
       // 意図的に1度だけ呼ぶにようにする
@@ -391,6 +392,8 @@ class MyMapViewModel extends _$MyMapViewModel {
       activityDays = lastPostDate.difference(firstPostDate).inDays;
     }
 
+    final consecutivePostingDays = _consecutivePostingStreakDays(validPosts);
+
     return _MapStats(
       visitedCitiesCount: uniqueLocations.length,
       postsCount: posts.length,
@@ -399,8 +402,34 @@ class MyMapViewModel extends _$MyMapViewModel {
       visitedCountriesCount: visitedCountries.length,
       visitedAreasCount: visitedAreas.length,
       activityDays: activityDays,
+      consecutivePostingDays: consecutivePostingDays,
     );
   }
+}
+
+/// 最終投稿日から連続して投稿があったローカル暦日数（同日複数投稿は1日とみなす）
+int _consecutivePostingStreakDays(List<Posts> validPosts) {
+  if (validPosts.isEmpty) {
+    return 0;
+  }
+  final daySet = <DateTime>{};
+  for (final post in validPosts) {
+    final d = post.createdAt.toLocal();
+    daySet.add(DateTime(d.year, d.month, d.day));
+  }
+  final sorted = daySet.toList()..sort();
+  var anchor = sorted.last;
+  var streak = 1;
+  for (var i = sorted.length - 2; i >= 0; i--) {
+    final prev = sorted[i];
+    if (anchor.difference(prev).inDays == 1) {
+      streak++;
+      anchor = prev;
+    } else {
+      break;
+    }
+  }
+  return streak;
 }
 
 /// 統計情報を保持するクラス
@@ -413,6 +442,7 @@ class _MapStats {
     required this.visitedCountriesCount,
     required this.visitedAreasCount,
     required this.activityDays,
+    required this.consecutivePostingDays,
   });
 
   final int visitedCitiesCount;
@@ -422,4 +452,5 @@ class _MapStats {
   final int visitedCountriesCount;
   final int visitedAreasCount;
   final int activityDays;
+  final int consecutivePostingDays;
 }
