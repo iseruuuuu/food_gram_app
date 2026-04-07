@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
+import 'package:food_gram_app/core/supabase/user/services/user_service.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
@@ -102,6 +104,7 @@ class MyMapScreen extends HookConsumerWidget {
                           visitedCountriesCount: state.visitedCountriesCount,
                           visitedAreasCount: state.visitedAreasCount,
                           activityDays: state.activityDays,
+                          postingStreakWeeks: state.postingStreakWeeks,
                           viewType: state.viewType,
                         ),
                         Padding(
@@ -260,6 +263,12 @@ class MyMapScreen extends HookConsumerWidget {
                 .then((value) async {
               if (value != null) {
                 ref.invalidate(myMapRepositoryProvider);
+                final uid = ref.read(currentUserProvider);
+                if (uid != null) {
+                  ref
+                      .read(userServiceProvider.notifier)
+                      .invalidateUserCache(uid);
+                }
               }
             });
           },
@@ -284,7 +293,7 @@ double _calculateIconSize(BuildContext context) {
 double _calculateTopPosition(BuildContext context) {
   final screenWidth = MediaQuery.of(context).size.width;
   if (screenWidth <= 375) {
-    return 25;
+    return 15;
   } else if (screenWidth < 720) {
     return 50;
   } else {

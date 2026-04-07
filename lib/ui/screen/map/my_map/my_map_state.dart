@@ -18,5 +18,7 @@ class MyMapState with _$MyMapState {
     @Default(0) int visitedCountriesCount,
     @Default(0) int visitedAreasCount,
     @Default(0) int activityDays,
+    /// `users.streak_weeks`（`last_post_date` が14日超古い場合は途切れとして 0）
+    @Default(0) int postingStreakWeeks,
   }) = _MyMapState;
 }
