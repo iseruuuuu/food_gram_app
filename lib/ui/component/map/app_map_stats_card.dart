@@ -4,6 +4,28 @@ import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 
+const _japanPrefectureMilestones = [5, 10, 15, 17, 20, 25, 30, 35, 40, 45, 47];
+const _streakWeekMilestones = [2, 4, 8, 12, 24, 52];
+const _worldCountryCap = 196;
+
+int? _nextStreakWeekMilestone(int streakWeeks) {
+  for (final m in _streakWeekMilestones) {
+    if (streakWeeks < m) {
+      return m;
+    }
+  }
+  return null;
+}
+
+int? _nextJapanPrefectureMilestone(int visited) {
+  for (final t in _japanPrefectureMilestones) {
+    if (visited < t) {
+      return t;
+    }
+  }
+  return null;
+}
+
 /// マイマップの統計情報を表示するカード
 class AppMapStatsCard extends StatelessWidget {
   const AppMapStatsCard({
@@ -14,6 +36,7 @@ class AppMapStatsCard extends StatelessWidget {
     required this.visitedCountriesCount,
     required this.visitedAreasCount,
     required this.activityDays,
+    required this.postingStreakWeeks,
     required this.viewType,
     super.key,
   });
@@ -25,6 +48,9 @@ class AppMapStatsCard extends StatelessWidget {
   final int visitedCountriesCount;
   final int visitedAreasCount;
   final int activityDays;
+
+  /// `users.streak_weeks` ベース（記録ビュー用）
+  final int postingStreakWeeks;
   final MapViewType viewType;
 
   @override
@@ -41,9 +67,11 @@ class AppMapStatsCard extends StatelessWidget {
       MapViewType.world => t.mapStats.worldSummary
           .replaceAll('{countries}', visitedCountriesCount.toString()),
     };
+    final encouragementLine = _encouragementSubline(t);
+    final sublineColor = isDark ? Colors.white70 : Colors.black;
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
       decoration: BoxDecoration(
         color: cardBg,
         borderRadius: BorderRadius.circular(16),
@@ -64,15 +92,32 @@ class AppMapStatsCard extends StatelessWidget {
           ),
           const Gap(12),
           Center(
-            child: Text(
-              summary,
-              style: TextStyle(
-                fontSize: 15,
-                color: summaryColor,
-                fontWeight: FontWeight.bold,
+            child: FittedBox(
+              child: Text(
+                summary,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: summaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
+          if (encouragementLine != null) ...[
+            const Gap(8),
+            Center(
+              child: Text(
+                encouragementLine,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  height: 1.35,
+                  color: sublineColor,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
@@ -325,5 +370,50 @@ class AppMapStatsCard extends StatelessWidget {
           ),
         ];
     }
+  }
+
+  String? _encouragementSubline(Translations t) {
+    switch (viewType) {
+      case MapViewType.detail:
+        if (postingStreakWeeks <= 0) {
+          return null;
+        }
+        return _recordEncouragementLine(t, postingStreakWeeks);
+      case MapViewType.japan:
+        if (visitedPrefecturesCount >= 47) {
+          return t.mapStats.japanStatsComplete;
+        }
+        final next = _nextJapanPrefectureMilestone(visitedPrefecturesCount);
+        if (next == null) {
+          return null;
+        }
+        final remaining = next - visitedPrefecturesCount;
+        return t.mapStats.japanStatsEncouragement
+            .replaceAll('{current}', visitedPrefecturesCount.toString())
+            .replaceAll('{remaining}', remaining.toString());
+      case MapViewType.world:
+        if (visitedCountriesCount >= _worldCountryCap) {
+          return t.mapStats.worldStatsComplete
+              .replaceAll('{current}', visitedCountriesCount.toString());
+        }
+        final next = visitedCountriesCount + 1;
+        return t.mapStats.worldStatsEncouragement
+            .replaceAll('{current}', visitedCountriesCount.toString())
+            .replaceAll('{remaining}', '1')
+            .replaceAll('{next}', next.toString());
+    }
+  }
+
+  String _recordEncouragementLine(Translations t, int streakWeeks) {
+    final next = _nextStreakWeekMilestone(streakWeeks);
+    if (next == null) {
+      return t.mapStats.recordStreakKeepGoing
+          .replaceAll('{streak}', streakWeeks.toString());
+    }
+    final remaining = next - streakWeeks;
+    return t.mapStats.recordStreakWithGoal
+        .replaceAll('{streak}', streakWeeks.toString())
+        .replaceAll('{remaining}', remaining.toString())
+        .replaceAll('{milestone}', next.toString());
   }
 }
