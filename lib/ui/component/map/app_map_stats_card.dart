@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
-import 'package:food_gram_app/core/utils/map_stats_presentation.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
+import 'package:food_gram_app/core/utils/map_stats_presentation.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 
@@ -45,6 +45,11 @@ class AppMapStatsCard extends StatelessWidget {
       postingStreakWeeks: postingStreakWeeks,
     );
     final sublineColor = isDark ? Colors.white70 : Colors.black;
+    final statLabelColor = isDark ? Colors.white70 : Colors.grey[600];
+    const valueBlue = AppTheme.primaryBlue;
+    const valueRed = Color(0xFFEA4335);
+    const valueGreen = Color(0xFF34A853);
+    final statValueColors = [valueBlue, valueRed, valueGreen];
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
@@ -64,7 +69,32 @@ class AppMapStatsCard extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: _buildStatColumns(pres.columns, isDark),
+            children: List.generate(pres.columns.length, (i) {
+              final c = pres.columns[i];
+              return Column(
+                children: [
+                  Text(c.emoji, style: const TextStyle(fontSize: 32)),
+                  const Gap(8),
+                  Text(
+                    c.value,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: statValueColors[i],
+                    ),
+                  ),
+                  const Gap(4),
+                  Text(
+                    c.label,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: statLabelColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              );
+            }),
           ),
           const Gap(12),
           Center(
@@ -97,42 +127,5 @@ class AppMapStatsCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  List<Widget> _buildStatColumns(
-    List<MapStatsColumnPresentation> columns,
-    bool isDark,
-  ) {
-    final labelColor = isDark ? Colors.white70 : Colors.grey[600];
-    const valueBlue = AppTheme.primaryBlue;
-    const valueRed = Color(0xFFEA4335);
-    const valueGreen = Color(0xFF34A853);
-    final valueColors = [valueBlue, valueRed, valueGreen];
-    return List.generate(columns.length, (i) {
-      final c = columns[i];
-      return Column(
-        children: [
-          Text(c.emoji, style: const TextStyle(fontSize: 32)),
-          const Gap(8),
-          Text(
-            c.value,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: valueColors[i],
-            ),
-          ),
-          const Gap(4),
-          Text(
-            c.label,
-            style: TextStyle(
-              fontSize: 12,
-              color: labelColor,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      );
-    });
   }
 }
