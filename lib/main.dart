@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/app.dart';
+import 'package:food_gram_app/core/home_widget/map_stats_home_widget_sync.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/core/review/in_app_review_service.dart';
 import 'package:food_gram_app/env.dart';
@@ -19,6 +20,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // デバイスのロケールで初期化
   LocaleSettings.useDeviceLocale();
+  await MapStatsHomeWidgetSync.configure();
   await initializeSystemSettings();
   await initializeThirdPartyServices();
   await initializePurchases();

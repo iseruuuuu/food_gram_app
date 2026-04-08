@@ -96,9 +96,7 @@ class MyMapScreen extends HookConsumerWidget {
                           onViewTypeChanged: controller.changeViewType,
                         ),
                         AppMapStatsCard(
-                          visitedCitiesCount: state.visitedCitiesCount,
                           postsCount: state.postsCount,
-                          completionPercentage: state.completionPercentage,
                           visitedPrefecturesCount:
                               state.visitedPrefecturesCount,
                           visitedCountriesCount: state.visitedCountriesCount,

@@ -1,8 +1,9 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/services.dart';
+import 'package:food_gram_app/core/home_widget/map_stats_home_widget_sync.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/core/utils/location/country_detector.dart';
@@ -103,6 +104,17 @@ class MyMapViewModel extends _$MyMapViewModel {
         visitedAreasCount: stats.visitedAreasCount,
         activityDays: stats.activityDays,
         postingStreakWeeks: postingStreakWeeks,
+      );
+
+      unawaited(
+        MapStatsHomeWidgetSync.syncAllModes(
+          postsCount: stats.postsCount,
+          visitedPrefecturesCount: stats.visitedPrefecturesCount,
+          visitedCountriesCount: stats.visitedCountriesCount,
+          visitedAreasCount: stats.visitedAreasCount,
+          activityDays: stats.activityDays,
+          postingStreakWeeks: postingStreakWeeks,
+        ),
       );
 
       // ピン情報をキャッシュ
@@ -456,4 +468,3 @@ class _MapStats {
   final int visitedAreasCount;
   final int activityDays;
 }
-
