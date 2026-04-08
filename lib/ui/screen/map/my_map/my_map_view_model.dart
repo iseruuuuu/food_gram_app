@@ -106,15 +106,13 @@ class MyMapViewModel extends _$MyMapViewModel {
         postingStreakWeeks: postingStreakWeeks,
       );
 
-      unawaited(
-        MapStatsHomeWidgetSync.syncAllModes(
-          postsCount: stats.postsCount,
-          visitedPrefecturesCount: stats.visitedPrefecturesCount,
-          visitedCountriesCount: stats.visitedCountriesCount,
-          visitedAreasCount: stats.visitedAreasCount,
-          activityDays: stats.activityDays,
-          postingStreakWeeks: postingStreakWeeks,
-        ),
+      MapStatsHomeWidgetSync.scheduleSyncAllModes(
+        postsCount: stats.postsCount,
+        visitedPrefecturesCount: stats.visitedPrefecturesCount,
+        visitedCountriesCount: stats.visitedCountriesCount,
+        visitedAreasCount: stats.visitedAreasCount,
+        activityDays: stats.activityDays,
+        postingStreakWeeks: postingStreakWeeks,
       );
 
       // ピン情報をキャッシュ
