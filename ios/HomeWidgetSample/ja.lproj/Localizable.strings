@@ -1,0 +1,13 @@
+"widget.unsupported" = "未対応";
+"widget.appName" = "FoodGram";
+"widget.fallback.small" = "アプリを開いてマイマップを表示すると統計が同期されます。";
+"widget.fallback.medium" = "FoodGram -> マイマップを開くと統計が表示されます。";
+"widget.mode.record" = "記録";
+"widget.mode.japan" = "日本";
+"widget.mode.world" = "世界";
+"widget.config.displayName" = "マイマップ統計";
+"widget.config.description" = "記録・日本（47都道府県）・世界の統計を表示します。";
+"widget.intent.statisticsType" = "統計タイプ";
+"widget.intent.title" = "マイマップ統計";
+"widget.intent.description" = "記録、日本、世界の統計タイプを選択します。";
+"widget.intent.type" = "タイプ";

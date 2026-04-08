@@ -7,6 +7,10 @@ import AppIntents
 import SwiftUI
 import WidgetKit
 
+private func l10n(_ key: String) -> LocalizedStringResource {
+    LocalizedStringResource(stringLiteral: key)
+}
+
 struct MapStatsEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
@@ -43,7 +47,7 @@ struct HomeWidgetSampleEntryView: View {
             case .systemMedium:
                 mediumContent
             default:
-                Text("Unsupported")
+                Text(l10n("widget.unsupported"))
             }
         }
     }
@@ -66,9 +70,9 @@ struct HomeWidgetSampleEntryView: View {
                     .lineLimit(3)
                     .minimumScaleFactor(0.8)
             } else {
-                Text("FoodGram")
+                Text(l10n("widget.appName"))
                     .font(.headline)
-                Text("Open the app and view My Map to sync stats.")
+                Text(l10n("widget.fallback.small"))
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
@@ -119,7 +123,7 @@ struct HomeWidgetSampleEntryView: View {
                         .minimumScaleFactor(0.85)
                 }
             } else {
-                Text("Open FoodGram → My Map to load your statistics.")
+                Text(l10n("widget.fallback.medium"))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -130,11 +134,11 @@ struct HomeWidgetSampleEntryView: View {
     private var modeTitle: String {
         switch entry.configuration.mapMode {
         case .detail:
-            return "Record"
+            return String(localized: "widget.mode.record")
         case .japan:
-            return "Japan"
+            return String(localized: "widget.mode.japan")
         case .world:
-            return "World"
+            return String(localized: "widget.mode.world")
         }
     }
 }
@@ -147,8 +151,8 @@ struct HomeWidgetSample: Widget {
             HomeWidgetSampleEntryView(entry: entry)
                 .containerBackground(Color.white, for: .widget)
         }
-        .configurationDisplayName("My Map stats")
-        .description("Record, Japan (47 prefectures), or world map statistics.")
+        .configurationDisplayName(l10n("widget.config.displayName"))
+        .description(l10n("widget.config.description"))
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }

@@ -12,24 +12,24 @@ enum MapStatsViewMode: String, AppEnum {
     case world
 
     static var typeDisplayRepresentation: TypeDisplayRepresentation {
-        TypeDisplayRepresentation(name: "Statistics type")
+        TypeDisplayRepresentation(name: LocalizedStringResource("widget.intent.statisticsType"))
     }
 
     static var caseDisplayRepresentations: [MapStatsViewMode: DisplayRepresentation] {
         [
-            .detail: "Record",
-            .japan: "Japan",
-            .world: "World",
+            .detail: DisplayRepresentation(title: LocalizedStringResource("widget.mode.record")),
+            .japan: DisplayRepresentation(title: LocalizedStringResource("widget.mode.japan")),
+            .world: DisplayRepresentation(title: LocalizedStringResource("widget.mode.world")),
         ]
     }
 }
 
 struct ConfigurationAppIntent: WidgetConfigurationIntent {
-    static var title: LocalizedStringResource { "Map statistics" }
+    static var title: LocalizedStringResource { "widget.intent.title" }
     static var description: IntentDescription {
-        "Choose record, Japan prefectures, or world countries."
+        IntentDescription("widget.intent.description")
     }
 
-    @Parameter(title: "Type", default: .detail)
+    @Parameter(title: "widget.intent.type", default: .detail)
     var mapMode: MapStatsViewMode
 }

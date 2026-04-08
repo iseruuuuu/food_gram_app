@@ -3,6 +3,7 @@ import 'package:food_gram_app/gen/strings.g.dart';
 
 const japanPrefectureMilestones = [5, 10, 15, 17, 20, 25, 30, 35, 40, 45, 47];
 const streakWeekMilestones = [2, 4, 8, 12, 24, 52];
+const japanPrefectureCap = 47;
 const worldCountryCap = 196;
 
 int? nextStreakWeekMilestone(int streakWeeks) {
@@ -48,77 +49,91 @@ class MapStatsPresentation {
     required int activityDays,
     required int postingStreakWeeks,
   }) {
+    final safePostsCount = postsCount < 0 ? 0 : postsCount;
+    final safeVisitedPrefecturesCount = visitedPrefecturesCount.clamp(
+      0,
+      japanPrefectureCap,
+    );
+    final safeVisitedCountriesCount = visitedCountriesCount.clamp(
+      0,
+      worldCountryCap,
+    );
+    final safeVisitedAreasCount = visitedAreasCount < 0 ? 0 : visitedAreasCount;
+    final safeActivityDays = activityDays < 0 ? 0 : activityDays;
+    final safePostingStreakWeeks =
+        postingStreakWeeks < 0 ? 0 : postingStreakWeeks;
+
     final summary = switch (viewType) {
-      MapViewType.detail =>
-        t.mapStats.recordSummary.replaceAll('{days}', activityDays.toString()),
+      MapViewType.detail => t.mapStats.recordSummary
+          .replaceAll('{days}', safeActivityDays.toString()),
       MapViewType.japan => t.mapStats.japanSummary
-          .replaceAll('{prefectures}', visitedPrefecturesCount.toString()),
+          .replaceAll('{prefectures}', safeVisitedPrefecturesCount.toString()),
       MapViewType.world => t.mapStats.worldSummary
-          .replaceAll('{countries}', visitedCountriesCount.toString()),
+          .replaceAll('{countries}', safeVisitedCountriesCount.toString()),
     };
 
     final columns = switch (viewType) {
       MapViewType.detail => [
-        MapStatsColumnPresentation(
-          emoji: '📍',
-          value: '$visitedAreasCount',
-          label: t.mapStats.visitedArea,
-        ),
-        MapStatsColumnPresentation(
-          emoji: '🍜',
-          value: '$postsCount',
-          label: t.mapStats.posts,
-        ),
-        MapStatsColumnPresentation(
-          emoji: '📅',
-          value: '$activityDays${t.dayUnit}',
-          label: t.mapStats.activityDays,
-        ),
-      ],
+          MapStatsColumnPresentation(
+            emoji: '📍',
+            value: '$safeVisitedAreasCount',
+            label: t.mapStats.visitedArea,
+          ),
+          MapStatsColumnPresentation(
+            emoji: '🍜',
+            value: '$safePostsCount',
+            label: t.mapStats.posts,
+          ),
+          MapStatsColumnPresentation(
+            emoji: '📅',
+            value: '$safeActivityDays${t.dayUnit}',
+            label: t.mapStats.activityDays,
+          ),
+        ],
       MapViewType.japan => [
-        MapStatsColumnPresentation(
-          emoji: '🗾',
-          value: '$visitedPrefecturesCount/47',
-          label: t.mapStats.prefectures,
-        ),
-        MapStatsColumnPresentation(
-          emoji: '🍜',
-          value: '$postsCount',
-          label: t.mapStats.posts,
-        ),
-        MapStatsColumnPresentation(
-          emoji: '📊',
-          value:
-              '${(visitedPrefecturesCount / 47 * 100).toStringAsFixed(1)}%',
-          label: t.mapStats.achievementRate,
-        ),
-      ],
+          MapStatsColumnPresentation(
+            emoji: '🗾',
+            value: '$safeVisitedPrefecturesCount/$japanPrefectureCap',
+            label: t.mapStats.prefectures,
+          ),
+          MapStatsColumnPresentation(
+            emoji: '🍜',
+            value: '$safePostsCount',
+            label: t.mapStats.posts,
+          ),
+          MapStatsColumnPresentation(
+            emoji: '📊',
+            value:
+                '${(safeVisitedPrefecturesCount / japanPrefectureCap * 100).toStringAsFixed(1)}%',
+            label: t.mapStats.achievementRate,
+          ),
+        ],
       MapViewType.world => [
-        MapStatsColumnPresentation(
-          emoji: '🌍',
-          value: '$visitedCountriesCount/196',
-          label: t.mapStats.visitedCountries,
-        ),
-        MapStatsColumnPresentation(
-          emoji: '🍜',
-          value: '$postsCount',
-          label: t.mapStats.posts,
-        ),
-        MapStatsColumnPresentation(
-          emoji: '📊',
-          value:
-              '${(visitedCountriesCount / 196 * 100).toStringAsFixed(1)}%',
-          label: t.mapStats.achievementRate,
-        ),
-      ],
+          MapStatsColumnPresentation(
+            emoji: '🌍',
+            value: '$safeVisitedCountriesCount/$worldCountryCap',
+            label: t.mapStats.visitedCountries,
+          ),
+          MapStatsColumnPresentation(
+            emoji: '🍜',
+            value: '$safePostsCount',
+            label: t.mapStats.posts,
+          ),
+          MapStatsColumnPresentation(
+            emoji: '📊',
+            value:
+                '${(safeVisitedCountriesCount / worldCountryCap * 100).toStringAsFixed(1)}%',
+            label: t.mapStats.achievementRate,
+          ),
+        ],
     };
 
     final encouragement = _encouragement(
       t: t,
       viewType: viewType,
-      visitedPrefecturesCount: visitedPrefecturesCount,
-      visitedCountriesCount: visitedCountriesCount,
-      postingStreakWeeks: postingStreakWeeks,
+      visitedPrefecturesCount: safeVisitedPrefecturesCount,
+      visitedCountriesCount: safeVisitedCountriesCount,
+      postingStreakWeeks: safePostingStreakWeeks,
     );
 
     return MapStatsPresentation(
@@ -159,7 +174,7 @@ class MapStatsPresentation {
             .replaceAll('{remaining}', remaining.toString())
             .replaceAll('{milestone}', next.toString());
       case MapViewType.japan:
-        if (visitedPrefecturesCount >= 47) {
+        if (visitedPrefecturesCount >= japanPrefectureCap) {
           return t.mapStats.japanStatsComplete;
         }
         final next = nextJapanPrefectureMilestone(visitedPrefecturesCount);
