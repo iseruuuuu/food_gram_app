@@ -146,8 +146,7 @@ class MyMapViewModel extends _$MyMapViewModel {
       }).toList();
       if (symbols.isNotEmpty) {
         await _addSymbolsInChunks(symbols);
-        await state.mapController?.setSymbolIconIgnorePlacement(true);
-        await state.mapController?.setSymbolIconAllowOverlap(true);
+        await _applySymbolOverlapPolicy();
       }
 
       // 意図的に1度だけ呼ぶにようにする
@@ -313,8 +312,7 @@ class MyMapViewModel extends _$MyMapViewModel {
 
     if (symbols.isNotEmpty && state.mapController != null) {
       await _addSymbolsInChunks(symbols);
-      await state.mapController!.setSymbolIconIgnorePlacement(false);
-      await state.mapController!.setSymbolIconAllowOverlap(false);
+      await _applySymbolOverlapPolicy();
     }
   }
 
@@ -349,9 +347,17 @@ class MyMapViewModel extends _$MyMapViewModel {
     }).toList();
     if (symbols.isNotEmpty && state.mapController != null) {
       await _addSymbolsInChunks(symbols);
-      await state.mapController!.setSymbolIconIgnorePlacement(false);
-      await state.mapController!.setSymbolIconAllowOverlap(false);
+      await _applySymbolOverlapPolicy();
     }
+  }
+
+  /// ピン同士の重なりを許可し、表示欠けを防ぐ。
+  Future<void> _applySymbolOverlapPolicy() async {
+    if (state.mapController == null) {
+      return;
+    }
+    await state.mapController!.setSymbolIconIgnorePlacement(true);
+    await state.mapController!.setSymbolIconAllowOverlap(true);
   }
 
   /// シンボルをチャンクに分けて追加し、UI スレッド負荷を軽減

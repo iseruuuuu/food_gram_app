@@ -289,13 +289,14 @@ double _calculateIconSize(BuildContext context) {
 }
 
 double _calculateTopPosition(BuildContext context) {
+  final topInset = MediaQuery.of(context).padding.top;
   final screenWidth = MediaQuery.of(context).size.width;
   if (screenWidth <= 375) {
-    return 15;
+    return topInset + 8;
   } else if (screenWidth < 720) {
-    return 50;
+    return topInset + 16;
   } else {
-    return 30;
+    return topInset + 12;
   }
 }
 
