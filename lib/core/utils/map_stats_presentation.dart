@@ -33,12 +33,6 @@ class MapStatsPresentation {
     this.encouragement,
   });
 
-  final MapViewType viewType;
-  final List<MapStatsColumnPresentation> columns;
-  final String summary;
-  final String? encouragement;
-
-  /// [AppMapStatsCard] と同じロジックで組み立てる
   factory MapStatsPresentation.build({
     required Translations t,
     required MapViewType viewType,
@@ -143,6 +137,11 @@ class MapStatsPresentation {
       encouragement: encouragement,
     );
   }
+
+  final MapViewType viewType;
+  final List<MapStatsColumnPresentation> columns;
+  final String summary;
+  final String? encouragement;
 
   Map<String, dynamic> toJson() => {
         'viewType': viewType.name,

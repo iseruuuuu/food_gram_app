@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:food_gram_app/core/map/map_stats_presentation.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
+import 'package:food_gram_app/core/utils/map_stats_presentation.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:logger/logger.dart';
