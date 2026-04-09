@@ -24,7 +24,8 @@ int? nextJapanPrefectureMilestone(int visited) {
   return null;
 }
 
-/// マイマップ統計カードとホームウィジェットで共有する表示用データ
+/// マイマップ統計カードとホームウィジェットで共有する
+/// 表示用データ。
 class MapStatsPresentation {
   const MapStatsPresentation({
     required this.viewType,
@@ -56,6 +57,11 @@ class MapStatsPresentation {
     final safeActivityDays = activityDays < 0 ? 0 : activityDays;
     final safePostingStreakWeeks =
         postingStreakWeeks < 0 ? 0 : postingStreakWeeks;
+    final japanAchievementPct =
+        (safeVisitedPrefecturesCount / japanPrefectureCap * 100)
+            .toStringAsFixed(1);
+    final worldAchievementPct =
+        (safeVisitedCountriesCount / worldCountryCap * 100).toStringAsFixed(1);
 
     final summary = switch (viewType) {
       MapViewType.detail => t.mapStats.recordSummary
@@ -97,8 +103,7 @@ class MapStatsPresentation {
           ),
           MapStatsColumnPresentation(
             emoji: '📊',
-            value:
-                '${(safeVisitedPrefecturesCount / japanPrefectureCap * 100).toStringAsFixed(1)}%',
+            value: '$japanAchievementPct%',
             label: t.mapStats.achievementRate,
           ),
         ],
@@ -115,8 +120,7 @@ class MapStatsPresentation {
           ),
           MapStatsColumnPresentation(
             emoji: '📊',
-            value:
-                '${(safeVisitedCountriesCount / worldCountryCap * 100).toStringAsFixed(1)}%',
+            value: '$worldAchievementPct%',
             label: t.mapStats.achievementRate,
           ),
         ],

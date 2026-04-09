@@ -11,7 +11,8 @@ import 'package:logger/logger.dart';
 /// マイマップ統計を iOS ホームウィジェット（HomeWidgetSample）へ同期する。
 ///
 /// Runner / 拡張の entitlements に `group.com.FoodGram.ios` がある。Developer で同じ App Group を
-/// `com.FoodGram.ios` と `com.FoodGram.ios.HomeWidgetSample` の Identifier に紐づけないと署名に失敗する。
+/// `com.FoodGram.ios` と `com.FoodGram.ios.HomeWidgetSample`の 
+///  Identifier に紐づけないと署名に失敗する。
 /// データ反映は [syncAllModes]（マイマップでピン更新成功時など）。
 class MapStatsHomeWidgetSync {
   MapStatsHomeWidgetSync._();
