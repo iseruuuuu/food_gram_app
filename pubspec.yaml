@@ -43,6 +43,7 @@ dependencies:
   google_mlkit_translation: ^0.13.0
   google_mobile_ads: ^5.2.0
   google_sign_in: ^6.1.4
+  home_widget: ^0.8.1
   hooks_riverpod: ^2.4.9
   image_picker: ^1.0.4
   in_app_review: ^2.0.8

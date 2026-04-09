@@ -1,0 +1,13 @@
+"widget.unsupported" = "Unsupported";
+"widget.appName" = "FoodGram";
+"widget.fallback.small" = "Open the app and view My Map to sync stats.";
+"widget.fallback.medium" = "Open FoodGram -> My Map to load your statistics.";
+"widget.mode.record" = "Record";
+"widget.mode.japan" = "Japan";
+"widget.mode.world" = "World";
+"widget.config.displayName" = "My Map stats";
+"widget.config.description" = "Record, Japan (47 prefectures), or world map statistics.";
+"widget.intent.statisticsType" = "Statistics type";
+"widget.intent.title" = "Map statistics";
+"widget.intent.description" = "Choose record, Japan prefectures, or world countries.";
+"widget.intent.type" = "Type";

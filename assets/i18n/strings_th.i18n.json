@@ -255,7 +255,13 @@
     "visitedCountries": "ประเทศที่ไปมา",
     "recordSummary": "มื้ออาหารของคุณถูกบันทึกไว้ {days} วัน ✨",
     "japanSummary": "ในญี่ปุ่น มื้ออาหารของคุณอยู่ใน {prefectures} จังหวัด ✨",
-    "worldSummary": "ทั่วโลก มื้ออาหารของคุณอยู่ใน {countries} ประเทศ ✨"
+    "worldSummary": "ทั่วโลก มื้ออาหารของคุณอยู่ใน {countries} ประเทศ ✨",
+    "recordStreakWithGoal": "🔥 สตรีค {streak} สัปดาห์｜อีก {remaining} สัปดาห์ถึง {milestone} สัปดาห์",
+    "recordStreakKeepGoing": "🔥 สตรีค {streak} สัปดาห์｜ทำต่อไป",
+    "japanStatsEncouragement": "🗾 {current}/47｜อีก {remaining} จังหวัดถึงเป้าถัดไป",
+    "japanStatsComplete": "🗾 47/47｜ครบทุกจังหวัด!",
+    "worldStatsEncouragement": "🌍 {current} ประเทศ｜อีก {remaining} ประเทศถึง {next}",
+    "worldStatsComplete": "🌍 {current} ประเทศ｜ครบทั่วโลก!"
   },
   "mapViewType": {
     "record": "บันทึก",

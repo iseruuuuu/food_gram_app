@@ -245,17 +245,23 @@
     "setting": "Setting"
   },
   "mapStats": {
-    "visitedArea": "Visited places",
+    "visitedArea": "Places",
     "posts": "Posts",
     "level": "Level",
     "activityDays": "Active days",
-    "prefectures": "Visited prefectures",
+    "prefectures": "Prefectures",
     "achievementRate": "Rate",
     "worldAchievementRate": "World achievement rate",
-    "visitedCountries": "Visited countries",
+    "visitedCountries": "Countries",
     "recordSummary": "Your meals are recorded for {days} days ✨",
     "japanSummary": "In Japan, your meals remain in {prefectures} prefectures ✨",
-    "worldSummary": "In the world, your meals remain in {countries} countries ✨"
+    "worldSummary": "In the world, your meals remain in {countries} countries ✨",
+    "recordStreakWithGoal": "🔥 {streak}-week streak｜{remaining} more weeks to hit {milestone}",
+    "recordStreakKeepGoing": "🔥 {streak}-week streak｜Keep it going",
+    "japanStatsEncouragement": "🗾 {current}/47｜{remaining} more prefectures to the next goal",
+    "japanStatsComplete": "🗾 47/47｜All prefectures complete!",
+    "worldStatsEncouragement": "🌍 {current} countries｜{remaining} more to reach {next}",
+    "worldStatsComplete": "🌍 {current} countries｜World complete!"
   },
   "mapViewType": {
     "record": "Record",

@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/services.dart';
+import 'package:food_gram_app/core/home_widget/map_stats_home_widget_sync.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
+import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/core/utils/location/prefecture_detector.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
@@ -13,6 +16,23 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:screenshot/screenshot.dart';
 
 part 'my_map_view_model.g.dart';
+
+/// `streak-update` と同様、最終投稿から14日を超えるとストリークは途切れたものとして表示しない。
+int effectivePostingStreakWeeks({
+  required DateTime? lastPostDate,
+  required int streakWeeks,
+  DateTime? now,
+}) {
+  if (streakWeeks <= 0) {
+    return 0;
+  }
+  final last = lastPostDate;
+  final n = now ?? DateTime.now();
+  if (last != null && n.difference(last).inDays > 14) {
+    return 0;
+  }
+  return streakWeeks;
+}
 
 @riverpod
 class MyMapViewModel extends _$MyMapViewModel {
@@ -74,6 +94,7 @@ class MyMapViewModel extends _$MyMapViewModel {
 
       // 統計情報を計算
       final stats = _calculateStats(posts);
+      final postingStreakWeeks = await _fetchPostingStreakWeeks();
       state = state.copyWith(
         visitedCitiesCount: stats.visitedCitiesCount,
         postsCount: stats.postsCount,
@@ -82,6 +103,16 @@ class MyMapViewModel extends _$MyMapViewModel {
         visitedCountriesCount: stats.visitedCountriesCount,
         visitedAreasCount: stats.visitedAreasCount,
         activityDays: stats.activityDays,
+        postingStreakWeeks: postingStreakWeeks,
+      );
+
+      MapStatsHomeWidgetSync.scheduleSyncAllModes(
+        postsCount: stats.postsCount,
+        visitedPrefecturesCount: stats.visitedPrefecturesCount,
+        visitedCountriesCount: stats.visitedCountriesCount,
+        visitedAreasCount: stats.visitedAreasCount,
+        activityDays: stats.activityDays,
+        postingStreakWeeks: postingStreakWeeks,
       );
 
       // ピン情報をキャッシュ
@@ -113,8 +144,7 @@ class MyMapViewModel extends _$MyMapViewModel {
       }).toList();
       if (symbols.isNotEmpty) {
         await _addSymbolsInChunks(symbols);
-        await state.mapController?.setSymbolIconIgnorePlacement(false);
-        await state.mapController?.setSymbolIconAllowOverlap(false);
+        await _applySymbolOverlapPolicy();
       }
 
       // 意図的に1度だけ呼ぶにようにする
@@ -280,8 +310,7 @@ class MyMapViewModel extends _$MyMapViewModel {
 
     if (symbols.isNotEmpty && state.mapController != null) {
       await _addSymbolsInChunks(symbols);
-      await state.mapController!.setSymbolIconIgnorePlacement(false);
-      await state.mapController!.setSymbolIconAllowOverlap(false);
+      await _applySymbolOverlapPolicy();
     }
   }
 
@@ -316,9 +345,17 @@ class MyMapViewModel extends _$MyMapViewModel {
     }).toList();
     if (symbols.isNotEmpty && state.mapController != null) {
       await _addSymbolsInChunks(symbols);
-      await state.mapController!.setSymbolIconIgnorePlacement(false);
-      await state.mapController!.setSymbolIconAllowOverlap(false);
+      await _applySymbolOverlapPolicy();
     }
+  }
+
+  /// ピン同士の重なりを許可し、表示欠けを防ぐ。
+  Future<void> _applySymbolOverlapPolicy() async {
+    if (state.mapController == null) {
+      return;
+    }
+    await state.mapController!.setSymbolIconIgnorePlacement(true);
+    await state.mapController!.setSymbolIconAllowOverlap(true);
   }
 
   /// シンボルをチャンクに分けて追加し、UI スレッド負荷を軽減
@@ -338,6 +375,18 @@ class MyMapViewModel extends _$MyMapViewModel {
       final chunk = symbols.sublist(start, end);
       await state.mapController!.addSymbols(chunk);
     }
+  }
+
+  Future<int> _fetchPostingStreakWeeks() async {
+    final result =
+        await ref.read(userRepositoryProvider.notifier).getCurrentUser();
+    return result.when(
+      success: (user) => effectivePostingStreakWeeks(
+        lastPostDate: user.lastPostDate,
+        streakWeeks: user.streakWeeks,
+      ),
+      failure: (_) => 0,
+    );
   }
 
   /// 統計情報を計算

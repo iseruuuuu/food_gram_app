@@ -18,5 +18,6 @@ class MyMapState with _$MyMapState {
     @Default(0) int visitedCountriesCount,
     @Default(0) int visitedAreasCount,
     @Default(0) int activityDays,
+    @Default(0) int postingStreakWeeks,
   }) = _MyMapState;
 }

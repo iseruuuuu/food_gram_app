@@ -255,7 +255,13 @@
     "visitedCountries": "Pays visités",
     "recordSummary": "Vos repas sont enregistrés pendant {days} jours ✨",
     "japanSummary": "Au Japon, vos repas sont présents dans {prefectures} préfectures ✨",
-    "worldSummary": "Dans le monde, vos repas sont présents dans {countries} pays ✨"
+    "worldSummary": "Dans le monde, vos repas sont présents dans {countries} pays ✨",
+    "recordStreakWithGoal": "🔥 Série de {streak} semaines｜encore {remaining} semaines pour atteindre {milestone}",
+    "recordStreakKeepGoing": "🔥 Série de {streak} semaines｜Continuez",
+    "japanStatsEncouragement": "🗾 {current}/47｜encore {remaining} préfectures pour le prochain objectif",
+    "japanStatsComplete": "🗾 47/47｜Toutes les préfectures !",
+    "worldStatsEncouragement": "🌍 {current} pays｜encore {remaining} pour atteindre {next}",
+    "worldStatsComplete": "🌍 {current} pays｜Monde complété !"
   },
   "mapViewType": {
     "record": "Record",

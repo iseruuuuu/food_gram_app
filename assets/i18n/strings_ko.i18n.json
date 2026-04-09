@@ -255,7 +255,13 @@
     "visitedCountries": "방문한 국가",
     "recordSummary": "{days}일 동안 당신의 식사가 기록으로 남았어요 ✨",
     "japanSummary": "일본에서는 {prefectures}개 도도부현에 당신의 식사가 남아 있어요 ✨",
-    "worldSummary": "세계에서는 {countries}개 국가에 당신의 식사가 남아 있어요 ✨"
+    "worldSummary": "세계에서는 {countries}개 국가에 당신의 식사가 남아 있어요 ✨",
+    "recordStreakWithGoal": "🔥 연속 기록 {streak}주｜{milestone}주까지 {remaining}주 남았어요",
+    "recordStreakKeepGoing": "🔥 연속 기록 {streak}주｜계속 이어가요",
+    "japanStatsEncouragement": "🗾 {current}/47｜다음 목표까지 도도부현 {remaining}개",
+    "japanStatsComplete": "🗾 47/47｜전 도도부현 달성!",
+    "worldStatsEncouragement": "🌍 {current}개국｜{next}개국까지 {remaining}개국 남음",
+    "worldStatsComplete": "🌍 {current}개국｜월드 컴플리트!"
   },
   "mapViewType": {
     "record": "기록",

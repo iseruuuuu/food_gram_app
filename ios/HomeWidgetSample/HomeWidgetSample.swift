@@ -3,104 +3,144 @@
 //  HomeWidgetSample
 //
 
-import WidgetKit
+import AppIntents
 import SwiftUI
+import WidgetKit
 
-struct Provider: AppIntentTimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent())
-    }
-
-    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: configuration)
-    }
-    
-    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        var entries: [SimpleEntry] = []
-
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration)
-            entries.append(entry)
-        }
-
-        return Timeline(entries: entries, policy: .atEnd)
-    }
+private func l10n(_ key: String) -> LocalizedStringResource {
+    LocalizedStringResource(stringLiteral: key)
 }
 
-struct SimpleEntry: TimelineEntry {
+struct MapStatsEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
+    let payload: MapStatsPayloadDTO?
+}
+
+struct Provider: AppIntentTimelineProvider {
+    func placeholder(in context: Context) -> MapStatsEntry {
+        MapStatsEntry(date: Date(), configuration: ConfigurationAppIntent(), payload: nil)
+    }
+
+    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> MapStatsEntry {
+        let payload = loadMapStatsPayload(mode: configuration.mapMode)
+        return MapStatsEntry(date: Date(), configuration: configuration, payload: payload)
+    }
+
+    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<MapStatsEntry> {
+        let payload = loadMapStatsPayload(mode: configuration.mapMode)
+        let entry = MapStatsEntry(date: Date(), configuration: configuration, payload: payload)
+        let refresh = Calendar.current.date(byAdding: .hour, value: 1, to: Date()) ?? Date().addingTimeInterval(3600)
+        return Timeline(entries: [entry], policy: .after(refresh))
+    }
 }
 
 struct HomeWidgetSampleEntryView: View {
-    var entry: SimpleEntry
+    var entry: MapStatsEntry
     @Environment(\.widgetFamily) var family
 
     var body: some View {
-        ZStack {
+        Group {
             switch family {
             case .systemSmall:
-                smallWidgetUI
+                smallContent
             case .systemMedium:
-                mediumWidgetUI
+                mediumContent
             default:
-                Text("Unsupported Size")
+                Text(l10n("widget.unsupported"))
             }
         }
     }
 
-    private var smallWidgetUI: some View {
-        VStack {
-            Image(systemName: "text.magnifyingglass")
-                .resizable()
-                .frame(width: 50, height: 50)
-                .padding(EdgeInsets.init(top: 0, leading: 0, bottom: 5, trailing: 0))
-            Text("Search Food")
-                .font(.body)
-                .fontWeight(Font.Weight.bold)
+    private var smallContent: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            if let p = entry.payload, let first = p.columns.first {
+                HStack(spacing: 4) {
+                    Text(first.emoji)
+                    Text(modeTitle)
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                }
+                Text(first.value)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundStyle(Color(red: 0.16, green: 0.45, blue: 0.92))
+                Text(p.summary)
+                    .font(.caption2)
+                    .lineLimit(3)
+                    .minimumScaleFactor(0.8)
+            } else {
+                Text(l10n("widget.appName"))
+                    .font(.headline)
+                Text(l10n("widget.fallback.small"))
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
         }
-       
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .padding(10)
     }
 
-    private var mediumWidgetUI: some View {
-        HStack(spacing: 12) {
-            VStack {
-                Image(systemName: "birthday.cake")
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .padding(EdgeInsets.init(top: 0, leading: 0, bottom: 5, trailing: 0))
-                Text("Post Food")
-                    .font(.footnote)
-                    .fontWeight(Font.Weight.bold)
+    private var mediumContent: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text(modeTitle)
+                    .font(.caption)
+                    .fontWeight(.bold)
+                Spacer()
             }
-
-            VStack {
-                Image(systemName: "text.magnifyingglass")
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .padding(EdgeInsets.init(top: 0, leading: 0, bottom: 5, trailing: 0))
-                Text("Seach Food")
-                    .font(.footnote)
-                    .fontWeight(Font.Weight.bold)
-            }.padding(EdgeInsets.init(top: 0, leading: 20, bottom: 0, trailing: 20))
-
-            VStack {
-                Image(systemName: "paperplane")
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .padding(EdgeInsets.init(top: 0, leading: 0, bottom: 5, trailing: 0))
-                Text("Share Food")
-                    .font(.footnote)
-                    .fontWeight(Font.Weight.bold)
+            if let p = entry.payload {
+                HStack(alignment: .top, spacing: 8) {
+                    ForEach(Array(p.columns.enumerated()), id: \.offset) { _, col in
+                        VStack(spacing: 4) {
+                            Text(col.emoji)
+                                .font(.title3)
+                            Text(col.value)
+                                .font(.subheadline)
+                                .fontWeight(.bold)
+                                .multilineTextAlignment(.center)
+                                .minimumScaleFactor(0.7)
+                            Text(col.label)
+                                .font(.system(size: 9))
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(.secondary)
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.8)
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                }
+                Text(p.summary)
+                    .font(.caption2)
+                    .fontWeight(.semibold)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.85)
+                if let e = p.encouragement {
+                    Text(e)
+                        .font(.system(size: 10))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.85)
+                }
+            } else {
+                Text(l10n("widget.fallback.medium"))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
-
         }
-        
+        .padding(12)
     }
 
+    private var modeTitle: String {
+        switch entry.configuration.mapMode {
+        case .detail:
+            return String(localized: "widget.mode.record")
+        case .japan:
+            return String(localized: "widget.mode.japan")
+        case .world:
+            return String(localized: "widget.mode.world")
+        }
+    }
 }
 
 struct HomeWidgetSample: Widget {
@@ -108,33 +148,30 @@ struct HomeWidgetSample: Widget {
 
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, provider: Provider()) { entry in
-            HomeWidgetSampleEntryView(entry: entry).containerBackground(Color(red: 1.0, green: 0.992, blue: 0.816), for: .widget)
+            HomeWidgetSampleEntryView(entry: entry)
+                .containerBackground(Color.white, for: .widget)
         }
-        .configurationDisplayName("Sample Widget")
-        .description("This is an example widget.")
-        // サポートするサイズを小（systemSmall）と中（systemMedium）のみに限定
+        .configurationDisplayName(l10n("widget.config.displayName"))
+        .description(l10n("widget.config.description"))
         .supportedFamilies([.systemSmall, .systemMedium])
-          
     }
 }
 
-extension ConfigurationAppIntent {
-    fileprivate static var smiley: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = ""
-        return intent
-    }
-    
-    fileprivate static var starEyes: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = ""
-        return intent
-    }
-}
-
-#Preview(as: .systemSmall) {
+#Preview(as: .systemMedium) {
     HomeWidgetSample()
 } timeline: {
-    SimpleEntry(date: .now, configuration: .smiley)
-    SimpleEntry(date: .now, configuration: .starEyes)
+    MapStatsEntry(
+        date: .now,
+        configuration: ConfigurationAppIntent(),
+        payload: MapStatsPayloadDTO(
+            viewType: "detail",
+            columns: [
+                MapStatsColumnDTO(emoji: "📍", value: "12", label: "Places"),
+                MapStatsColumnDTO(emoji: "🍜", value: "5", label: "Posts"),
+                MapStatsColumnDTO(emoji: "📅", value: "30日", label: "Active days"),
+            ],
+            summary: "Your meals are recorded for 30 days ✨",
+            encouragement: "🔥 2-week streak｜2 more weeks to hit 4"
+        )
+    )
 }
