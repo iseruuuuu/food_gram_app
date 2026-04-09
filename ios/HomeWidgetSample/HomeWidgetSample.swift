@@ -151,8 +151,8 @@ struct HomeWidgetSample: Widget {
             HomeWidgetSampleEntryView(entry: entry)
                 .containerBackground(Color.white, for: .widget)
         }
-        .configurationDisplayName(l10n("widget.config.displayName"))
-        .description(l10n("widget.config.description"))
+        .configurationDisplayName(String(localized: "widget.config.displayName"))
+        .description(String(localized: "widget.config.description"))
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
