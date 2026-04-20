@@ -11,7 +11,7 @@ import 'package:logger/logger.dart';
 /// マイマップ統計を iOS ホームウィジェット（HomeWidgetSample）へ同期する。
 ///
 /// Runner / 拡張の entitlements に `group.com.FoodGram.ios` がある。Developer で同じ App Group を
-/// `com.FoodGram.ios` と `com.FoodGram.ios.HomeWidgetSample`の 
+/// `com.FoodGram.ios` と `com.FoodGram.ios.HomeWidgetSample`の
 ///  Identifier に紐づけないと署名に失敗する。
 /// データ反映は [syncAllModes]（マイマップでピン更新成功時など）。
 class MapStatsHomeWidgetSync {
@@ -40,7 +40,13 @@ class MapStatsHomeWidgetSync {
     if (!Platform.isIOS) {
       return;
     }
-    final t = LocaleSettings.instance.currentTranslations;
+    // ループ全体で同一ロケール・同一翻訳を使う（途中でロケールが変わると
+    // currentTranslations と _widgetPayloadJson の判定が食い違うのを防ぐ）
+    final settings = LocaleSettings.instance;
+    final syncLocale = settings.currentLocale;
+    // translationMap に無い currentLocale は起動直後などであり得るため ! は使わない
+    final t =
+        settings.translationMap[syncLocale] ?? settings.currentTranslations;
     for (final viewType in MapViewType.values) {
       final pres = MapStatsPresentation.build(
         t: t,
@@ -52,7 +58,11 @@ class MapStatsHomeWidgetSync {
         activityDays: activityDays,
         postingStreakWeeks: postingStreakWeeks,
       );
-      final payload = _widgetPayloadJson(pres, activityDays: activityDays);
+      final payload = _widgetPayloadJson(
+        pres,
+        activityDays: activityDays,
+        syncLocale: syncLocale,
+      );
       await HomeWidget.saveWidgetData<String>(
         'map_stats_${viewType.name}',
         jsonEncode(payload),
@@ -92,18 +102,21 @@ class MapStatsHomeWidgetSync {
   }
 
   /// ホームウィジェット幅向けに、日本語だけサマリーを短くする（アプリ内カードの文言は変えない）。
+  ///
+  /// [syncLocale] は [syncAllModes] 開始時点のロケールを渡すこと（ループ中の
+  /// `LocaleSettings.instance.currentLocale` 参照は使わない）。
   static Map<String, dynamic> _widgetPayloadJson(
     MapStatsPresentation pres, {
     required int activityDays,
+    required AppLocale syncLocale,
   }) {
     final json = pres.toJson();
-    if (LocaleSettings.instance.currentLocale != AppLocale.ja) {
+    if (syncLocale != AppLocale.ja) {
       return json;
     }
     final days = activityDays < 0 ? 0 : activityDays;
     final compactSummary = switch (pres.viewType) {
-      MapViewType.detail =>
-        '$days日の食事が、記録に残っています✨', // 「分」「として」を省略（ウィジェット幅向け）
+      MapViewType.detail => '$days日の食事が、記録に残っています✨', // 「分」「として」を省略（ウィジェット幅向け）
       MapViewType.japan => pres.summary,
       MapViewType.world => pres.summary,
     };
