@@ -35,6 +35,28 @@ struct Provider: AppIntentTimelineProvider {
     }
 }
 
+private let smallStatValueBlue = Color(red: 0.16, green: 0.45, blue: 0.92)
+
+/// 横長ウィジェット3列の数値色（左→右 緑・赤・青＝右から青・赤・緑）。
+private let mediumColumnValueColors: [Color] = [
+    Color(red: 0.204, green: 0.659, blue: 0.325), // #34A853 緑（左端）
+    Color(red: 0.918, green: 0.263, blue: 0.208), // #EA4335 赤（中央）
+    Color(red: 0.16, green: 0.45, blue: 0.92), // 青（右端）
+]
+
+private func splitSummaryIntoTwoLines(_ summary: String) -> (String, String)? {
+    let separators: [Character] = ["、", "，"]
+    for sep in separators {
+        let parts = summary.split(separator: sep, maxSplits: 1, omittingEmptySubsequences: false)
+            .map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+        if parts.count == 2 {
+            return (parts[0], parts[1])
+        }
+    }
+    return nil
+}
+
 struct HomeWidgetSampleEntryView: View {
     var entry: MapStatsEntry
     @Environment(\.widgetFamily) var family
@@ -52,23 +74,50 @@ struct HomeWidgetSampleEntryView: View {
         }
     }
 
+    private var smallSummaryFont: Font { .system(size: 12) }
+
     private var smallContent: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 4) {
             if let p = entry.payload, let first = p.columns.first {
-                HStack(spacing: 4) {
+                HStack(spacing: 5) {
                     Text(first.emoji)
+                        .font(.system(size: 20))
                     Text(modeTitle)
-                        .font(.caption)
-                        .fontWeight(.semibold)
+                        .font(.system(size: 15, weight: .semibold))
                 }
                 Text(first.value)
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundStyle(Color(red: 0.16, green: 0.45, blue: 0.92))
-                Text(p.summary)
-                    .font(.caption2)
-                    .lineLimit(3)
-                    .minimumScaleFactor(0.8)
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundStyle(smallStatValueBlue)
+                    .minimumScaleFactor(0.75)
+                    .lineLimit(1)
+                Spacer(minLength: 0)
+                if let pair = splitSummaryIntoTwoLines(p.summary) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(pair.0)
+                            .font(smallSummaryFont)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.primary)
+                            .lineLimit(3)
+                            .minimumScaleFactor(0.58)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Text(pair.1)
+                            .font(smallSummaryFont)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.primary)
+                            .lineLimit(3)
+                            .minimumScaleFactor(0.58)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                } else {
+                    Text(p.summary)
+                        .font(smallSummaryFont)
+                        .fontWeight(.medium)
+                        .lineLimit(5)
+                        .minimumScaleFactor(0.58)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
             } else {
                 Text(l10n("widget.appName"))
                     .font(.headline)
@@ -78,56 +127,63 @@ struct HomeWidgetSampleEntryView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .padding(10)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 9)
     }
 
+    /// 横長ウィジェット：アイコン行・数値＋ラベル行・メッセージの縦の区切り
+    private let mediumVerticalSectionSpacing: CGFloat = 6
+
     private var mediumContent: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(modeTitle)
-                    .font(.caption)
-                    .fontWeight(.bold)
-                Spacer()
-            }
+        VStack(alignment: .center, spacing: 0) {
             if let p = entry.payload {
-                HStack(alignment: .top, spacing: 8) {
-                    ForEach(Array(p.columns.enumerated()), id: \.offset) { _, col in
-                        VStack(spacing: 4) {
+                VStack(alignment: .center, spacing: mediumVerticalSectionSpacing) {
+                    HStack(alignment: .center, spacing: 6) {
+                        ForEach(Array(p.columns.enumerated()), id: \.offset) { _, col in
                             Text(col.emoji)
-                                .font(.title3)
-                            Text(col.value)
-                                .font(.subheadline)
-                                .fontWeight(.bold)
-                                .multilineTextAlignment(.center)
-                                .minimumScaleFactor(0.7)
-                            Text(col.label)
-                                .font(.system(size: 9))
-                                .multilineTextAlignment(.center)
-                                .foregroundStyle(.secondary)
-                                .lineLimit(2)
-                                .minimumScaleFactor(0.8)
+                                .font(.system(size: 24))
+                                .frame(maxWidth: .infinity)
                         }
-                        .frame(maxWidth: .infinity)
                     }
-                }
-                Text(p.summary)
-                    .font(.caption2)
-                    .fontWeight(.semibold)
-                    .lineLimit(2)
-                    .minimumScaleFactor(0.85)
-                if let e = p.encouragement {
-                    Text(e)
-                        .font(.system(size: 10))
-                        .foregroundStyle(.secondary)
-                        .lineLimit(2)
-                        .minimumScaleFactor(0.85)
+                    .frame(maxWidth: .infinity)
+
+                    HStack(alignment: .center, spacing: 6) {
+                        ForEach(Array(p.columns.enumerated()), id: \.offset) { i, col in
+                            VStack(spacing: 2) {
+                                Text(col.value)
+                                    .font(.system(size: 25, weight: .bold))
+                                    .foregroundStyle(mediumColumnValueColors[min(i, 2)])
+                                    .multilineTextAlignment(.center)
+                                    .minimumScaleFactor(0.45)
+                                    .lineLimit(2)
+                                Text(col.label)
+                                    .font(.system(size: 13.5, weight: .medium))
+                                    .multilineTextAlignment(.center)
+                                    .foregroundStyle(.secondary)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.65)
+                            }
+                            .frame(maxWidth: .infinity)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+
+                    Text(p.summary)
+                        .font(.system(size: 15, weight: .semibold))
+                        .multilineTextAlignment(.center)
+                        .lineLimit(3)
+                        .minimumScaleFactor(0.78)
+                        .frame(maxWidth: .infinity)
                 }
             } else {
                 Text(l10n("widget.fallback.medium"))
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
             }
         }
+        .frame(maxWidth: .infinity)
         .padding(12)
     }
 

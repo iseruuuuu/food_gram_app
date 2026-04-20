@@ -52,9 +52,10 @@ class MapStatsHomeWidgetSync {
         activityDays: activityDays,
         postingStreakWeeks: postingStreakWeeks,
       );
+      final payload = _widgetPayloadJson(pres, activityDays: activityDays);
       await HomeWidget.saveWidgetData<String>(
         'map_stats_${viewType.name}',
-        jsonEncode(pres.toJson()),
+        jsonEncode(payload),
       );
     }
     await HomeWidget.updateWidget(
@@ -88,5 +89,25 @@ class MapStatsHomeWidgetSync {
         );
       }),
     );
+  }
+
+  /// ホームウィジェット幅向けに、日本語だけサマリーを短くする（アプリ内カードの文言は変えない）。
+  static Map<String, dynamic> _widgetPayloadJson(
+    MapStatsPresentation pres, {
+    required int activityDays,
+  }) {
+    final json = pres.toJson();
+    if (LocaleSettings.instance.currentLocale != AppLocale.ja) {
+      return json;
+    }
+    final days = activityDays < 0 ? 0 : activityDays;
+    final compactSummary = switch (pres.viewType) {
+      MapViewType.detail =>
+        '$days日の食事が、記録に残っています✨', // 「分」「として」を省略（ウィジェット幅向け）
+      MapViewType.japan => pres.summary,
+      MapViewType.world => pres.summary,
+    };
+    json['summary'] = compactSummary;
+    return json;
   }
 }
