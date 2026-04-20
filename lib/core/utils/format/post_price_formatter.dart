@@ -194,6 +194,19 @@ String postPriceCurrencySymbol(String code) {
 
 /// 端末ロケールから初期通貨を推定（換算はしない）
 String defaultPostPriceCurrencyForLocale(Locale locale) {
+  // アプリの言語設定を最優先にする。
+  // 例: 端末地域がUSでも、アプリ言語がjaならJPYを使う。
+  switch (locale.languageCode.toLowerCase()) {
+    case 'ja':
+      return 'JPY';
+    case 'ko':
+      return 'KRW';
+    case 'zh':
+      return 'CNY';
+    case 'en':
+      return 'USD';
+  }
+
   final country = locale.countryCode?.toUpperCase();
   switch (country) {
     case 'JP':
