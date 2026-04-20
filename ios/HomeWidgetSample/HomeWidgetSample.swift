@@ -132,7 +132,7 @@ struct HomeWidgetSampleEntryView: View {
     }
 
     /// 横長ウィジェット：アイコン行・数値＋ラベル行・メッセージの縦の区切り
-    private let mediumVerticalSectionSpacing: CGFloat = 6
+    private let mediumVerticalSectionSpacing: CGFloat = 10
 
     private var mediumContent: some View {
         VStack(alignment: .center, spacing: 0) {
