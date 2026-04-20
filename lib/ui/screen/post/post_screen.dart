@@ -64,13 +64,31 @@ class PostScreen extends HookConsumerWidget {
 
     useEffect(
       () {
-        if (restaurant != null) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          if (restaurant != null) {
             ref
                 .read(postViewModelProvider().notifier)
                 .loadRestaurant(restaurant);
-          });
-        }
+          }
+          final draft = await ref
+              .read(postViewModelProvider().notifier)
+              .loadSavedDraft();
+          if (!context.mounted) {
+            return;
+          }
+          if (draft != null && draft.hasRestorableContent) {
+            ref.read(postViewModelProvider().notifier).applyDraft(
+                  draft,
+                  applyRestaurant: restaurant == null,
+                );
+            foodTags.value = List<String>.from(draft.foodTags);
+            SnackBarHelper().openSuccessSnackBar(
+              context,
+              t.post.title,
+              t.post.draftRestored,
+            );
+          }
+        });
         return null;
       },
       [restaurant],
@@ -419,23 +437,26 @@ class PostScreen extends HookConsumerWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Row(
                         children: [
-                          RatingBar.builder(
-                            initialRating: postState.star,
-                            allowHalfRating: true,
-                            itemPadding:
-                                const EdgeInsets.symmetric(horizontal: 2),
-                            unratedColor: isDark
-                                ? Colors.grey.shade700
-                                : Colors.grey.shade300,
-                            itemBuilder: (context, _) => const Icon(
-                              Icons.star,
-                              color: Colors.amber,
+                          KeyedSubtree(
+                            key: ValueKey(postState.star),
+                            child: RatingBar.builder(
+                              initialRating: postState.star,
+                              allowHalfRating: true,
+                              itemPadding:
+                                  const EdgeInsets.symmetric(horizontal: 2),
+                              unratedColor: isDark
+                                  ? Colors.grey.shade700
+                                  : Colors.grey.shade300,
+                              itemBuilder: (context, _) => const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              onRatingUpdate: (rating) {
+                                ref
+                                    .read(postViewModelProvider().notifier)
+                                    .setStar(rating);
+                              },
                             ),
-                            onRatingUpdate: (rating) {
-                              ref
-                                  .read(postViewModelProvider().notifier)
-                                  .setStar(rating);
-                            },
                           ),
                           const Spacer(),
                           Text(
@@ -510,83 +531,135 @@ class PostScreen extends HookConsumerWidget {
         bottomNavigationBar: !loading
             ? Padding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 52,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      final foodTagString = foodTags.value.isEmpty
-                          ? ''
-                          : foodTags.value.join(',');
-                      final result =
-                          await ref.read(postViewModelProvider().notifier).post(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: OutlinedButton(
+                        onPressed: () async {
+                          primaryFocus?.unfocus();
+                          await ref
+                              .read(postViewModelProvider().notifier)
+                              .saveDraft(foodTags: foodTags.value);
+                          if (context.mounted) {
+                            SnackBarHelper().openSuccessSnackBar(
+                              context,
+                              t.post.saveDraft,
+                              t.post.draftSaved,
+                            );
+                          }
+                        },
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: Colors.black87),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          t.post.saveDraft,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Gap(10),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final foodTagString = foodTags.value.isEmpty
+                              ? ''
+                              : foodTags.value.join(',');
+                          final result = await ref
+                              .read(postViewModelProvider().notifier)
+                              .post(
                                 foodTag: foodTagString,
                                 locale: Localizations.localeOf(context),
                               );
-                      if (result) {
-                        // ストリークを更新
-                        final streakService =
-                            ref.read(streakServiceProvider.notifier);
-                        final streakResult = await streakService.updateStreak();
-                        // ストリークが更新された場合のみダイアログを表示
-                        if (streakResult.isUpdated) {
-                          // ダイアログを表示（初回投稿かどうかを判定）
-                          final isFirstTime = streakResult.newStreakWeeks == 1;
-                          // ストリークの節目（3週、5週、10週）を判定
-                          final milestoneWeeks = [3, 5, 10];
-                          final isMilestone = milestoneWeeks
-                              .contains(streakResult.newStreakWeeks);
-
-                          if (context.mounted) {
-                            await showStreakDialog(
-                              context: context,
-                              streakWeeks: streakResult.newStreakWeeks,
-                              isFirstTime: isFirstTime,
-                            );
-
-                            // 初回投稿またはストリークの節目の場合、レビューを表示
-                            if (isFirstTime || isMilestone) {
-                              // ストリークダイアログ表示後、少し間を置いてからレビューを表示
-                              await Future<void>.delayed(
-                                const Duration(seconds: 2),
-                              );
-                              final reviewService = InAppReviewService();
-                              await reviewService.requestReview();
-                            }
+                          if (!context.mounted) {
+                            return;
                           }
-                        }
-                        if (context.mounted) {
-                          context.pop(true);
-                        }
-                      } else {
-                        final latestStatus =
-                            ref.read(postViewModelProvider()).status;
-                        SnackBarHelper().openErrorSnackBar(
-                          context,
-                          t.post.error,
-                          _getLocalizedStatus(context, latestStatus),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      textStyle: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                          if (result) {
+                            // ストリークを更新
+                            final streakService =
+                                ref.read(streakServiceProvider.notifier);
+                            final streakResult =
+                                await streakService.updateStreak();
+                            if (!context.mounted) {
+                              return;
+                            }
+                            // ストリークが更新された場合のみダイアログを表示
+                            if (streakResult.isUpdated) {
+                              // ダイアログを表示（初回投稿かどうかを判定）
+                              final isFirstTime =
+                                  streakResult.newStreakWeeks == 1;
+                              // ストリークの節目（3週、5週、10週）を判定
+                              final milestoneWeeks = [3, 5, 10];
+                              final isMilestone = milestoneWeeks
+                                  .contains(streakResult.newStreakWeeks);
+
+                              await showStreakDialog(
+                                context: context,
+                                streakWeeks: streakResult.newStreakWeeks,
+                                isFirstTime: isFirstTime,
+                              );
+
+                              // 初回投稿またはストリークの節目の場合、レビューを表示
+                              if (isFirstTime || isMilestone) {
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                // ストリークダイアログ表示後、少し間を置いてからレビューを表示
+                                await Future<void>.delayed(
+                                  const Duration(seconds: 2),
+                                );
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                final reviewService = InAppReviewService();
+                                await reviewService.requestReview();
+                              }
+                            }
+                            if (context.mounted) {
+                              context.pop(true);
+                            }
+                          } else {
+                            final latestStatus =
+                                ref.read(postViewModelProvider()).status;
+                            SnackBarHelper().openErrorSnackBar(
+                              context,
+                              t.post.error,
+                              _getLocalizedStatus(context, latestStatus),
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          textStyle: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        child: Text(
+                          postState.isAnonymous
+                              ? t.anonymous.share
+                              : t.share.shareButton,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
-                    child: Text(
-                      postState.isAnonymous
-                          ? t.anonymous.share
-                          : t.share.shareButton,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                  ],
                 ),
               )
             : null,

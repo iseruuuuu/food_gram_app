@@ -1,4 +1,5 @@
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:food_gram_app/core/model/post_draft.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum PreferenceKey {
@@ -12,6 +13,7 @@ enum PreferenceKey {
   saveAlbumIds,
   lastReviewRequestDate,
   firstLaunchDate,
+  postDraft,
 }
 
 class Preference {
@@ -65,6 +67,19 @@ class Preference {
   Future<String> getString(PreferenceKey key) async {
     final pref = await _prefs;
     return pref.getString(_getKey(key)) ?? '';
+  }
+
+  Future<PostDraft?> getPostDraft() async {
+    final raw = await getString(PreferenceKey.postDraft);
+    return PostDraft.fromJsonString(raw);
+  }
+
+  Future<void> savePostDraft(PostDraft draft) async {
+    await setString(PreferenceKey.postDraft, draft.toJsonString());
+  }
+
+  Future<void> clearPostDraft() async {
+    await setString(PreferenceKey.postDraft, '');
   }
 
   /// 同じ日付で10回以上いいねした場合はfalseを返す

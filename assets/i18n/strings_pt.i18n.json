@@ -129,7 +129,10 @@
     "selectFavoriteTag": "Selecionar Etiqueta Favorita",
     "favoriteTagPlaceholder": "Selecione sua etiqueta favorita",
     "selectFoodTag": "Selecionar Etiqueta de Comida",
-    "requiredInfoMissing": "Informações obrigatórias em falta"
+    "requiredInfoMissing": "Informações obrigatórias em falta",
+    "saveDraft": "Salvar rascunho",
+    "draftSaved": "Rascunho salvo",
+    "draftRestored": "Rascunho carregado"
   },
   "share": {
     "shareButton": "Compartilhar",

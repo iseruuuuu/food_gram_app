@@ -129,7 +129,10 @@
     "selectFavoriteTag": "Select Favorite Tag",
     "favoriteTagPlaceholder": "Select your favorite tag",
     "selectFoodTag": "Select Food Tag",
-    "requiredInfoMissing": "Required information is missing"
+    "requiredInfoMissing": "Required information is missing",
+    "saveDraft": "Save draft",
+    "draftSaved": "Draft saved",
+    "draftRestored": "Draft loaded"
   },
   "share": {
     "shareButton": "Share",

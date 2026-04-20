@@ -129,7 +129,10 @@
     "selectFavoriteTag": "Lieblings-Etikett auswählen",
     "favoriteTagPlaceholder": "Wählen Sie Ihr Lieblings-Etikett",
     "selectFoodTag": "Essens-Etikett auswählen",
-    "requiredInfoMissing": "Erforderliche Informationen fehlen"
+    "requiredInfoMissing": "Erforderliche Informationen fehlen",
+    "saveDraft": "Entwurf speichern",
+    "draftSaved": "Entwurf gespeichert",
+    "draftRestored": "Entwurf geladen"
   },
   "share": {
     "shareButton": "Teilen",

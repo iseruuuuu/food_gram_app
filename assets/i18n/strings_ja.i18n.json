@@ -129,7 +129,10 @@
     "selectFavoriteTag": "お気に入りタグを選択",
     "favoriteTagPlaceholder": "お気に入りのタグ",
     "selectFoodTag": "料理タグの選択",
-    "requiredInfoMissing": "必要な情報が入力されていません"
+    "requiredInfoMissing": "必要な情報が入力されていません",
+    "saveDraft": "下書き保存",
+    "draftSaved": "下書きを保存しました",
+    "draftRestored": "下書きを読み込みました"
   },
   "share": {
     "shareButton": "シェア",
