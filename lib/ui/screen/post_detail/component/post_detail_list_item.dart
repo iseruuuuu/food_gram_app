@@ -511,18 +511,18 @@ class PostDetailListItem extends HookConsumerWidget {
                         ],
                       ],
                     ),
-                    const Gap(8),
+                    const Gap(4),
                     if (posts.comment.isNotEmpty)
                       AppTranslatableText(
                         posts.comment,
                         style: DetailPostStyle.comment(context),
                       ),
-                    const Gap(8),
+                    const Gap(4),
                     Text(
                       '${_formatDateTime(posts.createdAt)} ${t.posted}',
                       style: DetailPostStyle.comment(context),
                     ),
-                    const Gap(12),
+                    const Gap(8),
                     Wrap(
                       spacing: 10,
                       children: [
