@@ -582,12 +582,18 @@ class PostScreen extends HookConsumerWidget {
                                 foodTag: foodTagString,
                                 locale: Localizations.localeOf(context),
                               );
+                          if (!context.mounted) {
+                            return;
+                          }
                           if (result) {
                             // ストリークを更新
                             final streakService =
                                 ref.read(streakServiceProvider.notifier);
                             final streakResult =
                                 await streakService.updateStreak();
+                            if (!context.mounted) {
+                              return;
+                            }
                             // ストリークが更新された場合のみダイアログを表示
                             if (streakResult.isUpdated) {
                               // ダイアログを表示（初回投稿かどうかを判定）
@@ -598,22 +604,26 @@ class PostScreen extends HookConsumerWidget {
                               final isMilestone = milestoneWeeks
                                   .contains(streakResult.newStreakWeeks);
 
-                              if (context.mounted) {
-                                await showStreakDialog(
-                                  context: context,
-                                  streakWeeks: streakResult.newStreakWeeks,
-                                  isFirstTime: isFirstTime,
-                                );
+                              await showStreakDialog(
+                                context: context,
+                                streakWeeks: streakResult.newStreakWeeks,
+                                isFirstTime: isFirstTime,
+                              );
 
-                                // 初回投稿またはストリークの節目の場合、レビューを表示
-                                if (isFirstTime || isMilestone) {
-                                  // ストリークダイアログ表示後、少し間を置いてからレビューを表示
-                                  await Future<void>.delayed(
-                                    const Duration(seconds: 2),
-                                  );
-                                  final reviewService = InAppReviewService();
-                                  await reviewService.requestReview();
+                              // 初回投稿またはストリークの節目の場合、レビューを表示
+                              if (isFirstTime || isMilestone) {
+                                if (!context.mounted) {
+                                  return;
                                 }
+                                // ストリークダイアログ表示後、少し間を置いてからレビューを表示
+                                await Future<void>.delayed(
+                                  const Duration(seconds: 2),
+                                );
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                final reviewService = InAppReviewService();
+                                await reviewService.requestReview();
                               }
                             }
                             if (context.mounted) {
