@@ -80,7 +80,7 @@ class MapStatsHomeWidgetSync {
         name: iosWidgetKind,
         iOSName: iosWidgetKind,
       );
-    } catch (e, st) {
+    } on Exception catch (e, st) {
       _log.w(
         'MapStatsHomeWidgetSync.syncAllModes failed',
         error: e,
@@ -125,7 +125,7 @@ class MapStatsHomeWidgetSync {
           postingStreakWeeks: args.postingStreakWeeks,
         ),
       );
-      unawaited(_syncChain!);
+      unawaited(_syncChain);
     });
   }
 

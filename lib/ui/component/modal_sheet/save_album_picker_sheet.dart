@@ -29,9 +29,9 @@ Future<void> openSaveAlbumPaywall(BuildContext context) async {
 
 Future<void> showSaveAlbumIssueDialog(
   BuildContext context,
-  SaveAlbumIssue issue,
-  bool isPremium,
-) async {
+  SaveAlbumIssue issue, {
+  required bool isPremium,
+}) async {
   final t = Translations.of(context);
   final title = t.stored.albumLimitTitle;
   final body = switch (issue) {
@@ -156,7 +156,7 @@ class _CreateAlbumAlertDialogState
                       await showSaveAlbumIssueDialog(
                         widget.parentContext,
                         issue,
-                        isPremium,
+                        isPremium: isPremium,
                       );
                       return;
                     }
@@ -347,7 +347,7 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
                               await showSaveAlbumIssueDialog(
                                 context,
                                 issue,
-                                isPremium,
+                                isPremium: isPremium,
                               );
                               return;
                             }
@@ -389,7 +389,7 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
                               await showSaveAlbumIssueDialog(
                                 context,
                                 issue,
-                                isPremium,
+                                isPremium: isPremium,
                               );
                               return;
                             }
