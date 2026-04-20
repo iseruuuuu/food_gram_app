@@ -109,6 +109,13 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
       targetLocale: locale,
     );
     if (!need) {
+      if (!mounted) {
+        return;
+      }
+      final t = Translations.of(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(t.translatable.translateFailed)),
+      );
       return;
     }
     setState(() => _isTranslating = true);
