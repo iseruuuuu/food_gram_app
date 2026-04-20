@@ -129,7 +129,10 @@
     "selectFavoriteTag": "选择收藏标签",
     "favoriteTagPlaceholder": "选择您的收藏标签",
     "selectFoodTag": "选择食物标签",
-    "requiredInfoMissing": "缺少必要信息"
+    "requiredInfoMissing": "缺少必要信息",
+    "saveDraft": "保存草稿",
+    "draftSaved": "草稿已保存",
+    "draftRestored": "已加载草稿"
   },
   "share": {
     "shareButton": "分享",

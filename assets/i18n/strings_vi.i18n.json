@@ -129,7 +129,10 @@
     "selectFavoriteTag": "Chọn thẻ yêu thích",
     "favoriteTagPlaceholder": "Chọn thẻ yêu thích của bạn",
     "selectFoodTag": "Chọn thẻ món ăn",
-    "requiredInfoMissing": "Thông tin bắt buộc bị thiếu"
+    "requiredInfoMissing": "Thông tin bắt buộc bị thiếu",
+    "saveDraft": "Lưu bản nháp",
+    "draftSaved": "Đã lưu bản nháp",
+    "draftRestored": "Đã tải bản nháp"
   },
   "share": {
     "shareButton": "Chia sẻ",

@@ -129,7 +129,10 @@
     "selectFavoriteTag": "즐겨찾기 태그 선택",
     "favoriteTagPlaceholder": "즐겨찾기 태그 선택",
     "selectFoodTag": "음식 태그 선택",
-    "requiredInfoMissing": "필수 정보가 누락되었습니다"
+    "requiredInfoMissing": "필수 정보가 누락되었습니다",
+    "saveDraft": "임시 저장",
+    "draftSaved": "임시저장되었습니다",
+    "draftRestored": "임시저장을 불러왔습니다"
   },
   "share": {
     "shareButton": "공유",

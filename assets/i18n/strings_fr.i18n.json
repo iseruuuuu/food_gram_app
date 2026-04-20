@@ -129,7 +129,10 @@
     "selectFavoriteTag": "Sélectionner l'étiquette favorite",
     "favoriteTagPlaceholder": "Sélectionnez votre étiquette favorite",
     "selectFoodTag": "Tags cuisine",
-    "requiredInfoMissing": "Informations requises manquantes"
+    "requiredInfoMissing": "Informations requises manquantes",
+    "saveDraft": "Enregistrer le brouillon",
+    "draftSaved": "Brouillon enregistré",
+    "draftRestored": "Brouillon chargé"
   },
   "share": {
     "shareButton": "Partager",

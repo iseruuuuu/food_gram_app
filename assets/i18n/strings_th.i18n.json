@@ -129,7 +129,10 @@
     "selectFavoriteTag": "เลือกแท็กที่ชื่นชอบ",
     "favoriteTagPlaceholder": "เลือกแท็กที่ชื่นชอบของคุณ",
     "selectFoodTag": "เลือกแท็กอาหาร",
-    "requiredInfoMissing": "ข้อมูลที่จำเป็นขาดหายไป"
+    "requiredInfoMissing": "ข้อมูลที่จำเป็นขาดหายไป",
+    "saveDraft": "บันทึกแบบร่าง",
+    "draftSaved": "บันทึกแบบร่างแล้ว",
+    "draftRestored": "โหลดแบบร่างแล้ว"
   },
   "share": {
     "shareButton": "แชร์",
