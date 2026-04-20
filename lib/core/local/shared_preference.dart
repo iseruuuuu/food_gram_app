@@ -12,6 +12,7 @@ enum PreferenceKey {
   saveAlbumIds,
   lastReviewRequestDate,
   firstLaunchDate,
+  postDraft,
 }
 
 class Preference {
