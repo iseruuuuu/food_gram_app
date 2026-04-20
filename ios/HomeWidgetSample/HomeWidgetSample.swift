@@ -74,7 +74,7 @@ struct HomeWidgetSampleEntryView: View {
         }
     }
 
-    private var smallSummaryFont: Font { .system(size: 12) }
+    private var smallSummaryFont: Font { .system(size: 11) }
 
     private var smallContent: some View {
         VStack(alignment: .leading, spacing: 4) {
