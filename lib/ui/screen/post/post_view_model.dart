@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_gram_app/core/local/shared_preference.dart';
+import 'package:food_gram_app/core/model/post_draft.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
@@ -30,6 +32,7 @@ class PostViewModel extends _$PostViewModel {
   final Map<String, Uint8List> _imageBytesMap = {};
   final logger = Logger();
   final _foodLabeler = FoodImageLabeler();
+  final _preference = Preference();
   Completer<void>? _maybeNotFoodCompleter;
 
   TextEditingController get foodController => _foodController;
@@ -145,6 +148,7 @@ class PostViewModel extends _$PostViewModel {
         );
     await result.when(
       success: (_) async {
+        await _preference.clearPostDraft();
         state = state.copyWith(
           status: PostStatus.success.name,
           isSuccess: true,
@@ -310,6 +314,43 @@ class PostViewModel extends _$PostViewModel {
     state = state.copyWith(status: PostStatus.initial.name);
     _maybeNotFoodCompleter?.complete();
     _maybeNotFoodCompleter = null;
+  }
+
+  Future<PostDraft?> loadSavedDraft() => _preference.getPostDraft();
+
+  Future<void> saveDraft({required List<String> foodTags}) async {
+    final currency = state.priceCurrency.isEmpty
+        ? defaultPostPriceCurrencyFromPlatform()
+        : state.priceCurrency;
+    final draft = PostDraft(
+      foodName: _foodController.text,
+      comment: _commentController.text,
+      priceInput: _priceController.text,
+      restaurant: state.restaurant,
+      lat: state.lat,
+      lng: state.lng,
+      foodTags: List<String>.from(foodTags),
+      star: state.star,
+      isAnonymous: state.isAnonymous,
+      priceCurrency: currency,
+    );
+    await _preference.savePostDraft(draft);
+  }
+
+  void applyDraft(PostDraft draft, {required bool applyRestaurant}) {
+    _foodController.text = draft.foodName;
+    _commentController.text = draft.comment;
+    _priceController.text = draft.priceInput;
+    state = state.copyWith(
+      restaurant: applyRestaurant ? draft.restaurant : state.restaurant,
+      lat: applyRestaurant ? draft.lat : state.lat,
+      lng: applyRestaurant ? draft.lng : state.lng,
+      star: draft.star,
+      isAnonymous: draft.isAnonymous,
+      priceCurrency: draft.priceCurrency.isEmpty
+          ? state.priceCurrency
+          : draft.priceCurrency.toUpperCase(),
+    );
   }
 }
 
