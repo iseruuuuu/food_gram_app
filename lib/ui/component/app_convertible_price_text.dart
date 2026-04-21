@@ -26,9 +26,11 @@ class AppConvertiblePriceText extends ConsumerStatefulWidget {
 class _AppConvertiblePriceTextState
     extends ConsumerState<AppConvertiblePriceText> {
   String? _convertedDisplay;
-  bool _isConverting = false;
   String? _lastAutoConvertKey;
   String? _dependencyLocaleTag;
+
+  /// 無効化すると進行中の変換結果を破棄する（amount / 通貨 / ロケール変更時）
+  Object _conversionValidity = Object();
 
   String get _originalDisplay => formatPostPriceDisplay(
         amount: widget.amount,
@@ -59,6 +61,7 @@ class _AppConvertiblePriceTextState
     if (!mounted) {
       return;
     }
+    _conversionValidity = Object();
     setState(() {
       _convertedDisplay = null;
       _lastAutoConvertKey = null;
@@ -133,13 +136,10 @@ class _AppConvertiblePriceTextState
     required String targetCurrencyOverride,
     required String sourceCurrencyOverride,
   }) async {
-    if (_isConverting) {
-      return;
-    }
     final targetCurrency = targetCurrencyOverride;
     final sourceCurrency = sourceCurrencyOverride;
+    final validity = _conversionValidity;
 
-    setState(() => _isConverting = true);
     try {
       final repository = ref.read(currencyConversionRepositoryProvider);
       final converted = await repository.convert(
@@ -148,6 +148,9 @@ class _AppConvertiblePriceTextState
         toCurrency: targetCurrency,
       );
       if (!mounted) {
+        return;
+      }
+      if (!identical(validity, _conversionValidity)) {
         return;
       }
       setState(() {
@@ -161,14 +164,13 @@ class _AppConvertiblePriceTextState
       if (!mounted) {
         return;
       }
+      if (!identical(validity, _conversionValidity)) {
+        return;
+      }
       final t = Translations.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(t.translatable.priceConversionFailed)),
       );
-    } finally {
-      if (mounted) {
-        setState(() => _isConverting = false);
-      }
     }
   }
 }
