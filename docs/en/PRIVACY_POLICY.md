@@ -146,6 +146,7 @@ The Company may obtain users' location information (GPS information) in providin
 2. **Purpose of Use**
    - To display restaurant location information on the map
    - To search for nearby restaurants
+   - To protect user safety, location information may be displayed at an adjusted level of precision when necessary
 
 3. **Method of Obtaining**
    - Obtained only when the user explicitly permits
@@ -170,7 +171,7 @@ The Company handles photo data selected by users for posting or profile settings
    - Profile images set by users
    - Image files may include embedded metadata (e.g., capture time and location)
    - The Company does not extract or store such metadata as separate database fields
-   - The app strives to remove metadata (such as location information) when uploading images; however, complete removal may not always be guaranteed depending on device or image-processing library behavior
+   - The app removes metadata (such as location information) when uploading images
 
 2. **Purpose of Use**
    - To provide post and profile display features
@@ -193,7 +194,7 @@ The Company handles photo data selected by users for posting or profile settings
 
 1. **Retention Period**
    - The Company retains personal information until the user deletes their account or until the provision of the Services is terminated
-   - After account deletion, personal information will be promptly deleted except for the retention period prescribed by law
+   - After account deletion, personal information will, in principle, be deleted immediately, except where retention is required by law
 
 2. **Storage Location**
    - Personal information is stored on Supabase servers (mainly in Japan)
@@ -211,7 +212,7 @@ Users may request deletion of their information through in-app actions or by con
 
 3. **Delete Account**
    - Users can delete their account by completing the withdrawal flow in the app settings
-   - After account deletion, data will be deleted within a reasonable period, except where retention is required by law
+   - After account deletion, data will, in principle, be deleted immediately, except where retention is required by law
 
 4. **Deletion Request by Contact**
    - If there is data that cannot be deleted through app operations, please contact us via the contact information in Article 13
