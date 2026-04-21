@@ -14,6 +14,7 @@ import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/go_router_extension.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/app_convertible_price_text.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/app_translatable_text.dart';
 import 'package:food_gram_app/ui/component/dialog/app_share_dialog.dart';
@@ -477,8 +478,9 @@ class PostDetailListItem extends HookConsumerWidget {
                     Row(
                       children: [
                         if (posts.formattedPriceDisplay.isNotEmpty) ...[
-                          Text(
-                            posts.formattedPriceDisplay,
+                          AppConvertiblePriceText(
+                            amount: posts.priceAmount!,
+                            currencyCode: posts.priceCurrency!,
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
@@ -511,18 +513,18 @@ class PostDetailListItem extends HookConsumerWidget {
                         ],
                       ],
                     ),
-                    const Gap(8),
+                    const Gap(4),
                     if (posts.comment.isNotEmpty)
                       AppTranslatableText(
                         posts.comment,
                         style: DetailPostStyle.comment(context),
                       ),
-                    const Gap(8),
+                    const Gap(4),
                     Text(
                       '${_formatDateTime(posts.createdAt)} ${t.posted}',
                       style: DetailPostStyle.comment(context),
                     ),
-                    const Gap(12),
+                    const Gap(8),
                     Wrap(
                       spacing: 10,
                       children: [

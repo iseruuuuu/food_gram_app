@@ -1,0 +1,151 @@
+import 'dart:async';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+part 'currency_rate_service.g.dart';
+
+@Riverpod(keepAlive: true)
+CurrencyRateService currencyRateService(Ref ref) {
+  return CurrencyRateService(supabase: ref.read(supabaseProvider));
+}
+
+class CurrencyRateService {
+  CurrencyRateService({required SupabaseClient supabase})
+      : _supabase = supabase;
+
+  final SupabaseClient _supabase;
+  static const String _functionName = 'currency-convert';
+  static const Duration _invokeTimeout = Duration(seconds: 12);
+
+  Future<double> fetchRate({
+    required String fromCurrency,
+    required String toCurrency,
+  }) async {
+    final from = fromCurrency.trim().toUpperCase();
+    final to = toCurrency.trim().toUpperCase();
+
+    final FunctionResponse res;
+    try {
+      res = await _supabase.functions.invoke(
+        _functionName,
+        body: <String, dynamic>{
+          'from': from,
+          'to': to,
+          'base': from,
+          'symbols': [to],
+          'quotes': [to],
+          'target': to,
+        },
+      ).timeout(_invokeTimeout);
+    } on TimeoutException catch (e, st) {
+      throw CurrencyRateException(
+        type: CurrencyRateFailureType.timeout,
+        message: 'Edge Function invoke timed out.',
+        cause: e,
+        stackTrace: st,
+      );
+    } on FunctionException catch (e) {
+      throw CurrencyRateException(
+        type: CurrencyRateFailureType.invokeFailed,
+        message: 'Edge Function invoke failed: ${e.details ?? e.toString()}',
+        cause: e,
+      );
+    }
+
+    final data = res.data;
+    if (data is! Map<String, dynamic>) {
+      throw const CurrencyRateException(
+        type: CurrencyRateFailureType.invalidResponse,
+        message: 'Invalid Edge Function response.',
+      );
+    }
+    if (data['success'] == false) {
+      final error = data['error']?.toString() ?? 'Unknown error';
+      throw CurrencyRateException(
+        type: _looksLikePairUnavailable(error)
+            ? CurrencyRateFailureType.directPairUnavailable
+            : CurrencyRateFailureType.backendError,
+        message: 'Edge Function error: $error',
+      );
+    }
+
+    final parsedRate = _extractRate(data: data, to: to);
+    if (parsedRate != null) {
+      return parsedRate;
+    }
+    throw const CurrencyRateException(
+      type: CurrencyRateFailureType.rateMissing,
+      message: 'Rate not found in Edge Function response.',
+    );
+  }
+
+  bool _looksLikePairUnavailable(String rawError) {
+    final text = rawError.toLowerCase();
+    return text.contains('no rate') ||
+        text.contains('pair') && text.contains('not found') ||
+        text.contains('unsupported') && text.contains('pair') ||
+        text.contains('cannot convert');
+  }
+
+  double? _extractRate({
+    required Map<String, dynamic> data,
+    required String to,
+  }) {
+    final directRate = data['rate'];
+    if (directRate is num && directRate > 0) {
+      return directRate.toDouble();
+    }
+
+    final result = data['result'];
+    if (result is num && result > 0) {
+      return result.toDouble();
+    }
+
+    final rates = data['rates'];
+    if (rates is Map) {
+      final dynamic rate = rates[to];
+      if (rate is num && rate > 0) {
+        return rate.toDouble();
+      }
+    }
+
+    final nestedData = data['data'];
+    if (nestedData is Map<String, dynamic>) {
+      return _extractRate(data: nestedData, to: to);
+    }
+    return null;
+  }
+}
+
+enum CurrencyRateFailureType {
+  invokeFailed,
+  timeout,
+  backendError,
+  invalidResponse,
+  rateMissing,
+  directPairUnavailable,
+}
+
+class CurrencyRateException implements Exception {
+  const CurrencyRateException({
+    required this.type,
+    required this.message,
+    this.cause,
+    this.stackTrace,
+  });
+
+  final CurrencyRateFailureType type;
+  final String message;
+  final Object? cause;
+  final StackTrace? stackTrace;
+
+  bool get shouldTryUsdFallback =>
+      type == CurrencyRateFailureType.directPairUnavailable ||
+      type == CurrencyRateFailureType.timeout;
+
+  @override
+  String toString() => 'CurrencyRateException($type): $message';
+}

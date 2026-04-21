@@ -689,6 +689,9 @@
     "showOriginal": "原文を表示",
     "copy": "コピー",
     "copied": "コピーしました",
-    "translateFailed": "翻訳できませんでした"
+    "translateFailed": "翻訳できませんでした",
+    "priceConvertedOriginalSuffix": "（元: {price}）",
+    "priceAlreadyLocalCurrency": "すでに表示通貨と同じです",
+    "priceConversionFailed": "通貨変換に失敗しました"
   }
 }

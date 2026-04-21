@@ -194,7 +194,47 @@ String postPriceCurrencySymbol(String code) {
 
 /// 端末ロケールから初期通貨を推定（換算はしない）
 String defaultPostPriceCurrencyForLocale(Locale locale) {
+  final lang = locale.languageCode.toLowerCase();
   final country = locale.countryCode?.toUpperCase();
+  final hasCountry = country != null && country.isNotEmpty;
+
+  // 言語だけで一意に決まるもの（国コードがあっても同じ）
+  switch (lang) {
+    case 'ja':
+      return 'JPY';
+    case 'ko':
+      return 'KRW';
+  }
+
+  // zh は国によって通貨が変わる（zh_TW は TWD、zh_HK は HKD など）
+  if (lang == 'zh') {
+    if (hasCountry) {
+      switch (country) {
+        case 'TW':
+          return 'TWD';
+        case 'HK':
+          return 'HKD';
+        case 'MO':
+          return 'MOP';
+        case 'CN':
+          return 'CNY';
+        default:
+          return 'CNY';
+      }
+    }
+    return 'CNY';
+  }
+
+  // en は国があれば国ベース、なければ USD（en_GB → GBP など）
+  if (lang == 'en' && !hasCountry) {
+    return 'USD';
+  }
+
+  // それ以外の言語で国が無い場合の既定
+  if (!hasCountry) {
+    return 'USD';
+  }
+
   switch (country) {
     case 'JP':
       return 'JPY';
@@ -405,7 +445,7 @@ String defaultPostPriceCurrencyForLocale(Locale locale) {
         'ME',
         'XK',
       };
-      if (country != null && eurCountries.contains(country)) {
+      if (eurCountries.contains(country)) {
         return 'EUR';
       }
       return 'USD';

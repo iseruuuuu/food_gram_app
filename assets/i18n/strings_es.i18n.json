@@ -689,6 +689,9 @@
     "showOriginal": "Mostrar original",
     "copy": "Copiar",
     "copied": "Copiado al portapapeles",
-    "translateFailed": "Error al traducir"
+    "translateFailed": "Error al traducir",
+    "priceConvertedOriginalSuffix": "(original: {price})",
+    "priceAlreadyLocalCurrency": "Ya está en la moneda mostrada",
+    "priceConversionFailed": "Error al convertir la moneda"
   }
 }
