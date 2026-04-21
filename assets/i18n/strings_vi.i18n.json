@@ -689,6 +689,9 @@
     "showOriginal": "Hiển thị bản gốc",
     "copy": "Sao chép",
     "copied": "Đã sao chép vào bộ nhớ tạm",
-    "translateFailed": "Dịch không thành công"
+    "translateFailed": "Dịch không thành công",
+    "priceConvertedOriginalSuffix": "(gốc: {price})",
+    "priceAlreadyLocalCurrency": "Đã trùng với tiền tệ hiển thị",
+    "priceConversionFailed": "Chuyển đổi tiền tệ thất bại"
   }
 }

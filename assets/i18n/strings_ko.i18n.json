@@ -689,6 +689,9 @@
     "showOriginal": "원문 보기",
     "copy": "복사",
     "copied": "클립보드에 복사됨",
-    "translateFailed": "번역에 실패했습니다"
+    "translateFailed": "번역에 실패했습니다",
+    "priceConvertedOriginalSuffix": "(원래: {price})",
+    "priceAlreadyLocalCurrency": "이미 표시 통화와 같습니다",
+    "priceConversionFailed": "환율 변환에 실패했습니다"
   }
 }

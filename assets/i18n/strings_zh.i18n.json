@@ -689,6 +689,9 @@
     "showOriginal": "显示原文",
     "copy": "复制",
     "copied": "已复制到剪贴板",
-    "translateFailed": "翻译失败"
+    "translateFailed": "翻译失败",
+    "priceConvertedOriginalSuffix": "（原价：{price}）",
+    "priceAlreadyLocalCurrency": "已与显示货币相同",
+    "priceConversionFailed": "货币换算失败"
   }
 }

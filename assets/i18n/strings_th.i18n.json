@@ -689,6 +689,9 @@
     "showOriginal": "แสดงต้นฉบับ",
     "copy": "คัดลอก",
     "copied": "คัดลอกไปยังคลิปบอร์ดแล้ว",
-    "translateFailed": "ไม่สามารถแปลได้"
+    "translateFailed": "ไม่สามารถแปลได้",
+    "priceConvertedOriginalSuffix": "(ราคาเดิม: {price})",
+    "priceAlreadyLocalCurrency": "ตรงกับสกุลเงินที่แสดงอยู่แล้ว",
+    "priceConversionFailed": "แปลงสกุลเงินไม่สำเร็จ"
   }
 }

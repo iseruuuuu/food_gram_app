@@ -689,6 +689,9 @@
     "showOriginal": "顯示原文",
     "copy": "複製",
     "copied": "已複製到剪貼簿",
-    "translateFailed": "翻譯失敗"
+    "translateFailed": "翻譯失敗",
+    "priceConvertedOriginalSuffix": "（原價：{price}）",
+    "priceAlreadyLocalCurrency": "已與顯示幣別相同",
+    "priceConversionFailed": "幣別換算失敗"
   }
 }

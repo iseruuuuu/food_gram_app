@@ -689,6 +689,9 @@
     "showOriginal": "Show original",
     "copy": "Copy",
     "copied": "Copied to clipboard",
-    "translateFailed": "Translation failed"
+    "translateFailed": "Translation failed",
+    "priceConvertedOriginalSuffix": "(original: {price})",
+    "priceAlreadyLocalCurrency": "Already in the display currency",
+    "priceConversionFailed": "Currency conversion failed"
   }
 }

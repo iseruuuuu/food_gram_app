@@ -689,6 +689,9 @@
     "showOriginal": "Original anzeigen",
     "copy": "Kopieren",
     "copied": "In Zwischenablage kopiert",
-    "translateFailed": "Übersetzung fehlgeschlagen"
+    "translateFailed": "Übersetzung fehlgeschlagen",
+    "priceConvertedOriginalSuffix": "(Original: {price})",
+    "priceAlreadyLocalCurrency": "Bereits in der Anzeigewährung",
+    "priceConversionFailed": "Währungsumrechnung fehlgeschlagen"
   }
 }
