@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -16,6 +18,7 @@ class CurrencyRateService {
 
   final SupabaseClient _supabase;
   static const String _functionName = 'currency-convert';
+  static const Duration _invokeTimeout = Duration(seconds: 12);
 
   Future<double> fetchRate({
     required String fromCurrency,
@@ -36,7 +39,7 @@ class CurrencyRateService {
           'quotes': [to],
           'target': to,
         },
-      );
+      ).timeout(_invokeTimeout);
     } on FunctionException catch (e) {
       throw Exception(
         'Edge Function invoke failed: ${e.details ?? e.toString()}',
