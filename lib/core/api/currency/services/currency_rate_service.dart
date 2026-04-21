@@ -40,26 +40,54 @@ class CurrencyRateService {
           'target': to,
         },
       ).timeout(_invokeTimeout);
+    } on TimeoutException catch (e, st) {
+      throw CurrencyRateException(
+        type: CurrencyRateFailureType.timeout,
+        message: 'Edge Function invoke timed out.',
+        cause: e,
+        stackTrace: st,
+      );
     } on FunctionException catch (e) {
-      throw Exception(
-        'Edge Function invoke failed: ${e.details ?? e.toString()}',
+      throw CurrencyRateException(
+        type: CurrencyRateFailureType.invokeFailed,
+        message: 'Edge Function invoke failed: ${e.details ?? e.toString()}',
+        cause: e,
       );
     }
 
     final data = res.data;
     if (data is! Map<String, dynamic>) {
-      throw Exception('Invalid Edge Function response');
+      throw const CurrencyRateException(
+        type: CurrencyRateFailureType.invalidResponse,
+        message: 'Invalid Edge Function response.',
+      );
     }
     if (data['success'] == false) {
       final error = data['error']?.toString() ?? 'Unknown error';
-      throw Exception('Edge Function error: $error');
+      throw CurrencyRateException(
+        type: _looksLikePairUnavailable(error)
+            ? CurrencyRateFailureType.directPairUnavailable
+            : CurrencyRateFailureType.backendError,
+        message: 'Edge Function error: $error',
+      );
     }
 
     final parsedRate = _extractRate(data: data, to: to);
     if (parsedRate != null) {
       return parsedRate;
     }
-    throw Exception('Rate not found in Edge Function response');
+    throw const CurrencyRateException(
+      type: CurrencyRateFailureType.rateMissing,
+      message: 'Rate not found in Edge Function response.',
+    );
+  }
+
+  bool _looksLikePairUnavailable(String rawError) {
+    final text = rawError.toLowerCase();
+    return text.contains('no rate') ||
+        text.contains('pair') && text.contains('not found') ||
+        text.contains('unsupported') && text.contains('pair') ||
+        text.contains('cannot convert');
   }
 
   double? _extractRate({
@@ -90,4 +118,34 @@ class CurrencyRateService {
     }
     return null;
   }
+}
+
+enum CurrencyRateFailureType {
+  invokeFailed,
+  timeout,
+  backendError,
+  invalidResponse,
+  rateMissing,
+  directPairUnavailable,
+}
+
+class CurrencyRateException implements Exception {
+  const CurrencyRateException({
+    required this.type,
+    required this.message,
+    this.cause,
+    this.stackTrace,
+  });
+
+  final CurrencyRateFailureType type;
+  final String message;
+  final Object? cause;
+  final StackTrace? stackTrace;
+
+  bool get shouldTryUsdFallback =>
+      type == CurrencyRateFailureType.directPairUnavailable ||
+      type == CurrencyRateFailureType.timeout;
+
+  @override
+  String toString() => 'CurrencyRateException($type): $message';
 }

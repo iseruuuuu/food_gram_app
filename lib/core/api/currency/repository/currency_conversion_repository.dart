@@ -26,6 +26,20 @@ class CurrencyConversionRepository {
   }) async {
     final from = _normalizeCurrencyCode(fromCurrency);
     final to = _normalizeCurrencyCode(toCurrency);
+    if (from.isEmpty) {
+      throw ArgumentError.value(
+        fromCurrency,
+        'fromCurrency',
+        'Currency code must not be blank.',
+      );
+    }
+    if (to.isEmpty) {
+      throw ArgumentError.value(
+        toCurrency,
+        'toCurrency',
+        'Currency code must not be blank.',
+      );
+    }
     if (from == to) {
       return amount;
     }
@@ -75,7 +89,10 @@ class CurrencyConversionRepository {
         fromCurrency: fromCurrency,
         toCurrency: toCurrency,
       );
-    } on Exception {
+    } on CurrencyRateException catch (e) {
+      if (!e.shouldTryUsdFallback) {
+        rethrow;
+      }
       if (fromCurrency == 'USD' || toCurrency == 'USD') {
         rethrow;
       }
