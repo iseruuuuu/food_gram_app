@@ -2,6 +2,16 @@
 
 FoodGram (hereinafter referred to as "the Company") establishes this Privacy Policy (hereinafter referred to as "this Policy") regarding the handling of users' personal information in the services provided on this application (hereinafter referred to as "the Services").
 
+## Key Points of This Policy
+
+- Location information is obtained only when the user explicitly grants permission
+- Current location is used for map display and restaurant search, but current location itself is not stored in the Company's database
+- For posts, only restaurant location information is handled
+- Posted images are visible to other users, and the Company does not extract or store image metadata as separate database fields
+- Personal information is provided to external service providers only to the extent necessary to operate the Services
+- The Company has a policy of avoiding excessive ad delivery that harms user experience
+- Posts, profile information, and accounts can be deleted or changed through in-app actions (some cases are handled via contact support)
+
 ## Article 1 (Personal Information)
 
 "Personal Information" refers to "personal information" as defined in the Personal Information Protection Act, and means information about a living individual that can identify a specific individual by name, date of birth, address, telephone number, contact information, or other descriptions contained in such information, as well as data relating to appearance, fingerprints, voiceprints, and health insurance card numbers that can identify a specific individual from such information alone (personal identification information).
@@ -130,8 +140,8 @@ Notwithstanding the provisions of the preceding two paragraphs, if suspension of
 The Company may obtain users' location information (GPS information) in providing the Services. The Company will not obtain location information unless the user explicitly grants permission.
 
 1. **Location Information Obtained**
-   - Latitude and longitude of current location
-   - Location information of restaurants posted
+   - Current location latitude/longitude for map display and restaurant search (used on device)
+   - Restaurant location information (latitude and longitude) used for posts
 
 2. **Purpose of Use**
    - To display restaurant location information on the map
@@ -140,10 +150,12 @@ The Company may obtain users' location information (GPS information) in providin
 3. **Method of Obtaining**
    - Obtained only when the user explicitly permits
    - Obtaining location information is optional (basic functions of the Services can be used even if location information is not permitted)
+   - Obtained current location is used for map display and restaurant search, and is not stored in the Company's database
+   - Location information saved in posts is the restaurant location information set by the user
 
 4. **Provision to Third Parties**
-   - Location information will not be provided to third parties except when included in posts
-   - Location information included in posts will be disclosed to other users
+   - Current location information is not provided to third parties unless the user includes it in a post
+   - Restaurant location information included in posts will be disclosed to other users
 
 5. **User Controls (Stop/Delete)**
    - Users can disable location permissions for this app at any time from device settings
@@ -158,6 +170,7 @@ The Company handles photo data selected by users for posting or profile settings
    - Profile images set by users
    - Image files may include embedded metadata (e.g., capture time and location)
    - The Company does not extract or store such metadata as separate database fields
+   - The app strives to remove metadata (such as location information) when uploading images; however, complete removal may not always be guaranteed depending on device or image-processing library behavior
 
 2. **Purpose of Use**
    - To provide post and profile display features
@@ -184,7 +197,7 @@ The Company handles photo data selected by users for posting or profile settings
 
 2. **Storage Location**
    - Personal information is stored on Supabase servers (mainly in Japan)
-   - Some data may be stored on servers of Firebase, RevenueCat, and Google Mobile Ads (including overseas)
+   - In Firebase, RevenueCat, and Google Mobile Ads, identifiers and related data necessary to operate the Services may be processed and stored under each provider's service
 
 ## Article 10 (How to Delete Data)
 
@@ -215,6 +228,7 @@ The Company uses Google Mobile Ads to deliver advertisements in the Services.
 2. **User Rights**
    - Users can choose to allow or deny tracking from the settings screen
    - Even if tracking is denied, basic functions of the Services can be used (advertisements will continue to be displayed, but they will be non-personalized advertisements)
+   - The Company has a policy of avoiding excessive ad delivery that harms user experience
 
 ## Article 12 (Changes to Privacy Policy)
 
