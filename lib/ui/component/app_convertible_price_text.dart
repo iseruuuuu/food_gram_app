@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/api/currency/repository/currency_conversion_repository.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 
 class AppConvertiblePriceText extends ConsumerStatefulWidget {
   const AppConvertiblePriceText({
@@ -27,23 +28,57 @@ class _AppConvertiblePriceTextState
   String? _convertedDisplay;
   bool _isConverting = false;
   String? _lastAutoConvertKey;
+  String? _dependencyLocaleTag;
 
   String get _originalDisplay => formatPostPriceDisplay(
         amount: widget.amount,
-        currencyCode: widget.currencyCode,
+        currencyCode: widget.currencyCode.trim(),
       );
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    unawaited(_autoConvertIfNeeded());
+    final locale = Localizations.localeOf(context);
+    final tag = locale.toLanguageTag();
+    if (_dependencyLocaleTag != tag) {
+      _dependencyLocaleTag = tag;
+      _clearAndScheduleConvert();
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant AppConvertiblePriceText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.amount != widget.amount ||
+        oldWidget.currencyCode != widget.currencyCode) {
+      _clearAndScheduleConvert();
+    }
+  }
+
+  void _clearAndScheduleConvert() {
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _convertedDisplay = null;
+      _lastAutoConvertKey = null;
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        unawaited(_autoConvertIfNeeded());
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
     final hasConverted = _convertedDisplay != null;
     final primaryText = hasConverted ? _convertedDisplay! : _originalDisplay;
-    final secondaryText = hasConverted ? '(元: $_originalDisplay)' : null;
+    final secondaryText = hasConverted
+        ? t.translatable.priceConvertedOriginalSuffix
+            .replaceAll('{price}', _originalDisplay)
+        : null;
     final secondaryStyle = widget.style.copyWith(
       fontSize: (widget.style.fontSize ?? 16) * 0.7,
       fontWeight: FontWeight.w400,
@@ -69,37 +104,40 @@ class _AppConvertiblePriceTextState
 
   Future<void> _autoConvertIfNeeded() async {
     final locale = Localizations.localeOf(context);
-    final sourceCurrency = widget.currencyCode.toUpperCase();
+    final sourceCurrency = widget.currencyCode.trim().toUpperCase();
     final targetCurrency = defaultPostPriceCurrencyForLocale(locale);
-    final key = '${widget.amount}|$sourceCurrency|$targetCurrency';
+    final key = '${locale.toLanguageTag()}'
+        '|${widget.amount}'
+        '|$sourceCurrency'
+        '|$targetCurrency';
+
     if (_lastAutoConvertKey == key) {
       return;
     }
     _lastAutoConvertKey = key;
+
     if (targetCurrency == sourceCurrency) {
+      if (_convertedDisplay != null && mounted) {
+        setState(() => _convertedDisplay = null);
+      }
       return;
     }
-    await _handleConvert(targetCurrencyOverride: targetCurrency);
+
+    await _handleConvert(
+      targetCurrencyOverride: targetCurrency,
+      sourceCurrencyOverride: sourceCurrency,
+    );
   }
 
-  Future<void> _handleConvert({String? targetCurrencyOverride}) async {
+  Future<void> _handleConvert({
+    required String targetCurrencyOverride,
+    required String sourceCurrencyOverride,
+  }) async {
     if (_isConverting) {
       return;
     }
-    final locale = Localizations.localeOf(context);
-    final targetCurrency =
-        targetCurrencyOverride ?? defaultPostPriceCurrencyForLocale(locale);
-    final sourceCurrency = widget.currencyCode.toUpperCase();
-
-    if (targetCurrency == sourceCurrency) {
-      if (!mounted) {
-        return;
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('すでにローカル通貨です')),
-      );
-      return;
-    }
+    final targetCurrency = targetCurrencyOverride;
+    final sourceCurrency = sourceCurrencyOverride;
 
     setState(() => _isConverting = true);
     try {
@@ -118,12 +156,14 @@ class _AppConvertiblePriceTextState
           currencyCode: targetCurrency,
         );
       });
-    } on Exception catch (e) {
+    } on Exception catch (e, st) {
+      debugPrint('AppConvertiblePriceText: convert failed: $e\n$st');
       if (!mounted) {
         return;
       }
+      final t = Translations.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('通貨変換に失敗しました: $e')),
+        SnackBar(content: Text(t.translatable.priceConversionFailed)),
       );
     } finally {
       if (mounted) {
