@@ -17,8 +17,8 @@ class CurrencyRateService {
     required String fromCurrency,
     required String toCurrency,
   }) async {
-    final from = fromCurrency.toUpperCase();
-    final to = toCurrency.toUpperCase();
+    final from = fromCurrency.trim().toUpperCase();
+    final to = toCurrency.trim().toUpperCase();
 
     final FunctionResponse res;
     try {
