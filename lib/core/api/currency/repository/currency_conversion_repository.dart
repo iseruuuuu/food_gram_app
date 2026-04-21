@@ -1,12 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/api/currency/services/currency_rate_service.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final currencyConversionRepositoryProvider =
-    Provider<CurrencyConversionRepository>(
-  (ref) => CurrencyConversionRepository(
+part 'currency_conversion_repository.g.dart';
+
+@Riverpod(keepAlive: true)
+CurrencyConversionRepository currencyConversionRepository(Ref ref) {
+  return CurrencyConversionRepository(
     rateService: ref.read(currencyRateServiceProvider),
-  ),
-);
+  );
+}
 
 class CurrencyConversionRepository {
   CurrencyConversionRepository({required CurrencyRateService rateService})
