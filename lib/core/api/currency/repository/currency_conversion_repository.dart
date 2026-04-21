@@ -21,13 +21,24 @@ class CurrencyConversionRepository {
     required String fromCurrency,
     required String toCurrency,
   }) async {
-    final from = fromCurrency.toUpperCase();
-    final to = toCurrency.toUpperCase();
+    final from = _normalizeCurrencyCode(fromCurrency);
+    final to = _normalizeCurrencyCode(toCurrency);
     if (from == to) {
       return amount;
     }
     final rate = await _getRate(from: from, to: to);
     return amount * rate;
+  }
+
+  String _normalizeCurrencyCode(String raw) {
+    final code = raw.trim().toUpperCase();
+    switch (code) {
+      case r'NT$':
+      case 'NTD':
+        return 'TWD';
+      default:
+        return code;
+    }
   }
 
   Future<double> _getRate({
@@ -41,7 +52,7 @@ class CurrencyConversionRepository {
       return cached.rate;
     }
 
-    final rate = await _rateService.fetchRate(
+    final rate = await _fetchRateWithFallback(
       fromCurrency: from,
       toCurrency: to,
     );
@@ -50,6 +61,31 @@ class CurrencyConversionRepository {
       fetchedAt: DateTime.now(),
     );
     return rate;
+  }
+
+  Future<double> _fetchRateWithFallback({
+    required String fromCurrency,
+    required String toCurrency,
+  }) async {
+    try {
+      return await _rateService.fetchRate(
+        fromCurrency: fromCurrency,
+        toCurrency: toCurrency,
+      );
+    } on Exception {
+      if (fromCurrency == 'USD' || toCurrency == 'USD') {
+        rethrow;
+      }
+      final toUsd = await _rateService.fetchRate(
+        fromCurrency: fromCurrency,
+        toCurrency: 'USD',
+      );
+      final usdToTarget = await _rateService.fetchRate(
+        fromCurrency: 'USD',
+        toCurrency: toCurrency,
+      );
+      return toUsd * usdToTarget;
+    }
   }
 }
 
