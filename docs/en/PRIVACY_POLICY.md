@@ -157,6 +157,7 @@ The Company may obtain users' location information (GPS information) in providin
 4. **Provision to Third Parties**
    - Current location information is not provided to third parties unless the user includes it in a post
    - Restaurant location information included in posts will be disclosed to other users
+   - The Company does not disclose users' personal current location or movement history in a personally identifiable form
 
 5. **User Controls (Stop/Delete)**
    - Users can disable location permissions for this app at any time from device settings
@@ -171,7 +172,7 @@ The Company handles photo data selected by users for posting or profile settings
    - Profile images set by users
    - Image files may include embedded metadata (e.g., capture time and location)
    - The Company does not extract or store such metadata as separate database fields
-   - The app removes metadata (such as location information) when uploading images
+   - In principle, the app removes metadata (such as location information) when uploading images, but some metadata may remain depending on the device or processing environment
 
 2. **Purpose of Use**
    - To provide post and profile display features
