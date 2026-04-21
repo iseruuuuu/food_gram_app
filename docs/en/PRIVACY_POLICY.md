@@ -24,6 +24,7 @@ The personal information collected by the Company is as follows:
    - Comments
    - Restaurant information
    - Location information (latitude and longitude)
+   - Image files (may contain embedded metadata; see Article 8)
 
 4. **Usage Information**
    - App usage history
@@ -69,7 +70,7 @@ Notwithstanding the provisions of the preceding paragraph, the following cases s
 2. When personal information is provided in connection with the succession of business due to merger or other reasons
 3. When personal information is used jointly with a specific person, and the fact, items of personal information used jointly, scope of joint users, purpose of use by users, and name or title of the person responsible for management of such personal information have been notified to the person in advance or placed in a state where the person can easily know
 
-The Company uses the following third-party services in providing the Services, and may provide personal information to these service providers:
+The Company uses the following third-party services in providing the Services, and may provide personal information to these service providers only to the extent necessary to operate the Services:
 
 1. **Supabase** (Database and Storage Service)
    - Information provided: User information, post information, image data
@@ -87,7 +88,24 @@ The Company uses the following third-party services in providing the Services, a
    - Information provided: Advertising ID, device information (with user consent)
    - Purpose of use: Advertising delivery and advertising effectiveness measurement
 
-These service providers handle personal information appropriately in accordance with their respective privacy policies.
+These service providers handle personal information in accordance with their respective privacy policies.
+
+In addition, the Company does not sell, combine, or provide personal information for the following purposes:
+- Provision to third parties for purposes unnecessary for operating the Services
+- External provision of personal information for advertising purposes without user consent (except as permitted by law)
+
+To make our approach clear, the main scope of disclosure/provision in this Service is as follows:
+
+1. **Information disclosed to other users (when posting)**
+   - Post images, food name, comments, and restaurant information
+   - Restaurant location information attached to posts (when included by the user)
+
+2. **Information provided to external service providers (only as needed for operation)**
+   - Information required for data storage, push notifications, subscription management, and ad delivery
+
+3. **Information not disclosed or provided (as a rule)**
+   - Passwords themselves (managed by the authentication platform)
+   - Personal information not required to provide the Services
 
 ## Article 5 (Correction and Deletion of Personal Information)
 
@@ -109,7 +127,7 @@ Notwithstanding the provisions of the preceding two paragraphs, if suspension of
 
 ## Article 7 (Handling of Location Information)
 
-The Company may obtain location information (GPS information) of users in providing the Services.
+The Company may obtain users' location information (GPS information) in providing the Services. The Company will not obtain location information unless the user explicitly grants permission.
 
 1. **Location Information Obtained**
    - Latitude and longitude of current location
@@ -127,7 +145,38 @@ The Company may obtain location information (GPS information) of users in provid
    - Location information will not be provided to third parties except when included in posts
    - Location information included in posts will be disclosed to other users
 
-## Article 8 (Retention Period and Storage Location of Personal Information)
+5. **User Controls (Stop/Delete)**
+   - Users can disable location permissions for this app at any time from device settings
+   - Location information in posted content can be removed by editing or deleting the relevant post
+
+## Article 8 (Handling of Photo Data)
+
+The Company handles photo data selected by users for posting or profile settings in order to provide the Services.
+
+1. **Photo Data Obtained**
+   - Images posted by users
+   - Profile images set by users
+   - Image files may include embedded metadata (e.g., capture time and location)
+   - The Company does not extract or store such metadata as separate database fields
+
+2. **Purpose of Use**
+   - To provide post and profile display features
+   - To store, deliver, and back up images
+   - To respond to abuse and Terms of Service violations
+
+3. **Scope of Disclosure**
+   - Posted images are publicly viewable by other users in the app
+   - Profile images are shown to other users as profile information
+
+4. **What Users Can Do**
+   - Images may contain metadata such as location information. Users should consider removing metadata on their device before publishing
+   - Even after deletion, some images may remain in backups for a limited period when required by law or operational necessity
+
+5. **How to Delete**
+   - Post images: delete the relevant post
+   - Profile image: change or remove it from profile settings
+
+## Article 9 (Retention Period and Storage Location of Personal Information)
 
 1. **Retention Period**
    - The Company retains personal information until the user deletes their account or until the provision of the Services is terminated
@@ -137,7 +186,25 @@ The Company may obtain location information (GPS information) of users in provid
    - Personal information is stored on Supabase servers (mainly in Japan)
    - Some data may be stored on servers of Firebase, RevenueCat, and Google Mobile Ads (including overseas)
 
-## Article 9 (Advertising Tracking)
+## Article 10 (How to Delete Data)
+
+Users may request deletion of their information through in-app actions or by contacting us.
+
+1. **Delete Post Data**
+   - Users can delete their own posts from the posting screen or post detail screen
+
+2. **Delete/Change Profile Information**
+   - Users can change or remove their name, bio, profile image, etc. from the profile edit screen
+
+3. **Delete Account**
+   - Users can delete their account by completing the withdrawal flow in the app settings
+   - After account deletion, data will be deleted within a reasonable period, except where retention is required by law
+
+4. **Deletion Request by Contact**
+   - If there is data that cannot be deleted through app operations, please contact us via the contact information in Article 13
+   - We will verify identity and respond in accordance with applicable laws
+
+## Article 11 (Advertising Tracking)
 
 The Company uses Google Mobile Ads to deliver advertisements in the Services.
 
@@ -149,13 +216,13 @@ The Company uses Google Mobile Ads to deliver advertisements in the Services.
    - Users can choose to allow or deny tracking from the settings screen
    - Even if tracking is denied, basic functions of the Services can be used (advertisements will continue to be displayed, but they will be non-personalized advertisements)
 
-## Article 10 (Changes to Privacy Policy)
+## Article 12 (Changes to Privacy Policy)
 
 The contents of this Policy may be changed without notifying users, except as otherwise provided by laws and regulations or this Policy.
 
 Unless otherwise specified by the Company, the changed Privacy Policy shall take effect from the time it is posted on this website.
 
-## Article 11 (Contact Information)
+## Article 13 (Contact Information)
 
 For inquiries regarding this Policy, please contact the following:
 
