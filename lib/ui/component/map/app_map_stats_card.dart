@@ -6,8 +6,8 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 
 /// マイマップの統計情報を表示するカード
-class AppMapStatsCard extends StatelessWidget {
-  const AppMapStatsCard({
+class AppMyMapStatsCard extends StatelessWidget {
+  const AppMyMapStatsCard({
     required this.postsCount,
     required this.visitedPrefecturesCount,
     required this.visitedCountriesCount,
@@ -52,7 +52,7 @@ class AppMapStatsCard extends StatelessWidget {
     final statValueColors = [valueBlue, valueRed, valueGreen];
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         color: cardBg,
         borderRadius: BorderRadius.circular(16),
@@ -73,56 +73,122 @@ class AppMapStatsCard extends StatelessWidget {
               final c = pres.columns[i];
               return Column(
                 children: [
-                  Text(c.emoji, style: const TextStyle(fontSize: 32)),
                   const Gap(8),
-                  Text(
-                    c.value,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: statValueColors[i],
-                    ),
-                  ),
-                  const Gap(4),
-                  Text(
-                    c.label,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: statLabelColor,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(c.emoji, style: const TextStyle(fontSize: 28)),
+                      const Gap(8),
+                      Column(
+                        children: [
+                          Text(
+                            c.value,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: statValueColors[i],
+                            ),
+                          ),
+                          const Gap(2),
+                          Text(
+                            c.label,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: statLabelColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               );
             }),
           ),
-          const Gap(12),
-          Center(
-            child: FittedBox(
-              child: Text(
-                pres.summary,
-                style: TextStyle(
-                  fontSize: 15,
-                  color: summaryColor,
-                  fontWeight: FontWeight.bold,
-                ),
+          if (viewType == MapViewType.japan) ...[
+            const Gap(12),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              decoration: BoxDecoration(
+                color:
+                    isDark ? const Color(0xFF0F2E4D) : const Color(0xFFE9F2FF),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      pres.milestoneHint!,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: isDark
+                            ? const Color(0xFF9CCBFF)
+                            : const Color(0xFF2B6CB0),
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          if (pres.encouragement != null) ...[
-            const Gap(8),
+          ] else if (viewType == MapViewType.world) ...[
+            const Gap(12),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              decoration: BoxDecoration(
+                color:
+                    isDark ? const Color(0xFF0F2E4D) : const Color(0xFFE9F2FF),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      pres.milestoneHint!,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: isDark
+                            ? const Color(0xFF9CCBFF)
+                            : const Color(0xFF2B6CB0),
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ] else ...[
+            const Gap(12),
             Center(
-              child: Text(
-                pres.encouragement!,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  height: 1.35,
-                  color: sublineColor,
-                  fontWeight: FontWeight.w500,
+              child: FittedBox(
+                child: Text(
+                  pres.summary,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: summaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
+            if (pres.encouragement != null) ...[
+              const Gap(8),
+              Center(
+                child: Text(
+                  pres.encouragement!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14,
+                    height: 1.35,
+                    color: sublineColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
           ],
         ],
       ),

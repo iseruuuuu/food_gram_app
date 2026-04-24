@@ -2,6 +2,7 @@ import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 
 const japanPrefectureMilestones = [5, 10, 15, 17, 20, 25, 30, 35, 40, 45, 47];
+const worldCountryMilestones = [5, 10, 20, 30, 50, 100, 196];
 const streakWeekMilestones = [2, 4, 8, 12, 24, 52];
 const japanPrefectureCap = 47;
 const worldCountryCap = 196;
@@ -32,6 +33,7 @@ class MapStatsPresentation {
     required this.columns,
     required this.summary,
     this.encouragement,
+    this.milestoneHint,
   });
 
   factory MapStatsPresentation.build({
@@ -102,7 +104,7 @@ class MapStatsPresentation {
             label: t.mapStats.posts,
           ),
           MapStatsColumnPresentation(
-            emoji: '📊',
+            emoji: '🎯',
             value: '$japanAchievementPct%',
             label: t.mapStats.achievementRate,
           ),
@@ -119,7 +121,7 @@ class MapStatsPresentation {
             label: t.mapStats.posts,
           ),
           MapStatsColumnPresentation(
-            emoji: '📊',
+            emoji: '🎯',
             value: '$worldAchievementPct%',
             label: t.mapStats.achievementRate,
           ),
@@ -133,12 +135,19 @@ class MapStatsPresentation {
       visitedCountriesCount: safeVisitedCountriesCount,
       postingStreakWeeks: safePostingStreakWeeks,
     );
+    final milestoneHint = _milestoneHint(
+      t: t,
+      viewType: viewType,
+      visitedPrefecturesCount: safeVisitedPrefecturesCount,
+      visitedCountriesCount: safeVisitedCountriesCount,
+    );
 
     return MapStatsPresentation(
       viewType: viewType,
       columns: columns,
       summary: summary,
       encouragement: encouragement,
+      milestoneHint: milestoneHint,
     );
   }
 
@@ -146,12 +155,14 @@ class MapStatsPresentation {
   final List<MapStatsColumnPresentation> columns;
   final String summary;
   final String? encouragement;
+  final String? milestoneHint;
 
   Map<String, dynamic> toJson() => {
         'viewType': viewType.name,
         'columns': columns.map((c) => c.toJson()).toList(),
         'summary': summary,
         if (encouragement != null) 'encouragement': encouragement,
+        if (milestoneHint != null) 'milestoneHint': milestoneHint,
       };
 
   static String? _encouragement({
@@ -200,6 +211,47 @@ class MapStatsPresentation {
             .replaceAll('{next}', next.toString());
     }
   }
+
+  static String? _milestoneHint({
+    required Translations t,
+    required MapViewType viewType,
+    required int visitedPrefecturesCount,
+    required int visitedCountriesCount,
+  }) {
+    switch (viewType) {
+      case MapViewType.japan:
+        final next = nextJapanPrefectureMilestone(visitedPrefecturesCount);
+        if (next == null) {
+          return t.mapStats.japanMilestoneComplete
+              .replaceAll('{count}', japanPrefectureCap.toString());
+        }
+        final remaining = next - visitedPrefecturesCount;
+        return t.mapStats.japanMilestoneProgress
+            .replaceAll('{remaining}', remaining.toString())
+            .replaceAll('{next}', next.toString());
+      case MapViewType.world:
+        final next = _nextWorldCountryMilestone(visitedCountriesCount);
+        if (next == null) {
+          return t.mapStats.worldMilestoneComplete
+              .replaceAll('{count}', worldCountryCap.toString());
+        }
+        final remaining = next - visitedCountriesCount;
+        return t.mapStats.worldMilestoneProgress
+            .replaceAll('{remaining}', remaining.toString())
+            .replaceAll('{next}', next.toString());
+      case MapViewType.detail:
+        return null;
+    }
+  }
+}
+
+int? _nextWorldCountryMilestone(int visited) {
+  for (final m in worldCountryMilestones) {
+    if (visited < m) {
+      return m;
+    }
+  }
+  return null;
 }
 
 class MapStatsColumnPresentation {

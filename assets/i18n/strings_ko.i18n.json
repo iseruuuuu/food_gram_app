@@ -264,7 +264,11 @@
     "japanStatsEncouragement": "🗾 {current}/47｜다음 목표까지 도도부현 {remaining}개",
     "japanStatsComplete": "🗾 47/47｜전 도도부현 달성!",
     "worldStatsEncouragement": "🌍 {current}개국｜{next}개국까지 {remaining}개국 남음",
-    "worldStatsComplete": "🌍 {current}개국｜월드 컴플리트!"
+    "worldStatsComplete": "🌍 {current}개국｜월드 컴플리트!",
+    "japanMilestoneComplete": "{count}개 도도부현 달성! 🎉",
+    "japanMilestoneProgress": "앞으로 {remaining}개 도도부현이면 {next}개 달성!",
+    "worldMilestoneComplete": "{count}개국 달성! 🎉",
+    "worldMilestoneProgress": "앞으로 {remaining}개국이면 {next}개국 달성!"
   },
   "mapViewType": {
     "record": "기록",

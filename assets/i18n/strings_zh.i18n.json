@@ -264,7 +264,11 @@
     "japanStatsEncouragement": "🗾 {current}/47｜还差 {remaining} 个都道府县到达下一目标",
     "japanStatsComplete": "🗾 47/47｜全国达成！",
     "worldStatsEncouragement": "🌍 {current} 国｜还差 {remaining} 国达到 {next} 国",
-    "worldStatsComplete": "🌍 {current} 国｜世界达成！"
+    "worldStatsComplete": "🌍 {current} 国｜世界达成！",
+    "japanMilestoneComplete": "{count} 个都道府县达成！🎉",
+    "japanMilestoneProgress": "还差 {remaining} 个都道府县就到 {next} 个！",
+    "worldMilestoneComplete": "{count} 个国家达成！🎉",
+    "worldMilestoneProgress": "还差 {remaining} 个国家就到 {next} 个！"
   },
   "mapViewType": {
     "record": "记录",
