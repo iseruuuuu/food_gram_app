@@ -108,10 +108,58 @@ class AppMyMapStatsCard extends StatelessWidget {
           ),
           if (viewType == MapViewType.japan) ...[
             const Gap(12),
-            _mapMilestoneHintBanner(isDark: isDark, text: pres.milestoneHint!),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              decoration: BoxDecoration(
+                color:
+                    isDark ? const Color(0xFF0F2E4D) : const Color(0xFFE9F2FF),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      pres.milestoneHint!,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: isDark
+                            ? const Color(0xFF9CCBFF)
+                            : const Color(0xFF2B6CB0),
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ] else if (viewType == MapViewType.world) ...[
             const Gap(12),
-            _mapMilestoneHintBanner(isDark: isDark, text: pres.milestoneHint!),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              decoration: BoxDecoration(
+                color:
+                    isDark ? const Color(0xFF0F2E4D) : const Color(0xFFE9F2FF),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      pres.milestoneHint!,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: isDark
+                            ? const Color(0xFF9CCBFF)
+                            : const Color(0xFF2B6CB0),
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ] else ...[
             const Gap(12),
             Center(
@@ -146,32 +194,4 @@ class AppMyMapStatsCard extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget _mapMilestoneHintBanner({
-  required bool isDark,
-  required String text,
-}) {
-  return Container(
-    width: double.infinity,
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-    decoration: BoxDecoration(
-      color: isDark ? const Color(0xFF0F2E4D) : const Color(0xFFE9F2FF),
-      borderRadius: BorderRadius.circular(10),
-    ),
-    child: Row(
-      children: [
-        Expanded(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: 14,
-              color: isDark ? const Color(0xFF9CCBFF) : const Color(0xFF2B6CB0),
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
 }
