@@ -256,7 +256,7 @@
     "achievementRate": "Rate",
     "worldAchievementRate": "World achievement rate",
     "visitedCountries": "Countries",
-    "recordSummary": "Your meals are recorded for {days} days ✨",
+    "recordSummary": "{days} days of meals are saved\nas your record ✨",
     "japanSummary": "In Japan, your meals remain in {prefectures} prefectures ✨",
     "worldSummary": "In the world, your meals remain in {countries} countries ✨",
     "recordStreakWithGoal": "🔥 {streak}-week streak｜{remaining} more weeks to hit {milestone}",

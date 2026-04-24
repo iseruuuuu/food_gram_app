@@ -256,7 +256,7 @@
     "achievementRate": "อัตรา",
     "worldAchievementRate": "อัตราการพิชิตทั่วโลก",
     "visitedCountries": "ประเทศที่ไปมา",
-    "recordSummary": "มื้ออาหารของคุณถูกบันทึกไว้ {days} วัน ✨",
+    "recordSummary": "มื้ออาหารตลอด {days} วัน\nถูกบันทึกเป็นสถิติของคุณ ✨",
     "japanSummary": "ในญี่ปุ่น มื้ออาหารของคุณอยู่ใน {prefectures} จังหวัด ✨",
     "worldSummary": "ทั่วโลก มื้ออาหารของคุณอยู่ใน {countries} ประเทศ ✨",
     "recordStreakWithGoal": "🔥 สตรีค {streak} สัปดาห์｜อีก {remaining} สัปดาห์ถึง {milestone} สัปดาห์",

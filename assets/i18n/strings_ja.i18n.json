@@ -256,7 +256,7 @@
     "achievementRate": "達成率",
     "worldAchievementRate": "世界達成率",
     "visitedCountries": "行った国",
-    "recordSummary": "{days}日分の食事が、記録として残っています✨",
+    "recordSummary": "{days}日分の食事が記録\nとして残っています✨️",
     "japanSummary": "{prefectures}都道府県を食べ歩きました 🍽️",
     "worldSummary": "{countries}カ国に、食事が届いています✨",
     "recordStreakWithGoal": "🔥 連続記録 {streak}週｜あと{remaining}週で{milestone}週達成",

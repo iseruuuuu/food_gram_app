@@ -256,7 +256,7 @@
     "achievementRate": "Tasa",
     "worldAchievementRate": "Tasa de logro mundial",
     "visitedCountries": "Países visitados",
-    "recordSummary": "Tus comidas están registradas durante {days} días ✨",
+    "recordSummary": "{days} días de comidas quedan\nguardados como tu registro ✨",
     "japanSummary": "En Japón, tus comidas están en {prefectures} prefecturas ✨",
     "worldSummary": "En el mundo, tus comidas están en {countries} países ✨",
     "recordStreakWithGoal": "🔥 Racha de {streak} semanas｜{remaining} más para llegar a {milestone}",

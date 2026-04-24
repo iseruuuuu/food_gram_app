@@ -256,7 +256,7 @@
     "achievementRate": "Tỷ lệ",
     "worldAchievementRate": "Tỷ lệ hoàn thành toàn cầu",
     "visitedCountries": "Quốc gia đã đến",
-    "recordSummary": "Bữa ăn của bạn được lưu lại {days} ngày ✨",
+    "recordSummary": "{days} ngày bữa ăn đã được\nlưu lại thành nhật ký của bạn ✨",
     "japanSummary": "Tại Nhật, bữa ăn của bạn có ở {prefectures} tỉnh ✨",
     "worldSummary": "Trên thế giới, bữa ăn của bạn có ở {countries} quốc gia ✨",
     "recordStreakWithGoal": "🔥 Chuỗi {streak} tuần｜còn {remaining} tuần để đạt {milestone}",

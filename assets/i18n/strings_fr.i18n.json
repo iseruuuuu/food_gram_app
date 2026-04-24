@@ -256,7 +256,7 @@
     "achievementRate": "Taux",
     "worldAchievementRate": "Taux d'accomplissement mondial",
     "visitedCountries": "Pays visités",
-    "recordSummary": "Vos repas sont enregistrés pendant {days} jours ✨",
+    "recordSummary": "{days} jours de repas sont\ngardés comme ton historique ✨",
     "japanSummary": "Au Japon, vos repas sont présents dans {prefectures} préfectures ✨",
     "worldSummary": "Dans le monde, vos repas sont présents dans {countries} pays ✨",
     "recordStreakWithGoal": "🔥 Série de {streak} semaines｜encore {remaining} semaines pour atteindre {milestone}",

@@ -256,7 +256,7 @@
     "achievementRate": "达成率",
     "worldAchievementRate": "世界达成率",
     "visitedCountries": "访问的国家",
-    "recordSummary": "你的餐食已记录了 {days} 天✨",
+    "recordSummary": "{days}天的餐食已\n保存为你的记录 ✨",
     "japanSummary": "在日本，你的餐食遍布 {prefectures} 个都道府县✨",
     "worldSummary": "在世界范围内，你的餐食遍布 {countries} 个国家✨",
     "recordStreakWithGoal": "🔥 连续记录 {streak} 周｜还差 {remaining} 周达到 {milestone} 周",
