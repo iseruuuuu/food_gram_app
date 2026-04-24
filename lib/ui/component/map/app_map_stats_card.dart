@@ -6,8 +6,8 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 
 /// マイマップの統計情報を表示するカード
-class AppMapStatsCard extends StatelessWidget {
-  const AppMapStatsCard({
+class AppMyMapStatsCard extends StatelessWidget {
+  const AppMyMapStatsCard({
     required this.postsCount,
     required this.visitedPrefecturesCount,
     required this.visitedCountriesCount,
