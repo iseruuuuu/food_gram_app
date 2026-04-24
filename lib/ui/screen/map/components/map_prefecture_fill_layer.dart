@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -90,8 +91,10 @@ class MapPrefectureFillLayer {
           lineOpacity: 0.9,
         ),
       );
-    } on Exception catch (_) {
+    } on Exception catch (e, st) {
       // 地図の本体表示を止めないため、オーバーレイ描画失敗は握りつぶす。
+      debugPrint('MapPrefectureFillLayer.render failed: $e');
+      debugPrintStack(stackTrace: st);
     }
   }
 

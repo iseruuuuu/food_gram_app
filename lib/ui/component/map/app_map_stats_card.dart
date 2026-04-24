@@ -46,48 +46,6 @@ class AppMapStatsCard extends StatelessWidget {
     );
     final sublineColor = isDark ? Colors.white70 : Colors.black;
     final statLabelColor = isDark ? Colors.white70 : Colors.grey[600];
-    final safeVisitedPrefectures = visitedPrefecturesCount.clamp(
-      0,
-      japanPrefectureCap,
-    );
-    const japanMilestoneSteps = [5, 10, 20, 30, 47];
-    final nextJapanMilestone = japanMilestoneSteps.firstWhere(
-      (step) => safeVisitedPrefectures < step,
-      orElse: () => japanPrefectureCap,
-    );
-    final remainingJapanMilestone =
-        (nextJapanMilestone - safeVisitedPrefectures)
-            .clamp(0, japanPrefectureCap);
-    final japanHintText = remainingJapanMilestone == 0
-        ? t.mapStats.japanMilestoneComplete
-            .replaceAll('{count}', japanPrefectureCap.toString())
-        : t.mapStats.japanMilestoneProgress
-            .replaceAll('{remaining}', remainingJapanMilestone.toString())
-            .replaceAll('{next}', nextJapanMilestone.toString());
-
-    final safeVisitedCountries =
-        visitedCountriesCount.clamp(0, worldCountryCap);
-    final worldMilestoneSteps = [
-      5,
-      10,
-      20,
-      30,
-      50,
-      100,
-      worldCountryCap,
-    ];
-    final nextWorldMilestone = worldMilestoneSteps.firstWhere(
-      (step) => safeVisitedCountries < step,
-      orElse: () => worldCountryCap,
-    );
-    final remainingWorldMilestone =
-        (nextWorldMilestone - safeVisitedCountries).clamp(0, worldCountryCap);
-    final worldHintText = remainingWorldMilestone == 0
-        ? t.mapStats.worldMilestoneComplete
-            .replaceAll('{count}', worldCountryCap.toString())
-        : t.mapStats.worldMilestoneProgress
-            .replaceAll('{remaining}', remainingWorldMilestone.toString())
-            .replaceAll('{next}', nextWorldMilestone.toString());
     const valueBlue = AppTheme.primaryBlue;
     const valueRed = Color(0xFFEA4335);
     const valueGreen = Color(0xFF34A853);
@@ -150,10 +108,10 @@ class AppMapStatsCard extends StatelessWidget {
           ),
           if (viewType == MapViewType.japan) ...[
             const Gap(12),
-            _mapMilestoneHintBanner(isDark: isDark, text: japanHintText),
+            _mapMilestoneHintBanner(isDark: isDark, text: pres.milestoneHint!),
           ] else if (viewType == MapViewType.world) ...[
             const Gap(12),
-            _mapMilestoneHintBanner(isDark: isDark, text: worldHintText),
+            _mapMilestoneHintBanner(isDark: isDark, text: pres.milestoneHint!),
           ] else ...[
             const Gap(12),
             Center(
