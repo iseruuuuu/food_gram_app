@@ -275,6 +275,15 @@
     "japan": "Japan",
     "world": "World"
   },
+  "myMapRecord": {
+    "subtitle": "A trail of your food memories",
+    "postedMealsLabel": "Posted meals",
+    "streakDaysLabel": "Streak days",
+    "yearlyTitle": "Yearly records",
+    "recentTitle": "Recent records",
+    "noPostsYet": "No posts yet",
+    "countUnit": "items"
+  },
   "myMapShare": {
     "title": "Share My Map",
     "shareButton": "Share",

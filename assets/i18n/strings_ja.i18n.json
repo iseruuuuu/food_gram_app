@@ -242,7 +242,7 @@
   "tab": {
     "home": "フード",
     "map": "マップ",
-    "myMap": "マイマップ",
+    "myMap": "記録",
     "search": "探す",
     "myPage": "マイページ",
     "setting": "設定"
@@ -274,6 +274,15 @@
     "record": "記録",
     "japan": "日本",
     "world": "世界"
+  },
+  "myMapRecord": {
+    "subtitle": "あなたの食の軌跡です",
+    "postedMealsLabel": "投稿した食事",
+    "streakDaysLabel": "継続記録日数",
+    "yearlyTitle": "年間の記録",
+    "recentTitle": "最近の記録",
+    "noPostsYet": "まだ投稿がありません",
+    "countUnit": "件"
   },
   "myMapShare": {
     "title": "マイマップをシェア",
