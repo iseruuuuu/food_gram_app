@@ -251,6 +251,9 @@ class $AssetsMapGen {
   /// File path: assets/map/foodgram.json
   String get foodgram => 'assets/map/foodgram.json';
 
+  /// File path: assets/map/japan_prefectures.geojson
+  String get japanPrefectures => 'assets/map/japan_prefectures.geojson';
+
   /// File path: assets/map/local_en.json
   String get localEn => 'assets/map/local_en.json';
 
@@ -269,6 +272,7 @@ class $AssetsMapGen {
         earthEn,
         earthJa,
         foodgram,
+        japanPrefectures,
         localEn,
         localJa,
         overlayPostsLayer,
