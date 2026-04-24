@@ -264,7 +264,11 @@
     "japanStatsEncouragement": "🗾 {current}/47｜còn {remaining} tỉnh đến mục tiêu tiếp theo",
     "japanStatsComplete": "🗾 47/47｜Đủ 47 tỉnh thành!",
     "worldStatsEncouragement": "🌍 {current} quốc gia｜còn {remaining} quốc gia để đạt {next}",
-    "worldStatsComplete": "🌍 {current} quốc gia｜Hoàn thành thế giới!"
+    "worldStatsComplete": "🌍 {current} quốc gia｜Hoàn thành thế giới!",
+    "japanMilestoneComplete": "Đạt {count} tỉ/thành! 🎉",
+    "japanMilestoneProgress": "Còn {remaining} tỉ/thành nữa là đạt {next}!",
+    "worldMilestoneComplete": "Đạt {count} quốc gia! 🎉",
+    "worldMilestoneProgress": "Còn {remaining} quốc gia nữa là đạt {next}!"
   },
   "mapViewType": {
     "record": "Ghi chép",

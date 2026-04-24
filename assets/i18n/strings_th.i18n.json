@@ -264,7 +264,11 @@
     "japanStatsEncouragement": "🗾 {current}/47｜อีก {remaining} จังหวัดถึงเป้าถัดไป",
     "japanStatsComplete": "🗾 47/47｜ครบทุกจังหวัด!",
     "worldStatsEncouragement": "🌍 {current} ประเทศ｜อีก {remaining} ประเทศถึง {next}",
-    "worldStatsComplete": "🌍 {current} ประเทศ｜ครบทั่วโลก!"
+    "worldStatsComplete": "🌍 {current} ประเทศ｜ครบทั่วโลก!",
+    "japanMilestoneComplete": "ครบ {count} จังหวัดแล้ว! 🎉",
+    "japanMilestoneProgress": "อีก {remaining} จังหวัดถึง {next} จังหวัด!",
+    "worldMilestoneComplete": "ครบ {count} ประเทศแล้ว! 🎉",
+    "worldMilestoneProgress": "อีก {remaining} ประเทศถึง {next} ประเทศ!"
   },
   "mapViewType": {
     "record": "บันทึก",

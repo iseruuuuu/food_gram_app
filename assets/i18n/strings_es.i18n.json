@@ -264,7 +264,11 @@
     "japanStatsEncouragement": "🗾 {current}/47｜{remaining} prefecturas más para el siguiente objetivo",
     "japanStatsComplete": "🗾 47/47｜¡Todas las prefecturas!",
     "worldStatsEncouragement": "🌍 {current} países｜{remaining} más para llegar a {next}",
-    "worldStatsComplete": "🌍 {current} países｜¡Mundo completo!"
+    "worldStatsComplete": "🌍 {current} países｜¡Mundo completo!",
+    "japanMilestoneComplete": "¡{count} prefecturas logradas! 🎉",
+    "japanMilestoneProgress": "¡Faltan {remaining} prefecturas para llegar a {next}!",
+    "worldMilestoneComplete": "¡{count} países logrados! 🎉",
+    "worldMilestoneProgress": "¡Faltan {remaining} países para llegar a {next}!"
   },
   "mapViewType": {
     "record": "Registro",
