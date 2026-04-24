@@ -70,7 +70,6 @@ class MyMapScreen extends HookConsumerWidget {
                     onStyleLoadedCallback: controller.onStyleLoaded,
                     annotationOrder: const [AnnotationType.symbol],
                     key: const ValueKey('myMapWidget'),
-                    myLocationEnabled: isLocationEnabled,
                     initialCameraPosition: CameraPosition(
                       target: isLocationEnabled ? value.$1 : defaultLocation,
                       zoom: 7,
@@ -109,42 +108,6 @@ class MyMapScreen extends HookConsumerWidget {
                           padding: const EdgeInsets.only(right: 10),
                           child: Column(
                             children: [
-                              if (isLocationEnabled)
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 2, left: 8),
-                                  child: SizedBox(
-                                    width: 50,
-                                    height: 50,
-                                    child: Theme(
-                                      data: Theme.of(context).copyWith(
-                                        highlightColor: fabBg,
-                                      ),
-                                      child: FloatingActionButton(
-                                        heroTag: null,
-                                        shape: RoundedRectangleBorder(
-                                          side: BorderSide(color: fabBorder),
-                                          borderRadius: const BorderRadius.all(
-                                            Radius.circular(10),
-                                          ),
-                                        ),
-                                        foregroundColor: fabBg,
-                                        backgroundColor: fabBg,
-                                        focusColor: fabBg,
-                                        splashColor: fabBg,
-                                        hoverColor: fabBg,
-                                        elevation: 10,
-                                        onPressed:
-                                            controller.moveToCurrentLocation,
-                                        child: const Icon(
-                                          CupertinoIcons.location,
-                                          color: fabFg,
-                                          size: 24,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
                               Padding(
                                 padding:
                                     const EdgeInsets.only(top: 12, left: 8),
@@ -280,11 +243,11 @@ class MyMapScreen extends HookConsumerWidget {
 double _calculateIconSize(BuildContext context) {
   final screenWidth = MediaQuery.of(context).size.width;
   if (screenWidth <= 375) {
-    return 0.6;
+    return 0.5;
   } else if (screenWidth < 720) {
-    return 0.6;
+    return 0.5;
   } else {
-    return 0.8;
+    return 0.5;
   }
 }
 
