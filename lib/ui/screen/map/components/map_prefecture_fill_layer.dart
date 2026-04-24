@@ -17,7 +17,6 @@ class MapPrefectureFillLayer {
   static Future<void> render(
     MapLibreMapController controller, {
     required Map<String, int> prefecturePostCounts,
-    String? highlightedPrefectureName,
   }) async {
     try {
       final features = await _loadFeatures();
@@ -30,8 +29,6 @@ class MapPrefectureFillLayer {
         final postCount = name == null ? 0 : (prefecturePostCounts[name] ?? 0);
         properties['postCount'] = postCount;
         properties['visited'] = postCount > 0;
-        properties['isHighlighted'] =
-            name != null && name == highlightedPrefectureName;
         featureMap['properties'] = properties;
         return featureMap;
       }).toList();
@@ -62,44 +59,25 @@ class MapPrefectureFillLayer {
         _sourceId,
         _fillLayerId,
         const FillLayerProperties(
-          fillColor: [
-            'case',
-            [
-              '==',
-              ['get', 'isHighlighted'],
-              true
-            ],
-            '#FFE066',
-            '#FF6B6B',
-          ],
-          // `case` の false 側は式全体で1要素。`interpolate` は必ず配列で包む（iOS で落ちるのを防ぐ）
+          fillColor: '#FF6B6B',
           fillOpacity: [
-            'case',
-            [
-              '==',
-              ['get', 'isHighlighted'],
-              true
-            ],
-            0.85,
-            [
-              'interpolate',
-              ['linear'],
-              ['get', 'postCount'],
-              0,
-              0.05,
-              1,
-              0.15,
-              3,
-              0.25,
-              5,
-              0.35,
-              10,
-              0.45,
-              15,
-              0.55,
-              20,
-              0.65,
-            ],
+            'interpolate',
+            ['linear'],
+            ['get', 'postCount'],
+            0,
+            0.05,
+            1,
+            0.15,
+            3,
+            0.25,
+            5,
+            0.35,
+            10,
+            0.45,
+            15,
+            0.55,
+            20,
+            0.65,
           ],
         ),
       );
