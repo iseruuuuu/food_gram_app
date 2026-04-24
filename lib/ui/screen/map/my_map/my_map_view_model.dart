@@ -10,6 +10,7 @@ import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/core/utils/location/prefecture_detector.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/ui/component/app_pin_widget.dart';
+import 'package:food_gram_app/ui/screen/map/components/map_prefecture_fill_layer.dart';
 import 'package:food_gram_app/ui/screen/map/my_map/my_map_state.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -88,7 +89,15 @@ class MyMapViewModel extends _$MyMapViewModel {
       // 自分の投稿データを取得
       final posts =
           ref.read(myMapRepositoryProvider).whenOrNull(data: (value) => value);
-      if (posts == null || posts.isEmpty) {
+      if (posts == null) {
+        return;
+      }
+      final prefecturePostCounts = _collectPrefecturePostCounts(posts);
+      await MapPrefectureFillLayer.render(
+        state.mapController!,
+        prefecturePostCounts: prefecturePostCounts,
+      );
+      if (posts.isEmpty) {
         return;
       }
 
@@ -273,6 +282,7 @@ class MyMapViewModel extends _$MyMapViewModel {
     if (state.mapController == null) {
       return;
     }
+    unawaited(_syncPrefectureFillLayer());
     if (_cachedPosts != null) {
       _restorePinsFromCache();
     } else {
@@ -304,7 +314,7 @@ class MyMapViewModel extends _$MyMapViewModel {
       return SymbolOptions(
         geometry: LatLng(post.lat, post.lng),
         iconImage: _cachedImageKeys![imageType],
-        iconSize: _cachedIconSize ?? 0.6,
+        iconSize: _cachedIconSize ?? 0.5,
       );
     }).toList();
 
@@ -340,13 +350,29 @@ class MyMapViewModel extends _$MyMapViewModel {
       return SymbolOptions(
         geometry: LatLng(post.lat, post.lng),
         iconImage: imageKeys[imageType],
-        iconSize: 0.6,
+        iconSize: 0.5,
       );
     }).toList();
     if (symbols.isNotEmpty && state.mapController != null) {
       await _addSymbolsInChunks(symbols);
       await _applySymbolOverlapPolicy();
     }
+  }
+
+  Future<void> _syncPrefectureFillLayer() async {
+    if (state.mapController == null) {
+      return;
+    }
+    final posts =
+        ref.read(myMapRepositoryProvider).whenOrNull(data: (value) => value);
+    if (posts == null) {
+      return;
+    }
+    final prefecturePostCounts = _collectPrefecturePostCounts(posts);
+    await MapPrefectureFillLayer.render(
+      state.mapController!,
+      prefecturePostCounts: prefecturePostCounts,
+    );
   }
 
   /// ピン同士の重なりを許可し、表示欠けを防ぐ。
@@ -449,6 +475,22 @@ class MyMapViewModel extends _$MyMapViewModel {
       visitedAreasCount: visitedAreas.length,
       activityDays: activityDays,
     );
+  }
+
+  Map<String, int> _collectPrefecturePostCounts(List<Posts> posts) {
+    final prefecturePostCounts = <String, int>{};
+    for (final post in posts) {
+      if (post.lat == 0 || post.lng == 0) {
+        continue;
+      }
+      final prefecture =
+          PrefectureDetector.detectPrefecture(post.lat, post.lng);
+      if (prefecture != null) {
+        prefecturePostCounts[prefecture] =
+            (prefecturePostCounts[prefecture] ?? 0) + 1;
+      }
+    }
+    return prefecturePostCounts;
   }
 }
 
