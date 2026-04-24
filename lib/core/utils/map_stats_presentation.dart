@@ -102,7 +102,7 @@ class MapStatsPresentation {
             label: t.mapStats.posts,
           ),
           MapStatsColumnPresentation(
-            emoji: '📊',
+            emoji: '🎯',
             value: '$japanAchievementPct%',
             label: t.mapStats.achievementRate,
           ),
@@ -119,7 +119,7 @@ class MapStatsPresentation {
             label: t.mapStats.posts,
           ),
           MapStatsColumnPresentation(
-            emoji: '📊',
+            emoji: '🎯',
             value: '$worldAchievementPct%',
             label: t.mapStats.achievementRate,
           ),
