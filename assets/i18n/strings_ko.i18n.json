@@ -276,13 +276,13 @@
     "world": "세계"
   },
   "myMapRecord": {
-    "subtitle": "A trail of your food memories",
-    "postedMealsLabel": "Posted meals",
-    "streakDaysLabel": "Streak days",
-    "yearlyTitle": "Yearly records",
-    "recentTitle": "Recent records",
-    "noPostsYet": "No posts yet",
-    "countUnit": "items"
+    "subtitle": "당신의 음식 추억이 남는 발자취",
+    "postedMealsLabel": "게시한 식사",
+    "streakDaysLabel": "연속 기록 일수",
+    "yearlyTitle": "연간 기록",
+    "recentTitle": "최근 기록",
+    "noPostsYet": "아직 게시물이 없습니다",
+    "countUnit": "건"
   },
   "myMapShare": {
     "title": "내 지도 공유",

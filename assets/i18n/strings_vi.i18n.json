@@ -276,13 +276,13 @@
     "world": "Thế giới"
   },
   "myMapRecord": {
-    "subtitle": "A trail of your food memories",
-    "postedMealsLabel": "Posted meals",
-    "streakDaysLabel": "Streak days",
-    "yearlyTitle": "Yearly records",
-    "recentTitle": "Recent records",
-    "noPostsYet": "No posts yet",
-    "countUnit": "items"
+    "subtitle": "Dấu vết kỷ niệm ẩm thực của bạn",
+    "postedMealsLabel": "Bữa ăn đã đăng",
+    "streakDaysLabel": "Số ngày duy trì",
+    "yearlyTitle": "Tổng kết theo năm",
+    "recentTitle": "Bản ghi gần đây",
+    "noPostsYet": "Chưa có bài đăng nào",
+    "countUnit": "mục"
   },
   "myMapShare": {
     "title": "Chia sẻ bản đồ của tôi",

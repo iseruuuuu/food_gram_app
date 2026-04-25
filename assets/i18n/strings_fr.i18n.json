@@ -276,13 +276,13 @@
     "world": "Monde"
   },
   "myMapRecord": {
-    "subtitle": "A trail of your food memories",
-    "postedMealsLabel": "Posted meals",
-    "streakDaysLabel": "Streak days",
-    "yearlyTitle": "Yearly records",
-    "recentTitle": "Recent records",
-    "noPostsYet": "No posts yet",
-    "countUnit": "items"
+    "subtitle": "La trace de tes souvenirs culinaires",
+    "postedMealsLabel": "Repas publiés",
+    "streakDaysLabel": "Jours de série",
+    "yearlyTitle": "Bilan annuel",
+    "recentTitle": "Entrées récentes",
+    "noPostsYet": "Aucune publication pour le moment",
+    "countUnit": "éléments"
   },
   "myMapShare": {
     "title": "Partager ma carte",

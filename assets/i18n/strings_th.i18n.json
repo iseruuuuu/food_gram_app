@@ -276,13 +276,13 @@
     "world": "โลก"
   },
   "myMapRecord": {
-    "subtitle": "A trail of your food memories",
-    "postedMealsLabel": "Posted meals",
-    "streakDaysLabel": "Streak days",
-    "yearlyTitle": "Yearly records",
-    "recentTitle": "Recent records",
-    "noPostsYet": "No posts yet",
-    "countUnit": "items"
+    "subtitle": "ร่องรอยความทรงจำเรื่องอาหารของคุณ",
+    "postedMealsLabel": "มื้ออาหารที่โพสต์",
+    "streakDaysLabel": "จำนวนวันต่อเนื่อง",
+    "yearlyTitle": "สถิติรายปี",
+    "recentTitle": "บันทึกล่าสุด",
+    "noPostsYet": "ยังไม่มีโพสต์",
+    "countUnit": "รายการ"
   },
   "myMapShare": {
     "title": "แชร์แผนที่ของฉัน",
