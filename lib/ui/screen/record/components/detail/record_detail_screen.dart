@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
-import 'package:food_gram_app/ui/component/map/record_map_layout.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_recent_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_stat.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_summary.dart';
@@ -39,6 +38,7 @@ class RecordDetailScreen extends ConsumerWidget {
         .toSet()
         .length;
     final activityDays = recordActivityDaysSpan(posts);
+
     final selectorTop = recordMapOverlayTopForContext(context);
     const viewTypeTabHeight = 68.0;
     return Stack(
@@ -119,4 +119,16 @@ int recordActivityDaysSpan(List<Posts> source) {
   final sorted = [...source]
     ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
   return sorted.last.createdAt.difference(sorted.first.createdAt).inDays;
+}
+
+double recordMapOverlayTopForContext(BuildContext context) {
+  final topInset = MediaQuery.of(context).padding.top;
+  final screenWidth = MediaQuery.of(context).size.width;
+  if (screenWidth <= 375) {
+    return topInset + 8;
+  } else if (screenWidth < 720) {
+    return topInset + 16;
+  } else {
+    return topInset + 12;
+  }
 }
