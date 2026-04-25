@@ -2,11 +2,11 @@ import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
-part 'my_map_state.freezed.dart';
+part 'record_state.freezed.dart';
 
 @freezed
-class MyMapState with _$MyMapState {
-  const factory MyMapState({
+class RecordState with _$RecordState {
+  const factory RecordState({
     MapLibreMapController? mapController,
     @Default(false) bool isLoading,
     @Default(false) bool hasError,
@@ -19,5 +19,19 @@ class MyMapState with _$MyMapState {
     @Default(0) int visitedAreasCount,
     @Default(0) int activityDays,
     @Default(0) int postingStreakWeeks,
-  }) = _MyMapState;
+  }) = _RecordState;
+}
+
+/// 投稿一覧から算出したマップ用統計
+@freezed
+class RecordMapStats with _$RecordMapStats {
+  const factory RecordMapStats({
+    required int visitedCitiesCount,
+    required int postsCount,
+    required double completionPercentage,
+    required int visitedPrefecturesCount,
+    required int visitedCountriesCount,
+    required int visitedAreasCount,
+    required int activityDays,
+  }) = _RecordMapStats;
 }

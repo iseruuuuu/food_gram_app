@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math' as math;
+
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/home_widget/map_stats_home_widget_sync.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
@@ -11,36 +12,19 @@ import 'package:food_gram_app/core/utils/location/prefecture_detector.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/ui/component/app_pin_widget.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_prefecture_fill_layer.dart';
-import 'package:food_gram_app/ui/screen/map/my_map/my_map_state.dart';
+import 'package:food_gram_app/ui/screen/record/record_state.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:screenshot/screenshot.dart';
 
-part 'my_map_view_model.g.dart';
-
-/// `streak-update` と同様、最終投稿から14日を超えるとストリークは途切れたものとして表示しない。
-int effectivePostingStreakWeeks({
-  required DateTime? lastPostDate,
-  required int streakWeeks,
-  DateTime? now,
-}) {
-  if (streakWeeks <= 0) {
-    return 0;
-  }
-  final last = lastPostDate;
-  final n = now ?? DateTime.now();
-  if (last != null && n.difference(last).inDays > 14) {
-    return 0;
-  }
-  return streakWeeks;
-}
+part 'record_view_model.g.dart';
 
 @riverpod
-class MyMapViewModel extends _$MyMapViewModel {
+class RecordViewModel extends _$RecordViewModel {
   @override
-  MyMapState build() {
+  RecordState build() {
     _preloadDefaultImages();
-    return const MyMapState();
+    return const RecordState();
   }
 
   bool isInitialLoading = true;
@@ -49,12 +33,11 @@ class MyMapViewModel extends _$MyMapViewModel {
   final Set<String> _registeredImageKeys = {};
   bool _symbolTapHandlerRegistered = false;
 
-  // ピン情報をキャッシュ
   List<Posts>? _cachedPosts;
   Map<String, String>? _cachedImageKeys;
   double? _cachedIconSize;
 
-  /// デフォルト画像を事前生成
+  /// タグがないピンのビットマップを一度だけキャッシュする。
   Future<void> _preloadDefaultImages() async {
     if (!_imageCache.containsKey('default')) {
       final screenshotBytes = await screenshotController.captureFromWidget(
@@ -64,7 +47,6 @@ class MyMapViewModel extends _$MyMapViewModel {
     }
   }
 
-  /// マップコントローラーを設定し、ピンを配置
   Future<void> setMapController(
     MapLibreMapController controller, {
     required void Function(List<Posts> posts) onPinTap,
@@ -84,9 +66,7 @@ class MyMapViewModel extends _$MyMapViewModel {
     if (!isInitialLoading) {
       await state.mapController!.clearSymbols();
     }
-
     try {
-      // 自分の投稿データを取得
       final posts =
           ref.read(myMapRepositoryProvider).whenOrNull(data: (value) => value);
       if (posts == null) {
@@ -100,8 +80,6 @@ class MyMapViewModel extends _$MyMapViewModel {
       if (posts.isEmpty) {
         return;
       }
-
-      // 統計情報を計算
       final stats = _calculateStats(posts);
       final postingStreakWeeks = await _fetchPostingStreakWeeks();
       state = state.copyWith(
@@ -114,7 +92,6 @@ class MyMapViewModel extends _$MyMapViewModel {
         activityDays: stats.activityDays,
         postingStreakWeeks: postingStreakWeeks,
       );
-
       MapStatsHomeWidgetSync.scheduleSyncAllModes(
         postsCount: stats.postsCount,
         visitedPrefecturesCount: stats.visitedPrefecturesCount,
@@ -123,12 +100,8 @@ class MyMapViewModel extends _$MyMapViewModel {
         activityDays: stats.activityDays,
         postingStreakWeeks: postingStreakWeeks,
       );
-
-      // ピン情報をキャッシュ
       _cachedPosts = posts;
       _cachedIconSize = iconSize;
-
-      // ピン画像の種類を収集
       final imageTypes = <String>{};
       for (final post in posts) {
         final type = post.foodTag.isEmpty
@@ -136,11 +109,8 @@ class MyMapViewModel extends _$MyMapViewModel {
             : post.foodTag.split(',').first.trim();
         imageTypes.add(type);
       }
-      // 画像を並列で生成してマップに追加
       final imageKeys = await _generatePinImages(imageTypes, posts);
       _cachedImageKeys = imageKeys;
-
-      // シンボルを作成して追加
       final symbols = posts.map((post) {
         final imageType = post.foodTag.isEmpty
             ? 'default'
@@ -155,10 +125,7 @@ class MyMapViewModel extends _$MyMapViewModel {
         await _addSymbolsInChunks(symbols);
         await _applySymbolOverlapPolicy();
       }
-
-      // 意図的に1度だけ呼ぶにようにする
       if (!_symbolTapHandlerRegistered) {
-        // タップイベントを設定
         state.mapController?.onSymbolTapped.add((symbol) async {
           state = state.copyWith(isLoading: true);
           final latLng = symbol.options.geometry;
@@ -173,7 +140,6 @@ class MyMapViewModel extends _$MyMapViewModel {
           isInitialLoading = false;
           state = state.copyWith(isLoading: false, hasError: false);
         });
-
         _symbolTapHandlerRegistered = true;
       }
     } on PlatformException catch (_) {
@@ -181,19 +147,16 @@ class MyMapViewModel extends _$MyMapViewModel {
     }
   }
 
-  /// ピン画像を並列で生成してマップに追加
   Future<Map<String, String>> _generatePinImages(
     Set<String> imageTypes,
     List<Posts> posts,
   ) async {
     final imageKeys = <String, String>{};
     final imageTasks = <Future<void>>[];
-
     for (final imageType in imageTypes) {
       final imageKey = 'pin_$imageType';
       imageKeys[imageType] = imageKey;
       if (_imageCache.containsKey(imageType)) {
-        // キャッシュ済み → 即座にマップに追加
         if (!_registeredImageKeys.contains(imageKey)) {
           imageTasks.add(
             state.mapController!.addImage(imageKey, _imageCache[imageType]!),
@@ -201,7 +164,6 @@ class MyMapViewModel extends _$MyMapViewModel {
           _registeredImageKeys.add(imageKey);
         }
       } else {
-        // 新規生成
         final samplePost = posts.firstWhere(
           (post) =>
               (post.foodTag.isEmpty
@@ -225,8 +187,6 @@ class MyMapViewModel extends _$MyMapViewModel {
         }());
       }
     }
-
-    // 全ての画像生成を並列で実行
     await Future.wait(imageTasks);
     return imageKeys;
   }
@@ -246,7 +206,6 @@ class MyMapViewModel extends _$MyMapViewModel {
     );
   }
 
-  /// 方位をリセット（北を上にする）
   Future<void> resetBearing() async {
     if (state.mapController == null) {
       return;
@@ -263,21 +222,17 @@ class MyMapViewModel extends _$MyMapViewModel {
     );
   }
 
-  /// ビュータイプを変更
   void changeViewType(MapViewType viewType) {
     state = state.copyWith(viewType: viewType);
   }
 
-  /// スタイル切り替え時の処理
   void handleStyleChange() {
     if (state.mapController == null) {
       return;
     }
-    // スタイル変更時に画像登録情報をクリア（復元はスタイルロード完了後に実行）
     _registeredImageKeys.clear();
   }
 
-  /// マップスタイルのロード完了時に呼ばれる
   void onStyleLoaded() {
     if (state.mapController == null) {
       return;
@@ -290,7 +245,6 @@ class MyMapViewModel extends _$MyMapViewModel {
     }
   }
 
-  /// キャッシュされたピン情報からマップにピンを復元
   Future<void> _restorePinsFromCache() async {
     if (state.mapController == null ||
         _cachedPosts == null ||
@@ -317,7 +271,6 @@ class MyMapViewModel extends _$MyMapViewModel {
         iconSize: _cachedIconSize ?? 0.5,
       );
     }).toList();
-
     if (symbols.isNotEmpty && state.mapController != null) {
       await _addSymbolsInChunks(symbols);
       await _applySymbolOverlapPolicy();
@@ -328,13 +281,11 @@ class MyMapViewModel extends _$MyMapViewModel {
     if (state.mapController == null) {
       return;
     }
-    // 自分の投稿データを取得
     final posts =
         ref.read(myMapRepositoryProvider).whenOrNull(data: (value) => value);
     if (posts == null || posts.isEmpty) {
       return;
     }
-    // ピン画像の種類を収集
     final imageTypes = <String>{};
     for (final post in posts) {
       final type = post.foodTag.isEmpty
@@ -375,7 +326,7 @@ class MyMapViewModel extends _$MyMapViewModel {
     );
   }
 
-  /// ピン同士の重なりを許可し、表示欠けを防ぐ。
+  /// ピン（シンボル）同士が重なっても欠けないよう、MapLibre の重なり表示設定を有効にする。
   Future<void> _applySymbolOverlapPolicy() async {
     if (state.mapController == null) {
       return;
@@ -384,7 +335,7 @@ class MyMapViewModel extends _$MyMapViewModel {
     await state.mapController!.setSymbolIconAllowOverlap(true);
   }
 
-  /// シンボルをチャンクに分けて追加し、UI スレッド負荷を軽減
+  /// シンボル一覧を一定件数ずつ addSymbols して、大量ピン時の UI 負荷を抑える。
   Future<void> _addSymbolsInChunks(
     List<SymbolOptions> symbols, {
     int chunkSize = 250,
@@ -403,6 +354,7 @@ class MyMapViewModel extends _$MyMapViewModel {
     }
   }
 
+  /// ログインユーザーの streak_weeks を取得し、最終投稿から 14 日超なら 0 週として返す週数を得る。
   Future<int> _fetchPostingStreakWeeks() async {
     final result =
         await ref.read(userRepositoryProvider.notifier).getCurrentUser();
@@ -415,48 +367,33 @@ class MyMapViewModel extends _$MyMapViewModel {
     );
   }
 
-  /// 統計情報を計算
-  _MapStats _calculateStats(List<Posts> posts) {
-    // 緯度経度が0の投稿を除外
+  /// 投稿座標から訪問地点・都道府県・国・細かいエリアのユニーク数と活動日数などを集計する。
+  RecordMapStats _calculateStats(List<Posts> posts) {
     final validPosts =
         posts.where((post) => post.lat != 0 && post.lng != 0).toList();
-
-    // ユニークな位置を計算（訪問都市数）
     final uniqueLocations = <String>{};
     final visitedPrefectures = <String>{};
     final visitedCountries = <String>{};
     final visitedAreas = <String>{};
-
     for (final post in validPosts) {
-      // 緯度経度を小数点2桁で丸めて、同じ場所とみなす
       final locationKey =
           '${post.lat.toStringAsFixed(2)}_${post.lng.toStringAsFixed(2)}';
       uniqueLocations.add(locationKey);
-
-      // 詳細エリア（小数点3桁で丸める = 約100mの精度）
       final areaKey =
           '${post.lat.toStringAsFixed(3)}_${post.lng.toStringAsFixed(3)}';
       visitedAreas.add(areaKey);
-
-      // 都道府県を判定
       final prefecture =
           PrefectureDetector.detectPrefecture(post.lat, post.lng);
       if (prefecture != null) {
         visitedPrefectures.add(prefecture);
       }
-
-      // 国を判定（'その他'は除外）
       final country = CountryDetector.detectCountry(post.lat, post.lng);
       if (country != null && country != 'その他') {
         visitedCountries.add(country);
       }
     }
-
-    // 地図埋め率を計算（訪問エリア数ベース）
     final completionPercentage =
         (visitedAreas.length / 100 * 100).clamp(0.0, 100.0);
-
-    // 活動日数を計算（初投稿から最後の投稿までの日数）
     var activityDays = 0;
     if (validPosts.isNotEmpty) {
       final sortedPosts = validPosts.toList()
@@ -465,8 +402,7 @@ class MyMapViewModel extends _$MyMapViewModel {
       final lastPostDate = sortedPosts.last.createdAt;
       activityDays = lastPostDate.difference(firstPostDate).inDays;
     }
-
-    return _MapStats(
+    return RecordMapStats(
       visitedCitiesCount: uniqueLocations.length,
       postsCount: posts.length,
       completionPercentage: completionPercentage,
@@ -492,25 +428,21 @@ class MyMapViewModel extends _$MyMapViewModel {
     }
     return prefecturePostCounts;
   }
-}
 
-/// 統計情報を保持するクラス
-class _MapStats {
-  const _MapStats({
-    required this.visitedCitiesCount,
-    required this.postsCount,
-    required this.completionPercentage,
-    required this.visitedPrefecturesCount,
-    required this.visitedCountriesCount,
-    required this.visitedAreasCount,
-    required this.activityDays,
-  });
-
-  final int visitedCitiesCount;
-  final int postsCount;
-  final double completionPercentage;
-  final int visitedPrefecturesCount;
-  final int visitedCountriesCount;
-  final int visitedAreasCount;
-  final int activityDays;
+  /// 最終投稿から 14 日を超えている場合は週ストリークを 0 とみなし、それ以外は DB の週数をそのまま返す。
+  int effectivePostingStreakWeeks({
+    required DateTime? lastPostDate,
+    required int streakWeeks,
+    DateTime? now,
+  }) {
+    if (streakWeeks <= 0) {
+      return 0;
+    }
+    final last = lastPostDate;
+    final n = now ?? DateTime.now();
+    if (last != null && n.difference(last).inDays > 14) {
+      return 0;
+    }
+    return streakWeeks;
+  }
 }
