@@ -6,12 +6,13 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/services/user_service.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
-import 'package:food_gram_app/ui/component/map/record_japan_world_map_scene.dart';
-import 'package:food_gram_app/ui/component/map/record_map_layout.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_detail_screen.dart';
+import 'package:food_gram_app/ui/screen/record/components/map/app_record_map_libre_stack.dart';
+import 'package:food_gram_app/ui/screen/record/components/map/record_map.dart';
 import 'package:food_gram_app/ui/screen/record/record_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -30,6 +31,7 @@ class RecordScreen extends HookConsumerWidget {
     final post = useState<List<Posts?>>([]);
     final isEarthStyle = useState(false);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -46,37 +48,45 @@ class RecordScreen extends HookConsumerWidget {
               }
               final isLocationEnabled =
                   value.$1.latitude != 0 && value.$1.longitude != 0;
-              return RecordJapanWorldMapScene(
-                initialTarget: isLocationEnabled
-                    ? LatLng(value.$1.latitude, value.$1.longitude)
-                    : recordMapDefaultLocation,
-                styleString: recordMapLocalizedStyleAsset(
-                  context,
-                  isEarthStyle: isEarthStyle.value,
-                ),
-                onMapCreated: (mapLibre) {
-                  controller.setMapController(
-                    mapLibre,
-                    onPinTap: (posts) {
-                      isTapPin.value = true;
-                      post.value = posts;
+              return Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  AppRecordMapLibreStack(
+                    initialTarget: isLocationEnabled
+                        ? LatLng(value.$1.latitude, value.$1.longitude)
+                        : recordMapDefaultLocation,
+                    initialZoom: 7,
+                    styleString: recordMapLocalizedStyleAsset(
+                      context,
+                      isEarthStyle: isEarthStyle.value,
+                    ),
+                    onMapCreated: (mapLibre) {
+                      controller.setMapController(
+                        mapLibre,
+                        onPinTap: (posts) {
+                          isTapPin.value = true;
+                          post.value = posts;
+                        },
+                        iconSize: recordMapIconSizeForContext(context),
+                      );
                     },
-                    iconSize: recordMapIconSizeForContext(context),
-                  );
-                },
-                onMapBackgroundTap: () => isTapPin.value = false,
-                onStyleLoaded: controller.onStyleLoaded,
-                isTapPin: isTapPin.value,
-                post: post.value,
-                viewType: state.viewType,
-                onViewTypeChanged: controller.changeViewType,
-                postsCount: state.postsCount,
-                visitedPrefecturesCount: state.visitedPrefecturesCount,
-                visitedCountriesCount: state.visitedCountriesCount,
-                visitedAreasCount: state.visitedAreasCount,
-                activityDays: state.activityDays,
-                postingStreakWeeks: state.postingStreakWeeks,
-                onResetBearing: controller.resetBearing,
+                    onMapBackgroundTap: () => isTapPin.value = false,
+                    onStyleLoaded: controller.onStyleLoaded,
+                    isTapPin: isTapPin.value,
+                    post: post.value,
+                  ),
+                  RecordMap(
+                    viewType: state.viewType,
+                    onViewTypeChanged: controller.changeViewType,
+                    postsCount: state.postsCount,
+                    visitedPrefecturesCount: state.visitedPrefecturesCount,
+                    visitedCountriesCount: state.visitedCountriesCount,
+                    visitedAreasCount: state.visitedAreasCount,
+                    activityDays: state.activityDays,
+                    postingStreakWeeks: state.postingStreakWeeks,
+                    onResetBearing: controller.resetBearing,
+                  ),
+                ],
               );
             },
           ),
@@ -115,5 +125,43 @@ class RecordScreen extends HookConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+/// 日本の中心付近の座標（位置情報オフ時の初期表示）
+const recordMapDefaultLocation = LatLng(36.2048, 137.9777);
+
+double recordMapIconSizeForContext(BuildContext context) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  if (screenWidth <= 375) {
+    return 0.5;
+  } else if (screenWidth < 720) {
+    return 0.5;
+  } else {
+    return 0.5;
+  }
+}
+
+/// ローカル（日本周辺）／地球スタイルの MapLibre スタイル URL
+String recordMapLocalizedStyleAsset(
+  BuildContext context, {
+  required bool isEarthStyle,
+}) {
+  final lang = Localizations.localeOf(context).languageCode;
+
+  if (isEarthStyle) {
+    switch (lang) {
+      case 'ja':
+        return Assets.map.earthJa;
+      default:
+        return Assets.map.earthEn;
+    }
+  } else {
+    switch (lang) {
+      case 'ja':
+        return Assets.map.localJa;
+      default:
+        return Assets.map.localEn;
+    }
   }
 }

@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
-import 'package:food_gram_app/ui/component/map/record_map_layout.dart';
 import 'package:food_gram_app/ui/screen/record/components/map/record_map_button.dart';
 import 'package:food_gram_app/ui/screen/record/components/map/record_map_stats_card.dart';
 import 'package:food_gram_app/ui/screen/record/components/record_tab.dart';
@@ -62,5 +60,17 @@ class RecordMap extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+double recordMapOverlayTopForContext(BuildContext context) {
+  final topInset = MediaQuery.of(context).padding.top;
+  final screenWidth = MediaQuery.of(context).size.width;
+  if (screenWidth <= 375) {
+    return topInset + 8;
+  } else if (screenWidth < 720) {
+    return topInset + 16;
+  } else {
+    return topInset + 12;
   }
 }
