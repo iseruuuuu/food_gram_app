@@ -19,6 +19,7 @@ class RecordDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(recordViewModelProvider);
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = isDark ? const Color(0xFF161616) : Colors.white;
@@ -32,11 +33,6 @@ class RecordDetailScreen extends ConsumerWidget {
       yearlyCounts[year] = (yearlyCounts[year] ?? 0) + 1;
     }
     final sortedYears = yearlyCounts.keys.toList()..sort();
-    final uniqueVisitedPlaces = posts
-        .where((p) => p.lat != 0 && p.lng != 0)
-        .map((p) => '${p.lat.toStringAsFixed(2)}_${p.lng.toStringAsFixed(2)}')
-        .toSet()
-        .length;
     final activityDays = recordActivityDaysSpan(posts);
 
     final selectorTop = recordMapOverlayTopForContext(context);
@@ -59,7 +55,7 @@ class RecordDetailScreen extends ConsumerWidget {
                 children: [
                   RecordStat(
                     emoji: '📍',
-                    value: '$uniqueVisitedPlaces',
+                    value: '${state.visitedAreasCount}',
                     label: t.mapStats.visitedArea,
                     valueColor: const Color(0xFF2563EB),
                   ),
@@ -74,7 +70,7 @@ class RecordDetailScreen extends ConsumerWidget {
                   RecordStat(
                     emoji: '📅',
                     value: '$activityDays',
-                    label: t.myMapRecord.streakDaysLabel,
+                    label: t.mapStats.activityDays,
                     valueColor: const Color(0xFF16A34A),
                   ),
                 ],
