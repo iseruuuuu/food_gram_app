@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-/// 記録タブ：数値＋ラベルの小カード
-class RecordStat extends StatelessWidget {
-  const RecordStat({
+/// 記録タブ：数値＋ラベルのセクション
+class RecordStatSection extends StatelessWidget {
+  const RecordStatSection({
     required this.emoji,
     required this.value,
     required this.label,

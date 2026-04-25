@@ -3,8 +3,8 @@ import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_recent_section.dart';
-import 'package:food_gram_app/ui/screen/record/components/detail/record_stat.dart';
-import 'package:food_gram_app/ui/screen/record/components/detail/record_summary.dart';
+import 'package:food_gram_app/ui/screen/record/components/detail/record_stat_section.dart';
+import 'package:food_gram_app/ui/screen/record/components/detail/record_summary_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_yearly_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/record_tab.dart';
 import 'package:food_gram_app/ui/screen/record/record_view_model.dart';
@@ -34,7 +34,6 @@ class RecordDetailScreen extends ConsumerWidget {
     }
     final sortedYears = yearlyCounts.keys.toList()..sort();
     final activityDays = recordActivityDaysSpan(posts);
-
     final selectorTop = recordMapOverlayTopForContext(context);
     const viewTypeTabHeight = 68.0;
     return Stack(
@@ -45,7 +44,7 @@ class RecordDetailScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RecordSummary(
+              RecordSummarySection(
                 activityDays: activityDays,
                 cardColor: cardColor,
                 mutedColor: mutedColor,
@@ -53,21 +52,21 @@ class RecordDetailScreen extends ConsumerWidget {
               const Gap(12),
               Row(
                 children: [
-                  RecordStat(
+                  RecordStatSection(
                     emoji: '📍',
                     value: '${state.visitedAreasCount}',
                     label: t.mapStats.visitedArea,
                     valueColor: const Color(0xFF2563EB),
                   ),
                   const Gap(8),
-                  RecordStat(
+                  RecordStatSection(
                     emoji: '🍜',
                     value: '${posts.length}',
                     label: t.myMapRecord.postedMealsLabel,
                     valueColor: const Color(0xFFEA4335),
                   ),
                   const Gap(8),
-                  RecordStat(
+                  RecordStatSection(
                     emoji: '📅',
                     value: '$activityDays',
                     label: t.mapStats.activityDays,

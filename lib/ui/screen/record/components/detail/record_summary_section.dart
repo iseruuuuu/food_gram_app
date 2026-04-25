@@ -4,8 +4,8 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 
 /// 記録タブ：冒頭のサマリーカード
-class RecordSummary extends StatelessWidget {
-  const RecordSummary({
+class RecordSummarySection extends StatelessWidget {
+  const RecordSummarySection({
     required this.activityDays,
     required this.cardColor,
     required this.mutedColor,
