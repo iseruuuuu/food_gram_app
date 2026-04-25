@@ -4,11 +4,11 @@ import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/ui/component/map/record_map_layout.dart';
 import 'package:food_gram_app/ui/screen/record/components/map/record_map_button.dart';
 import 'package:food_gram_app/ui/screen/record/components/map/record_map_stats_card.dart';
-import 'package:food_gram_app/ui/screen/record/components/map/record_map_tab.dart';
+import 'package:food_gram_app/ui/screen/record/components/record_tab.dart';
 
 /// 記録タブ：日本／世界マップ時の上部オーバーレイ（切替・統計・FAB）
-class RecordMapTopOverlay extends StatelessWidget {
-  const RecordMapTopOverlay({
+class RecordMap extends StatelessWidget {
+  const RecordMap({
     required this.viewType,
     required this.onViewTypeChanged,
     required this.postsCount,
@@ -40,7 +40,7 @@ class RecordMapTopOverlay extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          RecordMapTab(
+          RecordTab(
             currentViewType: viewType,
             onViewTypeChanged: onViewTypeChanged,
           ),

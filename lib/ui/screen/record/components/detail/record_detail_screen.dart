@@ -7,7 +7,7 @@ import 'package:food_gram_app/ui/screen/record/components/detail/record_recent_s
 import 'package:food_gram_app/ui/screen/record/components/detail/record_stat.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_summary.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_yearly_section.dart';
-import 'package:food_gram_app/ui/screen/record/components/map/record_map_tab.dart';
+import 'package:food_gram_app/ui/screen/record/components/record_tab.dart';
 import 'package:food_gram_app/ui/screen/record/record_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -100,7 +100,7 @@ class RecordDetailScreen extends ConsumerWidget {
           top: selectorTop,
           left: 0,
           right: 0,
-          child: RecordMapTab(
+          child: RecordTab(
             currentViewType: MapViewType.detail,
             onViewTypeChanged:
                 ref.read(recordViewModelProvider.notifier).changeViewType,

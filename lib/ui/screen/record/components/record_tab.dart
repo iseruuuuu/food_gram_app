@@ -4,8 +4,8 @@ import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 
 /// 記録タブ：記録 / 日本マップ / 世界マップ の切り替え
-class RecordMapTab extends StatelessWidget {
-  const RecordMapTab({
+class RecordTab extends StatelessWidget {
+  const RecordTab({
     required this.currentViewType,
     required this.onViewTypeChanged,
     super.key,
