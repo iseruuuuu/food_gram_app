@@ -11,7 +11,7 @@ import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/map/record_japan_world_map_scene.dart';
 import 'package:food_gram_app/ui/component/map/record_map_layout.dart';
-import 'package:food_gram_app/ui/screen/record/components/detail/record_detail_scroll_view.dart';
+import 'package:food_gram_app/ui/screen/record/components/detail/record_detail_screen.dart';
 import 'package:food_gram_app/ui/screen/record/record_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -42,7 +42,7 @@ class RecordScreen extends HookConsumerWidget {
             },
             onData: (value) {
               if (state.viewType == MapViewType.detail) {
-                return RecordDetailScrollView(posts: value.$2);
+                return RecordDetailScreen(posts: value.$2);
               }
               final isLocationEnabled =
                   value.$1.latitude != 0 && value.$1.longitude != 0;
