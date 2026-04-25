@@ -1,0 +1,83 @@
+import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/model/map_view_type.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
+
+/// 記録タブ：記録 / 日本マップ / 世界マップ の切り替え
+class RecordMapTab extends StatelessWidget {
+  const RecordMapTab({
+    required this.currentViewType,
+    required this.onViewTypeChanged,
+    super.key,
+  });
+
+  final MapViewType currentViewType;
+  final void Function(MapViewType) onViewTypeChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? Colors.black : Colors.white;
+    final unselectedTextColor = isDark ? Colors.white : Colors.black87;
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: MapViewType.values.map((type) {
+          final isSelected = type == currentViewType;
+          return Expanded(
+            child: GestureDetector(
+              onTap: () => onViewTypeChanged(type),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: isSelected ? AppTheme.primaryBlue : Colors.transparent,
+                  borderRadius: BorderRadius.horizontal(
+                    left: type == MapViewType.detail
+                        ? const Radius.circular(12)
+                        : Radius.zero,
+                    right: type == MapViewType.world
+                        ? const Radius.circular(12)
+                        : Radius.zero,
+                  ),
+                ),
+                child: Text(
+                  _getLabel(type, t),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : unselectedTextColor,
+                    fontWeight:
+                        isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  String _getLabel(MapViewType type, Translations t) {
+    switch (type) {
+      case MapViewType.detail:
+        return t.mapViewType.record;
+      case MapViewType.japan:
+        return t.mapViewType.japan;
+      case MapViewType.world:
+        return t.mapViewType.world;
+    }
+  }
+}
