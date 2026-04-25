@@ -256,7 +256,7 @@
     "achievementRate": "อัตรา",
     "worldAchievementRate": "อัตราการพิชิตทั่วโลก",
     "visitedCountries": "ประเทศที่ไปมา",
-    "recordSummary": "มื้ออาหารของคุณถูกบันทึกไว้ {days} วัน ✨",
+    "recordSummary": "มื้ออาหารตลอด {days} วัน\nถูกบันทึกเป็นสถิติของคุณ ✨",
     "japanSummary": "ในญี่ปุ่น มื้ออาหารของคุณอยู่ใน {prefectures} จังหวัด ✨",
     "worldSummary": "ทั่วโลก มื้ออาหารของคุณอยู่ใน {countries} ประเทศ ✨",
     "recordStreakWithGoal": "🔥 สตรีค {streak} สัปดาห์｜อีก {remaining} สัปดาห์ถึง {milestone} สัปดาห์",
@@ -274,6 +274,15 @@
     "record": "บันทึก",
     "japan": "ญี่ปุ่น",
     "world": "โลก"
+  },
+  "myMapRecord": {
+    "subtitle": "ร่องรอยความทรงจำเรื่องอาหารของคุณ",
+    "postedMealsLabel": "มื้ออาหารที่โพสต์",
+    "streakDaysLabel": "จำนวนวันต่อเนื่อง",
+    "yearlyTitle": "สถิติรายปี",
+    "recentTitle": "บันทึกล่าสุด",
+    "noPostsYet": "ยังไม่มีโพสต์",
+    "countUnit": "รายการ"
   },
   "myMapShare": {
     "title": "แชร์แผนที่ของฉัน",

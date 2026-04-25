@@ -256,7 +256,7 @@
     "achievementRate": "Tỷ lệ",
     "worldAchievementRate": "Tỷ lệ hoàn thành toàn cầu",
     "visitedCountries": "Quốc gia đã đến",
-    "recordSummary": "Bữa ăn của bạn được lưu lại {days} ngày ✨",
+    "recordSummary": "{days} ngày bữa ăn đã được\nlưu lại thành nhật ký của bạn ✨",
     "japanSummary": "Tại Nhật, bữa ăn của bạn có ở {prefectures} tỉnh ✨",
     "worldSummary": "Trên thế giới, bữa ăn của bạn có ở {countries} quốc gia ✨",
     "recordStreakWithGoal": "🔥 Chuỗi {streak} tuần｜còn {remaining} tuần để đạt {milestone}",
@@ -274,6 +274,15 @@
     "record": "Ghi chép",
     "japan": "Nhật Bản",
     "world": "Thế giới"
+  },
+  "myMapRecord": {
+    "subtitle": "Dấu vết kỷ niệm ẩm thực của bạn",
+    "postedMealsLabel": "Bữa ăn đã đăng",
+    "streakDaysLabel": "Số ngày duy trì",
+    "yearlyTitle": "Tổng kết theo năm",
+    "recentTitle": "Bản ghi gần đây",
+    "noPostsYet": "Chưa có bài đăng nào",
+    "countUnit": "mục"
   },
   "myMapShare": {
     "title": "Chia sẻ bản đồ của tôi",

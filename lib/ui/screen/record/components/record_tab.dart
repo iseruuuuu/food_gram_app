@@ -3,8 +3,9 @@ import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 
-class AppMapViewTypeSelector extends StatelessWidget {
-  const AppMapViewTypeSelector({
+/// 記録タブ：記録 / 日本マップ / 世界マップ の切り替え
+class RecordTab extends StatelessWidget {
+  const RecordTab({
     required this.currentViewType,
     required this.onViewTypeChanged,
     super.key,
@@ -41,8 +42,7 @@ class AppMapViewTypeSelector extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color:
-                      isSelected ? AppTheme.primaryBlue : Colors.transparent,
+                  color: isSelected ? AppTheme.primaryBlue : Colors.transparent,
                   borderRadius: BorderRadius.horizontal(
                     left: type == MapViewType.detail
                         ? const Radius.circular(12)

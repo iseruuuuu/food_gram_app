@@ -256,7 +256,7 @@
     "achievementRate": "Rate",
     "worldAchievementRate": "Weltweiter Erfolgsgrad",
     "visitedCountries": "Besuchte Länder",
-    "recordSummary": "Deine Mahlzeiten sind seit {days} Tagen festgehalten ✨",
+    "recordSummary": "{days} Tage deiner Mahlzeiten sind\nals Aufzeichnung gespeichert ✨",
     "japanSummary": "In Japan sind deine Mahlzeiten in {prefectures} Präfekturen festgehalten ✨",
     "worldSummary": "Weltweit sind deine Mahlzeiten in {countries} Ländern festgehalten ✨",
     "recordStreakWithGoal": "🔥 {streak}-Wochen-Serie｜noch {remaining} Wochen bis {milestone}",
@@ -274,6 +274,15 @@
     "record": "Aufzeichnung",
     "japan": "Japan",
     "world": "Welt"
+  },
+  "myMapRecord": {
+    "subtitle": "Eine Spur deiner Food-Erinnerungen",
+    "postedMealsLabel": "Gepostete Mahlzeiten",
+    "streakDaysLabel": "Streak-Tage",
+    "yearlyTitle": "Jahresrückblick",
+    "recentTitle": "Neueste Einträge",
+    "noPostsYet": "Noch keine Beiträge",
+    "countUnit": "Einträge"
   },
   "myMapShare": {
     "title": "Meine Karte teilen",

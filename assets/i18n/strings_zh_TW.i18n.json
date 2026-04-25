@@ -256,7 +256,7 @@
     "achievementRate": "達成率",
     "worldAchievementRate": "世界達成率",
     "visitedCountries": "造訪過的國家",
-    "recordSummary": "你的餐點已記錄了 {days} 天✨",
+    "recordSummary": "{days}天的餐點已\n保存為你的記錄 ✨",
     "japanSummary": "在日本，你的餐點遍佈 {prefectures} 個都道府縣✨",
     "worldSummary": "在世界，你的餐點遍佈 {countries} 個國家✨",
     "recordStreakWithGoal": "🔥 連續記錄 {streak} 週｜還差 {remaining} 週達到 {milestone} 週",
@@ -274,6 +274,15 @@
     "record": "記錄",
     "japan": "日本",
     "world": "世界"
+  },
+  "myMapRecord": {
+    "subtitle": "你的美食回憶軌跡",
+    "postedMealsLabel": "已發佈餐點",
+    "streakDaysLabel": "連續紀錄天數",
+    "yearlyTitle": "年度紀錄",
+    "recentTitle": "近期紀錄",
+    "noPostsYet": "尚無貼文",
+    "countUnit": "筆"
   },
   "myMapShare": {
     "title": "分享我的地圖",

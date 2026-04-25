@@ -256,7 +256,7 @@
     "achievementRate": "Rate",
     "worldAchievementRate": "World achievement rate",
     "visitedCountries": "Countries",
-    "recordSummary": "Your meals are recorded for {days} days ✨",
+    "recordSummary": "{days} days of meals \n logged ✨",
     "japanSummary": "In Japan, your meals remain in {prefectures} prefectures ✨",
     "worldSummary": "In the world, your meals remain in {countries} countries ✨",
     "recordStreakWithGoal": "🔥 {streak}-week streak｜{remaining} more weeks to hit {milestone}",
@@ -274,6 +274,15 @@
     "record": "Record",
     "japan": "Japan",
     "world": "World"
+  },
+  "myMapRecord": {
+    "subtitle": "Your food journey",
+    "postedMealsLabel": "Meals posted",
+    "streakDaysLabel": "Streak",
+    "yearlyTitle": "Year in review",
+    "recentTitle": "Recent activity",
+    "noPostsYet": "Nothing posted yet",
+    "countUnit": "items"
   },
   "myMapShare": {
     "title": "Share My Map",

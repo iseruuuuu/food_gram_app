@@ -5,9 +5,9 @@ import 'package:food_gram_app/core/utils/map_stats_presentation.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 
-/// マイマップの統計情報を表示するカード
-class AppMyMapStatsCard extends StatelessWidget {
-  const AppMyMapStatsCard({
+/// 記録タブ：日本／世界マップ用の統計サマリーカード
+class RecordMapStatsCard extends StatelessWidget {
+  const RecordMapStatsCard({
     required this.postsCount,
     required this.visitedPrefecturesCount,
     required this.visitedCountriesCount,
@@ -23,8 +23,6 @@ class AppMyMapStatsCard extends StatelessWidget {
   final int visitedCountriesCount;
   final int visitedAreasCount;
   final int activityDays;
-
-  /// `users.streak_weeks` ベース（記録ビュー用）
   final int postingStreakWeeks;
   final MapViewType viewType;
 

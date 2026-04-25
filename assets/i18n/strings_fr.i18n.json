@@ -256,7 +256,7 @@
     "achievementRate": "Taux",
     "worldAchievementRate": "Taux d'accomplissement mondial",
     "visitedCountries": "Pays visités",
-    "recordSummary": "Vos repas sont enregistrés pendant {days} jours ✨",
+    "recordSummary": "{days} jours de repas sont\ngardés comme ton historique ✨",
     "japanSummary": "Au Japon, vos repas sont présents dans {prefectures} préfectures ✨",
     "worldSummary": "Dans le monde, vos repas sont présents dans {countries} pays ✨",
     "recordStreakWithGoal": "🔥 Série de {streak} semaines｜encore {remaining} semaines pour atteindre {milestone}",
@@ -274,6 +274,15 @@
     "record": "Record",
     "japan": "Japon",
     "world": "Monde"
+  },
+  "myMapRecord": {
+    "subtitle": "La trace de tes souvenirs culinaires",
+    "postedMealsLabel": "Repas publiés",
+    "streakDaysLabel": "Jours de série",
+    "yearlyTitle": "Bilan annuel",
+    "recentTitle": "Entrées récentes",
+    "noPostsYet": "Aucune publication pour le moment",
+    "countUnit": "éléments"
   },
   "myMapShare": {
     "title": "Partager ma carte",
