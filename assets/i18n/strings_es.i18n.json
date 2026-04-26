@@ -282,7 +282,29 @@
     "yearlyTitle": "Registros anuales",
     "recentTitle": "Registros recientes",
     "noPostsYet": "Aún no hay publicaciones",
-    "countUnit": "elementos"
+    "countUnit": "elementos",
+    "foodTraits": {
+      "sectionTitle": "Your Food Profile",
+      "premiumBadge": "Premium",
+      "noData": "No data",
+      "noRating": "No ratings",
+      "frequentAreaTitle": "Frequent area",
+      "topGenreTitle": "Top genre",
+      "frequentTimeTitle": "Common time",
+      "frequentRestaurantTitle": "Top restaurant",
+      "averageRatingTitle": "Avg rating",
+      "explorationRateTitle": "Exploration rate",
+      "morningLabel": "Morning (5-10)",
+      "lunchLabel": "Lunch (11-14)",
+      "afternoonLabel": "Afternoon (15-17)",
+      "eveningLabel": "Evening (18-21)",
+      "lateNightLabel": "Late night (22-4)",
+      "lockedDescription": "Unlock all your food insights\\nwith Premium",
+      "premiumCta": "View Premium plans",
+      "shareOfTotal": "{percent}% of total",
+      "ratingCount": "{count} ratings",
+      "firstVisitCount": "{count} first-time places"
+    }
   },
   "myMapShare": {
     "title": "Compartir mi mapa",
