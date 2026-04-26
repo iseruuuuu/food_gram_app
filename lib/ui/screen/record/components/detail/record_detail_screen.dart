@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
+import 'package:food_gram_app/core/supabase/post/analyzer/record_food_traits_analyzer.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/screen/record/components/detail/record_food_traits_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_recent_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_stat_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_summary_section.dart';
@@ -20,6 +24,7 @@ class RecordDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(recordViewModelProvider);
+    final isSubscribe = ref.watch(isSubscribeProvider).valueOrNull ?? false;
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = isDark ? const Color(0xFF161616) : Colors.white;
@@ -75,6 +80,18 @@ class RecordDetailScreen extends ConsumerWidget {
                 ],
               ),
               const Gap(16),
+              RecordFoodTraitsSection(
+                posts: posts,
+                cardColor: cardColor,
+                mutedColor: mutedColor,
+                isSubscribed: isSubscribe,
+                onTapPremiumCta: () {
+                  ref
+                      .read(revenueCatServiceProvider.notifier)
+                      .presentPaywallGuarded();
+                },
+              ),
+              const Gap(16),
               RecordYearlySection(
                 cardColor: cardColor,
                 mutedColor: mutedColor,
@@ -104,16 +121,6 @@ class RecordDetailScreen extends ConsumerWidget {
       ],
     );
   }
-}
-
-/// 初投稿日から最終投稿日までの日数（記録タブ表示用）
-int recordActivityDaysSpan(List<Posts> source) {
-  if (source.isEmpty) {
-    return 0;
-  }
-  final sorted = [...source]
-    ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
-  return sorted.last.createdAt.difference(sorted.first.createdAt).inDays;
 }
 
 double recordMapOverlayTopForContext(BuildContext context) {
