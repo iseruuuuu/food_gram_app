@@ -81,7 +81,7 @@ class RecordFoodTraitsSection extends StatelessWidget {
         title: t.myMapRecord.foodTraits.averageRatingTitle,
         value: summary.averageRating == null
             ? t.myMapRecord.foodTraits.noRating
-            : ratingFormat.format(summary.averageRating),
+            : ratingFormat.format(summary.averageRating!),
         subValue: summary.ratingCount == 0
             ? null
             : t.myMapRecord.foodTraits.ratingCount.replaceAll(
