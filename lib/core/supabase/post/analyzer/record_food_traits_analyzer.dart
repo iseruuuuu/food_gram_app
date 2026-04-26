@@ -57,17 +57,22 @@ RecordFoodTraitsSummary analyzeRecordFoodTraits(List<Posts> posts) {
 
   for (final post in posts) {
     final area = _areaFor(post);
-    areaCounts[area] = (areaCounts[area] ?? 0) + 1;
+    if (area != null) {
+      areaCounts[area] = (areaCounts[area] ?? 0) + 1;
+    }
 
     final genre = _genreFor(post);
-    genreCounts[genre] = (genreCounts[genre] ?? 0) + 1;
+    if (genre != null) {
+      genreCounts[genre] = (genreCounts[genre] ?? 0) + 1;
+    }
 
     final timeZone = _timeZoneFor(post.createdAt.hour);
     timeCounts[timeZone] = (timeCounts[timeZone] ?? 0) + 1;
 
-    final restaurant =
-        post.restaurant.trim().isEmpty ? '未設定' : post.restaurant.trim();
-    restaurantCounts[restaurant] = (restaurantCounts[restaurant] ?? 0) + 1;
+    final restaurant = post.restaurant.trim();
+    if (restaurant.isNotEmpty) {
+      restaurantCounts[restaurant] = (restaurantCounts[restaurant] ?? 0) + 1;
+    }
 
     if (post.star > 0) {
       ratingTotal += post.star;
@@ -122,42 +127,46 @@ RecordFoodTraitsSummary analyzeRecordFoodTraits(List<Posts> posts) {
   final sorted = [...posts]..sort((a, b) => a.createdAt.compareTo(b.createdAt));
   final seen = <String>{};
   var firstVisitCount = 0;
+  var validRestaurantPosts = 0;
 
   for (final post in sorted) {
     final shop = post.restaurant.trim();
     if (shop.isEmpty) {
       continue;
     }
+    validRestaurantPosts++;
     if (seen.add(shop)) {
       firstVisitCount++;
     }
   }
-  final ratio = ((firstVisitCount / posts.length) * 100).round();
+  if (validRestaurantPosts == 0) {
+    return (0, 0);
+  }
+  final ratio = ((firstVisitCount / validRestaurantPosts) * 100).round();
   return (ratio, firstVisitCount);
 }
 
-String _areaFor(Posts post) {
+String? _areaFor(Posts post) {
   if (post.lat == 0 || post.lng == 0) {
-    return '不明';
+    return null;
   }
-  final prefecture = PrefectureDetector.detectPrefecture(post.lat, post.lng);
-  if (prefecture != null && prefecture.isNotEmpty) {
-    return '$prefectureエリア';
+  final countryCode = CountryDetector.getCountryCode(post.lat, post.lng);
+  if (countryCode == 'JP') {
+    final prefecture = PrefectureDetector.detectPrefecture(post.lat, post.lng);
+    if (prefecture != null && prefecture.isNotEmpty) {
+      return prefecture;
+    }
   }
-  final country = CountryDetector.detectCountry(post.lat, post.lng);
-  if (country != null && country.isNotEmpty && country != 'その他') {
-    return country;
-  }
-  return '不明';
+  return countryCode;
 }
 
-String _genreFor(Posts post) {
+String? _genreFor(Posts post) {
   final raw = post.foodTag.trim();
   if (raw.isEmpty) {
-    return '未設定';
+    return null;
   }
   final first = raw.split(',').first.trim();
-  return first.isEmpty ? '未設定' : first;
+  return first.isEmpty ? null : first;
 }
 
 RecordMealTimeSlot _timeZoneFor(int hour) {

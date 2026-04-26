@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/analyzer/record_food_traits_analyzer.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 
 /// 記録タブ：プレミアム向けの食傾向カード群
 class RecordFoodTraitsSection extends StatelessWidget {
@@ -26,6 +27,10 @@ class RecordFoodTraitsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final localeTag = Localizations.localeOf(context).toLanguageTag();
+    final ratingFormat = NumberFormat.decimalPattern(localeTag)
+      ..minimumFractionDigits = 1
+      ..maximumFractionDigits = 1;
     final summary = analyzeRecordFoodTraits(posts);
     final total = summary.totalPosts == 0 ? 1 : summary.totalPosts;
     final traits = [
@@ -76,7 +81,7 @@ class RecordFoodTraitsSection extends StatelessWidget {
         title: t.myMapRecord.foodTraits.averageRatingTitle,
         value: summary.averageRating == null
             ? t.myMapRecord.foodTraits.noRating
-            : summary.averageRating!.toStringAsFixed(1),
+            : ratingFormat.format(summary.averageRating),
         subValue: summary.ratingCount == 0
             ? null
             : t.myMapRecord.foodTraits.ratingCount.replaceAll(
@@ -155,7 +160,9 @@ class RecordFoodTraitsSection extends StatelessWidget {
                     if (!isSubscribed)
                       Positioned.fill(
                         child: _NonSubscriberOverlay(
-                            t: t, onTapPremiumCta: onTapPremiumCta),
+                          t: t,
+                          onTapPremiumCta: onTapPremiumCta,
+                        ),
                       ),
                   ],
                 ),
@@ -194,9 +201,9 @@ class _NonSubscriberOverlay extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return ClipRect(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+        filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
         child: Container(
-          color: (isDark ? Colors.black : Colors.white).withValues(alpha: 0.56),
+          color: (isDark ? Colors.black : Colors.white).withValues(alpha: 0.72),
           alignment: Alignment.center,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
