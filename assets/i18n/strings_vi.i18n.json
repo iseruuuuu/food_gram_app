@@ -282,7 +282,29 @@
     "yearlyTitle": "Tổng kết theo năm",
     "recentTitle": "Bản ghi gần đây",
     "noPostsYet": "Chưa có bài đăng nào",
-    "countUnit": "mục"
+    "countUnit": "mục",
+    "foodTraits": {
+      "sectionTitle": "Thói quen ăn uống của bạn",
+      "premiumBadge": "Premium",
+      "noData": "Không có dữ liệu",
+      "noRating": "Chưa có đánh giá",
+      "frequentAreaTitle": "Khu vực thường đến",
+      "topGenreTitle": "Thể loại hàng đầu",
+      "frequentTimeTitle": "Khung giờ phổ biến",
+      "frequentRestaurantTitle": "Nhà hàng thường đến",
+      "averageRatingTitle": "Đánh giá trung bình",
+      "explorationRateTitle": "Tỷ lệ khám phá",
+      "morningLabel": "Sáng (5-10)",
+      "lunchLabel": "Trưa (11-14)",
+      "afternoonLabel": "Chiều (15-17)",
+      "eveningLabel": "Tối (18-21)",
+      "lateNightLabel": "Đêm khuya (22-4)",
+      "lockedDescription": "Mở khóa toàn bộ insight ẩm thực\ncủa bạn với Premium",
+      "premiumCta": "Xem gói Premium",
+      "shareOfTotal": "{percent}% tổng số",
+      "ratingCount": "{count} lượt đánh giá",
+      "firstVisitCount": "{count} địa điểm mới"
+    }
   },
   "myMapShare": {
     "title": "Chia sẻ bản đồ của tôi",

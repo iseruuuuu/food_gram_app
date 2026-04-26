@@ -282,7 +282,29 @@
     "yearlyTitle": "年間の記録",
     "recentTitle": "最近の記録",
     "noPostsYet": "まだ投稿がありません",
-    "countUnit": "件"
+    "countUnit": "件",
+    "foodTraits": {
+      "sectionTitle": "あなたの食の特徴",
+      "premiumBadge": "プレミアム限定",
+      "noData": "データなし",
+      "noRating": "評価なし",
+      "frequentAreaTitle": "よく行くエリア",
+      "topGenreTitle": "一番多いジャンル",
+      "frequentTimeTitle": "よく食べる時間帯",
+      "frequentRestaurantTitle": "よく行くお店",
+      "averageRatingTitle": "平均評価",
+      "explorationRateTitle": "新規開拓率",
+      "morningLabel": "朝 (5-10時)",
+      "lunchLabel": "昼 (11-14時)",
+      "afternoonLabel": "午後 (15-17時)",
+      "eveningLabel": "夜 (18-21時)",
+      "lateNightLabel": "深夜 (22-4時)",
+      "lockedDescription": "プレミアムであなたの食の特徴を\nすべて見ることができます",
+      "premiumCta": "プレミアムプランをみる",
+      "shareOfTotal": "全体の{percent}%",
+      "ratingCount": "{count}件の評価",
+      "firstVisitCount": "はじめてのお店 {count}件"
+    }
   },
   "myMapShare": {
     "title": "マイマップをシェア",

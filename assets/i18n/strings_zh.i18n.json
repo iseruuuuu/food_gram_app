@@ -282,7 +282,29 @@
     "yearlyTitle": "年度记录",
     "recentTitle": "最近记录",
     "noPostsYet": "还没有发布",
-    "countUnit": "条"
+    "countUnit": "条",
+    "foodTraits": {
+      "sectionTitle": "你的饮食习惯",
+      "premiumBadge": "高级版",
+      "noData": "暂无数据",
+      "noRating": "暂无评分",
+      "frequentAreaTitle": "常去区域",
+      "topGenreTitle": "最多类型",
+      "frequentTimeTitle": "常见用餐时段",
+      "frequentRestaurantTitle": "常去餐厅",
+      "averageRatingTitle": "平均评分",
+      "explorationRateTitle": "探索率",
+      "morningLabel": "早晨 (5-10点)",
+      "lunchLabel": "中午 (11-14点)",
+      "afternoonLabel": "下午 (15-17点)",
+      "eveningLabel": "晚上 (18-21点)",
+      "lateNightLabel": "深夜 (22-4点)",
+      "lockedDescription": "开通 Premium\n解锁你的全部饮食洞察",
+      "premiumCta": "查看 Premium 方案",
+      "shareOfTotal": "占总数的{percent}%",
+      "ratingCount": "{count} 条评分",
+      "firstVisitCount": "首次到访店铺 {count} 家"
+    }
   },
   "myMapShare": {
     "title": "分享我的地图",

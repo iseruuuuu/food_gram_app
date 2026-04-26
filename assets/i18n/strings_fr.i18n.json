@@ -282,7 +282,29 @@
     "yearlyTitle": "Bilan annuel",
     "recentTitle": "Entrées récentes",
     "noPostsYet": "Aucune publication pour le moment",
-    "countUnit": "éléments"
+    "countUnit": "éléments",
+    "foodTraits": {
+      "sectionTitle": "Tes habitudes alimentaires",
+      "premiumBadge": "Premium",
+      "noData": "Aucune donnée",
+      "noRating": "Aucune note",
+      "frequentAreaTitle": "Zone fréquente",
+      "topGenreTitle": "Genre principal",
+      "frequentTimeTitle": "Horaire fréquent",
+      "frequentRestaurantTitle": "Restaurant principal",
+      "averageRatingTitle": "Note moyenne",
+      "explorationRateTitle": "Taux d’exploration",
+      "morningLabel": "Matin (5-10)",
+      "lunchLabel": "Déjeuner (11-14)",
+      "afternoonLabel": "Après-midi (15-17)",
+      "eveningLabel": "Soir (18-21)",
+      "lateNightLabel": "Nuit (22-4)",
+      "lockedDescription": "Débloquez toutes vos analyses\nfood avec Premium",
+      "premiumCta": "Voir les offres Premium",
+      "shareOfTotal": "{percent}% du total",
+      "ratingCount": "{count} notes",
+      "firstVisitCount": "{count} nouveaux lieux"
+    }
   },
   "myMapShare": {
     "title": "Partager ma carte",

@@ -282,7 +282,29 @@
     "yearlyTitle": "สถิติรายปี",
     "recentTitle": "บันทึกล่าสุด",
     "noPostsYet": "ยังไม่มีโพสต์",
-    "countUnit": "รายการ"
+    "countUnit": "รายการ",
+    "foodTraits": {
+      "sectionTitle": "พฤติกรรมการกินของคุณ",
+      "premiumBadge": "พรีเมียม",
+      "noData": "ไม่มีข้อมูล",
+      "noRating": "ไม่มีการให้คะแนน",
+      "frequentAreaTitle": "พื้นที่ที่ไปบ่อย",
+      "topGenreTitle": "ประเภทที่มากที่สุด",
+      "frequentTimeTitle": "ช่วงเวลาที่กินบ่อย",
+      "frequentRestaurantTitle": "ร้านที่ไปบ่อย",
+      "averageRatingTitle": "คะแนนเฉลี่ย",
+      "explorationRateTitle": "อัตราการค้นพบร้านใหม่",
+      "morningLabel": "เช้า (5-10 น.)",
+      "lunchLabel": "กลางวัน (11-14 น.)",
+      "afternoonLabel": "บ่าย (15-17 น.)",
+      "eveningLabel": "เย็น (18-21 น.)",
+      "lateNightLabel": "ดึก (22-4 น.)",
+      "lockedDescription": "ปลดล็อกข้อมูลเชิงลึกการกินทั้งหมดของคุณ\nด้วย Premium",
+      "premiumCta": "ดูแพลน Premium",
+      "shareOfTotal": "{percent}% ของทั้งหมด",
+      "ratingCount": "{count} การให้คะแนน",
+      "firstVisitCount": "{count} ร้านที่ไปครั้งแรก"
+    }
   },
   "myMapShare": {
     "title": "แชร์แผนที่ของฉัน",

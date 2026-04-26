@@ -282,7 +282,29 @@
     "yearlyTitle": "Jahresrückblick",
     "recentTitle": "Neueste Einträge",
     "noPostsYet": "Noch keine Beiträge",
-    "countUnit": "Einträge"
+    "countUnit": "Einträge",
+    "foodTraits": {
+      "sectionTitle": "Deine Essgewohnheiten",
+      "premiumBadge": "Premium",
+      "noData": "Keine Daten",
+      "noRating": "Keine Bewertungen",
+      "frequentAreaTitle": "Häufige Gegend",
+      "topGenreTitle": "Top-Kategorie",
+      "frequentTimeTitle": "Übliche Uhrzeit",
+      "frequentRestaurantTitle": "Top-Restaurant",
+      "averageRatingTitle": "Durchschn. Bewertung",
+      "explorationRateTitle": "Entdeckungsrate",
+      "morningLabel": "Morgen (5-10)",
+      "lunchLabel": "Mittag (11-14)",
+      "afternoonLabel": "Nachmittag (15-17)",
+      "eveningLabel": "Abend (18-21)",
+      "lateNightLabel": "Späte Nacht (22-4)",
+      "lockedDescription": "Schalte alle deine Food-Insights\nmit Premium frei",
+      "premiumCta": "Premium-Pläne ansehen",
+      "shareOfTotal": "{percent}% insgesamt",
+      "ratingCount": "{count} Bewertungen",
+      "firstVisitCount": "{count} neue Orte"
+    }
   },
   "myMapShare": {
     "title": "Meine Karte teilen",
