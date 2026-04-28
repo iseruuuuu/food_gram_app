@@ -251,6 +251,10 @@ class MyProfileScreen extends HookConsumerWidget {
                           await context.pushNamed(RouterPath.myProfilePost);
                       if (result != null) {
                         ref.invalidate(myPostStreamProvider);
+                        final uid = ref.read(currentUserProvider);
+                        if (uid != null) {
+                          ref.invalidate(postCountRankProvider(uid));
+                        }
                         await ref.read(myPostStreamProvider.future);
                         final newPostCount = ref
                                 .read(myPostStreamProvider)
