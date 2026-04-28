@@ -164,7 +164,9 @@
     "levelLabel": "Lv.{level}",
     "nextLevelPosts": "次Lvまで {count} 投稿",
     "nextLevelBanner": "次のLvまであと {count} 投稿",
-    "levelMax": "Lv.MAX"
+    "levelMax": "Lv.MAX",
+    "rankingStats": "ランキング",
+    "memberOnlyBadge": "メンバー限定"
   },
   "postDetailSheet": {
     "title": "この投稿について",

@@ -164,7 +164,9 @@
     "levelLabel": "Lv.{level}",
     "nextLevelPosts": "Noch {count} Beiträge bis zum nächsten Lv",
     "nextLevelBanner": "Noch {count} Beiträge bis zum nächsten Lv",
-    "levelMax": "Lv.MAX"
+    "levelMax": "Lv.MAX",
+    "rankingStats": "Rangliste",
+    "memberOnlyBadge": "Nur für Mitglieder"
   },
   "postDetailSheet": {
     "title": "Über diesen Beitrag",

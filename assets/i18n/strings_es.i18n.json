@@ -164,7 +164,9 @@
     "levelLabel": "Lv.{level}",
     "nextLevelPosts": "{count} publicaciones para el siguiente Lv",
     "nextLevelBanner": "Faltan {count} publicaciones para el siguiente Lv",
-    "levelMax": "Lv.MAX"
+    "levelMax": "Lv.MAX",
+    "rankingStats": "Clasificación",
+    "memberOnlyBadge": "Solo miembros"
   },
   "postDetailSheet": {
     "title": "Acerca de esta publicación",

@@ -164,7 +164,9 @@
     "levelLabel": "Lv.{level}",
     "nextLevelPosts": "{count} posts to next Lv",
     "nextLevelBanner": "Next Lv in {count} posts",
-    "levelMax": "Lv.MAX"
+    "levelMax": "Lv.MAX",
+    "rankingStats": "Ranking",
+    "memberOnlyBadge": "Members only"
   },
   "postDetailSheet": {
     "title": "About this post",
