@@ -18,7 +18,7 @@ import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/dialog/app_level_up_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/app_promote_dialog.dart';
-import 'package:food_gram_app/ui/component/profile/app_profile_header.dart';
+import 'package:food_gram_app/ui/screen/profile/components/profile_header.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
 import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dart';
 import 'package:go_router/go_router.dart';

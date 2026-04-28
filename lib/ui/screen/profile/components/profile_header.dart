@@ -5,13 +5,13 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
-import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
 import 'package:food_gram_app/core/utils/user_level.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/dialog/app_profile_dialog.dart';
-import 'package:food_gram_app/ui/component/profile/app_profile_image.dart';
+import 'package:food_gram_app/ui/screen/profile/components/profile_stat.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -37,8 +37,7 @@ class AppProfileHeader extends ConsumerWidget {
     final isViewerSubscribed =
         ref.watch(isSubscribeProvider).valueOrNull ?? false;
     final rankingUnlocked = rankingUnlockedOverride ??
-        users.isSubscribe ||
-        (currentUser != null && isViewerSubscribed);
+        users.isSubscribe || (currentUser != null && isViewerSubscribed);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final headerBg = Theme.of(context).colorScheme.surface;
     final textColor = isDark ? Colors.white : Colors.black;
@@ -221,7 +220,7 @@ class AppProfileHeader extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Expanded(
-                            child: _ProfileStatColumn(
+                            child: ProfileStat(
                               icon: Icons.restaurant_rounded,
                               iconBg: const Color(0xFFFFF3CD),
                               iconColor: isDark
@@ -234,9 +233,16 @@ class AppProfileHeader extends ConsumerWidget {
                                   isDark ? Colors.white70 : Colors.black54,
                             ),
                           ),
-                          _ProfileStatDivider(isDark: isDark),
+                          VerticalDivider(
+                            width: 17,
+                            thickness: 1,
+                            indent: 6,
+                            endIndent: 6,
+                            color:
+                                isDark ? Colors.white24 : Colors.grey.shade300,
+                          ),
                           Expanded(
-                            child: _ProfileStatColumn(
+                            child: ProfileStat(
                               icon: Icons.favorite_rounded,
                               iconBg: const Color(0xFFFFE4EC),
                               iconColor: Colors.red.shade400,
@@ -247,10 +253,17 @@ class AppProfileHeader extends ConsumerWidget {
                                   isDark ? Colors.white70 : Colors.black54,
                             ),
                           ),
-                          _ProfileStatDivider(isDark: isDark),
+                          VerticalDivider(
+                            width: 17,
+                            thickness: 1,
+                            indent: 6,
+                            endIndent: 6,
+                            color:
+                                isDark ? Colors.white24 : Colors.grey.shade300,
+                          ),
                           Expanded(
                             child: rankingUnlocked
-                                ? _ProfileRankingUnlocked(
+                                ? ProfileRankingUnlocked(
                                     userId: users.userId,
                                     textColor: textColor,
                                     mutedColor: isDark
@@ -259,7 +272,7 @@ class AppProfileHeader extends ConsumerWidget {
                                     rankingLabel: t.profile.rankingStats,
                                     ref: ref,
                                   )
-                                : _ProfileRankingLocked(
+                                : ProfileRankingLocked(
                                     textColor: textColor,
                                     mutedColor: isDark
                                         ? Colors.white70
@@ -475,259 +488,6 @@ class AppProfileHeader extends ConsumerWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-String _formatPostCountRank(BuildContext context, int rank) {
-  final code = Localizations.localeOf(context).languageCode;
-  if (code == 'ja') {
-    return '$rank位';
-  }
-  return '#$rank';
-}
-
-class _ProfileStatDivider extends StatelessWidget {
-  const _ProfileStatDivider({required this.isDark});
-
-  final bool isDark;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = isDark ? Colors.white24 : Colors.grey.shade300;
-    return VerticalDivider(
-      width: 17,
-      thickness: 1,
-      indent: 6,
-      endIndent: 6,
-      color: color,
-    );
-  }
-}
-
-class _ProfileStatColumn extends StatelessWidget {
-  const _ProfileStatColumn({
-    required this.icon,
-    required this.iconBg,
-    required this.iconColor,
-    required this.valueText,
-    required this.label,
-    required this.textColor,
-    required this.mutedColor,
-  });
-
-  final IconData icon;
-  final Color iconBg;
-  final Color iconColor;
-  final String valueText;
-  final String label;
-  final Color textColor;
-  final Color mutedColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: 44,
-          height: 44,
-          decoration: BoxDecoration(
-            color: iconBg,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, color: iconColor, size: 22),
-        ),
-        const Gap(8),
-        Text(
-          valueText,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: textColor,
-          ),
-        ),
-        const Gap(4),
-        Text(
-          label,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 13,
-            color: mutedColor,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _ProfileRankingLocked extends StatelessWidget {
-  const _ProfileRankingLocked({
-    required this.textColor,
-    required this.mutedColor,
-    required this.rankingLabel,
-    required this.memberOnlyLabel,
-    required this.isDark,
-    required this.onTap,
-  });
-
-  final Color textColor;
-  final Color mutedColor;
-  final String rankingLabel;
-  final String memberOnlyLabel;
-  final bool isDark;
-  final Future<void> Function() onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    const radius = 12.0;
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(radius),
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(radius),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                if (isDark) ...[
-                  Colors.orange.shade50.withValues(alpha: 0.25),
-                  Colors.grey.shade900,
-                ] else ...[
-                  Colors.orange.shade50,
-                  Colors.grey.shade100,
-                ],
-              ],
-            ),
-            border: Border.all(
-              color: isDark ? Colors.white12 : Colors.grey.shade200,
-            ),
-          ),
-          child: Column(
-            children: [
-              Icon(
-                Icons.lock_outline_rounded,
-                size: 22,
-                color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-              ),
-              const Gap(6),
-              Text(
-                '???位',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
-                ),
-              ),
-              const Gap(4),
-              Text(
-                rankingLabel,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: mutedColor,
-                ),
-              ),
-              const Gap(8),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: isDark ? Colors.grey.shade800 : Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  memberOnlyLabel,
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.grey.shade300 : Colors.grey.shade800,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ProfileRankingUnlocked extends StatelessWidget {
-  const _ProfileRankingUnlocked({
-    required this.userId,
-    required this.textColor,
-    required this.mutedColor,
-    required this.rankingLabel,
-    required this.ref,
-  });
-
-  final String userId;
-  final Color textColor;
-  final Color mutedColor;
-  final String rankingLabel;
-  final WidgetRef ref;
-
-  @override
-  Widget build(BuildContext context) {
-    final asyncRank = ref.watch(postCountRankProvider(userId));
-    return asyncRank.when(
-      data: (rank) => _ProfileStatColumn(
-        icon: Icons.emoji_events_outlined,
-        iconBg: const Color(0xFFE8EAF6),
-        iconColor: Colors.indigo.shade400,
-        valueText: _formatPostCountRank(context, rank),
-        label: rankingLabel,
-        textColor: textColor,
-        mutedColor: mutedColor,
-      ),
-      loading: () => Column(
-        children: [
-          SizedBox(
-            width: 44,
-            height: 44,
-            child: Center(
-              child: SizedBox(
-                width: 22,
-                height: 22,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: mutedColor,
-                ),
-              ),
-            ),
-          ),
-          const Gap(8),
-          Text('—', style: TextStyle(fontSize: 20, color: textColor)),
-          const Gap(4),
-          Text(
-            rankingLabel,
-            style: TextStyle(fontSize: 13, color: mutedColor),
-          ),
-        ],
-      ),
-      error: (_, __) => Column(
-        children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: const BoxDecoration(
-              color: Color(0xFFE8EAF6),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(Icons.error_outline, color: Colors.grey.shade600),
-          ),
-          const Gap(8),
-          Text('—', style: TextStyle(fontSize: 20, color: textColor)),
-          const Gap(4),
-          Text(
-            rankingLabel,
-            style: TextStyle(fontSize: 13, color: mutedColor),
-          ),
-        ],
-      ),
     );
   }
 }

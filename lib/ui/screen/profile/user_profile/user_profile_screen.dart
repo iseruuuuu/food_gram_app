@@ -11,7 +11,7 @@ import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
-import 'package:food_gram_app/ui/component/profile/app_profile_header.dart';
+import 'package:food_gram_app/ui/screen/profile/components/profile_header.dart';
 import 'package:food_gram_app/ui/screen/profile/user_profile/user_profile_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
