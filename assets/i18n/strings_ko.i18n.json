@@ -166,6 +166,8 @@
     "nextLevelBanner": "다음 Lv까지 {count}개 게시물 남음",
     "levelMax": "Lv.MAX",
     "rankingStats": "랭킹",
+    "rankingPositionFormat": "#{rank}",
+    "rankingHiddenPosition": "???",
     "memberOnlyBadge": "멤버 전용"
   },
   "postDetailSheet": {

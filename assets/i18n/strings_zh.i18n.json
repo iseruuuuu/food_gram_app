@@ -166,6 +166,8 @@
     "nextLevelBanner": "距下一级还需 {count} 篇帖子",
     "levelMax": "Lv.MAX",
     "rankingStats": "排行榜",
+    "rankingPositionFormat": "#{rank}",
+    "rankingHiddenPosition": "???",
     "memberOnlyBadge": "会员专属"
   },
   "postDetailSheet": {

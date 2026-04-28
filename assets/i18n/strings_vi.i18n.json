@@ -166,6 +166,8 @@
     "nextLevelBanner": "Còn {count} bài đăng đến Lv tiếp theo",
     "levelMax": "Lv.MAX",
     "rankingStats": "Xếp hạng",
+    "rankingPositionFormat": "#{rank}",
+    "rankingHiddenPosition": "???",
     "memberOnlyBadge": "Chỉ thành viên"
   },
   "postDetailSheet": {

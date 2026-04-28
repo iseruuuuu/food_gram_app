@@ -166,6 +166,8 @@
     "nextLevelBanner": "Next Lv in {count} posts",
     "levelMax": "Lv.MAX",
     "rankingStats": "Ranking",
+    "rankingPositionFormat": "#{rank}",
+    "rankingHiddenPosition": "???",
     "memberOnlyBadge": "Members only"
   },
   "postDetailSheet": {

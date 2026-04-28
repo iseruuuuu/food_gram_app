@@ -166,6 +166,8 @@
     "nextLevelBanner": "อีก {count} โพสต์ถึง Lv ถัดไป",
     "levelMax": "Lv.MAX",
     "rankingStats": "อันดับ",
+    "rankingPositionFormat": "#{rank}",
+    "rankingHiddenPosition": "???",
     "memberOnlyBadge": "เฉพาะสมาชิก"
   },
   "postDetailSheet": {

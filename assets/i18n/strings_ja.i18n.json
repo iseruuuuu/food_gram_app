@@ -166,6 +166,8 @@
     "nextLevelBanner": "次のLvまであと {count} 投稿",
     "levelMax": "Lv.MAX",
     "rankingStats": "ランキング",
+    "rankingPositionFormat": "{rank}位",
+    "rankingHiddenPosition": "???位",
     "memberOnlyBadge": "メンバー限定"
   },
   "postDetailSheet": {

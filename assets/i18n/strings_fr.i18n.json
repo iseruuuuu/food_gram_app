@@ -166,6 +166,8 @@
     "nextLevelBanner": "Plus que {count} publications avant le prochain Lv",
     "levelMax": "Lv.MAX",
     "rankingStats": "Classement",
+    "rankingPositionFormat": "#{rank}",
+    "rankingHiddenPosition": "???",
     "memberOnlyBadge": "Réservé aux membres"
   },
   "postDetailSheet": {
