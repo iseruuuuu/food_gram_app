@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/fetch_post_repository.dart';
+import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
 import 'package:food_gram_app/core/theme/style/profile_style.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
@@ -53,6 +54,7 @@ class UserProfileScreen extends HookConsumerWidget {
             await Future<void>.delayed(const Duration(seconds: 1));
             ref.invalidate(profileRepositoryProvider(userId: users.userId));
             ref.invalidate(userProfileViewModelProvider(users.userId));
+            ref.invalidate(postCountRankProvider(users.userId));
           },
           child: CustomScrollView(
             controller: scrollController,

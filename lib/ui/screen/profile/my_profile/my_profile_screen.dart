@@ -2,8 +2,10 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/utils/user_level.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -92,6 +94,10 @@ class MyProfileScreen extends HookConsumerWidget {
                   onRefresh: () async {
                     await Future<void>.delayed(const Duration(seconds: 1));
                     ref.invalidate(myPostStreamProvider);
+                    final uid = ref.read(currentUserProvider);
+                    if (uid != null) {
+                      ref.invalidate(postCountRankProvider(uid));
+                    }
                     await ref
                         .read(myProfileViewModelProvider().notifier)
                         .getData();
@@ -112,6 +118,8 @@ class MyProfileScreen extends HookConsumerWidget {
                                   users: users,
                                   length: postCount,
                                   heartAmount: heartAmount,
+                                  rankingUnlockedOverride:
+                                      isSubscribed || users.isSubscribe,
                                 ),
                                 if (!isSubscribed)
                                   const Positioned(
