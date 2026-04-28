@@ -43,7 +43,6 @@ class MyProfileScreen extends HookConsumerWidget {
       extraDeps: [hasData],
     );
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
-    final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
     final loading = ref.watch(loadingProvider);
     useEffect(() {
       users.whenOrNull(
@@ -111,6 +110,8 @@ class MyProfileScreen extends HookConsumerWidget {
                       SliverToBoxAdapter(
                         child: users.when(
                           data: (users, heartAmount) {
+                            final premiumUnlocked = users.isSubscribe ||
+                                (isSubscribeAsync.valueOrNull == true);
                             return Stack(
                               clipBehavior: Clip.none,
                               children: [
@@ -118,10 +119,9 @@ class MyProfileScreen extends HookConsumerWidget {
                                   users: users,
                                   length: postCount,
                                   heartAmount: heartAmount,
-                                  rankingUnlockedOverride:
-                                      isSubscribed || users.isSubscribe,
+                                  rankingUnlockedOverride: premiumUnlocked,
                                 ),
-                                if (!isSubscribed)
+                                if (!premiumUnlocked)
                                   const Positioned(
                                     top: 10,
                                     left: 0,
@@ -130,7 +130,7 @@ class MyProfileScreen extends HookConsumerWidget {
                                   ),
                                 // ヘッダー右上の操作群（通知・保存）
                                 Positioned(
-                                  top: !isSubscribed ? 70 : 10,
+                                  top: !premiumUnlocked ? 70 : 10,
                                   right: 12,
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
