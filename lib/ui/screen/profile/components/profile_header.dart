@@ -131,7 +131,7 @@ class AppProfileHeader extends ConsumerWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 16,
-                            vertical: 8,
+                            vertical: 6,
                           ),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -160,14 +160,14 @@ class AppProfileHeader extends ConsumerWidget {
                             children: [
                               Image.asset(
                                 _getTrophyAsset(length),
-                                width: 25,
-                                height: 25,
+                                width: 20,
+                                height: 20,
                               ),
                               const Gap(8),
                               Text(
                                 '${_getRank(context, length)} ${t.rank.label}',
                                 style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                 ),
