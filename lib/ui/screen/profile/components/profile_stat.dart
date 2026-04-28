@@ -174,6 +174,7 @@ class ProfileRankingUnlocked extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
     final asyncRank = ref.watch(postCountRankProvider(userId));
     return asyncRank.when(
       data: (rank) => ProfileStat(
@@ -203,7 +204,10 @@ class ProfileRankingUnlocked extends StatelessWidget {
             ),
           ),
           const Gap(8),
-          Text('—', style: TextStyle(fontSize: 20, color: textColor)),
+          Text(
+            t.profile.rankingHiddenPosition,
+            style: TextStyle(fontSize: 20, color: textColor),
+          ),
           const Gap(4),
           Text(
             rankingLabel,
@@ -211,25 +215,31 @@ class ProfileRankingUnlocked extends StatelessWidget {
           ),
         ],
       ),
-      error: (_, __) => Column(
-        children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: const BoxDecoration(
-              color: Color(0xFFE8EAF6),
-              shape: BoxShape.circle,
+      error: (_, __) => GestureDetector(
+        onTap: () => ref.invalidate(postCountRankProvider(userId)),
+        child: Column(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: const BoxDecoration(
+                color: Color(0xFFE8EAF6),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.error_outline, color: Colors.grey.shade600),
             ),
-            child: Icon(Icons.error_outline, color: Colors.grey.shade600),
-          ),
-          const Gap(8),
-          Text('—', style: TextStyle(fontSize: 20, color: textColor)),
-          const Gap(4),
-          Text(
-            rankingLabel,
-            style: TextStyle(fontSize: 13, color: mutedColor),
-          ),
-        ],
+            const Gap(8),
+            Text(
+              t.profile.rankingHiddenPosition,
+              style: TextStyle(fontSize: 20, color: textColor),
+            ),
+            const Gap(4),
+            Text(
+              rankingLabel,
+              style: TextStyle(fontSize: 13, color: mutedColor),
+            ),
+          ],
+        ),
       ),
     );
   }
