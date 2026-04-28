@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/model/users.dart';
+import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
 import 'package:food_gram_app/core/utils/user_level.dart';
-import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -19,22 +21,24 @@ class AppProfileHeader extends ConsumerWidget {
     required this.users,
     required this.length,
     required this.heartAmount,
+    this.rankingUnlockedOverride,
     super.key,
   });
 
   final Users users;
   final int length;
   final int heartAmount;
+  final bool? rankingUnlockedOverride;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
     final currentUser = ref.watch(currentUserProvider);
-    final conversion = double.parse(Env.point);
-    final postlengthPoint = length * double.parse(Env.postLengthPoint);
-    final point =
-        (heartAmount - users.exchangedPoint) * conversion + postlengthPoint;
-    final trophyAsset = _getTrophyAsset(length);
+    final isViewerSubscribed =
+        ref.watch(isSubscribeProvider).valueOrNull ?? false;
+    final rankingUnlocked = rankingUnlockedOverride ??
+        users.isSubscribe ||
+        (currentUser != null && isViewerSubscribed);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final headerBg = Theme.of(context).colorScheme.surface;
     final textColor = isDark ? Colors.white : Colors.black;
@@ -121,59 +125,6 @@ class AppProfileHeader extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  if (users.isSubscribe)
-                    Column(
-                      children: [
-                        const Gap(8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.amber.shade100,
-                                Colors.amber.shade50,
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: Colors.amber.shade300,
-                              width: 2,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.amber.withValues(alpha: 0.2),
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                trophyAsset,
-                                width: 25,
-                                height: 25,
-                              ),
-                              const Gap(8),
-                              Text(
-                                '${_getRank(context, length)} ${t.rank.label}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
                   if (users.selfIntroduce.isNotEmpty) ...[
                     const Gap(8),
                     Padding(
@@ -262,95 +213,74 @@ class AppProfileHeader extends ConsumerWidget {
                         ),
                       ),
                   ],
-                  const Gap(8),
+                  const Gap(24),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Text(
-                                length.toString(),
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: textColor,
-                                ),
-                              ),
-                              const Gap(4),
-                              Text(
-                                t.profile.postCount,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color:
-                                      isDark ? Colors.white70 : Colors.black54,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: 1,
-                          height: 36,
-                          color: isDark ? Colors.white24 : Colors.grey.shade300,
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Text(
-                                heartAmount.toString(),
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: textColor,
-                                ),
-                              ),
-                              const Gap(4),
-                              Text(
-                                t.likeButton,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color:
-                                      isDark ? Colors.white70 : Colors.black54,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        if (currentUser == users.userId) ...[
-                          Container(
-                            width: 1,
-                            height: 36,
-                            color:
-                                isDark ? Colors.white24 : Colors.grey.shade300,
-                          ),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
                           Expanded(
-                            child: Column(
-                              children: [
-                                Text(
-                                  point.toStringAsFixed(2),
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: textColor,
-                                  ),
-                                ),
-                                const Gap(4),
-                                Text(
-                                  t.profile.pointCount,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: isDark
-                                        ? Colors.white70
-                                        : Colors.black54,
-                                  ),
-                                ),
-                              ],
+                            child: _ProfileStatColumn(
+                              icon: Icons.restaurant_rounded,
+                              iconBg: const Color(0xFFFFF3CD),
+                              iconColor: isDark
+                                  ? Colors.grey.shade400
+                                  : Colors.grey.shade700,
+                              valueText: length.toString(),
+                              label: t.profile.postCount,
+                              textColor: textColor,
+                              mutedColor:
+                                  isDark ? Colors.white70 : Colors.black54,
                             ),
                           ),
+                          _ProfileStatDivider(isDark: isDark),
+                          Expanded(
+                            child: _ProfileStatColumn(
+                              icon: Icons.favorite_rounded,
+                              iconBg: const Color(0xFFFFE4EC),
+                              iconColor: Colors.red.shade400,
+                              valueText: heartAmount.toString(),
+                              label: t.likeButton,
+                              textColor: textColor,
+                              mutedColor:
+                                  isDark ? Colors.white70 : Colors.black54,
+                            ),
+                          ),
+                          _ProfileStatDivider(isDark: isDark),
+                          Expanded(
+                            child: rankingUnlocked
+                                ? _ProfileRankingUnlocked(
+                                    userId: users.userId,
+                                    textColor: textColor,
+                                    mutedColor: isDark
+                                        ? Colors.white70
+                                        : Colors.black54,
+                                    rankingLabel: t.profile.rankingStats,
+                                    ref: ref,
+                                  )
+                                : _ProfileRankingLocked(
+                                    textColor: textColor,
+                                    mutedColor: isDark
+                                        ? Colors.white70
+                                        : Colors.black54,
+                                    rankingLabel: t.profile.rankingStats,
+                                    memberOnlyLabel: t.profile.memberOnlyBadge,
+                                    isDark: isDark,
+                                    onTap: () async {
+                                      try {
+                                        await ref
+                                            .read(
+                                              revenueCatServiceProvider
+                                                  .notifier,
+                                            )
+                                            .presentPaywallGuarded();
+                                      } on Exception catch (_) {}
+                                    },
+                                  ),
+                          ),
                         ],
-                      ],
+                      ),
                     ),
                   ),
                   if (currentUser == users.userId)
@@ -547,37 +477,257 @@ class AppProfileHeader extends ConsumerWidget {
       ],
     );
   }
+}
 
-  String _getRank(BuildContext context, int postCount) {
-    final t = Translations.of(context);
-    if (postCount >= 10000) {
-      return t.rank.emerald;
-    }
-    if (postCount >= 5000) {
-      return t.rank.diamond;
-    }
-    if (postCount >= 1000) {
-      return t.rank.gold;
-    }
-    if (postCount >= 500) {
-      return t.rank.silver;
-    }
-    return t.rank.bronze;
+String _formatPostCountRank(BuildContext context, int rank) {
+  final code = Localizations.localeOf(context).languageCode;
+  if (code == 'ja') {
+    return '$rank位';
   }
+  return '#$rank';
+}
 
-  String _getTrophyAsset(int postCount) {
-    if (postCount >= 10000) {
-      return Assets.trophy.trophyEmerald.path;
-    }
-    if (postCount >= 5000) {
-      return Assets.trophy.trophyDiamond.path;
-    }
-    if (postCount >= 1000) {
-      return Assets.trophy.trophyGold.path;
-    }
-    if (postCount >= 500) {
-      return Assets.trophy.trophySilver.path;
-    }
-    return Assets.trophy.trophyBronze.path;
+class _ProfileStatDivider extends StatelessWidget {
+  const _ProfileStatDivider({required this.isDark});
+
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = isDark ? Colors.white24 : Colors.grey.shade300;
+    return VerticalDivider(
+      width: 17,
+      thickness: 1,
+      indent: 6,
+      endIndent: 6,
+      color: color,
+    );
+  }
+}
+
+class _ProfileStatColumn extends StatelessWidget {
+  const _ProfileStatColumn({
+    required this.icon,
+    required this.iconBg,
+    required this.iconColor,
+    required this.valueText,
+    required this.label,
+    required this.textColor,
+    required this.mutedColor,
+  });
+
+  final IconData icon;
+  final Color iconBg;
+  final Color iconColor;
+  final String valueText;
+  final String label;
+  final Color textColor;
+  final Color mutedColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            color: iconBg,
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, color: iconColor, size: 22),
+        ),
+        const Gap(8),
+        Text(
+          valueText,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: textColor,
+          ),
+        ),
+        const Gap(4),
+        Text(
+          label,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 13,
+            color: mutedColor,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ProfileRankingLocked extends StatelessWidget {
+  const _ProfileRankingLocked({
+    required this.textColor,
+    required this.mutedColor,
+    required this.rankingLabel,
+    required this.memberOnlyLabel,
+    required this.isDark,
+    required this.onTap,
+  });
+
+  final Color textColor;
+  final Color mutedColor;
+  final String rankingLabel;
+  final String memberOnlyLabel;
+  final bool isDark;
+  final Future<void> Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    const radius = 12.0;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(radius),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(radius),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                if (isDark) ...[
+                  Colors.orange.shade50.withValues(alpha: 0.25),
+                  Colors.grey.shade900,
+                ] else ...[
+                  Colors.orange.shade50,
+                  Colors.grey.shade100,
+                ],
+              ],
+            ),
+            border: Border.all(
+              color: isDark ? Colors.white12 : Colors.grey.shade200,
+            ),
+          ),
+          child: Column(
+            children: [
+              Icon(
+                Icons.lock_outline_rounded,
+                size: 22,
+                color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+              ),
+              const Gap(6),
+              Text(
+                '???位',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                ),
+              ),
+              const Gap(4),
+              Text(
+                rankingLabel,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: mutedColor,
+                ),
+              ),
+              const Gap(8),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.grey.shade800 : Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  memberOnlyLabel,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? Colors.grey.shade300 : Colors.grey.shade800,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ProfileRankingUnlocked extends StatelessWidget {
+  const _ProfileRankingUnlocked({
+    required this.userId,
+    required this.textColor,
+    required this.mutedColor,
+    required this.rankingLabel,
+    required this.ref,
+  });
+
+  final String userId;
+  final Color textColor;
+  final Color mutedColor;
+  final String rankingLabel;
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    final asyncRank = ref.watch(postCountRankProvider(userId));
+    return asyncRank.when(
+      data: (rank) => _ProfileStatColumn(
+        icon: Icons.emoji_events_outlined,
+        iconBg: const Color(0xFFE8EAF6),
+        iconColor: Colors.indigo.shade400,
+        valueText: _formatPostCountRank(context, rank),
+        label: rankingLabel,
+        textColor: textColor,
+        mutedColor: mutedColor,
+      ),
+      loading: () => Column(
+        children: [
+          SizedBox(
+            width: 44,
+            height: 44,
+            child: Center(
+              child: SizedBox(
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: mutedColor,
+                ),
+              ),
+            ),
+          ),
+          const Gap(8),
+          Text('—', style: TextStyle(fontSize: 20, color: textColor)),
+          const Gap(4),
+          Text(
+            rankingLabel,
+            style: TextStyle(fontSize: 13, color: mutedColor),
+          ),
+        ],
+      ),
+      error: (_, __) => Column(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: const BoxDecoration(
+              color: Color(0xFFE8EAF6),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(Icons.error_outline, color: Colors.grey.shade600),
+          ),
+          const Gap(8),
+          Text('—', style: TextStyle(fontSize: 20, color: textColor)),
+          const Gap(4),
+          Text(
+            rankingLabel,
+            style: TextStyle(fontSize: 13, color: mutedColor),
+          ),
+        ],
+      ),
+    );
   }
 }
