@@ -2,8 +2,10 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/utils/user_level.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -16,7 +18,7 @@ import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/dialog/app_level_up_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/app_promote_dialog.dart';
-import 'package:food_gram_app/ui/component/profile/app_profile_header.dart';
+import 'package:food_gram_app/ui/screen/profile/components/profile_header.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
 import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dart';
 import 'package:go_router/go_router.dart';
@@ -41,7 +43,6 @@ class MyProfileScreen extends HookConsumerWidget {
       extraDeps: [hasData],
     );
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
-    final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
     final loading = ref.watch(loadingProvider);
     useEffect(() {
       users.whenOrNull(
@@ -92,6 +93,10 @@ class MyProfileScreen extends HookConsumerWidget {
                   onRefresh: () async {
                     await Future<void>.delayed(const Duration(seconds: 1));
                     ref.invalidate(myPostStreamProvider);
+                    final uid = ref.read(currentUserProvider);
+                    if (uid != null) {
+                      ref.invalidate(postCountRankProvider(uid));
+                    }
                     await ref
                         .read(myProfileViewModelProvider().notifier)
                         .getData();
@@ -105,6 +110,8 @@ class MyProfileScreen extends HookConsumerWidget {
                       SliverToBoxAdapter(
                         child: users.when(
                           data: (users, heartAmount) {
+                            final premiumUnlocked = users.isSubscribe ||
+                                (isSubscribeAsync.valueOrNull == true);
                             return Stack(
                               clipBehavior: Clip.none,
                               children: [
@@ -112,8 +119,9 @@ class MyProfileScreen extends HookConsumerWidget {
                                   users: users,
                                   length: postCount,
                                   heartAmount: heartAmount,
+                                  rankingUnlockedOverride: premiumUnlocked,
                                 ),
-                                if (!isSubscribed)
+                                if (!premiumUnlocked)
                                   const Positioned(
                                     top: 10,
                                     left: 0,
@@ -122,7 +130,7 @@ class MyProfileScreen extends HookConsumerWidget {
                                   ),
                                 // ヘッダー右上の操作群（通知・保存）
                                 Positioned(
-                                  top: !isSubscribed ? 70 : 10,
+                                  top: !premiumUnlocked ? 70 : 10,
                                   right: 12,
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -243,6 +251,10 @@ class MyProfileScreen extends HookConsumerWidget {
                           await context.pushNamed(RouterPath.myProfilePost);
                       if (result != null) {
                         ref.invalidate(myPostStreamProvider);
+                        final uid = ref.read(currentUserProvider);
+                        if (uid != null) {
+                          ref.invalidate(postCountRankProvider(uid));
+                        }
                         await ref.read(myPostStreamProvider.future);
                         final newPostCount = ref
                                 .read(myPostStreamProvider)

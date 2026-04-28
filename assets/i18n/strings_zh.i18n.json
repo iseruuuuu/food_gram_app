@@ -164,7 +164,11 @@
     "levelLabel": "Lv.{level}",
     "nextLevelPosts": "距下一级还需 {count} 篇帖子",
     "nextLevelBanner": "距下一级还需 {count} 篇帖子",
-    "levelMax": "Lv.MAX"
+    "levelMax": "Lv.MAX",
+    "rankingStats": "排行榜",
+    "rankingPositionFormat": "#{rank}",
+    "rankingHiddenPosition": "???",
+    "memberOnlyBadge": "会员专属"
   },
   "postDetailSheet": {
     "title": "关于此帖子",

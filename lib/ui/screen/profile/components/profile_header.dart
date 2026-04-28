@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/model/users.dart';
+import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/utils/user_level.dart';
-import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/dialog/app_profile_dialog.dart';
-import 'package:food_gram_app/ui/component/profile/app_profile_image.dart';
+import 'package:food_gram_app/ui/screen/profile/components/profile_stat.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -19,22 +21,23 @@ class AppProfileHeader extends ConsumerWidget {
     required this.users,
     required this.length,
     required this.heartAmount,
+    this.rankingUnlockedOverride,
     super.key,
   });
 
   final Users users;
   final int length;
   final int heartAmount;
+  final bool? rankingUnlockedOverride;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
     final currentUser = ref.watch(currentUserProvider);
-    final conversion = double.parse(Env.point);
-    final postlengthPoint = length * double.parse(Env.postLengthPoint);
-    final point =
-        (heartAmount - users.exchangedPoint) * conversion + postlengthPoint;
-    final trophyAsset = _getTrophyAsset(length);
+    final isViewerSubscribed =
+        ref.watch(isSubscribeProvider).valueOrNull ?? false;
+    final rankingUnlocked = rankingUnlockedOverride ??
+        users.isSubscribe || (currentUser != null && isViewerSubscribed);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final headerBg = Theme.of(context).colorScheme.surface;
     final textColor = isDark ? Colors.white : Colors.black;
@@ -121,14 +124,14 @@ class AppProfileHeader extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  if (users.isSubscribe)
+                  if (rankingUnlocked)
                     Column(
                       children: [
                         const Gap(8),
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 16,
-                            vertical: 8,
+                            vertical: 6,
                           ),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -156,15 +159,15 @@ class AppProfileHeader extends ConsumerWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Image.asset(
-                                trophyAsset,
-                                width: 25,
-                                height: 25,
+                                _getTrophyAsset(length),
+                                width: 20,
+                                height: 20,
                               ),
                               const Gap(8),
                               Text(
                                 '${_getRank(context, length)} ${t.rank.label}',
                                 style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                 ),
@@ -262,95 +265,88 @@ class AppProfileHeader extends ConsumerWidget {
                         ),
                       ),
                   ],
-                  const Gap(8),
+                  const Gap(24),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Text(
-                                length.toString(),
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: textColor,
-                                ),
-                              ),
-                              const Gap(4),
-                              Text(
-                                t.profile.postCount,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color:
-                                      isDark ? Colors.white70 : Colors.black54,
-                                ),
-                              ),
-                            ],
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: ProfileStat(
+                              icon: Icons.restaurant_rounded,
+                              iconBg: const Color(0xFFFFF3CD),
+                              iconColor: isDark
+                                  ? Colors.grey.shade400
+                                  : Colors.grey.shade700,
+                              valueText: length.toString(),
+                              label: t.profile.postCount,
+                              textColor: textColor,
+                              mutedColor:
+                                  isDark ? Colors.white70 : Colors.black54,
+                            ),
                           ),
-                        ),
-                        Container(
-                          width: 1,
-                          height: 36,
-                          color: isDark ? Colors.white24 : Colors.grey.shade300,
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Text(
-                                heartAmount.toString(),
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: textColor,
-                                ),
-                              ),
-                              const Gap(4),
-                              Text(
-                                t.likeButton,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color:
-                                      isDark ? Colors.white70 : Colors.black54,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        if (currentUser == users.userId) ...[
-                          Container(
-                            width: 1,
-                            height: 36,
+                          VerticalDivider(
+                            width: 17,
+                            thickness: 1,
+                            indent: 6,
+                            endIndent: 6,
                             color:
                                 isDark ? Colors.white24 : Colors.grey.shade300,
                           ),
                           Expanded(
-                            child: Column(
-                              children: [
-                                Text(
-                                  point.toStringAsFixed(2),
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: textColor,
-                                  ),
-                                ),
-                                const Gap(4),
-                                Text(
-                                  t.profile.pointCount,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: isDark
-                                        ? Colors.white70
-                                        : Colors.black54,
-                                  ),
-                                ),
-                              ],
+                            child: ProfileStat(
+                              icon: Icons.favorite_rounded,
+                              iconBg: const Color(0xFFFFE4EC),
+                              iconColor: Colors.red.shade400,
+                              valueText: heartAmount.toString(),
+                              label: t.likeButton,
+                              textColor: textColor,
+                              mutedColor:
+                                  isDark ? Colors.white70 : Colors.black54,
                             ),
                           ),
+                          VerticalDivider(
+                            width: 17,
+                            thickness: 1,
+                            indent: 6,
+                            endIndent: 6,
+                            color:
+                                isDark ? Colors.white24 : Colors.grey.shade300,
+                          ),
+                          Expanded(
+                            child: rankingUnlocked
+                                ? ProfileRankingUnlocked(
+                                    userId: users.userId,
+                                    textColor: textColor,
+                                    mutedColor: isDark
+                                        ? Colors.white70
+                                        : Colors.black54,
+                                    rankingLabel: t.profile.rankingStats,
+                                    ref: ref,
+                                  )
+                                : ProfileRankingLocked(
+                                    textColor: textColor,
+                                    mutedColor: isDark
+                                        ? Colors.white70
+                                        : Colors.black54,
+                                    rankingLabel: t.profile.rankingStats,
+                                    memberOnlyLabel: t.profile.memberOnlyBadge,
+                                    isDark: isDark,
+                                    onTap: () async {
+                                      try {
+                                        await ref
+                                            .read(
+                                              revenueCatServiceProvider
+                                                  .notifier,
+                                            )
+                                            .presentPaywallGuarded();
+                                      } on Exception catch (_) {}
+                                    },
+                                  ),
+                          ),
                         ],
-                      ],
+                      ),
                     ),
                   ),
                   if (currentUser == users.userId)

@@ -164,7 +164,11 @@
     "levelLabel": "Lv.{level}",
     "nextLevelPosts": "Còn {count} bài đăng đến Lv tiếp theo",
     "nextLevelBanner": "Còn {count} bài đăng đến Lv tiếp theo",
-    "levelMax": "Lv.MAX"
+    "levelMax": "Lv.MAX",
+    "rankingStats": "Xếp hạng",
+    "rankingPositionFormat": "#{rank}",
+    "rankingHiddenPosition": "???",
+    "memberOnlyBadge": "Chỉ thành viên"
   },
   "postDetailSheet": {
     "title": "Về bài đăng này",

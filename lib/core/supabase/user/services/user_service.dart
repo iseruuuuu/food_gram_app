@@ -100,6 +100,27 @@ class UserService extends _$UserService {
     return supabase.from('users').select().eq('user_id', post.userId).single();
   }
 
+  /// 全ユーザーの投稿数に基づく順位（1始まり）。RPC `get_post_count_rank` が必要。
+  Future<int> getPostCountRank(String userId) async {
+    return _cacheManager.get<int>(
+      key: 'post_count_rank_$userId',
+      fetcher: () async {
+        final res = await supabase.rpc<dynamic>(
+          'get_post_count_rank',
+          params: <String, dynamic>{'p_user_id': userId},
+        );
+        if (res is int) {
+          return res;
+        }
+        if (res is num) {
+          return res.toInt();
+        }
+        throw Exception('get_post_count_rank: unexpected response $res');
+      },
+      duration: const Duration(minutes: 5),
+    );
+  }
+
   /// キャッシュを無効化するメソッド
   void invalidateUserCache(String userId) {
     _cacheManager.invalidate('user_$userId');

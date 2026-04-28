@@ -58,6 +58,13 @@ class UserRepository extends _$UserRepository {
     });
   }
 
+  /// 投稿数ベースの全体ランキング順位（1始まり）
+  Future<Result<int, Exception>> getPostCountRank(String userId) async {
+    return _handleDatabaseOperation(() async {
+      return ref.read(userServiceProvider.notifier).getPostCountRank(userId);
+    });
+  }
+
   /// エラーハンドリング用のヘルパーメソッド
   Future<Result<T, Exception>> _handleDatabaseOperation<T>(
     Future<T> Function() operation,

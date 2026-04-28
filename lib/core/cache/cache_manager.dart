@@ -81,6 +81,7 @@ class CacheManager {
     invalidate('heart_amount_${userId}_incl_anon');
     invalidate('heart_amount_${userId}_excl_anon');
     invalidate('post_count_$userId');
+    invalidate('post_count_rank_$userId');
   }
 
   /// レストラン関連のキャッシュを無効化

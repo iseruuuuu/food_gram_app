@@ -164,7 +164,11 @@
     "levelLabel": "Lv.{level}",
     "nextLevelPosts": "อีก {count} โพสต์ถึง Lv ถัดไป",
     "nextLevelBanner": "อีก {count} โพสต์ถึง Lv ถัดไป",
-    "levelMax": "Lv.MAX"
+    "levelMax": "Lv.MAX",
+    "rankingStats": "อันดับ",
+    "rankingPositionFormat": "#{rank}",
+    "rankingHiddenPosition": "???",
+    "memberOnlyBadge": "เฉพาะสมาชิก"
   },
   "postDetailSheet": {
     "title": "เกี่ยวกับโพสต์นี้",
