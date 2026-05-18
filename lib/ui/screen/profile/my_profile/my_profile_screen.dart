@@ -112,7 +112,7 @@ class MyProfileScreen extends HookConsumerWidget {
                         child: users.when(
                           data: (users, heartAmount) {
                             final premiumUnlocked = users.isSubscribe ||
-                                (isSubscribeAsync.valueOrNull == true);
+                                (isSubscribeAsync.valueOrNull ?? false);
                             return Stack(
                               clipBehavior: Clip.none,
                               children: [
