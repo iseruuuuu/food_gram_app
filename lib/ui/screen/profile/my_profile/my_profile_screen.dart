@@ -78,6 +78,7 @@ class MyProfileScreen extends HookConsumerWidget {
             ),
             body: AsyncValueSwitcher(
               asyncValue: postList,
+              skipError: true,
               onErrorTap: () {
                 ref
                   ..invalidate(myPostStreamProvider)

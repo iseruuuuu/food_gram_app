@@ -101,10 +101,32 @@ Stream<List<Posts>> myPostStream(Ref ref) {
   if (user == null) {
     return const Stream<List<Posts>>.empty();
   }
-  return supabase
-      .from('posts')
-      .stream(primaryKey: ['id'])
-      .eq('user_id', user)
-      .order('created_at')
-      .map((events) => events.map(Posts.fromJson).toList());
+
+  Stream<List<Posts>> createMappedStream() {
+    return supabase
+        .from('posts')
+        .stream(primaryKey: ['id'])
+        .eq('user_id', user)
+        .order('created_at')
+        .map((events) {
+          final mapped = <Posts>[];
+          for (final e in events) {
+            try {
+              mapped.add(Posts.fromJson(e));
+            } on Object catch (err, st) {
+              _postsStreamLog.w(
+                'myPostStream: skip invalid post (fromJson failed)',
+                error: err,
+                stackTrace: st,
+              );
+            }
+          }
+          return mapped;
+        });
+  }
+
+  return _postsStreamWithReconnect(
+    categoryName: 'my_posts',
+    createStream: createMappedStream,
+  );
 }
