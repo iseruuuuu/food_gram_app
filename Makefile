@@ -1,4 +1,9 @@
-.PHONY: setup
+.PHONY: setup gen ci
+ci:
+	fvm flutter pub get --enforce-lockfile
+	fvm dart run build_runner build --delete-conflicting-outputs
+	fvm flutter test
+
 setup:
 	fvm flutter pub get
 	fvm dart run build_runner build --delete-conflicting-outputs
