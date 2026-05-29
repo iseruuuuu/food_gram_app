@@ -162,7 +162,9 @@ class _CreateAlbumAlertDialogState
                       );
                       return;
                     }
-                    await ref.read(firebaseAnalyticsServiceProvider).logEvent(
+                    ref
+                        .read(firebaseAnalyticsServiceProvider)
+                        .logEventUnawaited(
                           name: AnalyticsEvent.albumCreate,
                         );
                     Navigator.of(context).pop();
@@ -356,9 +358,11 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
                               );
                               return;
                             }
-                            await ref
+                            ref
                                 .read(firebaseAnalyticsServiceProvider)
-                                .logEvent(name: AnalyticsEvent.albumCreate);
+                                .logEventUnawaited(
+                                  name: AnalyticsEvent.albumCreate,
+                                );
                             newNameController.clear();
                             SnackBarHelper().openSimpleSnackBar(
                               context,
@@ -401,9 +405,14 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
                               );
                               return;
                             }
-                            await ref
+                            ref
                                 .read(firebaseAnalyticsServiceProvider)
-                                .logAlbumAddPost(postId);
+                                .logEventUnawaited(
+                              name: AnalyticsEvent.albumAddPost,
+                              parameters: {
+                                AnalyticsParam.postId: postId,
+                              },
+                            );
                             Navigator.of(context).pop();
                           } finally {
                             if (context.mounted) {

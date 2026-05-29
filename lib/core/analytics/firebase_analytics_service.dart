@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
@@ -73,6 +74,14 @@ class FirebaseAnalyticsService {
   /// Riverpod 外（FCM 等）から使う共有インスタンス
   static final FirebaseAnalyticsService shared =
       FirebaseAnalyticsService(FirebaseAnalytics.instance);
+
+  /// UI / 購入フローをブロックしない計測（失敗・遅延は呼び出し元に影響しない）
+  void logEventUnawaited({
+    required String name,
+    Map<String, Object>? parameters,
+  }) {
+    unawaited(logEvent(name: name, parameters: parameters));
+  }
 
   /// カスタムイベント（失敗しても呼び出し元には伝播しない）
   Future<void> logEvent({

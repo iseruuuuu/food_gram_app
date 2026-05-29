@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -74,13 +75,10 @@ class RevenueCatService extends _$RevenueCatService {
     final beforeInfo = await Purchases.getCustomerInfo();
     final wasActive =
         beforeInfo.entitlements.all[_entitlementId]?.isActive ?? false;
-    await ref.read(firebaseAnalyticsServiceProvider).logEvent(
-          name: AnalyticsEvent.paywallOpen,
-        );
+    final analytics = ref.read(firebaseAnalyticsServiceProvider);
+    analytics.logEventUnawaited(name: AnalyticsEvent.paywallOpen);
     if (!wasActive) {
-      await ref.read(firebaseAnalyticsServiceProvider).logEvent(
-            name: AnalyticsEvent.purchaseStart,
-          );
+      analytics.logEventUnawaited(name: AnalyticsEvent.purchaseStart);
     }
     await RevenueCatUI.presentPaywall();
     final afterInfo = await Purchases.getCustomerInfo();
@@ -92,9 +90,7 @@ class RevenueCatService extends _$RevenueCatService {
       loading.isLoading(value: true);
       if (isActiveNow && !wasActive) {
         await syncAfterPaywall();
-        await ref.read(firebaseAnalyticsServiceProvider).logEvent(
-              name: AnalyticsEvent.purchaseSuccess,
-            );
+        analytics.logEventUnawaited(name: AnalyticsEvent.purchaseSuccess);
         return true;
       }
       // 即時には有効になっていなくても、年間プランなどで遅れて反映されることがあるため1回同期
@@ -104,9 +100,7 @@ class RevenueCatService extends _$RevenueCatService {
         await Future<void>.delayed(const Duration(seconds: 2));
         final retryActive = await syncAfterPaywall();
         if (retryActive) {
-          await ref.read(firebaseAnalyticsServiceProvider).logEvent(
-                name: AnalyticsEvent.purchaseSuccess,
-              );
+          analytics.logEventUnawaited(name: AnalyticsEvent.purchaseSuccess);
           return true;
         }
       }

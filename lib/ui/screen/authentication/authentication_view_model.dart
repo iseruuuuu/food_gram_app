@@ -26,8 +26,8 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
 
   Loading get loading => ref.read(loadingProvider.notifier);
 
-  Future<void> _logLogin(String method) {
-    return ref.read(firebaseAnalyticsServiceProvider).logEvent(
+  void _logLogin(String method) {
+    ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
           name: AnalyticsEvent.login,
           parameters: {AnalyticsParam.method: method},
         );
@@ -38,7 +38,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     final result = await ref.read(authServiceProvider).loginApple();
     await result.when(
       success: (_) async {
-        await _logLogin('apple');
+        _logLogin('apple');
         state = state.copyWith(
           loginStatus: Translations.of(context).auth.loginSuccessful,
         );
@@ -59,7 +59,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     final result = await ref.read(authServiceProvider).loginGoogle();
     await result.when(
       success: (_) async {
-        await _logLogin('google');
+        _logLogin('google');
         state = state.copyWith(
           loginStatus: Translations.of(context).auth.loginSuccessful,
         );
@@ -80,7 +80,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     final result = await ref.read(authServiceProvider).loginTwitter();
     await result.when(
       success: (_) async {
-        await _logLogin('twitter');
+        _logLogin('twitter');
         state = state.copyWith(
           loginStatus: Translations.of(context).auth.loginSuccessful,
         );
