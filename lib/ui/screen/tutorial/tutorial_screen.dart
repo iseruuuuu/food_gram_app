@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -512,11 +513,16 @@ class TutorialScreen extends HookConsumerWidget {
                                     await preference.setBool(
                                       PreferenceKey.isFinishedTutorial,
                                     );
-                                    await ref
-                                        .read(firebaseAnalyticsServiceProvider)
-                                        .logEvent(
-                                          name: AnalyticsEvent.tutorialComplete,
-                                        );
+                                    unawaited(
+                                      ref
+                                          .read(
+                                            firebaseAnalyticsServiceProvider,
+                                          )
+                                          .logEvent(
+                                            name: AnalyticsEvent
+                                                .tutorialComplete,
+                                          ),
+                                    );
                                     context.go(RouterPath.splash);
                                   } else {
                                     context.pop();

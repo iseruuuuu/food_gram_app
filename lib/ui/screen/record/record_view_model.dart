@@ -244,6 +244,7 @@ class RecordViewModel extends _$RecordViewModel {
                 regionName: prefecture,
               );
         }
+        return;
       case MapViewType.world:
         final country = CountryDetector.detectCountry(lat, lng);
         if (country != null && country != 'その他') {
@@ -252,8 +253,9 @@ class RecordViewModel extends _$RecordViewModel {
                 regionName: country,
               );
         }
+        return;
       case MapViewType.detail:
-        break;
+        return;
     }
   }
 

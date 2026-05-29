@@ -151,20 +151,25 @@ class PostViewModel extends _$PostViewModel {
         );
     await result.when(
       success: (_) async {
-        await ref.read(firebaseAnalyticsServiceProvider).logPostSuccess(
-              fromDraft: _restoredFromDraft,
-            );
+        final fromDraft = _restoredFromDraft;
         _restoredFromDraft = false;
         await _preference.clearPostDraft();
         state = state.copyWith(
           status: PostStatus.success.name,
           isSuccess: true,
         );
+        unawaited(
+          ref.read(firebaseAnalyticsServiceProvider).logPostSuccess(
+                fromDraft: fromDraft,
+              ),
+        );
       },
       failure: (error) {
-        ref.read(firebaseAnalyticsServiceProvider).logPostFailed(
-              reason: error.toString(),
-            );
+        unawaited(
+          ref.read(firebaseAnalyticsServiceProvider).logPostFailed(
+                reason: error.toString(),
+              ),
+        );
         state = state.copyWith(
           status: PostStatus.error.name,
           isSuccess: false,
@@ -349,9 +354,11 @@ class PostViewModel extends _$PostViewModel {
       priceCurrency: currency,
     );
     await _preference.savePostDraft(draft);
-    await ref.read(firebaseAnalyticsServiceProvider).logEvent(
-          name: AnalyticsEvent.draftSave,
-        );
+    unawaited(
+      ref.read(firebaseAnalyticsServiceProvider).logEvent(
+            name: AnalyticsEvent.draftSave,
+          ),
+    );
   }
 
   void applyDraft(PostDraft draft, {required bool applyRestaurant}) {

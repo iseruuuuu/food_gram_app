@@ -176,8 +176,10 @@ class PostDetailViewModel extends _$PostDetailViewModel {
       storeList.add(parsePostId);
       await preference.setStringList(PreferenceKey.storeList, storeList);
       state = state.copyWith(isStore: true);
-      await ref.read(firebaseAnalyticsServiceProvider).logPostSave(postId);
       openSnackBar();
+      unawaited(
+        ref.read(firebaseAnalyticsServiceProvider).logPostSave(postId),
+      );
     }
   }
 

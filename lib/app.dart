@@ -28,8 +28,14 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     ref.listen(authStateProvider, (_, next) {
-      final userId = next.valueOrNull?.session?.user.id;
-      ref.read(firebaseAnalyticsServiceProvider).setUserId(userId);
+      next.when(
+        data: (authState) {
+          final userId = authState.session?.user.id;
+          ref.read(firebaseAnalyticsServiceProvider).setUserId(userId);
+        },
+        loading: () {},
+        error: (_, __) {},
+      );
     });
     return ToastificationWrapper(
       child: MaterialApp.router(

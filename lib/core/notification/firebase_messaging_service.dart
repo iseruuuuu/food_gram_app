@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -390,7 +391,7 @@ class FirebaseMessagingService {
     _logger.i('通知がタップされました: ${message.messageId}');
 
     final messageType = message.data['type'] as String?;
-    await FirebaseAnalyticsService.shared.logPushOpen(type: messageType);
+    unawaited(FirebaseAnalyticsService.shared.logPushOpen(type: messageType));
     if (messageType == 'heart') {
       // いいね通知がタップされた場合
       final postIdStr =

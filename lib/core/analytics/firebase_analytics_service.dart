@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,37 +21,74 @@ class FirebaseAnalyticsService {
 
   final FirebaseAnalytics _analytics;
   final Logger _logger = Logger();
+  bool _collectionEnabled = false;
+
+  bool get isCollectionEnabled => _collectionEnabled;
 
   /// 画面遷移の自動計測用 Observer（GoRouter に渡す）
   FirebaseAnalyticsObserver get navigatorObserver {
     return FirebaseAnalyticsObserver(analytics: _analytics);
   }
 
-  /// Analytics を有効化し、アプリ起動を記録
+  /// ATT（iOS）に合わせて収集可否を同期し、有効時のみ app_open を送る
   Future<void> initialize() async {
-    await _analytics.setAnalyticsCollectionEnabled(true);
-    await _analytics.logAppOpen();
-    _logger.i('Firebase Analytics を初期化しました');
+    await syncCollectionWithAppTracking();
+    if (_collectionEnabled) {
+      await _runSafe('logAppOpen', () => _analytics.logAppOpen());
+    }
+    _logger.i(
+      'Firebase Analytics を初期化しました (collection=$_collectionEnabled)',
+    );
+  }
+
+  /// iOS は ATT 許可時のみ収集。Android は収集 ON。
+  Future<void> syncCollectionWithAppTracking() async {
+    var enabled = true;
+    if (Platform.isIOS) {
+      final status = await AppTrackingTransparency.trackingAuthorizationStatus;
+      enabled = status == TrackingStatus.authorized;
+    }
+    await _setCollectionEnabled(enabled);
+  }
+
+  Future<void> _setCollectionEnabled(bool enabled) async {
+    _collectionEnabled = enabled;
+    await _runSafe(
+      'setAnalyticsCollectionEnabled',
+      () => _analytics.setAnalyticsCollectionEnabled(enabled),
+    );
   }
 
   /// ログインユーザー ID（ログアウト時は null）
   Future<void> setUserId(String? userId) async {
-    await _analytics.setUserId(id: userId);
+    if (!_collectionEnabled) {
+      return;
+    }
+    await _runSafe(
+      'setUserId',
+      () => _analytics.setUserId(id: userId),
+    );
   }
 
   /// Riverpod 外（FCM 等）から使う共有インスタンス
   static final FirebaseAnalyticsService shared =
       FirebaseAnalyticsService(FirebaseAnalytics.instance);
 
-  /// カスタムイベント
+  /// カスタムイベント（失敗しても呼び出し元には伝播しない）
   Future<void> logEvent({
     required String name,
     Map<String, Object>? parameters,
   }) async {
+    if (!_collectionEnabled) {
+      return;
+    }
     if (kDebugMode) {
       _logger.d('Analytics event: $name params=$parameters');
     }
-    await _analytics.logEvent(name: name, parameters: parameters);
+    await _runSafe(
+      name,
+      () => _analytics.logEvent(name: name, parameters: parameters),
+    );
   }
 
   Future<void> logPostStart({String? source}) => logEvent(
@@ -127,10 +167,24 @@ class FirebaseAnalyticsService {
     required String screenName,
     String? screenClass,
   }) async {
-    await _analytics.logScreenView(
-      screenName: screenName,
-      screenClass: screenClass ?? screenName,
+    if (!_collectionEnabled) {
+      return;
+    }
+    await _runSafe(
+      'logScreenView',
+      () => _analytics.logScreenView(
+        screenName: screenName,
+        screenClass: screenClass ?? screenName,
+      ),
     );
+  }
+
+  Future<void> _runSafe(String label, Future<void> Function() action) async {
+    try {
+      await action();
+    } on Object catch (e, st) {
+      _logger.w('Analytics $label failed: $e', stackTrace: st);
+    }
   }
 }
 
