@@ -134,12 +134,14 @@ class RecordViewModel extends _$RecordViewModel {
           final restaurant = await ref
               .read(mapPostRepositoryProvider.notifier)
               .getRestaurantPosts(lat: latLng!.latitude, lng: latLng.longitude);
-          restaurant.whenOrNull(success: (posts) {
-            ref.read(firebaseAnalyticsServiceProvider).logMapPinTap(
-                  source: 'mymap',
-                );
-            onPinTap(posts);
-          });
+          restaurant.whenOrNull(
+            success: (posts) {
+              ref.read(firebaseAnalyticsServiceProvider).logMapPinTap(
+                    source: 'mymap',
+                  );
+              onPinTap(posts);
+            },
+          );
           await state.mapController?.animateCamera(
             CameraUpdate.newLatLng(latLng),
             duration: const Duration(seconds: 1),

@@ -117,7 +117,7 @@ class MapScreen extends HookConsumerWidget {
                           if (posts.isEmpty) {
                             return;
                           }
-                          ref
+                          await ref
                               .read(firebaseAnalyticsServiceProvider)
                               .logMapPinTap(source: 'map');
                           final first = posts.first;

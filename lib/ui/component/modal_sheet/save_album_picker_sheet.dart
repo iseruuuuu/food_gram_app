@@ -401,7 +401,7 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
                               );
                               return;
                             }
-                            ref
+                            await ref
                                 .read(firebaseAnalyticsServiceProvider)
                                 .logAlbumAddPost(postId);
                             Navigator.of(context).pop();

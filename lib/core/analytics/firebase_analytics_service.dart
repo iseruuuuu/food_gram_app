@@ -34,7 +34,7 @@ class FirebaseAnalyticsService {
   Future<void> initialize() async {
     await syncCollectionWithAppTracking();
     if (_collectionEnabled) {
-      await _runSafe('logAppOpen', () => _analytics.logAppOpen());
+      await _runSafe('logAppOpen', _analytics.logAppOpen);
     }
     _logger.i(
       'Firebase Analytics を初期化しました (collection=$_collectionEnabled)',

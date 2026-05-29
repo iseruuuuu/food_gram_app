@@ -158,7 +158,7 @@ class MapPlaceSearchModalSheet extends HookConsumerWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         onTap: () async {
-                          ref
+                          await ref
                               .read(firebaseAnalyticsServiceProvider)
                               .logMapSearchResultTap(searchQuery.value);
                           await onRestaurantSelected(restaurant);
