@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/app.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/home_widget/map_stats_home_widget_sync.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/core/review/in_app_review_service.dart';
@@ -46,6 +47,8 @@ Future<void> initializeThirdPartyServices() async {
   if (Firebase.apps.isEmpty) {
     await Firebase.initializeApp();
   }
+
+  await initializeFirebaseAnalytics();
 
   // バックグラウンドメッセージハンドラーを設定
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
