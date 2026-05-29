@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/post_deail_list_mode.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
@@ -40,6 +41,7 @@ class PostDetailScreen extends HookConsumerWidget {
     final memoizedPosts = useMemoized(() => posts, [posts.id]);
     useEffect(
       () {
+        ref.read(firebaseAnalyticsServiceProvider).logPostDetailOpen(posts.id);
         ref
             .read(postDetailViewModelProvider().notifier)
             .initializeStoreState(posts.id);

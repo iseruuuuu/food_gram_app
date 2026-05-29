@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/model.dart';
@@ -389,6 +390,7 @@ class FirebaseMessagingService {
     _logger.i('通知がタップされました: ${message.messageId}');
 
     final messageType = message.data['type'] as String?;
+    await FirebaseAnalyticsService.shared.logPushOpen(type: messageType);
     if (messageType == 'heart') {
       // いいね通知がタップされた場合
       final postIdStr =

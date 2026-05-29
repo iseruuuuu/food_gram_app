@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/review/in_app_review_service.dart';
@@ -64,6 +65,9 @@ class PostScreen extends HookConsumerWidget {
 
     useEffect(
       () {
+        ref.read(firebaseAnalyticsServiceProvider).logPostStart(
+              source: routerPath,
+            );
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           if (restaurant != null) {
             ref
@@ -77,6 +81,7 @@ class PostScreen extends HookConsumerWidget {
             return;
           }
           if (draft != null && draft.hasRestorableContent) {
+            ref.read(postViewModelProvider().notifier).markRestoredFromDraft();
             ref.read(postViewModelProvider().notifier).applyDraft(
                   draft,
                   applyRestaurant: restaurant == null,

@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/core/theme/style/tutorial_style.dart';
@@ -510,6 +512,11 @@ class TutorialScreen extends HookConsumerWidget {
                                     await preference.setBool(
                                       PreferenceKey.isFinishedTutorial,
                                     );
+                                    await ref
+                                        .read(firebaseAnalyticsServiceProvider)
+                                        .logEvent(
+                                          name: AnalyticsEvent.tutorialComplete,
+                                        );
                                     context.go(RouterPath.splash);
                                   } else {
                                     context.pop();

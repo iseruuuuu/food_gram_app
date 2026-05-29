@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
@@ -16,13 +19,22 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// 記録タブの全体のUI
-class RecordDetailScreen extends ConsumerWidget {
+class RecordDetailScreen extends HookConsumerWidget {
   const RecordDetailScreen({required this.posts, super.key});
 
   final List<Posts> posts;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useEffect(
+      () {
+        final analytics = ref.read(firebaseAnalyticsServiceProvider);
+        analytics.logEvent(name: AnalyticsEvent.recordOpen);
+        analytics.logEvent(name: AnalyticsEvent.insightOpen);
+        return null;
+      },
+      const [],
+    );
     final state = ref.watch(recordViewModelProvider);
     final isSubscribe = ref.watch(isSubscribeProvider).valueOrNull ?? false;
     final t = Translations.of(context);

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/translation/translation_service.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 
@@ -136,6 +138,9 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
         return;
       }
       setState(() => _translated = out);
+      ref.read(firebaseAnalyticsServiceProvider).logEvent(
+            name: AnalyticsEvent.translateTap,
+          );
     } finally {
       if (mounted) {
         setState(() => _isTranslating = false);

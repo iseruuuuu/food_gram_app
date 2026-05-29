@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/supabase/auth/services/auth_service.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
@@ -24,11 +26,19 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
 
   Loading get loading => ref.read(loadingProvider.notifier);
 
+  Future<void> _logLogin(String method) {
+    return ref.read(firebaseAnalyticsServiceProvider).logEvent(
+          name: AnalyticsEvent.login,
+          parameters: {AnalyticsParam.method: method},
+        );
+  }
+
   Future<void> loginApple(BuildContext context) async {
     primaryFocus?.unfocus();
     final result = await ref.read(authServiceProvider).loginApple();
     await result.when(
       success: (_) async {
+        await _logLogin('apple');
         state = state.copyWith(
           loginStatus: Translations.of(context).auth.loginSuccessful,
         );
@@ -49,6 +59,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     final result = await ref.read(authServiceProvider).loginGoogle();
     await result.when(
       success: (_) async {
+        await _logLogin('google');
         state = state.copyWith(
           loginStatus: Translations.of(context).auth.loginSuccessful,
         );
@@ -69,6 +80,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     final result = await ref.read(authServiceProvider).loginTwitter();
     await result.when(
       success: (_) async {
+        await _logLogin('twitter');
         state = state.copyWith(
           loginStatus: Translations.of(context).auth.loginSuccessful,
         );

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/local/save_album_local_repository.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
@@ -175,6 +176,7 @@ class PostDetailViewModel extends _$PostDetailViewModel {
       storeList.add(parsePostId);
       await preference.setStringList(PreferenceKey.storeList, storeList);
       state = state.copyWith(isStore: true);
+      await ref.read(firebaseAnalyticsServiceProvider).logPostSave(postId);
       openSnackBar();
     }
   }

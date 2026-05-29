@@ -8,10 +8,11 @@ import 'package:food_gram_app/ui/screen/record/components/map/record_map_stats_c
 import 'package:food_gram_app/ui/screen/record/components/record_tab.dart';
 import 'package:food_gram_app/ui/screen/record/record_state.dart';
 import 'package:food_gram_app/ui/screen/record/record_view_model.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
 /// 日本／世界マップ
-class RecordMap extends HookWidget {
+class RecordMap extends HookConsumerWidget {
   const RecordMap({
     required this.state,
     required this.controller,
@@ -26,7 +27,7 @@ class RecordMap extends HookWidget {
   final double longitude;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isTapPin = useState(false);
     final post = useState<List<Posts?>>([]);
     final isEarthStyle = useState(false);
@@ -47,7 +48,10 @@ class RecordMap extends HookWidget {
               iconSize: recordMapIconSizeForContext(context),
             );
           },
-          onMapClick: (_, __) => isTapPin.value = false,
+          onMapClick: (_, latLng) {
+            isTapPin.value = false;
+            controller.logRegionMapTap(latLng.latitude, latLng.longitude);
+          },
           onStyleLoadedCallback: controller.onStyleLoaded,
           annotationOrder: const [AnnotationType.symbol],
           key: const ValueKey('recordMapLibre'),
