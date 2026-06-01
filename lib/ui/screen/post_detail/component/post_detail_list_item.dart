@@ -342,10 +342,10 @@ class PostDetailListItem extends HookConsumerWidget {
                           ? Icons.bookmark_add_rounded
                           : Icons.bookmark_add_outlined,
                     ),
-                    iconSize: 36,
+                    iconSize: 34,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
-                  const Gap(6),
+                  const Gap(8),
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).push<void>(
@@ -360,7 +360,7 @@ class PostDetailListItem extends HookConsumerWidget {
                     },
                     child: Icon(
                       Icons.ios_share_outlined,
-                      size: 36,
+                      size: 34,
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
