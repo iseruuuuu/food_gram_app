@@ -129,8 +129,12 @@ class AdmobInterstitial {
       _isAdShowing = true;
       _lastAdShowTime = DateTime.now();
       await _interstitialAd!.show();
-    } on Exception catch (e) {
+    } on Object catch (e) {
       logger.e('Error showing interstitial ad: $e');
+      _interstitialAd?.dispose();
+      _interstitialAd = null;
+      _isAdReady = false;
+      createAd();
       onShowFailed();
     } finally {
       _isAdShowing = false;
