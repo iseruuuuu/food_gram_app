@@ -1,13 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
-import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:gap/gap.dart';
+import 'package:food_gram_app/ui/component/share/post_share_branding.dart';
+import 'package:food_gram_app/ui/component/share/post_share_image.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AppShareWidget extends StatelessWidget {
-  const AppShareWidget({
+class PostShareClassicTemplate extends StatelessWidget {
+  const PostShareClassicTemplate({
     required this.posts,
     required this.ref,
     super.key,
@@ -16,13 +16,18 @@ class AppShareWidget extends StatelessWidget {
   final Posts posts;
   final WidgetRef ref;
 
+  static const Size size = Size(350, 420);
+
   @override
   Widget build(BuildContext context) {
     final supabase = ref.watch(supabaseProvider);
+    final imageUrl =
+        supabase.storage.from('food').getPublicUrl(posts.firstFoodImage);
+
     return ProviderScope(
       child: SizedBox(
-        width: 350,
-        height: 420,
+        width: size.width,
+        height: size.height,
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
@@ -34,12 +39,7 @@ class AppShareWidget extends StatelessWidget {
             child: Stack(
               children: [
                 SizedBox.expand(
-                  child: CachedNetworkImage(
-                    imageUrl: supabase.storage
-                        .from('food')
-                        .getPublicUrl(posts.firstFoodImage),
-                    fit: BoxFit.cover,
-                  ),
+                  child: PostShareImage(imageUrl: imageUrl),
                 ),
                 Positioned(
                   bottom: 0,
@@ -93,18 +93,7 @@ class AppShareWidget extends StatelessWidget {
                         Row(
                           children: [
                             const Spacer(),
-                            const Text(
-                              '#FoodGram',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Gap(4),
-                            Assets.icon.icon3.image(
-                              width: 30,
-                              height: 30,
-                            ),
+                            const PostShareBranding(),
                           ],
                         ),
                       ],
