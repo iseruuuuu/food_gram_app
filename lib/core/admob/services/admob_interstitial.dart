@@ -106,7 +106,10 @@ class AdmobInterstitial {
 
   void _setupFullScreenCallback(VoidCallback onAdClosed) {
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-      onAdShowedFullScreenContent: (ad) => logger.i('Ad displayed'),
+      onAdShowedFullScreenContent: (ad) {
+        _lastAdShowTime = DateTime.now();
+        logger.i('Ad displayed');
+      },
       onAdDismissedFullScreenContent: (ad) {
         logger.i('Ad dismissed');
         ad.dispose();
@@ -127,7 +130,6 @@ class AdmobInterstitial {
   Future<void> _showAd({required VoidCallback onShowFailed}) async {
     try {
       _isAdShowing = true;
-      _lastAdShowTime = DateTime.now();
       await _interstitialAd!.show();
     } on Object catch (e) {
       logger.e('Error showing interstitial ad: $e');
