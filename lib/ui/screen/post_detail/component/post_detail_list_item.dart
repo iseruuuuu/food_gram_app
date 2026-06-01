@@ -268,11 +268,11 @@ class PostDetailListItem extends HookConsumerWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Gap(8),
               Row(
                 children: [
-                  const Gap(4),
+                  const Gap(8),
                   IconButton(
+                    padding: EdgeInsets.zero,
                     onPressed: () async {
                       if (currentUser == null || currentUser == users.userId) {
                         return;
@@ -307,30 +307,6 @@ class PostDetailListItem extends HookConsumerWidget {
                       size: 36,
                     ),
                   ),
-                  const Gap(6),
-                  GestureDetector(
-                    onTap: () {
-                      showGeneralDialog(
-                        context: context,
-                        pageBuilder: (_, __, ___) {
-                          return AppShareDialog(
-                            posts: posts,
-                            users: users,
-                          );
-                        },
-                      );
-                    },
-                    child: Icon(
-                      Icons.send,
-                      size: 36,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    '${heartCount.value} ${t.likeButton}',
-                    style: DetailPostStyle.like(context),
-                  ),
                   IconButton(
                     onPressed: () {
                       ref.read(postDetailViewModelProvider().notifier).store(
@@ -363,15 +339,39 @@ class PostDetailListItem extends HookConsumerWidget {
                     },
                     icon: Icon(
                       (isStored.value ?? false)
-                          ? Icons.bookmark
-                          : Icons.bookmark_border,
+                          ? Icons.bookmark_add_rounded
+                          : Icons.bookmark_add_outlined,
                     ),
-                    iconSize: 36,
+                    iconSize: 40,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
+                  const Gap(6),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push<void>(
+                        MaterialPageRoute<void>(
+                          fullscreenDialog: true,
+                          builder: (context) => AppShareDialog(
+                            posts: posts,
+                            users: users,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Icon(
+                      Icons.ios_share_outlined,
+                      size: 36,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    '${heartCount.value} ${t.likeButton}',
+                    style: DetailPostStyle.like(context),
+                  ),
+                  const Gap(6),
                 ],
               ),
-              const Gap(6),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: SizedBox(
