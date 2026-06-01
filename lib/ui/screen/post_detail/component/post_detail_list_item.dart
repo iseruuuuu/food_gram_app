@@ -342,7 +342,7 @@ class PostDetailListItem extends HookConsumerWidget {
                           ? Icons.bookmark_add_rounded
                           : Icons.bookmark_add_outlined,
                     ),
-                    iconSize: 40,
+                    iconSize: 36,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                   const Gap(6),
