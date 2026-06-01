@@ -70,8 +70,17 @@ class AdmobInterstitial {
       return;
     }
 
-    _setupFullScreenCallback(onAdClosed);
-    await _showAd();
+    var didComplete = false;
+    void complete() {
+      if (didComplete) {
+        return;
+      }
+      didComplete = true;
+      onAdClosed?.call();
+    }
+
+    _setupFullScreenCallback(complete);
+    await _showAd(onShowFailed: complete);
   }
 
   bool _canShowAd() {
@@ -95,7 +104,7 @@ class AdmobInterstitial {
     return true;
   }
 
-  void _setupFullScreenCallback(VoidCallback? onAdClosed) {
+  void _setupFullScreenCallback(VoidCallback onAdClosed) {
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) => logger.i('Ad displayed'),
       onAdDismissedFullScreenContent: (ad) {
@@ -103,24 +112,26 @@ class AdmobInterstitial {
         ad.dispose();
         _isAdReady = false;
         createAd();
-        onAdClosed?.call();
+        onAdClosed();
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
         logger.e('Failed to show ad: $error');
         ad.dispose();
         _isAdReady = false;
         createAd();
+        onAdClosed();
       },
     );
   }
 
-  Future<void> _showAd() async {
+  Future<void> _showAd({required VoidCallback onShowFailed}) async {
     try {
       _isAdShowing = true;
       _lastAdShowTime = DateTime.now();
       await _interstitialAd!.show();
     } on Exception catch (e) {
       logger.e('Error showing interstitial ad: $e');
+      onShowFailed();
     } finally {
       _isAdShowing = false;
     }

@@ -5,7 +5,6 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/ui/component/share/post_share_preview_view.dart';
 import 'package:food_gram_app/ui/component/share/post_share_template.dart';
 import 'package:food_gram_app/ui/component/share/post_share_template_selection_view.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AppShareDialog extends HookConsumerWidget {
@@ -28,7 +27,7 @@ class AppShareDialog extends HookConsumerWidget {
         onTemplateSelected: (templateId) {
           selectedTemplate.value = templateId;
         },
-        onClose: context.pop,
+        onClose: () => Navigator.of(context).pop(),
       );
     }
 
