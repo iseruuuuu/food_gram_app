@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
+import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/local/force_update_checker.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
@@ -131,7 +132,9 @@ class MapScreen extends HookConsumerWidget {
                     myLocationEnabled: isLocationEnabled,
                     initialCameraPosition: CameraPosition(
                       target: isLocationEnabled ? value.$1 : defaultLocation,
-                      zoom: isLocationEnabled ? 16 : 3.8,
+                      zoom: isLocationEnabled
+                          ? MapOverlayConstants.initial
+                          : MapOverlayConstants.countryOverview,
                     ),
                     trackCameraPosition: true,
                     tiltGesturesEnabled: false,
