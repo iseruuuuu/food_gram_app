@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
@@ -59,9 +60,16 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
     }
     return DraggableScrollableSheet(
       expand: false,
-      initialChildSize: 0.35,
-      minChildSize: 0.15,
+      initialChildSize: MapOverlayConstants.detailInitialChildSize,
+      minChildSize: 0.12,
       maxChildSize: 0.95,
+      snap: true,
+      snapAnimationDuration: const Duration(milliseconds: 280),
+      snapSizes: const [
+        0.12,
+        MapOverlayConstants.detailInitialChildSize,
+        0.95,
+      ],
       builder: (context, scrollController) {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         final sheetBg = isDark ? Colors.black : Colors.white;
@@ -273,6 +281,9 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
           child: CustomScrollView(
             controller: scrollController,
             primary: false,
+            physics: const AlwaysScrollableScrollPhysics(
+              parent: ClampingScrollPhysics(),
+            ),
             slivers: slivers,
           ),
         );

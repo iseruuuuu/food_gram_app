@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -33,12 +37,38 @@ class MapRestaurantOverviewModalSheet extends HookConsumerWidget {
     final nearbyAsync = cameraCenter == null
         ? null
         : ref.watch(map_repo.getNearByPostsProvider(cameraCenter));
+
+    final sheetController = useMemoized(DraggableScrollableController.new);
+    useEffect(
+      () => sheetController.dispose,
+      [sheetController],
+    );
+    useListenable(sheetController);
+
+    final isCollapsed = !sheetController.isAttached ||
+        sheetController.size <=
+            MapOverlayConstants.overviewCollapsedSize + 0.02;
+
+    Future<void> expandSheet() {
+      return sheetController.animateTo(
+        MapOverlayConstants.overviewExpandedSize,
+        duration: const Duration(milliseconds: 280),
+        curve: Curves.easeOutCubic,
+      );
+    }
+
     return DraggableScrollableSheet(
       expand: false,
-      // 初期のModalSheetの高さ
-      initialChildSize: 0.25,
-      minChildSize: 0.15,
+      controller: sheetController,
+      initialChildSize: MapOverlayConstants.overviewCollapsedSize,
+      minChildSize: MapOverlayConstants.overviewCollapsedSize,
       maxChildSize: 0.95,
+      snap: true,
+      snapAnimationDuration: const Duration(milliseconds: 280),
+      snapSizes: const [
+        MapOverlayConstants.overviewCollapsedSize,
+        MapOverlayConstants.overviewExpandedSize,
+      ],
       builder: (context, scrollController) {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         final sheetBg = isDark ? Colors.black : Colors.white;
@@ -46,43 +76,50 @@ class MapRestaurantOverviewModalSheet extends HookConsumerWidget {
         final t = Translations.of(context);
         final slivers = <Widget>[
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8, bottom: 8),
-              child: Center(
-                child: Container(
-                  width: 36,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: handleColor,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
+            child: GestureDetector(
+              onTap: () {
+                if (isCollapsed) {
+                  unawaited(expandSheet());
+                }
+              },
+              behavior: HitTestBehavior.opaque,
+              child: SizedBox(
+                width: double.infinity,
+                height: 44,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 36,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: handleColor,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton.icon(
-                  onPressed: () => ref
-                      .read(mapViewModelProvider.notifier)
-                      .setNearbySearchCenterFromCamera(),
-                  icon: const Icon(Icons.search, size: 18),
-                  label: Text(
-                    t.searchNearbyPlaces,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+              child: TextButton.icon(
+                onPressed: () => ref
+                    .read(mapViewModelProvider.notifier)
+                    .setNearbySearchCenterFromCamera(),
+                icon: const Icon(Icons.search, size: 18),
+                label: Text(
+                  t.searchNearbyPlaces,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
                   ),
-                  style: FilledButton.styleFrom(
-                    minimumSize: const Size.fromHeight(40),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+                ),
+                style: TextButton.styleFrom(
+                  minimumSize: const Size.fromHeight(32),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                 ),
               ),
             ),
@@ -93,8 +130,8 @@ class MapRestaurantOverviewModalSheet extends HookConsumerWidget {
                 padding: EdgeInsets.all(24),
                 child: Center(child: CircularProgressIndicator()),
               ),
-            )
-          else
+            ),
+          if (nearbyAsync != null)
             nearbyAsync.when(
               data: (posts) {
                 if (posts.isEmpty) {
@@ -154,18 +191,17 @@ class MapRestaurantOverviewModalSheet extends HookConsumerWidget {
                               vertical: 4,
                             ),
                             child: Card(
-                              elevation: 4,
+                              elevation: index == 0 ? 2 : 4,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(12),
                               ),
                               clipBehavior: Clip.antiAlias,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  // 写真
                                   SizedBox(
-                                    height: 100,
+                                    height: index == 0 ? 56 : 88,
                                     width: double.infinity,
                                     child: Stack(
                                       children: [
@@ -200,11 +236,11 @@ class MapRestaurantOverviewModalSheet extends HookConsumerWidget {
                                   ),
                                   // 店名 + 星
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(
+                                    padding: EdgeInsets.fromLTRB(
                                       12,
-                                      10,
+                                      index == 0 ? 6 : 8,
                                       12,
-                                      10,
+                                      index == 0 ? 6 : 8,
                                     ),
                                     child: Column(
                                       crossAxisAlignment:
@@ -310,6 +346,10 @@ class MapRestaurantOverviewModalSheet extends HookConsumerWidget {
           child: CustomScrollView(
             controller: scrollController,
             primary: false,
+            // 折りたたみ時も上スワイプでシートを広げられるようにする
+            physics: const AlwaysScrollableScrollPhysics(
+              parent: ClampingScrollPhysics(),
+            ),
             slivers: slivers,
           ),
         );
