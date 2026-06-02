@@ -48,6 +48,13 @@ class MapViewModel extends _$MapViewModel {
   static const Duration _cameraIdleDebounceDuration = Duration(seconds: 1);
   Timer? _cameraIdleDebounceTimer;
 
+  /// スタイル読込後も含め、初期ズームを確実に適用する
+  Future<void> applyInitialCameraZoom(LatLng center) async {
+    await state.mapController?.moveCamera(
+      CameraUpdate.newLatLngZoom(center, MapOverlayConstants.initial),
+    );
+  }
+
   Future<void> setMapController(
     MapLibreMapController controller, {
     required void Function(List<Posts> posts) onPinTap,
@@ -105,7 +112,7 @@ class MapViewModel extends _$MapViewModel {
             result.whenOrNull(success: handler);
           }
           await state.mapController?.animateCamera(
-            CameraUpdate.newLatLngZoom(latLng, 16),
+            CameraUpdate.newLatLngZoom(latLng, MapOverlayConstants.pinTap),
             duration: const Duration(seconds: 1),
           );
           state = state.copyWith(isLoading: false, hasError: false);
@@ -120,7 +127,10 @@ class MapViewModel extends _$MapViewModel {
   Future<void> moveToCurrentLocation() async {
     await ref.read(locationProvider).whenOrNull(
           data: (loc) async => state.mapController?.animateCamera(
-            CameraUpdate.newLatLngZoom(LatLng(loc.latitude, loc.longitude), 16),
+            CameraUpdate.newLatLngZoom(
+              LatLng(loc.latitude, loc.longitude),
+              MapOverlayConstants.currentLocation,
+            ),
           ),
         );
   }
@@ -149,7 +159,7 @@ class MapViewModel extends _$MapViewModel {
   Future<void> animateToLatLng({
     required double lat,
     required double lng,
-    double zoom = 16,
+    double zoom = MapOverlayConstants.pinTap,
     Duration duration = const Duration(milliseconds: 500),
   }) async {
     await state.mapController?.animateCamera(
