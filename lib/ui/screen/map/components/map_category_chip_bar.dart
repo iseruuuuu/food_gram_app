@@ -4,6 +4,9 @@ import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_p
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+/// マップ上部に常に見せたいカテゴリ（All の次）
+const _mapPrimaryCategoryNames = ['麺類', '肉料理'];
+
 class MapCategoryChipBar extends ConsumerWidget {
   const MapCategoryChipBar({
     required this.onCategoryChanged,
@@ -14,7 +17,8 @@ class MapCategoryChipBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categories = ref.watch(categoriesProvider);
+    final allCategories = ref.watch(categoriesProvider);
+    final categories = _orderedMapCategories(allCategories);
     final selectedCategory = ref.watch(selectedMapCategoryProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return SizedBox(
@@ -69,4 +73,27 @@ class MapCategoryChipBar extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// All → 麺類・肉料理 → その他の順（初期表示で主要3つが見える）
+List<CategoryData> _orderedMapCategories(List<CategoryData> all) {
+  final allChip = all.where((c) => c.isAllCategory).toList();
+  final primary = <CategoryData>[];
+  final rest = <CategoryData>[];
+  for (final c in all) {
+    if (c.isAllCategory) {
+      continue;
+    }
+    if (_mapPrimaryCategoryNames.contains(c.name)) {
+      primary.add(c);
+    } else {
+      rest.add(c);
+    }
+  }
+  primary.sort(
+    (a, b) => _mapPrimaryCategoryNames
+        .indexOf(a.name)
+        .compareTo(_mapPrimaryCategoryNames.indexOf(b.name)),
+  );
+  return [...allChip, ...primary, ...rest];
 }
