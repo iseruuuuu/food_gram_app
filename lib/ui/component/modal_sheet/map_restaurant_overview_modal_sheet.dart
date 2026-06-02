@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -85,7 +86,7 @@ class MapRestaurantOverviewModalSheet extends HookConsumerWidget {
               behavior: HitTestBehavior.opaque,
               child: SizedBox(
                 width: double.infinity,
-                height: 44,
+                height: 36,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -104,22 +105,29 @@ class MapRestaurantOverviewModalSheet extends HookConsumerWidget {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
-              child: TextButton.icon(
-                onPressed: () => ref
-                    .read(mapViewModelProvider.notifier)
-                    .setNearbySearchCenterFromCamera(),
-                icon: const Icon(Icons.search, size: 18),
-                label: Text(
-                  t.searchNearbyPlaces,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () => ref
+                      .read(mapViewModelProvider.notifier)
+                      .setNearbySearchCenterFromCamera(),
+                  icon: const Icon(Icons.search, size: 18),
+                  label: Text(
+                    t.searchNearbyPlaces,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                style: TextButton.styleFrom(
-                  minimumSize: const Size.fromHeight(32),
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primaryBlue,
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size.fromHeight(40),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 ),
               ),
             ),
