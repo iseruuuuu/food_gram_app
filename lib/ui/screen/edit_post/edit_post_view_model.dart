@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.
 import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
+import 'package:food_gram_app/core/utils/image/upload_image_bytes.dart';
+import 'package:food_gram_app/core/utils/location/post_price_currency_from_location.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/vision/food_image_labeler.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -28,12 +31,6 @@ class EditPostViewModel extends _$EditPostViewModel {
   final logger = Logger();
   final _foodLabeler = FoodImageLabeler();
 
-  // 画像設定の定数
-  static const _imageConfig = (
-    maxSize: 960.0,
-    quality: 100,
-  );
-
   // コントローラーとプロパティ
   final _foodController = TextEditingController();
   final _commentController = TextEditingController();
@@ -41,6 +38,7 @@ class EditPostViewModel extends _$EditPostViewModel {
   final _picker = ImagePicker();
   final Map<String, Uint8List> _imageBytesMap = {};
   late Posts _posts;
+  bool _priceCurrencyManuallySet = false;
 
   TextEditingController get foodController => _foodController;
 
@@ -76,6 +74,8 @@ class EditPostViewModel extends _$EditPostViewModel {
     // 既存の画像パス（表示・Storage 用。ローカル一時パス等は [Posts.foodImageList] で除外）
     final existingImages = posts.foodImageList;
     final currency = posts.priceCurrency?.trim();
+    _priceCurrencyManuallySet =
+        currency != null && currency.isNotEmpty;
     state = state.copyWith(
       restaurant: posts.restaurant,
       lat: posts.lat,
@@ -204,13 +204,11 @@ class EditPostViewModel extends _$EditPostViewModel {
     try {
       final image = await _picker.pickImage(
         source: source,
-        maxHeight: _imageConfig.maxSize,
-        maxWidth: _imageConfig.maxSize,
-        imageQuality: _imageConfig.quality,
       );
       if (image == null) {
         return false;
       }
+      unawaited(_tryApplyCurrencyFromImage(image.path));
       final bytes = await _openImageEditor(context, image.path);
       if (bytes == null) {
         return false;
@@ -229,16 +227,13 @@ class EditPostViewModel extends _$EditPostViewModel {
     String errorMessage,
   ) async {
     try {
-      final images = await _picker.pickMultiImage(
-        maxHeight: _imageConfig.maxSize,
-        maxWidth: _imageConfig.maxSize,
-        imageQuality: _imageConfig.quality,
-      );
+      final images = await _picker.pickMultiImage();
       if (images.isEmpty) {
         return false;
       }
 
       for (final image in images) {
+        unawaited(_tryApplyCurrencyFromImage(image.path));
         final bytes = await _openImageEditor(context, image.path);
         if (bytes != null) {
           await _processImageFromBytes(bytes);
@@ -267,11 +262,12 @@ class EditPostViewModel extends _$EditPostViewModel {
   }
 
   Future<void> _processImageFromBytes(Uint8List bytes) async {
+    final uploadBytes = await prepareUploadImageBytes(bytes);
     final dir = await getTemporaryDirectory();
     final file = File(
       '${dir.path}/food_gram_edit_${DateTime.now().millisecondsSinceEpoch}.jpg',
     );
-    await file.writeAsBytes(bytes);
+    await file.writeAsBytes(uploadBytes);
     await _processImage(file);
   }
 
@@ -311,6 +307,39 @@ class EditPostViewModel extends _$EditPostViewModel {
       lat: restaurant.lat,
       lng: restaurant.lng,
     );
+    unawaited(
+      _tryApplyCurrencyFromCoordinates(restaurant.lat, restaurant.lng),
+    );
+  }
+
+  Future<void> _tryApplyCurrencyFromImage(String imagePath) async {
+    if (_priceCurrencyManuallySet) {
+      return;
+    }
+    final code = await postPriceCurrencyFromImagePath(imagePath);
+    _applyAutoDetectedCurrency(code);
+  }
+
+  Future<void> _tryApplyCurrencyFromCoordinates(double lat, double lng) async {
+    if (_priceCurrencyManuallySet) {
+      return;
+    }
+    final code = await postPriceCurrencyFromCoordinates(
+      latitude: lat,
+      longitude: lng,
+    );
+    _applyAutoDetectedCurrency(code);
+  }
+
+  void _applyAutoDetectedCurrency(String? code) {
+    if (code == null || code.isEmpty || _priceCurrencyManuallySet) {
+      return;
+    }
+    final upper = code.toUpperCase();
+    if (state.priceCurrency == upper) {
+      return;
+    }
+    state = state.copyWith(priceCurrency: upper);
   }
 
   void setStar(double value) {
@@ -322,6 +351,7 @@ class EditPostViewModel extends _$EditPostViewModel {
   }
 
   void setPriceCurrency(String code) {
+    _priceCurrencyManuallySet = true;
     state = state.copyWith(priceCurrency: code.toUpperCase());
   }
 

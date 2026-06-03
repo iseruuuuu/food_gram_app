@@ -10,6 +10,8 @@ import 'package:food_gram_app/core/model/post_draft.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
+import 'package:food_gram_app/core/utils/image/upload_image_bytes.dart';
+import 'package:food_gram_app/core/utils/location/post_price_currency_from_location.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/vision/food_image_labeler.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -25,7 +27,6 @@ part 'post_view_model.g.dart';
 @riverpod
 class PostViewModel extends _$PostViewModel {
   static const defaultRestaurantText = '場所を追加';
-  static const _imageConfig = (maxSize: 960.0, quality: 100);
 
   late final TextEditingController _foodController;
   late final TextEditingController _commentController;
@@ -37,6 +38,7 @@ class PostViewModel extends _$PostViewModel {
   final _preference = Preference();
   Completer<void>? _maybeNotFoodCompleter;
   bool _restoredFromDraft = false;
+  bool _priceCurrencyManuallySet = false;
 
   TextEditingController get foodController => _foodController;
 
@@ -203,13 +205,11 @@ class PostViewModel extends _$PostViewModel {
     try {
       final image = await _picker.pickImage(
         source: source,
-        maxHeight: _imageConfig.maxSize,
-        maxWidth: _imageConfig.maxSize,
-        imageQuality: _imageConfig.quality,
       );
       if (image == null) {
         return false;
       }
+      unawaited(_tryApplyCurrencyFromImage(image.path));
       final bytes = await _openImageEditor(context, image.path);
       if (bytes == null) {
         return false;
@@ -228,16 +228,13 @@ class PostViewModel extends _$PostViewModel {
     String errorPickerImage,
   ) async {
     try {
-      final images = await _picker.pickMultiImage(
-        maxHeight: _imageConfig.maxSize,
-        maxWidth: _imageConfig.maxSize,
-        imageQuality: _imageConfig.quality,
-      );
+      final images = await _picker.pickMultiImage();
       if (images.isEmpty) {
         return false;
       }
 
       for (final image in images) {
+        unawaited(_tryApplyCurrencyFromImage(image.path));
         final bytes = await _openImageEditor(context, image.path);
         if (bytes != null) {
           await _processImageFromBytes(bytes);
@@ -269,11 +266,12 @@ class PostViewModel extends _$PostViewModel {
   }
 
   Future<void> _processImageFromBytes(Uint8List bytes) async {
+    final uploadBytes = await prepareUploadImageBytes(bytes);
     final dir = await getTemporaryDirectory();
     final file = File(
       '${dir.path}/food_gram_${DateTime.now().millisecondsSinceEpoch}.jpg',
     );
-    await file.writeAsBytes(bytes);
+    await file.writeAsBytes(uploadBytes);
     await _processImage(file);
   }
 
@@ -311,6 +309,39 @@ class PostViewModel extends _$PostViewModel {
       lat: restaurant.lat,
       lng: restaurant.lng,
     );
+    unawaited(
+      _tryApplyCurrencyFromCoordinates(restaurant.lat, restaurant.lng),
+    );
+  }
+
+  Future<void> _tryApplyCurrencyFromImage(String imagePath) async {
+    if (_priceCurrencyManuallySet) {
+      return;
+    }
+    final code = await postPriceCurrencyFromImagePath(imagePath);
+    _applyAutoDetectedCurrency(code);
+  }
+
+  Future<void> _tryApplyCurrencyFromCoordinates(double lat, double lng) async {
+    if (_priceCurrencyManuallySet) {
+      return;
+    }
+    final code = await postPriceCurrencyFromCoordinates(
+      latitude: lat,
+      longitude: lng,
+    );
+    _applyAutoDetectedCurrency(code);
+  }
+
+  void _applyAutoDetectedCurrency(String? code) {
+    if (code == null || code.isEmpty || _priceCurrencyManuallySet) {
+      return;
+    }
+    final upper = code.toUpperCase();
+    if (state.priceCurrency == upper) {
+      return;
+    }
+    state = state.copyWith(priceCurrency: upper);
   }
 
   void setAnonymous({required bool value}) {
@@ -322,6 +353,7 @@ class PostViewModel extends _$PostViewModel {
   }
 
   void setPriceCurrency(String code) {
+    _priceCurrencyManuallySet = true;
     state = state.copyWith(priceCurrency: code.toUpperCase());
   }
 
@@ -365,15 +397,19 @@ class PostViewModel extends _$PostViewModel {
     _foodController.text = draft.foodName;
     _commentController.text = draft.comment;
     _priceController.text = draft.priceInput;
+    final draftCurrency = draft.priceCurrency.trim();
+    if (draftCurrency.isNotEmpty) {
+      _priceCurrencyManuallySet = true;
+    }
     state = state.copyWith(
       restaurant: applyRestaurant ? draft.restaurant : state.restaurant,
       lat: applyRestaurant ? draft.lat : state.lat,
       lng: applyRestaurant ? draft.lng : state.lng,
       star: draft.star,
       isAnonymous: draft.isAnonymous,
-      priceCurrency: draft.priceCurrency.isEmpty
+      priceCurrency: draftCurrency.isEmpty
           ? state.priceCurrency
-          : draft.priceCurrency.toUpperCase(),
+          : draftCurrency.toUpperCase(),
     );
   }
 }
