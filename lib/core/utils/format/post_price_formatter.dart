@@ -235,6 +235,12 @@ String defaultPostPriceCurrencyForLocale(Locale locale) {
     return 'USD';
   }
 
+  return defaultPostPriceCurrencyForCountry(country);
+}
+
+/// ISO 3166-1 alpha-2 国コードから投稿価格の通貨を推定（換算はしない）
+String defaultPostPriceCurrencyForCountry(String countryCode) {
+  final country = countryCode.toUpperCase();
   switch (country) {
     case 'JP':
       return 'JPY';
