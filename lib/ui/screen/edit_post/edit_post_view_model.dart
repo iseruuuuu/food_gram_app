@@ -37,6 +37,8 @@ class EditPostViewModel extends _$EditPostViewModel {
   final Map<String, Uint8List> _imageBytesMap = {};
   late Posts _posts;
   bool _priceCurrencyManuallySet = false;
+  bool _disposed = false;
+  int _currencyAutoDetectSeq = 0;
   TextEditingController get foodController => _foodController;
   TextEditingController get commentController => _commentController;
   TextEditingController get priceController => _priceController;
@@ -46,10 +48,12 @@ class EditPostViewModel extends _$EditPostViewModel {
   @override
   EditPostState build({EditPostState? initState}) {
     ref.onDispose(() {
+      _disposed = true;
       _foodController.dispose();
       _commentController.dispose();
       _priceController.dispose();
       _imageBytesMap.clear();
+      _currencyAutoDetectSeq++;
     });
     return initState ?? const EditPostState();
   }
@@ -314,25 +318,30 @@ class EditPostViewModel extends _$EditPostViewModel {
   }
 
   Future<void> _tryApplyCurrencyFromImage(String imagePath) async {
-    if (_priceCurrencyManuallySet) {
+    if (_priceCurrencyManuallySet || _disposed) {
       return;
     }
+    final seq = ++_currencyAutoDetectSeq;
     final code = await postPriceCurrencyFromImagePath(imagePath);
-    _applyAutoDetectedCurrency(code);
+    _applyAutoDetectedCurrency(code, seq);
   }
 
   Future<void> _tryApplyCurrencyFromCoordinates(double lat, double lng) async {
-    if (_priceCurrencyManuallySet) {
+    if (_priceCurrencyManuallySet || _disposed) {
       return;
     }
+    final seq = ++_currencyAutoDetectSeq;
     final code = await postPriceCurrencyFromCoordinates(
       latitude: lat,
       longitude: lng,
     );
-    _applyAutoDetectedCurrency(code);
+    _applyAutoDetectedCurrency(code, seq);
   }
 
-  void _applyAutoDetectedCurrency(String? code) {
+  void _applyAutoDetectedCurrency(String? code, int seq) {
+    if (_disposed || seq != _currencyAutoDetectSeq) {
+      return;
+    }
     if (code == null || code.isEmpty || _priceCurrencyManuallySet) {
       return;
     }

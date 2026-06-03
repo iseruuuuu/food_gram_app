@@ -18,8 +18,10 @@ Uint8List _encodeUploadJpeg(Uint8List bytes) {
     if (decoded == null) {
       return bytes;
     }
+    // リサイズしない場合もピクセルに向きを焼き込む（ImagePicker 相当の表示向き）
+    final oriented = img.bakeOrientation(decoded);
     final resized = _resizeToMaxDimension(
-      decoded,
+      oriented,
       maxDimension: kUploadImageMaxDimension.round(),
     );
     return Uint8List.fromList(

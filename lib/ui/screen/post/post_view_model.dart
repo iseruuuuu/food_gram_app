@@ -38,6 +38,8 @@ class PostViewModel extends _$PostViewModel {
   Completer<void>? _maybeNotFoodCompleter;
   bool _restoredFromDraft = false;
   bool _priceCurrencyManuallySet = false;
+  bool _disposed = false;
+  int _currencyAutoDetectSeq = 0;
   TextEditingController get foodController => _foodController;
   TextEditingController get commentController => _commentController;
   TextEditingController get priceController => _priceController;
@@ -58,6 +60,7 @@ class PostViewModel extends _$PostViewModel {
     _commentController = TextEditingController();
     _priceController = TextEditingController();
     ref.onDispose(() {
+      _disposed = true;
       _foodController.dispose();
       _commentController.dispose();
       _priceController.dispose();
@@ -66,6 +69,7 @@ class PostViewModel extends _$PostViewModel {
       }
       _maybeNotFoodCompleter = null;
       _imageBytesMap.clear();
+      _currencyAutoDetectSeq++;
     });
   }
 
@@ -313,25 +317,30 @@ class PostViewModel extends _$PostViewModel {
   }
 
   Future<void> _tryApplyCurrencyFromImage(String imagePath) async {
-    if (_priceCurrencyManuallySet) {
+    if (_priceCurrencyManuallySet || _disposed) {
       return;
     }
+    final seq = ++_currencyAutoDetectSeq;
     final code = await postPriceCurrencyFromImagePath(imagePath);
-    _applyAutoDetectedCurrency(code);
+    _applyAutoDetectedCurrency(code, seq);
   }
 
   Future<void> _tryApplyCurrencyFromCoordinates(double lat, double lng) async {
-    if (_priceCurrencyManuallySet) {
+    if (_priceCurrencyManuallySet || _disposed) {
       return;
     }
+    final seq = ++_currencyAutoDetectSeq;
     final code = await postPriceCurrencyFromCoordinates(
       latitude: lat,
       longitude: lng,
     );
-    _applyAutoDetectedCurrency(code);
+    _applyAutoDetectedCurrency(code, seq);
   }
 
-  void _applyAutoDetectedCurrency(String? code) {
+  void _applyAutoDetectedCurrency(String? code, int seq) {
+    if (_disposed || seq != _currencyAutoDetectSeq) {
+      return;
+    }
     if (code == null || code.isEmpty || _priceCurrencyManuallySet) {
       return;
     }
