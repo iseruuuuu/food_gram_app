@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
@@ -158,9 +160,11 @@ class MapPlaceSearchModalSheet extends HookConsumerWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         onTap: () async {
-                          await ref
-                              .read(firebaseAnalyticsServiceProvider)
-                              .logMapSearchResultTap(searchQuery.value);
+                          unawaited(
+                            ref
+                                .read(firebaseAnalyticsServiceProvider)
+                                .logMapSearchResultTap(searchQuery.value),
+                          );
                           await onRestaurantSelected(restaurant);
                           if (!context.mounted) {
                             return;
