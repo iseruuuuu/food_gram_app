@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/theme/style/restaurant_style.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
@@ -95,7 +96,7 @@ class _RestaurantMapScreenState extends State<RestaurantMapScreen> {
             onStyleLoadedCallback: _addPin,
             initialCameraPosition: CameraPosition(
               target: LatLng(widget.restaurant.lat, widget.restaurant.lng),
-              zoom: 17,
+              zoom: MapOverlayConstants.fromPostDetail,
             ),
             styleString: _getLocalizedStyle(),
             trackCameraPosition: true,
