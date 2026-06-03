@@ -90,10 +90,10 @@ class PostShareClassicTemplate extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        Row(
+                        const Row(
                           children: [
-                            const Spacer(),
-                            const PostShareBranding(),
+                            Spacer(),
+                            PostShareBranding(),
                           ],
                         ),
                       ],

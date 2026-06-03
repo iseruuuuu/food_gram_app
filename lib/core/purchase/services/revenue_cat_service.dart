@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -72,6 +75,11 @@ class RevenueCatService extends _$RevenueCatService {
     final beforeInfo = await Purchases.getCustomerInfo();
     final wasActive =
         beforeInfo.entitlements.all[_entitlementId]?.isActive ?? false;
+    final analytics = ref.read(firebaseAnalyticsServiceProvider);
+    analytics.logEventUnawaited(name: AnalyticsEvent.paywallOpen);
+    if (!wasActive) {
+      analytics.logEventUnawaited(name: AnalyticsEvent.purchaseStart);
+    }
     await RevenueCatUI.presentPaywall();
     final afterInfo = await Purchases.getCustomerInfo();
     final isActiveNow =
@@ -82,6 +90,7 @@ class RevenueCatService extends _$RevenueCatService {
       loading.isLoading(value: true);
       if (isActiveNow && !wasActive) {
         await syncAfterPaywall();
+        analytics.logEventUnawaited(name: AnalyticsEvent.purchaseSuccess);
         return true;
       }
       // 即時には有効になっていなくても、年間プランなどで遅れて反映されることがあるため1回同期
@@ -91,6 +100,7 @@ class RevenueCatService extends _$RevenueCatService {
         await Future<void>.delayed(const Duration(seconds: 2));
         final retryActive = await syncAfterPaywall();
         if (retryActive) {
+          analytics.logEventUnawaited(name: AnalyticsEvent.purchaseSuccess);
           return true;
         }
       }

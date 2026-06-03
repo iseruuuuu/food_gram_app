@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/local/force_update_checker.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
@@ -50,6 +52,9 @@ class MapScreen extends HookConsumerWidget {
     final loading = ref.watch(loadingProvider);
     useEffect(
       () {
+        ref.read(firebaseAnalyticsServiceProvider).logEvent(
+              name: AnalyticsEvent.mapOpen,
+            );
         // トラッキング許可を取得
         AdTrackingPermission().requestTracking();
         // 強制更新チェック
@@ -113,6 +118,9 @@ class MapScreen extends HookConsumerWidget {
                           if (posts.isEmpty) {
                             return;
                           }
+                          await ref
+                              .read(firebaseAnalyticsServiceProvider)
+                              .logMapPinTap(source: 'map');
                           final first = posts.first;
                           ref.read(mapModalSelectionProvider.notifier).state =
                               MapModalSelection(

@@ -72,11 +72,11 @@ class PostShareStoryTemplate extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
+              const Positioned(
                 top: 18,
                 right: 18,
                 child: Row(
-                  children: const [
+                  children: [
                     _StorySegment(isActive: true),
                     Gap(4),
                     _StorySegment(isActive: false),
@@ -116,16 +116,16 @@ class PostShareStoryTemplate extends StatelessWidget {
                   ],
                 ),
               ),
-              Positioned(
+              const Positioned(
                 left: 22,
                 right: 22,
                 bottom: 24,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const Spacer(),
-                    const Gap(12),
-                    const PostShareBranding(),
+                    Spacer(),
+                    Gap(12),
+                    PostShareBranding(),
                   ],
                 ),
               ),
@@ -167,9 +167,7 @@ class _StorySegment extends StatelessWidget {
       width: 52,
       height: 3,
       decoration: BoxDecoration(
-        color: isActive
-            ? Colors.white
-            : Colors.white.withValues(alpha: 0.35),
+        color: isActive ? Colors.white : Colors.white.withValues(alpha: 0.35),
         borderRadius: BorderRadius.circular(2),
       ),
     );

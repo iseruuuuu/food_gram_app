@@ -2,7 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/notification/firebase_messaging_service.dart';
+import 'package:food_gram_app/core/supabase/auth/providers/auth_state_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -25,6 +27,16 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(authStateProvider, (_, next) {
+      next.when(
+        data: (authState) {
+          final userId = authState.session?.user.id;
+          ref.read(firebaseAnalyticsServiceProvider).setUserId(userId);
+        },
+        loading: () {},
+        error: (_, __) {},
+      );
+    });
     return ToastificationWrapper(
       child: MaterialApp.router(
         // TranslationProviderをロケールにセット

@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
@@ -53,6 +56,12 @@ class PostSharePreviewView extends HookConsumerWidget {
     Future<void> share({required bool hasText}) async {
       await adInterstitial.showAd(
         onAdClosed: () async {
+          unawaited(
+            ref.read(firebaseAnalyticsServiceProvider).logPostShare(
+                  posts.id,
+                  shareType: hasText ? 'text_and_image' : 'image_only',
+                ),
+          );
           await ShareHelpers().captureAndShare(
             widget: template.builder(posts, ref, t),
             shareText: shareText,

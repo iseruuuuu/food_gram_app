@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/post_draft.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
@@ -34,6 +36,7 @@ class PostViewModel extends _$PostViewModel {
   final _foodLabeler = FoodImageLabeler();
   final _preference = Preference();
   Completer<void>? _maybeNotFoodCompleter;
+  bool _restoredFromDraft = false;
 
   TextEditingController get foodController => _foodController;
 
@@ -148,13 +151,25 @@ class PostViewModel extends _$PostViewModel {
         );
     await result.when(
       success: (_) async {
+        final fromDraft = _restoredFromDraft;
+        _restoredFromDraft = false;
         await _preference.clearPostDraft();
         state = state.copyWith(
           status: PostStatus.success.name,
           isSuccess: true,
         );
+        unawaited(
+          ref.read(firebaseAnalyticsServiceProvider).logPostSuccess(
+                fromDraft: fromDraft,
+              ),
+        );
       },
       failure: (error) {
+        unawaited(
+          ref.read(firebaseAnalyticsServiceProvider).logPostFailed(
+                reason: error.toString(),
+              ),
+        );
         state = state.copyWith(
           status: PostStatus.error.name,
           isSuccess: false,
@@ -316,6 +331,10 @@ class PostViewModel extends _$PostViewModel {
     _maybeNotFoodCompleter = null;
   }
 
+  void markRestoredFromDraft() {
+    _restoredFromDraft = true;
+  }
+
   Future<PostDraft?> loadSavedDraft() => _preference.getPostDraft();
 
   Future<void> saveDraft({required List<String> foodTags}) async {
@@ -335,6 +354,11 @@ class PostViewModel extends _$PostViewModel {
       priceCurrency: currency,
     );
     await _preference.savePostDraft(draft);
+    unawaited(
+      ref.read(firebaseAnalyticsServiceProvider).logEvent(
+            name: AnalyticsEvent.draftSave,
+          ),
+    );
   }
 
   void applyDraft(PostDraft draft, {required bool applyRestaurant}) {

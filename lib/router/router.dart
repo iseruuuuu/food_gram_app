@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
@@ -22,8 +23,11 @@ part 'routes/map_routes.dart';
 @riverpod
 GoRouter router(Ref ref) {
   final authState = ref.watch(authStateProvider);
+  final analyticsObserver =
+      ref.read(firebaseAnalyticsServiceProvider).navigatorObserver;
   return GoRouter(
     initialLocation: '/${RouterPath.splash}',
+    observers: [analyticsObserver],
     redirect: (context, state) async {
       final preference = Preference();
       final isFinishedTutorial =

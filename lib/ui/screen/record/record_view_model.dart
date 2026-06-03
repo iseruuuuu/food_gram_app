@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/services.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/home_widget/map_stats_home_widget_sync.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
@@ -132,7 +134,14 @@ class RecordViewModel extends _$RecordViewModel {
           final restaurant = await ref
               .read(mapPostRepositoryProvider.notifier)
               .getRestaurantPosts(lat: latLng!.latitude, lng: latLng.longitude);
-          restaurant.whenOrNull(success: (posts) => onPinTap(posts));
+          restaurant.whenOrNull(
+            success: (posts) {
+              ref.read(firebaseAnalyticsServiceProvider).logMapPinTap(
+                    source: 'mymap',
+                  );
+              onPinTap(posts);
+            },
+          );
           await state.mapController?.animateCamera(
             CameraUpdate.newLatLng(latLng),
             duration: const Duration(seconds: 1),
@@ -224,6 +233,32 @@ class RecordViewModel extends _$RecordViewModel {
 
   void changeViewType(MapViewType viewType) {
     state = state.copyWith(viewType: viewType);
+  }
+
+  /// 日本／世界マップ上のタップ（都道府県・国の推定）
+  void logRegionMapTap(double lat, double lng) {
+    switch (state.viewType) {
+      case MapViewType.japan:
+        final prefecture = PrefectureDetector.detectPrefecture(lat, lng);
+        if (prefecture != null) {
+          ref.read(firebaseAnalyticsServiceProvider).logMyMapRegionTap(
+                eventName: AnalyticsEvent.myMapPrefectureTap,
+                regionName: prefecture,
+              );
+        }
+        return;
+      case MapViewType.world:
+        final country = CountryDetector.detectCountry(lat, lng);
+        if (country != null && country != 'その他') {
+          ref.read(firebaseAnalyticsServiceProvider).logMyMapRegionTap(
+                eventName: AnalyticsEvent.myMapCountryTap,
+                regionName: country,
+              );
+        }
+        return;
+      case MapViewType.detail:
+        return;
+    }
   }
 
   void handleStyleChange() {
