@@ -133,7 +133,7 @@ class AdmobInterstitial {
       await _interstitialAd!.show();
     } on Object catch (e) {
       logger.e('Error showing interstitial ad: $e');
-      _interstitialAd?.dispose();
+      await _interstitialAd?.dispose();
       _interstitialAd = null;
       _isAdReady = false;
       createAd();

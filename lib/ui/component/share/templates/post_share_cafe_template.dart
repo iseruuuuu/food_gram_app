@@ -113,16 +113,16 @@ class PostShareCafeTemplate extends StatelessWidget {
                   ],
                 ),
               ),
-              Positioned(
+              const Positioned(
                 left: 24,
                 right: 24,
                 bottom: 24,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const Spacer(),
-                    const Gap(12),
-                    const PostShareBranding(),
+                    Spacer(),
+                    Gap(12),
+                    PostShareBranding(),
                   ],
                 ),
               ),
