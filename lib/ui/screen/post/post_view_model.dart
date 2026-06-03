@@ -27,36 +27,28 @@ part 'post_view_model.g.dart';
 @riverpod
 class PostViewModel extends _$PostViewModel {
   static const defaultRestaurantText = '場所を追加';
-
+  final _logger = Logger();
+  final _picker = ImagePicker();
+  final _foodLabeler = FoodImageLabeler();
+  final _preference = Preference();
   late final TextEditingController _foodController;
   late final TextEditingController _commentController;
   late final TextEditingController _priceController;
-  final _picker = ImagePicker();
   final Map<String, Uint8List> _imageBytesMap = {};
-  final logger = Logger();
-  final _foodLabeler = FoodImageLabeler();
-  final _preference = Preference();
   Completer<void>? _maybeNotFoodCompleter;
   bool _restoredFromDraft = false;
   bool _priceCurrencyManuallySet = false;
-
   TextEditingController get foodController => _foodController;
-
   TextEditingController get commentController => _commentController;
-
   TextEditingController get priceController => _priceController;
-
   Loading get loading => ref.read(loadingProvider.notifier);
-
   Map<String, Uint8List> get imageBytesMap => _imageBytesMap;
 
   @override
   PostState build({PostState initState = const PostState()}) {
     _initializeControllers();
     final withCurrency = initState.priceCurrency.isEmpty
-        ? initState.copyWith(
-            priceCurrency: defaultPostPriceCurrencyFromPlatform(),
-          )
+        ? initState.copyWith(priceCurrency: defaultPostPriceCurrencyForLocale())
         : initState;
     return withCurrency;
   }
@@ -65,7 +57,6 @@ class PostViewModel extends _$PostViewModel {
     _foodController = TextEditingController();
     _commentController = TextEditingController();
     _priceController = TextEditingController();
-
     ref.onDispose(() {
       _foodController.dispose();
       _commentController.dispose();
@@ -78,6 +69,7 @@ class PostViewModel extends _$PostViewModel {
     });
   }
 
+  // --- 投稿 ---
   Future<bool> post({
     required String foodTag,
     Locale? locale,
@@ -90,7 +82,7 @@ class PostViewModel extends _$PostViewModel {
       return false;
     }
     final currency = state.priceCurrency.isEmpty
-        ? defaultPostPriceCurrencyFromPlatform()
+        ? defaultPostPriceCurrencyForLocale()
         : state.priceCurrency;
     final parsed = parsePostPriceInput(
       rawAmount: _priceController.text,
@@ -110,27 +102,20 @@ class PostViewModel extends _$PostViewModel {
     return state.isSuccess;
   }
 
-  Future<bool> camera(BuildContext context) async {
-    return _pickImage(
-      context,
-      ImageSource.camera,
-      PostStatus.cameraPermission.name,
-    );
-  }
-
-  Future<bool> album(BuildContext context) async {
-    return _pickMultiImage(context, PostStatus.albumPermission.name);
-  }
-
-  void loadRestaurant(Restaurant? restaurant) {
-    if (restaurant == null) {
-      return;
+  bool _isPostMissing() {
+    if (state.foodImages.isEmpty) {
+      state = state.copyWith(status: PostStatus.missingPhoto.name);
+      return true;
     }
-    _updateRestaurantState(restaurant);
-  }
-
-  void getPlace(Restaurant restaurant) {
-    _updateRestaurantState(restaurant);
+    if (foodController.text.isEmpty) {
+      state = state.copyWith(status: PostStatus.missingFoodName.name);
+      return true;
+    }
+    if (state.restaurant == defaultRestaurantText) {
+      state = state.copyWith(status: PostStatus.missingRestaurant.name);
+      return true;
+    }
+    return false;
   }
 
   Future<void> _submitPost(
@@ -161,16 +146,16 @@ class PostViewModel extends _$PostViewModel {
           isSuccess: true,
         );
         unawaited(
-          ref.read(firebaseAnalyticsServiceProvider).logPostSuccess(
-                fromDraft: fromDraft,
-              ),
+          ref
+              .read(firebaseAnalyticsServiceProvider)
+              .logPostSuccess(fromDraft: fromDraft),
         );
       },
       failure: (error) {
         unawaited(
-          ref.read(firebaseAnalyticsServiceProvider).logPostFailed(
-                reason: error.toString(),
-              ),
+          ref
+              .read(firebaseAnalyticsServiceProvider)
+              .logPostFailed(reason: error.toString()),
         );
         state = state.copyWith(
           status: PostStatus.error.name,
@@ -180,21 +165,24 @@ class PostViewModel extends _$PostViewModel {
     );
   }
 
-  bool _isPostMissing() {
-    if (state.foodImages.isEmpty) {
-      state = state.copyWith(status: PostStatus.missingPhoto.name);
-      return true;
-    }
-    if (foodController.text.isEmpty) {
-      state = state.copyWith(status: PostStatus.missingFoodName.name);
-      return true;
-    }
-    if (state.restaurant == defaultRestaurantText) {
-      state = state.copyWith(status: PostStatus.missingRestaurant.name);
-      return true;
-    }
+  // --- 画像 ---
+  Future<bool> camera(BuildContext context) async {
+    return _pickImage(
+      context,
+      ImageSource.camera,
+      PostStatus.cameraPermission.name,
+    );
+  }
 
-    return false;
+  Future<bool> album(BuildContext context) async {
+    return _pickMultiImage(context, PostStatus.albumPermission.name);
+  }
+
+  void removeImage(String imagePath) {
+    _imageBytesMap.remove(imagePath);
+    final updatedImages =
+        state.foodImages.where((path) => path != imagePath).toList();
+    state = state.copyWith(foodImages: updatedImages);
   }
 
   Future<bool> _pickImage(
@@ -217,7 +205,7 @@ class PostViewModel extends _$PostViewModel {
       await _processImageFromBytes(bytes);
       return true;
     } on PlatformException catch (error) {
-      logger.e(error.message);
+      _logger.e(error.message);
       state = state.copyWith(status: errorPickerImage);
       return false;
     }
@@ -232,7 +220,6 @@ class PostViewModel extends _$PostViewModel {
       if (images.isEmpty) {
         return false;
       }
-
       for (final image in images) {
         unawaited(_tryApplyCurrencyFromImage(image.path));
         final bytes = await _openImageEditor(context, image.path);
@@ -245,7 +232,7 @@ class PostViewModel extends _$PostViewModel {
       }
       return state.foodImages.isNotEmpty;
     } on PlatformException catch (error) {
-      logger.e(error.message);
+      _logger.e(error.message);
       state = state.copyWith(status: errorPickerImage);
       return false;
     }
@@ -275,13 +262,6 @@ class PostViewModel extends _$PostViewModel {
     await _processImage(file);
   }
 
-  Future<void> _waitMaybeNotFoodHandled() async {
-    // UI側のダイアログで「続行」または「削除」によって
-    // resetStatus() が呼ばれ、Completer が完了するまで待機
-    _maybeNotFoodCompleter = Completer<void>();
-    return _maybeNotFoodCompleter!.future;
-  }
-
   Future<void> _processImage(File cropImage) async {
     final imageBytes = await cropImage.readAsBytes();
     final imagePath = cropImage.path;
@@ -296,11 +276,23 @@ class PostViewModel extends _$PostViewModel {
     );
   }
 
-  void removeImage(String imagePath) {
-    _imageBytesMap.remove(imagePath);
-    final updatedImages =
-        state.foodImages.where((path) => path != imagePath).toList();
-    state = state.copyWith(foodImages: updatedImages);
+  Future<void> _waitMaybeNotFoodHandled() async {
+    // UI側のダイアログで「続行」または「削除」によって
+    // resetStatus() が呼ばれ、Completer が完了するまで待機
+    _maybeNotFoodCompleter = Completer<void>();
+    return _maybeNotFoodCompleter!.future;
+  }
+
+  // --- レストラン ---
+  void loadRestaurant(Restaurant? restaurant) {
+    if (restaurant == null) {
+      return;
+    }
+    _updateRestaurantState(restaurant);
+  }
+
+  void getPlace(Restaurant restaurant) {
+    _updateRestaurantState(restaurant);
   }
 
   void _updateRestaurantState(Restaurant restaurant) {
@@ -312,6 +304,12 @@ class PostViewModel extends _$PostViewModel {
     unawaited(
       _tryApplyCurrencyFromCoordinates(restaurant.lat, restaurant.lng),
     );
+  }
+
+  // --- 価格・通貨 ---
+  void setPriceCurrency(String code) {
+    _priceCurrencyManuallySet = true;
+    state = state.copyWith(priceCurrency: code.toUpperCase());
   }
 
   Future<void> _tryApplyCurrencyFromImage(String imagePath) async {
@@ -344,6 +342,7 @@ class PostViewModel extends _$PostViewModel {
     state = state.copyWith(priceCurrency: upper);
   }
 
+  // --- 投稿の情報 ---
   void setAnonymous({required bool value}) {
     state = state.copyWith(isAnonymous: value);
   }
@@ -352,17 +351,13 @@ class PostViewModel extends _$PostViewModel {
     state = state.copyWith(star: value);
   }
 
-  void setPriceCurrency(String code) {
-    _priceCurrencyManuallySet = true;
-    state = state.copyWith(priceCurrency: code.toUpperCase());
-  }
-
   void resetStatus() {
     state = state.copyWith(status: PostStatus.initial.name);
     _maybeNotFoodCompleter?.complete();
     _maybeNotFoodCompleter = null;
   }
 
+  // --- 下書き ---
   void markRestoredFromDraft() {
     _restoredFromDraft = true;
   }
@@ -371,7 +366,7 @@ class PostViewModel extends _$PostViewModel {
 
   Future<void> saveDraft({required List<String> foodTags}) async {
     final currency = state.priceCurrency.isEmpty
-        ? defaultPostPriceCurrencyFromPlatform()
+        ? defaultPostPriceCurrencyForLocale()
         : state.priceCurrency;
     final draft = PostDraft(
       foodName: _foodController.text,

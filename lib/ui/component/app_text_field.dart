@@ -502,7 +502,7 @@ class AppPostPriceInputRow extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final t = Translations.of(context);
     final code = currencyCode.isEmpty
-        ? defaultPostPriceCurrencyFromPlatform()
+        ? defaultPostPriceCurrencyForLocale()
         : currencyCode;
     return SizedBox(
       width: double.infinity,

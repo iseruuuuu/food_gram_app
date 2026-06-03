@@ -193,9 +193,11 @@ String postPriceCurrencySymbol(String code) {
 }
 
 /// 端末ロケールから初期通貨を推定（換算はしない）
-String defaultPostPriceCurrencyForLocale(Locale locale) {
-  final lang = locale.languageCode.toLowerCase();
-  final country = locale.countryCode?.toUpperCase();
+/// [locale] 省略時は [ui.PlatformDispatcher.instance.locale] を使う。
+String defaultPostPriceCurrencyForLocale([Locale? locale]) {
+  final l = locale ?? ui.PlatformDispatcher.instance.locale;
+  final lang = l.languageCode.toLowerCase();
+  final country = l.countryCode?.toUpperCase();
   final hasCountry = country != null && country.isNotEmpty;
 
   // 言語だけで一意に決まるもの（国コードがあっても同じ）
@@ -456,12 +458,6 @@ String defaultPostPriceCurrencyForCountry(String countryCode) {
       }
       return 'USD';
   }
-}
-
-String defaultPostPriceCurrencyFromPlatform() {
-  return defaultPostPriceCurrencyForLocale(
-    ui.PlatformDispatcher.instance.locale,
-  );
 }
 
 /// ISO 4217 の **minor unit exponent = 0** の通貨（公式テーブルに基づく）。

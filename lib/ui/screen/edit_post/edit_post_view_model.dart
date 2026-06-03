@@ -85,7 +85,7 @@ class EditPostViewModel extends _$EditPostViewModel {
       existingImagePaths: existingImages,
       priceCurrency: (currency != null && currency.isNotEmpty)
           ? currency.toUpperCase()
-          : defaultPostPriceCurrencyFromPlatform(),
+          : defaultPostPriceCurrencyForLocale(),
     );
   }
 
@@ -102,7 +102,7 @@ class EditPostViewModel extends _$EditPostViewModel {
       return false;
     }
     final currency = state.priceCurrency.isEmpty
-        ? defaultPostPriceCurrencyFromPlatform()
+        ? defaultPostPriceCurrencyForLocale()
         : state.priceCurrency;
     final parsed = parsePostPriceInput(
       rawAmount: _priceController.text,
