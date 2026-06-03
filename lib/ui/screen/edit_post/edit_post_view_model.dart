@@ -30,8 +30,6 @@ part 'edit_post_view_model.g.dart';
 class EditPostViewModel extends _$EditPostViewModel {
   final logger = Logger();
   final _foodLabeler = FoodImageLabeler();
-
-  // コントローラーとプロパティ
   final _foodController = TextEditingController();
   final _commentController = TextEditingController();
   final _priceController = TextEditingController();
@@ -39,15 +37,10 @@ class EditPostViewModel extends _$EditPostViewModel {
   final Map<String, Uint8List> _imageBytesMap = {};
   late Posts _posts;
   bool _priceCurrencyManuallySet = false;
-
   TextEditingController get foodController => _foodController;
-
   TextEditingController get commentController => _commentController;
-
   TextEditingController get priceController => _priceController;
-
   Loading get loading => ref.read(loadingProvider.notifier);
-
   Map<String, Uint8List> get imageBytesMap => _imageBytesMap;
 
   @override
@@ -61,6 +54,7 @@ class EditPostViewModel extends _$EditPostViewModel {
     return initState ?? const EditPostState();
   }
 
+  // --- 初期化 ---
   void initializeWithPosts(Posts posts) {
     // ビルド中にプロバイダを更新しないよう遅延
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -74,8 +68,7 @@ class EditPostViewModel extends _$EditPostViewModel {
     // 既存の画像パス（表示・Storage 用。ローカル一時パス等は [Posts.foodImageList] で除外）
     final existingImages = posts.foodImageList;
     final currency = posts.priceCurrency?.trim();
-    _priceCurrencyManuallySet =
-        currency != null && currency.isNotEmpty;
+    _priceCurrencyManuallySet = currency != null && currency.isNotEmpty;
     state = state.copyWith(
       restaurant: posts.restaurant,
       lat: posts.lat,
@@ -89,6 +82,7 @@ class EditPostViewModel extends _$EditPostViewModel {
     );
   }
 
+  // --- 更新 ---
   Future<bool> update({
     required String foodTag,
     Locale? locale,
@@ -123,18 +117,6 @@ class EditPostViewModel extends _$EditPostViewModel {
     } finally {
       loading.state = false;
     }
-  }
-
-  Future<bool> camera(BuildContext context) async {
-    return _pickImage(
-      context,
-      ImageSource.camera,
-      EditStatus.cameraPermission.name,
-    );
-  }
-
-  Future<bool> album(BuildContext context) async {
-    return _pickMultiImage(context, EditStatus.albumPermission.name);
   }
 
   Future<void> _updatePost(
@@ -196,6 +178,36 @@ class EditPostViewModel extends _$EditPostViewModel {
     );
   }
 
+  // --- 画像 ---
+  Future<bool> camera(BuildContext context) async {
+    return _pickImage(
+      context,
+      ImageSource.camera,
+      EditStatus.cameraPermission.name,
+    );
+  }
+
+  Future<bool> album(BuildContext context) async {
+    return _pickMultiImage(context, EditStatus.albumPermission.name);
+  }
+
+  void removeImage(String imagePath) {
+    _imageBytesMap.remove(imagePath);
+    final updatedImages =
+        state.foodImages.where((path) => path != imagePath).toList();
+    state = state.copyWith(foodImages: updatedImages);
+  }
+
+  void removeExistingImage(String imagePath) {
+    final idx = state.existingImagePaths.indexOf(imagePath);
+    if (idx < 0) {
+      return;
+    }
+    final updatedExisting = List<String>.from(state.existingImagePaths)
+      ..removeAt(idx);
+    state = state.copyWith(existingImagePaths: updatedExisting);
+  }
+
   Future<bool> _pickImage(
     BuildContext context,
     ImageSource source,
@@ -231,7 +243,6 @@ class EditPostViewModel extends _$EditPostViewModel {
       if (images.isEmpty) {
         return false;
       }
-
       for (final image in images) {
         unawaited(_tryApplyCurrencyFromImage(image.path));
         final bytes = await _openImageEditor(context, image.path);
@@ -284,23 +295,7 @@ class EditPostViewModel extends _$EditPostViewModel {
     );
   }
 
-  void removeImage(String imagePath) {
-    _imageBytesMap.remove(imagePath);
-    final updatedImages =
-        state.foodImages.where((path) => path != imagePath).toList();
-    state = state.copyWith(foodImages: updatedImages);
-  }
-
-  void removeExistingImage(String imagePath) {
-    final idx = state.existingImagePaths.indexOf(imagePath);
-    if (idx < 0) {
-      return;
-    }
-    final updatedExisting = List<String>.from(state.existingImagePaths)
-      ..removeAt(idx);
-    state = state.copyWith(existingImagePaths: updatedExisting);
-  }
-
+  // --- 店舗 ---
   void getPlace(Restaurant restaurant) {
     state = state.copyWith(
       restaurant: restaurant.name,
@@ -310,6 +305,12 @@ class EditPostViewModel extends _$EditPostViewModel {
     unawaited(
       _tryApplyCurrencyFromCoordinates(restaurant.lat, restaurant.lng),
     );
+  }
+
+  // --- 価格・通貨 ---
+  void setPriceCurrency(String code) {
+    _priceCurrencyManuallySet = true;
+    state = state.copyWith(priceCurrency: code.toUpperCase());
   }
 
   Future<void> _tryApplyCurrencyFromImage(String imagePath) async {
@@ -342,17 +343,13 @@ class EditPostViewModel extends _$EditPostViewModel {
     state = state.copyWith(priceCurrency: upper);
   }
 
-  void setStar(double value) {
-    state = state.copyWith(star: value);
-  }
-
+  // --- フォーム ---
   void setAnonymous({required bool value}) {
     state = state.copyWith(isAnonymous: value);
   }
 
-  void setPriceCurrency(String code) {
-    _priceCurrencyManuallySet = true;
-    state = state.copyWith(priceCurrency: code.toUpperCase());
+  void setStar(double value) {
+    state = state.copyWith(star: value);
   }
 
   void resetStatus() {
