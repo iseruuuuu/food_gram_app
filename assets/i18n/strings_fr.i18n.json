@@ -132,7 +132,21 @@
     "requiredInfoMissing": "Informations requises manquantes",
     "saveDraft": "Enregistrer le brouillon",
     "draftSaved": "Brouillon enregistré",
-    "draftRestored": "Brouillon chargé"
+    "draftRestored": "Brouillon chargé",
+    "nearbySuggestionTitle": "Choisissez le restaurant de cette photo",
+    "nearbySuggestionSubtitle": "Établissements proches du lieu de la photo",
+    "nearbyCommunityHint": "D'autres utilisateurs FoodGram ont posté ici",
+    "nearbyMallHint": "Peut être dans un centre commercial. Vérifiez.",
+    "nearbyDistanceHint": "Ce lieu est un peu loin de la photo. Vérifiez.",
+    "nearbySelect": "Choisir ce lieu",
+    "nearbyManualSearch": "Rechercher manuellement",
+    "nearbyPostWithout": "Publier sans restaurant",
+    "nearbyEmpty": "Aucun restaurant à proximité",
+    "nearbyFetchError": "Échec du chargement des suggestions",
+    "nearbyOpen": "Ouvert",
+    "nearbyClosed": "Fermé",
+    "nearbyDistanceMeters": "{distance}m",
+    "nearbySourceCommunity": "FoodGram"
   },
   "share": {
     "shareButton": "Partager",

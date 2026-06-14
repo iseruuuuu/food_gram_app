@@ -132,7 +132,21 @@
     "requiredInfoMissing": "필수 정보가 누락되었습니다",
     "saveDraft": "임시 저장",
     "draftSaved": "임시 저장되었습니다",
-    "draftRestored": "임시 저장을 불러왔습니다"
+    "draftRestored": "임시 저장을 불러왔습니다",
+    "nearbySuggestionTitle": "이 사진의 식당을 선택해 주세요",
+    "nearbySuggestionSubtitle": "촬영 위치 근처의 음식점을 표시합니다",
+    "nearbyCommunityHint": "이 장소에 다른 FoodGram 사용자가 게시했습니다",
+    "nearbyMallHint": "역 건물·상업시설 안일 수 있습니다. 확인해 주세요.",
+    "nearbyDistanceHint": "촬영 위치에서 조금 떨어진 곳입니다. 확인해 주세요.",
+    "nearbySelect": "이 식당 선택",
+    "nearbyManualSearch": "직접 검색",
+    "nearbyPostWithout": "식당 없이 게시",
+    "nearbyEmpty": "근처 식당을 찾지 못했습니다",
+    "nearbyFetchError": "식당 후보를 불러오지 못했습니다",
+    "nearbyOpen": "영업 중",
+    "nearbyClosed": "영업 종료",
+    "nearbyDistanceMeters": "{distance}m",
+    "nearbySourceCommunity": "FoodGram"
   },
   "share": {
     "shareButton": "공유",

@@ -132,7 +132,21 @@
     "requiredInfoMissing": "缺少必要資訊",
     "saveDraft": "儲存草稿",
     "draftSaved": "草稿已儲存",
-    "draftRestored": "已載入草稿"
+    "draftRestored": "已載入草稿",
+    "nearbySuggestionTitle": "請選擇這張照片的餐廳",
+    "nearbySuggestionSubtitle": "顯示拍攝位置附近的餐飲店",
+    "nearbyCommunityHint": "有其他 FoodGram 使用者在這裡發布",
+    "nearbyMallHint": "可能在商場或車站大樓內，請確認。",
+    "nearbyDistanceHint": "該店離拍攝位置稍遠，請確認。",
+    "nearbySelect": "選擇此店",
+    "nearbyManualSearch": "手動搜尋",
+    "nearbyPostWithout": "不填餐廳發布",
+    "nearbyEmpty": "附近未找到餐廳",
+    "nearbyFetchError": "取得餐廳候選失敗",
+    "nearbyOpen": "營業中",
+    "nearbyClosed": "已打烊",
+    "nearbyDistanceMeters": "{distance}m",
+    "nearbySourceCommunity": "FoodGram"
   },
   "share": {
     "shareButton": "分享",
