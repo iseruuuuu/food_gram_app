@@ -111,7 +111,7 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Text(
-                      entry.key,
+                      getLocalizedCategoryName(entry.key, context),
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
