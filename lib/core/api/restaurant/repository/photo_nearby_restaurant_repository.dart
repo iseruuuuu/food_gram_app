@@ -71,13 +71,18 @@ List<PhotoRestaurantCandidate> _mergeCandidates(
     if (candidate.name.trim().isEmpty) {
       continue;
     }
-    final key =
-        '${candidate.name}_${candidate.lat.toStringAsFixed(4)}_${candidate.lng.toStringAsFixed(4)}';
+    final key = _locationKey(candidate);
     if (seen.add(key)) {
       unique.add(candidate);
     }
   }
   return unique;
+}
+
+String _locationKey(PhotoRestaurantCandidate candidate) {
+  final lat = candidate.lat.toStringAsFixed(4);
+  final lng = candidate.lng.toStringAsFixed(4);
+  return '${candidate.name}_${lat}_$lng';
 }
 
 /// 近い距離帯から優先して最大10件（純粋に距離順）

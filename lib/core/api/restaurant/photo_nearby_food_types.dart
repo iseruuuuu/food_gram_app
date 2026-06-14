@@ -1,6 +1,4 @@
 /// Google Places Nearby Search で拾う飲食系の type 一覧。
-///
-/// 吉野家などのチェーン店は primary type が [fast_food_restaurant] のため必須。
 const photoNearbyFoodPlaceTypes = [
   'restaurant',
   'fast_food_restaurant',

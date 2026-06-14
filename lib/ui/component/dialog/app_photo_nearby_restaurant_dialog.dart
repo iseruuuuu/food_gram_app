@@ -22,7 +22,6 @@ Future<void> showPhotoNearbyRestaurantDialog({
 
   await showDialog<void>(
     context: context,
-    barrierDismissible: true,
     builder: (dialogContext) => Consumer(
       builder: (context, ref, _) {
         final t = Translations.of(context);
@@ -36,7 +35,9 @@ Future<void> showPhotoNearbyRestaurantDialog({
 
         return AlertDialog(
           backgroundColor: scheme.surface,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           title: Text(
             t.post.nearbySuggestionTitle,
             style: TextStyle(
@@ -163,8 +164,7 @@ String _formatDistance(Translations t, double meters) {
 String _buildSubtitle(PhotoRestaurantCandidate candidate, String distance) {
   final parts = <String>[
     distance,
-    if (candidate.rating != null)
-      '★ ${candidate.rating!.toStringAsFixed(1)}',
+    if (candidate.rating != null) '★ ${candidate.rating!.toStringAsFixed(1)}',
   ];
   return parts.join(' · ');
 }

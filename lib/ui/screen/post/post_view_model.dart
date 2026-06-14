@@ -6,12 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
+import 'package:food_gram_app/core/model/photo_restaurant_candidate.dart';
 import 'package:food_gram_app/core/model/post_draft.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:food_gram_app/core/utils/image/upload_image_bytes.dart';
-import 'package:food_gram_app/core/model/photo_restaurant_candidate.dart';
 import 'package:food_gram_app/core/utils/location/image_gps_reader.dart';
 import 'package:food_gram_app/core/utils/location/post_price_currency_from_location.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
@@ -195,7 +195,7 @@ class PostViewModel extends _$PostViewModel {
     state = state.copyWith(
       foodImages: updatedImages,
       nearbySuggestionDismissed:
-          updatedImages.isEmpty ? false : state.nearbySuggestionDismissed,
+          updatedImages.isNotEmpty && state.nearbySuggestionDismissed,
     );
     _applyPhotoGpsFromImages(updatedImages);
   }
@@ -310,13 +310,13 @@ class PostViewModel extends _$PostViewModel {
     for (final path in imagePaths) {
       final gps = _imageGpsByPath[path];
       if (gps != null) {
-        final gpsChanged = state.photoLat != gps.latitude ||
-            state.photoLng != gps.longitude;
+        final gpsChanged =
+            state.photoLat != gps.latitude || state.photoLng != gps.longitude;
         state = state.copyWith(
           photoLat: gps.latitude,
           photoLng: gps.longitude,
           nearbySuggestionDismissed:
-              gpsChanged ? false : state.nearbySuggestionDismissed,
+              !gpsChanged && state.nearbySuggestionDismissed,
         );
         return;
       }
@@ -325,7 +325,7 @@ class PostViewModel extends _$PostViewModel {
       photoLat: null,
       photoLng: null,
       nearbySuggestionDismissed:
-          imagePaths.isEmpty ? false : state.nearbySuggestionDismissed,
+          imagePaths.isNotEmpty && state.nearbySuggestionDismissed,
     );
   }
 

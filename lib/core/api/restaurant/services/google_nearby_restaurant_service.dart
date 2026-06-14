@@ -44,7 +44,8 @@ Future<List<PhotoRestaurantCandidate>> googleNearbyRestaurantService(
 
     if (response.status != 200) {
       logger.w(
-        'Nearby search non-200: status=${response.status}, data=${response.data}',
+        'Nearby search non-200: status=${response.status}, '
+        'data=${response.data}',
       );
       return [];
     }
@@ -58,7 +59,8 @@ Future<List<PhotoRestaurantCandidate>> googleNearbyRestaurantService(
     final places = data['places'] as List<dynamic>? ?? [];
     if (places.isEmpty) {
       logger.i(
-        'Nearby search empty: lat=$latitude, lng=$longitude, radius=$radiusMeters',
+        'Nearby search empty: lat=$latitude, lng=$longitude, '
+        'radius=$radiusMeters',
       );
     }
 
@@ -104,10 +106,9 @@ PhotoRestaurantCandidate? _parsePlace({
   final openingHours = json['currentOpeningHours'] as Map<String, dynamic>?;
   final isOpenNow = openingHours?['openNow'] as bool?;
 
-  final types = (json['types'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ??
-      [];
+  final types =
+      (json['types'] as List<dynamic>?)?.map((e) => e.toString()).toList() ??
+          [];
 
   final displayName = json['displayName'] as Map<String, dynamic>?;
   final name = displayName?['text'] as String? ?? '';
