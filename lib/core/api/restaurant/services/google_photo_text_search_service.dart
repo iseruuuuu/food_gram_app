@@ -60,7 +60,7 @@ Future<List<PhotoRestaurantCandidate>> googlePhotoTextSearchService(
           merged.add(candidate);
         }
       }
-    } on Exception catch (e, st) {
+    } on Object catch (e, st) {
       logger.w(
         'Photo text search error: query=$query',
         error: e,

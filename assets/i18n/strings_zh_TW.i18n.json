@@ -146,6 +146,7 @@
     "nearbyOpen": "營業中",
     "nearbyClosed": "已打烊",
     "nearbyDistanceMeters": "{distance}m",
+    "nearbyDistanceKilometers": "{distance}km",
     "nearbySourceCommunity": "FoodGram"
   },
   "share": {

@@ -146,6 +146,7 @@
     "nearbyOpen": "営業中",
     "nearbyClosed": "営業時間外",
     "nearbyDistanceMeters": "{distance}m",
+    "nearbyDistanceKilometers": "{distance}km",
     "nearbySourceCommunity": "FoodGram"
   },
   "share": {

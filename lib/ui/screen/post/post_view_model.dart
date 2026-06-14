@@ -37,6 +37,7 @@ class PostViewModel extends _$PostViewModel {
   late final TextEditingController _commentController;
   late final TextEditingController _priceController;
   final Map<String, Uint8List> _imageBytesMap = {};
+  final Map<String, ({double latitude, double longitude})> _imageGpsByPath = {};
   Completer<void>? _maybeNotFoodCompleter;
   bool _restoredFromDraft = false;
   bool _priceCurrencyManuallySet = false;
@@ -71,6 +72,7 @@ class PostViewModel extends _$PostViewModel {
       }
       _maybeNotFoodCompleter = null;
       _imageBytesMap.clear();
+      _imageGpsByPath.clear();
       _currencyAutoDetectSeq++;
     });
   }
@@ -103,6 +105,7 @@ class PostViewModel extends _$PostViewModel {
     await _submitPost(foodTag, parsed);
     if (state.isSuccess) {
       _imageBytesMap.clear();
+      _imageGpsByPath.clear();
     }
     loading.state = false;
     return state.isSuccess;
@@ -186,15 +189,15 @@ class PostViewModel extends _$PostViewModel {
 
   void removeImage(String imagePath) {
     _imageBytesMap.remove(imagePath);
+    _imageGpsByPath.remove(imagePath);
     final updatedImages =
         state.foodImages.where((path) => path != imagePath).toList();
     state = state.copyWith(
       foodImages: updatedImages,
-      photoLat: updatedImages.isEmpty ? null : state.photoLat,
-      photoLng: updatedImages.isEmpty ? null : state.photoLng,
       nearbySuggestionDismissed:
           updatedImages.isEmpty ? false : state.nearbySuggestionDismissed,
     );
+    _applyPhotoGpsFromImages(updatedImages);
   }
 
   Future<bool> _pickImage(
@@ -235,9 +238,7 @@ class PostViewModel extends _$PostViewModel {
       }
       for (final image in images) {
         unawaited(_tryApplyCurrencyFromImage(image.path));
-        final photoGps = state.photoLat == null
-            ? await readGpsFromImagePath(image.path)
-            : null;
+        final photoGps = await readGpsFromImagePath(image.path);
         final bytes = await _openImageEditor(context, image.path);
         if (bytes != null) {
           await _processImageFromBytes(bytes, photoGps: photoGps);
@@ -296,15 +297,36 @@ class PostViewModel extends _$PostViewModel {
       status:
           isFood ? PostStatus.photoSuccess.name : PostStatus.maybeNotFood.name,
     );
-    if (state.restaurant == defaultRestaurantText &&
-        state.photoLat == null &&
-        photoGps != null) {
-      state = state.copyWith(
-        photoLat: photoGps.latitude,
-        photoLng: photoGps.longitude,
-        nearbySuggestionDismissed: false,
-      );
+    if (photoGps != null) {
+      _imageGpsByPath[imagePath] = photoGps;
     }
+    if (state.restaurant == defaultRestaurantText) {
+      _applyPhotoGpsFromImages(updatedImages);
+    }
+  }
+
+  /// 残っている画像のうち先頭の GPS を photoLat/photoLng に反映する
+  void _applyPhotoGpsFromImages(List<String> imagePaths) {
+    for (final path in imagePaths) {
+      final gps = _imageGpsByPath[path];
+      if (gps != null) {
+        final gpsChanged = state.photoLat != gps.latitude ||
+            state.photoLng != gps.longitude;
+        state = state.copyWith(
+          photoLat: gps.latitude,
+          photoLng: gps.longitude,
+          nearbySuggestionDismissed:
+              gpsChanged ? false : state.nearbySuggestionDismissed,
+        );
+        return;
+      }
+    }
+    state = state.copyWith(
+      photoLat: null,
+      photoLng: null,
+      nearbySuggestionDismissed:
+          imagePaths.isEmpty ? false : state.nearbySuggestionDismissed,
+    );
   }
 
   Future<void> _waitMaybeNotFoodHandled() async {

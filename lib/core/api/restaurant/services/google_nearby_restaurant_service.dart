@@ -72,7 +72,7 @@ Future<List<PhotoRestaurantCandidate>> googleNearbyRestaurantService(
         )
         .whereType<PhotoRestaurantCandidate>()
         .toList();
-  } on Exception catch (e, st) {
+  } on Object catch (e, st) {
     logger.w('Nearby search error', error: e, stackTrace: st);
     return [];
   }

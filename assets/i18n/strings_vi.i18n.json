@@ -146,6 +146,7 @@
     "nearbyOpen": "Đang mở",
     "nearbyClosed": "Đã đóng",
     "nearbyDistanceMeters": "{distance}m",
+    "nearbyDistanceKilometers": "{distance}km",
     "nearbySourceCommunity": "FoodGram"
   },
   "share": {

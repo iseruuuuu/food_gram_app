@@ -89,8 +89,7 @@ List<PhotoRestaurantCandidate> _pickClosest(
 
   for (final maxDist in _displayDistanceTiersMeters) {
     final tier = sorted.where((c) => c.distanceMeters <= maxDist).toList();
-    if (tier.length >= _maxCandidates ||
-        maxDist == _displayDistanceTiersMeters.last) {
+    if (tier.length >= _maxCandidates) {
       return tier.take(_maxCandidates).toList();
     }
   }

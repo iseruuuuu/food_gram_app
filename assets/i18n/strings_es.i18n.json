@@ -146,6 +146,7 @@
     "nearbyOpen": "Abierto",
     "nearbyClosed": "Cerrado",
     "nearbyDistanceMeters": "{distance}m",
+    "nearbyDistanceKilometers": "{distance}km",
     "nearbySourceCommunity": "FoodGram"
   },
   "share": {

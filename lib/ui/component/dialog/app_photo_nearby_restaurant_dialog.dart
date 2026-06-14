@@ -114,6 +114,9 @@ Future<void> showPhotoNearbyRestaurantDialog({
                       handled = true;
                       Navigator.of(dialogContext).pop();
                       vm.dismissNearbySuggestion();
+                      if (!context.mounted) {
+                        return;
+                      }
                       final result = await context.pushNamed(routerPath);
                       if (result != null && context.mounted) {
                         vm.getPlace(result as Restaurant);
@@ -151,7 +154,10 @@ String _formatDistance(Translations t, double meters) {
         : meters.round().toString();
     return t.post.nearbyDistanceMeters.replaceFirst('{distance}', label);
   }
-  return '${(meters / 1000).toStringAsFixed(1)}km';
+  return t.post.nearbyDistanceKilometers.replaceFirst(
+    '{distance}',
+    (meters / 1000).toStringAsFixed(1),
+  );
 }
 
 String _buildSubtitle(PhotoRestaurantCandidate candidate, String distance) {
