@@ -11,6 +11,8 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:food_gram_app/core/utils/image/upload_image_bytes.dart';
+import 'package:food_gram_app/core/model/photo_restaurant_candidate.dart';
+import 'package:food_gram_app/core/utils/location/image_gps_reader.dart';
 import 'package:food_gram_app/core/utils/location/post_price_currency_from_location.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/vision/food_image_labeler.dart';
@@ -186,7 +188,13 @@ class PostViewModel extends _$PostViewModel {
     _imageBytesMap.remove(imagePath);
     final updatedImages =
         state.foodImages.where((path) => path != imagePath).toList();
-    state = state.copyWith(foodImages: updatedImages);
+    state = state.copyWith(
+      foodImages: updatedImages,
+      photoLat: updatedImages.isEmpty ? null : state.photoLat,
+      photoLng: updatedImages.isEmpty ? null : state.photoLng,
+      nearbySuggestionDismissed:
+          updatedImages.isEmpty ? false : state.nearbySuggestionDismissed,
+    );
   }
 
   Future<bool> _pickImage(
@@ -202,11 +210,12 @@ class PostViewModel extends _$PostViewModel {
         return false;
       }
       unawaited(_tryApplyCurrencyFromImage(image.path));
+      final photoGps = await readGpsFromImagePath(image.path);
       final bytes = await _openImageEditor(context, image.path);
       if (bytes == null) {
         return false;
       }
-      await _processImageFromBytes(bytes);
+      await _processImageFromBytes(bytes, photoGps: photoGps);
       return true;
     } on PlatformException catch (error) {
       _logger.e(error.message);
@@ -226,9 +235,12 @@ class PostViewModel extends _$PostViewModel {
       }
       for (final image in images) {
         unawaited(_tryApplyCurrencyFromImage(image.path));
+        final photoGps = state.photoLat == null
+            ? await readGpsFromImagePath(image.path)
+            : null;
         final bytes = await _openImageEditor(context, image.path);
         if (bytes != null) {
-          await _processImageFromBytes(bytes);
+          await _processImageFromBytes(bytes, photoGps: photoGps);
           if (state.status == PostStatus.maybeNotFood.name) {
             await _waitMaybeNotFoodHandled();
           }
@@ -256,17 +268,23 @@ class PostViewModel extends _$PostViewModel {
     return result;
   }
 
-  Future<void> _processImageFromBytes(Uint8List bytes) async {
+  Future<void> _processImageFromBytes(
+    Uint8List bytes, {
+    ({double latitude, double longitude})? photoGps,
+  }) async {
     final uploadBytes = await prepareUploadImageBytes(bytes);
     final dir = await getTemporaryDirectory();
     final file = File(
       '${dir.path}/food_gram_${DateTime.now().millisecondsSinceEpoch}.jpg',
     );
     await file.writeAsBytes(uploadBytes);
-    await _processImage(file);
+    await _processImage(file, photoGps: photoGps);
   }
 
-  Future<void> _processImage(File cropImage) async {
+  Future<void> _processImage(
+    File cropImage, {
+    ({double latitude, double longitude})? photoGps,
+  }) async {
     final imageBytes = await cropImage.readAsBytes();
     final imagePath = cropImage.path;
     _imageBytesMap[imagePath] = imageBytes;
@@ -278,6 +296,15 @@ class PostViewModel extends _$PostViewModel {
       status:
           isFood ? PostStatus.photoSuccess.name : PostStatus.maybeNotFood.name,
     );
+    if (state.restaurant == defaultRestaurantText &&
+        state.photoLat == null &&
+        photoGps != null) {
+      state = state.copyWith(
+        photoLat: photoGps.latitude,
+        photoLng: photoGps.longitude,
+        nearbySuggestionDismissed: false,
+      );
+    }
   }
 
   Future<void> _waitMaybeNotFoodHandled() async {
@@ -299,11 +326,29 @@ class PostViewModel extends _$PostViewModel {
     _updateRestaurantState(restaurant);
   }
 
+  void selectNearbyCandidate(PhotoRestaurantCandidate candidate) {
+    _updateRestaurantState(candidate.toRestaurant());
+  }
+
+  void dismissNearbySuggestion() {
+    state = state.copyWith(nearbySuggestionDismissed: true);
+  }
+
+  void postWithoutRestaurant() {
+    state = state.copyWith(
+      restaurant: '不明',
+      lat: 0,
+      lng: 0,
+      nearbySuggestionDismissed: true,
+    );
+  }
+
   void _updateRestaurantState(Restaurant restaurant) {
     state = state.copyWith(
       restaurant: restaurant.name,
       lat: restaurant.lat,
       lng: restaurant.lng,
+      nearbySuggestionDismissed: true,
     );
     unawaited(
       _tryApplyCurrencyFromCoordinates(restaurant.lat, restaurant.lng),
