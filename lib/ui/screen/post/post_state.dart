@@ -14,5 +14,10 @@ class PostState with _$PostState {
     @Default(0.0) double star,
     @Default(false) bool isAnonymous,
     @Default('') String priceCurrency,
+    /// 写真 EXIF から取得した撮影位置（候補提案用）
+    double? photoLat,
+    double? photoLng,
+    /// 候補リストを閉じた / 店舗を選択済み
+    @Default(false) bool nearbySuggestionDismissed,
   }) = _PostState;
 }

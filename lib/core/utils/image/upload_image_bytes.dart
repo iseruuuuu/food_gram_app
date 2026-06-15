@@ -1,9 +1,7 @@
-import 'dart:typed_data';
-
 import 'package:flutter/foundation.dart';
 import 'package:image/image.dart' as img;
 
-/// 従来の [ImagePicker] 設定（maxWidth/maxHeight: 960, imageQuality: 100）に合わせる
+/// 従来の [Image Picker] 設定（maxWidth/maxHeight: 960, imageQuality: 100）に合わせる
 const double kUploadImageMaxDimension = 960;
 const int kUploadImageJpegQuality = 100;
 
@@ -25,7 +23,7 @@ Uint8List _encodeUploadJpeg(Uint8List bytes) {
       maxDimension: kUploadImageMaxDimension.round(),
     );
     return Uint8List.fromList(
-      img.encodeJpg(resized, quality: kUploadImageJpegQuality),
+      img.encodeJpg(resized),
     );
   } on Object {
     return bytes;

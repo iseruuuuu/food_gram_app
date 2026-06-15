@@ -132,7 +132,22 @@
     "requiredInfoMissing": "缺少必要信息",
     "saveDraft": "保存草稿",
     "draftSaved": "草稿已保存",
-    "draftRestored": "已加载草稿"
+    "draftRestored": "已加载草稿",
+    "nearbySuggestionTitle": "请选择这张照片的餐厅",
+    "nearbySuggestionSubtitle": "显示拍摄位置附近的餐饮店",
+    "nearbyCommunityHint": "有其他 FoodGram 用户在此发布",
+    "nearbyMallHint": "可能在商场或车站大楼内，请确认。",
+    "nearbyDistanceHint": "该店离拍摄位置稍远，请确认。",
+    "nearbySelect": "选择此店",
+    "nearbyManualSearch": "手动搜索",
+    "nearbyPostWithout": "不填餐厅发布",
+    "nearbyEmpty": "附近未找到餐厅",
+    "nearbyFetchError": "获取餐厅候选失败",
+    "nearbyOpen": "营业中",
+    "nearbyClosed": "已打烊",
+    "nearbyDistanceMeters": "{distance}m",
+    "nearbyDistanceKilometers": "{distance}km",
+    "nearbySourceCommunity": "FoodGram"
   },
   "share": {
     "shareButton": "分享",

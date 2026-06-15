@@ -132,7 +132,22 @@
     "requiredInfoMissing": "Required information is missing",
     "saveDraft": "Save draft",
     "draftSaved": "Draft saved",
-    "draftRestored": "Draft loaded"
+    "draftRestored": "Draft loaded",
+    "nearbySuggestionTitle": "Select the restaurant for this photo",
+    "nearbySuggestionSubtitle": "Showing eateries near where this photo was taken",
+    "nearbyCommunityHint": "Other FoodGram users posted here",
+    "nearbyMallHint": "May be inside a station building or mall. Please verify.",
+    "nearbyDistanceHint": "This place is a bit far from the photo location. Please verify.",
+    "nearbySelect": "Select this place",
+    "nearbyManualSearch": "Search manually",
+    "nearbyPostWithout": "Post without restaurant",
+    "nearbyEmpty": "No nearby restaurants found",
+    "nearbyFetchError": "Failed to load restaurant suggestions",
+    "nearbyOpen": "Open now",
+    "nearbyClosed": "Closed",
+    "nearbyDistanceMeters": "{distance}m",
+    "nearbyDistanceKilometers": "{distance}km",
+    "nearbySourceCommunity": "FoodGram"
   },
   "share": {
     "shareButton": "Share",
