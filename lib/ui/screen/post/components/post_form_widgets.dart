@@ -44,20 +44,23 @@ class PostSectionHeader extends StatelessWidget {
   const PostSectionHeader({
     required this.title,
     required this.badge,
-    required this.hint,
-    required this.subtitle,
     required this.accent,
+    this.hint,
+    this.subtitle,
     super.key,
   });
 
   final String title;
   final String badge;
-  final String hint;
-  final String subtitle;
+  final String? hint;
+  final String? subtitle;
   final Color accent;
 
   @override
   Widget build(BuildContext context) {
+    final hasHint = hint != null && hint!.isNotEmpty;
+    final hasSubtitle = subtitle != null && subtitle!.isNotEmpty;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -80,12 +83,16 @@ class PostSectionHeader extends StatelessWidget {
                 ),
               ),
             ),
-            const Spacer(),
-            Text(hint, style: PostStyle.sectionHint(accent)),
+            if (hasHint) ...[
+              const Spacer(),
+              Text(hint!, style: PostStyle.sectionHint(accent)),
+            ],
           ],
         ),
-        const Gap(4),
-        Text(subtitle, style: PostStyle.sectionSubtitle(context)),
+        if (hasSubtitle) ...[
+          const Gap(4),
+          Text(subtitle!, style: PostStyle.sectionSubtitle(context)),
+        ],
       ],
     );
   }

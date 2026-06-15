@@ -205,7 +205,6 @@ class PostScreen extends HookConsumerWidget {
                           PostSectionHeader(
                             title: t.post.requiredSectionTitle,
                             badge: t.post.requiredBadge,
-                            hint: t.post.requiredSectionHint,
                             subtitle: t.post.requiredSectionSubtitle,
                             accent: requiredAccent,
                           ),
@@ -259,7 +258,6 @@ class PostScreen extends HookConsumerWidget {
                           PostSectionHeader(
                             title: t.post.optionalSectionTitle,
                             badge: t.post.optionalBadge,
-                            hint: t.post.optionalSectionHint,
                             subtitle: t.post.optionalSectionSubtitle,
                             accent: optionalAccent,
                           ),
