@@ -14,12 +14,14 @@ class AppFoodTag extends HookWidget {
     required this.onTagSelected,
     required this.foodTags,
     required this.foodTexts,
+    this.emptyHint,
     super.key,
   });
 
   final OnTagSelected onTagSelected;
   final List<String> foodTags;
   final ValueNotifier<List<String>> foodTexts;
+  final String? emptyHint;
 
   Future<void> _showTagSelector(
     BuildContext context,
@@ -327,10 +329,10 @@ class AppFoodTag extends HookWidget {
                     Expanded(
                       child: foodTags.isEmpty
                           ? Text(
-                              Translations.of(context).post.categoryTitle,
+                              emptyHint ??
+                                  Translations.of(context).post.categoryTitle,
                               style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
                                 color: scheme.onSurfaceVariant,
                               ),
                             )
