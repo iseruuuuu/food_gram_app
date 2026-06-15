@@ -1,7 +1,10 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/number_symbols.dart';
+import 'package:intl/number_symbols_data.dart';
 
 /// ISO 4217 通貨コード（カンマ区切り・アルファベット順）。記号未定義はコードそのものを表示。
 const String _kSupportedPostPriceCurrencyCsv =
@@ -798,16 +801,25 @@ PostPriceParseResult parsePostPriceInput({
   }
   final code = currencyCode.toUpperCase();
   final loc = locale ?? ui.PlatformDispatcher.instance.locale;
-  final s =
+  final withoutSpaces =
       trimmed.replaceAll(RegExp(r'[\s\u00A0\u202F]'), ''); // space, NBSP, NNBSP
-  if (s.isEmpty ||
-      !RegExp(r'^[0-9.,]+$').hasMatch(s) ||
-      !RegExp('^[0-9]').hasMatch(s)) {
+  if (withoutSpaces.isEmpty || !RegExp(r'^[0-9]').hasMatch(withoutSpaces)) {
+    return const PostPriceParseResult.invalid();
+  }
+  if (!postPriceInputAllowedCharacterRegExp(
+    locale: loc,
+    currencyCode: code,
+  ).hasMatch(withoutSpaces)) {
+    return const PostPriceParseResult.invalid();
+  }
+
+  final s = _normalizeLocaleSeparatorsToCommaDot(withoutSpaces, loc, code);
+  if (!RegExp(r'^[0-9.,]+$').hasMatch(s)) {
     return const PostPriceParseResult.invalid();
   }
 
   final heuristicNorm = _heuristicNormalizeSeparatorsToDot(s);
-  final intlVal = _tryParseDecimalWithIntl(s, loc);
+  final intlVal = _tryParseDecimalWithIntl(withoutSpaces, loc);
 
   double? value;
   String? dotNormalizedForScale;
@@ -848,6 +860,66 @@ PostPriceParseResult parsePostPriceInput({
   return PostPriceParseResult.value(
     amount: canonical,
     currency: code,
+  );
+}
+
+/// ロケール固有の桁区切り（例: `'`）を [`,` / `.`] 表記へ寄せ、既存ヒューリスティックと整合させる。
+String _normalizeLocaleSeparatorsToCommaDot(
+  String s,
+  Locale locale,
+  String currencyCode,
+) {
+  final symbols = _numberSymbolsForLocale(locale);
+  final group = symbols.GROUP_SEP;
+  final decimal = symbols.DECIMAL_SEP;
+  var result = s;
+
+  if (group.isNotEmpty && group != ',' && group != '.') {
+    final thousandReplacement = decimal == ',' ? '.' : ',';
+    result = result.replaceAll(group, thousandReplacement);
+  }
+
+  return result;
+}
+
+NumberSymbols _numberSymbolsForLocale(Locale locale) {
+  for (final tag in _localeTagsForNumberFormat(locale)) {
+    final normalized = tag.replaceAll('-', '_');
+    final symbols = numberFormatSymbols[normalized];
+    if (symbols != null) {
+      return symbols;
+    }
+  }
+  return numberFormatSymbols['en']!;
+}
+
+/// 投稿価格入力で許容する文字（ロケールの桁区切り・小数点のみ）
+RegExp postPriceInputAllowedCharacterRegExp({
+  required Locale locale,
+  required String currencyCode,
+}) {
+  final symbols = _numberSymbolsForLocale(locale);
+  final chars = <String>[r'\d'];
+  final group = symbols.GROUP_SEP;
+  final decimal = symbols.DECIMAL_SEP;
+  if (group.isNotEmpty) {
+    chars.add(RegExp.escape(group));
+  }
+  if (!_isIntegerStyleCurrency(currencyCode) && decimal.isNotEmpty) {
+    chars.add(RegExp.escape(decimal));
+  }
+  return RegExp('^[${chars.join()}]*\$');
+}
+
+TextInputFormatter postPriceInputFormatter({
+  required Locale locale,
+  required String currencyCode,
+}) {
+  return FilteringTextInputFormatter.allow(
+    postPriceInputAllowedCharacterRegExp(
+      locale: locale,
+      currencyCode: currencyCode,
+    ),
   );
 }
 
