@@ -801,16 +801,25 @@ PostPriceParseResult parsePostPriceInput({
   }
   final code = currencyCode.toUpperCase();
   final loc = locale ?? ui.PlatformDispatcher.instance.locale;
-  final s =
+  final withoutSpaces =
       trimmed.replaceAll(RegExp(r'[\s\u00A0\u202F]'), ''); // space, NBSP, NNBSP
-  if (s.isEmpty ||
-      !RegExp(r'^[0-9.,]+$').hasMatch(s) ||
-      !RegExp('^[0-9]').hasMatch(s)) {
+  if (withoutSpaces.isEmpty || !RegExp(r'^[0-9]').hasMatch(withoutSpaces)) {
+    return const PostPriceParseResult.invalid();
+  }
+  if (!postPriceInputAllowedCharacterRegExp(
+    locale: loc,
+    currencyCode: code,
+  ).hasMatch(withoutSpaces)) {
+    return const PostPriceParseResult.invalid();
+  }
+
+  final s = _normalizeLocaleSeparatorsToCommaDot(withoutSpaces, loc, code);
+  if (!RegExp(r'^[0-9.,]+$').hasMatch(s)) {
     return const PostPriceParseResult.invalid();
   }
 
   final heuristicNorm = _heuristicNormalizeSeparatorsToDot(s);
-  final intlVal = _tryParseDecimalWithIntl(s, loc);
+  final intlVal = _tryParseDecimalWithIntl(withoutSpaces, loc);
 
   double? value;
   String? dotNormalizedForScale;
@@ -852,6 +861,25 @@ PostPriceParseResult parsePostPriceInput({
     amount: canonical,
     currency: code,
   );
+}
+
+/// ロケール固有の桁区切り（例: `'`）を [`,` / `.`] 表記へ寄せ、既存ヒューリスティックと整合させる。
+String _normalizeLocaleSeparatorsToCommaDot(
+  String s,
+  Locale locale,
+  String currencyCode,
+) {
+  final symbols = _numberSymbolsForLocale(locale);
+  final group = symbols.GROUP_SEP;
+  final decimal = symbols.DECIMAL_SEP;
+  var result = s;
+
+  if (group.isNotEmpty && group != ',' && group != '.') {
+    final thousandReplacement = decimal == ',' ? '.' : ',';
+    result = result.replaceAll(group, thousandReplacement);
+  }
+
+  return result;
 }
 
 NumberSymbols _numberSymbolsForLocale(Locale locale) {
