@@ -434,7 +434,10 @@ class PostPriceField extends StatelessWidget {
                     decimal: true,
                   ),
                   inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
+                    postPriceInputFormatter(
+                      locale: Localizations.localeOf(context),
+                      currencyCode: code,
+                    ),
                   ],
                   contextMenuBuilder: (context, state) {
                     if (SystemContextMenu.isSupported(context)) {

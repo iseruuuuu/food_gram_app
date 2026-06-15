@@ -1,7 +1,10 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/number_symbols.dart';
+import 'package:intl/number_symbols_data.dart';
 
 /// ISO 4217 通貨コード（カンマ区切り・アルファベット順）。記号未定義はコードそのものを表示。
 const String _kSupportedPostPriceCurrencyCsv =
@@ -848,6 +851,47 @@ PostPriceParseResult parsePostPriceInput({
   return PostPriceParseResult.value(
     amount: canonical,
     currency: code,
+  );
+}
+
+NumberSymbols _numberSymbolsForLocale(Locale locale) {
+  for (final tag in _localeTagsForNumberFormat(locale)) {
+    final normalized = tag.replaceAll('-', '_');
+    final symbols = numberFormatSymbols[normalized];
+    if (symbols != null) {
+      return symbols;
+    }
+  }
+  return numberFormatSymbols['en']!;
+}
+
+/// 投稿価格入力で許容する文字（ロケールの桁区切り・小数点のみ）
+RegExp postPriceInputAllowedCharacterRegExp({
+  required Locale locale,
+  required String currencyCode,
+}) {
+  final symbols = _numberSymbolsForLocale(locale);
+  final chars = <String>[r'\d'];
+  final group = symbols.GROUP_SEP;
+  final decimal = symbols.DECIMAL_SEP;
+  if (group.isNotEmpty) {
+    chars.add(RegExp.escape(group));
+  }
+  if (!_isIntegerStyleCurrency(currencyCode) && decimal.isNotEmpty) {
+    chars.add(RegExp.escape(decimal));
+  }
+  return RegExp('^[${chars.join()}]*\$');
+}
+
+TextInputFormatter postPriceInputFormatter({
+  required Locale locale,
+  required String currencyCode,
+}) {
+  return FilteringTextInputFormatter.allow(
+    postPriceInputAllowedCharacterRegExp(
+      locale: locale,
+      currencyCode: currencyCode,
+    ),
   );
 }
 
