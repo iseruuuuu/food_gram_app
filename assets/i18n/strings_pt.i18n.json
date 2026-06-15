@@ -151,7 +151,22 @@
     "requiredInfoMissing": "Informações obrigatórias em falta",
     "saveDraft": "Salvar rascunho",
     "draftSaved": "Rascunho salvo",
-    "draftRestored": "Rascunho carregado"
+    "draftRestored": "Rascunho carregado",
+    "nearbySuggestionTitle": "Selecione o restaurante desta foto",
+    "nearbySuggestionSubtitle": "Mostrando locais perto de onde a foto foi tirada",
+    "nearbyCommunityHint": "Outros usuários do FoodGram postaram aqui",
+    "nearbyMallHint": "Pode estar em um shopping. Verifique.",
+    "nearbyDistanceHint": "Este local está um pouco longe da foto. Verifique.",
+    "nearbySelect": "Selecionar este local",
+    "nearbyManualSearch": "Buscar manualmente",
+    "nearbyPostWithout": "Postar sem restaurante",
+    "nearbyEmpty": "Nenhum restaurante próximo encontrado",
+    "nearbyFetchError": "Falha ao carregar sugestões",
+    "nearbyOpen": "Aberto",
+    "nearbyClosed": "Fechado",
+    "nearbyDistanceMeters": "{distance}m",
+    "nearbyDistanceKilometers": "{distance}km",
+    "nearbySourceCommunity": "FoodGram"
   },
   "share": {
     "shareButton": "Compartilhar",

@@ -151,7 +151,22 @@
     "requiredInfoMissing": "Thông tin bắt buộc bị thiếu",
     "saveDraft": "Lưu bản nháp",
     "draftSaved": "Đã lưu bản nháp",
-    "draftRestored": "Đã tải bản nháp"
+    "draftRestored": "Đã tải bản nháp",
+    "nearbySuggestionTitle": "Chọn nhà hàng cho ảnh này",
+    "nearbySuggestionSubtitle": "Hiển thị quán ăn gần vị trí chụp ảnh",
+    "nearbyCommunityHint": "Người dùng FoodGram khác đã đăng tại đây",
+    "nearbyMallHint": "Có thể nằm trong trung tâm thương mại. Vui lòng kiểm tra.",
+    "nearbyDistanceHint": "Địa điểm hơi xa vị trí chụp. Vui lòng kiểm tra.",
+    "nearbySelect": "Chọn địa điểm này",
+    "nearbyManualSearch": "Tìm thủ công",
+    "nearbyPostWithout": "Đăng không cần nhà hàng",
+    "nearbyEmpty": "Không tìm thấy nhà hàng gần đây",
+    "nearbyFetchError": "Không tải được gợi ý nhà hàng",
+    "nearbyOpen": "Đang mở",
+    "nearbyClosed": "Đã đóng",
+    "nearbyDistanceMeters": "{distance}m",
+    "nearbyDistanceKilometers": "{distance}km",
+    "nearbySourceCommunity": "FoodGram"
   },
   "share": {
     "shareButton": "Chia sẻ",
