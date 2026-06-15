@@ -273,6 +273,11 @@ class PostScreen extends HookConsumerWidget {
                             accent: optionalAccent,
                           ),
                           const Gap(16),
+                          PostCommentField(
+                            controller: viewModel.commentController,
+                            accent: optionalAccent,
+                          ),
+                          const Gap(16),
                           PostPriceField(
                             controller: viewModel.priceController,
                             currencyCode: postState.priceCurrency,
@@ -283,11 +288,6 @@ class PostScreen extends HookConsumerWidget {
                           PostRatingField(
                             star: postState.star,
                             onRatingUpdate: viewModel.setStar,
-                            accent: optionalAccent,
-                          ),
-                          const Gap(16),
-                          PostCommentField(
-                            controller: viewModel.commentController,
                             accent: optionalAccent,
                           ),
                         ],
