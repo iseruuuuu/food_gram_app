@@ -395,6 +395,227 @@ class PostFoodTagField extends StatelessWidget {
   }
 }
 
+class PostPriceAndRatingRow extends StatelessWidget {
+  const PostPriceAndRatingRow({
+    required this.priceController,
+    required this.currencyCode,
+    required this.onCurrencyChanged,
+    required this.star,
+    required this.onRatingUpdate,
+    required this.accent,
+    super.key,
+  });
+
+  final TextEditingController priceController;
+  final String currencyCode;
+  final ValueChanged<String> onCurrencyChanged;
+  final double star;
+  final ValueChanged<double> onRatingUpdate;
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translations.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final code = currencyCode.isEmpty
+        ? defaultPostPriceCurrencyForLocale()
+        : currencyCode;
+    const inputHeight = 44.0;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 11,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PostFieldLabel(
+                icon: Icons.payments_outlined,
+                label: t.post.priceOptionalLabel,
+                accent: accent,
+              ),
+              const Gap(8),
+              SizedBox(
+                height: inputHeight,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: scheme.surface,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: PostStyle.fieldBorder),
+                        ),
+                        child: TextField(
+                          controller: priceController,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
+                          inputFormatters: [
+                            postPriceInputFormatter(
+                              locale: Localizations.localeOf(context),
+                              currencyCode: code,
+                            ),
+                          ],
+                          contextMenuBuilder: (context, state) {
+                            if (SystemContextMenu.isSupported(context)) {
+                              return SystemContextMenu.editableText(
+                                editableTextState: state,
+                              );
+                            }
+                            return AdaptiveTextSelectionToolbar.editableText(
+                              editableTextState: state,
+                            );
+                          },
+                          selectionHeightStyle: BoxHeightStyle.strut,
+                          style: PostStyle.fieldValue(context),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 10,
+                            ),
+                            hintText: t.post.priceHint,
+                            hintStyle: PostStyle.fieldHint(context),
+                          ),
+                          autocorrect: false,
+                        ),
+                      ),
+                    ),
+                    const Gap(6),
+                    Material(
+                      color: scheme.surface,
+                      borderRadius: BorderRadius.circular(8),
+                      child: InkWell(
+                        onTap: () {
+                          primaryFocus?.unfocus();
+                          showPostPriceCurrencySheet(
+                            context: context,
+                            selected: code,
+                            onSelected: onCurrencyChanged,
+                          );
+                        },
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          width: 54,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: PostStyle.fieldBorder),
+                          ),
+                          child: Text(
+                            code,
+                            style: PostStyle.fieldValue(context).copyWith(
+                              fontSize: 13,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        const Gap(10),
+        Expanded(
+          flex: 10,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PostFieldLabel(
+                icon: Icons.star_outline,
+                label: t.post.ratingOptionalLabel,
+                accent: accent,
+              ),
+              const Gap(8),
+              SizedBox(
+                height: inputHeight,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: KeyedSubtree(
+                    key: ValueKey(star),
+                    child: RatingBar.builder(
+                      initialRating: star,
+                      allowHalfRating: true,
+                      itemSize: 26,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 1),
+                      unratedColor: isDark
+                          ? Colors.grey.shade700
+                          : Colors.grey.shade300,
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: onRatingUpdate,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+void showPostPriceCurrencySheet({
+  required BuildContext context,
+  required String selected,
+  required ValueChanged<String> onSelected,
+}) {
+  final t = Translations.of(context);
+  final theme = Theme.of(context);
+  showModalBottomSheet<void>(
+    context: context,
+    showDragHandle: true,
+    backgroundColor: theme.brightness == Brightness.light
+        ? Colors.white
+        : theme.colorScheme.surface,
+    builder: (sheetContext) {
+      return SafeArea(
+        child: ListView.builder(
+          itemCount: kSupportedPostPriceCurrencies.length + 1,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                child: Text(
+                  t.post.selectCurrency,
+                  style: Theme.of(sheetContext).textTheme.titleMedium,
+                ),
+              );
+            }
+            final c = kSupportedPostPriceCurrencies[index - 1];
+            final sym = postPriceCurrencySymbol(c);
+            return ListTile(
+              title: Text('$sym  $c'),
+              trailing: c == selected
+                  ? Icon(
+                      Icons.check,
+                      color: Theme.of(context).colorScheme.primary,
+                    )
+                  : null,
+              onTap: () {
+                onSelected(c);
+                Navigator.of(sheetContext).pop();
+              },
+            );
+          },
+        ),
+      );
+    },
+  );
+}
+
 class PostPriceField extends StatelessWidget {
   const PostPriceField({
     required this.controller,
@@ -480,7 +701,11 @@ class PostPriceField extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   primaryFocus?.unfocus();
-                  _openCurrencySheet(context, code);
+                  showPostPriceCurrencySheet(
+                    context: context,
+                    selected: code,
+                    onSelected: onCurrencyChanged,
+                  );
                 },
                 borderRadius: BorderRadius.circular(8),
                 child: Container(
@@ -501,51 +726,6 @@ class PostPriceField extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-
-  void _openCurrencySheet(BuildContext context, String selected) {
-    final t = Translations.of(context);
-    final theme = Theme.of(context);
-    showModalBottomSheet<void>(
-      context: context,
-      showDragHandle: true,
-      backgroundColor: theme.brightness == Brightness.light
-          ? Colors.white
-          : theme.colorScheme.surface,
-      builder: (sheetContext) {
-        return SafeArea(
-          child: ListView.builder(
-            itemCount: kSupportedPostPriceCurrencies.length + 1,
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                  child: Text(
-                    t.post.selectCurrency,
-                    style: Theme.of(sheetContext).textTheme.titleMedium,
-                  ),
-                );
-              }
-              final c = kSupportedPostPriceCurrencies[index - 1];
-              final sym = postPriceCurrencySymbol(c);
-              return ListTile(
-                title: Text('$sym  $c'),
-                trailing: c == selected
-                    ? Icon(
-                        Icons.check,
-                        color: Theme.of(context).colorScheme.primary,
-                      )
-                    : null,
-                onTap: () {
-                  onCurrencyChanged(c);
-                  Navigator.of(sheetContext).pop();
-                },
-              );
-            },
-          ),
-        );
-      },
     );
   }
 }

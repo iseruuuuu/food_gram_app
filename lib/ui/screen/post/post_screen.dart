@@ -337,14 +337,10 @@ class PostScreen extends HookConsumerWidget {
                             accent: optionalAccent,
                           ),
                           const Gap(16),
-                          PostPriceField(
-                            controller: viewModel.priceController,
+                          PostPriceAndRatingRow(
+                            priceController: viewModel.priceController,
                             currencyCode: postState.priceCurrency,
                             onCurrencyChanged: viewModel.setPriceCurrency,
-                            accent: optionalAccent,
-                          ),
-                          const Gap(16),
-                          PostRatingField(
                             star: postState.star,
                             onRatingUpdate: viewModel.setStar,
                             accent: optionalAccent,
