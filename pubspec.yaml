@@ -2,7 +2,7 @@ name: food_gram_app
 description: A new Flutter project.
 publish_to: 'none'
 
-version: 1.42.0+76
+version: 1.42.1+77
 
 environment:
   sdk: '>=3.1.5 <4.0.0'
@@ -45,7 +45,7 @@ dependencies:
   google_mlkit_translation: ^0.13.0
   google_mobile_ads: ^5.2.0
   google_sign_in: ^6.1.4
-  home_widget: ^0.8.1
+  home_widget: ^0.9.2
   hooks_riverpod: ^2.4.9
   image: ^4.8.0
   image_picker: ^1.0.4
@@ -59,7 +59,7 @@ dependencies:
   maplibre_gl: ^0.24.1
   motor: ^1.1.0
   new_version_plus: ^0.0.11
-  package_info_plus: ^4.0.1
+  package_info_plus: ^8.1.0
   path_provider: ^2.1.5
   permission_handler: ^11.3.1
   photo_viewer: ^0.0.3

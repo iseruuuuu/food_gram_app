@@ -57,11 +57,12 @@ tasks.whenTaskAdded { task ->
 
 android {
     namespace "com.food_gram_app"
-    compileSdkVersion 36
+    compileSdk 36
     ndkVersion "28.1.13356709"
 
     buildFeatures {
         viewBinding true
+        resValues true
     }
 
     compileOptions {
