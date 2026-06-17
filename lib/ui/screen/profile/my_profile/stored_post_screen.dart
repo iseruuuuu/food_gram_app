@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/local/providers/save_album_notifier.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -27,6 +29,15 @@ class StoredPostScreen extends HookConsumerWidget {
 
     final t = Translations.of(context);
     final scrollController = useScrollController();
+    useEffect(
+      () {
+        ref
+            .read(firebaseAnalyticsServiceProvider)
+            .logEventUnawaited(name: AnalyticsEvent.savedPostOpen);
+        return null;
+      },
+      const [],
+    );
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).brightness == Brightness.light

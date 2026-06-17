@@ -376,8 +376,12 @@ class FirebaseMessagingService {
   Future<void> _handleForegroundMessage(RemoteMessage message) async {
     _logger.i('フォアグラウンドでメッセージを受信しました: ${message.messageId}');
 
-    // メッセージタイプに応じて処理
     final messageType = message.data['type'] as String?;
+    unawaited(
+      FirebaseAnalyticsService.shared.logPushReceive(type: messageType),
+    );
+
+    // メッセージタイプに応じて処理
     if (messageType == 'heart') {
       await _showHeartNotification(message);
     } else {

@@ -39,8 +39,12 @@ class TabViewModel extends _$TabViewModel {
     switch (index) {
       case 0:
         unawaited(analytics.logEvent(name: AnalyticsEvent.mapOpen));
+      case 1:
+        unawaited(analytics.logEvent(name: AnalyticsEvent.timelineOpen));
       case 2:
         unawaited(analytics.logEvent(name: AnalyticsEvent.myMapOpen));
+      case 3:
+        unawaited(analytics.logEvent(name: AnalyticsEvent.profileOpen));
     }
     if (index == 1 || index == 3) {
       final current = ref.read(scrollToTopForTabProvider);

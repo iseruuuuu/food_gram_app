@@ -39,6 +39,11 @@ class TutorialScreen extends HookConsumerWidget {
           isFinishedTutorial.value = await preference.getBool(
             PreferenceKey.isFinishedTutorial,
           );
+          if (!isFinishedTutorial.value) {
+            ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                  name: AnalyticsEvent.tutorialStart,
+                );
+          }
         }
 
         loadPreference();
@@ -54,6 +59,7 @@ class TutorialScreen extends HookConsumerWidget {
             currentPageIndex.value = page.round();
           }
         }
+
         pageController.addListener(updatePageIndex);
         WidgetsBinding.instance.addPostFrameCallback((_) => updatePageIndex());
         return () => pageController.removeListener(updatePageIndex);
@@ -519,8 +525,8 @@ class TutorialScreen extends HookConsumerWidget {
                                             firebaseAnalyticsServiceProvider,
                                           )
                                           .logEvent(
-                                            name: AnalyticsEvent
-                                                .tutorialComplete,
+                                            name:
+                                                AnalyticsEvent.tutorialComplete,
                                           ),
                                     );
                                     context.go(RouterPath.splash);
