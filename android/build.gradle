@@ -24,6 +24,7 @@ rootProject.buildDir = '../build'
 def applyJava17ToPluginProjects = { subproject ->
     if (subproject.name == 'app') return
     if (!subproject.plugins.hasPlugin('com.android.library')) return
+    subproject.android.compileSdk = 36
     subproject.android.compileOptions.sourceCompatibility = JavaVersion.VERSION_17
     subproject.android.compileOptions.targetCompatibility = JavaVersion.VERSION_17
     try {
