@@ -50,6 +50,25 @@
     "albumEmptyListHint": "Crie um álbum abaixo e depois selecione-o.",
     "albumCreated": "Álbum criado"
   },
+  "memoryAlbum": {
+    "title": "Álbuns de memórias gastronômicas",
+    "create": "Criar álbum",
+    "edit": "Editar álbum",
+    "emptyTitle": "Ainda não há álbuns",
+    "emptyBody": "Agrupe suas publicações em álbuns para reviver suas memórias",
+    "titleHint": "Título (ex. Rota de cafés)",
+    "descriptionHint": "Descrição",
+    "selectPosts": "Selecionar publicações",
+    "postCount": "{count} publicações",
+    "emptyTitleError": "Digite um título",
+    "emptyPostsError": "Selecione pelo menos uma publicação",
+    "deleteTitle": "Excluir álbum",
+    "deleteBody": "Excluir este álbum? Suas publicações não serão excluídas.",
+    "deleted": "Álbum excluído",
+    "saved": "Álbum salvo",
+    "createdAt": "Criado",
+    "notFound": "Álbum não encontrado"
+  },
   "maybeNotFoodDialog": {
     "title": "Só conferindo 🍽️",
     "text": "Imagem {index},\nEsta foto pode não ser de comida… 🤔\\n\\nDeseja publicar mesmo assim?",

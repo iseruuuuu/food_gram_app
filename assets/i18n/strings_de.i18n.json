@@ -50,6 +50,25 @@
     "albumEmptyListHint": "Erstelle unten ein Album und wähle es dann aus.",
     "albumCreated": "Album erstellt"
   },
+  "memoryAlbum": {
+    "title": "Essens-Erinnerungsalben",
+    "create": "Album erstellen",
+    "edit": "Album bearbeiten",
+    "emptyTitle": "Noch keine Alben",
+    "emptyBody": "Gruppiere deine Beiträge in Alben und schwelge in Erinnerungen",
+    "titleHint": "Titel (z. B. Café-Tour)",
+    "descriptionHint": "Beschreibung",
+    "selectPosts": "Beiträge auswählen",
+    "postCount": "{count} Beiträge",
+    "emptyTitleError": "Bitte einen Titel eingeben",
+    "emptyPostsError": "Bitte mindestens einen Beitrag auswählen",
+    "deleteTitle": "Album löschen",
+    "deleteBody": "Dieses Album löschen? Deine Beiträge werden nicht gelöscht.",
+    "deleted": "Album gelöscht",
+    "saved": "Album gespeichert",
+    "createdAt": "Erstellt",
+    "notFound": "Album nicht gefunden"
+  },
   "maybeNotFoodDialog": {
     "title": "Kurze Bestätigung 🍽️",
     "text": "Bild {index},\nDieses Foto zeigt möglicherweise kein Essen… 🤔\\n\\nTrotzdem posten?",

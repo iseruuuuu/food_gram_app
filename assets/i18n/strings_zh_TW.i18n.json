@@ -50,6 +50,25 @@
     "albumEmptyListHint": "請先在下方建立相簿，然後再選擇。",
     "albumCreated": "相簿已建立"
   },
+  "memoryAlbum": {
+    "title": "美食回憶相簿",
+    "create": "建立相簿",
+    "edit": "編輯相簿",
+    "emptyTitle": "還沒有相簿",
+    "emptyBody": "將貼文整理成相簿，回顧美食回憶",
+    "titleHint": "標題（例如：咖啡廳巡禮）",
+    "descriptionHint": "說明",
+    "selectPosts": "選擇貼文",
+    "postCount": "{count} 篇貼文",
+    "emptyTitleError": "請輸入標題",
+    "emptyPostsError": "請至少選擇一篇貼文",
+    "deleteTitle": "刪除相簿",
+    "deleteBody": "確定刪除此相簿嗎？貼文本身不會被刪除。",
+    "deleted": "相簿已刪除",
+    "saved": "相簿已儲存",
+    "createdAt": "建立日期",
+    "notFound": "找不到相簿"
+  },
   "maybeNotFoodDialog": {
     "title": "稍作確認 🍽️",
     "text": "第{index}張照片，\n這張照片可能不是食物… 🤔\\n\\n仍要發布嗎？",

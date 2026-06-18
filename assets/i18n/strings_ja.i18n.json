@@ -50,6 +50,25 @@
     "albumEmptyListHint": "下でアルバムを作成してから選んでください。",
     "albumCreated": "アルバムを作成しました"
   },
+  "memoryAlbum": {
+    "title": "食の思い出アルバム",
+    "create": "アルバムを作成",
+    "edit": "アルバムを編集",
+    "emptyTitle": "まだアルバムがありません",
+    "emptyBody": "投稿をまとめて、食の思い出を振り返りましょう",
+    "titleHint": "タイトル（例: カフェ巡り）",
+    "descriptionHint": "コメント・説明",
+    "selectPosts": "投稿を選択",
+    "postCount": "{count}件の投稿",
+    "emptyTitleError": "タイトルを入力してください",
+    "emptyPostsError": "投稿を1件以上選択してください",
+    "deleteTitle": "アルバムを削除",
+    "deleteBody": "このアルバムを削除しますか？投稿自体は削除されません。",
+    "deleted": "アルバムを削除しました",
+    "saved": "アルバムを保存しました",
+    "createdAt": "作成日",
+    "notFound": "アルバムが見つかりません"
+  },
   "maybeNotFoodDialog": {
     "title": "ちょっと確認 🍽️",
     "text": "{index}枚目の写真、\n食べものじゃないかも…？と\nFoodGramが首をかしげています 🤔\n\nそれでも投稿しますか？",

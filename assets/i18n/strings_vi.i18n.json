@@ -50,6 +50,25 @@
     "albumEmptyListHint": "Hãy tạo album bên dưới rồi chọn album đó.",
     "albumCreated": "Đã tạo album"
   },
+  "memoryAlbum": {
+    "title": "Album kỷ niệm ẩm thực",
+    "create": "Tạo album",
+    "edit": "Chỉnh sửa album",
+    "emptyTitle": "Chưa có album nào",
+    "emptyBody": "Nhóm bài đăng của bạn thành album để ôn lại kỷ niệm",
+    "titleHint": "Tiêu đề (vd. Tour quán cà phê)",
+    "descriptionHint": "Mô tả",
+    "selectPosts": "Chọn bài đăng",
+    "postCount": "{count} bài đăng",
+    "emptyTitleError": "Vui lòng nhập tiêu đề",
+    "emptyPostsError": "Vui lòng chọn ít nhất một bài đăng",
+    "deleteTitle": "Xóa album",
+    "deleteBody": "Xóa album này? Bài đăng của bạn sẽ không bị xóa.",
+    "deleted": "Đã xóa album",
+    "saved": "Đã lưu album",
+    "createdAt": "Ngày tạo",
+    "notFound": "Không tìm thấy album"
+  },
   "maybeNotFoodDialog": {
     "title": "Kiểm tra nhanh 🍽️",
     "text": "Ảnh {index},\nẢnh này có thể không phải là đồ ăn… 🤔\\n\\nBạn vẫn muốn đăng chứ?",
