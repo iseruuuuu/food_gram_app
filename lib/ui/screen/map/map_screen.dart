@@ -24,6 +24,7 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_detail_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_overview_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_category_chip_bar.dart';
@@ -97,6 +98,7 @@ class MapScreen extends HookConsumerWidget {
         children: [
           AsyncValueSwitcher(
             asyncValue: AsyncValueGroup.group2(location, mapService),
+            onLoading: const AppTabLoading.map(),
             onErrorTap: () {
               ref
                 ..invalidate(locationProvider)
