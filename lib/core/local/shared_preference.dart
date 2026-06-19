@@ -14,6 +14,15 @@ enum PreferenceKey {
   lastReviewRequestDate,
   firstLaunchDate,
   postDraft,
+  analyticsFirstRecordOpen,
+  analyticsFirstInsightOpen,
+  analyticsFirstJapanMapOpen,
+  analyticsFirstWorldMapOpen,
+  analyticsFirstPostWithComment,
+  analyticsFirstPostWithRestaurant,
+  analyticsFirstCountryComplete,
+  analyticsFirstPrefectureComplete,
+  analyticsHighestPostMilestone,
 }
 
 class Preference {

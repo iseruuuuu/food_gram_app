@@ -139,7 +139,7 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
       }
       setState(() => _translated = out);
       await ref.read(firebaseAnalyticsServiceProvider).logEvent(
-            name: AnalyticsEvent.translateTap,
+            name: AnalyticsEvent.postTranslate,
           );
     } finally {
       if (mounted) {

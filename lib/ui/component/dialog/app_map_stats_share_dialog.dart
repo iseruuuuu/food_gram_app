@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -154,6 +156,21 @@ class AppMapStatsShareDialog extends HookConsumerWidget {
                           onPressed: () async {
                             loading.value = true;
                             final vt = selectedType.value;
+                            ref
+                                .read(firebaseAnalyticsServiceProvider)
+                                .logEventUnawaited(
+                              name: AnalyticsEvent.mapStatsShare,
+                              parameters: {
+                                AnalyticsParam.source: vt.name,
+                                AnalyticsParam.shareType: 'text_and_image',
+                              },
+                            );
+                            ref
+                                .read(firebaseAnalyticsServiceProvider)
+                                .logEventUnawaited(
+                              name: AnalyticsEvent.mapShare,
+                              parameters: {AnalyticsParam.source: vt.name},
+                            );
                             final widget = buildShareWidget(vt);
                             final shareText = shareMessageFor(vt);
                             await ShareHelpers().captureAndShare(
@@ -195,7 +212,23 @@ class AppMapStatsShareDialog extends HookConsumerWidget {
                           ),
                           onPressed: () async {
                             loading.value = true;
-                            final widget = buildShareWidget(selectedType.value);
+                            final vt = selectedType.value;
+                            ref
+                                .read(firebaseAnalyticsServiceProvider)
+                                .logEventUnawaited(
+                              name: AnalyticsEvent.mapStatsShare,
+                              parameters: {
+                                AnalyticsParam.source: vt.name,
+                                AnalyticsParam.shareType: 'image_only',
+                              },
+                            );
+                            ref
+                                .read(firebaseAnalyticsServiceProvider)
+                                .logEventUnawaited(
+                              name: AnalyticsEvent.mapShare,
+                              parameters: {AnalyticsParam.source: vt.name},
+                            );
+                            final widget = buildShareWidget(vt);
                             await ShareHelpers().captureAndShare(
                               widget: widget,
                               loading: loading,

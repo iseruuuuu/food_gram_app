@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
@@ -199,6 +201,14 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                             'click map sheet detail grid',
                             Duration.zero,
                             () async {
+                              ref
+                                  .read(firebaseAnalyticsServiceProvider)
+                                  .logEventUnawaited(
+                                name: AnalyticsEvent.mapPostOpen,
+                                parameters: {
+                                  AnalyticsParam.postId: postItem.id,
+                                },
+                              );
                               final userResult = await ref
                                   .read(
                                     userRepositoryProvider.notifier,

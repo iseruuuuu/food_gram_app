@@ -104,6 +104,9 @@ class RevenueCatService extends _$RevenueCatService {
           return true;
         }
       }
+      if (!isActiveNow) {
+        analytics.logEventUnawaited(name: AnalyticsEvent.purchaseFailed);
+      }
       return isActiveNow;
     } finally {
       loading.isLoading(value: false);
@@ -158,8 +161,7 @@ class RevenueCatService extends _$RevenueCatService {
         return false;
       }
       await _getPurchaserInfo(customerInfo);
-      final result =
-          await ref.read(accountServiceProvider).updateIsSubscribe();
+      final result = await ref.read(accountServiceProvider).updateIsSubscribe();
       final ok = result.when(
         success: (_) {
           final userId = ref.read(currentUserProvider);

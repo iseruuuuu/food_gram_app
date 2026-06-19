@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
@@ -61,6 +62,12 @@ class PostSharePreviewView extends HookConsumerWidget {
                   posts.id,
                   shareType: hasText ? 'text_and_image' : 'image_only',
                 ),
+          );
+          ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+            name: hasText
+                ? AnalyticsEvent.postShareLink
+                : AnalyticsEvent.postShareImage,
+            parameters: {AnalyticsParam.postId: posts.id},
           );
           await ShareHelpers().captureAndShare(
             widget: template.builder(posts, ref, t),
