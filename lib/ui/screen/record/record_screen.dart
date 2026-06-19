@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
@@ -62,6 +64,9 @@ class RecordScreen extends ConsumerWidget {
             ),
           ),
           onPressed: () async {
+            ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                  name: AnalyticsEvent.recordPostOpen,
+                );
             await context
                 .pushNamed(RouterPath.timeLinePost)
                 .then((value) async {

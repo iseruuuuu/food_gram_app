@@ -64,8 +64,8 @@ dependencies:
   permission_handler: ^11.3.1
   photo_viewer: ^0.0.3
   pro_image_editor: ^12.0.1
-  purchases_flutter: ^9.9.10
-  purchases_ui_flutter: ^9.9.10
+  purchases_flutter: ^10.3.0
+  purchases_ui_flutter: ^10.3.0
   quickalert: ^1.1.0
   riverpod_annotation: ^2.0.0
   screenshot: ^3.0.0

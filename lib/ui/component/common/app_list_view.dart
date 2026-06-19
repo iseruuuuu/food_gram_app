@@ -2,7 +2,10 @@ import 'package:auto_animated/auto_animated.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_rectangle_banner.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/timeline_detail_extra.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -37,6 +40,7 @@ class AppListView extends HookConsumerWidget {
     final screenWidth = MediaQuery.of(context).size.width / 3;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final supabase = ref.watch(supabaseProvider);
+    final impressedPostIds = useRef<Set<int>>({});
     if (posts.isEmpty) {
       return const SliverToBoxAdapter(child: AppEmpty());
     }
@@ -71,15 +75,23 @@ class AppListView extends HookConsumerWidget {
               if (itemIndex >= posts.length) {
                 return const Expanded(child: SizedBox());
               }
+              final post = posts[itemIndex];
+              final postId = post.id;
+              if (type == AppListViewType.timeline &&
+                  impressedPostIds.value.add(postId)) {
+                ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                  name: AnalyticsEvent.timelinePostImpression,
+                  parameters: {AnalyticsParam.postId: postId},
+                );
+              }
               // 複数画像がある場合は最初の画像のみ表示（Storage キーは正規化済み）
-              final storageKey = posts[itemIndex].firstFoodImage;
+              final storageKey = post.firstFoodImage;
               final itemImageUrl = storageKey.isEmpty
                   ? ''
                   : supabase.storage.from('food').getPublicUrl(storageKey);
-              final postUserId = posts[itemIndex].userId as String?;
+              final postUserId = post.userId as String?;
               final isSubscribed = ref.watch(isSubscribedProvider(postUserId));
-              final hasMultipleImages =
-                  posts[itemIndex].foodImageList.length > 1;
+              final hasMultipleImages = post.foodImageList.length > 1;
               return Expanded(
                 child: GestureDetector(
                   onTap: () {
@@ -87,6 +99,14 @@ class AppListView extends HookConsumerWidget {
                       'click_detail',
                       const Duration(milliseconds: 200),
                       () async {
+                        if (type == AppListViewType.timeline) {
+                          ref
+                              .read(firebaseAnalyticsServiceProvider)
+                              .logEventUnawaited(
+                            name: AnalyticsEvent.timelinePostOpen,
+                            parameters: {AnalyticsParam.postId: postId},
+                          );
+                        }
                         final postResult = await ref
                             .read(detailPostRepositoryProvider.notifier)
                             .getPostData(posts, itemIndex);
@@ -165,7 +185,7 @@ class AppListView extends HookConsumerWidget {
                                 ),
                               ),
                             ),
-                          if (posts[itemIndex].restaurant.isNotEmpty)
+                          if (post.restaurant.isNotEmpty)
                             Positioned(
                               left: 0,
                               right: 0,
@@ -177,7 +197,7 @@ class AppListView extends HookConsumerWidget {
                                   vertical: 3,
                                 ),
                                 child: Text(
-                                  posts[itemIndex].restaurant,
+                                  post.restaurant,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.center,

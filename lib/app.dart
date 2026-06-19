@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/notification/firebase_messaging_service.dart';
 import 'package:food_gram_app/core/supabase/auth/providers/auth_state_provider.dart';
@@ -17,12 +18,34 @@ class MyApp extends ConsumerStatefulWidget {
   ConsumerState<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends ConsumerState<MyApp> {
+class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     // Firebase Messaging ServiceにRefを設定（ディープリンク用）
     ref.read(firebaseMessagingServiceProvider).setRef(ref);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final analytics = ref.read(firebaseAnalyticsServiceProvider);
+    switch (state) {
+      case AppLifecycleState.resumed:
+        analytics.logEventUnawaited(name: AnalyticsEvent.appForeground);
+      case AppLifecycleState.paused:
+      case AppLifecycleState.inactive:
+        analytics.logEventUnawaited(name: AnalyticsEvent.appBackground);
+      case AppLifecycleState.detached:
+      case AppLifecycleState.hidden:
+        break;
+    }
   }
 
   @override

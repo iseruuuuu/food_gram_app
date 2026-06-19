@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/home_widget/map_stats_home_widget_sync.dart';
+import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
@@ -101,6 +102,12 @@ class RecordViewModel extends _$RecordViewModel {
         visitedAreasCount: stats.visitedAreasCount,
         activityDays: stats.activityDays,
         postingStreakWeeks: postingStreakWeeks,
+      );
+      unawaited(
+        ref.read(firebaseAnalyticsServiceProvider).logRegionCompleteMilestones(
+              visitedPrefectures: stats.visitedPrefecturesCount,
+              visitedCountries: stats.visitedCountriesCount,
+            ),
       );
       _cachedPosts = posts;
       _cachedIconSize = iconSize;
@@ -233,6 +240,27 @@ class RecordViewModel extends _$RecordViewModel {
 
   void changeViewType(MapViewType viewType) {
     state = state.copyWith(viewType: viewType);
+    final analytics = ref.read(firebaseAnalyticsServiceProvider);
+    switch (viewType) {
+      case MapViewType.japan:
+        analytics.logEventUnawaited(name: AnalyticsEvent.japanMapOpen);
+        analytics.logOnceEvent(
+          key: PreferenceKey.analyticsFirstJapanMapOpen,
+          name: AnalyticsEvent.firstJapanMapOpen,
+        );
+        analytics.logEventUnawaited(
+          name: AnalyticsEvent.prefectureProgressView,
+        );
+      case MapViewType.world:
+        analytics.logEventUnawaited(name: AnalyticsEvent.worldMapOpen);
+        analytics.logOnceEvent(
+          key: PreferenceKey.analyticsFirstWorldMapOpen,
+          name: AnalyticsEvent.firstWorldMapOpen,
+        );
+        analytics.logEventUnawaited(name: AnalyticsEvent.countryProgressView);
+      case MapViewType.detail:
+        return;
+    }
   }
 
   /// 日本／世界マップ上のタップ（都道府県・国の推定）
