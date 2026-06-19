@@ -306,7 +306,11 @@
     "myMap": "Bản đồ tôi",
     "search": "Tìm kiếm",
     "myPage": "Trang của tôi",
-    "setting": "Cài đặt"
+    "setting": "Cài đặt",
+    "loadingMap": "Đang tìm kiếm trải nghiệm ẩm thực trên thế giới...",
+    "loadingFood": "Đang thu thập trải nghiệm ẩm thực...",
+    "loadingRecord": "Đang mở hồ sơ ẩm thực của bạn...",
+    "loadingMyPage": "Đang tổng hợp trải nghiệm ẩm thực của bạn..."
   },
   "mapStats": {
     "visitedArea": "Địa điểm đã đến",

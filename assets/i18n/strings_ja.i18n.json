@@ -306,7 +306,11 @@
     "myMap": "記録",
     "search": "探す",
     "myPage": "マイページ",
-    "setting": "設定"
+    "setting": "設定",
+    "loadingMap": "世界中の食体験を探しています...",
+    "loadingFood": "食体験を集めています...",
+    "loadingRecord": "あなたの食の記録を開いています...",
+    "loadingMyPage": "あなたらしい食体験をまとめています..."
   },
   "mapStats": {
     "visitedArea": "訪れた場所",

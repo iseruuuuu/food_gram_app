@@ -306,7 +306,11 @@
     "myMap": "My Map",
     "search": "Search",
     "myPage": "My Page",
-    "setting": "Setting"
+    "setting": "Setting",
+    "loadingMap": "Searching for food experiences around the world...",
+    "loadingFood": "Collecting food experiences...",
+    "loadingRecord": "Opening your food records...",
+    "loadingMyPage": "Summarizing your unique food experiences..."
   },
   "mapStats": {
     "visitedArea": "Places",

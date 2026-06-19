@@ -306,7 +306,11 @@
     "myMap": "Meine Karte",
     "search": "Suchen",
     "myPage": "Meine Seite",
-    "setting": "Einstellungen"
+    "setting": "Einstellungen",
+    "loadingMap": "Suche nach Essenserlebnissen auf der ganzen Welt...",
+    "loadingFood": "Sammle Essenserlebnisse...",
+    "loadingRecord": "Öffne deine Essensaufzeichnungen...",
+    "loadingMyPage": "Fasse deine Essenserlebnisse zusammen..."
   },
   "mapStats": {
     "visitedArea": "Besuchte Orte",

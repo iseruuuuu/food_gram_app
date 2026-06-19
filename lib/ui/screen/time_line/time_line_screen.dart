@@ -9,7 +9,7 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
-import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
+import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dart';
 import 'package:food_gram_app/ui/screen/time_line/components/timeline_category_tab_bar.dart';
 import 'package:go_router/go_router.dart';
@@ -98,8 +98,10 @@ class TimeLineScreen extends HookConsumerWidget {
                       },
                     )
                   : const SliverToBoxAdapter(child: AppEmpty()),
-              loading: () =>
-                  const SliverToBoxAdapter(child: AppListViewSkeleton()),
+              loading: () => const SliverFillRemaining(
+                hasScrollBody: false,
+                child: AppTabLoading.food(),
+              ),
               error: (_, __) => SliverToBoxAdapter(
                 child: AppErrorWidget(
                   onTap: () =>
