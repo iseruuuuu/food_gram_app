@@ -105,11 +105,11 @@ flutter_launcher_icons:
   ios: true
 
 flutter_native_splash:
-    color: '#ffffff'
+    color: '#F5F0E8'
     android: true
     ios: true
     android_12:
-      color: '#ffffff'
+      color: '#F5F0E8'
 
 flutter:
   uses-material-design: true
