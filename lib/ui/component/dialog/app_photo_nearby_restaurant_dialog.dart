@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/api/restaurant/repository/photo_nearby_restaurant_repository.dart';
 import 'package:food_gram_app/core/model/photo_restaurant_candidate.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
@@ -63,17 +65,31 @@ Future<void> showPhotoNearbyRestaurantDialog({
                   ],
                 ),
               ),
-              error: (_, __) => Text(
-                t.post.nearbyFetchError,
-                style: TextStyle(color: scheme.onSurfaceVariant),
-              ),
+              error: (_, __) {
+                ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                      name: AnalyticsEvent.postRestaurantAutoDetectFail,
+                    );
+                return Text(
+                  t.post.nearbyFetchError,
+                  style: TextStyle(color: scheme.onSurfaceVariant),
+                );
+              },
               data: (candidates) {
                 if (candidates.isEmpty) {
+                  ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                        name: AnalyticsEvent.postRestaurantAutoDetectFail,
+                      );
                   return Text(
                     t.post.nearbyEmpty,
                     style: TextStyle(color: scheme.onSurfaceVariant),
                   );
                 }
+                ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                  name: AnalyticsEvent.postRestaurantAutoDetectSuccess,
+                  parameters: {
+                    AnalyticsParam.photoCount: candidates.length,
+                  },
+                );
                 return ConstrainedBox(
                   constraints: BoxConstraints(
                     maxHeight: MediaQuery.of(dialogContext).size.height * 0.45,
@@ -112,6 +128,11 @@ Future<void> showPhotoNearbyRestaurantDialog({
               : [
                   TextButton(
                     onPressed: () async {
+                      ref
+                          .read(firebaseAnalyticsServiceProvider)
+                          .logEventUnawaited(
+                            name: AnalyticsEvent.postRestaurantManualSearch,
+                          );
                       handled = true;
                       Navigator.of(dialogContext).pop();
                       vm.dismissNearbySuggestion();

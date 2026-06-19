@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
@@ -60,12 +62,21 @@ class MapCategoryChipBar extends ConsumerWidget {
                   : (isDark ? Colors.white38 : Colors.grey.shade300),
             ),
             onSelected: (selected) async {
+              ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                    name: AnalyticsEvent.mapFilterOpen,
+                  );
               final notifier = ref.read(selectedMapCategoryProvider.notifier);
               if (isAll) {
                 notifier.state = null;
               } else {
                 notifier.state = isSelected ? null : categoryName;
               }
+              ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                name: AnalyticsEvent.mapFilterApply,
+                parameters: {
+                  AnalyticsParam.category: isAll ? 'all' : categoryName,
+                },
+              );
               await onCategoryChanged();
             },
           );

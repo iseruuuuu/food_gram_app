@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/notification/repository/notification_repository.dart';
@@ -16,6 +18,9 @@ class NotificationsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final async = ref.watch(myLikeNotificationsProvider);
+    ref
+        .read(firebaseAnalyticsServiceProvider)
+        .logEventUnawaited(name: AnalyticsEvent.notificationOpen);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).brightness == Brightness.light
@@ -70,6 +75,14 @@ class NotificationsScreen extends ConsumerWidget {
               final likerUserId = n.likerUserId;
               return ListTile(
                 onTap: () async {
+                  ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                    name: AnalyticsEvent.notificationLikeOpen,
+                    parameters: {AnalyticsParam.postId: post.id},
+                  );
+                  ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                    name: AnalyticsEvent.notificationPostOpen,
+                    parameters: {AnalyticsParam.postId: post.id},
+                  );
                   final postResult = await ref
                       .read(detailPostRepositoryProvider.notifier)
                       .getPostData(posts, index);

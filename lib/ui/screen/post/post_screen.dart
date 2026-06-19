@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/review/in_app_review_service.dart';
+import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/services/streak_service.dart';
 import 'package:food_gram_app/core/theme/style/post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
@@ -83,14 +87,16 @@ class PostScreen extends HookConsumerWidget {
                 .read(postViewModelProvider().notifier)
                 .loadRestaurant(restaurant);
           }
-          final draft = await ref
-              .read(postViewModelProvider().notifier)
-              .loadSavedDraft();
+          final draft =
+              await ref.read(postViewModelProvider().notifier).loadSavedDraft();
           if (!context.mounted) {
             return;
           }
           if (draft != null && draft.hasRestorableContent) {
             ref.read(postViewModelProvider().notifier).markRestoredFromDraft();
+            ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                  name: AnalyticsEvent.draftOpen,
+                );
             ref.read(postViewModelProvider().notifier).applyDraft(
                   draft,
                   applyRestaurant: restaurant == null,
@@ -328,6 +334,16 @@ class PostScreen extends HookConsumerWidget {
                             foodTexts: foodTexts,
                             onTagSelected: (tags) {
                               foodTags.value = tags;
+                              if (tags.isNotEmpty) {
+                                ref
+                                    .read(firebaseAnalyticsServiceProvider)
+                                    .logEventUnawaited(
+                                  name: AnalyticsEvent.postTagSelected,
+                                  parameters: {
+                                    AnalyticsParam.tag: tags.join(','),
+                                  },
+                                );
+                              }
                             },
                             accent: optionalAccent,
                           ),
@@ -466,6 +482,17 @@ class PostScreen extends HookConsumerWidget {
                           final foodTagString = foodTags.value.isEmpty
                               ? ''
                               : foodTags.value.join(',');
+                          final comment = ref
+                              .read(postViewModelProvider().notifier)
+                              .commentController
+                              .text;
+                          if (comment.trim().isNotEmpty) {
+                            ref
+                                .read(firebaseAnalyticsServiceProvider)
+                                .logEventUnawaited(
+                                  name: AnalyticsEvent.postCommentInput,
+                                );
+                          }
                           final result = await ref
                               .read(postViewModelProvider().notifier)
                               .post(
@@ -476,6 +503,17 @@ class PostScreen extends HookConsumerWidget {
                             return;
                           }
                           if (result) {
+                            final postCount = (ref
+                                        .read(myPostStreamProvider)
+                                        .valueOrNull
+                                        ?.length ??
+                                    0) +
+                                1;
+                            unawaited(
+                              ref
+                                  .read(firebaseAnalyticsServiceProvider)
+                                  .logPostCountMilestones(postCount),
+                            );
                             // ストリークを更新
                             final streakService =
                                 ref.read(streakServiceProvider.notifier);
@@ -486,6 +524,24 @@ class PostScreen extends HookConsumerWidget {
                             }
                             // ストリークが更新された場合のみダイアログを表示
                             if (streakResult.isUpdated) {
+                              final analytics =
+                                  ref.read(firebaseAnalyticsServiceProvider);
+                              analytics.logEventUnawaited(
+                                name: AnalyticsEvent.streakView,
+                                parameters: {
+                                  AnalyticsParam.streakWeeks:
+                                      streakResult.newStreakWeeks,
+                                },
+                              );
+                              if (streakResult.newStreakWeeks > 1) {
+                                analytics.logEventUnawaited(
+                                  name: AnalyticsEvent.streakContinue,
+                                  parameters: {
+                                    AnalyticsParam.streakWeeks:
+                                        streakResult.newStreakWeeks,
+                                  },
+                                );
+                              }
                               // ダイアログを表示（初回投稿かどうかを判定）
                               final isFirstTime =
                                   streakResult.newStreakWeeks == 1;
