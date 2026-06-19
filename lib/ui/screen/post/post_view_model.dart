@@ -154,10 +154,15 @@ class PostViewModel extends _$PostViewModel {
           status: PostStatus.success.name,
           isSuccess: true,
         );
+        final hasComment = commentController.text.trim().isNotEmpty;
+        final hasRestaurant = state.restaurant != defaultRestaurantText &&
+            state.restaurant != '不明';
         unawaited(
-          ref
-              .read(firebaseAnalyticsServiceProvider)
-              .logPostSuccess(fromDraft: fromDraft),
+          ref.read(firebaseAnalyticsServiceProvider).logPostSuccess(
+                fromDraft: fromDraft,
+                hasComment: hasComment,
+                hasRestaurant: hasRestaurant,
+              ),
         );
       },
       failure: (error) {
@@ -219,6 +224,9 @@ class PostViewModel extends _$PostViewModel {
         return false;
       }
       await _processImageFromBytes(bytes, photoGps: photoGps);
+      ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+            name: AnalyticsEvent.postPhotoSelected,
+          );
       return true;
     } on PlatformException catch (error) {
       _logger.e(error.message);
@@ -236,6 +244,10 @@ class PostViewModel extends _$PostViewModel {
       if (images.isEmpty) {
         return false;
       }
+      ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+        name: AnalyticsEvent.postMultiplePhotoSelected,
+        parameters: {AnalyticsParam.photoCount: images.length},
+      );
       for (final image in images) {
         unawaited(_tryApplyCurrencyFromImage(image.path));
         final photoGps = await readGpsFromImagePath(image.path);
@@ -346,10 +358,16 @@ class PostViewModel extends _$PostViewModel {
 
   void getPlace(Restaurant restaurant) {
     _updateRestaurantState(restaurant);
+    ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+          name: AnalyticsEvent.postRestaurantManualSelected,
+        );
   }
 
   void selectNearbyCandidate(PhotoRestaurantCandidate candidate) {
     _updateRestaurantState(candidate.toRestaurant());
+    ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+          name: AnalyticsEvent.postRestaurantAutoDetectSelected,
+        );
   }
 
   void dismissNearbySuggestion() {
@@ -381,6 +399,9 @@ class PostViewModel extends _$PostViewModel {
   void setPriceCurrency(String code) {
     _priceCurrencyManuallySet = true;
     state = state.copyWith(priceCurrency: code.toUpperCase());
+    ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+          name: AnalyticsEvent.postPriceInput,
+        );
   }
 
   Future<void> _tryApplyCurrencyFromImage(String imagePath) async {
@@ -425,6 +446,10 @@ class PostViewModel extends _$PostViewModel {
 
   void setStar(double value) {
     state = state.copyWith(star: value);
+    ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+      name: AnalyticsEvent.postRatingInput,
+      parameters: {AnalyticsParam.rating: value},
+    );
   }
 
   void resetStatus() {
