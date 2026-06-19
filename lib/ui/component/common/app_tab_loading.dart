@@ -88,7 +88,7 @@ class AppTabLoading extends StatelessWidget {
                   height: 1.4,
                 ),
               ),
-              const SizedBox(height: 20),
+              const Gap(20),
               _TabLoadingDots(color: config.color),
             ],
           ),
