@@ -306,7 +306,11 @@
     "myMap": "我的地圖",
     "search": "搜尋",
     "myPage": "我的頁面",
-    "setting": "設定"
+    "setting": "設定",
+    "loadingMap": "正在搜尋世界各地的美食體驗...",
+    "loadingFood": "正在收集美食體驗...",
+    "loadingRecord": "正在開啟您的美食記錄...",
+    "loadingMyPage": "正在整理您的美食體驗..."
   },
   "mapStats": {
     "visitedArea": "造訪過的地點",

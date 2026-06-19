@@ -24,10 +24,12 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_detail_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_overview_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_category_chip_bar.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
+import 'package:food_gram_app/ui/screen/tab/use_tab_loading_on_mount.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -45,6 +47,9 @@ class MapScreen extends HookConsumerWidget {
     final controller = ref.watch(mapViewModelProvider.notifier);
     final location = ref.watch(locationProvider);
     final mapService = ref.watch(mapRepositoryProvider);
+    final showTabLoading = useTabLoadingOnMount(
+      dataReady: location.hasValue && mapService.hasValue,
+    );
     final isEarthStyle = useState(false);
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final adLoadAttempted = useRef(false);
@@ -97,6 +102,7 @@ class MapScreen extends HookConsumerWidget {
         children: [
           AsyncValueSwitcher(
             asyncValue: AsyncValueGroup.group2(location, mapService),
+            onLoading: const AppTabLoading.map(),
             onErrorTap: () {
               ref
                 ..invalidate(locationProvider)
@@ -239,6 +245,7 @@ class MapScreen extends HookConsumerWidget {
               );
             },
           ),
+          if (showTabLoading) const Positioned.fill(child: AppTabLoading.map()),
           AppMapLoading(
             loading: state.isLoading,
             hasError: state.hasError,

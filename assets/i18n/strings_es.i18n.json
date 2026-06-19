@@ -306,7 +306,11 @@
     "myMap": "Mi Mapa",
     "search": "Buscar",
     "myPage": "Mi Página",
-    "setting": "Ajustes"
+    "setting": "Ajustes",
+    "loadingMap": "Buscando experiencias gastronómicas en el mundo...",
+    "loadingFood": "Recopilando experiencias gastronómicas...",
+    "loadingRecord": "Abriendo tus registros de comidas...",
+    "loadingMyPage": "Resumiendo tus experiencias gastronómicas..."
   },
   "mapStats": {
     "visitedArea": "Lugares visitados",

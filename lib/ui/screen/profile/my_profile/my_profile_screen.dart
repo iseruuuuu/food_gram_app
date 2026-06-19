@@ -16,6 +16,7 @@ import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
+import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/component/dialog/app_level_up_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/app_promote_dialog.dart';
 import 'package:food_gram_app/ui/screen/profile/components/profile_header.dart';
@@ -78,6 +79,7 @@ class MyProfileScreen extends HookConsumerWidget {
             ),
             body: AsyncValueSwitcher(
               asyncValue: postList,
+              onLoading: const AppTabLoading.myPage(),
               skipError: true,
               onErrorTap: () {
                 ref
