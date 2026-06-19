@@ -14,10 +14,10 @@ class TimelineCategoryTabBar extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onCategorySelected;
 
-  static const double _circleSize = 56;
-  static const double _iconFontSize = 28;
+  static const double _circleSize = 46;
+  static const double _iconFontSize = 22;
   static const double _labelFontSize = 12;
-  static const double _itemWidth = 68;
+  static const double _itemWidth = 52;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +26,8 @@ class TimelineCategoryTabBar extends StatelessWidget {
         isDark ? const Color(0xFF2A2A2A) : const Color(0xFFF5F5F5);
     final selectedCircleColor =
         isDark ? const Color(0xFF3A3A3A) : const Color(0xFFEAEAEA);
-
     return SizedBox(
-      height: _circleSize + 8 + _labelFontSize + 12,
+      height: _circleSize + 8 + _labelFontSize + 16,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -40,7 +39,6 @@ class TimelineCategoryTabBar extends StatelessWidget {
           final label = category.isAllCategory
               ? Translations.of(context).share.categoryAll
               : getLocalizedCategoryName(category.name, context);
-
           return GestureDetector(
             onTap: () => onCategorySelected(index),
             behavior: HitTestBehavior.opaque,
@@ -62,7 +60,6 @@ class TimelineCategoryTabBar extends StatelessWidget {
                       style: const TextStyle(fontSize: _iconFontSize),
                     ),
                   ),
-                  const SizedBox(height: 6),
                   Text(
                     label,
                     maxLines: 1,
