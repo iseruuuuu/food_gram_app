@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
@@ -66,6 +68,10 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                   ),
                 ),
                 onPressed: () async {
+                  ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                    name: AnalyticsEvent.postEdit,
+                    parameters: {AnalyticsParam.postId: posts.id},
+                  );
                   context.pop();
                   await context
                       .pushNamed(

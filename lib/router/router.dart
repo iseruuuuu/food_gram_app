@@ -29,9 +29,25 @@ GoRouter router(Ref ref) {
     initialLocation: '/${RouterPath.splash}',
     observers: [analyticsObserver],
     redirect: (context, state) async {
+      final location = state.matchedLocation;
       final preference = Preference();
       final isFinishedTutorial =
           await preference.getBool(PreferenceKey.isFinishedTutorial);
+
+      // スプラッシュは認証状態に関わらず表示し、遷移は SplashScreen 側で行う
+      if (location == '/${RouterPath.splash}') {
+        if (!isFinishedTutorial) {
+          return '/${RouterPath.tutorial}';
+        }
+        return null;
+      }
+
+      if (location == '/${RouterPath.tutorial}' ||
+          location == '/${RouterPath.authentication}' ||
+          location == '/${RouterPath.newAccount}') {
+        return null;
+      }
+
       if (!isFinishedTutorial) {
         return '/${RouterPath.tutorial}';
       }

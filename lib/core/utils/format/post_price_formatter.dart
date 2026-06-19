@@ -803,7 +803,7 @@ PostPriceParseResult parsePostPriceInput({
   final loc = locale ?? ui.PlatformDispatcher.instance.locale;
   final withoutSpaces =
       trimmed.replaceAll(RegExp(r'[\s\u00A0\u202F]'), ''); // space, NBSP, NNBSP
-  if (withoutSpaces.isEmpty || !RegExp(r'^[0-9]').hasMatch(withoutSpaces)) {
+  if (withoutSpaces.isEmpty || !RegExp('^[0-9]').hasMatch(withoutSpaces)) {
     return const PostPriceParseResult.invalid();
   }
   if (!postPriceInputAllowedCharacterRegExp(

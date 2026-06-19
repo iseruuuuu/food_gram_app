@@ -6,6 +6,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -105,8 +106,27 @@ class FirebaseAnalyticsService {
         parameters: source != null ? {AnalyticsParam.source: source} : null,
       );
 
-  Future<void> logPostSuccess({bool fromDraft = false}) async {
+  Future<void> logPostSuccess({
+    bool fromDraft = false,
+    bool hasComment = false,
+    bool hasRestaurant = false,
+  }) async {
     await logEvent(name: AnalyticsEvent.postSuccess);
+    if (hasComment) {
+      await logEvent(name: AnalyticsEvent.postCompleteWithComment);
+      await logOnceEvent(
+        key: PreferenceKey.analyticsFirstPostWithComment,
+        name: AnalyticsEvent.firstPostWithComment,
+      );
+    } else {
+      await logEvent(name: AnalyticsEvent.postCompleteWithoutComment);
+    }
+    if (hasRestaurant) {
+      await logOnceEvent(
+        key: PreferenceKey.analyticsFirstPostWithRestaurant,
+        name: AnalyticsEvent.firstPostWithRestaurant,
+      );
+    }
     if (fromDraft) {
       await logEvent(name: AnalyticsEvent.draftPost);
     }
@@ -170,6 +190,85 @@ class FirebaseAnalyticsService {
         name: AnalyticsEvent.pushOpen,
         parameters: type != null ? {AnalyticsParam.pushType: type} : null,
       );
+
+  Future<void> logPushReceive({String? type}) => logEvent(
+        name: AnalyticsEvent.pushReceive,
+        parameters: type != null ? {AnalyticsParam.pushType: type} : null,
+      );
+
+  /// 初回のみ送信するイベント
+  Future<void> logOnceEvent({
+    required PreferenceKey key,
+    required String name,
+    Map<String, Object>? parameters,
+  }) async {
+    final pref = Preference();
+    if (await pref.getBool(key)) {
+      return;
+    }
+    await logEvent(name: name, parameters: parameters);
+    await pref.setBool(key);
+  }
+
+  /// 投稿数マイルストーン（10 / 50 / 100 / 500）
+  Future<void> logPostCountMilestones(int postCount) async {
+    final pref = Preference();
+    final logged =
+        await pref.getInt(PreferenceKey.analyticsHighestPostMilestone);
+    const milestones = <int, String>{
+      10: AnalyticsEvent.user10Posts,
+      50: AnalyticsEvent.user50Posts,
+      100: AnalyticsEvent.user100Posts,
+      500: AnalyticsEvent.user500Posts,
+    };
+    var highest = logged;
+    for (final entry in milestones.entries) {
+      if (postCount >= entry.key && logged < entry.key) {
+        await logEvent(name: entry.value);
+        if (entry.key > highest) {
+          highest = entry.key;
+        }
+      }
+    }
+    if (highest > logged) {
+      await pref.setInt(PreferenceKey.analyticsHighestPostMilestone, highest);
+    }
+  }
+
+  /// 都道府県・国コンプリートの初回マイルストーン
+  Future<void> logRegionCompleteMilestones({
+    required int visitedPrefectures,
+    required int visitedCountries,
+  }) async {
+    const prefectureCap = 47;
+    const countryCap = 195;
+    if (visitedPrefectures >= prefectureCap) {
+      await logEvent(name: AnalyticsEvent.prefectureComplete);
+      await logOnceEvent(
+        key: PreferenceKey.analyticsFirstPrefectureComplete,
+        name: AnalyticsEvent.userFirstPrefectureComplete,
+      );
+    }
+    if (visitedCountries >= countryCap) {
+      await logEvent(name: AnalyticsEvent.countryComplete);
+      await logOnceEvent(
+        key: PreferenceKey.analyticsFirstCountryComplete,
+        name: AnalyticsEvent.userFirstCountryComplete,
+      );
+    }
+  }
+
+  void logPremiumFeatureTap(String featureEvent) {
+    logEventUnawaited(
+      name: AnalyticsEvent.premiumFeatureTap,
+      parameters: {
+        AnalyticsParam.premiumFeature: featureEvent,
+      },
+    );
+    logEventUnawaited(
+      name: featureEvent,
+    );
+  }
 
   /// 画面表示（手動計測が必要な場合）
   Future<void> logScreenView({

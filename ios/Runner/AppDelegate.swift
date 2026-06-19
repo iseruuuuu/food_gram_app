@@ -5,7 +5,7 @@ import FirebaseMessaging
 import UserNotifications
 
 @main
-@objc class AppDelegate: FlutterAppDelegate {
+@objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -20,35 +20,33 @@ import UserNotifications
     if FirebaseApp.app() == nil {
       FirebaseApp.configure()
     }
-    
+
     // APNsトークンの登録
     application.registerForRemoteNotifications()
-    
+
     // アプリ起動時にバッジをクリア
     application.applicationIconBadgeNumber = 0
 
-    GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
-  
+
+  func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
+    GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+  }
+
   // APNsトークンの登録成功時の処理
   override func application(_ application: UIApplication,
                             didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     // Firebase MessagingにAPNsトークンを設定
     Messaging.messaging().apnsToken = deviceToken
   }
-  
+
   // APNsトークンの登録失敗時の処理
   override func application(_ application: UIApplication,
                             didFailToRegisterForRemoteNotificationsWithError error: Error) {
     print("APNsトークンの登録に失敗しました: \(error.localizedDescription)")
   }
-  
-  // アプリがフォアグラウンドに戻ったときにバッジをクリア
-  override func applicationDidBecomeActive(_ application: UIApplication) {
-    application.applicationIconBadgeNumber = 0
-  }
-  
+
   // 通知を受信したときの処理（バックグラウンドでも動作）
   override func application(_ application: UIApplication,
                             didReceiveRemoteNotification userInfo: [AnyHashable: Any],
@@ -57,7 +55,7 @@ import UserNotifications
     Messaging.messaging().appDidReceiveMessage(userInfo)
     completionHandler(.newData)
   }
-  
+
   // ディープリンク処理: アプリがURLで開かれたとき
   override func application(_ app: UIApplication,
                             open url: URL,
@@ -65,7 +63,7 @@ import UserNotifications
     // FlutterAppDelegateが自動的に処理する
     return super.application(app, open: url, options: options)
   }
-  
+
   // ディープリンク処理: アプリがバックグラウンドでURLで開かれたとき
   override func application(_ application: UIApplication,
                             continue userActivity: NSUserActivity,

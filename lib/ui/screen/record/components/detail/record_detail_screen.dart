@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
+import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
@@ -30,7 +31,25 @@ class RecordDetailScreen extends HookConsumerWidget {
       () {
         final analytics = ref.read(firebaseAnalyticsServiceProvider);
         analytics.logEvent(name: AnalyticsEvent.recordOpen);
+        analytics.logOnceEvent(
+          key: PreferenceKey.analyticsFirstRecordOpen,
+          name: AnalyticsEvent.firstRecordOpen,
+        );
         analytics.logEvent(name: AnalyticsEvent.insightOpen);
+        analytics.logOnceEvent(
+          key: PreferenceKey.analyticsFirstInsightOpen,
+          name: AnalyticsEvent.firstInsightOpen,
+        );
+        analytics.logEventUnawaited(name: AnalyticsEvent.recordSummaryOpen);
+        analytics.logEventUnawaited(name: AnalyticsEvent.recordYearOpen);
+        analytics.logEventUnawaited(name: AnalyticsEvent.recordRecentPostOpen);
+        analytics.logEventUnawaited(name: AnalyticsEvent.recordStatisticsOpen);
+        analytics.logEventUnawaited(name: AnalyticsEvent.foodInsightAreaOpen);
+        analytics.logEventUnawaited(name: AnalyticsEvent.foodInsightGenreOpen);
+        analytics.logEventUnawaited(name: AnalyticsEvent.foodInsightTimeOpen);
+        analytics.logEventUnawaited(
+          name: AnalyticsEvent.foodInsightRestaurantOpen,
+        );
         return null;
       },
       const [],
@@ -98,6 +117,11 @@ class RecordDetailScreen extends HookConsumerWidget {
                 mutedColor: mutedColor,
                 isSubscribed: isSubscribe,
                 onTapPremiumCta: () {
+                  ref
+                      .read(firebaseAnalyticsServiceProvider)
+                      .logPremiumFeatureTap(
+                        AnalyticsEvent.premiumRankingTap,
+                      );
                   ref
                       .read(revenueCatServiceProvider.notifier)
                       .presentPaywallGuarded();

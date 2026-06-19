@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/local/save_album_local_repository.dart';
@@ -103,6 +104,12 @@ class PostDetailViewModel extends _$PostDetailViewModel {
         state.heartList,
       );
       unawaited(
+        ref.read(firebaseAnalyticsServiceProvider).logEvent(
+          name: AnalyticsEvent.postLike,
+          parameters: {AnalyticsParam.postId: posts.id},
+        ),
+      );
+      unawaited(
         () async {
           try {
             final currentUserData = await getUserData(currentUser);
@@ -137,6 +144,12 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     await result.when(
       success: (_) async {
         state = state.copyWith(isSuccess: true);
+        unawaited(
+          ref.read(firebaseAnalyticsServiceProvider).logEvent(
+            name: AnalyticsEvent.postDelete,
+            parameters: {AnalyticsParam.postId: posts.id},
+          ),
+        );
         ref
           ..invalidate(postsStreamProvider)
           ..invalidate(blockListProvider);
@@ -172,6 +185,12 @@ class PostDetailViewModel extends _$PostDetailViewModel {
       await preference.setStringList(PreferenceKey.storeList, storeList);
       await SaveAlbumLocalRepository().removePostFromAllAlbums(postId);
       state = state.copyWith(isStore: false);
+      unawaited(
+        ref.read(firebaseAnalyticsServiceProvider).logEvent(
+          name: AnalyticsEvent.albumRemovePost,
+          parameters: {AnalyticsParam.postId: postId},
+        ),
+      );
     } else {
       storeList.add(parsePostId);
       await preference.setStringList(PreferenceKey.storeList, storeList);

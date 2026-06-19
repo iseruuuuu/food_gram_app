@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
@@ -30,6 +32,15 @@ class TimeLineScreen extends HookConsumerWidget {
       scrollController: scrollController,
       tabIndex: _tabIndex,
     );
+    useEffect(
+      () {
+        ref
+            .read(firebaseAnalyticsServiceProvider)
+            .logEventUnawaited(name: AnalyticsEvent.timelineOpen);
+        return null;
+      },
+      const [],
+    );
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(0),
@@ -43,6 +54,9 @@ class TimeLineScreen extends HookConsumerWidget {
         color: Theme.of(context).colorScheme.primary,
         backgroundColor: Theme.of(context).colorScheme.surface,
         onRefresh: () async {
+          ref
+              .read(firebaseAnalyticsServiceProvider)
+              .logEventUnawaited(name: AnalyticsEvent.timelineRefresh);
           await Future<void>.delayed(const Duration(seconds: 1));
           ref.invalidate(postsStreamProvider);
         },
