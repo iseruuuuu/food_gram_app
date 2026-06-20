@@ -67,7 +67,14 @@
     "deleted": "相簿已刪除",
     "saved": "相簿已儲存",
     "createdAt": "建立日期",
-    "notFound": "找不到相簿"
+    "notFound": "找不到相簿",
+    "entrySubtitle": "旅行、約會與回憶，一站收納",
+    "listSubtitle": "把珍貴的美食回憶整理成相簿",
+    "longPressHint": "長按相簿可排序或刪除",
+    "highlightsTitle": "相簿亮點",
+    "postsSectionTitle": "回憶中的料理",
+    "sortNewest": "最新",
+    "sortOldest": "最早"
   },
   "maybeNotFoodDialog": {
     "title": "稍作確認 🍽️",

@@ -67,7 +67,14 @@
     "deleted": "ลบอัลบั้มแล้ว",
     "saved": "บันทึกอัลบั้มแล้ว",
     "createdAt": "สร้างเมื่อ",
-    "notFound": "ไม่พบอัลบั้ม"
+    "notFound": "ไม่พบอัลบั้ม",
+    "entrySubtitle": "ทริป เดท และความทรงจำ",
+    "listSubtitle": "รวมความทรงจำอาหารไว้ในอัลบั้ม",
+    "longPressHint": "กดค้างเพื่อจัดเรียงหรือลบ",
+    "highlightsTitle": "ไฮไลท์ของอัลบั้ม",
+    "postsSectionTitle": "เมนูในความทรงจำ",
+    "sortNewest": "ใหม่สุด",
+    "sortOldest": "เก่าสุด"
   },
   "maybeNotFoodDialog": {
     "title": "ขอตรวจสอบสักครู่ 🍽️",

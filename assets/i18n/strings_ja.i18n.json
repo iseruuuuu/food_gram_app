@@ -67,7 +67,14 @@
     "deleted": "アルバムを削除しました",
     "saved": "アルバムを保存しました",
     "createdAt": "作成日",
-    "notFound": "アルバムが見つかりません"
+    "notFound": "アルバムが見つかりません",
+    "entrySubtitle": "旅行・デート・思い出をまとめる",
+    "listSubtitle": "大切な食の思い出を、アルバムにまとめて振り返ろう",
+    "longPressHint": "ドラッグで並び替えできます",
+    "highlightsTitle": "このアルバムのハイライト",
+    "postsSectionTitle": "思い出の料理たち",
+    "sortNewest": "新しい順",
+    "sortOldest": "古い順"
   },
   "maybeNotFoodDialog": {
     "title": "ちょっと確認 🍽️",

@@ -67,7 +67,14 @@
     "deleted": "Album supprimé",
     "saved": "Album enregistré",
     "createdAt": "Créé",
-    "notFound": "Album introuvable"
+    "notFound": "Album introuvable",
+    "entrySubtitle": "Voyages, rendez-vous et souvenirs",
+    "listSubtitle": "Rassemblez vos souvenirs culinaires en albums",
+    "longPressHint": "Appui long pour réorganiser ou supprimer",
+    "highlightsTitle": "Points forts de l'album",
+    "postsSectionTitle": "Plats de cet album",
+    "sortNewest": "Plus récents",
+    "sortOldest": "Plus anciens"
   },
   "maybeNotFoodDialog": {
     "title": "Petite vérification 🍽️",

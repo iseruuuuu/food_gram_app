@@ -67,7 +67,14 @@
     "deleted": "앨범을 삭제했습니다",
     "saved": "앨범을 저장했습니다",
     "createdAt": "생성일",
-    "notFound": "앨범을 찾을 수 없습니다"
+    "notFound": "앨범을 찾을 수 없습니다",
+    "entrySubtitle": "여행·데이트·추억을 한곳에",
+    "listSubtitle": "소중한 음식 추억을 앨범으로 모아보세요",
+    "longPressHint": "앨범을 길게 눌러 순서 변경·삭제",
+    "highlightsTitle": "이 앨범의 하이라이트",
+    "postsSectionTitle": "추억의 요리들",
+    "sortNewest": "최신순",
+    "sortOldest": "오래된순"
   },
   "maybeNotFoodDialog": {
     "title": "잠깐 확인 🍽️",

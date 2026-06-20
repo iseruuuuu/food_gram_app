@@ -67,7 +67,14 @@
     "deleted": "Album deleted",
     "saved": "Album saved",
     "createdAt": "Created",
-    "notFound": "Album not found"
+    "notFound": "Album not found",
+    "entrySubtitle": "Trips, dates & memories in one place",
+    "listSubtitle": "Gather your precious food memories into albums",
+    "longPressHint": "Drag to reorder albums",
+    "highlightsTitle": "Album highlights",
+    "postsSectionTitle": "Dishes in this album",
+    "sortNewest": "Newest first",
+    "sortOldest": "Oldest first"
   },
   "maybeNotFoodDialog": {
     "title": "Just a quick check 🍽️",

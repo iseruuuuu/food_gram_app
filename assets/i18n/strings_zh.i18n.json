@@ -67,7 +67,14 @@
     "deleted": "相册已删除",
     "saved": "相册已保存",
     "createdAt": "创建日期",
-    "notFound": "未找到相册"
+    "notFound": "未找到相册",
+    "entrySubtitle": "旅行、约会与回忆，一站收纳",
+    "listSubtitle": "把珍贵的美食回忆整理成相册",
+    "longPressHint": "长按相册可排序或删除",
+    "highlightsTitle": "相册亮点",
+    "postsSectionTitle": "回忆中的料理",
+    "sortNewest": "最新",
+    "sortOldest": "最早"
   },
   "maybeNotFoodDialog": {
     "title": "稍作确认 🍽️",

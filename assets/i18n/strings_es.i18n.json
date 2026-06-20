@@ -67,7 +67,14 @@
     "deleted": "Álbum eliminado",
     "saved": "Álbum guardado",
     "createdAt": "Creado",
-    "notFound": "Álbum no encontrado"
+    "notFound": "Álbum no encontrado",
+    "entrySubtitle": "Viajes, citas y recuerdos en un solo lugar",
+    "listSubtitle": "Reúne tus recuerdos gastronómicos en álbumes",
+    "longPressHint": "Mantén pulsado para reordenar o eliminar",
+    "highlightsTitle": "Destacados del álbum",
+    "postsSectionTitle": "Platos de este álbum",
+    "sortNewest": "Más recientes",
+    "sortOldest": "Más antiguos"
   },
   "maybeNotFoodDialog": {
     "title": "Una pequeña confirmación 🍽️",

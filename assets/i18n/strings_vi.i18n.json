@@ -67,7 +67,14 @@
     "deleted": "Đã xóa album",
     "saved": "Đã lưu album",
     "createdAt": "Ngày tạo",
-    "notFound": "Không tìm thấy album"
+    "notFound": "Không tìm thấy album",
+    "entrySubtitle": "Chuyến đi, hẹn hò & kỷ niệm",
+    "listSubtitle": "Gom kỷ niệm ẩm thực vào album",
+    "longPressHint": "Nhấn giữ để sắp xếp hoặc xóa",
+    "highlightsTitle": "Điểm nổi bật",
+    "postsSectionTitle": "Món ăn trong album",
+    "sortNewest": "Mới nhất",
+    "sortOldest": "Cũ nhất"
   },
   "maybeNotFoodDialog": {
     "title": "Kiểm tra nhanh 🍽️",

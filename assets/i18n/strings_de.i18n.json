@@ -67,7 +67,14 @@
     "deleted": "Album gelöscht",
     "saved": "Album gespeichert",
     "createdAt": "Erstellt",
-    "notFound": "Album nicht gefunden"
+    "notFound": "Album nicht gefunden",
+    "entrySubtitle": "Reisen, Dates & Erinnerungen sammeln",
+    "listSubtitle": "Bewahre deine kulinarischen Erinnerungen in Alben",
+    "longPressHint": "Album lange drücken zum Sortieren oder Löschen",
+    "highlightsTitle": "Highlights dieses Albums",
+    "postsSectionTitle": "Gerichte in diesem Album",
+    "sortNewest": "Neueste zuerst",
+    "sortOldest": "Älteste zuerst"
   },
   "maybeNotFoodDialog": {
     "title": "Kurze Bestätigung 🍽️",

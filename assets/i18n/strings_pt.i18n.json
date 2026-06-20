@@ -67,7 +67,14 @@
     "deleted": "Álbum excluído",
     "saved": "Álbum salvo",
     "createdAt": "Criado",
-    "notFound": "Álbum não encontrado"
+    "notFound": "Álbum não encontrado",
+    "entrySubtitle": "Viagens, encontros e memórias",
+    "listSubtitle": "Reúna suas memórias gastronômicas em álbuns",
+    "longPressHint": "Pressione e segure para reordenar ou excluir",
+    "highlightsTitle": "Destaques do álbum",
+    "postsSectionTitle": "Pratos deste álbum",
+    "sortNewest": "Mais recentes",
+    "sortOldest": "Mais antigos"
   },
   "maybeNotFoodDialog": {
     "title": "Só conferindo 🍽️",
