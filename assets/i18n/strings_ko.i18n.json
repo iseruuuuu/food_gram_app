@@ -325,7 +325,11 @@
     "myMap": "내 지도",
     "search": "검색",
     "myPage": "마이페이지",
-    "setting": "설정"
+    "setting": "설정",
+    "loadingMap": "전 세계의 식사 경험을 찾고 있습니다...",
+    "loadingFood": "식사 경험을 모으고 있습니다...",
+    "loadingRecord": "식사 기록을 열고 있습니다...",
+    "loadingMyPage": "나만의 식사 경험을 정리하고 있습니다..."
   },
   "mapStats": {
     "visitedArea": "방문한 장소",

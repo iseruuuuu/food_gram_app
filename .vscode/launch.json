@@ -2,10 +2,20 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Attach dev (Hot Reload)",
+            "request": "attach",
+            "type": "dart",
+            "deviceId": "00008110-0009593C34F1801E",
+            "args": [
+                "--device-connection=attached"
+            ]
+        },
+        {
             "name": "Debug dev",
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
+            "deviceId": "00008110-0009593C34F1801E",
             "args": [
                 "--dart-define-from-file=dart_defines/dev.env"
             ]
@@ -15,6 +25,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
+            "deviceId": "00008110-0009593C34F1801E",
             "args": [
                 "--dart-define-from-file=dart_defines/prod.env"
             ]

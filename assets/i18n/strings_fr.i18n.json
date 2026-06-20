@@ -325,7 +325,11 @@
     "myMap": "Ma Carte",
     "search": "Rechercher",
     "myPage": "Ma page",
-    "setting": "Paramètres"
+    "setting": "Paramètres",
+    "loadingMap": "Recherche d'expériences culinaires dans le monde...",
+    "loadingFood": "Collecte d'expériences culinaires...",
+    "loadingRecord": "Ouverture de vos enregistrements alimentaires...",
+    "loadingMyPage": "Résumé de vos expériences culinaires..."
   },
   "mapStats": {
     "visitedArea": "Lieux visités",

@@ -125,6 +125,22 @@ class $AssetsImageGen {
   /// File path: assets/image/loading.gif
   AssetGenImage get loading => const AssetGenImage('assets/image/loading.gif');
 
+  /// File path: assets/image/loading_food.png
+  AssetGenImage get loadingFood =>
+      const AssetGenImage('assets/image/loading_food.png');
+
+  /// File path: assets/image/loading_map.png
+  AssetGenImage get loadingMap =>
+      const AssetGenImage('assets/image/loading_map.png');
+
+  /// File path: assets/image/loading_mypage.png
+  AssetGenImage get loadingMypage =>
+      const AssetGenImage('assets/image/loading_mypage.png');
+
+  /// File path: assets/image/loading_record.png
+  AssetGenImage get loadingRecord =>
+      const AssetGenImage('assets/image/loading_record.png');
+
   /// File path: assets/image/logo_google.png
   AssetGenImage get logoGoogle =>
       const AssetGenImage('assets/image/logo_google.png');
@@ -180,6 +196,10 @@ class $AssetsImageGen {
         foodgramer,
         frame,
         loading,
+        loadingFood,
+        loadingMap,
+        loadingMypage,
+        loadingRecord,
         logoGoogle,
         paywall2,
         paywallBackground,

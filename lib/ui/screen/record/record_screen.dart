@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
@@ -7,6 +9,7 @@ import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_detail_screen.dart';
 import 'package:food_gram_app/ui/screen/record/components/map/record_map.dart';
 import 'package:food_gram_app/ui/screen/record/record_view_model.dart';
@@ -28,6 +31,7 @@ class RecordScreen extends ConsumerWidget {
         children: [
           AsyncValueSwitcher(
             asyncValue: AsyncValueGroup.group2(location, mapService),
+            onLoading: const AppTabLoading.record(),
             onErrorTap: () {
               ref
                 ..invalidate(locationProvider)
@@ -62,6 +66,9 @@ class RecordScreen extends ConsumerWidget {
             ),
           ),
           onPressed: () async {
+            ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                  name: AnalyticsEvent.recordPostOpen,
+                );
             await context
                 .pushNamed(RouterPath.timeLinePost)
                 .then((value) async {

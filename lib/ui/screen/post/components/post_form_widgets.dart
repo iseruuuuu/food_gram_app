@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:food_gram_app/core/theme/style/post_style.dart';
@@ -336,9 +335,7 @@ class PostRestaurantField extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  isPlaceholder
-                      ? t.post.restaurantNamePlaceholder
-                      : restaurant,
+                  isPlaceholder ? t.post.restaurantNamePlaceholder : restaurant,
                   overflow: TextOverflow.ellipsis,
                   style: isPlaceholder
                       ? PostStyle.fieldHint(context)
@@ -547,9 +544,8 @@ class PostPriceAndRatingRow extends StatelessWidget {
                       allowHalfRating: true,
                       itemSize: 26,
                       itemPadding: const EdgeInsets.symmetric(horizontal: 1),
-                      unratedColor: isDark
-                          ? Colors.grey.shade700
-                          : Colors.grey.shade300,
+                      unratedColor:
+                          isDark ? Colors.grey.shade700 : Colors.grey.shade300,
                       itemBuilder: (context, _) => const Icon(
                         Icons.star,
                         color: Colors.amber,
