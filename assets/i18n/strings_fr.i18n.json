@@ -74,7 +74,8 @@
     "highlightsTitle": "Points forts de l'album",
     "postsSectionTitle": "Plats de cet album",
     "sortNewest": "Plus récents",
-    "sortOldest": "Plus anciens"
+    "sortOldest": "Plus anciens",
+    "albumLimitBody": "Le plan gratuit permet 1 album. Passez à Premium pour un nombre illimité."
   },
   "maybeNotFoodDialog": {
     "title": "Petite vérification 🍽️",

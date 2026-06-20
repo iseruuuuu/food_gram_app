@@ -74,7 +74,8 @@
     "highlightsTitle": "相簿亮點",
     "postsSectionTitle": "回憶中的料理",
     "sortNewest": "最新",
-    "sortOldest": "最早"
+    "sortOldest": "最早",
+    "albumLimitBody": "免費版最多1個相簿。升級進階版可無限新增。"
   },
   "maybeNotFoodDialog": {
     "title": "稍作確認 🍽️",

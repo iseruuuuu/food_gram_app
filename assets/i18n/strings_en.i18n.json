@@ -74,7 +74,8 @@
     "highlightsTitle": "Album highlights",
     "postsSectionTitle": "Dishes in this album",
     "sortNewest": "Newest first",
-    "sortOldest": "Oldest first"
+    "sortOldest": "Oldest first",
+    "albumLimitBody": "Free plan allows up to 1 album. Upgrade to Premium for unlimited albums."
   },
   "maybeNotFoodDialog": {
     "title": "Just a quick check 🍽️",

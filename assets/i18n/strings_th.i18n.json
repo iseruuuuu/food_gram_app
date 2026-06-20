@@ -74,7 +74,8 @@
     "highlightsTitle": "ไฮไลท์ของอัลบั้ม",
     "postsSectionTitle": "เมนูในความทรงจำ",
     "sortNewest": "ใหม่สุด",
-    "sortOldest": "เก่าสุด"
+    "sortOldest": "เก่าสุด",
+    "albumLimitBody": "แผนฟรีสร้างอัลบั้มได้ 1 อัน อัปเกรดพรีเมียมเพื่อเพิ่มได้ไม่จำกัด"
   },
   "maybeNotFoodDialog": {
     "title": "ขอตรวจสอบสักครู่ 🍽️",

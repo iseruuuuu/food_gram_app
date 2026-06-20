@@ -74,7 +74,8 @@
     "highlightsTitle": "이 앨범의 하이라이트",
     "postsSectionTitle": "추억의 요리들",
     "sortNewest": "최신순",
-    "sortOldest": "오래된순"
+    "sortOldest": "오래된순",
+    "albumLimitBody": "무료 플랜은 앨범 1개까지입니다. 프리미엄으로 무제한 추가할 수 있습니다."
   },
   "maybeNotFoodDialog": {
     "title": "잠깐 확인 🍽️",

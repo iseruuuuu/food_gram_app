@@ -74,7 +74,8 @@
     "highlightsTitle": "Destaques do álbum",
     "postsSectionTitle": "Pratos deste álbum",
     "sortNewest": "Mais recentes",
-    "sortOldest": "Mais antigos"
+    "sortOldest": "Mais antigos",
+    "albumLimitBody": "O plano gratuito permite 1 álbum. Com Premium, adicione quantos quiser."
   },
   "maybeNotFoodDialog": {
     "title": "Só conferindo 🍽️",

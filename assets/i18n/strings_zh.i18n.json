@@ -74,7 +74,8 @@
     "highlightsTitle": "相册亮点",
     "postsSectionTitle": "回忆中的料理",
     "sortNewest": "最新",
-    "sortOldest": "最早"
+    "sortOldest": "最早",
+    "albumLimitBody": "免费版最多1个相册。升级高级版可无限添加。"
   },
   "maybeNotFoodDialog": {
     "title": "稍作确认 🍽️",

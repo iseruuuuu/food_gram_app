@@ -74,7 +74,8 @@
     "highlightsTitle": "このアルバムのハイライト",
     "postsSectionTitle": "思い出の料理たち",
     "sortNewest": "新しい順",
-    "sortOldest": "古い順"
+    "sortOldest": "古い順",
+    "albumLimitBody": "無料プランではアルバムは1個までです。プレミアムで無制限に追加できます。"
   },
   "maybeNotFoodDialog": {
     "title": "ちょっと確認 🍽️",

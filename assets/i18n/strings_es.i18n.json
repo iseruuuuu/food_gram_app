@@ -74,7 +74,8 @@
     "highlightsTitle": "Destacados del álbum",
     "postsSectionTitle": "Platos de este álbum",
     "sortNewest": "Más recientes",
-    "sortOldest": "Más antiguos"
+    "sortOldest": "Más antiguos",
+    "albumLimitBody": "El plan gratuito permite 1 álbum. Con Premium puedes añadir ilimitados."
   },
   "maybeNotFoodDialog": {
     "title": "Una pequeña confirmación 🍽️",
