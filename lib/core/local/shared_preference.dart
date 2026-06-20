@@ -23,6 +23,7 @@ enum PreferenceKey {
   analyticsFirstCountryComplete,
   analyticsFirstPrefectureComplete,
   analyticsHighestPostMilestone,
+  memoryAlbums,
 }
 
 class Preference {
