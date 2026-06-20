@@ -19,7 +19,6 @@ import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/component/dialog/app_level_up_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/app_promote_dialog.dart';
-import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_entry_card.dart';
 import 'package:food_gram_app/ui/screen/profile/components/profile_header.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
 import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dart';
@@ -210,9 +209,6 @@ class MyProfileScreen extends HookConsumerWidget {
                           },
                           error: SizedBox.shrink,
                         ),
-                      ),
-                      const SliverToBoxAdapter(
-                        child: MemoryAlbumEntryCard(),
                       ),
                       if (value.isNotEmpty)
                         SliverPadding(
