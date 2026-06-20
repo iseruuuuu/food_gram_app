@@ -51,6 +51,7 @@ class MemoryAlbumLocalRepository implements MemoryAlbumRepository {
     required String title,
     required String description,
     required List<int> postIds,
+    required bool isPremium,
   }) async {
     final trimmed = title.trim();
     if (trimmed.isEmpty) {
@@ -58,6 +59,14 @@ class MemoryAlbumLocalRepository implements MemoryAlbumRepository {
     }
     if (postIds.isEmpty) {
       return const Failure(MemoryAlbumError.emptyPostIds);
+    }
+
+    final store = await _load();
+    final maxAlbums = isPremium
+        ? MemoryAlbumLimits.premiumMaxAlbums
+        : MemoryAlbumLimits.freeMaxAlbums;
+    if (store.albums.length >= maxAlbums) {
+      return const Failure(MemoryAlbumError.albumLimitFree);
     }
 
     final now = DateTime.now();
@@ -69,7 +78,6 @@ class MemoryAlbumLocalRepository implements MemoryAlbumRepository {
       createdAt: now,
       updatedAt: now,
     );
-    final store = await _load();
     await _save(MemoryAlbumStore(albums: [album, ...store.albums]));
     return Success(album);
   }

@@ -10,6 +10,7 @@ abstract class MemoryAlbumRepository {
     required String title,
     required String description,
     required List<int> postIds,
+    required bool isPremium,
   });
 
   Future<Result<MemoryAlbum, MemoryAlbumError>> update({

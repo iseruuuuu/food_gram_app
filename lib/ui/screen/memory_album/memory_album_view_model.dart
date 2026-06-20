@@ -3,6 +3,7 @@ import 'package:food_gram_app/core/model/memory_album.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/repository/memory_album/memory_album_repository_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/fetch_post_repository.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'memory_album_view_model.g.dart';
@@ -29,6 +30,27 @@ class MemoryAlbumListViewModel extends _$MemoryAlbumListViewModel {
     await ref.read(memoryAlbumRepositoryProvider).reorderAlbums(
           albums.map((a) => a.id).toList(),
         );
+  }
+
+  Future<MemoryAlbumError?> createAlbum({
+    required String title,
+    required String description,
+    required List<int> postIds,
+  }) async {
+    final isPremium = await ref.read(isSubscribeProvider.future);
+    final result = await ref.read(memoryAlbumRepositoryProvider).create(
+          title: title,
+          description: description,
+          postIds: postIds,
+          isPremium: isPremium,
+        );
+    return result.when(
+      success: (_) {
+        ref.invalidateSelf();
+        return null;
+      },
+      failure: (error) => error,
+    );
   }
 }
 

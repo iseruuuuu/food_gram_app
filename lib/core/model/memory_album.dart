@@ -99,8 +99,14 @@ class MemoryAlbumStore {
   String toJsonString() => jsonEncode(toJson());
 }
 
+abstract final class MemoryAlbumLimits {
+  static const int freeMaxAlbums = 1;
+  static const int premiumMaxAlbums = 10000;
+}
+
 enum MemoryAlbumError {
   emptyTitle,
   emptyPostIds,
   albumNotFound,
+  albumLimitFree,
 }

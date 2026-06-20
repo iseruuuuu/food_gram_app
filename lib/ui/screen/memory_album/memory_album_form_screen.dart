@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/memory_album.dart';
 import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/repository/memory_album/memory_album_repository_provider.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/memory_album_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_limit_dialog.dart';
 import 'package:food_gram_app/ui/screen/memory_album/memory_album_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -61,46 +62,76 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
       final repo = ref.read(memoryAlbumRepositoryProvider);
       isSaving.value = true;
       try {
-        final Result<MemoryAlbum, MemoryAlbumError> result;
         if (isEdit) {
-          result = await repo.update(
+          final result = await repo.update(
             id: albumId!,
             title: titleCtrl.text,
             description: descCtrl.text,
             postIds: selectedIds.value,
           );
-        } else {
-          result = await repo.create(
-            title: titleCtrl.text,
-            description: descCtrl.text,
-            postIds: selectedIds.value,
+          if (!context.mounted) {
+            return;
+          }
+          result.when(
+            success: (_) {
+              ref.invalidate(memoryAlbumListViewModelProvider);
+              ref.invalidate(memoryAlbumDetailViewModelProvider(albumId!));
+              SnackBarHelper().openSuccessSnackBar(
+                context,
+                t.memoryAlbum.saved,
+                '',
+              );
+              context.pop();
+            },
+            failure: (error) {
+              final message = switch (error) {
+                MemoryAlbumError.emptyTitle => t.memoryAlbum.emptyTitleError,
+                MemoryAlbumError.emptyPostIds => t.memoryAlbum.emptyPostsError,
+                MemoryAlbumError.albumNotFound => t.memoryAlbum.notFound,
+                MemoryAlbumError.albumLimitFree => t.memoryAlbum.albumLimitBody,
+              };
+              SnackBarHelper().openErrorSnackBar(context, message, '');
+            },
           );
+          return;
         }
+
+        final error = await ref
+            .read(memoryAlbumListViewModelProvider.notifier)
+            .createAlbum(
+              title: titleCtrl.text,
+              description: descCtrl.text,
+              postIds: selectedIds.value,
+            );
         if (!context.mounted) {
           return;
         }
-        result.when(
-          success: (_) {
-            ref.invalidate(memoryAlbumListViewModelProvider);
-            if (isEdit) {
-              ref.invalidate(memoryAlbumDetailViewModelProvider(albumId!));
-            }
-            SnackBarHelper().openSuccessSnackBar(
+        if (error == null) {
+          SnackBarHelper().openSuccessSnackBar(
+            context,
+            t.memoryAlbum.saved,
+            '',
+          );
+          context.pop();
+          return;
+        }
+        if (error == MemoryAlbumError.albumLimitFree) {
+          final isPremium = await ref.read(isSubscribeProvider.future);
+          if (context.mounted) {
+            await showMemoryAlbumLimitDialog(
               context,
-              t.memoryAlbum.saved,
-              '',
+              isPremium: isPremium,
             );
-            context.pop();
-          },
-          failure: (error) {
-            final message = switch (error) {
-              MemoryAlbumError.emptyTitle => t.memoryAlbum.emptyTitleError,
-              MemoryAlbumError.emptyPostIds => t.memoryAlbum.emptyPostsError,
-              MemoryAlbumError.albumNotFound => t.memoryAlbum.notFound,
-            };
-            SnackBarHelper().openErrorSnackBar(context, message, '');
-          },
-        );
+          }
+          return;
+        }
+        final message = switch (error) {
+          MemoryAlbumError.emptyTitle => t.memoryAlbum.emptyTitleError,
+          MemoryAlbumError.emptyPostIds => t.memoryAlbum.emptyPostsError,
+          MemoryAlbumError.albumNotFound => t.memoryAlbum.notFound,
+          MemoryAlbumError.albumLimitFree => t.memoryAlbum.albumLimitBody,
+        };
+        SnackBarHelper().openErrorSnackBar(context, message, '');
       } finally {
         isSaving.value = false;
       }

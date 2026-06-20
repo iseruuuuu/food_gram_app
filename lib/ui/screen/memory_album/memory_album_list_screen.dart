@@ -7,6 +7,7 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_limit_dialog.dart';
 import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_card.dart';
 import 'package:food_gram_app/ui/screen/memory_album/memory_album_view_model.dart';
 import 'package:gap/gap.dart';
@@ -102,10 +103,7 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
               ),
             ),
             tooltip: t.memoryAlbum.create,
-            onPressed: () async {
-              await context.pushNamed(RouterPath.memoryAlbumCreate);
-              await reload();
-            },
+            onPressed: () => openMemoryAlbumCreate(context, ref),
           ),
           const Gap(4),
         ],
@@ -155,10 +153,7 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
                           vertical: 14,
                         ),
                       ),
-                      onPressed: () async {
-                        await context.pushNamed(RouterPath.memoryAlbumCreate);
-                        await reload();
-                      },
+                      onPressed: () => openMemoryAlbumCreate(context, ref),
                       icon: const Icon(Icons.add),
                       label: Text(t.memoryAlbum.create),
                     ),
