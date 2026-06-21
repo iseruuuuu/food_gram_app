@@ -1,0 +1,153 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+
+/// 食の思い出アルバム（メタデータのみ。画像は投稿から参照）
+class MemoryAlbum {
+  const MemoryAlbum({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.postIds,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory MemoryAlbum.fromJson(Map<String, dynamic> json) {
+    final rawIds = json['postIds'];
+    return MemoryAlbum(
+      id: json['id'] as String,
+      title: json['title'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      postIds: rawIds is List
+          ? rawIds.map((e) => (e as num).toInt()).toList()
+          : const [],
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+    );
+  }
+
+  static MemoryAlbum? tryFromJson(Object? json) {
+    if (json is! Map<String, dynamic>) {
+      return null;
+    }
+    try {
+      return MemoryAlbum.fromJson(json);
+    } on Object {
+      return null;
+    }
+  }
+
+  final String id;
+  final String title;
+  final String description;
+
+  /// ユーザーが選択した順序（カバー = postIds.first）
+  final List<int> postIds;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  int? get coverPostId => postIds.isEmpty ? null : postIds.first;
+
+  int get postCount => postIds.length;
+
+  MemoryAlbumPostIdsKey get postIdsKey => MemoryAlbumPostIdsKey.from(postIds);
+
+  static const _version = 1;
+
+  Map<String, dynamic> toJson() => {
+        'v': _version,
+        'id': id,
+        'title': title,
+        'description': description,
+        'postIds': postIds,
+        'createdAt': createdAt.toIso8601String(),
+        'updatedAt': updatedAt.toIso8601String(),
+      };
+
+  MemoryAlbum copyWith({
+    String? title,
+    String? description,
+    List<int>? postIds,
+    DateTime? updatedAt,
+  }) {
+    return MemoryAlbum(
+      id: id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      postIds: postIds ?? this.postIds,
+      createdAt: createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+}
+
+class MemoryAlbumStore {
+  const MemoryAlbumStore({required this.albums});
+
+  factory MemoryAlbumStore.fromJsonString(String raw) {
+    if (raw.isEmpty) {
+      return const MemoryAlbumStore(albums: []);
+    }
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is! Map<String, dynamic>) {
+        return const MemoryAlbumStore(albums: []);
+      }
+      final rawList = decoded['albums'];
+      final list = rawList is List ? rawList : const <dynamic>[];
+      final albums = <MemoryAlbum>[
+        for (final item in list)
+          if (MemoryAlbum.tryFromJson(item) case final album?) album,
+      ];
+      return MemoryAlbumStore(albums: albums);
+    } on Object {
+      return const MemoryAlbumStore(albums: []);
+    }
+  }
+
+  final List<MemoryAlbum> albums;
+
+  static const _version = 1;
+
+  Map<String, dynamic> toJson() => {
+        'v': _version,
+        'albums': albums.map((a) => a.toJson()).toList(),
+      };
+
+  String toJsonString() => jsonEncode(toJson());
+}
+
+@immutable
+class MemoryAlbumPostIdsKey {
+  const MemoryAlbumPostIdsKey._(this.postIds);
+
+  factory MemoryAlbumPostIdsKey.from(List<int> postIds) {
+    return MemoryAlbumPostIdsKey._(List<int>.unmodifiable(postIds));
+  }
+
+  final List<int> postIds;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is MemoryAlbumPostIdsKey && listEquals(postIds, other.postIds);
+  }
+
+  @override
+  int get hashCode => Object.hashAll(postIds);
+}
+
+abstract final class MemoryAlbumLimits {
+  static const int freeMaxAlbums = 1;
+  static const int premiumMaxAlbums = 10000;
+}
+
+enum MemoryAlbumError {
+  emptyTitle,
+  emptyPostIds,
+  albumNotFound,
+  albumLimitFree,
+}

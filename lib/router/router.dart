@@ -143,6 +143,10 @@ final class RouterPath {
   static const String notifications = 'notifications';
   static const String storedPost = 'stored_post';
   static const String storedPostDetail = 'stored_post_detail';
+  static const String memoryAlbumList = 'memory_album_list';
+  static const String memoryAlbumCreate = 'memory_album_create';
+  static const String memoryAlbumDetail = 'memory_album_detail';
+  static const String memoryAlbumEdit = 'memory_album_edit';
   static const String myProfilePost = 'my_profile_post';
   static const String edit = 'edit';
   static const String myProfileDetail = 'my_profile_detail';

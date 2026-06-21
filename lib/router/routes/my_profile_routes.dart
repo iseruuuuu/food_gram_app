@@ -29,6 +29,48 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
+      path: RouterPath.memoryAlbumList,
+      name: RouterPath.memoryAlbumList,
+      pageBuilder: (context, state) {
+        return whiteOut(const MemoryAlbumListScreen());
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: RouterPath.memoryAlbumCreate,
+          name: RouterPath.memoryAlbumCreate,
+          pageBuilder: (context, state) {
+            return slideIn(const MemoryAlbumFormScreen());
+          },
+        ),
+        GoRoute(
+          path: RouterPath.memoryAlbumDetail,
+          name: RouterPath.memoryAlbumDetail,
+          pageBuilder: (context, state) {
+            final extra = state.extra;
+            final albumId = extra is String ? extra : null;
+            if (albumId == null) {
+              return slideIn(const Scaffold(body: RouterErrorWidget()));
+            }
+            return slideIn(MemoryAlbumDetailScreen(albumId: albumId));
+          },
+          routes: <RouteBase>[
+            GoRoute(
+              path: RouterPath.memoryAlbumEdit,
+              name: RouterPath.memoryAlbumEdit,
+              pageBuilder: (context, state) {
+                final extra = state.extra;
+                final albumId = extra is String ? extra : null;
+                if (albumId == null) {
+                  return slideIn(const Scaffold(body: RouterErrorWidget()));
+                }
+                return slideIn(MemoryAlbumFormScreen(albumId: albumId));
+              },
+            ),
+          ],
+        ),
+      ],
+    ),
+    GoRoute(
       path: '${RouterPath.storedPost}/${RouterPath.storedPostDetail}',
       name: RouterPath.storedPostDetail,
       pageBuilder: (context, state) {

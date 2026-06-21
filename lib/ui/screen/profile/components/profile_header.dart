@@ -11,6 +11,7 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/dialog/app_profile_dialog.dart';
+import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_entry_card.dart';
 import 'package:food_gram_app/ui/screen/profile/components/profile_stat.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
 import 'package:gap/gap.dart';
@@ -388,6 +389,10 @@ class AppProfileHeader extends ConsumerWidget {
                         ),
                       ),
                     ),
+                  if (currentUser == users.userId) ...[
+                    const Gap(12),
+                    const MemoryAlbumEntryCard(),
+                  ],
                   if (users.isSubscribe)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
