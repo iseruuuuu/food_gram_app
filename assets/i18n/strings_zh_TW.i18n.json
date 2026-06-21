@@ -65,6 +65,7 @@
     "deleteTitle": "刪除相簿",
     "deleteBody": "確定刪除此相簿嗎？貼文本身不會被刪除。",
     "deleted": "相簿已刪除",
+    "deleteError": "無法刪除相簿",
     "saved": "相簿已儲存",
     "createdAt": "建立日期",
     "notFound": "找不到相簿",

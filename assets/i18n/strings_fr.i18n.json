@@ -65,6 +65,7 @@
     "deleteTitle": "Supprimer l'album",
     "deleteBody": "Supprimer cet album ? Vos publications ne seront pas supprimées.",
     "deleted": "Album supprimé",
+    "deleteError": "Impossible de supprimer l'album",
     "saved": "Album enregistré",
     "createdAt": "Créé",
     "notFound": "Album introuvable",

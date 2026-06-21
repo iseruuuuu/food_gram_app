@@ -4,7 +4,6 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/utils/memory_album_utils.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 
 class MemoryAlbumPostTile extends ConsumerWidget {
   const MemoryAlbumPostTile({
@@ -20,7 +19,7 @@ class MemoryAlbumPostTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final imageUrl = postImageUrl(ref, post);
-    final dateText = DateFormat.yMMMd().format(post.createdAt);
+    final dateText = formatMemoryAlbumPostDate(post.createdAt);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),

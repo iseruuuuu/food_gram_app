@@ -24,7 +24,7 @@ class MemoryAlbumCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final postsAsync = ref.watch(memoryAlbumPostsProvider(album.postIds));
+    final postsAsync = ref.watch(memoryAlbumPostsProvider(album.postIdsKey));
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

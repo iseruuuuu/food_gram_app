@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 /// 食の思い出アルバム（メタデータのみ。画像は投稿から参照）
 class MemoryAlbum {
   const MemoryAlbum({
@@ -25,6 +27,17 @@ class MemoryAlbum {
     );
   }
 
+  static MemoryAlbum? tryFromJson(Object? json) {
+    if (json is! Map<String, dynamic>) {
+      return null;
+    }
+    try {
+      return MemoryAlbum.fromJson(json);
+    } on Object {
+      return null;
+    }
+  }
+
   final String id;
   final String title;
   final String description;
@@ -37,6 +50,8 @@ class MemoryAlbum {
   int? get coverPostId => postIds.isEmpty ? null : postIds.first;
 
   int get postCount => postIds.length;
+
+  MemoryAlbumPostIdsKey get postIdsKey => MemoryAlbumPostIdsKey.from(postIds);
 
   static const _version = 1;
 
@@ -75,13 +90,17 @@ class MemoryAlbumStore {
       return const MemoryAlbumStore(albums: []);
     }
     try {
-      final decoded = jsonDecode(raw) as Map<String, dynamic>;
-      final list = decoded['albums'] as List<dynamic>? ?? [];
-      return MemoryAlbumStore(
-        albums: list
-            .map((e) => MemoryAlbum.fromJson(e as Map<String, dynamic>))
-            .toList(),
-      );
+      final decoded = jsonDecode(raw);
+      if (decoded is! Map<String, dynamic>) {
+        return const MemoryAlbumStore(albums: []);
+      }
+      final rawList = decoded['albums'];
+      final list = rawList is List ? rawList : const <dynamic>[];
+      final albums = <MemoryAlbum>[
+        for (final item in list)
+          if (MemoryAlbum.tryFromJson(item) case final album?) album,
+      ];
+      return MemoryAlbumStore(albums: albums);
     } on Object {
       return const MemoryAlbumStore(albums: []);
     }
@@ -97,6 +116,28 @@ class MemoryAlbumStore {
       };
 
   String toJsonString() => jsonEncode(toJson());
+}
+
+@immutable
+class MemoryAlbumPostIdsKey {
+  const MemoryAlbumPostIdsKey._(this.postIds);
+
+  factory MemoryAlbumPostIdsKey.from(List<int> postIds) {
+    return MemoryAlbumPostIdsKey._(List<int>.unmodifiable(postIds));
+  }
+
+  final List<int> postIds;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is MemoryAlbumPostIdsKey && listEquals(postIds, other.postIds);
+  }
+
+  @override
+  int get hashCode => Object.hashAll(postIds);
 }
 
 abstract final class MemoryAlbumLimits {

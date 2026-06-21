@@ -1,9 +1,19 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:intl/intl.dart';
 
 enum MemoryAlbumPostSort { newest, oldest }
+
+String memoryAlbumLocaleTag() {
+  final locale = LocaleSettings.currentLocale;
+  final country = locale.countryCode;
+  if (country != null && country.isNotEmpty) {
+    return '${locale.languageCode}_$country';
+  }
+  return locale.languageCode;
+}
 
 String? postImageUrl(WidgetRef ref, Posts post) {
   final storageKey = post.firstFoodImage;
@@ -38,11 +48,15 @@ String formatAlbumDateRange(DateTime? start, DateTime? end) {
   if (start == null || end == null) {
     return '';
   }
-  final fmt = DateFormat('yyyy.MM.dd');
+  final fmt = DateFormat('yyyy.MM.dd', memoryAlbumLocaleTag());
   if (fmt.format(start) == fmt.format(end)) {
     return fmt.format(start);
   }
   return '${fmt.format(start)} - ${fmt.format(end)}';
+}
+
+String formatMemoryAlbumPostDate(DateTime date) {
+  return DateFormat.yMMMd(memoryAlbumLocaleTag()).format(date);
 }
 
 List<Posts> sortAlbumPosts(List<Posts> posts, MemoryAlbumPostSort sort) {

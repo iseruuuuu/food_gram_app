@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/local/repository/memory_album_local_repository.dart';
 import 'package:food_gram_app/core/model/memory_album.dart';
 import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/core/local/repository/memory_album_local_repository.dart';
 import 'package:food_gram_app/core/supabase/post/repository/fetch_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -93,8 +93,9 @@ class MemoryAlbumDetailViewModel extends _$MemoryAlbumDetailViewModel {
 @riverpod
 Future<List<Posts>> memoryAlbumPosts(
   Ref ref,
-  List<int> postIds,
+  MemoryAlbumPostIdsKey postIdsKey,
 ) async {
+  final postIds = postIdsKey.postIds;
   if (postIds.isEmpty) {
     return [];
   }

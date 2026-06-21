@@ -65,6 +65,7 @@
     "deleteTitle": "删除相册",
     "deleteBody": "确定删除此相册吗？帖子本身不会被删除。",
     "deleted": "相册已删除",
+    "deleteError": "无法删除相册",
     "saved": "相册已保存",
     "createdAt": "创建日期",
     "notFound": "未找到相册",

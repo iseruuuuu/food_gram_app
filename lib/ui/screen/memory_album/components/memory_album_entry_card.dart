@@ -22,7 +22,7 @@ class MemoryAlbumEntryCard extends ConsumerWidget {
         : null;
     final previewAsync = firstAlbum == null
         ? null
-        : ref.watch(memoryAlbumPostsProvider(firstAlbum.postIds));
+        : ref.watch(memoryAlbumPostsProvider(firstAlbum.postIdsKey));
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),

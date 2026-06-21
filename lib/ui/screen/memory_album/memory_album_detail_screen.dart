@@ -11,6 +11,7 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_detail_header.dart';
+import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_limit_dialog.dart';
 import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_post_tile.dart';
 import 'package:food_gram_app/ui/screen/memory_album/memory_album_view_model.dart';
 import 'package:gap/gap.dart';
@@ -62,7 +63,8 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
           );
         }
 
-        final postsAsync = ref.watch(memoryAlbumPostsProvider(album.postIds));
+        final postsAsync =
+            ref.watch(memoryAlbumPostsProvider(album.postIdsKey));
 
         Future<void> deleteAlbum() async {
           DialogHelper().openDialog(
@@ -71,10 +73,8 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
             text: t.memoryAlbum.deleteBody,
             onTap: () async {
               context.pop();
-              await ref
-                  .read(memoryAlbumListViewModelProvider.notifier)
-                  .deleteAlbum(albumId);
-              if (context.mounted) {
+              final deleted = await deleteMemoryAlbum(context, ref, albumId);
+              if (deleted && context.mounted) {
                 SnackBarHelper().openSuccessSnackBar(
                   context,
                   t.memoryAlbum.deleted,
@@ -94,7 +94,7 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
             loading: () => const Center(child: AppContentLoading()),
             error: (_, __) => AppErrorWidget(
               onTap: () =>
-                  ref.invalidate(memoryAlbumPostsProvider(album.postIds)),
+                  ref.invalidate(memoryAlbumPostsProvider(album.postIdsKey)),
             ),
             data: (posts) {
               final range = postDateRange(posts);
@@ -131,6 +131,9 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
                             RouterPath.memoryAlbumEdit,
                             extra: albumId,
                           );
+                          if (!context.mounted) {
+                            return;
+                          }
                           await ref
                               .read(
                                 memoryAlbumDetailViewModelProvider(albumId)
@@ -138,7 +141,7 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
                               )
                               .reload();
                           ref.invalidate(
-                            memoryAlbumPostsProvider(album.postIds),
+                            memoryAlbumPostsProvider(album.postIdsKey),
                           );
                         },
                       ),

@@ -65,6 +65,7 @@
     "deleteTitle": "Eliminar álbum",
     "deleteBody": "¿Eliminar este álbum? Tus publicaciones no se eliminarán.",
     "deleted": "Álbum eliminado",
+    "deleteError": "No se pudo eliminar el álbum",
     "saved": "Álbum guardado",
     "createdAt": "Creado",
     "notFound": "Álbum no encontrado",

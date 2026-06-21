@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:food_gram_app/core/local/repository/memory_album_local_repository.dart';
 import 'package:food_gram_app/core/model/memory_album.dart';
 import 'package:food_gram_app/core/model/result.dart';
-import 'package:food_gram_app/core/local/repository/memory_album_local_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -101,5 +101,31 @@ void main() {
     final id = (created as Success<MemoryAlbum, MemoryAlbumError>).value.id;
     await repo.delete(id);
     expect(await repo.getById(id), isNull);
+  });
+
+  test('concurrent writes persist all changes', () async {
+    final repo = MemoryAlbumLocalRepository(random: Random(0));
+    final first = await repo.create(
+      title: 'First',
+      description: '',
+      postIds: const [1],
+      isPremium: true,
+    );
+    final firstId = (first as Success<MemoryAlbum, MemoryAlbumError>).value.id;
+
+    await Future.wait([
+      repo.create(
+        title: 'Second',
+        description: '',
+        postIds: const [2],
+        isPremium: true,
+      ),
+      repo.reorderAlbums([firstId]),
+    ]);
+
+    final all = await repo.getAll();
+    expect(all.length, 2);
+    expect(all.map((a) => a.title).toSet(), {'First', 'Second'});
+    expect(all.first.id, firstId);
   });
 }

@@ -65,6 +65,7 @@
     "deleteTitle": "Delete album",
     "deleteBody": "Delete this album? Your posts will not be deleted.",
     "deleted": "Album deleted",
+    "deleteError": "Could not delete album",
     "saved": "Album saved",
     "createdAt": "Created",
     "notFound": "Album not found",

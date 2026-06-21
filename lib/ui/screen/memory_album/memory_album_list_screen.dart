@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/memory_album.dart';
 import 'package:food_gram_app/core/theme/memory_album_theme.dart';
@@ -46,10 +48,9 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
                       text: t.memoryAlbum.deleteBody,
                       onTap: () async {
                         context.pop();
-                        await ref
-                            .read(memoryAlbumListViewModelProvider.notifier)
-                            .deleteAlbum(album.id);
-                        if (context.mounted) {
+                        final deleted =
+                            await deleteMemoryAlbum(context, ref, album.id);
+                        if (deleted && context.mounted) {
                           SnackBarHelper().openSuccessSnackBar(
                             context,
                             t.memoryAlbum.deleted,
@@ -103,7 +104,7 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
               ),
             ),
             tooltip: t.memoryAlbum.create,
-            onPressed: () => openMemoryAlbumCreate(context, ref),
+            onPressed: () => unawaited(openMemoryAlbumCreate(context, ref)),
           ),
           const Gap(4),
         ],
@@ -153,7 +154,8 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
                           vertical: 14,
                         ),
                       ),
-                      onPressed: () => openMemoryAlbumCreate(context, ref),
+                      onPressed: () =>
+                          unawaited(openMemoryAlbumCreate(context, ref)),
                       icon: const Icon(Icons.add),
                       label: Text(t.memoryAlbum.create),
                     ),
@@ -207,6 +209,9 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
                               RouterPath.memoryAlbumDetail,
                               extra: album.id,
                             );
+                            if (!context.mounted) {
+                              return;
+                            }
                             await reload();
                           },
                           onDelete: () => showAlbumActions(album),

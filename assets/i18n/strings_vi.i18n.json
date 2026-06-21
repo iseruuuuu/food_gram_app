@@ -65,6 +65,7 @@
     "deleteTitle": "Xóa album",
     "deleteBody": "Xóa album này? Bài đăng của bạn sẽ không bị xóa.",
     "deleted": "Đã xóa album",
+    "deleteError": "Không thể xóa album",
     "saved": "Đã lưu album",
     "createdAt": "Ngày tạo",
     "notFound": "Không tìm thấy album",

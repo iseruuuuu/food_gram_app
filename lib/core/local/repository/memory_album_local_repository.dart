@@ -9,6 +9,13 @@ class MemoryAlbumLocalRepository {
 
   final Random _random;
   final _preference = Preference();
+  Future<void> _writeQueue = Future<void>.value();
+
+  Future<T> _serialized<T>(Future<T> Function() action) {
+    final future = _writeQueue.then((_) => action());
+    _writeQueue = future.whenComplete(() {});
+    return future;
+  }
 
   String _newId() {
     final ts = DateTime.now().microsecondsSinceEpoch;
@@ -57,25 +64,27 @@ class MemoryAlbumLocalRepository {
       return const Failure(MemoryAlbumError.emptyPostIds);
     }
 
-    final store = await _load();
-    final maxAlbums = isPremium
-        ? MemoryAlbumLimits.premiumMaxAlbums
-        : MemoryAlbumLimits.freeMaxAlbums;
-    if (store.albums.length >= maxAlbums) {
-      return const Failure(MemoryAlbumError.albumLimitFree);
-    }
+    return _serialized(() async {
+      final store = await _load();
+      final maxAlbums = isPremium
+          ? MemoryAlbumLimits.premiumMaxAlbums
+          : MemoryAlbumLimits.freeMaxAlbums;
+      if (store.albums.length >= maxAlbums) {
+        return const Failure(MemoryAlbumError.albumLimitFree);
+      }
 
-    final now = DateTime.now();
-    final album = MemoryAlbum(
-      id: _newId(),
-      title: trimmed,
-      description: description.trim(),
-      postIds: List<int>.from(postIds),
-      createdAt: now,
-      updatedAt: now,
-    );
-    await _save(MemoryAlbumStore(albums: [album, ...store.albums]));
-    return Success(album);
+      final now = DateTime.now();
+      final album = MemoryAlbum(
+        id: _newId(),
+        title: trimmed,
+        description: description.trim(),
+        postIds: List<int>.from(postIds),
+        createdAt: now,
+        updatedAt: now,
+      );
+      await _save(MemoryAlbumStore(albums: [album, ...store.albums]));
+      return Success(album);
+    });
   }
 
   Future<Result<MemoryAlbum, MemoryAlbumError>> update({
@@ -92,45 +101,51 @@ class MemoryAlbumLocalRepository {
       return const Failure(MemoryAlbumError.emptyPostIds);
     }
 
-    final store = await _load();
-    final index = store.albums.indexWhere((a) => a.id == id);
-    if (index < 0) {
-      return const Failure(MemoryAlbumError.albumNotFound);
-    }
-
-    final updated = store.albums[index].copyWith(
-      title: trimmed,
-      description: description.trim(),
-      postIds: List<int>.from(postIds),
-      updatedAt: DateTime.now(),
-    );
-    final albums = [...store.albums];
-    albums[index] = updated;
-    await _save(MemoryAlbumStore(albums: albums));
-    return Success(updated);
-  }
-
-  Future<void> delete(String id) async {
-    final store = await _load();
-    await _save(
-      MemoryAlbumStore(
-        albums: store.albums.where((a) => a.id != id).toList(),
-      ),
-    );
-  }
-
-  Future<void> reorderAlbums(List<String> orderedIds) async {
-    final store = await _load();
-    final byId = {for (final a in store.albums) a.id: a};
-    final reordered = <MemoryAlbum>[
-      for (final id in orderedIds)
-        if (byId.containsKey(id)) byId[id]!,
-    ];
-    for (final album in store.albums) {
-      if (!orderedIds.contains(album.id)) {
-        reordered.add(album);
+    return _serialized(() async {
+      final store = await _load();
+      final index = store.albums.indexWhere((a) => a.id == id);
+      if (index < 0) {
+        return const Failure(MemoryAlbumError.albumNotFound);
       }
-    }
-    await _save(MemoryAlbumStore(albums: reordered));
+
+      final updated = store.albums[index].copyWith(
+        title: trimmed,
+        description: description.trim(),
+        postIds: List<int>.from(postIds),
+        updatedAt: DateTime.now(),
+      );
+      final albums = [...store.albums];
+      albums[index] = updated;
+      await _save(MemoryAlbumStore(albums: albums));
+      return Success(updated);
+    });
+  }
+
+  Future<void> delete(String id) {
+    return _serialized(() async {
+      final store = await _load();
+      await _save(
+        MemoryAlbumStore(
+          albums: store.albums.where((a) => a.id != id).toList(),
+        ),
+      );
+    });
+  }
+
+  Future<void> reorderAlbums(List<String> orderedIds) {
+    return _serialized(() async {
+      final store = await _load();
+      final byId = {for (final a in store.albums) a.id: a};
+      final reordered = <MemoryAlbum>[
+        for (final albumId in orderedIds)
+          if (byId.containsKey(albumId)) byId[albumId]!,
+      ];
+      for (final album in store.albums) {
+        if (!orderedIds.contains(album.id)) {
+          reordered.add(album);
+        }
+      }
+      await _save(MemoryAlbumStore(albums: reordered));
+    });
   }
 }

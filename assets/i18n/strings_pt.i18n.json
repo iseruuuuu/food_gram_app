@@ -65,6 +65,7 @@
     "deleteTitle": "Excluir álbum",
     "deleteBody": "Excluir este álbum? Suas publicações não serão excluídas.",
     "deleted": "Álbum excluído",
+    "deleteError": "Não foi possível excluir o álbum",
     "saved": "Álbum salvo",
     "createdAt": "Criado",
     "notFound": "Álbum não encontrado",

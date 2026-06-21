@@ -65,6 +65,7 @@
     "deleteTitle": "Album löschen",
     "deleteBody": "Dieses Album löschen? Deine Beiträge werden nicht gelöscht.",
     "deleted": "Album gelöscht",
+    "deleteError": "Album konnte nicht gelöscht werden",
     "saved": "Album gespeichert",
     "createdAt": "Erstellt",
     "notFound": "Album nicht gefunden",
