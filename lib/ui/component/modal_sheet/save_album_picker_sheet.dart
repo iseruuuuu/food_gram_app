@@ -5,7 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/local/providers/save_album_notifier.dart';
-import 'package:food_gram_app/core/local/save_album_local_repository.dart';
+import 'package:food_gram_app/core/local/repository/save_album_local_repository.dart';
 import 'package:food_gram_app/core/model/save_album.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';

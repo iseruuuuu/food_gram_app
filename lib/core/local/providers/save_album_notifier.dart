@@ -1,4 +1,4 @@
-import 'package:food_gram_app/core/local/save_album_local_repository.dart';
+import 'package:food_gram_app/core/local/repository/save_album_local_repository.dart';
 import 'package:food_gram_app/core/model/save_album.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

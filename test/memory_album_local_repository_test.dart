@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:food_gram_app/core/model/memory_album.dart';
 import 'package:food_gram_app/core/model/result.dart';
-import 'package:food_gram_app/core/repository/memory_album/memory_album_local_repository.dart';
+import 'package:food_gram_app/core/local/repository/memory_album_local_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
