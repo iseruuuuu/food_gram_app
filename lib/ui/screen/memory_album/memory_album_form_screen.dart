@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/memory_album.dart';
 import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/core/repository/memory_album/memory_album_repository_provider.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
@@ -59,40 +58,35 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
       if (isSaving.value) {
         return;
       }
-      final repo = ref.read(memoryAlbumRepositoryProvider);
       isSaving.value = true;
       try {
         if (isEdit) {
-          final result = await repo.update(
-            id: albumId!,
-            title: titleCtrl.text,
-            description: descCtrl.text,
-            postIds: selectedIds.value,
-          );
+          final error = await ref
+              .read(memoryAlbumDetailViewModelProvider(albumId!).notifier)
+              .updateAlbum(
+                title: titleCtrl.text,
+                description: descCtrl.text,
+                postIds: selectedIds.value,
+              );
           if (!context.mounted) {
             return;
           }
-          result.when(
-            success: (_) {
-              ref.invalidate(memoryAlbumListViewModelProvider);
-              ref.invalidate(memoryAlbumDetailViewModelProvider(albumId!));
-              SnackBarHelper().openSuccessSnackBar(
-                context,
-                t.memoryAlbum.saved,
-                '',
-              );
-              context.pop();
-            },
-            failure: (error) {
-              final message = switch (error) {
-                MemoryAlbumError.emptyTitle => t.memoryAlbum.emptyTitleError,
-                MemoryAlbumError.emptyPostIds => t.memoryAlbum.emptyPostsError,
-                MemoryAlbumError.albumNotFound => t.memoryAlbum.notFound,
-                MemoryAlbumError.albumLimitFree => t.memoryAlbum.albumLimitBody,
-              };
-              SnackBarHelper().openErrorSnackBar(context, message, '');
-            },
-          );
+          if (error == null) {
+            SnackBarHelper().openSuccessSnackBar(
+              context,
+              t.memoryAlbum.saved,
+              '',
+            );
+            context.pop();
+            return;
+          }
+          final message = switch (error) {
+            MemoryAlbumError.emptyTitle => t.memoryAlbum.emptyTitleError,
+            MemoryAlbumError.emptyPostIds => t.memoryAlbum.emptyPostsError,
+            MemoryAlbumError.albumNotFound => t.memoryAlbum.notFound,
+            MemoryAlbumError.albumLimitFree => t.memoryAlbum.albumLimitBody,
+          };
+          SnackBarHelper().openErrorSnackBar(context, message, '');
           return;
         }
 

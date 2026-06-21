@@ -3,9 +3,8 @@ import 'dart:math';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/memory_album.dart';
 import 'package:food_gram_app/core/model/result.dart';
-import 'package:food_gram_app/core/repository/memory_album/memory_album_repository.dart';
 
-class MemoryAlbumLocalRepository implements MemoryAlbumRepository {
+class MemoryAlbumLocalRepository {
   MemoryAlbumLocalRepository({Random? random}) : _random = random ?? Random();
 
   final Random _random;
@@ -29,13 +28,11 @@ class MemoryAlbumLocalRepository implements MemoryAlbumRepository {
     );
   }
 
-  @override
   Future<List<MemoryAlbum>> getAll() async {
     final store = await _load();
     return List<MemoryAlbum>.from(store.albums);
   }
 
-  @override
   Future<MemoryAlbum?> getById(String id) async {
     final store = await _load();
     for (final album in store.albums) {
@@ -46,7 +43,6 @@ class MemoryAlbumLocalRepository implements MemoryAlbumRepository {
     return null;
   }
 
-  @override
   Future<Result<MemoryAlbum, MemoryAlbumError>> create({
     required String title,
     required String description,
@@ -82,7 +78,6 @@ class MemoryAlbumLocalRepository implements MemoryAlbumRepository {
     return Success(album);
   }
 
-  @override
   Future<Result<MemoryAlbum, MemoryAlbumError>> update({
     required String id,
     required String title,
@@ -115,7 +110,6 @@ class MemoryAlbumLocalRepository implements MemoryAlbumRepository {
     return Success(updated);
   }
 
-  @override
   Future<void> delete(String id) async {
     final store = await _load();
     await _save(
@@ -125,7 +119,6 @@ class MemoryAlbumLocalRepository implements MemoryAlbumRepository {
     );
   }
 
-  @override
   Future<void> reorderAlbums(List<String> orderedIds) async {
     final store = await _load();
     final byId = {for (final a in store.albums) a.id: a};

@@ -1,7 +1,6 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/repository/memory_album/memory_album_repository_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/core/theme/memory_album_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
@@ -72,8 +71,9 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
             text: t.memoryAlbum.deleteBody,
             onTap: () async {
               context.pop();
-              await ref.read(memoryAlbumRepositoryProvider).delete(albumId);
-              ref.invalidate(memoryAlbumListViewModelProvider);
+              await ref
+                  .read(memoryAlbumListViewModelProvider.notifier)
+                  .deleteAlbum(albumId);
               if (context.mounted) {
                 SnackBarHelper().openSuccessSnackBar(
                   context,
