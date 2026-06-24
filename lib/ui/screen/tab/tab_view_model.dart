@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
+import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
+import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/ui/screen/map/map_screen.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_screen.dart';
 import 'package:food_gram_app/ui/screen/record/record_screen.dart';
@@ -23,6 +26,8 @@ class TabViewModel extends _$TabViewModel {
   TabState build({
     TabState initState = const TabState(),
   }) {
+    ref.read(admobInterstitialNotifierProvider).createAd();
+    ref.read(admobOpenNotifierProvider).loadAd();
     return initState;
   }
 
@@ -34,7 +39,44 @@ class TabViewModel extends _$TabViewModel {
     const SettingScreen(),
   ];
 
-  void onTap(int index) {
+  Future<void> onTap(int index) async {
+    if (index == state.selectedIndex) {
+      if (index == 1 || index == 3) {
+        final current = ref.read(scrollToTopForTabProvider);
+        ref.read(scrollToTopForTabProvider.notifier).state = (
+          tabIndex: index,
+          trigger: (current?.trigger ?? -1) + 1,
+        );
+      }
+      return;
+    }
+
+    void switchTab() => _switchToTab(index);
+
+    if (index == 2) {
+      final hasShownAd = await Preference().getBool(
+        PreferenceKey.recordTabInterstitialShown,
+      );
+      if (!hasShownAd) {
+        await Preference().setBool(PreferenceKey.recordTabInterstitialShown);
+        final adInterstitial = ref.read(admobInterstitialNotifierProvider);
+        adInterstitial.createAd();
+        await adInterstitial.showAd(onAdClosed: switchTab);
+        return;
+      }
+    }
+
+    final appOpen = ref.read(admobOpenNotifierProvider);
+    if (appOpen.registerTabOpenAndShouldShow(index)) {
+      appOpen.loadAd();
+      await appOpen.showAdIfAvailable(onAdClosed: switchTab);
+      return;
+    }
+
+    switchTab();
+  }
+
+  void _switchToTab(int index) {
     final analytics = ref.read(firebaseAnalyticsServiceProvider);
     switch (index) {
       case 0:

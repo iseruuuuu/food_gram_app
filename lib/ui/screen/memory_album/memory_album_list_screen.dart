@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/model/memory_album.dart';
 import 'package:food_gram_app/core/theme/memory_album_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
@@ -24,6 +26,15 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
     final t = Translations.of(context);
     final albumsAsync = ref.watch(memoryAlbumListViewModelProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final adInterstitial =
+        useMemoized(() => ref.read(admobInterstitialNotifierProvider));
+    useEffect(
+      () {
+        adInterstitial.createAd();
+        return;
+      },
+      [adInterstitial],
+    );
 
     Future<void> reload() async {
       await ref.read(memoryAlbumListViewModelProvider.notifier).reload();
@@ -205,14 +216,21 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
                         child: MemoryAlbumCard(
                           album: album,
                           onTap: () async {
-                            await context.pushNamed(
-                              RouterPath.memoryAlbumDetail,
-                              extra: album.id,
+                            await adInterstitial.showAd(
+                              onAdClosed: () async {
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                await context.pushNamed(
+                                  RouterPath.memoryAlbumDetail,
+                                  extra: album.id,
+                                );
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                await reload();
+                              },
                             );
-                            if (!context.mounted) {
-                              return;
-                            }
-                            await reload();
                           },
                           onDelete: () => showAlbumActions(album),
                         ),
