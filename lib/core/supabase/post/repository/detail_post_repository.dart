@@ -122,7 +122,8 @@ class DetailPostRepository extends _$DetailPostRepository {
             }
             if (foodEmojis != null) {
               final tag = m['food_tag'] as String? ?? '';
-              if (!foodEmojis.contains(tag)) {
+              final postTags = parseFoodTagIds(tag);
+              if (!postTags.any(foodEmojis.contains)) {
                 continue;
               }
             }

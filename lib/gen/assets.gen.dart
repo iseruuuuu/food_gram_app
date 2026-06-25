@@ -323,6 +323,25 @@ class $AssetsSplashGen {
   List<AssetGenImage> get values => [splashGif, splashPng, splashDark];
 }
 
+class $AssetsTagGen {
+  const $AssetsTagGen();
+
+  /// File path: assets/tag/soba.png
+  AssetGenImage get soba => const AssetGenImage('assets/tag/soba.png');
+
+  /// File path: assets/tag/tonkatsu.png
+  AssetGenImage get tonkatsu => const AssetGenImage('assets/tag/tonkatsu.png');
+
+  /// File path: assets/tag/udon.png
+  AssetGenImage get udon => const AssetGenImage('assets/tag/udon.png');
+
+  /// File path: assets/tag/yakisoba.png
+  AssetGenImage get yakisoba => const AssetGenImage('assets/tag/yakisoba.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [soba, tonkatsu, udon, yakisoba];
+}
+
 class $AssetsTrophyGen {
   const $AssetsTrophyGen();
 
@@ -360,6 +379,7 @@ class Assets {
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
   static const $AssetsMapGen map = $AssetsMapGen();
   static const $AssetsSplashGen splash = $AssetsSplashGen();
+  static const $AssetsTagGen tag = $AssetsTagGen();
   static const $AssetsTrophyGen trophy = $AssetsTrophyGen();
 }
 

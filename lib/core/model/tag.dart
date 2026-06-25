@@ -132,8 +132,14 @@ String getLocalizedCountryName(String emoji, BuildContext context) {
 }
 
 final Map<String, List<String>> foodCategory = {
-  '麺類': ['🍝', '🍜'],
-  '肉料理': ['🥩', '🍗', '🍖', '🥓'],
+  '麺類': [
+    '🍝',
+    '🍜',
+    'tag:udon',
+    'tag:soba',
+    'tag:yakisoba',
+  ],
+  '肉料理': ['🥩', '🍗', '🍖', '🥓', 'tag:tonkatsu'],
   '軽食系': ['🍔', '🍟', '🍕', '🥙', '🌯', '🍤', '🥟'],
   'ご飯物': ['🍲', '🍛', '🫕', '🍙', '🍚', '🍱', '🥘', '🍳'],
   '魚介類': ['🍣', '🐟', '🐙', '🦑', '🦐', '🦀', '🐚', '🦪', '🐡', '🦞', '🐳', '🦈'],
@@ -155,8 +161,19 @@ String getFoodName(String emoji) {
   return 'その他の食べ物';
 }
 
-String getLocalizedFoodName(String emoji, BuildContext context) {
+String getLocalizedFoodName(String tagId, BuildContext context) {
   final t = Translations.of(context);
+
+  final customFoodNameMap = {
+    'tag:udon': t.tag.udon,
+    'tag:soba': t.tag.soba,
+    'tag:yakisoba': t.tag.yakisoba,
+    'tag:tonkatsu': t.tag.tonkatsu,
+  };
+  final customName = customFoodNameMap[tagId];
+  if (customName != null) {
+    return customName;
+  }
 
   final foodNameMap = {
     '🍝': t.tag.pasta,
@@ -284,7 +301,16 @@ String getLocalizedFoodName(String emoji, BuildContext context) {
     '🧈': t.tag.butter,
   };
 
-  return foodNameMap[emoji] ?? t.tag.otherFood;
+  return foodNameMap[tagId] ?? t.tag.otherFood;
+}
+
+/// 投稿の foodTag 文字列をタグIDのリストに分解する
+List<String> parseFoodTagIds(String foodTag) {
+  return foodTag
+      .split(',')
+      .map((e) => e.trim())
+      .where((e) => e.isNotEmpty)
+      .toList();
 }
 
 String getLocalizedCategoryName(String categoryName, BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/model/food_tag_registry.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 
 class AppPinWidget extends StatelessWidget {
@@ -103,8 +104,9 @@ class AppFoodTagPinWidget extends StatelessWidget {
     if (foodTag.isEmpty) {
       return AppPinWidget(image: Assets.image.pinIcon.path);
     }
-    // foodTagから最初の絵文字を取得（カンマ区切りの場合）
+    // foodTagから最初のタグIDを取得（カンマ区切りの場合）
     final firstTag = foodTag.split(',').first.trim();
+    final customAssetPath = customFoodTagAssetPath(firstTag);
     return Container(
       width: 44,
       height: 58,
@@ -150,23 +152,35 @@ class AppFoodTagPinWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Center(
-                child: Text(
-                  firstTag,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black26,
-                        offset: Offset(0, 1),
-                        blurRadius: 2,
+              child: customAssetPath != null
+                  ? Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: ClipOval(
+                        child: Image.asset(
+                          customAssetPath,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
+                    )
+                  : Center(
+                      child: Text(
+                        firstTag,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black26,
+                              offset: Offset(0, 1),
+                              blurRadius: 2,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
             ),
           ),
           Positioned(
