@@ -82,27 +82,32 @@ class PostDetailScreen extends HookConsumerWidget {
       ),
     );
     final isInitialLoading = listState.isLoading;
-    final adInterstitial =
-        useMemoized(() => ref.read(admobInterstitialNotifierProvider));
-    useEffect(
-      () {
-        adInterstitial.createAd();
-        return;
-      },
-      [adInterstitial],
-    );
+    final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
+    final isClosing = useState(false);
 
     Future<void> closeDetail() async {
-      await adInterstitial.showAd(
-        onAdClosed: () {
-          if (context.mounted) {
-            context.pop();
-          }
-        },
-      );
+      if (isClosing.value ||
+          loading ||
+          menuLoading.value ||
+          isInitialLoading) {
+        return;
+      }
+      isClosing.value = true;
+      try {
+        await adInterstitial.showAd(
+          onAdClosed: () {
+            if (context.mounted) {
+              context.pop();
+            }
+          },
+        );
+      } finally {
+        isClosing.value = false;
+      }
     }
 
-    final canClose = !loading && !menuLoading.value && !isInitialLoading;
+    final canClose =
+        !loading && !menuLoading.value && !isInitialLoading && !isClosing.value;
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {

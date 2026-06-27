@@ -282,7 +282,6 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
                         childCount: sorted.length,
                       ),
                     ),
-                  const SliverGap(24),
                   const SliverGap(72),
                 ],
               );

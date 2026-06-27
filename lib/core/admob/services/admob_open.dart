@@ -20,12 +20,14 @@ class AdmobOpen {
   bool _isAdLoading = false;
   int _loadAttempts = 0;
   DateTime? _lastAdShowTime;
+  DateTime? _appOpenLoadTime;
   int _tabSwitchCount = 0;
   final logger = Logger();
   final bool isSubscribed;
 
   static const int maxLoadAttempts = 2;
   static const Duration adReadyTimeout = Duration(seconds: 5);
+  static const Duration maxCacheDuration = Duration(hours: 4);
 
   bool get isAdReady => _appOpenAd != null;
 
@@ -39,7 +41,9 @@ class AdmobOpen {
       _loadAttempts = 0;
     }
 
-    if (_appOpenAd != null || _isAdLoading || _loadAttempts >= maxLoadAttempts) {
+    if (_appOpenAd != null ||
+        _isAdLoading ||
+        _loadAttempts >= maxLoadAttempts) {
       return;
     }
 
@@ -74,7 +78,8 @@ class AdmobOpen {
       return false;
     }
     if (_appOpenAd != null) {
-      return true;
+      _discardExpiredAdIfNeeded();
+      return _appOpenAd != null;
     }
 
     loadAd(resetAttempts: resetAttempts);
@@ -137,6 +142,9 @@ class AdmobOpen {
       logger.d('App open ad skipped: already showing');
       return false;
     }
+
+    _discardExpiredAdIfNeeded();
+
     if (_appOpenAd == null) {
       logger.i('App open ad skipped: not loaded');
       return false;
@@ -157,6 +165,7 @@ class AdmobOpen {
     logger.d('App open ad loaded successfully');
     _appOpenAd?.dispose();
     _appOpenAd = ad;
+    _appOpenLoadTime = DateTime.now();
     _isAdLoading = false;
     _loadAttempts = 0;
   }
@@ -197,6 +206,19 @@ class AdmobOpen {
   void _disposeAd() {
     _appOpenAd?.dispose();
     _appOpenAd = null;
+    _appOpenLoadTime = null;
+  }
+
+  void _discardExpiredAdIfNeeded() {
+    if (_appOpenAd == null) {
+      return;
+    }
+    if (_appOpenLoadTime == null ||
+        DateTime.now().difference(_appOpenLoadTime!) > maxCacheDuration) {
+      logger.i('Discarding expired app open ad');
+      _disposeAd();
+      loadAd();
+    }
   }
 
   void dispose() {

@@ -26,6 +26,8 @@ class AdmobInterstitial {
   InterstitialAd? _interstitialAd;
   bool _isAdReady = false;
   bool _isAdLoading = false;
+  bool _isDisposed = false;
+  int _loadGeneration = 0;
   int _loadAttempts = 0;
   bool _isAdShowing = false;
   DateTime? _lastAdShowTime;
@@ -34,7 +36,7 @@ class AdmobInterstitial {
 
   /// 広告を作成して読み込む
   void createAd({bool resetAttempts = false}) {
-    if (isSubscribed) {
+    if (isSubscribed || _isDisposed) {
       return;
     }
     if (resetAttempts) {
@@ -44,18 +46,23 @@ class AdmobInterstitial {
       return;
     }
 
+    final loadGeneration = ++_loadGeneration;
     _isAdLoading = true;
     InterstitialAd.load(
       adUnitId: interstitialAdUnitId,
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: _onAdLoaded,
-        onAdFailedToLoad: _onAdFailedToLoad,
+        onAdLoaded: (ad) => _onAdLoaded(ad, loadGeneration),
+        onAdFailedToLoad: (error) => _onAdFailedToLoad(error, loadGeneration),
       ),
     );
   }
 
-  void _onAdLoaded(InterstitialAd ad) {
+  void _onAdLoaded(InterstitialAd ad, int loadGeneration) {
+    if (_isDisposed || loadGeneration != _loadGeneration) {
+      ad.dispose();
+      return;
+    }
     logger.d('Interstitial ad loaded successfully');
     _interstitialAd?.dispose();
     _interstitialAd = ad;
@@ -65,7 +72,10 @@ class AdmobInterstitial {
     onAdStateChanged?.call(isReady: true);
   }
 
-  void _onAdFailedToLoad(LoadAdError error) {
+  void _onAdFailedToLoad(LoadAdError error, int loadGeneration) {
+    if (_isDisposed || loadGeneration != _loadGeneration) {
+      return;
+    }
     logger.e('Interstitial ad failed to load: ${error.message}');
     _isAdLoading = false;
     _loadAttempts++;
@@ -82,25 +92,26 @@ class AdmobInterstitial {
     if (isSubscribed) {
       return false;
     }
-    if (_interstitialAd != null) {
+    if (_isAdReady && _interstitialAd != null) {
       return true;
     }
 
     createAd(resetAttempts: resetAttempts);
     final deadline = DateTime.now().add(timeout);
     while (DateTime.now().isBefore(deadline)) {
-      if (_interstitialAd != null) {
+      if (_isAdReady && _interstitialAd != null) {
         return true;
       }
       if (!_isAdLoading && _loadAttempts >= maxLoadAttempts) {
-        logger.i('Interstitial ad load aborted after $maxLoadAttempts attempts');
+        logger
+            .i('Interstitial ad load aborted after $maxLoadAttempts attempts');
         return false;
       }
       await Future<void>.delayed(const Duration(milliseconds: 100));
     }
 
     logger.i('Interstitial ad load timed out after ${timeout.inSeconds}s');
-    return _interstitialAd != null;
+    return _isAdReady && _interstitialAd != null;
   }
 
   /// 広告を表示する
@@ -138,7 +149,7 @@ class AdmobInterstitial {
     if (_isAdShowing) {
       return false;
     }
-    if (_interstitialAd == null) {
+    if (!_isAdReady || _interstitialAd == null) {
       logger.d('Interstitial ad is not ready yet');
       return false;
     }
@@ -206,6 +217,8 @@ class AdmobInterstitial {
   }
 
   void dispose() {
+    _loadGeneration++;
+    _isDisposed = true;
     _interstitialAd?.dispose();
     _interstitialAd = null;
     _isAdReady = false;
