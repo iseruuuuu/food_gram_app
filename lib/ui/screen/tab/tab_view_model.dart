@@ -22,6 +22,8 @@ final scrollToTopForTabProvider =
 
 @riverpod
 class TabViewModel extends _$TabViewModel {
+  bool _isHandlingTap = false;
+
   @override
   TabState build({
     TabState initState = const TabState(),
@@ -40,40 +42,51 @@ class TabViewModel extends _$TabViewModel {
   ];
 
   Future<void> onTap(int index) async {
-    if (index == state.selectedIndex) {
-      if (index == 1 || index == 3) {
-        final current = ref.read(scrollToTopForTabProvider);
-        ref.read(scrollToTopForTabProvider.notifier).state = (
-          tabIndex: index,
-          trigger: (current?.trigger ?? -1) + 1,
-        );
-      }
+    if (_isHandlingTap) {
       return;
     }
-
-    void switchTab() => _switchToTab(index);
-
-    if (index == 2) {
-      final hasShownAd = await Preference().getBool(
-        PreferenceKey.recordTabInterstitialShown,
-      );
-      if (!hasShownAd) {
-        await Preference().setBool(PreferenceKey.recordTabInterstitialShown);
-        final adInterstitial = ref.read(admobInterstitialNotifierProvider);
-        adInterstitial.createAd();
-        await adInterstitial.showAd(onAdClosed: switchTab);
+    _isHandlingTap = true;
+    try {
+      if (index == state.selectedIndex) {
+        if (index == 1 || index == 3) {
+          final current = ref.read(scrollToTopForTabProvider);
+          ref.read(scrollToTopForTabProvider.notifier).state = (
+            tabIndex: index,
+            trigger: (current?.trigger ?? -1) + 1,
+          );
+        }
         return;
       }
-    }
 
-    final appOpen = ref.read(admobOpenNotifierProvider);
-    if (appOpen.registerTabOpenAndShouldShow(index)) {
+      void switchTab() => _switchToTab(index);
+
+      final appOpen = ref.read(admobOpenNotifierProvider);
       appOpen.loadAd();
-      await appOpen.showAdIfAvailable(onAdClosed: switchTab);
-      return;
-    }
 
-    switchTab();
+      if (index == 2) {
+        final hasShownAd = await Preference().getBool(
+          PreferenceKey.recordTabInterstitialShown,
+        );
+        if (!hasShownAd) {
+          await Preference().setBool(PreferenceKey.recordTabInterstitialShown);
+          appOpen.registerTabSwitchAndShouldShow();
+          final adInterstitial = ref.read(admobInterstitialNotifierProvider);
+          adInterstitial.createAd();
+          await adInterstitial.showAd(onAdClosed: switchTab);
+          return;
+        }
+      }
+
+      if (appOpen.registerTabSwitchAndShouldShow()) {
+        await appOpen.ensureAdReady(resetAttempts: true);
+        await appOpen.showAdIfAvailable(onAdClosed: switchTab);
+        return;
+      }
+
+      switchTab();
+    } finally {
+      _isHandlingTap = false;
+    }
   }
 
   void _switchToTab(int index) {

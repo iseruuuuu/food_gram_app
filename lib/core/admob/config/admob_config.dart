@@ -49,8 +49,8 @@ String get appOpenAdUnitId {
 const Duration minInterstitialDuration = Duration(minutes: 3);
 const Duration minAppOpenDuration = Duration(minutes: 5);
 
-// タブを開いたときのアプリオープン広告（N回に1回）
-const tabOpenAdInterval = 10;
+// タブ切り替えN回ごとのアプリオープン広告
+const tabOpenAdInterval = 5;
 
 // テスト用広告IDを管理するクラス
 class _TestAdIds {
