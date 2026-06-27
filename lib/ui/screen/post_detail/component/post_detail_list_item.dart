@@ -49,6 +49,7 @@ class PostDetailListItem extends HookConsumerWidget {
     final isHearted = useState<bool>(false);
     final heartCount = useState<int>(posts.heart);
     final isStored = useState<bool?>(null);
+    final isOpeningSearch = useRef(false);
     // リスト再利用時も状態を保持
     useAutomaticKeepAlive();
     useEffect(
@@ -412,18 +413,28 @@ class PostDetailListItem extends HookConsumerWidget {
                         const Gap(4),
                         AppDetailElevatedButton(
                           onPressed: () async {
-                            final adInterstitial =
-                                ref.read(admobInterstitialNotifierProvider);
-                            adInterstitial.createAd();
-                            await adInterstitial.showAd(
-                              onAdClosed: () {
-                                ref
-                                    .read(
-                                      postDetailViewModelProvider().notifier,
-                                    )
-                                    .openUrl(posts.restaurant);
-                              },
-                            );
+                            if (isOpeningSearch.value) {
+                              return;
+                            }
+                            isOpeningSearch.value = true;
+                            try {
+                              final adInterstitial =
+                                  ref.read(admobInterstitialNotifierProvider);
+                              await adInterstitial.ensureAdReady(
+                                resetAttempts: true,
+                              );
+                              await adInterstitial.showAd(
+                                onAdClosed: () {
+                                  ref
+                                      .read(
+                                        postDetailViewModelProvider().notifier,
+                                      )
+                                      .openUrl(posts.restaurant);
+                                },
+                              );
+                            } finally {
+                              isOpeningSearch.value = false;
+                            }
                           },
                           title: t.detailMenu.search,
                           icon: Icons.search,

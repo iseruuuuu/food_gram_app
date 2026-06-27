@@ -49,5 +49,5 @@ class URL {
       'https://www.google.com/maps/search/?api=1&query=$restaurant';
 
   static String search(String restaurant) =>
-      'https://www.google.com/search?q=$restaurant';
+      'https://www.google.com/search?q=${Uri.encodeComponent(restaurant)}';
 }
