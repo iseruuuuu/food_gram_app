@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:food_gram_app/core/admob/config/admob_config.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
@@ -16,6 +18,7 @@ class AdmobInterstitial {
 
   final logger = Logger();
   static const int maxLoadAttempts = 2;
+  static const Duration adReadyTimeout = Duration(seconds: 5);
 
   final bool isSubscribed;
   final void Function({required bool isReady})? onAdStateChanged;
@@ -30,9 +33,12 @@ class AdmobInterstitial {
   bool get isAdReady => _isAdReady;
 
   /// 広告を作成して読み込む
-  void createAd() {
+  void createAd({bool resetAttempts = false}) {
     if (isSubscribed) {
       return;
+    }
+    if (resetAttempts) {
+      _loadAttempts = 0;
     }
     if (_isAdReady || _isAdLoading || _loadAttempts >= maxLoadAttempts) {
       return;
@@ -68,8 +74,40 @@ class AdmobInterstitial {
     }
   }
 
+  /// 表示可能になるまで広告の読み込みを待つ
+  Future<bool> ensureAdReady({
+    Duration timeout = adReadyTimeout,
+    bool resetAttempts = false,
+  }) async {
+    if (isSubscribed) {
+      return false;
+    }
+    if (_interstitialAd != null) {
+      return true;
+    }
+
+    createAd(resetAttempts: resetAttempts);
+    final deadline = DateTime.now().add(timeout);
+    while (DateTime.now().isBefore(deadline)) {
+      if (_interstitialAd != null) {
+        return true;
+      }
+      if (!_isAdLoading && _loadAttempts >= maxLoadAttempts) {
+        logger.i('Interstitial ad load aborted after $maxLoadAttempts attempts');
+        return false;
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+    }
+
+    logger.i('Interstitial ad load timed out after ${timeout.inSeconds}s');
+    return _interstitialAd != null;
+  }
+
   /// 広告を表示する
-  Future<void> showAd({VoidCallback? onAdClosed}) async {
+  Future<void> showAd({
+    VoidCallback? onAdClosed,
+    VoidCallback? onAdShown,
+  }) async {
     if (_isAdShowing) {
       logger.d('Interstitial ad is already showing');
       return;
@@ -89,7 +127,10 @@ class AdmobInterstitial {
       onAdClosed?.call();
     }
 
-    _setupFullScreenCallback(complete);
+    _setupFullScreenCallback(
+      onAdClosed: complete,
+      onAdShown: onAdShown,
+    );
     await _showAd(onShowFailed: complete);
   }
 
@@ -117,12 +158,16 @@ class AdmobInterstitial {
     return true;
   }
 
-  void _setupFullScreenCallback(VoidCallback onAdClosed) {
+  void _setupFullScreenCallback({
+    required VoidCallback onAdClosed,
+    VoidCallback? onAdShown,
+  }) {
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
         _isAdShowing = true;
         _lastAdShowTime = DateTime.now();
         logger.i('Ad displayed');
+        onAdShown?.call();
       },
       onAdDismissedFullScreenContent: (ad) {
         logger.i('Ad dismissed');

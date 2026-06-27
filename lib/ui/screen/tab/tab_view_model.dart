@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
-import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/ui/screen/map/map_screen.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_screen.dart';
 import 'package:food_gram_app/ui/screen/record/record_screen.dart';
@@ -28,7 +26,6 @@ class TabViewModel extends _$TabViewModel {
   TabState build({
     TabState initState = const TabState(),
   }) {
-    ref.read(admobInterstitialNotifierProvider).createAd();
     ref.read(admobOpenNotifierProvider).loadAd();
     return initState;
   }
@@ -62,20 +59,6 @@ class TabViewModel extends _$TabViewModel {
 
       final appOpen = ref.read(admobOpenNotifierProvider);
       appOpen.loadAd();
-
-      if (index == 2) {
-        final hasShownAd = await Preference().getBool(
-          PreferenceKey.recordTabInterstitialShown,
-        );
-        if (!hasShownAd) {
-          await Preference().setBool(PreferenceKey.recordTabInterstitialShown);
-          appOpen.registerTabSwitchAndShouldShow();
-          final adInterstitial = ref.read(admobInterstitialNotifierProvider);
-          adInterstitial.createAd();
-          await adInterstitial.showAd(onAdClosed: switchTab);
-          return;
-        }
-      }
 
       if (appOpen.registerTabSwitchAndShouldShow()) {
         await appOpen.ensureAdReady(resetAttempts: true);

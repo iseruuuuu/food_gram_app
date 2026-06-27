@@ -23,7 +23,6 @@ enum PreferenceKey {
   analyticsFirstCountryComplete,
   analyticsFirstPrefectureComplete,
   analyticsHighestPostMilestone,
-  recordTabInterstitialShown,
   memoryAlbums,
 }
 
