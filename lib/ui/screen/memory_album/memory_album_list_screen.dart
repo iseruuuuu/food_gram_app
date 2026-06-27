@@ -26,15 +26,8 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
     final t = Translations.of(context);
     final albumsAsync = ref.watch(memoryAlbumListViewModelProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final adInterstitial =
-        useMemoized(() => ref.read(admobInterstitialNotifierProvider));
-    useEffect(
-      () {
-        adInterstitial.createAd();
-        return;
-      },
-      [adInterstitial],
-    );
+    final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
+    final isOpeningAlbum = useRef(false);
 
     Future<void> reload() async {
       await ref.read(memoryAlbumListViewModelProvider.notifier).reload();
@@ -216,19 +209,27 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
                         child: MemoryAlbumCard(
                           album: album,
                           onTap: () async {
+                            if (isOpeningAlbum.value) {
+                              return;
+                            }
+                            isOpeningAlbum.value = true;
                             await adInterstitial.showAd(
                               onAdClosed: () async {
-                                if (!context.mounted) {
-                                  return;
+                                try {
+                                  if (!context.mounted) {
+                                    return;
+                                  }
+                                  await context.pushNamed(
+                                    RouterPath.memoryAlbumDetail,
+                                    extra: album.id,
+                                  );
+                                  if (!context.mounted) {
+                                    return;
+                                  }
+                                  await reload();
+                                } finally {
+                                  isOpeningAlbum.value = false;
                                 }
-                                await context.pushNamed(
-                                  RouterPath.memoryAlbumDetail,
-                                  extra: album.id,
-                                );
-                                if (!context.mounted) {
-                                  return;
-                                }
-                                await reload();
                               },
                             );
                           },

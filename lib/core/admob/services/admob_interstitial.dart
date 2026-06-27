@@ -70,6 +70,11 @@ class AdmobInterstitial {
 
   /// 広告を表示する
   Future<void> showAd({VoidCallback? onAdClosed}) async {
+    if (_isAdShowing) {
+      logger.d('Interstitial ad is already showing');
+      return;
+    }
+
     if (!_canShowAd()) {
       onAdClosed?.call();
       return;
@@ -115,19 +120,24 @@ class AdmobInterstitial {
   void _setupFullScreenCallback(VoidCallback onAdClosed) {
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
+        _isAdShowing = true;
         _lastAdShowTime = DateTime.now();
         logger.i('Ad displayed');
       },
       onAdDismissedFullScreenContent: (ad) {
         logger.i('Ad dismissed');
+        _isAdShowing = false;
         ad.dispose();
+        _interstitialAd = null;
         _isAdReady = false;
         createAd();
         onAdClosed();
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
         logger.e('Failed to show ad: $error');
+        _isAdShowing = false;
         ad.dispose();
+        _interstitialAd = null;
         _isAdReady = false;
         createAd();
         onAdClosed();
@@ -137,17 +147,16 @@ class AdmobInterstitial {
 
   Future<void> _showAd({required VoidCallback onShowFailed}) async {
     try {
-      _isAdShowing = true;
       await _interstitialAd!.show();
+      logger.d('Interstitial show() called');
     } on Object catch (e) {
+      _isAdShowing = false;
       logger.e('Error showing interstitial ad: $e');
       await _interstitialAd?.dispose();
       _interstitialAd = null;
       _isAdReady = false;
       createAd();
       onShowFailed();
-    } finally {
-      _isAdShowing = false;
     }
   }
 
@@ -161,7 +170,7 @@ class AdmobInterstitial {
 }
 
 /// インタースティシャル広告の状態を管理するプロバイダー
-@riverpod
+@Riverpod(keepAlive: true)
 class AdmobInterstitialNotifier extends _$AdmobInterstitialNotifier {
   AdmobInterstitial? _admobInterstitial;
 

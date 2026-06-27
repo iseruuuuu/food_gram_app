@@ -414,6 +414,7 @@ class PostDetailListItem extends HookConsumerWidget {
                           onPressed: () async {
                             final adInterstitial =
                                 ref.read(admobInterstitialNotifierProvider);
+                            adInterstitial.createAd();
                             await adInterstitial.showAd(
                               onAdClosed: () {
                                 ref
