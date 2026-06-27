@@ -1,6 +1,7 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/core/theme/memory_album_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
@@ -90,6 +91,12 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
           backgroundColor: isDark
               ? Theme.of(context).scaffoldBackgroundColor
               : MemoryAlbumTheme.creamBackground,
+          bottomNavigationBar: const SafeArea(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 8, top: 4),
+              child: AdmobBanner(id: 'memory_album_detail_footer'),
+            ),
+          ),
           body: postsAsync.when(
             loading: () => const Center(child: AppContentLoading()),
             error: (_, __) => AppErrorWidget(
@@ -275,7 +282,7 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
                         childCount: sorted.length,
                       ),
                     ),
-                  const SliverGap(24),
+                  const SliverGap(72),
                 ],
               );
             },

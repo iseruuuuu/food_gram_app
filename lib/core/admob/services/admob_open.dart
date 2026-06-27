@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:food_gram_app/core/admob/config/admob_config.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -6,7 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'admob_open.g.dart';
 
-/// アプリ起動時の広告を管理するクラス
+/// アプリオープン広告を管理するクラス
 class AdmobOpen {
   AdmobOpen({
     required this.isSubscribed,
@@ -14,86 +17,220 @@ class AdmobOpen {
 
   AppOpenAd? _appOpenAd;
   bool _isAdShowing = false;
+  bool _isAdLoading = false;
+  int _loadAttempts = 0;
+  DateTime? _lastAdShowTime;
+  DateTime? _appOpenLoadTime;
+  int _tabSwitchCount = 0;
   final logger = Logger();
   final bool isSubscribed;
 
+  static const int maxLoadAttempts = 2;
+  static const Duration adReadyTimeout = Duration(seconds: 5);
+  static const Duration maxCacheDuration = Duration(hours: 4);
+
+  bool get isAdReady => _appOpenAd != null;
+
   /// 広告を読み込む
-  void loadAd() {
+  void loadAd({bool resetAttempts = false}) {
     if (isSubscribed) {
       return;
     }
 
-    if (_appOpenAd != null) {
+    if (resetAttempts) {
+      _loadAttempts = 0;
+    }
+
+    if (_appOpenAd != null ||
+        _isAdLoading ||
+        _loadAttempts >= maxLoadAttempts) {
       return;
     }
 
+    _isAdLoading = true;
     AppOpenAd.load(
       adUnitId: appOpenAdUnitId,
       request: const AdRequest(),
       adLoadCallback: AppOpenAdLoadCallback(
         onAdLoaded: _onAdLoaded,
-        onAdFailedToLoad: (error) =>
-            logger.e('App open ad failed to load: $error'),
+        onAdFailedToLoad: _onAdFailedToLoad,
       ),
     );
   }
 
+  /// タブ切り替え回数を記録し、表示タイミングかどうかを返す
+  bool registerTabSwitchAndShouldShow() {
+    _tabSwitchCount++;
+    final shouldShow = _tabSwitchCount % tabOpenAdInterval == 0;
+    logger.d(
+      'Tab switch count: $_tabSwitchCount / interval: $tabOpenAdInterval, '
+      'shouldShow: $shouldShow',
+    );
+    return shouldShow;
+  }
+
+  /// 表示可能になるまで広告の読み込みを待つ
+  Future<bool> ensureAdReady({
+    Duration timeout = adReadyTimeout,
+    bool resetAttempts = false,
+  }) async {
+    if (isSubscribed) {
+      return false;
+    }
+    if (_appOpenAd != null) {
+      _discardExpiredAdIfNeeded();
+      return _appOpenAd != null;
+    }
+
+    loadAd(resetAttempts: resetAttempts);
+    final deadline = DateTime.now().add(timeout);
+    while (DateTime.now().isBefore(deadline)) {
+      if (_appOpenAd != null) {
+        return true;
+      }
+      if (!_isAdLoading && _loadAttempts >= maxLoadAttempts) {
+        logger.i('App open ad load aborted after $maxLoadAttempts attempts');
+        return false;
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+    }
+
+    logger.i('App open ad load timed out after ${timeout.inSeconds}s');
+    return _appOpenAd != null;
+  }
+
   /// 広告が利用可能な場合に表示する
-  Future<void> showAdIfAvailable() async {
-    if (_isAdShowing || _appOpenAd == null || isSubscribed) {
+  Future<void> showAdIfAvailable({VoidCallback? onAdClosed}) async {
+    if (_isAdShowing) {
+      logger.d('App open ad is already showing');
       return;
     }
 
-    try {
-      _isAdShowing = true;
-      await _appOpenAd?.show();
-      logger.d('App open ad show() called');
-    } on Exception catch (e) {
-      logger.e('Error showing app open ad: $e');
-      _isAdShowing = false;
-      _onAdClosed();
+    if (!_canShowAd()) {
+      onAdClosed?.call();
+      return;
     }
+
+    var didComplete = false;
+    void complete() {
+      if (didComplete) {
+        return;
+      }
+      didComplete = true;
+      onAdClosed?.call();
+    }
+
+    _setupFullScreenCallback(complete);
+    try {
+      await _appOpenAd!.show();
+      logger.d('App open ad show() called');
+    } on Object catch (e) {
+      _isAdShowing = false;
+      logger.e('Error showing app open ad: $e');
+      _disposeAd();
+      loadAd();
+      complete();
+    }
+  }
+
+  bool _canShowAd() {
+    if (isSubscribed) {
+      logger.d('App open ad skipped: subscribed');
+      return false;
+    }
+    if (_isAdShowing) {
+      logger.d('App open ad skipped: already showing');
+      return false;
+    }
+
+    _discardExpiredAdIfNeeded();
+
+    if (_appOpenAd == null) {
+      logger.i('App open ad skipped: not loaded');
+      return false;
+    }
+
+    if (_lastAdShowTime != null) {
+      final timeSinceLastAd = DateTime.now().difference(_lastAdShowTime!);
+      if (timeSinceLastAd < minAppOpenDuration) {
+        logger.i('Skipping app open ad due to minimum duration not met');
+        return false;
+      }
+    }
+
+    return true;
   }
 
   void _onAdLoaded(AppOpenAd ad) {
     logger.d('App open ad loaded successfully');
+    _appOpenAd?.dispose();
     _appOpenAd = ad;
-    _setupFullScreenCallback();
-    // 広告が読み込まれたら即座に表示を試みる
-    showAdIfAvailable();
+    _appOpenLoadTime = DateTime.now();
+    _isAdLoading = false;
+    _loadAttempts = 0;
   }
 
-  void _setupFullScreenCallback() {
+  void _onAdFailedToLoad(LoadAdError error) {
+    logger.e('App open ad failed to load: $error');
+    _isAdLoading = false;
+    _loadAttempts++;
+    if (_loadAttempts < maxLoadAttempts) {
+      loadAd();
+    }
+  }
+
+  void _setupFullScreenCallback(VoidCallback onAdClosed) {
     _appOpenAd?.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
+        _isAdShowing = true;
+        _lastAdShowTime = DateTime.now();
         logger.i('App open ad showed');
       },
       onAdDismissedFullScreenContent: (ad) {
+        _isAdShowing = false;
         logger.i('App open ad dismissed');
-        _onAdClosed();
+        _disposeAd();
+        loadAd();
+        onAdClosed();
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
+        _isAdShowing = false;
         logger.e('App open ad failed to show: $error');
-        _onAdClosed();
+        _disposeAd();
+        loadAd();
+        onAdClosed();
       },
     );
   }
 
-  void _onAdClosed() {
+  void _disposeAd() {
     _appOpenAd?.dispose();
     _appOpenAd = null;
-    _isAdShowing = false;
+    _appOpenLoadTime = null;
+  }
+
+  void _discardExpiredAdIfNeeded() {
+    if (_appOpenAd == null) {
+      return;
+    }
+    if (_appOpenLoadTime == null ||
+        DateTime.now().difference(_appOpenLoadTime!) > maxCacheDuration) {
+      logger.i('Discarding expired app open ad');
+      _disposeAd();
+      loadAd();
+    }
   }
 
   void dispose() {
-    _appOpenAd?.dispose();
-    _appOpenAd = null;
+    _disposeAd();
     _isAdShowing = false;
+    _isAdLoading = false;
+    _tabSwitchCount = 0;
   }
 }
 
-/// アプリ起動時の広告の状態を管理するプロバイダー
-@riverpod
+/// アプリオープン広告の状態を管理するプロバイダー
+@Riverpod(keepAlive: true)
 class AdmobOpenNotifier extends _$AdmobOpenNotifier {
   AdmobOpen? _admobOpen;
 
@@ -105,22 +242,18 @@ class AdmobOpenNotifier extends _$AdmobOpenNotifier {
 
     return subscriptionState.when(
       data: (isSubscribed) {
-        if (_admobOpen == null) {
-          _admobOpen = AdmobOpen(isSubscribed: isSubscribed);
-        } else {
-          // サブスクリプション状態が変更された場合、新しいインスタンスを作成
+        if (_admobOpen == null || _admobOpen!.isSubscribed != isSubscribed) {
           _admobOpen?.dispose();
           _admobOpen = AdmobOpen(isSubscribed: isSubscribed);
+          _admobOpen!.loadAd();
         }
         return _admobOpen!;
       },
       loading: () {
-        // ローディング中は広告を表示しない
         _admobOpen ??= AdmobOpen(isSubscribed: true);
         return _admobOpen!;
       },
       error: (_, __) {
-        // エラー時は広告を表示しない
         _admobOpen ??= AdmobOpen(isSubscribed: true);
         return _admobOpen!;
       },

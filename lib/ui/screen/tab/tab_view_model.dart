@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/ui/screen/map/map_screen.dart';
@@ -19,10 +20,13 @@ final scrollToTopForTabProvider =
 
 @riverpod
 class TabViewModel extends _$TabViewModel {
+  bool _isHandlingTap = false;
+
   @override
   TabState build({
     TabState initState = const TabState(),
   }) {
+    ref.read(admobOpenNotifierProvider).loadAd();
     return initState;
   }
 
@@ -34,7 +38,41 @@ class TabViewModel extends _$TabViewModel {
     const SettingScreen(),
   ];
 
-  void onTap(int index) {
+  Future<void> onTap(int index) async {
+    if (_isHandlingTap) {
+      return;
+    }
+    _isHandlingTap = true;
+    try {
+      if (index == state.selectedIndex) {
+        if (index == 1 || index == 3) {
+          final current = ref.read(scrollToTopForTabProvider);
+          ref.read(scrollToTopForTabProvider.notifier).state = (
+            tabIndex: index,
+            trigger: (current?.trigger ?? -1) + 1,
+          );
+        }
+        return;
+      }
+
+      void switchTab() => _switchToTab(index);
+
+      final appOpen = ref.read(admobOpenNotifierProvider);
+      appOpen.loadAd();
+
+      if (appOpen.registerTabSwitchAndShouldShow()) {
+        await appOpen.ensureAdReady(resetAttempts: true);
+        await appOpen.showAdIfAvailable(onAdClosed: switchTab);
+        return;
+      }
+
+      switchTab();
+    } finally {
+      _isHandlingTap = false;
+    }
+  }
+
+  void _switchToTab(int index) {
     final analytics = ref.read(firebaseAnalyticsServiceProvider);
     switch (index) {
       case 0:
