@@ -53,8 +53,7 @@ class MapScreen extends HookConsumerWidget {
     final isEarthStyle = useState(false);
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final pinTapCount = useRef(0);
-    final adInterstitial =
-        useMemoized(() => ref.read(admobInterstitialNotifierProvider));
+    final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
     final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
     final loading = ref.watch(loadingProvider);
     useEffect(
@@ -75,13 +74,6 @@ class MapScreen extends HookConsumerWidget {
         return null;
       },
       [],
-    );
-    useEffect(
-      () {
-        adInterstitial.createAd();
-        return;
-      },
-      [adInterstitial],
     );
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final fabBg = isDark ? Colors.black : Colors.white;
@@ -133,6 +125,7 @@ class MapScreen extends HookConsumerWidget {
                             );
                           }
 
+                          adInterstitial.createAd();
                           pinTapCount.value++;
                           if (pinTapCount.value >= mapPinTapAdInterval) {
                             pinTapCount.value = 0;

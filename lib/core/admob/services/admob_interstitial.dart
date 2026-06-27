@@ -22,6 +22,7 @@ class AdmobInterstitial {
 
   InterstitialAd? _interstitialAd;
   bool _isAdReady = false;
+  bool _isAdLoading = false;
   int _loadAttempts = 0;
   bool _isAdShowing = false;
   DateTime? _lastAdShowTime;
@@ -33,10 +34,11 @@ class AdmobInterstitial {
     if (isSubscribed) {
       return;
     }
-    if (_isAdReady || _loadAttempts >= maxLoadAttempts) {
+    if (_isAdReady || _isAdLoading || _loadAttempts >= maxLoadAttempts) {
       return;
     }
 
+    _isAdLoading = true;
     InterstitialAd.load(
       adUnitId: interstitialAdUnitId,
       request: const AdRequest(),
@@ -49,14 +51,17 @@ class AdmobInterstitial {
 
   void _onAdLoaded(InterstitialAd ad) {
     logger.d('Interstitial ad loaded successfully');
+    _interstitialAd?.dispose();
     _interstitialAd = ad;
     _isAdReady = true;
+    _isAdLoading = false;
     _loadAttempts = 0;
     onAdStateChanged?.call(isReady: true);
   }
 
   void _onAdFailedToLoad(LoadAdError error) {
     logger.e('Interstitial ad failed to load: ${error.message}');
+    _isAdLoading = false;
     _loadAttempts++;
     if (_loadAttempts < maxLoadAttempts) {
       createAd();
@@ -84,8 +89,11 @@ class AdmobInterstitial {
   }
 
   bool _canShowAd() {
-    if (_isAdShowing || _interstitialAd == null) {
-      logger.e('Attempted to show ad before it was ready');
+    if (_isAdShowing) {
+      return false;
+    }
+    if (_interstitialAd == null) {
+      logger.d('Interstitial ad is not ready yet');
       return false;
     }
 
@@ -147,6 +155,7 @@ class AdmobInterstitial {
     _interstitialAd?.dispose();
     _interstitialAd = null;
     _isAdReady = false;
+    _isAdLoading = false;
     _isAdShowing = false;
   }
 }
@@ -164,11 +173,8 @@ class AdmobInterstitialNotifier extends _$AdmobInterstitialNotifier {
 
     return subscriptionState.when(
       data: (isSubscribed) {
-        if (_admobInterstitial == null) {
-          _admobInterstitial = AdmobInterstitial(isSubscribed: isSubscribed);
-          _admobInterstitial!.createAd();
-        } else {
-          // サブスクリプション状態が変更された場合、新しいインスタンスを作成
+        if (_admobInterstitial == null ||
+            _admobInterstitial!.isSubscribed != isSubscribed) {
           _admobInterstitial?.dispose();
           _admobInterstitial = AdmobInterstitial(isSubscribed: isSubscribed);
           _admobInterstitial!.createAd();
