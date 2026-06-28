@@ -289,6 +289,8 @@
     "description1": "Une erreur de connexion s'est produite.",
     "description2": "Vérifiez votre connexion réseau et réessayez.",
     "refreshButton": "Recharger",
+    "networkUnstable": "La connexion réseau est instable.",
+    "reconnectButton": "Reconnecter",
     "message": "Des erreurs se sont produites",
     "routerErrorTitle": "Erreur de routage",
     "routerErrorMessage": "Erreur : Données de route invalides",
