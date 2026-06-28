@@ -36,7 +36,7 @@ class AppTabError extends StatelessWidget {
     this.compact = false,
   }) : type = TabLoadingType.myPage;
 
-  static AppTabError forType({
+  factory AppTabError.forType({
     required TabLoadingType type,
     required VoidCallback onRetry,
     bool compact = false,

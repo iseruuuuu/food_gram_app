@@ -8,9 +8,9 @@ import 'package:food_gram_app/core/supabase/post/repository/fetch_post_repositor
 import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
 import 'package:food_gram_app/core/theme/style/profile_style.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
-import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/screen/profile/components/profile_header.dart';
 import 'package:food_gram_app/ui/screen/profile/user_profile/user_profile_view_model.dart';
 import 'package:go_router/go_router.dart';

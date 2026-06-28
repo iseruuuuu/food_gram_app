@@ -11,7 +11,6 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
-import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/component/dialog/memory_album_dialog.dart';
 import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_card.dart';
 import 'package:food_gram_app/ui/screen/memory_album/memory_album_view_model.dart';
