@@ -31,8 +31,20 @@ class AdmobInterstitial {
   int _loadAttempts = 0;
   bool _isAdShowing = false;
   DateTime? _lastAdShowTime;
+  int _postDetailCloseCount = 0;
 
   bool get isAdReady => _isAdReady;
+
+  /// 投稿詳細を閉じた回数を記録し、表示タイミングかどうかを返す
+  bool registerPostDetailCloseAndShouldShow() {
+    _postDetailCloseCount++;
+    final shouldShow = _postDetailCloseCount % postDetailCloseAdInterval == 0;
+    logger.d(
+      'Post detail close count: $_postDetailCloseCount / '
+      'interval: $postDetailCloseAdInterval, shouldShow: $shouldShow',
+    );
+    return shouldShow;
+  }
 
   /// 広告を作成して読み込む
   void createAd({bool resetAttempts = false}) {

@@ -94,13 +94,18 @@ class PostDetailScreen extends HookConsumerWidget {
       }
       isClosing.value = true;
       try {
-        await adInterstitial.showAd(
-          onAdClosed: () {
-            if (context.mounted) {
-              context.pop();
-            }
-          },
-        );
+        void popDetail() {
+          if (context.mounted) {
+            context.pop();
+          }
+        }
+
+        if (adInterstitial.registerPostDetailCloseAndShouldShow()) {
+          await adInterstitial.ensureAdReady(resetAttempts: true);
+          await adInterstitial.showAd(onAdClosed: popDetail);
+        } else {
+          popDetail();
+        }
       } finally {
         isClosing.value = false;
       }

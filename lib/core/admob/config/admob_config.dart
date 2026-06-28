@@ -52,6 +52,9 @@ const Duration minAppOpenDuration = Duration(minutes: 5);
 // タブ切り替えN回ごとのアプリオープン広告
 const tabOpenAdInterval = 5;
 
+// 投稿詳細を閉じるN回ごとのインタースティシャル広告
+const postDetailCloseAdInterval = 3;
+
 // テスト用広告IDを管理するクラス
 class _TestAdIds {
   const _TestAdIds({
