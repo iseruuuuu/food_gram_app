@@ -10,6 +10,7 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
+import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -67,6 +68,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
       ),
       body: AsyncValueSwitcher(
         asyncValue: reviewsAsync,
+        errorType: TabLoadingType.food,
         onErrorTap: () async => ref.refresh(
           restaurantReviewsProvider(
             lat: posts.lat,

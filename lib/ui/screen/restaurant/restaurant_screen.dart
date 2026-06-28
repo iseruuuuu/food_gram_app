@@ -8,6 +8,7 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
+import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -90,6 +91,7 @@ class RestaurantScreen extends HookConsumerWidget {
                   ? const AppSearchEmpty()
                   : AsyncValueSwitcher(
                       asyncValue: isKakao.value ? kakaoRestaurant : restaurant,
+                      errorType: TabLoadingType.map,
                       onErrorTap: () {
                         ref.invalidate(
                           googleRestaurantRepositoryProvider(keyword.value),
