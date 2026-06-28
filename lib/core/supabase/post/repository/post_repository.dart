@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
+import 'package:food_gram_app/core/utils/post/post_submit_cancellation.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -36,6 +37,7 @@ class PostRepository extends _$PostRepository {
     required bool isAnonymous,
     double? priceAmount,
     String? priceCurrency,
+    PostSubmitCancellation? cancellation,
   }) async {
     try {
       final result = await _postService.createPost(
@@ -51,8 +53,9 @@ class PostRepository extends _$PostRepository {
         isAnonymous: isAnonymous,
         priceAmount: priceAmount,
         priceCurrency: priceCurrency,
+        cancellation: cancellation,
       );
-      if (result is Success) {
+      if (result is Success && !(cancellation?.isCancelled ?? false)) {
         // キャッシュの無効化
         _cacheManager.invalidatePostsCache();
         if (_currentUserId != null) {

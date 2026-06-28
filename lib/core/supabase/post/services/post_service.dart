@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/utils/post/post_submit_cancellation.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -41,16 +42,30 @@ class PostService extends _$PostService {
     required bool isAnonymous,
     double? priceAmount,
     String? priceCurrency,
+    PostSubmitCancellation? cancellation,
   }) async {
+    Future<Result<void, Exception>> cancelAndRollback(
+      List<String> uploadedPaths,
+    ) async {
+      await _removeUploadedImages(uploadedPaths);
+      return const Failure(PostSubmitCancelledException());
+    }
+
     try {
       final uid = _currentUserId;
       if (uid == null || uid.isEmpty) {
         logger.e('createPost: no current user (not signed in?)');
         return Failure(Exception('Not signed in'));
       }
+      if (cancellation?.isCancelled ?? false) {
+        return const Failure(PostSubmitCancelledException());
+      }
       // 複数画像をアップロード
       final imagePaths = <String>[];
       for (final uploadImage in uploadImages) {
+        if (cancellation?.isCancelled ?? false) {
+          return cancelAndRollback(imagePaths);
+        }
         final fileName = uploadImage.split('/').last;
         // 先頭 `/` は付けない（DB・getPublicUrl とオブジェクトキーを一致させる）
         final imagePath = '$uid/$fileName';
@@ -65,6 +80,9 @@ class PostService extends _$PostService {
                 ),
               );
           imagePaths.add(imagePath);
+          if (cancellation?.isCancelled ?? false) {
+            return cancelAndRollback(imagePaths);
+          }
         }
       }
       if (imagePaths.isEmpty) {
@@ -96,6 +114,10 @@ class PostService extends _$PostService {
         post['price_currency'] = priceCurrency ?? 'JPY';
       }
 
+      if (cancellation?.isCancelled ?? false) {
+        return cancelAndRollback(imagePaths);
+      }
+
       // 投稿の insert は Edge Function 経由で行う
       final res = await supabase.functions.invoke(
         'post-create',
@@ -103,6 +125,12 @@ class PostService extends _$PostService {
       );
       final data = res.data;
       final ok = data is Map<String, dynamic> && data['ok'] == true;
+      if (cancellation?.isCancelled ?? false) {
+        if (!ok) {
+          return cancelAndRollback(imagePaths);
+        }
+        return const Failure(PostSubmitCancelledException());
+      }
       if (!ok) {
         final errorMsg = data is Map<String, dynamic>
             ? (data['error']?.toString() ?? 'status: ${res.status}')
@@ -118,6 +146,17 @@ class PostService extends _$PostService {
     } on Exception catch (e) {
       logger.e('Failed to create post: $e');
       return Failure(e);
+    }
+  }
+
+  Future<void> _removeUploadedImages(List<String> imagePaths) async {
+    if (imagePaths.isEmpty) {
+      return;
+    }
+    try {
+      await supabase.storage.from('food').remove(imagePaths);
+    } on StorageException catch (e) {
+      logger.e('Failed to rollback uploaded images: ${e.message}');
     }
   }
 

@@ -578,10 +578,17 @@ class PostScreen extends HookConsumerWidget {
                           } else {
                             final latestStatus =
                                 ref.read(postViewModelProvider()).status;
+                            final isNetworkError =
+                                latestStatus == PostStatus.networkError.name;
                             SnackBarHelper().openErrorSnackBar(
                               context,
-                              t.post.error,
-                              _getLocalizedStatus(context, latestStatus),
+                              isNetworkError ? t.error.title : t.post.error,
+                              isNetworkError
+                                  ? t.error.description2
+                                  : _getLocalizedStatus(
+                                      context,
+                                      latestStatus,
+                                    ),
                             );
                           }
                         },
@@ -624,6 +631,8 @@ class PostScreen extends HookConsumerWidget {
         return t.post.errorPickImage;
       case PostStatus.error:
         return t.post.error;
+      case PostStatus.networkError:
+        return t.error.description2;
       case PostStatus.photoSuccess:
         return t.post.photoSuccess;
       case PostStatus.cameraPermission:
