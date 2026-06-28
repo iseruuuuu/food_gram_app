@@ -289,6 +289,8 @@
     "description1": "Ocorreu um erro de conexão.",
     "description2": "Verifique sua conexão de rede e tente novamente.",
     "refreshButton": "Recarregar",
+    "networkUnstable": "A conexão de rede está instável.",
+    "reconnectButton": "Reconectar",
     "message": "Ocorreram erros",
     "routerErrorTitle": "Erro de rota",
     "routerErrorMessage": "Erro: Dados de rota inválidos",

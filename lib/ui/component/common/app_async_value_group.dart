@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
+import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 
 class AsyncValueSwitcher<T> extends StatelessWidget {
   const AsyncValueSwitcher({
@@ -11,6 +12,7 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
     super.key,
     this.onError,
     this.onLoading,
+    this.errorType = TabLoadingType.food,
     this.skipLoadingOnReload = true,
     this.skipLoadingOnRefresh = true,
     this.skipError = false,
@@ -21,6 +23,7 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
   final Widget Function(T data) onData;
   final Widget? onLoading;
   final Widget Function(Object, StackTrace)? onError;
+  final TabLoadingType errorType;
   final bool skipLoadingOnReload;
   final bool skipLoadingOnRefresh;
   final bool skipError;
@@ -41,9 +44,11 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
         ),
         error: (e, s) => KeyedSubtree(
           key: const ValueKey('onError'),
-          child: AppErrorWidget(
-            onTap: onErrorTap,
-          ),
+          child: onError?.call(e, s) ??
+              AppTabError.forType(
+                type: errorType,
+                onRetry: onErrorTap,
+              ),
         ),
         loading: () => KeyedSubtree(
           key: const ValueKey('onLoading'),

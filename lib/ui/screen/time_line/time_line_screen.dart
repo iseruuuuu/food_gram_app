@@ -7,8 +7,8 @@ import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.d
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
-import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
+import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dart';
 import 'package:food_gram_app/ui/screen/time_line/components/timeline_category_tab_bar.dart';
@@ -102,9 +102,10 @@ class TimeLineScreen extends HookConsumerWidget {
                 hasScrollBody: false,
                 child: AppTabLoading.food(),
               ),
-              error: (_, __) => SliverToBoxAdapter(
-                child: AppErrorWidget(
-                  onTap: () =>
+              error: (_, __) => SliverFillRemaining(
+                hasScrollBody: false,
+                child: AppTabError.food(
+                  onRetry: () =>
                       ref.refresh(postsStreamProvider(selectedCategoryName)),
                 ),
               ),

@@ -90,6 +90,7 @@ class MapScreen extends HookConsumerWidget {
           AsyncValueSwitcher(
             asyncValue: AsyncValueGroup.group2(location, mapService),
             onLoading: const AppTabLoading.map(),
+            errorType: TabLoadingType.map,
             onErrorTap: () {
               ref
                 ..invalidate(locationProvider)
