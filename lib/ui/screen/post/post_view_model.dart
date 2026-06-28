@@ -14,6 +14,7 @@ import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:food_gram_app/core/utils/image/upload_image_bytes.dart';
 import 'package:food_gram_app/core/utils/location/image_gps_reader.dart';
 import 'package:food_gram_app/core/utils/location/post_price_currency_from_location.dart';
+import 'package:food_gram_app/core/utils/post/post_submit_cancellation.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/vision/food_image_labeler.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -29,6 +30,7 @@ part 'post_view_model.g.dart';
 @riverpod
 class PostViewModel extends _$PostViewModel {
   static const defaultRestaurantText = '場所を追加';
+  static const _postSubmitTimeout = Duration(seconds: 20);
   final _logger = Logger();
   final _picker = ImagePicker();
   final _foodLabeler = FoodImageLabeler();
@@ -43,6 +45,8 @@ class PostViewModel extends _$PostViewModel {
   bool _priceCurrencyManuallySet = false;
   bool _disposed = false;
   int _currencyAutoDetectSeq = 0;
+  int _activePostSubmitId = 0;
+  PostSubmitCancellation? _postSubmitCancellation;
   TextEditingController get foodController => _foodController;
   TextEditingController get commentController => _commentController;
   TextEditingController get priceController => _priceController;
@@ -74,6 +78,8 @@ class PostViewModel extends _$PostViewModel {
       _imageBytesMap.clear();
       _imageGpsByPath.clear();
       _currencyAutoDetectSeq++;
+      _postSubmitCancellation?.cancel();
+      _postSubmitCancellation = null;
     });
   }
 
@@ -83,32 +89,73 @@ class PostViewModel extends _$PostViewModel {
     Locale? locale,
   }) async {
     primaryFocus?.unfocus();
+    _postSubmitCancellation?.cancel();
+    final submitId = ++_activePostSubmitId;
+    final cancellation = PostSubmitCancellation();
+    _postSubmitCancellation = cancellation;
+    bool isActiveSubmit() => !_disposed && submitId == _activePostSubmitId;
     loading.state = true;
     state = state.copyWith(status: PostStatus.loading.name);
-    if (_isPostMissing()) {
-      loading.state = false;
+    try {
+      if (_isPostMissing()) {
+        return false;
+      }
+      final currency = state.priceCurrency.isEmpty
+          ? defaultPostPriceCurrencyForLocale()
+          : state.priceCurrency;
+      final parsed = parsePostPriceInput(
+        rawAmount: _priceController.text,
+        currencyCode: currency,
+        locale: locale,
+      );
+      if (parsed.isInvalid) {
+        state = state.copyWith(status: PostStatus.invalidPrice.name);
+        return false;
+      }
+      await _submitPost(
+        foodTag,
+        parsed,
+        submitId: submitId,
+        cancellation: cancellation,
+      ).timeout(
+        _postSubmitTimeout,
+        onTimeout: () {
+          cancellation.cancel();
+          throw TimeoutException('createPost', _postSubmitTimeout);
+        },
+      );
+      if (!isActiveSubmit()) {
+        return false;
+      }
+      if (state.isSuccess) {
+        _imageBytesMap.clear();
+        _imageGpsByPath.clear();
+      }
+      return state.isSuccess;
+    } on TimeoutException catch (e, st) {
+      cancellation.cancel();
+      if (!isActiveSubmit()) {
+        return false;
+      }
+      _logger.e('Post timed out: $e\n$st');
+      unawaited(
+        ref
+            .read(firebaseAnalyticsServiceProvider)
+            .logPostFailed(reason: 'timeout'),
+      );
+      state = state.copyWith(
+        status: PostStatus.networkError.name,
+        isSuccess: false,
+      );
       return false;
+    } finally {
+      if (isActiveSubmit()) {
+        if (_postSubmitCancellation == cancellation) {
+          _postSubmitCancellation = null;
+        }
+        loading.state = false;
+      }
     }
-    final currency = state.priceCurrency.isEmpty
-        ? defaultPostPriceCurrencyForLocale()
-        : state.priceCurrency;
-    final parsed = parsePostPriceInput(
-      rawAmount: _priceController.text,
-      currencyCode: currency,
-      locale: locale,
-    );
-    if (parsed.isInvalid) {
-      loading.state = false;
-      state = state.copyWith(status: PostStatus.invalidPrice.name);
-      return false;
-    }
-    await _submitPost(foodTag, parsed);
-    if (state.isSuccess) {
-      _imageBytesMap.clear();
-      _imageGpsByPath.clear();
-    }
-    loading.state = false;
-    return state.isSuccess;
   }
 
   bool _isPostMissing() {
@@ -129,8 +176,12 @@ class PostViewModel extends _$PostViewModel {
 
   Future<void> _submitPost(
     String foodTag,
-    PostPriceParseResult priceParse,
-  ) async {
+    PostPriceParseResult priceParse, {
+    required int submitId,
+    required PostSubmitCancellation cancellation,
+  }) async {
+    bool isActiveSubmit() => !_disposed && submitId == _activePostSubmitId;
+
     final result = await ref.read(postRepositoryProvider.notifier).createPost(
           foodName: foodController.text,
           comment: commentController.text,
@@ -144,9 +195,13 @@ class PostViewModel extends _$PostViewModel {
           isAnonymous: state.isAnonymous,
           priceAmount: priceParse.isEmpty ? null : priceParse.amount,
           priceCurrency: priceParse.isEmpty ? null : priceParse.currency,
+          cancellation: cancellation,
         );
     await result.when(
       success: (_) async {
+        if (!isActiveSubmit()) {
+          return;
+        }
         final fromDraft = _restoredFromDraft;
         _restoredFromDraft = false;
         await _preference.clearPostDraft();
@@ -154,6 +209,10 @@ class PostViewModel extends _$PostViewModel {
           status: PostStatus.success.name,
           isSuccess: true,
         );
+        if (cancellation.isCancelled) {
+          _imageBytesMap.clear();
+          _imageGpsByPath.clear();
+        }
         final hasComment = commentController.text.trim().isNotEmpty;
         final hasRestaurant = state.restaurant != defaultRestaurantText &&
             state.restaurant != '不明';
@@ -166,6 +225,12 @@ class PostViewModel extends _$PostViewModel {
         );
       },
       failure: (error) {
+        if (!isActiveSubmit()) {
+          return;
+        }
+        if (cancellation.isCancelled || error is PostSubmitCancelledException) {
+          return;
+        }
         unawaited(
           ref
               .read(firebaseAnalyticsServiceProvider)
@@ -512,6 +577,7 @@ class PostViewModel extends _$PostViewModel {
 
 enum PostStatus {
   error,
+  networkError,
   photoSuccess,
   cameraPermission,
   albumPermission,
