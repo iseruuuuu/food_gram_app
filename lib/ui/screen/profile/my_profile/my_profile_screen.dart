@@ -80,6 +80,7 @@ class MyProfileScreen extends HookConsumerWidget {
             body: AsyncValueSwitcher(
               asyncValue: postList,
               onLoading: const AppTabLoading.myPage(),
+              errorType: TabLoadingType.myPage,
               skipError: true,
               onErrorTap: () {
                 ref
