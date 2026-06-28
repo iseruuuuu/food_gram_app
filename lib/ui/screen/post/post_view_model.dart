@@ -45,6 +45,7 @@ class PostViewModel extends _$PostViewModel {
   bool _priceCurrencyManuallySet = false;
   bool _disposed = false;
   int _currencyAutoDetectSeq = 0;
+  int _activePostSubmitId = 0;
   PostSubmitCancellation? _postSubmitCancellation;
   TextEditingController get foodController => _foodController;
   TextEditingController get commentController => _commentController;
@@ -89,8 +90,10 @@ class PostViewModel extends _$PostViewModel {
   }) async {
     primaryFocus?.unfocus();
     _postSubmitCancellation?.cancel();
+    final submitId = ++_activePostSubmitId;
     final cancellation = PostSubmitCancellation();
     _postSubmitCancellation = cancellation;
+    bool isActiveSubmit() => !_disposed && submitId == _activePostSubmitId;
     loading.state = true;
     state = state.copyWith(status: PostStatus.loading.name);
     try {
@@ -112,6 +115,7 @@ class PostViewModel extends _$PostViewModel {
       await _submitPost(
         foodTag,
         parsed,
+        submitId: submitId,
         cancellation: cancellation,
       ).timeout(
         _postSubmitTimeout,
@@ -120,7 +124,7 @@ class PostViewModel extends _$PostViewModel {
           throw TimeoutException('createPost', _postSubmitTimeout);
         },
       );
-      if (cancellation.isCancelled) {
+      if (!isActiveSubmit()) {
         return false;
       }
       if (state.isSuccess) {
@@ -130,6 +134,9 @@ class PostViewModel extends _$PostViewModel {
       return state.isSuccess;
     } on TimeoutException catch (e, st) {
       cancellation.cancel();
+      if (!isActiveSubmit()) {
+        return false;
+      }
       _logger.e('Post timed out: $e\n$st');
       unawaited(
         ref
@@ -142,10 +149,12 @@ class PostViewModel extends _$PostViewModel {
       );
       return false;
     } finally {
-      if (_postSubmitCancellation == cancellation) {
-        _postSubmitCancellation = null;
+      if (isActiveSubmit()) {
+        if (_postSubmitCancellation == cancellation) {
+          _postSubmitCancellation = null;
+        }
+        loading.state = false;
       }
-      loading.state = false;
     }
   }
 
@@ -168,8 +177,11 @@ class PostViewModel extends _$PostViewModel {
   Future<void> _submitPost(
     String foodTag,
     PostPriceParseResult priceParse, {
+    required int submitId,
     required PostSubmitCancellation cancellation,
   }) async {
+    bool isActiveSubmit() => !_disposed && submitId == _activePostSubmitId;
+
     final result = await ref.read(postRepositoryProvider.notifier).createPost(
           foodName: foodController.text,
           comment: commentController.text,
@@ -185,12 +197,9 @@ class PostViewModel extends _$PostViewModel {
           priceCurrency: priceParse.isEmpty ? null : priceParse.currency,
           cancellation: cancellation,
         );
-    if (cancellation.isCancelled) {
-      return;
-    }
     await result.when(
       success: (_) async {
-        if (cancellation.isCancelled) {
+        if (!isActiveSubmit()) {
           return;
         }
         final fromDraft = _restoredFromDraft;
@@ -200,6 +209,10 @@ class PostViewModel extends _$PostViewModel {
           status: PostStatus.success.name,
           isSuccess: true,
         );
+        if (cancellation.isCancelled) {
+          _imageBytesMap.clear();
+          _imageGpsByPath.clear();
+        }
         final hasComment = commentController.text.trim().isNotEmpty;
         final hasRestaurant = state.restaurant != defaultRestaurantText &&
             state.restaurant != '不明';
@@ -212,6 +225,9 @@ class PostViewModel extends _$PostViewModel {
         );
       },
       failure: (error) {
+        if (!isActiveSubmit()) {
+          return;
+        }
         if (cancellation.isCancelled || error is PostSubmitCancelledException) {
           return;
         }

@@ -125,13 +125,10 @@ class PostService extends _$PostService {
       );
       final data = res.data;
       final ok = data is Map<String, dynamic> && data['ok'] == true;
-      if (cancellation?.isCancelled ?? false) {
-        if (!ok) {
+      if (!ok) {
+        if (cancellation?.isCancelled ?? false) {
           return cancelAndRollback(imagePaths);
         }
-        return const Failure(PostSubmitCancelledException());
-      }
-      if (!ok) {
         final errorMsg = data is Map<String, dynamic>
             ? (data['error']?.toString() ?? 'status: ${res.status}')
             : 'status: ${res.status}';
@@ -139,6 +136,7 @@ class PostService extends _$PostService {
         return Failure(Exception(errorMsg));
       }
 
+      // post-create が成功した時点で投稿は確定。タイムアウト後でも成功として扱う。
       return const Success(null);
     } on StorageException catch (e) {
       logger.e('Failed to upload images: ${e.message}');

@@ -55,7 +55,7 @@ class PostRepository extends _$PostRepository {
         priceCurrency: priceCurrency,
         cancellation: cancellation,
       );
-      if (result is Success && !(cancellation?.isCancelled ?? false)) {
+      if (result is Success) {
         // キャッシュの無効化
         _cacheManager.invalidatePostsCache();
         if (_currentUserId != null) {
