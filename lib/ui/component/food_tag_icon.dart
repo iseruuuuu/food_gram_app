@@ -6,26 +6,50 @@ class FoodTagIcon extends StatelessWidget {
   const FoodTagIcon({
     required this.tagId,
     this.size = 24,
+    this.textStyle,
+    this.fit = BoxFit.contain,
+    this.clipOval = false,
+    this.imagePadding,
+    this.expandToFill = false,
+    this.centerText = false,
     super.key,
   });
 
   final String tagId;
   final double size;
+  final TextStyle? textStyle;
+  final BoxFit fit;
+  final bool clipOval;
+  final EdgeInsetsGeometry? imagePadding;
+  final bool expandToFill;
+  final bool centerText;
 
   @override
   Widget build(BuildContext context) {
     final assetPath = customFoodTagAssetPath(tagId);
     if (assetPath != null) {
-      return Image.asset(
+      Widget image = Image.asset(
         assetPath,
-        width: size,
-        height: size,
-        fit: BoxFit.contain,
+        width: expandToFill ? null : size,
+        height: expandToFill ? null : size,
+        fit: fit,
       );
+      if (expandToFill) {
+        image = SizedBox.expand(child: image);
+      }
+      if (imagePadding != null) {
+        image = Padding(padding: imagePadding!, child: image);
+      }
+      if (clipOval) {
+        image = ClipOval(child: image);
+      }
+      return image;
     }
-    return Text(
+
+    final text = Text(
       tagId,
-      style: TextStyle(fontSize: size * 0.75),
+      style: textStyle ?? TextStyle(fontSize: size * 0.75),
     );
+    return centerText ? Center(child: text) : text;
   }
 }
