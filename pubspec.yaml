@@ -2,7 +2,7 @@ name: food_gram_app
 description: A new Flutter project.
 publish_to: 'none'
 
-version: 1.43.0+78
+version: 1.44.0+79
 
 environment:
   sdk: '>=3.1.5 <4.0.0'
