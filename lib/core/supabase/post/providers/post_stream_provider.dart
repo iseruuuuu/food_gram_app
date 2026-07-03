@@ -70,16 +70,18 @@ Stream<List<Posts>> postsStream(
         final filtered =
             mapped.where((post) => !blockList.contains(post.userId)).toList();
         if (categoryName.isNotEmpty) {
-          final foodEmojis = foodCategory[categoryName];
-          if (foodEmojis == null) {
+          final categoryTagIds = foodCategory[categoryName];
+          if (categoryTagIds == null) {
             _postsStreamLog.w(
               'Unknown category passed to postsStream: "$categoryName". '
               'No posts will match.',
             );
           }
-          final emojis = foodEmojis ?? <String>[];
-          final result =
-              filtered.where((post) => emojis.contains(post.foodTag)).toList();
+          final tagIds = categoryTagIds ?? <String>[];
+          final result = filtered.where((post) {
+            final postTags = parseFoodTagIds(post.foodTag);
+            return postTags.any(tagIds.contains);
+          }).toList();
           return result;
         }
         return filtered;

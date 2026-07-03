@@ -19,17 +19,13 @@ final filteredMapPostsProvider = Provider<AsyncValue<List<Posts>>>((ref) {
 });
 
 bool _postMatchesCategory(Posts post, String selectedCategory) {
-  final categoryEmojis = foodCategory[selectedCategory];
-  if (categoryEmojis == null || categoryEmojis.isEmpty) {
+  final categoryTagIds = foodCategory[selectedCategory];
+  if (categoryTagIds == null || categoryTagIds.isEmpty) {
     return false;
   }
-  if (post.foodTag.trim().isEmpty) {
-    return false;
-  }
-  final tags =
-      post.foodTag.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty);
+  final tags = parseFoodTagIds(post.foodTag);
   for (final tag in tags) {
-    if (categoryEmojis.contains(tag)) {
+    if (categoryTagIds.contains(tag)) {
       return true;
     }
   }

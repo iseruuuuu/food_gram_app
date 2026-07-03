@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/ui/component/food_tag_icon.dart';
 
 class AppPinWidget extends StatelessWidget {
   const AppPinWidget({
@@ -103,7 +104,7 @@ class AppFoodTagPinWidget extends StatelessWidget {
     if (foodTag.isEmpty) {
       return AppPinWidget(image: Assets.image.pinIcon.path);
     }
-    // foodTagから最初の絵文字を取得（カンマ区切りの場合）
+    // foodTagから最初のタグIDを取得（カンマ区切りの場合）
     final firstTag = foodTag.split(',').first.trim();
     return Container(
       width: 44,
@@ -150,21 +151,25 @@ class AppFoodTagPinWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Center(
-                child: Text(
-                  firstTag,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black26,
-                        offset: Offset(0, 1),
-                        blurRadius: 2,
-                      ),
-                    ],
-                  ),
+              child: FoodTagIcon(
+                tagId: firstTag,
+                size: 40,
+                fit: BoxFit.cover,
+                clipOval: true,
+                expandToFill: true,
+                centerText: true,
+                imagePadding: const EdgeInsets.all(4),
+                textStyle: const TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black26,
+                      offset: Offset(0, 1),
+                      blurRadius: 2,
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -4,6 +4,7 @@ import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/search_utils.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/component/food_tag_icon.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -217,13 +218,13 @@ class AppFoodTag extends HookWidget {
                                       spacing: 8,
                                       runSpacing: 8,
                                       children: entry.value.map((food) {
-                                        final emoji = food;
+                                        final tagId = food;
                                         final text = getLocalizedFoodName(
                                           food,
                                           context,
                                         );
                                         final isSelected =
-                                            selectedTags.value.contains(emoji);
+                                            selectedTags.value.contains(tagId);
                                         return GestureDetector(
                                           onTap: () {
                                             final newSelectedTags = <String>[
@@ -233,10 +234,10 @@ class AppFoodTag extends HookWidget {
                                               ...selectedTexts.value,
                                             ];
                                             if (isSelected) {
-                                              newSelectedTags.remove(emoji);
+                                              newSelectedTags.remove(tagId);
                                               newSelectedTexts.remove(text);
                                             } else {
-                                              newSelectedTags.add(emoji);
+                                              newSelectedTags.add(tagId);
                                               newSelectedTexts.add(text);
                                             }
                                             selectedTags.value =
@@ -266,11 +267,9 @@ class AppFoodTag extends HookWidget {
                                             child: Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                Text(
-                                                  emoji,
-                                                  style: const TextStyle(
-                                                    fontSize: 16,
-                                                  ),
+                                                FoodTagIcon(
+                                                  tagId: tagId,
+                                                  size: 20,
                                                 ),
                                                 const Gap(4),
                                                 Text(
@@ -356,12 +355,9 @@ class AppFoodTag extends HookWidget {
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text(
-                                          foodTags.first,
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: scheme.onSurface,
-                                          ),
+                                        FoodTagIcon(
+                                          tagId: foodTags.first,
+                                          size: 22,
                                         ),
                                         const Gap(2),
                                         Text(
@@ -400,12 +396,9 @@ class AppFoodTag extends HookWidget {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Text(
-                                            foodTags[1],
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: scheme.onSurface,
-                                            ),
+                                          FoodTagIcon(
+                                            tagId: foodTags[1],
+                                            size: 22,
                                           ),
                                           const Gap(2),
                                           Text(

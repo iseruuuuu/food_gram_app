@@ -20,6 +20,7 @@ import 'package:food_gram_app/ui/component/app_elevated_button.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/app_translatable_text.dart';
 import 'package:food_gram_app/ui/component/dialog/app_share_dialog.dart';
+import 'package:food_gram_app/ui/component/food_tag_icon.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/save_album_picker_sheet.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
 import 'package:gap/gap.dart';
@@ -552,7 +553,7 @@ class PostDetailListItem extends HookConsumerWidget {
                       spacing: 10,
                       children: [
                         if (posts.foodTag.isNotEmpty)
-                          ...posts.foodTag.split(',').map(
+                          ...parseFoodTagIds(posts.foodTag).map(
                                 (tag) => Chip(
                                   backgroundColor:
                                       Theme.of(context).colorScheme.surface,
@@ -560,9 +561,9 @@ class PostDetailListItem extends HookConsumerWidget {
                                   label: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Text(
-                                        tag,
-                                        style: const TextStyle(fontSize: 24),
+                                      FoodTagIcon(
+                                        tagId: tag,
+                                        size: 28,
                                       ),
                                       const Gap(8),
                                       Text(
