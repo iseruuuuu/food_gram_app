@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
+import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
+import 'package:food_gram_app/core/admob/services/admob_rectangle_banner.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/post_deail_list_mode.dart';
 import 'package:food_gram_app/core/model/posts.dart';
@@ -78,8 +82,45 @@ class PostDetailScreen extends HookConsumerWidget {
       ),
     );
     final isInitialLoading = listState.isLoading;
+    final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
+    final isClosing = useState(false);
+
+    Future<void> closeDetail() async {
+      if (isClosing.value ||
+          loading ||
+          menuLoading.value ||
+          isInitialLoading) {
+        return;
+      }
+      isClosing.value = true;
+      try {
+        void popDetail() {
+          if (context.mounted) {
+            context.pop();
+          }
+        }
+
+        if (adInterstitial.registerPostDetailCloseAndShouldShow()) {
+          await adInterstitial.ensureAdReady(resetAttempts: true);
+          await adInterstitial.showAd(onAdClosed: popDetail);
+        } else {
+          popDetail();
+        }
+      } finally {
+        isClosing.value = false;
+      }
+    }
+
+    final canClose =
+        !loading && !menuLoading.value && !isInitialLoading && !isClosing.value;
     return PopScope(
-      canPop: !(loading || isInitialLoading),
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop || !canClose) {
+          return;
+        }
+        unawaited(closeDetail());
+      },
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: !(loading || isInitialLoading),
@@ -92,7 +133,7 @@ class PostDetailScreen extends HookConsumerWidget {
           leading: loading || menuLoading.value || isInitialLoading
               ? const SizedBox.shrink()
               : GestureDetector(
-                  onTap: () => context.pop(),
+                  onTap: closeDetail,
                   child: Icon(
                     Icons.close,
                     size: 30,
@@ -165,27 +206,36 @@ class PostDetailScreen extends HookConsumerWidget {
                 error: (error, stack) => const Center(
                   child: Text('エラーが発生しました'),
                 ),
-                data: (posts) => ListView.builder(
-                  controller: scrollController,
-                  key: PageStorageKey('post_detail_list_${memoizedPosts.id}'),
-                  restorationId: 'post_detail_list_${memoizedPosts.id}',
-                  cacheExtent: 2000,
-                  itemCount: posts.length,
-                  itemBuilder: (context, index) {
-                    final post = posts[index];
-                    return PostDetailListItem(
-                      key: ValueKey('post_${post.id}'),
-                      posts: post,
-                      menuLoading: menuLoading,
-                      onHeartLimitReached: () {
-                        SnackBarHelper().openWarningSnackBar(
-                          context,
-                          t.heartLimitMessage,
-                        );
-                      },
-                    );
-                  },
-                ),
+                data: (posts) {
+                  const adInterval = 2;
+                  final itemCount = posts.length + (posts.length ~/ adInterval);
+                  return ListView.builder(
+                    controller: scrollController,
+                    key: PageStorageKey('post_detail_list_${memoizedPosts.id}'),
+                    restorationId: 'post_detail_list_${memoizedPosts.id}',
+                    cacheExtent: 2000,
+                    itemCount: itemCount,
+                    itemBuilder: (context, index) {
+                      final isAdRow = (index + 1) % (adInterval + 1) == 0;
+                      if (isAdRow) {
+                        return RectangleBanner(id: 'detail_feed_$index');
+                      }
+                      final postIndex = index - (index ~/ (adInterval + 1));
+                      final post = posts[postIndex];
+                      return PostDetailListItem(
+                        key: ValueKey('post_${post.id}'),
+                        posts: post,
+                        menuLoading: menuLoading,
+                        onHeartLimitReached: () {
+                          SnackBarHelper().openWarningSnackBar(
+                            context,
+                            t.heartLimitMessage,
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
               ),
               AppHeart(isHeart: detailState.isAppearHeart),
               AppProcessLoading(

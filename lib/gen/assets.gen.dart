@@ -112,6 +112,22 @@ class $AssetsImageGen {
   /// File path: assets/image/error.png
   AssetGenImage get error => const AssetGenImage('assets/image/error.png');
 
+  /// File path: assets/image/error_food.png
+  AssetGenImage get errorFood =>
+      const AssetGenImage('assets/image/error_food.png');
+
+  /// File path: assets/image/error_map.png
+  AssetGenImage get errorMap =>
+      const AssetGenImage('assets/image/error_map.png');
+
+  /// File path: assets/image/error_mypage.png
+  AssetGenImage get errorMypage =>
+      const AssetGenImage('assets/image/error_mypage.png');
+
+  /// File path: assets/image/error_record.png
+  AssetGenImage get errorRecord =>
+      const AssetGenImage('assets/image/error_record.png');
+
   /// File path: assets/image/food.png
   AssetGenImage get food => const AssetGenImage('assets/image/food.png');
 
@@ -192,6 +208,10 @@ class $AssetsImageGen {
         empty,
         emptyDark,
         error,
+        errorFood,
+        errorMap,
+        errorMypage,
+        errorRecord,
         food,
         foodgramer,
         frame,

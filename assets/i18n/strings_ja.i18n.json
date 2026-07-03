@@ -289,6 +289,8 @@
     "description1": "接続エラーが発生しました",
     "description2": "ネットワーク接続を確認し、もう一度試してください",
     "refreshButton": "再読み込み",
+    "networkUnstable": "ネットワークの状況が不安定です",
+    "reconnectButton": "再接続する",
     "message": "エラーが発生しました",
     "routerErrorTitle": "ルートエラー",
     "routerErrorMessage": "Error: 不正なルートデータ",

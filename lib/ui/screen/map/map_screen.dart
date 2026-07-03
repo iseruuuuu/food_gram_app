@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/admob/services/admob_open.dart';
+import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
@@ -37,6 +36,7 @@ import 'package:maplibre_gl/maplibre_gl.dart';
 
 // 日本の中心付近の座標
 const defaultLocation = LatLng(36.2048, 137.9777);
+const mapPinTapAdInterval = 5;
 
 class MapScreen extends HookConsumerWidget {
   const MapScreen({super.key});
@@ -52,7 +52,8 @@ class MapScreen extends HookConsumerWidget {
     );
     final isEarthStyle = useState(false);
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
-    final adLoadAttempted = useRef(false);
+    final pinTapCount = useRef(0);
+    final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
     final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
     final loading = ref.watch(loadingProvider);
     useEffect(
@@ -74,20 +75,6 @@ class MapScreen extends HookConsumerWidget {
       },
       [],
     );
-    useEffect(
-      () {
-        if (adLoadAttempted.value) {
-          return null;
-        }
-        adLoadAttempted.value = true;
-        final value = math.Random().nextInt(8);
-        if (value == 0) {
-          ref.read(admobOpenNotifierProvider).loadAd();
-        }
-        return null;
-      },
-      [],
-    );
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final fabBg = isDark ? Colors.black : Colors.white;
     const fabFg = AppTheme.primaryBlue;
@@ -103,6 +90,7 @@ class MapScreen extends HookConsumerWidget {
           AsyncValueSwitcher(
             asyncValue: AsyncValueGroup.group2(location, mapService),
             onLoading: const AppTabLoading.map(),
+            errorType: TabLoadingType.map,
             onErrorTap: () {
               ref
                 ..invalidate(locationProvider)
@@ -128,12 +116,26 @@ class MapScreen extends HookConsumerWidget {
                               .read(firebaseAnalyticsServiceProvider)
                               .logMapPinTap(source: 'map');
                           final first = posts.first;
-                          ref.read(mapModalSelectionProvider.notifier).state =
-                              MapModalSelection(
-                            name: first.restaurant,
-                            lat: first.lat,
-                            lng: first.lng,
-                          );
+                          void openStoreSheet() {
+                            ref
+                                .read(mapModalSelectionProvider.notifier)
+                                .state = MapModalSelection(
+                              name: first.restaurant,
+                              lat: first.lat,
+                              lng: first.lng,
+                            );
+                          }
+
+                          adInterstitial.createAd();
+                          pinTapCount.value++;
+                          if (pinTapCount.value >= mapPinTapAdInterval) {
+                            pinTapCount.value = 0;
+                            await adInterstitial.showAd(
+                              onAdClosed: openStoreSheet,
+                            );
+                          } else {
+                            openStoreSheet();
+                          }
                         },
                         iconSize: _calculateIconSize(context),
                         initialCenter: initialCenter,

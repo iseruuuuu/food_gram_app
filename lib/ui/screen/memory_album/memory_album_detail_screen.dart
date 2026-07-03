@@ -1,6 +1,7 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/core/theme/memory_album_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
@@ -8,8 +9,8 @@ import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/memory_album_utils.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/component/common/app_error_widget.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/dialog/memory_album_dialog.dart';
 import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_detail_header.dart';
 import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_post_tile.dart';
@@ -44,8 +45,8 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
             onPressed: () => context.pop(),
           ),
         ),
-        body: AppErrorWidget(
-          onTap: () => ref
+        body: AppTabError.myPage(
+          onRetry: () => ref
               .read(memoryAlbumDetailViewModelProvider(albumId).notifier)
               .reload(),
         ),
@@ -90,10 +91,16 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
           backgroundColor: isDark
               ? Theme.of(context).scaffoldBackgroundColor
               : MemoryAlbumTheme.creamBackground,
+          bottomNavigationBar: const SafeArea(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 8, top: 4),
+              child: AdmobBanner(id: 'memory_album_detail_footer'),
+            ),
+          ),
           body: postsAsync.when(
             loading: () => const Center(child: AppContentLoading()),
-            error: (_, __) => AppErrorWidget(
-              onTap: () =>
+            error: (_, __) => AppTabError.myPage(
+              onRetry: () =>
                   ref.invalidate(memoryAlbumPostsProvider(album.postIdsKey)),
             ),
             data: (posts) {
@@ -275,7 +282,7 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
                         childCount: sorted.length,
                       ),
                     ),
-                  const SliverGap(24),
+                  const SliverGap(72),
                 ],
               );
             },

@@ -289,6 +289,8 @@
     "description1": "Ein Verbindungsfehler ist aufgetreten.",
     "description2": "Überprüfen Sie Ihre Netzwerkverbindung und versuchen Sie es erneut.",
     "refreshButton": "Neu laden",
+    "networkUnstable": "Die Netzwerkverbindung ist instabil.",
+    "reconnectButton": "Erneut verbinden",
     "message": "Fehler sind aufgetreten",
     "routerErrorTitle": "Routenfehler",
     "routerErrorMessage": "Fehler: Ungültige Routendaten",

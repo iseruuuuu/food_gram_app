@@ -32,6 +32,7 @@ class RecordScreen extends ConsumerWidget {
           AsyncValueSwitcher(
             asyncValue: AsyncValueGroup.group2(location, mapService),
             onLoading: const AppTabLoading.record(),
+            errorType: TabLoadingType.record,
             onErrorTap: () {
               ref
                 ..invalidate(locationProvider)

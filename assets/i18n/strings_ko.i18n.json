@@ -289,6 +289,8 @@
     "description1": "연결 오류가 발생했습니다.",
     "description2": "네트워크 연결을 확인하고 다시 시도해 주세요.",
     "refreshButton": "새로고침",
+    "networkUnstable": "네트워크 상태가 불안정합니다.",
+    "reconnectButton": "다시 연결",
     "message": "오류가 발생했습니다",
     "routerErrorTitle": "경로 오류",
     "routerErrorMessage": "오류: 잘못된 경로 데이터",
