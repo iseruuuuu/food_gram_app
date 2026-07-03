@@ -154,7 +154,6 @@ class AppMapStatsShareDialog extends HookConsumerWidget {
                             foregroundColor: overlayBtnFg,
                           ),
                           onPressed: () async {
-                            loading.value = true;
                             final vt = selectedType.value;
                             ref
                                 .read(firebaseAnalyticsServiceProvider)
@@ -174,10 +173,16 @@ class AppMapStatsShareDialog extends HookConsumerWidget {
                             final widget = buildShareWidget(vt);
                             final shareText = shareMessageFor(vt);
                             await ShareHelpers().captureAndShare(
+                              context: context,
                               widget: widget,
                               shareText: shareText,
                               loading: loading,
                               hasText: true,
+                              targetSize: const Size(
+                                AppMapStatsShareComposition.compositionWidth,
+                                AppMapStatsShareComposition.compositionHeight,
+                              ),
+                              errorMessage: t.error.message,
                             );
                           },
                           child: Row(
@@ -211,7 +216,6 @@ class AppMapStatsShareDialog extends HookConsumerWidget {
                             foregroundColor: overlayBtnFg,
                           ),
                           onPressed: () async {
-                            loading.value = true;
                             final vt = selectedType.value;
                             ref
                                 .read(firebaseAnalyticsServiceProvider)
@@ -230,9 +234,15 @@ class AppMapStatsShareDialog extends HookConsumerWidget {
                             );
                             final widget = buildShareWidget(vt);
                             await ShareHelpers().captureAndShare(
+                              context: context,
                               widget: widget,
                               loading: loading,
                               hasText: false,
+                              targetSize: const Size(
+                                AppMapStatsShareComposition.compositionWidth,
+                                AppMapStatsShareComposition.compositionHeight,
+                              ),
+                              errorMessage: t.error.message,
                             );
                           },
                           child: Row(
