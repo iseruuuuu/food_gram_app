@@ -57,6 +57,14 @@ class PostSharePreviewView extends HookConsumerWidget {
     Future<void> share({required bool hasText}) async {
       await adInterstitial.showAd(
         onAdClosed: () async {
+          if (!context.mounted) {
+            return;
+          }
+          // 広告閉鎖直後は iOS でシェアシートが出せないことがあるため少し待つ
+          await Future<void>.delayed(const Duration(milliseconds: 350));
+          if (!context.mounted) {
+            return;
+          }
           unawaited(
             ref.read(firebaseAnalyticsServiceProvider).logPostShare(
                   posts.id,
@@ -70,10 +78,13 @@ class PostSharePreviewView extends HookConsumerWidget {
             parameters: {AnalyticsParam.postId: posts.id},
           );
           await ShareHelpers().captureAndShare(
+            context: context,
             widget: template.builder(posts, ref, t),
             shareText: shareText,
             loading: loading,
             hasText: hasText,
+            targetSize: template.size,
+            errorMessage: t.error.message,
           );
         },
       );
