@@ -31,6 +31,7 @@ class PostShareImage extends StatelessWidget {
       fit: BoxFit.cover,
       width: double.infinity,
       height: double.infinity,
+      filterQuality: FilterQuality.high,
       placeholder: (_, __) => _fallback(),
       errorWidget: (_, __, ___) => _fallback(),
     );

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:path_provider/path_provider.dart';
@@ -50,14 +51,27 @@ class ShareHelpers {
     required String errorMessage,
     String? shareText,
     Size? targetSize,
+    double? pixelRatio,
+    String? precacheImageUrl,
   }) async {
     try {
       loading.value = true;
+      if (precacheImageUrl != null && context.mounted) {
+        try {
+          await precacheImage(
+            CachedNetworkImageProvider(precacheImageUrl),
+            context,
+          );
+        } on Object {
+          // プリロード失敗時もキャプチャは続行する
+        }
+      }
       final screenshotController = ScreenshotController();
       final screenshotBytes = await screenshotController.captureFromWidget(
         widget,
         context: context,
         targetSize: targetSize,
+        pixelRatio: pixelRatio,
         delay: const Duration(milliseconds: 500),
       );
 

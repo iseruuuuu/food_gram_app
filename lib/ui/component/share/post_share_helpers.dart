@@ -4,6 +4,9 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+/// シェア画像キャプチャ時の device pixel ratio（例: 360pt → 1080px）
+const double kPostShareCapturePixelRatio = 3;
+
 String postShareImageUrl(WidgetRef ref, Posts posts) {
   final supabase = ref.watch(supabaseProvider);
   return supabase.storage.from('food').getPublicUrl(posts.firstFoodImage);
