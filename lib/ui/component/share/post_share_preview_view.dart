@@ -10,6 +10,7 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/share/post_share_helpers.dart';
 import 'package:food_gram_app/ui/component/share/post_share_template.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -84,6 +85,8 @@ class PostSharePreviewView extends HookConsumerWidget {
             loading: loading,
             hasText: hasText,
             targetSize: template.size,
+            pixelRatio: kPostShareCapturePixelRatio,
+            precacheImageUrl: postShareImageUrl(ref, posts),
             errorMessage: t.error.message,
           );
         },
