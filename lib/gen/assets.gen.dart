@@ -44,6 +44,18 @@ class $AssetsGifGen {
   AssetGenImage get profileDetail =>
       const AssetGenImage('assets/gif/profile_detail.gif');
 
+  /// File path: assets/gif/record_dog.gif
+  AssetGenImage get recordDog =>
+      const AssetGenImage('assets/gif/record_dog.gif');
+
+  /// File path: assets/gif/record_footprints.gif
+  AssetGenImage get recordFootprints =>
+      const AssetGenImage('assets/gif/record_footprints.gif');
+
+  /// File path: assets/gif/record_nopost.gif
+  AssetGenImage get recordNopost =>
+      const AssetGenImage('assets/gif/record_nopost.gif');
+
   /// File path: assets/gif/tutorial1.gif
   AssetGenImage get tutorial1 =>
       const AssetGenImage('assets/gif/tutorial1.gif');
@@ -59,6 +71,9 @@ class $AssetsGifGen {
         myProfile,
         postSuccess,
         profileDetail,
+        recordDog,
+        recordFootprints,
+        recordNopost,
         tutorial1
       ];
 }

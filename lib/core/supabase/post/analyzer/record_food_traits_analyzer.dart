@@ -47,6 +47,139 @@ int recordActivityDaysSpan(List<Posts> source) {
   return sorted.last.createdAt.difference(sorted.first.createdAt).inDays;
 }
 
+/// 投稿の座標から訪れた都道府県数を数える（記録タブ詳細の統計用）。
+/// 地図を開かなくても正しい件数を表示できるよう、posts から直接算出する。
+int recordVisitedPrefecturesCount(List<Posts> posts) {
+  final prefectures = <String>{};
+  for (final post in posts) {
+    if (post.lat == 0 || post.lng == 0) {
+      continue;
+    }
+    final prefecture = PrefectureDetector.detectPrefecture(post.lat, post.lng);
+    if (prefecture != null && prefecture.isNotEmpty) {
+      prefectures.add(prefecture);
+    }
+  }
+  return prefectures.length;
+}
+
+/// 投稿の座標から訪れた国数を数える（記録タブ詳細の統計用）。
+int recordVisitedCountriesCount(List<Posts> posts) {
+  final countries = <String>{};
+  for (final post in posts) {
+    if (post.lat == 0 || post.lng == 0) {
+      continue;
+    }
+    final country = CountryDetector.detectCountry(post.lat, post.lng);
+    if (country != null && country != 'その他') {
+      countries.add(country);
+    }
+  }
+  return countries.length;
+}
+
+/// 今年はじめて訪れたお店の数（記録タブのハイライト表示用）
+int recordNewShopsThisYear(List<Posts> posts) {
+  if (posts.isEmpty) {
+    return 0;
+  }
+  final year = DateTime.now().year;
+  final firstSeen = <String, DateTime>{};
+  for (final post in posts) {
+    final shop = post.restaurant.trim();
+    if (shop.isEmpty) {
+      continue;
+    }
+    final current = firstSeen[shop];
+    if (current == null || post.createdAt.isBefore(current)) {
+      firstSeen[shop] = post.createdAt;
+    }
+  }
+  return firstSeen.values.where((date) => date.year == year).length;
+}
+
+/// 連続して記録した最長の日数（記録タブのハイライト表示用）
+int recordLongestDailyStreak(List<Posts> posts) {
+  if (posts.isEmpty) {
+    return 0;
+  }
+  final days = posts
+      .map(
+        (p) =>
+            DateTime.utc(p.createdAt.year, p.createdAt.month, p.createdAt.day),
+      )
+      .toSet()
+      .toList()
+    ..sort();
+  var longest = 1;
+  var current = 1;
+  for (var i = 1; i < days.length; i++) {
+    final diff = days[i].difference(days[i - 1]).inDays;
+    if (diff == 1) {
+      current++;
+      if (current > longest) {
+        longest = current;
+      }
+    } else if (diff > 1) {
+      current = 1;
+    }
+  }
+  return longest;
+}
+
+/// 先月と比べた今月の投稿数の増加率（%）。先月が0件の場合はnull。
+int? recordMonthlyGrowthPercent(List<Posts> posts) {
+  final now = DateTime.now();
+  final thisMonth = DateTime(now.year, now.month);
+  final lastMonth = DateTime(now.year, now.month - 1);
+  var thisCount = 0;
+  var lastCount = 0;
+  for (final post in posts) {
+    final d = post.createdAt;
+    if (d.year == thisMonth.year && d.month == thisMonth.month) {
+      thisCount++;
+    } else if (d.year == lastMonth.year && d.month == lastMonth.month) {
+      lastCount++;
+    }
+  }
+  if (lastCount == 0) {
+    return null;
+  }
+  return (((thisCount - lastCount) / lastCount) * 100).round();
+}
+
+/// 今月の投稿数（記録タブのサブ指標表示用）
+int recordPostsThisMonth(List<Posts> posts) {
+  final now = DateTime.now();
+  return posts
+      .where(
+        (p) => p.createdAt.year == now.year && p.createdAt.month == now.month,
+      )
+      .length;
+}
+
+/// 今月はじめて訪れたお店の数（記録タブのサブ指標表示用）
+int recordNewShopsThisMonth(List<Posts> posts) {
+  if (posts.isEmpty) {
+    return 0;
+  }
+  final now = DateTime.now();
+  final firstSeen = <String, DateTime>{};
+  for (final post in posts) {
+    final shop = post.restaurant.trim();
+    if (shop.isEmpty) {
+      continue;
+    }
+    final current = firstSeen[shop];
+    if (current == null || post.createdAt.isBefore(current)) {
+      firstSeen[shop] = post.createdAt;
+    }
+  }
+  return firstSeen.values
+      .where((date) => date.year == now.year && date.month == now.month)
+      .length;
+}
+
 RecordFoodTraitsSummary analyzeRecordFoodTraits(List<Posts> posts) {
   final areaCounts = <String, int>{};
   final genreCounts = <String, int>{};
@@ -145,6 +278,10 @@ RecordFoodTraitsSummary analyzeRecordFoodTraits(List<Posts> posts) {
   final ratio = ((firstVisitCount / validRestaurantPosts) * 100).round();
   return (ratio, firstVisitCount);
 }
+
+/// 投稿の緯度経度から都道府県名（日本）または国コードを返す。
+/// 記録タブのカード表示などで利用する公開ヘルパー。
+String? recordPostAreaLabel(Posts post) => _areaFor(post);
 
 String? _areaFor(Posts post) {
   if (post.lat == 0 || post.lng == 0) {

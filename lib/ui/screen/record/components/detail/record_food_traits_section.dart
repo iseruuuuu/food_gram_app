@@ -5,9 +5,8 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/analyzer/record_food_traits_analyzer.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
 
-/// 記録タブ：プレミアム向けの食傾向カード群
+/// 記録タブ：プレミアム向けの「食の旅のハイライト」カード群
 class RecordFoodTraitsSection extends StatelessWidget {
   const RecordFoodTraitsSection({
     required this.posts,
@@ -27,164 +26,193 @@ class RecordFoodTraitsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
-    final localeTag = Localizations.localeOf(context).toLanguageTag();
-    final ratingFormat = NumberFormat.decimalPattern(localeTag)
-      ..minimumFractionDigits = 1
-      ..maximumFractionDigits = 1;
     final summary = analyzeRecordFoodTraits(posts);
     final total = summary.totalPosts == 0 ? 1 : summary.totalPosts;
-    final traits = [
-      _RecordFoodTraitItem(
-        title: t.myMapRecord.foodTraits.frequentAreaTitle,
-        value: summary.topArea ?? t.myMapRecord.foodTraits.noData,
-        subValue: summary.topArea == null
-            ? null
-            : t.myMapRecord.foodTraits.shareOfTotal.replaceAll(
-                '{percent}',
-                recordFoodTraitsRatio(summary.topAreaCount, total).toString(),
-              ),
-      ),
-      _RecordFoodTraitItem(
-        title: t.myMapRecord.foodTraits.topGenreTitle,
+    final newShopsThisYear = recordNewShopsThisYear(posts);
+    final longestStreak = recordLongestDailyStreak(posts);
+    final highlights = [
+      _HighlightItem(
+        icon: '🍜',
+        accent: const Color(0xFFEA4335),
+        title: t.myMapRecord.mostEatenFoodTitle,
         value: summary.topGenre ?? t.myMapRecord.foodTraits.noData,
-        subValue: summary.topGenre == null
+        valueFontSize: 26,
+        sub: summary.topGenre == null
             ? null
-            : t.myMapRecord.foodTraits.shareOfTotal.replaceAll(
-                '{percent}',
-                recordFoodTraitsRatio(summary.topGenreCount, total).toString(),
-              ),
+            : t.myMapRecord.foodCountUnit
+                .replaceAll('{count}', '${summary.topGenreCount}'),
       ),
-      _RecordFoodTraitItem(
-        title: t.myMapRecord.foodTraits.frequentTimeTitle,
+      _HighlightItem(
+        icon: '🕐',
+        accent: const Color(0xFFF59E0B),
+        title: t.myMapRecord.eatingTimeTitle,
         value: summary.topTimeSlot == null
             ? t.myMapRecord.foodTraits.noData
             : recordFoodTraitsTimeSlotLabel(t, summary.topTimeSlot!),
-        subValue: summary.topTimeSlot == null
+        sub: summary.topTimeSlot == null
             ? null
             : t.myMapRecord.foodTraits.shareOfTotal.replaceAll(
                 '{percent}',
-                recordFoodTraitsRatio(summary.topTimeCount, total).toString(),
+                '${recordFoodTraitsRatio(summary.topTimeCount, total)}',
               ),
       ),
-      _RecordFoodTraitItem(
-        title: t.myMapRecord.foodTraits.frequentRestaurantTitle,
-        value: summary.topRestaurant ?? t.myMapRecord.foodTraits.noData,
-        subValue: summary.topRestaurant == null
-            ? null
-            : t.myMapRecord.foodTraits.shareOfTotal.replaceAll(
-                '{percent}',
-                recordFoodTraitsRatio(summary.topRestaurantCount, total)
-                    .toString(),
-              ),
+      _HighlightItem(
+        icon: '🏪',
+        accent: const Color(0xFF3B82F6),
+        title: t.myMapRecord.newShopsTitle,
+        value: t.myMapRecord.newShopsThisYear
+            .replaceAll('{count}', '$newShopsThisYear'),
+        sub: t.myMapRecord.explorationRateShort
+            .replaceAll('{percent}', '${summary.explorationRatio}'),
       ),
-      _RecordFoodTraitItem(
-        title: t.myMapRecord.foodTraits.averageRatingTitle,
-        value: summary.averageRating == null
-            ? t.myMapRecord.foodTraits.noRating
-            : ratingFormat.format(summary.averageRating),
-        subValue: summary.ratingCount == 0
-            ? null
-            : t.myMapRecord.foodTraits.ratingCount.replaceAll(
-                '{count}',
-                summary.ratingCount.toString(),
-              ),
-      ),
-      _RecordFoodTraitItem(
-        title: t.myMapRecord.foodTraits.explorationRateTitle,
-        value: '${summary.explorationRatio}%',
-        subValue: summary.firstVisitCount == 0
-            ? null
-            : t.myMapRecord.foodTraits.firstVisitCount.replaceAll(
-                '{count}',
-                summary.firstVisitCount.toString(),
-              ),
+      _HighlightItem(
+        icon: '🔥',
+        accent: const Color(0xFFA855F7),
+        title: t.myMapRecord.longestRecordTitle,
+        value: t.myMapRecord.streakDaysValue
+            .replaceAll('{days}', '$longestStreak'),
+        sub: t.myMapRecord.streakUpdating,
       ),
     ];
+
     return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: Stack(
-        children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: cardColor,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.12),
-                  blurRadius: 14,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: cardColor,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 16,
+              offset: const Offset(0, 5),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      t.myMapRecord.foodTraits.sectionTitle,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const Gap(8),
-                    Text(
-                      t.myMapRecord.foodTraits.premiumBadge,
-                      style: TextStyle(
-                        color: Colors.amber.shade700,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
-                const Gap(10),
-                Stack(
-                  children: [
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: traits
-                          .map(
-                            (trait) => _TraitCard(
-                              trait: trait,
-                              mutedColor: mutedColor,
-                            ),
-                          )
-                          .toList(),
-                    ),
-                    if (!isSubscribed)
-                      Positioned.fill(
-                        child: _NonSubscriberOverlay(
-                          t: t,
-                          onTapPremiumCta: onTapPremiumCta,
-                        ),
-                      ),
-                  ],
+                const Text('👑', style: TextStyle(fontSize: 17)),
+                const Gap(6),
+                Text(
+                  t.myMapRecord.highlightsTitle,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ],
             ),
-          ),
-        ],
+            const Gap(12),
+            Stack(
+              children: [
+                GridView.count(
+                  padding: EdgeInsets.zero,
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 1.5,
+                  children: highlights
+                      .map((item) => _HighlightCard(item: item))
+                      .toList(),
+                ),
+                if (!isSubscribed)
+                  Positioned.fill(
+                    child: _NonSubscriberOverlay(
+                      t: t,
+                      onTapPremiumCta: onTapPremiumCta,
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class _RecordFoodTraitItem {
-  const _RecordFoodTraitItem({
+class _HighlightItem {
+  const _HighlightItem({
+    required this.icon,
+    required this.accent,
     required this.title,
     required this.value,
-    this.subValue,
+    this.sub,
+    this.valueFontSize = 17,
   });
 
+  final String icon;
+  final Color accent;
   final String title;
   final String value;
-  final String? subValue;
+  final String? sub;
+  final double valueFontSize;
+}
+
+class _HighlightCard extends StatelessWidget {
+  const _HighlightCard({required this.item});
+
+  final _HighlightItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      padding: const EdgeInsets.all(11),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1D1D1D) : const Color(0xFFF8FAFC),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: isDark ? Colors.white10 : const Color(0xFFECECEC),
+        ),
+      ),
+      child: Column(
+        children: [
+          Text(
+            item.title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: isDark ? Colors.white60 : Colors.black54,
+            ),
+          ),
+          const Gap(9),
+          Text(
+            item.value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: item.valueFontSize,
+              fontWeight: FontWeight.w900,
+              height: 1.1,
+            ),
+          ),
+          if (item.sub != null) ...[
+            const Gap(6),
+            Text(
+              item.sub!,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 10.5,
+                fontWeight: FontWeight.w700,
+                color: item.accent,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
 }
 
 class _NonSubscriberOverlay extends StatelessWidget {
@@ -199,7 +227,8 @@ class _NonSubscriberOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return ClipRect(
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(14),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
         child: Container(
@@ -255,71 +284,6 @@ class _NonSubscriberOverlay extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _TraitCard extends StatelessWidget {
-  const _TraitCard({
-    required this.trait,
-    required this.mutedColor,
-  });
-
-  final _RecordFoodTraitItem trait;
-  final Color mutedColor;
-
-  @override
-  Widget build(BuildContext context) {
-    final width = (MediaQuery.of(context).size.width - 16 * 2 - 14 * 2 - 8) / 2;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Container(
-      width: width,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1D1D1D) : const Color(0xFFF8FAFC),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            trait.title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 12,
-              color: mutedColor,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const Gap(4),
-          FittedBox(
-            child: Text(
-              trait.value,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-                height: 1.2,
-              ),
-            ),
-          ),
-          if (trait.subValue != null) ...[
-            const Gap(4),
-            Text(
-              trait.subValue!,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 10,
-                color: mutedColor,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ],
       ),
     );
   }
