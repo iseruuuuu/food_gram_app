@@ -361,11 +361,39 @@ class $AssetsSplashGen {
 class $AssetsTagGen {
   const $AssetsTagGen();
 
+  /// File path: assets/tag/frenchtoast.png
+  AssetGenImage get frenchtoast =>
+      const AssetGenImage('assets/tag/frenchtoast.png');
+
+  /// File path: assets/tag/montblanc.png
+  AssetGenImage get montblanc =>
+      const AssetGenImage('assets/tag/montblanc.png');
+
+  /// File path: assets/tag/omurice.png
+  AssetGenImage get omurice => const AssetGenImage('assets/tag/omurice.png');
+
   /// File path: assets/tag/soba.png
   AssetGenImage get soba => const AssetGenImage('assets/tag/soba.png');
 
+  /// File path: assets/tag/stew.png
+  AssetGenImage get stew => const AssetGenImage('assets/tag/stew.png');
+
+  /// File path: assets/tag/takoyaki.png
+  AssetGenImage get takoyaki => const AssetGenImage('assets/tag/takoyaki.png');
+
+  /// File path: assets/tag/tamagoyaki.png
+  AssetGenImage get tamagoyaki =>
+      const AssetGenImage('assets/tag/tamagoyaki.png');
+
+  /// File path: assets/tag/tantanmen.png
+  AssetGenImage get tantanmen =>
+      const AssetGenImage('assets/tag/tantanmen.png');
+
   /// File path: assets/tag/tonkatsu.png
   AssetGenImage get tonkatsu => const AssetGenImage('assets/tag/tonkatsu.png');
+
+  /// File path: assets/tag/tsukune.png
+  AssetGenImage get tsukune => const AssetGenImage('assets/tag/tsukune.png');
 
   /// File path: assets/tag/udon.png
   AssetGenImage get udon => const AssetGenImage('assets/tag/udon.png');
@@ -374,7 +402,20 @@ class $AssetsTagGen {
   AssetGenImage get yakisoba => const AssetGenImage('assets/tag/yakisoba.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [soba, tonkatsu, udon, yakisoba];
+  List<AssetGenImage> get values => [
+        frenchtoast,
+        montblanc,
+        omurice,
+        soba,
+        stew,
+        takoyaki,
+        tamagoyaki,
+        tantanmen,
+        tonkatsu,
+        tsukune,
+        udon,
+        yakisoba
+      ];
 }
 
 class $AssetsTrophyGen {

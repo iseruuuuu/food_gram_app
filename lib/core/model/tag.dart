@@ -138,17 +138,18 @@ final Map<String, List<String>> foodCategory = {
     'tag:udon',
     'tag:soba',
     'tag:yakisoba',
+    'tag:tantanmen',
   ],
-  '肉料理': ['🥩', '🍗', '🍖', '🥓', 'tag:tonkatsu'],
-  '軽食系': ['🍔', '🍟', '🍕', '🥙', '🌯', '🍤', '🥟'],
-  'ご飯物': ['🍲', '🍛', '🫕', '🍙', '🍚', '🍱', '🥘', '🍳'],
+  '肉料理': ['🥩', '🍗', '🍖', '🥓', 'tag:tonkatsu', 'tag:tsukune'],
+  '軽食系': ['🍔', '🍟', '🍕', '🥙', '🌯', '🍤', '🥟', 'tag:takoyaki'],
+  'ご飯物': ['🍲', '🍛', '🫕', '🍙', '🍚', '🍱', '🥘', '🍳', 'tag:omurice', 'tag:stew'],
   '魚介類': ['🍣', '🐟', '🐙', '🦑', '🦐', '🦀', '🐚', '🦪', '🐡', '🦞', '🐳', '🦈'],
-  'パン類': ['🍞', '🥪', '🌭', '🍩', '🥞', '🥐', '🥯', '🥖', '🥨', '🧁', '🧇', '🍰'],
-  'おやつ': ['🍦', '🍮', '🍘', '🍡', '🍧', '🍨', '🥧', '🍭', '🍫', '🍿', '🍪', '🥜', '🌰', '🥮', '🍯'],
+  'パン類': ['🍞', '🥪', '🌭', '🍩', '🥞', '🥐', '🥯', '🥖', '🥨', '🧁', '🧇', '🍰', 'tag:frenchtoast'],
+  'おやつ': ['🍦', '🍮', '🍘', '🍡', '🍧', '🍨', '🥧', '🍭', '🍫', '🍿', '🍪', '🥜', '🌰', '🥮', '🍯', 'tag:montblanc'],
   'フルーツ': ['🍎', '🍐', '🍊', '🍋', '🍋‍🟩', '🍌', '🍉', '🍇', '🍓', '🫐', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝'],
   '野菜類': ['🥗', '🍅', '🍆', '🥑', '🫛', '🥦', '🥬', '🥒', '🌶️', '🫑', '🌽', '🥕', '🫒', '🧄', '🧅', '🥔', '🍠', '🫚', '🍄‍🟫'],
   'ドリンク': ['🫖', '☕️', '🍵', '🧃', '🥤', '🧋', '🍶', '🍺', '🥂', '🍷', '🥃', '🍸', '🍹', '🧉', '🍾', '🍼'],
-  'その他': ['🍥', '🍢', '🧀', '🥚', '🧈'],
+  'その他': ['🍥', '🍢', '🧀', '🥚', '🧈', 'tag:tamagoyaki'],
 };
 
 /// 食べ物の絵文字から食べ物名を取得する関数
@@ -169,6 +170,14 @@ String getLocalizedFoodName(String tagId, BuildContext context) {
     'tag:soba': t.tag.soba,
     'tag:yakisoba': t.tag.yakisoba,
     'tag:tonkatsu': t.tag.tonkatsu,
+    'tag:tantanmen': t.tag.tantanmen,
+    'tag:takoyaki': t.tag.takoyaki,
+    'tag:tsukune': t.tag.tsukune,
+    'tag:omurice': t.tag.omurice,
+    'tag:tamagoyaki': t.tag.tamagoyaki,
+    'tag:frenchtoast': t.tag.frenchToast,
+    'tag:montblanc': t.tag.montBlanc,
+    'tag:stew': t.tag.stew,
   };
   final customName = customFoodNameMap[tagId];
   if (customName != null) {
