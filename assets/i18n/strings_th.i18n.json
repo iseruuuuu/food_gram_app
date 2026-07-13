@@ -399,7 +399,7 @@
     "explorationRateShort": "ใหม่ {percent}%",
     "longestRecordTitle": "สถิติต่อเนื่องนานสุด",
     "streakDaysValue": "{days} วัน",
-    "streakUpdating": "กำลังทำสถิติ!",
+    "streakUpdating": "สถิติส่วนตัว",
     "monthlyGrowthTitle": "คุณโพสต์มากกว่าเดือนที่แล้ว +{percent}%!",
     "monthlyGrowthBody": "ความอยากรู้เรื่องอาหารของคุณกำลังขยายออกไป 🚀",
     "foodTraits": {

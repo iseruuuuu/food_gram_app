@@ -399,7 +399,7 @@
     "explorationRateShort": "신규율 {percent}%",
     "longestRecordTitle": "최장 기록",
     "streakDaysValue": "{days}일 연속",
-    "streakUpdating": "기록 갱신 중!",
+    "streakUpdating": "자기 최고 기록",
     "monthlyGrowthTitle": "지난달보다 +{percent}% 더 올렸어요!",
     "monthlyGrowthBody": "음식에 대한 당신의 호기심이 넓어지고 있어요 🚀",
     "foodTraits": {

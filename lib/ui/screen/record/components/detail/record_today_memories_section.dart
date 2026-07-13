@@ -653,11 +653,18 @@ Posts? recordTodayLatestPost(List<Posts> posts) {
   return matches.firstOrNull;
 }
 
+/// 指定の年月に対して、日付を月末でクランプした DateTime を返す。
+/// 例: 3/31 の1ヶ月前は 2/28（うるう年なら 2/29）になる。
+DateTime _clampedDate(int year, int month, int day) {
+  final lastDayOfMonth = DateTime(year, month + 1, 0).day;
+  final clampedDay = day > lastDayOfMonth ? lastDayOfMonth : day;
+  return DateTime(year, month, clampedDay);
+}
+
 /// 過去の思い出（先週・1ヶ月前・1年前の同日）を常に3件返す。
 /// 該当投稿が無いスロットは post を null にして空状態で表示する。
 List<RecordMemory> collectPastMemories(List<Posts> posts) {
   final now = DateTime.now();
-  final today = DateTime(now.year, now.month, now.day);
 
   Posts? pickLatest(DateTime target) {
     final matches = posts.where((p) => _isSameDay(p.createdAt, target)).toList()
@@ -665,18 +672,21 @@ List<RecordMemory> collectPastMemories(List<Posts> posts) {
     return matches.firstOrNull;
   }
 
+  // 先週の同日: DSTの影響を受けないよう日付ベースで7日戻す
+  final weekAgo = _clampedDate(now.year, now.month, now.day - 7);
+
   return [
     RecordMemory(
       type: RecordMemoryType.oneWeekAgo,
-      post: pickLatest(today.subtract(const Duration(days: 7))),
+      post: pickLatest(weekAgo),
     ),
     RecordMemory(
       type: RecordMemoryType.oneMonthAgo,
-      post: pickLatest(DateTime(now.year, now.month - 1, now.day)),
+      post: pickLatest(_clampedDate(now.year, now.month - 1, now.day)),
     ),
     RecordMemory(
       type: RecordMemoryType.oneYearAgo,
-      post: pickLatest(DateTime(now.year - 1, now.month, now.day)),
+      post: pickLatest(_clampedDate(now.year - 1, now.month, now.day)),
     ),
   ];
 }

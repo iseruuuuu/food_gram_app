@@ -105,7 +105,8 @@ int recordLongestDailyStreak(List<Posts> posts) {
   }
   final days = posts
       .map(
-        (p) => DateTime(p.createdAt.year, p.createdAt.month, p.createdAt.day),
+        (p) =>
+            DateTime.utc(p.createdAt.year, p.createdAt.month, p.createdAt.day),
       )
       .toSet()
       .toList()
