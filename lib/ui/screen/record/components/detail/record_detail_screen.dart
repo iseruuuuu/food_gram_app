@@ -11,8 +11,8 @@ import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_food_traits_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_recent_section.dart';
-import 'package:food_gram_app/ui/screen/record/components/detail/record_stat_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_summary_section.dart';
+import 'package:food_gram_app/ui/screen/record/components/detail/record_today_memories_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_yearly_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/record_tab.dart';
 import 'package:food_gram_app/ui/screen/record/record_view_model.dart';
@@ -54,22 +54,30 @@ class RecordDetailScreen extends HookConsumerWidget {
       },
       const [],
     );
-    final state = ref.watch(recordViewModelProvider);
     final isSubscribe = ref.watch(isSubscribeProvider).valueOrNull ?? false;
-    final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = isDark ? const Color(0xFF161616) : Colors.white;
     final mutedColor = isDark ? Colors.white70 : Colors.black54;
     final recentPosts = [...posts]
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    final latest3 = recentPosts.take(3).toList();
+    final mostLiked3 = ([...posts]
+          ..sort((a, b) {
+            final heartCompare = b.heart.compareTo(a.heart);
+            if (heartCompare != 0) {
+              return heartCompare;
+            }
+            return b.createdAt.compareTo(a.createdAt);
+          }))
+        .take(3)
+        .toList();
     final yearlyCounts = <int, int>{};
     for (final post in posts) {
       final year = post.createdAt.year;
       yearlyCounts[year] = (yearlyCounts[year] ?? 0) + 1;
     }
     final sortedYears = yearlyCounts.keys.toList()..sort();
-    final activityDays = recordActivityDaysSpan(posts);
+    final uniqueShops = _countUniqueRestaurants(posts);
+    final monthlyGrowth = recordMonthlyGrowthPercent(posts);
     final selectorTop = recordMapOverlayTopForContext(context);
     const viewTypeTabHeight = 68.0;
     return Stack(
@@ -80,37 +88,17 @@ class RecordDetailScreen extends HookConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              RecordTodayMemoriesSection(
+                posts: posts,
+              ),
+              const Gap(14),
               RecordSummarySection(
-                activityDays: activityDays,
-                cardColor: cardColor,
-                mutedColor: mutedColor,
+                mealsCount: posts.length,
+                shopsCount: uniqueShops,
+                prefecturesCount: recordVisitedPrefecturesCount(posts),
+                countriesCount: recordVisitedCountriesCount(posts),
               ),
-              const Gap(12),
-              Row(
-                children: [
-                  RecordStatSection(
-                    emoji: '📍',
-                    value: '${state.visitedAreasCount}',
-                    label: t.mapStats.visitedArea,
-                    valueColor: const Color(0xFF2563EB),
-                  ),
-                  const Gap(8),
-                  RecordStatSection(
-                    emoji: '🍜',
-                    value: '${posts.length}',
-                    label: t.myMapRecord.postedMealsLabel,
-                    valueColor: const Color(0xFFEA4335),
-                  ),
-                  const Gap(8),
-                  RecordStatSection(
-                    emoji: '📅',
-                    value: '$activityDays',
-                    label: t.mapStats.activityDays,
-                    valueColor: const Color(0xFF16A34A),
-                  ),
-                ],
-              ),
-              const Gap(16),
+              const Gap(14),
               RecordFoodTraitsSection(
                 posts: posts,
                 cardColor: cardColor,
@@ -127,7 +115,11 @@ class RecordDetailScreen extends HookConsumerWidget {
                       .presentPaywallGuarded();
                 },
               ),
-              const Gap(16),
+              if (monthlyGrowth != null && monthlyGrowth > 0) ...[
+                const Gap(14),
+                _MonthlyGrowthBanner(percent: monthlyGrowth),
+              ],
+              const Gap(14),
               RecordYearlySection(
                 cardColor: cardColor,
                 mutedColor: mutedColor,
@@ -135,11 +127,11 @@ class RecordDetailScreen extends HookConsumerWidget {
                 yearlyCounts: yearlyCounts,
                 recentPosts: recentPosts,
               ),
-              const Gap(16),
+              const Gap(14),
               RecordRecentSection(
                 cardColor: cardColor,
                 mutedColor: mutedColor,
-                latestPosts: latest3,
+                latestPosts: mostLiked3,
               ),
             ],
           ),
@@ -157,6 +149,69 @@ class RecordDetailScreen extends HookConsumerWidget {
       ],
     );
   }
+}
+
+class _MonthlyGrowthBanner extends StatelessWidget {
+  const _MonthlyGrowthBanner({required this.percent});
+
+  final int percent;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF16283A) : const Color(0xFFEAF3FE),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Row(
+        children: [
+          const Text('📊', style: TextStyle(fontSize: 18)),
+          const Gap(10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  t.myMapRecord.monthlyGrowthTitle
+                      .replaceAll('{percent}', '$percent'),
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: isDark ? Colors.white : const Color(0xFF1565C0),
+                  ),
+                ),
+                const Gap(2),
+                Text(
+                  t.myMapRecord.monthlyGrowthBody,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? Colors.white60 : const Color(0xFF3B82F6),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Icon(
+            Icons.chevron_right_rounded,
+            color: isDark ? Colors.white38 : const Color(0xFF90CAF9),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+int _countUniqueRestaurants(List<Posts> posts) {
+  return posts
+      .map((post) => post.restaurant.trim())
+      .where((name) => name.isNotEmpty)
+      .toSet()
+      .length;
 }
 
 double recordMapOverlayTopForContext(BuildContext context) {

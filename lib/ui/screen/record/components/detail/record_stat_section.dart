@@ -8,6 +8,8 @@ class RecordStatSection extends StatelessWidget {
     required this.value,
     required this.label,
     required this.valueColor,
+    this.valueFontSize = 15,
+    this.compact = false,
     super.key,
   });
 
@@ -15,48 +17,59 @@ class RecordStatSection extends StatelessWidget {
   final String value;
   final String label;
   final Color valueColor;
+  final double valueFontSize;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+        padding: EdgeInsets.symmetric(
+          horizontal: compact ? 6 : 10,
+          vertical: compact ? 10 : 12,
+        ),
         decoration: BoxDecoration(
           color: isDark ? const Color(0xFF161616) : Colors.white,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.14),
-              blurRadius: 14,
-              offset: const Offset(0, 4),
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 12,
+              offset: const Offset(0, 3),
             ),
           ],
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(emoji, style: const TextStyle(fontSize: 18)),
-                const Gap(4),
-                Text(
-                  value,
-                  style: TextStyle(
-                    color: valueColor,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 18,
-                  ),
-                ),
-              ],
+            Text(
+              emoji,
+              style: TextStyle(fontSize: compact ? 16 : 18),
+            ),
+            const Gap(4),
+            Text(
+              value,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: valueColor,
+                fontWeight: FontWeight.w800,
+                fontSize: valueFontSize,
+                height: 1.2,
+              ),
             ),
             const Gap(4),
             Text(
               label,
+              textAlign: TextAlign.center,
+              maxLines: 2,
               style: TextStyle(
-                fontSize: 10,
+                fontSize: compact ? 9 : 10,
                 color: isDark ? Colors.white70 : Colors.black54,
                 fontWeight: FontWeight.w700,
+                height: 1.2,
               ),
               overflow: TextOverflow.ellipsis,
             ),
