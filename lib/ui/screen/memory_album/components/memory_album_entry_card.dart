@@ -25,7 +25,7 @@ class MemoryAlbumEntryCard extends ConsumerWidget {
         : ref.watch(memoryAlbumPostsProvider(firstAlbum.postIdsKey));
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+      padding: EdgeInsets.zero,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
