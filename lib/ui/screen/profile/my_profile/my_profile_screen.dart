@@ -70,13 +70,36 @@ class MyProfileScreen extends HookConsumerWidget {
         DefaultTabController(
           length: 2,
           child: Scaffold(
-            appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(0),
-              child: AppBar(
-                surfaceTintColor: Colors.transparent,
-                forceMaterialTransparency: true,
-                elevation: 0,
+            appBar: AppBar(
+              surfaceTintColor: Colors.transparent,
+              elevation: 0,
+              centerTitle: true,
+              title: Text(
+                Translations.of(context).tab.myPage,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
               ),
+              actions: [
+                IconButton(
+                  onPressed: () =>
+                      context.pushNamed(RouterPath.storedPost),
+                  icon: Icon(
+                    Icons.bookmark_border,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () =>
+                      context.pushNamed(RouterPath.notifications),
+                  icon: const Icon(
+                    Icons.favorite_border,
+                    color: Colors.red,
+                  ),
+                ),
+              ],
             ),
             body: AsyncValueSwitcher(
               asyncValue: postList,
@@ -90,8 +113,6 @@ class MyProfileScreen extends HookConsumerWidget {
                 ref.read(myProfileViewModelProvider().notifier).getData();
               },
               onData: (value) {
-                final isDark = Theme.of(context).brightness == Brightness.dark;
-                final surfaceColor = isDark ? Colors.black : Colors.white;
                 return RefreshIndicator(
                   color: Theme.of(context).colorScheme.primary,
                   backgroundColor: Theme.of(context).colorScheme.surface,
@@ -117,91 +138,15 @@ class MyProfileScreen extends HookConsumerWidget {
                           data: (users, heartAmount) {
                             final premiumUnlocked = users.isSubscribe ||
                                 (isSubscribeAsync.valueOrNull ?? false);
-                            return Stack(
-                              clipBehavior: Clip.none,
+                            return Column(
                               children: [
+                                if (!premiumUnlocked)
+                                  const AppPremiumMembershipCard(),
                                 AppProfileHeader(
                                   users: users,
                                   length: postCount,
                                   heartAmount: heartAmount,
                                   rankingUnlockedOverride: premiumUnlocked,
-                                ),
-                                if (!premiumUnlocked)
-                                  const Positioned(
-                                    top: 10,
-                                    left: 0,
-                                    right: 0,
-                                    child: AppPremiumMembershipCard(),
-                                  ),
-                                // ヘッダー右上の操作群（通知・保存）
-                                Positioned(
-                                  top: !premiumUnlocked ? 70 : 10,
-                                  right: 12,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Material(
-                                        color: surfaceColor,
-                                        elevation: 4,
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: InkWell(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          onTap: () => context
-                                              .pushNamed(RouterPath.storedPost),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 24,
-                                              vertical: 12,
-                                            ),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Icon(
-                                                  Icons.bookmark,
-                                                  size: 20,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurface,
-                                                ),
-                                                const SizedBox(width: 6),
-                                                Text(
-                                                  Translations.of(context)
-                                                      .stored
-                                                      .savedPosts,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .onSurface,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Material(
-                                        color: surfaceColor,
-                                        shape: const CircleBorder(),
-                                        elevation: 4,
-                                        child: IconButton(
-                                          onPressed: () {
-                                            context.pushNamed(
-                                              RouterPath.notifications,
-                                            );
-                                          },
-                                          icon: const Icon(
-                                            Icons.favorite_border,
-                                            color: Colors.red,
-                                            size: 28,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
                                 ),
                               ],
                             );

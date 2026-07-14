@@ -15,104 +15,104 @@ class AppProfileHeaderSkeleton extends StatelessWidget {
     final skeletonSecondary =
         isDark ? Colors.grey.shade800 : Colors.grey.shade200;
     return Skeletonizer(
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Column(
+      child: ColoredBox(
+        color: scheme.surface,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 150,
-                width: double.infinity,
-                color: skeletonPrimary,
-              ),
-              Container(
-                color: scheme.surface,
-                padding: const EdgeInsets.only(top: 50, bottom: 10),
-                child: Column(
-                  children: [
-                    const Gap(8),
-                    Container(
-                      width: 120,
-                      height: 20,
+              Row(
+                children: [
+                  Container(
+                    width: 88,
+                    height: 88,
+                    decoration: BoxDecoration(
                       color: skeletonPrimary,
+                      shape: BoxShape.circle,
                     ),
-                    const Gap(8),
-                    Container(
-                      width: 80,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        color: skeletonSecondary,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    const Gap(8),
-                    Container(
-                      width: 200,
-                      height: 16,
-                      color: skeletonSecondary,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  ),
+                  const Gap(16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _ColumnSkeleton(
-                          primary: skeletonPrimary,
-                          secondary: skeletonSecondary,
+                        Container(
+                          width: 140,
+                          height: 20,
+                          color: skeletonPrimary,
                         ),
-                        _ColumnSkeleton(
-                          primary: skeletonPrimary,
-                          secondary: skeletonSecondary,
+                        const Gap(8),
+                        Container(
+                          width: 100,
+                          height: 14,
+                          color: skeletonSecondary,
                         ),
-                        _ColumnSkeleton(
-                          primary: skeletonPrimary,
-                          secondary: skeletonSecondary,
+                        const Gap(10),
+                        Container(
+                          width: 150,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            color: skeletonSecondary,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
                       ],
                     ),
-                    const Gap(16),
-                    Container(
-                      width: double.infinity,
-                      height: 40,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: skeletonSecondary,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                    ),
-                    const Gap(16),
-                    Container(
-                      width: double.infinity,
-                      height: 40,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: skeletonSecondary,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                  ],
+                  ),
+                ],
+              ),
+              const Gap(14),
+              Container(
+                width: 220,
+                height: 14,
+                color: skeletonSecondary,
+              ),
+              const Gap(6),
+              Container(
+                width: 180,
+                height: 14,
+                color: skeletonSecondary,
+              ),
+              const Gap(20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _ColumnSkeleton(
+                    primary: skeletonPrimary,
+                    secondary: skeletonSecondary,
+                  ),
+                  _ColumnSkeleton(
+                    primary: skeletonPrimary,
+                    secondary: skeletonSecondary,
+                  ),
+                  _ColumnSkeleton(
+                    primary: skeletonPrimary,
+                    secondary: skeletonSecondary,
+                  ),
+                ],
+              ),
+              const Gap(16),
+              Container(
+                width: double.infinity,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: skeletonSecondary,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              ),
+              const Gap(12),
+              Container(
+                width: double.infinity,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: skeletonSecondary,
+                  borderRadius: BorderRadius.circular(16),
                 ),
               ),
             ],
           ),
-          Positioned(
-            top: 105,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Container(
-                width: 96,
-                height: 96,
-                decoration: BoxDecoration(
-                  color: skeletonPrimary,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: scheme.surface,
-                    width: 4,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
