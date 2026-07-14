@@ -512,7 +512,8 @@ class PostPriceAndRatingRow extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
-                                color: PostStyle.fieldBorderColor(context)),
+                              color: PostStyle.fieldBorderColor(context),
+                            ),
                           ),
                           child: Text(
                             code,
