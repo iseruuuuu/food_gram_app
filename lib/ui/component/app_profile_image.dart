@@ -17,17 +17,23 @@ class AppProfileImage extends ConsumerWidget {
   final double borderWidth;
   final Color borderColor;
 
+  /// プリセットのデフォルトアイコンかどうか
+  static bool isDefaultIcon(String imagePath) {
+    return _assetImages.contains(imagePath);
+  }
+
+  static const _assetImages = <String>[
+    'assets/icon/icon1.png',
+    'assets/icon/icon2.png',
+    'assets/icon/icon3.png',
+    'assets/icon/icon4.png',
+    'assets/icon/icon5.png',
+    'assets/icon/icon6.png',
+  ];
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final supabase = ref.watch(supabaseProvider);
-    const assetImages = <String>[
-      'assets/icon/icon1.png',
-      'assets/icon/icon2.png',
-      'assets/icon/icon3.png',
-      'assets/icon/icon4.png',
-      'assets/icon/icon5.png',
-      'assets/icon/icon6.png',
-    ];
 
     Widget buildCircleAvatar() {
       return Container(
@@ -42,7 +48,7 @@ class AppProfileImage extends ConsumerWidget {
           ),
         ),
         child: ClipOval(
-          child: assetImages.contains(imagePath)
+          child: isDefaultIcon(imagePath)
               ? Image.asset(
                   imagePath,
                   fit: BoxFit.cover,

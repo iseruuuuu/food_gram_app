@@ -57,8 +57,20 @@ class AppProfileHeader extends ConsumerWidget {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () {
-                    showDialog<void>(
+                  onTap: () async {
+                    final isDefaultIcon =
+                        AppProfileImage.isDefaultIcon(users.image);
+                    final isSubscribed = users.isSubscribe || isViewerSubscribed;
+                    if (isOwnProfile && isDefaultIcon && !isSubscribed) {
+                      await ref
+                          .read(revenueCatServiceProvider.notifier)
+                          .presentPaywallGuarded();
+                      return;
+                    }
+                    if (!context.mounted) {
+                      return;
+                    }
+                    await showDialog<void>(
                       context: context,
                       builder: (_) {
                         return AppProfileDialog(image: users.image);
