@@ -117,9 +117,8 @@ class MapScreen extends HookConsumerWidget {
                               .logMapPinTap(source: 'map');
                           final first = posts.first;
                           void openStoreSheet() {
-                            ref
-                                .read(mapModalSelectionProvider.notifier)
-                                .state = MapModalSelection(
+                            ref.read(mapModalSelectionProvider.notifier).state =
+                                MapModalSelection(
                               name: first.restaurant,
                               lat: first.lat,
                               lng: first.lng,
@@ -260,7 +259,6 @@ class MapScreen extends HookConsumerWidget {
       ),
       floatingActionButton: Builder(
         builder: (context) {
-          final isDark = Theme.of(context).brightness == Brightness.dark;
           return SizedBox(
             width: 60,
             height: 60,
@@ -269,11 +267,7 @@ class MapScreen extends HookConsumerWidget {
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
               elevation: 10,
-              shape: CircleBorder(
-                side: BorderSide(
-                  color: isDark ? Colors.white : Colors.black,
-                ),
-              ),
+              shape: const CircleBorder(side: BorderSide()),
               onPressed: () async {
                 await context
                     .pushNamed(RouterPath.timeLinePost)
@@ -314,8 +308,8 @@ class _MapSideFab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 50,
-      height: 50,
+      width: 55,
+      height: 55,
       child: Theme(
         data: Theme.of(context).copyWith(highlightColor: fabBg),
         child: FloatingActionButton(
