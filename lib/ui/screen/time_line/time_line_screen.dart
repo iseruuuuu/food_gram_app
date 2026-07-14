@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
@@ -121,7 +122,9 @@ class TimeLineScreen extends HookConsumerWidget {
           foregroundColor: Colors.white,
           backgroundColor: Colors.black,
           elevation: 10,
-          shape: const CircleBorder(side: BorderSide()),
+          shape: CircleBorder(
+            side: BorderSide(color: AppTheme.fabBorderColor(context)),
+          ),
           onPressed: () async {
             await context
                 .pushNamed(RouterPath.timeLinePost)

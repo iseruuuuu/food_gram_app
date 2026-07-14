@@ -70,10 +70,14 @@ class AppFoodTag extends HookWidget {
             },
             [searchController],
           );
+          final scheme = Theme.of(context).colorScheme;
           final isDark = Theme.of(context).brightness == Brightness.dark;
-          final sheetBg = isDark ? Colors.black : Colors.white;
+          final sheetBg = isDark ? scheme.surface : Colors.white;
           final sheetFg = isDark ? Colors.white : Colors.black;
           final sheetFgMuted = isDark ? Colors.white70 : Colors.grey;
+          // 真っ黒に潰れないよう、チップ/検索欄は一段明るい面色にする
+          final chipBg = isDark ? scheme.surfaceContainerHighest : Colors.white;
+          final chipBorder = isDark ? Colors.white24 : Colors.grey[300]!;
           return GestureDetector(
             onTap: () => primaryFocus?.unfocus(),
             child: Container(
@@ -151,7 +155,7 @@ class AppFoodTag extends HookWidget {
                               )
                             : null,
                         filled: isDark,
-                        fillColor: isDark ? Colors.grey[900] : null,
+                        fillColor: isDark ? chipBg : null,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: sheetFgMuted),
@@ -253,15 +257,13 @@ class AppFoodTag extends HookWidget {
                                             decoration: BoxDecoration(
                                               color: isSelected
                                                   ? AppTheme.primaryBlue
-                                                  : sheetBg,
+                                                  : chipBg,
                                               borderRadius:
                                                   BorderRadius.circular(20),
                                               border: Border.all(
                                                 color: isSelected
                                                     ? AppTheme.primaryBlue
-                                                    : (isDark
-                                                        ? Colors.white54
-                                                        : Colors.grey[300]!),
+                                                    : chipBorder,
                                               ),
                                             ),
                                             child: Row(

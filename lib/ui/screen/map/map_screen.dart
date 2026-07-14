@@ -78,7 +78,7 @@ class MapScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final fabBg = isDark ? Colors.black : Colors.white;
     const fabFg = AppTheme.primaryBlue;
-    final fabBorder = isDark ? Colors.white54 : Colors.grey.shade300;
+    final fabBorder = AppTheme.fabBorderColor(context);
     ref.listen<MapModalSelection?>(mapModalSelectionProvider, (_, next) {
       if (next == null || next.placeSearchRestaurant == null) {
         unawaited(controller.clearSearchResultPin());
@@ -260,14 +260,16 @@ class MapScreen extends HookConsumerWidget {
       floatingActionButton: Builder(
         builder: (context) {
           return SizedBox(
-            width: 60,
-            height: 60,
+            width: 70,
+            height: 70,
             child: FloatingActionButton(
               heroTag: null,
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
               elevation: 10,
-              shape: const CircleBorder(side: BorderSide()),
+              shape: CircleBorder(
+                side: BorderSide(color: AppTheme.fabBorderColor(context)),
+              ),
               onPressed: () async {
                 await context
                     .pushNamed(RouterPath.timeLinePost)

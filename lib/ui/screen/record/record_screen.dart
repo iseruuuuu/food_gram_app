@@ -6,6 +6,7 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/services/user_service.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
@@ -25,7 +26,6 @@ class RecordScreen extends ConsumerWidget {
     final controller = ref.watch(recordViewModelProvider.notifier);
     final location = ref.watch(locationProvider);
     final mapService = ref.watch(myMapRepositoryProvider);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       body: Stack(
         children: [
@@ -62,9 +62,7 @@ class RecordScreen extends ConsumerWidget {
           foregroundColor: Colors.white,
           elevation: 10,
           shape: CircleBorder(
-            side: BorderSide(
-              color: isDark ? Colors.white : Colors.black,
-            ),
+            side: BorderSide(color: AppTheme.fabBorderColor(context)),
           ),
           onPressed: () async {
             ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(

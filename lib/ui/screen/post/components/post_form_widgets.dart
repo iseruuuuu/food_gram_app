@@ -140,7 +140,7 @@ class PostTextInputField extends StatelessWidget {
       decoration: BoxDecoration(
         color: scheme.surface,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: PostStyle.fieldBorder),
+        border: Border.all(color: PostStyle.fieldBorderColor(context)),
       ),
       child: TextField(
         controller: controller,
@@ -206,7 +206,10 @@ class PostPhotoArea extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: borderColor, width: 1.5),
+            border: Border.all(
+              color: PostStyle.photoAreaBorder(context, borderColor),
+              width: 1.5,
+            ),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -243,7 +246,10 @@ class PostPhotoArea extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: borderColor, width: 1.5),
+                    border: Border.all(
+                      color: PostStyle.photoAreaBorder(context, borderColor),
+                      width: 1.5,
+                    ),
                   ),
                   child: Icon(Icons.add, size: 32, color: accent),
                 ),
@@ -327,7 +333,7 @@ class PostRestaurantField extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: PostStyle.fieldBorder),
+          border: Border.all(color: PostStyle.fieldBorderColor(context)),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -443,7 +449,9 @@ class PostPriceAndRatingRow extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: scheme.surface,
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: PostStyle.fieldBorder),
+                          border: Border.all(
+                            color: PostStyle.fieldBorderColor(context),
+                          ),
                         ),
                         child: TextField(
                           controller: priceController,
@@ -503,7 +511,8 @@ class PostPriceAndRatingRow extends StatelessWidget {
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: PostStyle.fieldBorder),
+                            border: Border.all(
+                                color: PostStyle.fieldBorderColor(context)),
                           ),
                           child: Text(
                             code,
@@ -650,7 +659,8 @@ class PostPriceField extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: scheme.surface,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: PostStyle.fieldBorder),
+                  border:
+                      Border.all(color: PostStyle.fieldBorderColor(context)),
                 ),
                 child: TextField(
                   controller: controller,
@@ -710,7 +720,8 @@ class PostPriceField extends StatelessWidget {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: PostStyle.fieldBorder),
+                    border:
+                        Border.all(color: PostStyle.fieldBorderColor(context)),
                   ),
                   child: Text(
                     code,
@@ -820,7 +831,7 @@ class PostCommentField extends HookWidget {
           decoration: BoxDecoration(
             color: scheme.surface,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: PostStyle.fieldBorder),
+            border: Border.all(color: PostStyle.fieldBorderColor(context)),
           ),
           child: Column(
             children: [

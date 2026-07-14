@@ -373,7 +373,9 @@ class PostScreen extends HookConsumerWidget {
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: PostStyle.fieldBorder),
+                        border: Border.all(
+                          color: PostStyle.fieldBorderColor(context),
+                        ),
                       ),
                       child: Row(
                         children: [
@@ -389,9 +391,11 @@ class PostScreen extends HookConsumerWidget {
                               children: [
                                 Text(
                                   t.anonymous.post,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
                                   ),
                                 ),
                                 Text(
@@ -414,8 +418,14 @@ class PostScreen extends HookConsumerWidget {
                                 .colorScheme
                                 .primary
                                 .withValues(alpha: 0.3),
-                            inactiveTrackColor: Colors.grey[300],
-                            inactiveThumbColor: Colors.white,
+                            inactiveTrackColor:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.grey[700]
+                                    : Colors.grey[300],
+                            inactiveThumbColor:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.grey[400]
+                                    : Colors.white,
                             onChanged: (value) {
                               viewModel.setAnonymous(value: value);
                             },
@@ -458,7 +468,9 @@ class PostScreen extends HookConsumerWidget {
                           }
                         },
                         style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Colors.black87),
+                          side: BorderSide(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -593,7 +605,10 @@ class PostScreen extends HookConsumerWidget {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
+                          backgroundColor:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -606,8 +621,11 @@ class PostScreen extends HookConsumerWidget {
                           postState.isAnonymous
                               ? t.anonymous.share
                               : t.share.shareButton,
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.black
+                                    : Colors.white,
                           ),
                         ),
                       ),
