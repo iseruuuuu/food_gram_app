@@ -6,6 +6,7 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/utils/user_level.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -233,7 +234,6 @@ class MyProfileScreen extends HookConsumerWidget {
             ),
             floatingActionButton: Builder(
               builder: (context) {
-                final isDark = Theme.of(context).brightness == Brightness.dark;
                 return SizedBox(
                   width: 70,
                   height: 70,
@@ -244,7 +244,7 @@ class MyProfileScreen extends HookConsumerWidget {
                     elevation: 10,
                     shape: CircleBorder(
                       side: BorderSide(
-                        color: isDark ? Colors.white : Colors.black,
+                        color: AppTheme.fabBorderColor(context),
                       ),
                     ),
                     onPressed: () async {

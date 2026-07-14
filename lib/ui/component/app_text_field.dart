@@ -35,9 +35,11 @@ class AppSearchTextField extends HookWidget {
       },
       [initialText],
     );
-    const bgColor = Colors.white;
-    const textColor = Colors.black87;
-    const hintColor = Colors.black54;
+    final scheme = Theme.of(context).colorScheme;
+    final bgColor = scheme.surface;
+    final textColor = scheme.onSurface;
+    final hintColor = scheme.onSurfaceVariant;
+    final borderColor = scheme.outlineVariant;
     return SizedBox(
       height: 48,
       child: Row(
@@ -61,7 +63,7 @@ class AppSearchTextField extends HookWidget {
                 },
                 selectionHeightStyle: BoxHeightStyle.strut,
                 textAlignVertical: TextAlignVertical.center,
-                style: const TextStyle(color: textColor),
+                style: TextStyle(color: textColor),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: bgColor,
@@ -70,8 +72,8 @@ class AppSearchTextField extends HookWidget {
                     vertical: 11,
                     horizontal: 10,
                   ),
-                  prefixIcon: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 3),
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3),
                     child: Icon(Icons.search, color: textColor, size: 24),
                   ),
                   hintStyle: Theme.of(context)
@@ -83,13 +85,13 @@ class AppSearchTextField extends HookWidget {
                       .textTheme
                       .bodyMedium!
                       .copyWith(color: textColor),
-                  enabledBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(18)),
-                    borderSide: BorderSide(color: Color(0xFFD0D0D0)),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(18)),
+                    borderSide: BorderSide(color: borderColor),
                   ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(18)),
-                    borderSide: BorderSide(color: Color(0xFFD0D0D0)),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(18)),
+                    borderSide: BorderSide(color: borderColor),
                   ),
                 ),
                 keyboardType: TextInputType.text,

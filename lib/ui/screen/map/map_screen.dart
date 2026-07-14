@@ -78,7 +78,7 @@ class MapScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final fabBg = isDark ? Colors.black : Colors.white;
     const fabFg = AppTheme.primaryBlue;
-    final fabBorder = isDark ? Colors.white54 : Colors.grey.shade300;
+    final fabBorder = AppTheme.fabBorderColor(context);
     ref.listen<MapModalSelection?>(mapModalSelectionProvider, (_, next) {
       if (next == null || next.placeSearchRestaurant == null) {
         unawaited(controller.clearSearchResultPin());
@@ -117,9 +117,8 @@ class MapScreen extends HookConsumerWidget {
                               .logMapPinTap(source: 'map');
                           final first = posts.first;
                           void openStoreSheet() {
-                            ref
-                                .read(mapModalSelectionProvider.notifier)
-                                .state = MapModalSelection(
+                            ref.read(mapModalSelectionProvider.notifier).state =
+                                MapModalSelection(
                               name: first.restaurant,
                               lat: first.lat,
                               lng: first.lng,
@@ -260,19 +259,16 @@ class MapScreen extends HookConsumerWidget {
       ),
       floatingActionButton: Builder(
         builder: (context) {
-          final isDark = Theme.of(context).brightness == Brightness.dark;
           return SizedBox(
-            width: 60,
-            height: 60,
+            width: 70,
+            height: 70,
             child: FloatingActionButton(
               heroTag: null,
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
               elevation: 10,
               shape: CircleBorder(
-                side: BorderSide(
-                  color: isDark ? Colors.white : Colors.black,
-                ),
+                side: BorderSide(color: AppTheme.fabBorderColor(context)),
               ),
               onPressed: () async {
                 await context
@@ -314,8 +310,8 @@ class _MapSideFab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 50,
-      height: 50,
+      width: 55,
+      height: 55,
       child: Theme(
         data: Theme.of(context).copyWith(highlightColor: fabBg),
         child: FloatingActionButton(

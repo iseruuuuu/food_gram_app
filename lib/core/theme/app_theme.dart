@@ -8,6 +8,13 @@ class AppTheme {
   /// アプリの青系（primary）に使う色
   static const Color primaryBlue = Color(0xFF0168B7);
 
+  /// 地図上FABの枠線。ダーク=白、ライト=グレーで背景に依存せず視認性を確保する。
+  static Color fabBorderColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? Colors.white
+        : Colors.grey.shade300;
+  }
+
   static ThemeData get light {
     final baseScheme = ColorScheme.fromSeed(
       seedColor: primaryBlue,

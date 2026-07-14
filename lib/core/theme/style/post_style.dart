@@ -36,6 +36,20 @@ class PostStyle {
         : optionalSectionBorder;
   }
 
+  /// 各入力フィールドの枠線。ダークでは薄い白系にして視認性を確保する。
+  static Color fieldBorderColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? Colors.white.withValues(alpha: 0.24)
+        : fieldBorder;
+  }
+
+  /// 写真追加エリアの枠線。背景はダークのまま、枠だけ白にして際立たせる。
+  static Color photoAreaBorder(BuildContext context, Color lightBorder) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? Colors.white
+        : lightBorder;
+  }
+
   static TextStyle title(BuildContext context) {
     return TextStyle(
       fontSize: 16,
