@@ -315,7 +315,7 @@ class PostsViewModel extends _$PostsViewModel {
 
   void setUser(Posts posts) {
     state.whenOrNull(
-      data: (posts) {
+      data: (_) {
         state = PostState.data(posts: posts);
       },
     );

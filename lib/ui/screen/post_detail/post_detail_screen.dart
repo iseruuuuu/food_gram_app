@@ -58,6 +58,10 @@ class PostDetailScreen extends HookConsumerWidget {
     );
     final t = Translations.of(context);
     final menuLoading = useState(false);
+    // 編集後の投稿を id ごとに保持し、詳細リストへ即時反映する
+    final postOverrides = useState<Map<int, Posts>>(const {});
+    final currentPosts =
+        postOverrides.value[memoizedPosts.id] ?? memoizedPosts;
     final loading = ref.watch(loadingProvider);
     final currentUser = ref.watch(currentUserProvider);
     final detailState = ref.watch(postDetailViewModelProvider());
@@ -149,7 +153,7 @@ class PostDetailScreen extends HookConsumerWidget {
                     builder: (context) {
                       if (currentUser == Env.masterAccount) {
                         return AppDetailMasterModalSheet(
-                          posts: posts,
+                          posts: currentPosts,
                           users: users,
                           delete: (posts) async {
                             await ref
@@ -161,7 +165,7 @@ class PostDetailScreen extends HookConsumerWidget {
                       if (users.userId != currentUser) {
                         return AppDetailOtherInfoModalSheet(
                           users: users,
-                          posts: posts,
+                          posts: currentPosts,
                           loading: menuLoading,
                           block: (userId) async {
                             return ref
@@ -172,19 +176,24 @@ class PostDetailScreen extends HookConsumerWidget {
                       } else {
                         return AppDetailMyInfoModalSheet(
                           users: users,
-                          posts: posts,
+                          posts: currentPosts,
                           loading: menuLoading,
                           delete: (posts) async {
                             await ref
                                 .read(postDetailViewModelProvider().notifier)
                                 .delete(posts);
                           },
-                          setUser: (posts) {
+                          setUser: (updatedPosts) {
+                            postOverrides.value = {
+                              ...postOverrides.value,
+                              updatedPosts.id: updatedPosts,
+                            };
                             ref
                                 .read(
-                                  postsViewModelProvider(posts.id).notifier,
+                                  postsViewModelProvider(updatedPosts.id)
+                                      .notifier,
                                 )
-                                .setUser(posts);
+                                .setUser(updatedPosts);
                           },
                         );
                       }
@@ -221,7 +230,9 @@ class PostDetailScreen extends HookConsumerWidget {
                         return RectangleBanner(id: 'detail_feed_$index');
                       }
                       final postIndex = index - (index ~/ (adInterval + 1));
-                      final post = posts[postIndex];
+                      final listPost = posts[postIndex];
+                      final post =
+                          postOverrides.value[listPost.id] ?? listPost;
                       return PostDetailListItem(
                         key: ValueKey('post_${post.id}'),
                         posts: post,
