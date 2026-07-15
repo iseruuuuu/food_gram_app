@@ -234,22 +234,7 @@ class PostDetailScreen extends HookConsumerWidget {
                       final post =
                           postOverrides.value[listPost.id] ?? listPost;
                       return PostDetailListItem(
-                        key: ValueKey(
-                          Object.hash(
-                            post.id,
-                            post.foodImage,
-                            post.foodName,
-                            post.comment,
-                            post.restaurant,
-                            post.foodTag,
-                            post.star,
-                            post.isAnonymous,
-                            post.priceAmount,
-                            post.priceCurrency,
-                            post.lat,
-                            post.lng,
-                          ),
-                        ),
+                        key: ValueKey('post_${post.id}'),
                         posts: post,
                         menuLoading: menuLoading,
                         onHeartLimitReached: () {
