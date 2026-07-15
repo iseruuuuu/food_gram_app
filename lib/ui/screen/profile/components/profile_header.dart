@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/analytics_screen.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
@@ -288,7 +291,6 @@ class AppProfileHeader extends ConsumerWidget {
                             mutedColor:
                                 isDark ? Colors.white70 : Colors.black54,
                             rankingLabel: t.profile.rankingStats,
-                            ref: ref,
                           )
                         : ProfileRankingLocked(
                             textColor: textColor,
@@ -298,6 +300,12 @@ class AppProfileHeader extends ConsumerWidget {
                             memberOnlyLabel: t.profile.memberOnlyBadge,
                             isDark: isDark,
                             onTap: () async {
+                              final analytics =
+                                  ref.read(firebaseAnalyticsServiceProvider);
+                              analytics.logScreen(AnalyticsScreen.ranking);
+                              analytics.logEventUnawaited(
+                                name: AnalyticsEvent.rankingOpen,
+                              );
                               try {
                                 await ref
                                     .read(

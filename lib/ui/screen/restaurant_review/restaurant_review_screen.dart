@@ -2,6 +2,8 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
@@ -25,6 +27,15 @@ class RestaurantReviewScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useEffect(
+      () {
+        final analytics = ref.read(firebaseAnalyticsServiceProvider);
+        analytics.logEventUnawaited(name: AnalyticsEvent.restaurantDetailOpen);
+        analytics.logEventUnawaited(name: AnalyticsEvent.restaurantReviewOpen);
+        return null;
+      },
+      const [],
+    );
     final reviewsAsync = ref.watch(
       restaurantReviewsProvider(
         lat: posts.lat,

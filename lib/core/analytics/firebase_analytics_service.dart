@@ -6,6 +6,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/analytics_screen.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -17,19 +18,37 @@ FirebaseAnalytics firebaseAnalytics(Ref ref) {
   return FirebaseAnalytics.instance;
 }
 
-/// Firebase Analytics の計測を担当
+/// FoodGram Analytics v1.0
+///
+/// 使い方:
+/// ```dart
+/// final analytics = ref.read(firebaseAnalyticsServiceProvider);
+/// analytics.logScreen(AnalyticsScreen.map);
+/// analytics.logEvent(name: AnalyticsEvent.postSuccess);
+/// ```
 class FirebaseAnalyticsService {
-  FirebaseAnalyticsService(this._analytics);
+  FirebaseAnalyticsService._(this._analytics);
+
+  /// アプリ全体で共有する唯一のインスタンス
+  static final FirebaseAnalyticsService instance =
+      FirebaseAnalyticsService._(FirebaseAnalytics.instance);
+
+  /// Riverpod 外（FCM / ATT 等）から使うエイリアス
+  static FirebaseAnalyticsService get shared => instance;
 
   final FirebaseAnalytics _analytics;
   final Logger _logger = Logger();
   bool _collectionEnabled = false;
+  FirebaseAnalyticsObserver? _navigatorObserver;
 
   bool get isCollectionEnabled => _collectionEnabled;
 
   /// 画面遷移の自動計測用 Observer（GoRouter に渡す）
   FirebaseAnalyticsObserver get navigatorObserver {
-    return FirebaseAnalyticsObserver(analytics: _analytics);
+    return _navigatorObserver ??= FirebaseAnalyticsObserver(
+      analytics: _analytics,
+      nameExtractor: AnalyticsScreen.nameExtractor,
+    );
   }
 
   /// ATT（iOS）に合わせて収集可否を同期し、有効時のみ app_open を送る
@@ -72,11 +91,37 @@ class FirebaseAnalyticsService {
     );
   }
 
-  /// Riverpod 外（FCM 等）から使う共有インスタンス
-  static final FirebaseAnalyticsService shared =
-      FirebaseAnalyticsService(FirebaseAnalytics.instance);
+  /// 画面表示（推奨 API）
+  void logScreen(String screenName, {String? screenClass}) {
+    unawaited(
+      logScreenView(
+        screenName: screenName,
+        screenClass: screenClass,
+      ),
+    );
+  }
 
-  /// UI / 購入フローをブロックしない計測（失敗・遅延は呼び出し元に影響しない）
+  /// 画面表示（await が必要な場合）
+  Future<void> logScreenView({
+    required String screenName,
+    String? screenClass,
+  }) async {
+    if (!_collectionEnabled) {
+      return;
+    }
+    if (kDebugMode) {
+      _logger.d('Analytics screen: $screenName');
+    }
+    await _runSafe(
+      'logScreenView',
+      () => _analytics.logScreenView(
+        screenName: screenName,
+        screenClass: screenClass ?? screenName,
+      ),
+    );
+  }
+
+  /// UI / 購入フローをブロックしない計測
   void logEventUnawaited({
     required String name,
     Map<String, Object>? parameters,
@@ -270,23 +315,6 @@ class FirebaseAnalyticsService {
     );
   }
 
-  /// 画面表示（手動計測が必要な場合）
-  Future<void> logScreenView({
-    required String screenName,
-    String? screenClass,
-  }) async {
-    if (!_collectionEnabled) {
-      return;
-    }
-    await _runSafe(
-      'logScreenView',
-      () => _analytics.logScreenView(
-        screenName: screenName,
-        screenClass: screenClass ?? screenName,
-      ),
-    );
-  }
-
   Future<void> _runSafe(String label, Future<void> Function() action) async {
     try {
       await action();
@@ -298,10 +326,10 @@ class FirebaseAnalyticsService {
 
 @Riverpod(keepAlive: true)
 FirebaseAnalyticsService firebaseAnalyticsService(Ref ref) {
-  return FirebaseAnalyticsService(ref.read(firebaseAnalyticsProvider));
+  return FirebaseAnalyticsService.instance;
 }
 
-/// アプリ起動時の初期化（main から呼ぶ）
+/// アプリ起動時の初期化（main から呼ぶ）。必ず Singleton を初期化する。
 Future<void> initializeFirebaseAnalytics() async {
-  await FirebaseAnalyticsService(FirebaseAnalytics.instance).initialize();
+  await FirebaseAnalyticsService.instance.initialize();
 }

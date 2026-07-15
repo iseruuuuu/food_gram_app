@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/analytics_screen.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
@@ -78,9 +79,9 @@ class PostScreen extends HookConsumerWidget {
 
     useEffect(
       () {
-        ref.read(firebaseAnalyticsServiceProvider).logPostStart(
-              source: routerPath,
-            );
+        final analytics = ref.read(firebaseAnalyticsServiceProvider);
+        // ScreenView(Post) は GoRouter Observer が送信。Draft のみ手動。
+        unawaited(analytics.logPostStart(source: routerPath));
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           if (restaurant != null) {
             ref
@@ -94,9 +95,8 @@ class PostScreen extends HookConsumerWidget {
           }
           if (draft != null && draft.hasRestorableContent) {
             ref.read(postViewModelProvider().notifier).markRestoredFromDraft();
-            ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
-                  name: AnalyticsEvent.draftOpen,
-                );
+            analytics.logScreen(AnalyticsScreen.draft);
+            analytics.logEventUnawaited(name: AnalyticsEvent.draftOpen);
             ref.read(postViewModelProvider().notifier).applyDraft(
                   draft,
                   applyRestaurant: restaurant == null,

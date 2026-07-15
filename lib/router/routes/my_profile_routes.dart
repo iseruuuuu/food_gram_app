@@ -11,35 +11,55 @@ final myProfileRouter = GoRoute(
       path: RouterPath.notifications,
       name: RouterPath.notifications,
       pageBuilder: (context, state) {
-        return whiteOut(const NotificationsScreen());
+        return whiteOut(
+          const NotificationsScreen(),
+          key: state.pageKey,
+          name: AnalyticsScreen.notification,
+        );
       },
     ),
     GoRoute(
       path: RouterPath.edit,
       name: RouterPath.edit,
       pageBuilder: (context, state) {
-        return slideIn(const EditScreen());
+        return slideIn(
+          const EditScreen(),
+          key: state.pageKey,
+          name: AnalyticsScreen.editProfile,
+        );
       },
     ),
     GoRoute(
       path: RouterPath.storedPost,
       name: RouterPath.storedPost,
       pageBuilder: (context, state) {
-        return whiteOut(const StoredPostScreen());
+        return whiteOut(
+          const StoredPostScreen(),
+          key: state.pageKey,
+          name: AnalyticsScreen.savedPosts,
+        );
       },
     ),
     GoRoute(
       path: RouterPath.memoryAlbumList,
       name: RouterPath.memoryAlbumList,
       pageBuilder: (context, state) {
-        return whiteOut(const MemoryAlbumListScreen());
+        return whiteOut(
+          const MemoryAlbumListScreen(),
+          key: state.pageKey,
+          name: AnalyticsScreen.album,
+        );
       },
       routes: <RouteBase>[
         GoRoute(
           path: RouterPath.memoryAlbumCreate,
           name: RouterPath.memoryAlbumCreate,
           pageBuilder: (context, state) {
-            return slideIn(const MemoryAlbumFormScreen());
+            return slideIn(
+              const MemoryAlbumFormScreen(),
+              key: state.pageKey,
+              name: AnalyticsScreen.albumForm,
+            );
           },
         ),
         GoRoute(
@@ -49,9 +69,16 @@ final myProfileRouter = GoRoute(
             final extra = state.extra;
             final albumId = extra is String ? extra : null;
             if (albumId == null) {
-              return slideIn(const Scaffold(body: RouterErrorWidget()));
+              return slideIn(
+                const Scaffold(body: RouterErrorWidget()),
+                key: state.pageKey,
+              );
             }
-            return slideIn(MemoryAlbumDetailScreen(albumId: albumId));
+            return slideIn(
+              MemoryAlbumDetailScreen(albumId: albumId),
+              key: state.pageKey,
+              name: AnalyticsScreen.albumDetail,
+            );
           },
           routes: <RouteBase>[
             GoRoute(
@@ -61,9 +88,16 @@ final myProfileRouter = GoRoute(
                 final extra = state.extra;
                 final albumId = extra is String ? extra : null;
                 if (albumId == null) {
-                  return slideIn(const Scaffold(body: RouterErrorWidget()));
+                  return slideIn(
+                    const Scaffold(body: RouterErrorWidget()),
+                    key: state.pageKey,
+                  );
                 }
-                return slideIn(MemoryAlbumFormScreen(albumId: albumId));
+                return slideIn(
+                  MemoryAlbumFormScreen(albumId: albumId),
+                  key: state.pageKey,
+                  name: AnalyticsScreen.albumForm,
+                );
               },
             ),
           ],
@@ -77,7 +111,10 @@ final myProfileRouter = GoRoute(
         final extra = state.extra;
         final model = extra is Model ? extra : null;
         if (model == null) {
-          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
+          return slideUpTransition(
+            const Scaffold(body: RouterErrorWidget()),
+            key: state.pageKey,
+          );
         }
         return slideUpTransition(
           PostDetailScreen(
@@ -85,6 +122,8 @@ final myProfileRouter = GoRoute(
             users: model.users,
             type: PostDetailScreenType.stored,
           ),
+          key: state.pageKey,
+          name: AnalyticsScreen.postDetail,
         );
       },
     ),
@@ -94,6 +133,8 @@ final myProfileRouter = GoRoute(
       pageBuilder: (context, state) {
         return whiteOut(
           const PostScreen(routerPath: RouterPath.myProfileRestaurant),
+          key: state.pageKey,
+          name: AnalyticsScreen.post,
         );
       },
     ),
@@ -111,9 +152,16 @@ final myProfileRouter = GoRoute(
             final extra = state.extra;
             final restaurant = extra is Restaurant ? extra : null;
             if (restaurant == null) {
-              return slideIn(const Scaffold(body: RouterErrorWidget()));
+              return slideIn(
+                const Scaffold(body: RouterErrorWidget()),
+                key: state.pageKey,
+              );
             }
-            return slideIn(RestaurantMapScreen(restaurant: restaurant));
+            return slideIn(
+              RestaurantMapScreen(restaurant: restaurant),
+              key: state.pageKey,
+              name: AnalyticsScreen.restaurantMap,
+            );
           },
         ),
       ],
@@ -125,7 +173,10 @@ final myProfileRouter = GoRoute(
         final extra = state.extra;
         final model = extra is Model ? extra : null;
         if (model == null) {
-          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
+          return slideUpTransition(
+            const Scaffold(body: RouterErrorWidget()),
+            key: state.pageKey,
+          );
         }
         return slideUpTransition(
           PostDetailScreen(
@@ -133,6 +184,8 @@ final myProfileRouter = GoRoute(
             users: model.users,
             type: PostDetailScreenType.myprofile,
           ),
+          key: state.pageKey,
+          name: AnalyticsScreen.postDetail,
         );
       },
     ),
@@ -143,9 +196,16 @@ final myProfileRouter = GoRoute(
         final extra = state.extra;
         final posts = extra is Posts ? extra : null;
         if (posts == null) {
-          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
+          return slideUpTransition(
+            const Scaffold(body: RouterErrorWidget()),
+            key: state.pageKey,
+          );
         }
-        return slideUpTransition(EditPostScreen(posts: posts));
+        return slideUpTransition(
+          EditPostScreen(posts: posts),
+          key: state.pageKey,
+          name: AnalyticsScreen.editPost,
+        );
       },
     ),
     GoRoute(
@@ -155,13 +215,18 @@ final myProfileRouter = GoRoute(
         final extra = state.extra;
         final model = extra is Restaurant ? extra : null;
         if (model == null) {
-          return whiteOut(const Scaffold(body: RouterErrorWidget()));
+          return whiteOut(
+            const Scaffold(body: RouterErrorWidget()),
+            key: state.pageKey,
+          );
         }
         return whiteOut(
           PostScreen(
             routerPath: RouterPath.myProfileRestaurant,
             restaurant: model,
           ),
+          key: state.pageKey,
+          name: AnalyticsScreen.post,
         );
       },
     ),
@@ -173,9 +238,16 @@ final myProfileRouter = GoRoute(
         final extra = state.extra;
         final posts = extra is Posts ? extra : null;
         if (posts == null) {
-          return slideUpTransition(const Scaffold(body: RouterErrorWidget()));
+          return slideUpTransition(
+            const Scaffold(body: RouterErrorWidget()),
+            key: state.pageKey,
+          );
         }
-        return slideUpTransition(RestaurantReviewScreen(posts: posts));
+        return slideUpTransition(
+          RestaurantReviewScreen(posts: posts),
+          key: state.pageKey,
+          name: AnalyticsScreen.restaurantDetail,
+        );
       },
     ),
   ],

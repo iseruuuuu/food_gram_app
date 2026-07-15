@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/analytics_screen.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
@@ -76,6 +77,7 @@ class RevenueCatService extends _$RevenueCatService {
     final wasActive =
         beforeInfo.entitlements.all[_entitlementId]?.isActive ?? false;
     final analytics = ref.read(firebaseAnalyticsServiceProvider);
+    analytics.logScreen(AnalyticsScreen.paywall);
     analytics.logEventUnawaited(name: AnalyticsEvent.paywallOpen);
     if (!wasActive) {
       analytics.logEventUnawaited(name: AnalyticsEvent.purchaseStart);

@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/memory_album.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
@@ -92,6 +94,10 @@ Future<bool> deleteMemoryAlbum(
     await ref
         .read(memoryAlbumListViewModelProvider.notifier)
         .deleteAlbum(albumId);
+    ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+          name: AnalyticsEvent.albumDelete,
+          parameters: {AnalyticsParam.albumId: albumId},
+        );
     return true;
   } on Object catch (e, st) {
     debugPrint('deleteMemoryAlbum: $e\n$st');

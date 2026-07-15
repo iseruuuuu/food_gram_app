@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/analytics/analytics_screen.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/model.dart';
@@ -83,6 +84,7 @@ GoRouter router(Ref ref) {
         pageBuilder: (context, state) {
           return MaterialPage(
             key: state.pageKey,
+            name: AnalyticsScreen.authentication,
             child: const AuthenticationScreen(),
           );
         },
@@ -91,14 +93,22 @@ GoRouter router(Ref ref) {
         path: '/${RouterPath.newAccount}',
         name: RouterPath.newAccount,
         pageBuilder: (context, state) {
-          return blackOut(const NewAccountScreen());
+          return blackOut(
+            const NewAccountScreen(),
+            key: state.pageKey,
+            name: AnalyticsScreen.newAccount,
+          );
         },
       ),
       GoRoute(
         path: '/${RouterPath.tab}',
         name: RouterPath.tab,
         pageBuilder: (context, state) {
-          return blackOut(const TabScreen());
+          // Tab 本体の ScreenView は Widget 切替時に手動送信する
+          return blackOut(
+            const TabScreen(),
+            key: state.pageKey,
+          );
         },
         routes: <RouteBase>[
           imageEditorRoute,
@@ -118,6 +128,8 @@ final imageEditorRoute = GoRoute(
   pageBuilder: (context, state) {
     final imagePath = state.extra as String? ?? '';
     return MaterialPage(
+      key: state.pageKey,
+      name: AnalyticsScreen.imageEditor,
       child: ImageEditorScreen(imagePath: imagePath),
     );
   },

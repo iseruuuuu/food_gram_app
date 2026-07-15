@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
@@ -11,16 +11,23 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class NotificationsScreen extends ConsumerWidget {
+class NotificationsScreen extends HookConsumerWidget {
   const NotificationsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useEffect(
+      () {
+        ref
+            .read(firebaseAnalyticsServiceProvider)
+            .logEventUnawaited(name: AnalyticsEvent.notificationOpen);
+        return null;
+      },
+      const [],
+    );
     final async = ref.watch(myLikeNotificationsProvider);
-    ref
-        .read(firebaseAnalyticsServiceProvider)
-        .logEventUnawaited(name: AnalyticsEvent.notificationOpen);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).brightness == Brightness.light
@@ -76,13 +83,13 @@ class NotificationsScreen extends ConsumerWidget {
               return ListTile(
                 onTap: () async {
                   ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
-                    name: AnalyticsEvent.notificationLikeOpen,
-                    parameters: {AnalyticsParam.postId: post.id},
-                  );
+                        name: AnalyticsEvent.notificationLikeOpen,
+                        parameters: {AnalyticsParam.postId: post.id},
+                      );
                   ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
-                    name: AnalyticsEvent.notificationPostOpen,
-                    parameters: {AnalyticsParam.postId: post.id},
-                  );
+                        name: AnalyticsEvent.notificationPostOpen,
+                        parameters: {AnalyticsParam.postId: post.id},
+                      );
                   final postResult = await ref
                       .read(detailPostRepositoryProvider.notifier)
                       .getPostData(posts, index);

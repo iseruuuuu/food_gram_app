@@ -1,4 +1,5 @@
-/// Firebase Analytics のカスタムイベント名
+/// FoodGram Analytics v1.0 イベント名
+/// 命名規則: snake_case / `{object}_{action}` （open / create / success / failed など）
 abstract final class AnalyticsEvent {
   // --- アプリ起動 ---
   static const String appOpen = 'app_open';
@@ -13,7 +14,7 @@ abstract final class AnalyticsEvent {
   static const String tutorialStart = 'tutorial_start';
   static const String tutorialComplete = 'tutorial_complete';
 
-  // --- タイムライン ---
+  // --- タイムライン (Food) ---
   static const String timelineOpen = 'timeline_open';
   static const String timelinePostImpression = 'timeline_post_impression';
   static const String timelinePostOpen = 'timeline_post_open';
@@ -48,21 +49,22 @@ abstract final class AnalyticsEvent {
       'post_complete_without_comment';
   static const String postSuccess = 'post_success';
   static const String postFailed = 'post_failed';
+  static const String postEdit = 'post_edit';
+  static const String postEditComplete = 'post_edit_complete';
+  static const String postDelete = 'post_delete';
+  static const String postDetailOpen = 'post_detail_open';
+  static const String postLike = 'post_like';
+  static const String postSave = 'post_save';
+  static const String postShare = 'post_share';
+  static const String postShareImage = 'post_share_image';
+  static const String postShareLink = 'post_share_link';
+  static const String postTranslate = 'post_translate';
 
   // --- 下書き ---
   static const String draftSave = 'draft_save';
   static const String draftOpen = 'draft_open';
   static const String draftDelete = 'draft_delete';
   static const String draftPost = 'draft_post';
-
-  // --- 投稿詳細 ---
-  static const String postDetailOpen = 'post_detail_open';
-  static const String postLike = 'post_like';
-  static const String postSave = 'post_save';
-  static const String postShare = 'post_share';
-  static const String postTranslate = 'post_translate';
-  static const String postEdit = 'post_edit';
-  static const String postDelete = 'post_delete';
 
   // --- マップ ---
   static const String mapOpen = 'map_open';
@@ -73,8 +75,10 @@ abstract final class AnalyticsEvent {
   static const String mapClusterTap = 'map_cluster_tap';
   static const String mapFilterOpen = 'map_filter_open';
   static const String mapFilterApply = 'map_filter_apply';
+  static const String mapShare = 'map_share';
+  static const String mapStatsShare = 'map_stats_share';
 
-  // --- マイマップ ---
+  // --- マイマップ / Record ---
   static const String myMapOpen = 'mymap_open';
   static const String japanMapOpen = 'japan_map_open';
   static const String worldMapOpen = 'world_map_open';
@@ -84,9 +88,6 @@ abstract final class AnalyticsEvent {
   static const String countryComplete = 'country_complete';
   static const String prefectureProgressView = 'prefecture_progress_view';
   static const String countryProgressView = 'country_progress_view';
-  static const String mapStatsShare = 'map_stats_share';
-
-  // --- 記録タブ ---
   static const String recordOpen = 'record_open';
   static const String recordSummaryOpen = 'record_summary_open';
   static const String recordYearOpen = 'record_year_open';
@@ -105,14 +106,18 @@ abstract final class AnalyticsEvent {
   static const String foodInsightShare = 'food_insight_share';
   static const String firstInsightOpen = 'first_insight_open';
 
-  // --- 保存 ---
-  static const String savedPostOpen = 'saved_post_open';
-  static const String savedAlbumOpen = 'saved_album_open';
+  // --- アルバム ---
+  static const String albumOpen = 'album_open';
+  static const String albumDetailOpen = 'album_detail_open';
   static const String albumCreate = 'album_create';
   static const String albumEdit = 'album_edit';
+  static const String albumEditComplete = 'album_edit_complete';
   static const String albumDelete = 'album_delete';
   static const String albumAddPost = 'album_add_post';
   static const String albumRemovePost = 'album_remove_post';
+  static const String savedPostOpen = 'saved_post_open';
+  static const String savedAlbumOpen = 'saved_album_open';
+  static const String foodMemoryOpen = 'food_memory_open';
 
   // --- 通知 ---
   static const String notificationOpen = 'notification_open';
@@ -122,20 +127,19 @@ abstract final class AnalyticsEvent {
   static const String notificationCommentOpen = 'notification_comment_open';
 
   // --- レストラン ---
+  static const String restaurantOpen = 'restaurant_open';
+  static const String restaurantDetailOpen = 'restaurant_detail_open';
   static const String restaurantReviewOpen = 'restaurant_review_open';
   static const String restaurantReviewPostOpen = 'restaurant_review_post_open';
   static const String restaurantRevisitOpen = 'restaurant_revisit_open';
 
-  // --- プロフィール ---
+  // --- プロフィール / 設定 / ランキング ---
   static const String profileOpen = 'profile_open';
   static const String profileEdit = 'profile_edit';
   static const String profileShare = 'profile_share';
   static const String profileLevelOpen = 'profile_level_open';
-
-  // --- シェア ---
-  static const String postShareImage = 'post_share_image';
-  static const String postShareLink = 'post_share_link';
-  static const String mapShare = 'map_share';
+  static const String settingOpen = 'setting_open';
+  static const String rankingOpen = 'ranking_open';
 
   // --- Premium ---
   static const String paywallOpen = 'paywall_open';
@@ -149,20 +153,17 @@ abstract final class AnalyticsEvent {
   static const String premiumProfileCustomizationTap =
       'premium_profile_customization_tap';
 
-  // --- FoodGram らしいイベント ---
+  // --- マイルストーン / FoodGram ---
   static const String firstRecordOpen = 'first_record_open';
   static const String firstJapanMapOpen = 'first_japan_map_open';
   static const String firstWorldMapOpen = 'first_world_map_open';
   static const String firstPostWithComment = 'first_post_with_comment';
   static const String firstPostWithRestaurant = 'first_post_with_restaurant';
-  static const String foodMemoryOpen = 'food_memory_open';
   static const String yearlySummaryOpen = 'yearly_summary_open';
   static const String monthlySummaryOpen = 'monthly_summary_open';
   static const String streakView = 'streak_view';
   static const String streakContinue = 'streak_continue';
   static const String streakBreak = 'streak_break';
-
-  // --- マイルストーン ---
   static const String user10Posts = 'user_10_posts';
   static const String user50Posts = 'user_50_posts';
   static const String user100Posts = 'user_100_posts';
@@ -171,13 +172,14 @@ abstract final class AnalyticsEvent {
   static const String userFirstPrefectureComplete =
       'user_first_prefecture_complete';
 
-  // 既存イベント（互換）
+  // --- 認証 ---
   static const String login = 'login';
+
   @Deprecated('Use postTranslate instead')
   static const String translateTap = 'post_translate';
 }
 
-/// イベントパラメータ名（Firebase 予約語を避けたスネークケース）
+/// イベントパラメータ名（Firebase 予約語を避けた snake_case）
 abstract final class AnalyticsParam {
   static const String method = 'method';
   static const String postId = 'post_id';

@@ -204,6 +204,9 @@ class PostViewModel extends _$PostViewModel {
         }
         final fromDraft = _restoredFromDraft;
         _restoredFromDraft = false;
+        final existingDraft = await _preference.getPostDraft();
+        final hadUnusedDraft =
+            !fromDraft && (existingDraft?.hasRestorableContent ?? false);
         await _preference.clearPostDraft();
         state = state.copyWith(
           status: PostStatus.success.name,
@@ -216,13 +219,17 @@ class PostViewModel extends _$PostViewModel {
         final hasComment = commentController.text.trim().isNotEmpty;
         final hasRestaurant = state.restaurant != defaultRestaurantText &&
             state.restaurant != '不明';
+        final analytics = ref.read(firebaseAnalyticsServiceProvider);
         unawaited(
-          ref.read(firebaseAnalyticsServiceProvider).logPostSuccess(
-                fromDraft: fromDraft,
-                hasComment: hasComment,
-                hasRestaurant: hasRestaurant,
-              ),
+          analytics.logPostSuccess(
+            fromDraft: fromDraft,
+            hasComment: hasComment,
+            hasRestaurant: hasRestaurant,
+          ),
         );
+        if (hadUnusedDraft) {
+          analytics.logEventUnawaited(name: AnalyticsEvent.draftDelete);
+        }
       },
       failure: (error) {
         if (!isActiveSubmit()) {

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/memory_album.dart';
 import 'package:food_gram_app/core/theme/memory_album_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
@@ -28,6 +30,16 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
     final isOpeningAlbum = useRef(false);
+
+    useEffect(
+      () {
+        ref
+            .read(firebaseAnalyticsServiceProvider)
+            .logEventUnawaited(name: AnalyticsEvent.albumOpen);
+        return null;
+      },
+      const [],
+    );
 
     Future<void> reload() async {
       await ref.read(memoryAlbumListViewModelProvider.notifier).reload();

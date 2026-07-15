@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-CustomTransitionPage<Object?> blackOut(Widget screen) {
+CustomTransitionPage<Object?> blackOut(
+  Widget screen, {
+  LocalKey? key,
+  String? name,
+}) {
   return CustomTransitionPage<Object?>(
+    key: key,
+    name: name,
     child: screen,
     transitionDuration: const Duration(seconds: 1),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -40,8 +46,14 @@ CustomTransitionPage<Object?> blackOut(Widget screen) {
   );
 }
 
-CustomTransitionPage<Object?> whiteOut(Widget screen) {
+CustomTransitionPage<Object?> whiteOut(
+  Widget screen, {
+  LocalKey? key,
+  String? name,
+}) {
   return CustomTransitionPage<Object?>(
+    key: key,
+    name: name,
     child: screen,
     transitionDuration: const Duration(seconds: 1),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -79,8 +91,14 @@ CustomTransitionPage<Object?> whiteOut(Widget screen) {
   );
 }
 
-CustomTransitionPage<Object?> slideIn(Widget screen) {
+CustomTransitionPage<Object?> slideIn(
+  Widget screen, {
+  LocalKey? key,
+  String? name,
+}) {
   return CustomTransitionPage<Object?>(
+    key: key,
+    name: name,
     child: screen,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       final offsetTween = Tween<Offset>(
@@ -100,8 +118,14 @@ CustomTransitionPage<Object?> slideIn(Widget screen) {
   );
 }
 
-CustomTransitionPage<Object?> scaleUpTransition(Widget screen) {
+CustomTransitionPage<Object?> scaleUpTransition(
+  Widget screen, {
+  LocalKey? key,
+  String? name,
+}) {
   return CustomTransitionPage<Object?>(
+    key: key,
+    name: name,
     child: screen,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       return ScaleTransition(
@@ -117,8 +141,14 @@ CustomTransitionPage<Object?> scaleUpTransition(Widget screen) {
   );
 }
 
-CustomTransitionPage<Object?> elasticTransition(Widget screen) {
+CustomTransitionPage<Object?> elasticTransition(
+  Widget screen, {
+  LocalKey? key,
+  String? name,
+}) {
   return CustomTransitionPage<Object?>(
+    key: key,
+    name: name,
     child: screen,
     transitionDuration: const Duration(seconds: 1),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -133,8 +163,14 @@ CustomTransitionPage<Object?> elasticTransition(Widget screen) {
   );
 }
 
-CustomTransitionPage<Object?> slideUpTransition(Widget screen) {
+CustomTransitionPage<Object?> slideUpTransition(
+  Widget screen, {
+  LocalKey? key,
+  String? name,
+}) {
   return CustomTransitionPage<Object?>(
+    key: key,
+    name: name,
     child: screen,
     transitionDuration: const Duration(milliseconds: 400),
     reverseTransitionDuration: const Duration(milliseconds: 400),
@@ -170,8 +206,14 @@ CustomTransitionPage<Object?> slideUpTransition(Widget screen) {
   );
 }
 
-CustomTransitionPage<Object?> zoomTransition(Widget screen) {
+CustomTransitionPage<Object?> zoomTransition(
+  Widget screen, {
+  LocalKey? key,
+  String? name,
+}) {
   return CustomTransitionPage<Object?>(
+    key: key,
+    name: name,
     child: screen,
     transitionDuration: const Duration(milliseconds: 400),
     reverseTransitionDuration: const Duration(milliseconds: 400),

@@ -11,7 +11,11 @@ final settingRouter = GoRoute(
       path: RouterPath.license,
       name: RouterPath.license,
       pageBuilder: (context, state) {
-        return scaleUpTransition(const LicensePage());
+        return scaleUpTransition(
+          const LicensePage(),
+          key: state.pageKey,
+          name: AnalyticsScreen.license,
+        );
       },
     ),
     GoRoute(

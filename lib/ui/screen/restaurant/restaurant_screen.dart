@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/api/restaurant/repository/google_restaurant_repository.dart';
 import 'package:food_gram_app/core/api/restaurant/repository/kakao_restaurant_repository.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
@@ -19,6 +21,15 @@ class RestaurantScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useEffect(
+      () {
+        ref
+            .read(firebaseAnalyticsServiceProvider)
+            .logEventUnawaited(name: AnalyticsEvent.restaurantOpen);
+        return null;
+      },
+      const [],
+    );
     final keyword = useState('');
     final isKakao = useState(false);
     final restaurant =
