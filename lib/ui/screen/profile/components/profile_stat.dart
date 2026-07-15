@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
-import 'package:food_gram_app/core/analytics/analytics_screen.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -184,9 +183,14 @@ class _ProfileRankingUnlockedState
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final analytics = ref.read(firebaseAnalyticsServiceProvider);
-      analytics.logScreen(AnalyticsScreen.ranking);
-      analytics.logEventUnawaited(name: AnalyticsEvent.rankingOpen);
+      if (!mounted) {
+        return;
+      }
+      // Profile 上のウィジェットなので logScreen(Ranking) は送らない
+      // （送ると以降のイベントが Ranking 画面に紐づく）
+      ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+            name: AnalyticsEvent.rankingOpen,
+          );
     });
   }
 

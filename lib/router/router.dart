@@ -185,5 +185,7 @@ final class RouterPath {
   static const String mapProfile = 'map_profile';
   static const String mapProfileDetail = 'map_profile_detail';
   static const String mapDetailPost = 'map_detail_post';
+  static const String mapRestaurant = 'map_restaurant';
   static const String mapRestaurantReview = 'map_restaurant_review';
+  static const String restaurantMapFromMap = 'restaurant_map_map';
 }

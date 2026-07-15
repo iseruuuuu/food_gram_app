@@ -104,7 +104,9 @@ abstract final class AnalyticsScreen {
     'map_profile': userProfile,
     'map_profile_detail': postDetail,
     'map_detail_post': post,
+    'map_restaurant': restaurant,
     'map_restaurant_review': restaurantDetail,
+    'restaurant_map_map': restaurantMap,
     'image_editor': imageEditor,
   };
 

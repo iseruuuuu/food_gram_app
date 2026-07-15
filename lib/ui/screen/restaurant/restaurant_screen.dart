@@ -128,10 +128,18 @@ class RestaurantScreen extends HookConsumerWidget {
                                       // 現在のルートパスに基づいて適切なルート名を決定
                                       final currentPath =
                                           GoRouterState.of(context).uri.path;
-                                      final routeName = currentPath
-                                              .contains(RouterPath.timeLine)
-                                          ? RouterPath.restaurantMap
-                                          : RouterPath.restaurantMapMyProfile;
+                                      final routeName =
+                                          currentPath.contains(
+                                        RouterPath.timeLine,
+                                      )
+                                              ? RouterPath.restaurantMap
+                                              : currentPath.contains(
+                                                  RouterPath.mapDetailPost,
+                                                )
+                                                  ? RouterPath
+                                                      .restaurantMapFromMap
+                                                  : RouterPath
+                                                      .restaurantMapMyProfile;
                                       // pushNamed の結果を待つ
                                       final result =
                                           await context.pushNamed<Restaurant>(
