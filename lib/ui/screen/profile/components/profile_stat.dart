@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
@@ -156,13 +158,12 @@ class ProfileRankingLocked extends StatelessWidget {
   }
 }
 
-class ProfileRankingUnlocked extends StatelessWidget {
+class ProfileRankingUnlocked extends ConsumerStatefulWidget {
   const ProfileRankingUnlocked({
     required this.userId,
     required this.textColor,
     required this.mutedColor,
     required this.rankingLabel,
-    required this.ref,
     super.key,
   });
 
@@ -170,12 +171,33 @@ class ProfileRankingUnlocked extends StatelessWidget {
   final Color textColor;
   final Color mutedColor;
   final String rankingLabel;
-  final WidgetRef ref;
+
+  @override
+  ConsumerState<ProfileRankingUnlocked> createState() =>
+      _ProfileRankingUnlockedState();
+}
+
+class _ProfileRankingUnlockedState
+    extends ConsumerState<ProfileRankingUnlocked> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      // Profile 上のウィジェットなので logScreen(Ranking) は送らない
+      // （送ると以降のイベントが Ranking 画面に紐づく）
+      ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+            name: AnalyticsEvent.rankingOpen,
+          );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
-    final asyncRank = ref.watch(postCountRankProvider(userId));
+    final asyncRank = ref.watch(postCountRankProvider(widget.userId));
     return asyncRank.when(
       data: (rank) => ProfileStat(
         icon: Icons.emoji_events_outlined,
@@ -183,9 +205,9 @@ class ProfileRankingUnlocked extends StatelessWidget {
         iconColor: Colors.indigo.shade400,
         valueText: t.profile.rankingPositionFormat
             .replaceAll('{rank}', rank.toString()),
-        label: rankingLabel,
-        textColor: textColor,
-        mutedColor: mutedColor,
+        label: widget.rankingLabel,
+        textColor: widget.textColor,
+        mutedColor: widget.mutedColor,
       ),
       loading: () => Column(
         children: [
@@ -198,7 +220,7 @@ class ProfileRankingUnlocked extends StatelessWidget {
                 height: 22,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: mutedColor,
+                  color: widget.mutedColor,
                 ),
               ),
             ),
@@ -206,17 +228,17 @@ class ProfileRankingUnlocked extends StatelessWidget {
           const Gap(8),
           Text(
             t.profile.rankingHiddenPosition,
-            style: TextStyle(fontSize: 20, color: textColor),
+            style: TextStyle(fontSize: 20, color: widget.textColor),
           ),
           const Gap(4),
           Text(
-            rankingLabel,
-            style: TextStyle(fontSize: 13, color: mutedColor),
+            widget.rankingLabel,
+            style: TextStyle(fontSize: 13, color: widget.mutedColor),
           ),
         ],
       ),
       error: (_, __) => GestureDetector(
-        onTap: () => ref.invalidate(postCountRankProvider(userId)),
+        onTap: () => ref.invalidate(postCountRankProvider(widget.userId)),
         child: Column(
           children: [
             Container(
@@ -231,12 +253,12 @@ class ProfileRankingUnlocked extends StatelessWidget {
             const Gap(8),
             Text(
               t.profile.rankingHiddenPosition,
-              style: TextStyle(fontSize: 20, color: textColor),
+              style: TextStyle(fontSize: 20, color: widget.textColor),
             ),
             const Gap(4),
             Text(
-              rankingLabel,
-              style: TextStyle(fontSize: 13, color: mutedColor),
+              widget.rankingLabel,
+              style: TextStyle(fontSize: 13, color: widget.mutedColor),
             ),
           ],
         ),

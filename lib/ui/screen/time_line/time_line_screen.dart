@@ -37,15 +37,7 @@ class TimeLineScreen extends HookConsumerWidget {
       scrollController: scrollController,
       tabIndex: _tabIndex,
     );
-    useEffect(
-      () {
-        ref
-            .read(firebaseAnalyticsServiceProvider)
-            .logEventUnawaited(name: AnalyticsEvent.timelineOpen);
-        return null;
-      },
-      const [],
-    );
+    // timeline_open / ScreenView(Food) は TabViewModel で送信
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(0),

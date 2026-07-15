@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/analytics_screen.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/ui/screen/map/map_screen.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_screen.dart';
@@ -21,12 +22,15 @@ final scrollToTopForTabProvider =
 @riverpod
 class TabViewModel extends _$TabViewModel {
   bool _isHandlingTap = false;
+  bool _didLogInitialTab = false;
 
   @override
   TabState build({
     TabState initState = const TabState(),
   }) {
     ref.read(admobOpenNotifierProvider).loadAd();
+    // 初回表示タブの ScreenView（Observer では取れない）
+    Future.microtask(_logInitialTabIfNeeded);
     return initState;
   }
 
@@ -37,6 +41,14 @@ class TabViewModel extends _$TabViewModel {
     const MyProfileScreen(),
     const SettingScreen(),
   ];
+
+  void _logInitialTabIfNeeded() {
+    if (_didLogInitialTab) {
+      return;
+    }
+    _didLogInitialTab = true;
+    _logTabAnalytics(state.selectedIndex);
+  }
 
   Future<void> onTap(int index) async {
     if (_isHandlingTap) {
@@ -73,17 +85,7 @@ class TabViewModel extends _$TabViewModel {
   }
 
   void _switchToTab(int index) {
-    final analytics = ref.read(firebaseAnalyticsServiceProvider);
-    switch (index) {
-      case 0:
-        unawaited(analytics.logEvent(name: AnalyticsEvent.mapOpen));
-      case 1:
-        unawaited(analytics.logEvent(name: AnalyticsEvent.timelineOpen));
-      case 2:
-        unawaited(analytics.logEvent(name: AnalyticsEvent.myMapOpen));
-      case 3:
-        unawaited(analytics.logEvent(name: AnalyticsEvent.profileOpen));
-    }
+    _logTabAnalytics(index);
     if (index == 1 || index == 3) {
       final current = ref.read(scrollToTopForTabProvider);
       ref.read(scrollToTopForTabProvider.notifier).state = (
@@ -92,5 +94,22 @@ class TabViewModel extends _$TabViewModel {
       );
     }
     state = TabState(selectedIndex: index);
+  }
+
+  void _logTabAnalytics(int index) {
+    final analytics = ref.read(firebaseAnalyticsServiceProvider);
+    analytics.logScreen(AnalyticsScreen.forTabIndex(index));
+    switch (index) {
+      case 0:
+        analytics.logEventUnawaited(name: AnalyticsEvent.mapOpen);
+      case 1:
+        analytics.logEventUnawaited(name: AnalyticsEvent.timelineOpen);
+      case 2:
+        analytics.logEventUnawaited(name: AnalyticsEvent.myMapOpen);
+      case 3:
+        analytics.logEventUnawaited(name: AnalyticsEvent.profileOpen);
+      case 4:
+        analytics.logEventUnawaited(name: AnalyticsEvent.settingOpen);
+    }
   }
 }

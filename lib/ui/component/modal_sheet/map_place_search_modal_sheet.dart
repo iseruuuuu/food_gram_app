@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/analytics/analytics_screen.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/api/restaurant/services/google_restaurant_service.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
@@ -20,6 +21,7 @@ Future<void> showMapPlaceSearchModalSheet({
   required String keyword,
   required MapViewModel mapController,
 }) async {
+  ref.read(firebaseAnalyticsServiceProvider).logScreen(AnalyticsScreen.search);
   await showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,

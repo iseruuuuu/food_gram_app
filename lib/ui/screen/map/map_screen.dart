@@ -58,9 +58,7 @@ class MapScreen extends HookConsumerWidget {
     final loading = ref.watch(loadingProvider);
     useEffect(
       () {
-        ref.read(firebaseAnalyticsServiceProvider).logEvent(
-              name: AnalyticsEvent.mapOpen,
-            );
+        // map_open / ScreenView(Map) は TabViewModel で送信
         // トラッキング許可を取得
         AdTrackingPermission().requestTracking();
         // 強制更新チェック

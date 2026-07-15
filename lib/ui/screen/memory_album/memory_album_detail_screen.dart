@@ -2,6 +2,8 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/core/theme/memory_album_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
@@ -26,6 +28,16 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useEffect(
+      () {
+        ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+              name: AnalyticsEvent.albumDetailOpen,
+              parameters: {AnalyticsParam.albumId: albumId},
+            );
+        return null;
+      },
+      [albumId],
+    );
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final albumAsync = ref.watch(memoryAlbumDetailViewModelProvider(albumId));
