@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/weekly_summary_period.dart';
 import 'package:food_gram_app/core/weekly_summary/weekly_summary_calculator.dart';
-import 'package:food_gram_app/core/weekly_summary/weekly_summary_period.dart';
 
 Posts _post({
   required int id,
