@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/tag.dart';
+import 'package:food_gram_app/core/model/weekly_summary.dart';
+import 'package:food_gram_app/core/model/weekly_summary_period.dart';
 import 'package:food_gram_app/core/utils/memory_album_utils.dart';
-import 'package:food_gram_app/core/weekly_summary/weekly_summary.dart';
-import 'package:food_gram_app/core/weekly_summary/weekly_summary_period.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/food_tag_icon.dart';
@@ -616,7 +616,6 @@ class _GenreRankItem extends StatelessWidget {
                     tagId: genre.tagId,
                     size: 48,
                     expandToFill: true,
-                    fit: BoxFit.contain,
                     centerText: true,
                     textStyle: const TextStyle(fontSize: 36, height: 1),
                   ),
