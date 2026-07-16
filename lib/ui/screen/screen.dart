@@ -22,3 +22,4 @@ export 'package:food_gram_app/ui/screen/splash/splash_screen.dart';
 export 'package:food_gram_app/ui/screen/tab/tab_screen.dart';
 export 'package:food_gram_app/ui/screen/time_line/time_line_screen.dart';
 export 'package:food_gram_app/ui/screen/tutorial/tutorial_screen.dart';
+export 'package:food_gram_app/ui/screen/weekly_summary/weekly_summary_screen.dart';

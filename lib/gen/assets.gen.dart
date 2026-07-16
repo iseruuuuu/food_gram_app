@@ -56,6 +56,10 @@ class $AssetsGifGen {
   AssetGenImage get recordNopost =>
       const AssetGenImage('assets/gif/record_nopost.gif');
 
+  /// File path: assets/gif/sammary_dog.gif
+  AssetGenImage get sammaryDog =>
+      const AssetGenImage('assets/gif/sammary_dog.gif');
+
   /// File path: assets/gif/tutorial1.gif
   AssetGenImage get tutorial1 =>
       const AssetGenImage('assets/gif/tutorial1.gif');
@@ -74,6 +78,7 @@ class $AssetsGifGen {
         recordDog,
         recordFootprints,
         recordNopost,
+        sammaryDog,
         tutorial1
       ];
 }
