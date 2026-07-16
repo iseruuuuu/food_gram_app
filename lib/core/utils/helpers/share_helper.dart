@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
@@ -41,6 +43,59 @@ class ShareHelpers {
       files,
       sharePositionOrigin: _sharePositionOrigin(context),
     );
+  }
+
+  /// 画面上の [RepaintBoundary] をそのままキャプチャしてシェアする
+  Future<bool> captureBoundaryAndShare({
+    required BuildContext context,
+    required GlobalKey boundaryKey,
+    required ValueNotifier<bool> loading,
+    required bool hasText,
+    required String errorMessage,
+    String? shareText,
+    double pixelRatio = 3,
+  }) async {
+    try {
+      loading.value = true;
+      // レイアウト確定後にキャプチャする
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      final boundary = boundaryKey.currentContext?.findRenderObject()
+          as RenderRepaintBoundary?;
+      if (boundary == null) {
+        throw StateError('Share boundary is not ready');
+      }
+      final image = await boundary.toImage(pixelRatio: pixelRatio);
+      final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      if (byteData == null || byteData.lengthInBytes == 0) {
+        throw StateError('Screenshot capture returned empty bytes');
+      }
+
+      final tempDir = await getTemporaryDirectory();
+      final filePath = '${tempDir.path}/shared_image.png';
+      final file = File(filePath);
+      await file.writeAsBytes(byteData.buffer.asUint8List());
+
+      if (!context.mounted) {
+        return false;
+      }
+      if (hasText) {
+        await sharePosts(
+          [XFile(file.path)],
+          shareText!,
+          context: context,
+        );
+      } else {
+        await shareOnlyPost([XFile(file.path)], context: context);
+      }
+      return true;
+    } on Exception {
+      if (context.mounted) {
+        SnackBarHelper().openErrorSnackBar(context, errorMessage, '');
+      }
+      return false;
+    } finally {
+      loading.value = false;
+    }
   }
 
   Future<bool> captureAndShare({
