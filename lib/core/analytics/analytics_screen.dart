@@ -1,6 +1,10 @@
+// Analytics screen_name 定数と RouterPath 解決の名前空間として使うため。
+// ignore_for_file: avoid_classes_with_only_static_members
+
 import 'package:flutter/widgets.dart';
 
-/// FoodGram Analytics v1.0 の screen_name（PascalCase）
+/// FoodGram Analytics v1.0 の screen_name（PascalCase）。
+/// 定数と解決ロジックの名前空間として使う。
 abstract final class AnalyticsScreen {
   static const splash = 'Splash';
   static const introduction = 'Introduction';
@@ -30,6 +34,7 @@ abstract final class AnalyticsScreen {
   static const imageEditor = 'ImageEditor';
   static const userProfile = 'UserProfile';
   static const restaurantMap = 'RestaurantMap';
+  static const weeklySummary = 'WeeklySummary';
 
   static const Set<String> all = {
     splash,
@@ -60,6 +65,7 @@ abstract final class AnalyticsScreen {
     imageEditor,
     userProfile,
     restaurantMap,
+    weeklySummary,
   };
 
   /// GoRouter の RouterPath（snake_case）→ Analytics screen_name
@@ -107,6 +113,7 @@ abstract final class AnalyticsScreen {
     'map_restaurant': restaurant,
     'map_restaurant_review': restaurantDetail,
     'restaurant_map_map': restaurantMap,
+    'weekly_summary': weeklySummary,
     'image_editor': imageEditor,
   };
 

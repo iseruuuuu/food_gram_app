@@ -62,7 +62,8 @@ class AppProfileHeader extends ConsumerWidget {
                   onTap: () async {
                     final isDefaultIcon =
                         AppProfileImage.isDefaultIcon(users.image);
-                    final isSubscribed = users.isSubscribe || isViewerSubscribed;
+                    final isSubscribed =
+                        users.isSubscribe || isViewerSubscribed;
                     if (isOwnProfile && isDefaultIcon && !isSubscribed) {
                       await ref
                           .read(revenueCatServiceProvider.notifier)
