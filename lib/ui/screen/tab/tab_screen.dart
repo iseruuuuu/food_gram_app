@@ -2,13 +2,18 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/theme/style/tab_style.dart';
+import 'package:food_gram_app/core/weekly_summary/weekly_summary_gate.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class TabScreen extends ConsumerWidget {
+class TabScreen extends HookConsumerWidget {
   const TabScreen({super.key});
 
   @override
@@ -16,6 +21,40 @@ class TabScreen extends ConsumerWidget {
     final state = ref.watch(tabViewModelProvider());
     final controller = ref.watch(tabViewModelProvider().notifier);
     final t = Translations.of(context);
+
+    useEffect(() {
+      var cancelled = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (cancelled || !context.mounted) {
+          return;
+        }
+        try {
+          final now = DateTime.now();
+          final posts = await ref.read(myPostStreamProvider.future);
+          if (cancelled || !context.mounted) {
+            return;
+          }
+          final shouldShow = await shouldShowWeeklySummary(
+            now: now,
+            posts: posts,
+          );
+          if (!shouldShow || cancelled || !context.mounted) {
+            return;
+          }
+          await markWeeklySummaryShown(now: now);
+          if (!context.mounted) {
+            return;
+          }
+          await context.pushNamed(RouterPath.weeklySummary);
+        } on Object {
+          // 起動時のまとめ表示失敗は無視
+        }
+      });
+      return () {
+        cancelled = true;
+      };
+    }, const [],);
+
     return MediaQuery.removePadding(
       context: context,
       removeBottom: Platform.isIOS,
