@@ -886,6 +886,7 @@
     "weeklyRecapLabel": "WEEKLY RECAP",
     "encourageLead": "¡Qué semana tan deliciosa de recuerdos!",
     "statPostsSuffix": " publicaciones\nregistradas!",
-    "statShopsSuffix": " lugares\nnuevos!"
+    "statShopsSuffix": " lugares\nnuevos!",
+    "shareLoading": "Cargando..."
   }
 }

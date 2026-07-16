@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/model/weekly_summary.dart';
 import 'package:food_gram_app/core/theme/memory_album_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
+import 'package:food_gram_app/core/utils/memory_album_utils.dart';
 import 'package:food_gram_app/core/weekly_summary/weekly_summary_provider.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
@@ -63,6 +65,8 @@ class WeeklySummaryScreen extends HookConsumerWidget {
                     ? null
                     : () => _share(
                           context: context,
+                          ref: ref,
+                          summary: summary,
                           boundaryKey: shareBoundaryKey,
                           loading: sharing,
                         ),
@@ -83,8 +87,7 @@ class WeeklySummaryScreen extends HookConsumerWidget {
               if (summary == null) {
                 return const SizedBox.shrink();
               }
-              return Align(
-                alignment: Alignment.topCenter,
+              return SingleChildScrollView(
                 child: RepaintBoundary(
                   key: shareBoundaryKey,
                   child: DecoratedBox(
@@ -107,7 +110,7 @@ class WeeklySummaryScreen extends HookConsumerWidget {
           ),
           AppProcessLoading(
             loading: sharing.value,
-            status: 'Loading...',
+            status: t.weeklySummary.shareLoading,
           ),
         ],
       ),
@@ -116,10 +119,15 @@ class WeeklySummaryScreen extends HookConsumerWidget {
 
   Future<void> _share({
     required BuildContext context,
+    required WidgetRef ref,
+    required WeeklySummary summary,
     required GlobalKey boundaryKey,
     required ValueNotifier<bool> loading,
   }) async {
     final t = Translations.of(context);
+    final bestPost = summary.bestPost;
+    final precacheImageUrl =
+        bestPost == null ? null : postImageUrl(ref, bestPost);
     await ShareHelpers().captureBoundaryAndShare(
       context: context,
       boundaryKey: boundaryKey,
@@ -127,6 +135,7 @@ class WeeklySummaryScreen extends HookConsumerWidget {
       hasText: true,
       shareText: t.weeklySummary.shareText,
       errorMessage: t.weeklySummary.shareError,
+      precacheImageUrl: precacheImageUrl,
     );
   }
 }

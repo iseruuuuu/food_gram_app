@@ -53,18 +53,33 @@ class ShareHelpers {
     required bool hasText,
     required String errorMessage,
     String? shareText,
+    String? precacheImageUrl,
     double pixelRatio = 3,
   }) async {
+    ui.Image? image;
     try {
       loading.value = true;
+      if (precacheImageUrl != null && context.mounted) {
+        try {
+          await precacheImage(
+            CachedNetworkImageProvider(precacheImageUrl),
+            context,
+          );
+        } on Object {
+          // プリロード失敗時もキャプチャは続行する
+        }
+      }
       // レイアウト確定後にキャプチャする
       await Future<void>.delayed(const Duration(milliseconds: 50));
+      if (!context.mounted) {
+        return false;
+      }
       final boundary = boundaryKey.currentContext?.findRenderObject()
           as RenderRepaintBoundary?;
       if (boundary == null) {
         throw StateError('Share boundary is not ready');
       }
-      final image = await boundary.toImage(pixelRatio: pixelRatio);
+      image = await boundary.toImage(pixelRatio: pixelRatio);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       if (byteData == null || byteData.lengthInBytes == 0) {
         throw StateError('Screenshot capture returned empty bytes');
@@ -94,6 +109,7 @@ class ShareHelpers {
       }
       return false;
     } finally {
+      image?.dispose();
       loading.value = false;
     }
   }

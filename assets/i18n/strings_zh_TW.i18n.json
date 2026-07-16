@@ -886,6 +886,7 @@
     "weeklyRecapLabel": "WEEKLY RECAP",
     "encourageLead": "這週又多了不少美味回憶！",
     "statPostsSuffix": "則\n記錄！",
-    "statShopsSuffix": "家\n新店！"
+    "statShopsSuffix": "家\n新店！",
+    "shareLoading": "載入中..."
   }
 }

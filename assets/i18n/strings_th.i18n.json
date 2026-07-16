@@ -886,6 +886,7 @@
     "weeklyRecapLabel": "WEEKLY RECAP",
     "encourageLead": "สัปดาห์นี้ความทรงจำอร่อยๆ เพิ่มขึ้นอีกแล้ว!",
     "statPostsSuffix": " โพสต์\nบันทึกแล้ว!",
-    "statShopsSuffix": " ร้านใหม่\nค้นพบ!"
+    "statShopsSuffix": " ร้านใหม่\nค้นพบ!",
+    "shareLoading": "กำลังโหลด..."
   }
 }

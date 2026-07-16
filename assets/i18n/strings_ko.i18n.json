@@ -886,6 +886,7 @@
     "weeklyRecapLabel": "WEEKLY RECAP",
     "encourageLead": "이번 주도 맛있는 추억이 늘었네!",
     "statPostsSuffix": "건\n기록!",
-    "statShopsSuffix": "곳\n개척!"
+    "statShopsSuffix": "곳\n개척!",
+    "shareLoading": "로딩 중..."
   }
 }
