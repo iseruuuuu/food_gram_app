@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/model/weekly_summary.dart';
+import 'package:food_gram_app/core/summary/weekly/weekly_summary.dart';
+import 'package:food_gram_app/core/summary/weekly/weekly_summary_provider.dart';
 import 'package:food_gram_app/core/theme/memory_album_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/core/utils/memory_album_utils.dart';
-import 'package:food_gram_app/core/weekly_summary/weekly_summary_provider.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
-import 'package:food_gram_app/ui/screen/weekly_summary/components/weekly_summary_content.dart';
+import 'package:food_gram_app/ui/screen/summary/weekly/components/weekly_summary_content.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

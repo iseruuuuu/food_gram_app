@@ -1,4 +1,4 @@
-import 'package:food_gram_app/core/model/weekly_summary_period.dart';
+import 'package:food_gram_app/core/summary/weekly/weekly_summary_period.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 
 List<String> weeklySummaryWeekdayLabels(Translations t) => [
