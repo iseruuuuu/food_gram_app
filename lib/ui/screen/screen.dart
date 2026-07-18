@@ -19,7 +19,8 @@ export 'package:food_gram_app/ui/screen/restaurant_review/restaurant_review_scre
 export 'package:food_gram_app/ui/screen/setting/setting_screen.dart';
 export 'package:food_gram_app/ui/screen/setting/setting_view_model.dart';
 export 'package:food_gram_app/ui/screen/splash/splash_screen.dart';
+export 'package:food_gram_app/ui/screen/summary/monthly/monthly_summary_screen.dart';
+export 'package:food_gram_app/ui/screen/summary/weekly/weekly_summary_screen.dart';
 export 'package:food_gram_app/ui/screen/tab/tab_screen.dart';
 export 'package:food_gram_app/ui/screen/time_line/time_line_screen.dart';
 export 'package:food_gram_app/ui/screen/tutorial/tutorial_screen.dart';
-export 'package:food_gram_app/ui/screen/weekly_summary/weekly_summary_screen.dart';
