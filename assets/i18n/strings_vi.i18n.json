@@ -888,5 +888,10 @@
     "statPostsSuffix": " bài\nđã ghi!",
     "statShopsSuffix": " địa điểm\nmới!",
     "shareLoading": "Đang tải..."
+  },
+  "monthlySummary": {
+    "shareText": "Mình đã nhìn lại tháng {month} với FoodGram!\n#FoodGram",
+    "shareError": "Chia sẻ thất bại",
+    "shareLoading": "Đang tải..."
   }
 }

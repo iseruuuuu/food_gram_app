@@ -888,5 +888,10 @@
     "statPostsSuffix": " publicações\nregistradas!",
     "statShopsSuffix": " lugares\nnovos!",
     "shareLoading": "Carregando..."
+  },
+  "monthlySummary": {
+    "shareText": "Revisei o mês {month} com o FoodGram!\n#FoodGram",
+    "shareError": "Falha ao compartilhar",
+    "shareLoading": "Carregando..."
   }
 }

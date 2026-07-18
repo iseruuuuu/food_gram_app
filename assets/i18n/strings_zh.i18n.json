@@ -888,5 +888,10 @@
     "statPostsSuffix": "条\n记录！",
     "statShopsSuffix": "家\n新店！",
     "shareLoading": "加载中..."
+  },
+  "monthlySummary": {
+    "shareText": "用 FoodGram 回顾了{month}月的美食！\n#FoodGram",
+    "shareError": "分享失败",
+    "shareLoading": "加载中..."
   }
 }

@@ -888,5 +888,10 @@
     "statPostsSuffix": " โพสต์\nบันทึกแล้ว!",
     "statShopsSuffix": " ร้านใหม่\nค้นพบ!",
     "shareLoading": "กำลังโหลด..."
+  },
+  "monthlySummary": {
+    "shareText": "ย้อนดูมื้ออาหารเดือน {month} กับ FoodGram!\n#FoodGram",
+    "shareError": "แชร์ไม่สำเร็จ",
+    "shareLoading": "กำลังโหลด..."
   }
 }

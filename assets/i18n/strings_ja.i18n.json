@@ -888,5 +888,10 @@
     "statPostsSuffix": "件\n記録！",
     "statShopsSuffix": "店\n開拓！",
     "shareLoading": "読み込み中..."
+  },
+  "monthlySummary": {
+    "shareText": "FoodGramで{month}月の食事を振り返りました！\n#FoodGram",
+    "shareError": "シェアに失敗しました",
+    "shareLoading": "読み込み中..."
   }
 }

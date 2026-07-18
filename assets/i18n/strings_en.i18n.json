@@ -888,5 +888,10 @@
     "statPostsSuffix": " posts\nlogged!",
     "statShopsSuffix": " new\nplaces!",
     "shareLoading": "Loading..."
+  },
+  "monthlySummary": {
+    "shareText": "I looked back on month {month} with FoodGram!\n#FoodGram",
+    "shareError": "Failed to share",
+    "shareLoading": "Loading..."
   }
 }

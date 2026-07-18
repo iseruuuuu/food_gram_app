@@ -888,5 +888,10 @@
     "statPostsSuffix": " Beiträge\nerfasst!",
     "statShopsSuffix": " neue\nOrte!",
     "shareLoading": "Wird geladen..."
+  },
+  "monthlySummary": {
+    "shareText": "Mit FoodGram habe ich auf Monat {month} zurückgeblickt!\n#FoodGram",
+    "shareError": "Teilen fehlgeschlagen",
+    "shareLoading": "Wird geladen..."
   }
 }

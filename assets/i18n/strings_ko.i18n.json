@@ -888,5 +888,10 @@
     "statPostsSuffix": "건\n기록!",
     "statShopsSuffix": "곳\n개척!",
     "shareLoading": "로딩 중..."
+  },
+  "monthlySummary": {
+    "shareText": "FoodGram으로 {month}월 식사를 돌아봤어요!\n#FoodGram",
+    "shareError": "공유에 실패했습니다",
+    "shareLoading": "로딩 중..."
   }
 }
