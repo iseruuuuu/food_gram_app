@@ -1,5 +1,5 @@
 import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/core/model/weekly_summary_period.dart';
+import 'package:food_gram_app/core/summary/weekly/weekly_summary_period.dart';
 
 /// 週内で食べたジャンルの順位
 class WeeklySummaryGenreRank {
