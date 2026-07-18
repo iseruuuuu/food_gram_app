@@ -892,6 +892,31 @@
   "monthlySummary": {
     "shareText": "用 FoodGram 回顾了{month}月的美食！\n#FoodGram",
     "shareError": "分享失败",
-    "shareLoading": "加载中..."
+    "shareLoading": "加载中...",
+    "monthTitle": "{month}月总结",
+    "greeting": "美味的一个月！🎉",
+    "greetingPostsSuffix": " 条记录，",
+    "greetingPlacesSuffix": " 家\n新店与你相遇！",
+    "recordsTitle": "本月记录",
+    "posts": "发布次数",
+    "newPlaces": "新店",
+    "average": "平均评分",
+    "genreTitle": "本月美食类型 TOP3",
+    "footprintTitle": "本月首次到访的地方",
+    "japanLabel": "都道府县（日本）",
+    "overseasLabel": "国家（海外）",
+    "noOverseasYet": "还没有海外记录",
+    "prefectureUnit": "",
+    "unvisitedLegend": "未到访",
+    "visitedLegend": "曾到访",
+    "newThisMonthLegend": "本月新到访",
+    "footer": "愿下个月也能收获更多美味回忆！",
+    "countUnit": "",
+    "placeUnit": "",
+    "countValue": "{count}",
+    "placeValue": "{count}",
+    "countryProgress": "{count}个国家",
+    "comparison": "较上月 {delta}{unit} {arrow}",
+    "dateRange": "{start} – {end}"
   }
 }

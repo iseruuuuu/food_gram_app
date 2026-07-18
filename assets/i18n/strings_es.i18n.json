@@ -892,6 +892,31 @@
   "monthlySummary": {
     "shareText": "¡Repasé el mes {month} con FoodGram!\n#FoodGram",
     "shareError": "Error al compartir",
-    "shareLoading": "Cargando..."
+    "shareLoading": "Cargando...",
+    "monthTitle": "Resumen del mes {month}",
+    "greeting": "¡Un mes delicioso! 🎉",
+    "greetingPostsSuffix": " publicaciones y ",
+    "greetingPlacesSuffix": " lugares nuevos descubiertos!",
+    "recordsTitle": "Registros del mes",
+    "posts": "Publicaciones",
+    "newPlaces": "Lugares nuevos",
+    "average": "Valoración media",
+    "genreTitle": "Top géneros de este mes",
+    "footprintTitle": "Lugares nuevos este mes",
+    "japanLabel": "Prefecturas (Japón)",
+    "overseasLabel": "Países",
+    "noOverseasYet": "Aún sin registros en el extranjero",
+    "prefectureUnit": "",
+    "unvisitedLegend": "No visitado",
+    "visitedLegend": "Visitado antes",
+    "newThisMonthLegend": "Nuevo este mes",
+    "footer": "¡Por más recuerdos deliciosos el próximo mes!",
+    "countUnit": "",
+    "placeUnit": "",
+    "countValue": "{count}",
+    "placeValue": "{count}",
+    "countryProgress": "{count} países",
+    "comparison": "{delta}{unit} respecto al mes pasado {arrow}",
+    "dateRange": "{start} – {end}"
   }
 }

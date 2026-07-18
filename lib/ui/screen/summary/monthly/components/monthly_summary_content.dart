@@ -3,8 +3,10 @@ import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/summary/monthly/monthly_summary.dart';
 import 'package:food_gram_app/core/summary/weekly/weekly_summary.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/food_tag_icon.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 
 class MonthlySummaryContent extends StatelessWidget {
   const MonthlySummaryContent({
@@ -1226,65 +1228,93 @@ class _Colors {
   final Color iconBackground;
 }
 
+/// 生成済みの i18n リソース（[Translations]）を薄くラップし、
+/// 画面側の呼び出しをそのまま保ちながらロケール対応の文言・日付を返す。
 class _MonthlyStrings {
-  const _MonthlyStrings({required this.japanese});
+  const _MonthlyStrings({
+    required this.t,
+    required this.localeTag,
+    required this.languageCode,
+  });
 
-  factory _MonthlyStrings.of(BuildContext context) => _MonthlyStrings(
-        japanese: Localizations.localeOf(context).languageCode == 'ja',
-      );
+  factory _MonthlyStrings.of(BuildContext context) {
+    final locale = Localizations.localeOf(context);
+    return _MonthlyStrings(
+      t: Translations.of(context),
+      localeTag: locale.toLanguageTag(),
+      languageCode: locale.languageCode,
+    );
+  }
 
-  final bool japanese;
+  final Translations t;
+  final String localeTag;
+  final String languageCode;
 
   String monthTitle(int month) =>
-      japanese ? '$month月のまとめ' : 'Month $month recap';
+      t.monthlySummary.monthTitle.replaceAll('{month}', '$month');
   String greeting(int month) =>
-      japanese ? '$month月もおつかれさま！ 🎉' : 'A delicious month! 🎉';
-  String get greetingPostsSuffix => japanese ? '件の記録で、 ' : ' posts and ';
-  String get greetingPlacesSuffix =>
-      japanese ? '店舗の\n新しいお店と出会えました！' : ' new places discovered!';
-  String get recordsTitle => japanese ? '今月の記録' : 'Monthly records';
-  String get posts => japanese ? '投稿した回数' : 'Posts';
-  String get newPlaces => japanese ? '新しいお店' : 'New places';
-  String get average => japanese ? '平均評価' : 'Avg rating';
-  String get genreTitle =>
-      japanese ? '今月食べたジャンル TOP3' : 'Top genres this month';
-  String get footprintTitle =>
-      japanese ? '今月初めて訪れた場所' : 'New places this month';
-  String get japanLabel => japanese ? '都道府県（日本）' : 'Japan prefectures';
-  String get overseasLabel => japanese ? '国（海外）' : 'Countries';
-  String get noOverseasYet => japanese ? 'まだ海外記録なし' : 'No overseas yet';
-  String get prefectureUnit => japanese ? '県' : '';
-  String get unvisitedLegend => japanese ? '未訪問の県' : 'Not visited';
-  String get visitedLegend => japanese ? 'これまでに訪れた県' : 'Visited before';
-  String get newThisMonthLegend => japanese ? '今月新しく訪れた県' : 'New this month';
-  String get footer => japanese
-      ? '来月も美味しい思い出が増えますように！'
-      : 'Here’s to more delicious memories next month!';
-  String get countUnit => japanese ? '件' : '';
-  String get placeUnit => japanese ? '店' : '';
-  String count(int value) => japanese ? '$value件' : '$value';
-  String places(int value) => japanese ? '$value店' : '$value';
+      t.monthlySummary.greeting.replaceAll('{month}', '$month');
+  String get greetingPostsSuffix => t.monthlySummary.greetingPostsSuffix;
+  String get greetingPlacesSuffix => t.monthlySummary.greetingPlacesSuffix;
+  String get recordsTitle => t.monthlySummary.recordsTitle;
+  String get posts => t.monthlySummary.posts;
+  String get newPlaces => t.monthlySummary.newPlaces;
+  String get average => t.monthlySummary.average;
+  String get genreTitle => t.monthlySummary.genreTitle;
+  String get footprintTitle => t.monthlySummary.footprintTitle;
+  String get japanLabel => t.monthlySummary.japanLabel;
+  String get overseasLabel => t.monthlySummary.overseasLabel;
+  String get noOverseasYet => t.monthlySummary.noOverseasYet;
+  String get prefectureUnit => t.monthlySummary.prefectureUnit;
+  String get unvisitedLegend => t.monthlySummary.unvisitedLegend;
+  String get visitedLegend => t.monthlySummary.visitedLegend;
+  String get newThisMonthLegend => t.monthlySummary.newThisMonthLegend;
+  String get footer => t.monthlySummary.footer;
+  String get countUnit => t.monthlySummary.countUnit;
+  String get placeUnit => t.monthlySummary.placeUnit;
+  String count(int value) =>
+      t.monthlySummary.countValue.replaceAll('{count}', '$value');
+  String places(int value) =>
+      t.monthlySummary.placeValue.replaceAll('{count}', '$value');
   String countryProgress(int current) =>
-      japanese ? '$currentか国' : '$current countries';
-  String comparison(int value, String unit) {
-    final sign = value > 0 ? '+' : '';
-    return japanese
-        ? '先月より $sign$value$unit ${value >= 0 ? '↑' : '↓'}'
-        : '$sign$value vs last month ${value >= 0 ? '↑' : '↓'}';
-  }
+      t.monthlySummary.countryProgress.replaceAll('{count}', '$current');
 
-  String ratingComparison(double value) {
-    final sign = value > 0 ? '+' : '';
-    final formatted = value.toStringAsFixed(1);
-    return japanese
-        ? '先月より $sign$formatted ${value >= 0 ? '↑' : '↓'}'
-        : '$sign$formatted vs last month ${value >= 0 ? '↑' : '↓'}';
-  }
+  String comparison(int value, String unit) => _comparison(
+        delta: '${value > 0 ? '+' : ''}$value',
+        unit: unit,
+        isUp: value >= 0,
+      );
 
-  String dateRange(DateTime start, DateTime end) {
-    if (japanese) {
-      return '${start.month}/${start.day} ～ ${end.month}/${end.day}';
+  String ratingComparison(double value) => _comparison(
+        delta: '${value > 0 ? '+' : ''}${value.toStringAsFixed(1)}',
+        unit: '',
+        isUp: value >= 0,
+      );
+
+  String _comparison({
+    required String delta,
+    required String unit,
+    required bool isUp,
+  }) =>
+      t.monthlySummary.comparison
+          .replaceAll('{delta}', delta)
+          .replaceAll('{unit}', unit)
+          .replaceAll('{arrow}', isUp ? '↑' : '↓');
+
+  String dateRange(DateTime start, DateTime end) => t.monthlySummary.dateRange
+      .replaceAll('{start}', _formatDate(start))
+      .replaceAll('{end}', _formatDate(end));
+
+  /// アクティブロケールに合わせて日付を整形する。
+  /// ロケールデータが未ロードでも落ちないよう段階的にフォールバックする。
+  String _formatDate(DateTime date) {
+    for (final candidate in <String>{localeTag, languageCode}) {
+      try {
+        return DateFormat.MMMd(candidate).format(date);
+      } on Object {
+        continue;
+      }
     }
-    return '${start.month}/${start.day} – ${end.month}/${end.day}';
+    return DateFormat.MMMd().format(date);
   }
 }

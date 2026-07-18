@@ -42,11 +42,11 @@ class TabScreen extends HookConsumerWidget {
             if (launchType == null || cancelled || !context.mounted) {
               return;
             }
-            await markSummaryLaunchShown(type: launchType, now: now);
-            if (!context.mounted) {
-              return;
-            }
             await context.pushNamed(_routeNameForSummary(launchType));
+            // 表示（プッシュ→ポップ）に成功したときだけ「表示済み」を記録する。
+            // pushNamed が失敗した場合は例外で下の catch に飛ぶため、
+            // 未表示のまま既読扱いになることを防げる。
+            await markSummaryLaunchShown(type: launchType, now: now);
           } on Object {
             // 起動時のまとめ表示失敗は無視
           }

@@ -892,6 +892,31 @@
   "monthlySummary": {
     "shareText": "ย้อนดูมื้ออาหารเดือน {month} กับ FoodGram!\n#FoodGram",
     "shareError": "แชร์ไม่สำเร็จ",
-    "shareLoading": "กำลังโหลด..."
+    "shareLoading": "กำลังโหลด...",
+    "monthTitle": "สรุปเดือน {month}",
+    "greeting": "เดือนแห่งความอร่อย! 🎉",
+    "greetingPostsSuffix": " โพสต์ และ ",
+    "greetingPlacesSuffix": " ร้านใหม่ที่ได้ไปเยือน!",
+    "recordsTitle": "บันทึกเดือนนี้",
+    "posts": "จำนวนโพสต์",
+    "newPlaces": "ร้านใหม่",
+    "average": "คะแนนเฉลี่ย",
+    "genreTitle": "ประเภทอาหารยอดนิยม 3 อันดับเดือนนี้",
+    "footprintTitle": "สถานที่ที่ไปครั้งแรกเดือนนี้",
+    "japanLabel": "จังหวัด (ญี่ปุ่น)",
+    "overseasLabel": "ประเทศ (ต่างประเทศ)",
+    "noOverseasYet": "ยังไม่มีบันทึกต่างประเทศ",
+    "prefectureUnit": "",
+    "unvisitedLegend": "ยังไม่ไป",
+    "visitedLegend": "เคยไปแล้ว",
+    "newThisMonthLegend": "ใหม่เดือนนี้",
+    "footer": "ขอให้เดือนหน้ามีความทรงจำอร่อย ๆ เพิ่มขึ้นอีก!",
+    "countUnit": "",
+    "placeUnit": "",
+    "countValue": "{count}",
+    "placeValue": "{count}",
+    "countryProgress": "{count} ประเทศ",
+    "comparison": "{delta}{unit} เทียบเดือนก่อน {arrow}",
+    "dateRange": "{start} – {end}"
   }
 }
