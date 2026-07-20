@@ -31,7 +31,7 @@ Future<SummaryLaunchType?> resolveSummaryLaunch({
   required List<Posts> posts,
   Preference? preference,
 }) async {
-  final debugForce = debugForceSummaryLaunch;
+  const debugForce = debugForceSummaryLaunch;
   if (debugForce != null) {
     return debugForce;
   }

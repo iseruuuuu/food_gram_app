@@ -27,7 +27,8 @@ MonthlySummary calculateMonthlySummary({
       .toList();
   final cumulativePosts = allPosts
       .where(
-          (post) => post.createdAt.toLocal().isBefore(period.monthEndExclusive))
+        (post) => post.createdAt.toLocal().isBefore(period.monthEndExclusive),
+      )
       .toList();
 
   final priorPrefectures = _visitedPrefectures(priorPosts);
