@@ -25,6 +25,7 @@ enum PreferenceKey {
   analyticsHighestPostMilestone,
   memoryAlbums,
   lastWeeklySummaryWeekStart,
+  lastMonthlySummaryMonthStart,
 }
 
 class Preference {

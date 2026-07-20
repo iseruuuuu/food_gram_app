@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/tag.dart';
-import 'package:food_gram_app/core/model/weekly_summary.dart';
-import 'package:food_gram_app/core/model/weekly_summary_period.dart';
+import 'package:food_gram_app/core/summary/weekly/weekly_summary.dart';
+import 'package:food_gram_app/core/summary/weekly/weekly_summary_period.dart';
 
 /// 週次まとめの純関数集計
 WeeklySummary calculateWeeklySummary({

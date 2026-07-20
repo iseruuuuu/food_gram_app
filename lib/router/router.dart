@@ -112,6 +112,7 @@ GoRouter router(Ref ref) {
         },
         routes: <RouteBase>[
           imageEditorRoute,
+          monthlySummaryRoute,
           weeklySummaryRoute,
           timeLineRouter,
           mapRouter,
@@ -131,6 +132,18 @@ final weeklySummaryRoute = GoRoute(
       const WeeklySummaryScreen(),
       key: state.pageKey,
       name: AnalyticsScreen.weeklySummary,
+    );
+  },
+);
+
+final monthlySummaryRoute = GoRoute(
+  path: RouterPath.monthlySummary,
+  name: RouterPath.monthlySummary,
+  pageBuilder: (context, state) {
+    return slideUpTransition(
+      const MonthlySummaryScreen(),
+      key: state.pageKey,
+      name: AnalyticsScreen.monthlySummary,
     );
   },
 );
@@ -203,4 +216,5 @@ final class RouterPath {
   static const String restaurantMapFromMap = 'restaurant_map_map';
   // /tab
   static const String weeklySummary = 'weekly_summary';
+  static const String monthlySummary = 'monthly_summary';
 }

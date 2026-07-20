@@ -1,7 +1,7 @@
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/core/model/weekly_summary_period.dart';
-import 'package:food_gram_app/core/weekly_summary/weekly_summary_provider.dart';
+import 'package:food_gram_app/core/summary/weekly/weekly_summary_period.dart';
+import 'package:food_gram_app/core/summary/weekly/weekly_summary_provider.dart';
 
 /// 「今週のまとめ」を出すかの判定。
 /// 先週分をまだ見ておらず、先週に投稿があるとき（曜日は問わない）。
