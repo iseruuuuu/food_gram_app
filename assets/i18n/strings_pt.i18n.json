@@ -50,6 +50,33 @@
     "albumEmptyListHint": "Crie um álbum abaixo e depois selecione-o.",
     "albumCreated": "Álbum criado"
   },
+  "wantToGo": {
+    "title": "Quero visitar",
+    "added": "Adicionado à sua lista",
+    "removed": "Removido da sua lista",
+    "emptyHint": "Adicione lugares pela busca no mapa",
+    "addToList": "Adicionar à lista",
+    "removeFromList": "Remover da lista",
+    "alreadyAdded": "Já está na lista",
+    "addToListHint": "Salve lugares que te interessam e veja novamente quando quiser",
+    "headerLine1": "Veja seus restaurantes salvos em uma lista",
+    "headerLine2": "Publique depois de ir e guarde a memória",
+    "tabList": "Lista",
+    "tabMap": "Mapa",
+    "sortNewest": "Adicionados recentemente",
+    "sortOldest": "Adicionados há mais tempo",
+    "count": {
+      "one": "$n lugar",
+      "other": "$n lugares"
+    },
+    "addedOn": "Adicionado: {date}",
+    "viewOnMap": "Ver no mapa",
+    "postAfterVisit": "Registrar uma memória neste lugar",
+    "mapCtaTitle": "Confira seus lugares no mapa!",
+    "mapCtaBody": "Vê-los juntos no mapa facilita planejar saídas.",
+    "deleteConfirm": "Remover da lista?",
+    "noLocation": "Sem localização"
+  },
   "memoryAlbum": {
     "title": "Álbuns de memórias gastronômicas",
     "create": "Criar álbum",
@@ -307,7 +334,8 @@
     "visibleAreaLoading": "Carregando...",
     "areaPopularLabel": "Principais gêneros",
     "noPostsAtPlace": "Ainda não há posts aqui. Que tal ser o primeiro?",
-    "firstPostCta": "Publicar"
+    "firstPostCta": "Primeira publicação",
+    "firstPostHint": "Registre uma memória deliciosa neste lugar"
   },
   "app": {
     "shareTitle": "Compartilhar",
