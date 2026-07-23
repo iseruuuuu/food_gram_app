@@ -30,6 +30,17 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
+      path: RouterPath.wantToGoList,
+      name: RouterPath.wantToGoList,
+      pageBuilder: (context, state) {
+        return whiteOut(
+          const WantToGoListScreen(),
+          key: state.pageKey,
+          name: AnalyticsScreen.wantToGoList,
+        );
+      },
+    ),
+    GoRoute(
       path: RouterPath.storedPost,
       name: RouterPath.storedPost,
       pageBuilder: (context, state) {
@@ -131,8 +142,13 @@ final myProfileRouter = GoRoute(
       path: RouterPath.myProfilePost,
       name: RouterPath.myProfilePost,
       pageBuilder: (context, state) {
+        final extra = state.extra;
+        final restaurant = extra is Restaurant ? extra : null;
         return whiteOut(
-          const PostScreen(routerPath: RouterPath.myProfileRestaurant),
+          PostScreen(
+            routerPath: RouterPath.myProfileRestaurant,
+            restaurant: restaurant,
+          ),
           key: state.pageKey,
           name: AnalyticsScreen.post,
         );
