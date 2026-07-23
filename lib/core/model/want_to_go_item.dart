@@ -43,13 +43,33 @@ class WantToGoItem {
     );
   }
 
+  /// 店舗の安定キー（マップ側の (name, lat, lng) と同趣旨）
+  static String identityKey({
+    required String name,
+    required double lat,
+    required double lng,
+  }) {
+    return '${name.trim()}@${lat.toStringAsFixed(6)},${lng.toStringAsFixed(6)}';
+  }
+
+  static String identityKeyForRestaurant(Restaurant restaurant) => identityKey(
+        name: restaurant.name,
+        lat: restaurant.lat,
+        lng: restaurant.lng,
+      );
+
   final String name;
   final String address;
   final double lat;
   final double lng;
   final DateTime addedAt;
 
+  String get id => identityKey(name: name, lat: lat, lng: lng);
+
   bool get hasLocation => lat != 0 || lng != 0;
+
+  bool matchesRestaurant(Restaurant restaurant) =>
+      id == identityKeyForRestaurant(restaurant);
 
   Restaurant toRestaurant() => Restaurant(
         name: name,

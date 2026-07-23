@@ -65,7 +65,10 @@
     "tabMap": "맵",
     "sortNewest": "추가한 지 최신순",
     "sortOldest": "추가한 지 오래된순",
-    "count": "{count}곳",
+    "count": {
+      "one": "$n곳",
+      "other": "$n곳"
+    },
     "addedOn": "추가일: {date}",
     "viewOnMap": "지도에서 보기",
     "postAfterVisit": "이 가게의 추억을 남기기",

@@ -65,7 +65,10 @@
     "tabMap": "Mapa",
     "sortNewest": "Adicionados recentemente",
     "sortOldest": "Adicionados há mais tempo",
-    "count": "{count} lugares",
+    "count": {
+      "one": "$n lugar",
+      "other": "$n lugares"
+    },
     "addedOn": "Adicionado: {date}",
     "viewOnMap": "Ver no mapa",
     "postAfterVisit": "Registrar uma memória neste lugar",

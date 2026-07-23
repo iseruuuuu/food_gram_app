@@ -6,18 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
-import 'package:food_gram_app/core/local/providers/want_to_go_notifier.dart';
+import 'package:food_gram_app/core/local/want_to_go_actions.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
-import 'package:food_gram_app/core/model/want_to_go_item.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
-import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -147,11 +145,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                 final forNewPost = selection.placeSearchRestaurant;
                 if (forNewPost != null) {
                   final t = Translations.of(context);
-                  final wantToGoList =
-                      ref.watch(wantToGoNotifierProvider).valueOrNull ??
-                          const <WantToGoItem>[];
-                  final isInList =
-                      wantToGoList.any((e) => e.name == forNewPost.name);
+                  final isInList = isWantToGoListed(ref, forNewPost);
                   const wantToGoAccent = Color(0xFFFF8A00);
                   return SliverToBoxAdapter(
                     child: Padding(
@@ -184,21 +178,11 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                             subtitle: t.wantToGo.addToListHint,
                             accent: wantToGoAccent,
                             isDark: isDark,
-                            onTap: () async {
-                              final added = await ref
-                                  .read(
-                                    wantToGoNotifierProvider.notifier,
-                                  )
-                                  .toggle(forNewPost);
-                              if (!context.mounted) {
-                                return;
-                              }
-                              SnackBarHelper().openSuccessSnackBar(
-                                context,
-                                added ? t.wantToGo.added : t.wantToGo.removed,
-                                '',
-                              );
-                            },
+                            onTap: () => toggleWantToGoWithFeedback(
+                              context: context,
+                              ref: ref,
+                              restaurant: forNewPost,
+                            ),
                           ),
                         ],
                       ),

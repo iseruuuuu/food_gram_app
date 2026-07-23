@@ -5,12 +5,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/analytics_screen.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/api/restaurant/services/google_restaurant_service.dart';
-import 'package:food_gram_app/core/local/providers/want_to_go_notifier.dart';
+import 'package:food_gram_app/core/local/want_to_go_actions.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
-import 'package:food_gram_app/core/model/want_to_go_item.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
-import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
@@ -101,9 +99,6 @@ class MapPlaceSearchModalSheet extends HookConsumerWidget {
     final searchQuery = useState<String>(initialQuery.trim());
     final restaurantsAsync =
         ref.watch(googleRestaurantServicesProvider(searchQuery.value));
-    final wantToGoList =
-        ref.watch(wantToGoNotifierProvider).valueOrNull ??
-            const <WantToGoItem>[];
     return SafeArea(
       child: DecoratedBox(
         decoration: BoxDecoration(
@@ -156,8 +151,7 @@ class MapPlaceSearchModalSheet extends HookConsumerWidget {
                     itemCount: list.length,
                     itemBuilder: (context, index) {
                       final restaurant = list[index];
-                      final isInList =
-                          wantToGoList.any((e) => e.name == restaurant.name);
+                      final isInList = isWantToGoListed(ref, restaurant);
                       return ListTile(
                         title: Text(
                           restaurant.name,
@@ -181,21 +175,11 @@ class MapPlaceSearchModalSheet extends HookConsumerWidget {
                                 ? Theme.of(context).colorScheme.primary
                                 : null,
                           ),
-                          onPressed: () async {
-                            final added = await ref
-                                .read(wantToGoNotifierProvider.notifier)
-                                .toggle(restaurant);
-                            if (!context.mounted) {
-                              return;
-                            }
-                            SnackBarHelper().openSuccessSnackBar(
-                              context,
-                              added
-                                  ? t.wantToGo.added
-                                  : t.wantToGo.removed,
-                              '',
-                            );
-                          },
+                          onPressed: () => toggleWantToGoWithFeedback(
+                            context: context,
+                            ref: ref,
+                            restaurant: restaurant,
+                          ),
                         ),
                         onTap: () async {
                           unawaited(

@@ -79,10 +79,7 @@ class WantToGoListScreen extends ConsumerWidget {
             separatorBuilder: (_, __) => const SizedBox(height: 10),
             itemBuilder: (context, index) {
               final item = sorted[index];
-              final dateLabel = DateFormat(
-                'yyyy.MM.dd (E)',
-                Localizations.localeOf(context).toString(),
-              ).format(item.addedAt);
+              final dateLabel = _formatAddedDate(context, item.addedAt);
 
               return DecoratedBox(
                 decoration: BoxDecoration(
@@ -128,7 +125,7 @@ class WantToGoListScreen extends ConsumerWidget {
                             onPressed: () async {
                               await ref
                                   .read(wantToGoNotifierProvider.notifier)
-                                  .remove(item.name);
+                                  .removeById(item.id);
                             },
                             icon: Icon(Icons.close, color: muted, size: 20),
                           ),
@@ -204,4 +201,22 @@ class WantToGoListScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+String _formatAddedDate(BuildContext context, DateTime date) {
+  final locale = Localizations.localeOf(context);
+  final candidates = <String>{
+    locale.toString(),
+    locale.languageCode,
+    if (locale.countryCode != null && locale.countryCode!.isNotEmpty)
+      '${locale.languageCode}_${locale.countryCode}',
+  };
+  for (final tag in candidates) {
+    try {
+      return DateFormat('yyyy.MM.dd (E)', tag).format(date);
+    } on Object {
+      // try next candidate
+    }
+  }
+  return DateFormat('yyyy.MM.dd').format(date);
 }

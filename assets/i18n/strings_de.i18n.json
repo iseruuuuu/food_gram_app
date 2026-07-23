@@ -65,7 +65,10 @@
     "tabMap": "Karte",
     "sortNewest": "Zuletzt hinzugefügt",
     "sortOldest": "Zuerst hinzugefügt",
-    "count": "{count} Orte",
+    "count": {
+      "one": "$n Ort",
+      "other": "$n Orte"
+    },
     "addedOn": "Hinzugefügt: {date}",
     "viewOnMap": "Auf Karte anzeigen",
     "postAfterVisit": "Eine Erinnerung an diesem Ort festhalten",

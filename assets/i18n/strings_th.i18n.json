@@ -65,7 +65,10 @@
     "tabMap": "แผนที่",
     "sortNewest": "เพิ่มล่าสุดก่อน",
     "sortOldest": "เพิ่มเก่าสุดก่อน",
-    "count": "{count} ร้าน",
+    "count": {
+      "one": "$n ร้าน",
+      "other": "$n ร้าน"
+    },
     "addedOn": "เพิ่มเมื่อ: {date}",
     "viewOnMap": "ดูบนแผนที่",
     "postAfterVisit": "บันทึกความทรงจำที่ร้านนี้",

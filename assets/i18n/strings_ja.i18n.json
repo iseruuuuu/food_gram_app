@@ -65,7 +65,10 @@
     "tabMap": "マップ",
     "sortNewest": "追加が新しい順",
     "sortOldest": "追加が古い順",
-    "count": "{count}件",
+    "count": {
+      "one": "$n件",
+      "other": "$n件"
+    },
     "addedOn": "追加日：{date}",
     "viewOnMap": "地図で見る",
     "postAfterVisit": "このお店の思い出を記録する",

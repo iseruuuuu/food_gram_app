@@ -65,7 +65,10 @@
     "tabMap": "Bản đồ",
     "sortNewest": "Mới thêm trước",
     "sortOldest": "Cũ thêm trước",
-    "count": "{count} quán",
+    "count": {
+      "one": "$n quán",
+      "other": "$n quán"
+    },
     "addedOn": "Đã thêm: {date}",
     "viewOnMap": "Xem trên bản đồ",
     "postAfterVisit": "Ghi lại kỷ niệm tại quán này",

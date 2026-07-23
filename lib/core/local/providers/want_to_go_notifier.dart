@@ -12,9 +12,13 @@ class WantToGoNotifier extends _$WantToGoNotifier {
   @override
   Future<List<WantToGoItem>> build() async => _preference.getWantToGoList();
 
-  bool containsName(String name) {
-    final trimmed = name.trim();
-    return state.valueOrNull?.any((e) => e.name == trimmed) ?? false;
+  /// build() 完了後の一覧を使う（読み込み中のディスク再読込はしない）
+  Future<List<WantToGoItem>> _currentList() async =>
+      List<WantToGoItem>.from(await future);
+
+  bool contains(Restaurant restaurant) {
+    final key = WantToGoItem.identityKeyForRestaurant(restaurant);
+    return state.valueOrNull?.any((e) => e.id == key) ?? false;
   }
 
   Future<bool> toggle(Restaurant restaurant) async {
@@ -22,10 +26,9 @@ class WantToGoNotifier extends _$WantToGoNotifier {
     if (name.isEmpty) {
       return false;
     }
-    final list = List<WantToGoItem>.from(
-      state.valueOrNull ?? await _preference.getWantToGoList(),
-    );
-    final index = list.indexWhere((e) => e.name == name);
+    final key = WantToGoItem.identityKeyForRestaurant(restaurant);
+    final list = await _currentList();
+    final index = list.indexWhere((e) => e.id == key);
     final added = index < 0;
     if (added) {
       list.insert(0, WantToGoItem.fromRestaurant(restaurant));
@@ -37,10 +40,8 @@ class WantToGoNotifier extends _$WantToGoNotifier {
     return added;
   }
 
-  Future<void> remove(String name) async {
-    final list = List<WantToGoItem>.from(
-      state.valueOrNull ?? await _preference.getWantToGoList(),
-    )..removeWhere((e) => e.name == name);
+  Future<void> removeById(String id) async {
+    final list = await _currentList()..removeWhere((e) => e.id == id);
     await _preference.saveWantToGoList(list);
     state = AsyncData(list);
   }

@@ -65,7 +65,10 @@
     "tabMap": "地圖",
     "sortNewest": "最新新增",
     "sortOldest": "最早新增",
-    "count": "{count}家",
+    "count": {
+      "one": "$n家",
+      "other": "$n家"
+    },
     "addedOn": "新增日：{date}",
     "viewOnMap": "在地圖中查看",
     "postAfterVisit": "留下這家店的回憶",
