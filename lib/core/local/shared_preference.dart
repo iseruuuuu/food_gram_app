@@ -1,5 +1,6 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:food_gram_app/core/model/post_draft.dart';
+import 'package:food_gram_app/core/model/want_to_go_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum PreferenceKey {
@@ -26,6 +27,7 @@ enum PreferenceKey {
   memoryAlbums,
   lastWeeklySummaryWeekStart,
   lastMonthlySummaryMonthStart,
+  wantToGoList,
 }
 
 class Preference {
@@ -93,6 +95,40 @@ class Preference {
   Future<void> clearPostDraft() async {
     await setString(PreferenceKey.postDraft, '');
   }
+
+  Future<List<WantToGoItem>> getWantToGoList() async {
+    try {
+      final pref = await _prefs;
+      final key = _getKey(PreferenceKey.wantToGoList);
+      final value = pref.get(key);
+
+      // 新形式（JSON 文字列）
+      if (value is String && value.isNotEmpty) {
+        return WantToGoStore.fromJsonString(value).items;
+      }
+
+      // 旧形式（店名の StringList）からの移行
+      if (value is List) {
+        final migrated = value
+            .map((e) => e.toString().trim())
+            .where((e) => e.isNotEmpty)
+            .map(WantToGoItem.fromLegacyName)
+            .toList();
+        await saveWantToGoList(migrated);
+        return migrated;
+      }
+
+      return [];
+    } on Object {
+      // 型不一致などで読めない場合は空として扱う
+      return [];
+    }
+  }
+
+  Future<void> saveWantToGoList(List<WantToGoItem> items) => setString(
+        PreferenceKey.wantToGoList,
+        WantToGoStore(items).toJsonString(),
+      );
 
   /// 同じ日付で10回以上いいねした場合はfalseを返す
   Future<bool> canLike() async {
