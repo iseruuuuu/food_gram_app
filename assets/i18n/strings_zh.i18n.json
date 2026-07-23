@@ -58,7 +58,21 @@
     "addToList": "添加到想去清单",
     "removeFromList": "从想去清单移除",
     "alreadyAdded": "已加入清单",
-    "addToListHint": "保存感兴趣的店，随时回头看"
+    "addToListHint": "保存感兴趣的店，随时回头看",
+    "headerLine1": "可在列表中查看已保存的店",
+    "headerLine2": "去过之后发帖，留下回忆吧",
+    "tabList": "列表",
+    "tabMap": "地图",
+    "sortNewest": "最新添加",
+    "sortOldest": "最早添加",
+    "count": "{count}家",
+    "addedOn": "添加日：{date}",
+    "viewOnMap": "在地图中查看",
+    "postAfterVisit": "留下这家店的回忆",
+    "mapCtaTitle": "在地图上查看想去的店！",
+    "mapCtaBody": "在地图上一起看，更容易规划出行。",
+    "deleteConfirm": "从想去清单中删除吗？",
+    "noLocation": "没有位置信息"
   },
   "memoryAlbum": {
     "title": "美食回忆相册",

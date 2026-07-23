@@ -58,7 +58,21 @@
     "addToList": "Zur Wunschliste hinzufügen",
     "removeFromList": "Von der Wunschliste entfernen",
     "alreadyAdded": "Bereits auf der Liste",
-    "addToListHint": "Interessante Orte speichern und jederzeit wieder ansehen"
+    "addToListHint": "Interessante Orte speichern und jederzeit wieder ansehen",
+    "headerLine1": "Gespeicherte Restaurants in einer Liste ansehen",
+    "headerLine2": "Nach dem Besuch posten und die Erinnerung behalten",
+    "tabList": "Liste",
+    "tabMap": "Karte",
+    "sortNewest": "Zuletzt hinzugefügt",
+    "sortOldest": "Zuerst hinzugefügt",
+    "count": "{count} Orte",
+    "addedOn": "Hinzugefügt: {date}",
+    "viewOnMap": "Auf Karte anzeigen",
+    "postAfterVisit": "Eine Erinnerung an diesem Ort festhalten",
+    "mapCtaTitle": "Orte auf der Karte prüfen!",
+    "mapCtaBody": "Gemeinsam auf der Karte zu sehen erleichtert die Planung.",
+    "deleteConfirm": "Von der Wunschliste entfernen?",
+    "noLocation": "Kein Standort verfügbar"
   },
   "memoryAlbum": {
     "title": "Essens-Erinnerungsalben",

@@ -58,7 +58,21 @@
     "addToList": "行きたいリストに追加",
     "removeFromList": "行きたいリストから削除",
     "alreadyAdded": "リストに追加済み",
-    "addToListHint": "気になるお店を保存して、いつでも見返そう"
+    "addToListHint": "気になるお店を保存して、いつでも見返そう",
+    "headerLine1": "保存したお店を一覧で確認できます",
+    "headerLine2": "行ったら投稿して、思い出を残しましょう",
+    "tabList": "リスト",
+    "tabMap": "マップ",
+    "sortNewest": "追加が新しい順",
+    "sortOldest": "追加が古い順",
+    "count": "{count}件",
+    "addedOn": "追加日：{date}",
+    "viewOnMap": "地図で見る",
+    "postAfterVisit": "このお店の思い出を記録する",
+    "mapCtaTitle": "行きたいお店を地図でチェック！",
+    "mapCtaBody": "マップでまとめて見ると、おでかけの計画が立てやすくなります。",
+    "deleteConfirm": "行きたいリストから削除しますか？",
+    "noLocation": "位置情報がありません"
   },
   "memoryAlbum": {
     "title": "食の思い出アルバム",

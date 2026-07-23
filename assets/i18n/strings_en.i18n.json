@@ -58,7 +58,21 @@
     "addToList": "Add to want-to-go list",
     "removeFromList": "Remove from want-to-go list",
     "alreadyAdded": "Already on your list",
-    "addToListHint": "Save places you're curious about and revisit anytime"
+    "addToListHint": "Save places you're curious about and revisit anytime",
+    "headerLine1": "Review your saved restaurants in one list",
+    "headerLine2": "Post after you visit and keep the memory",
+    "tabList": "List",
+    "tabMap": "Map",
+    "sortNewest": "Newest added",
+    "sortOldest": "Oldest added",
+    "count": "{count} places",
+    "addedOn": "Added: {date}",
+    "viewOnMap": "View on map",
+    "postAfterVisit": "Record a memory at this place",
+    "mapCtaTitle": "Check your places on the map!",
+    "mapCtaBody": "Seeing them together on a map makes outing plans easier.",
+    "deleteConfirm": "Remove from your want-to-go list?",
+    "noLocation": "No location available"
   },
   "memoryAlbum": {
     "title": "Food Memory Albums",

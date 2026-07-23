@@ -58,7 +58,21 @@
     "addToList": "加入想去清單",
     "removeFromList": "從想去清單移除",
     "alreadyAdded": "已加入清單",
-    "addToListHint": "儲存感興趣的店，隨時回頭看"
+    "addToListHint": "儲存感興趣的店，隨時回頭看",
+    "headerLine1": "可在列表中查看已儲存的店",
+    "headerLine2": "去過之後發文，留下回憶吧",
+    "tabList": "列表",
+    "tabMap": "地圖",
+    "sortNewest": "最新新增",
+    "sortOldest": "最早新增",
+    "count": "{count}家",
+    "addedOn": "新增日：{date}",
+    "viewOnMap": "在地圖中查看",
+    "postAfterVisit": "留下這家店的回憶",
+    "mapCtaTitle": "在地圖上查看想去的店！",
+    "mapCtaBody": "在地圖上一起看，更容易規劃出行。",
+    "deleteConfirm": "從想去清單中刪除嗎？",
+    "noLocation": "沒有位置資訊"
   },
   "memoryAlbum": {
     "title": "美食回憶相簿",

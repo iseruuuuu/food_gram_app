@@ -58,7 +58,21 @@
     "addToList": "Añadir a la lista",
     "removeFromList": "Quitar de la lista",
     "alreadyAdded": "Ya está en tu lista",
-    "addToListHint": "Guarda sitios que te interesen y revísalos cuando quieras"
+    "addToListHint": "Guarda sitios que te interesen y revísalos cuando quieras",
+    "headerLine1": "Revisa tus restaurantes guardados en una lista",
+    "headerLine2": "Publica después de ir y guarda el recuerdo",
+    "tabList": "Lista",
+    "tabMap": "Mapa",
+    "sortNewest": "Añadidos más recientes",
+    "sortOldest": "Añadidos más antiguos",
+    "count": "{count} sitios",
+    "addedOn": "Añadido: {date}",
+    "viewOnMap": "Ver en el mapa",
+    "postAfterVisit": "Registrar un recuerdo en este lugar",
+    "mapCtaTitle": "¡Mira tus sitios en el mapa!",
+    "mapCtaBody": "Verlos juntos en el mapa facilita planear salidas.",
+    "deleteConfirm": "¿Quitar de la lista?",
+    "noLocation": "Sin ubicación"
   },
   "memoryAlbum": {
     "title": "Álbumes de recuerdos gastronómicos",

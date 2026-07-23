@@ -58,7 +58,21 @@
     "addToList": "Thêm vào danh sách muốn đến",
     "removeFromList": "Xóa khỏi danh sách muốn đến",
     "alreadyAdded": "Đã có trong danh sách",
-    "addToListHint": "Lưu quán bạn quan tâm và xem lại bất cứ lúc nào"
+    "addToListHint": "Lưu quán bạn quan tâm và xem lại bất cứ lúc nào",
+    "headerLine1": "Xem các quán đã lưu trong một danh sách",
+    "headerLine2": "Đăng bài sau khi đến và giữ kỷ niệm",
+    "tabList": "Danh sách",
+    "tabMap": "Bản đồ",
+    "sortNewest": "Mới thêm trước",
+    "sortOldest": "Cũ thêm trước",
+    "count": "{count} quán",
+    "addedOn": "Đã thêm: {date}",
+    "viewOnMap": "Xem trên bản đồ",
+    "postAfterVisit": "Ghi lại kỷ niệm tại quán này",
+    "mapCtaTitle": "Xem quán muốn đến trên bản đồ!",
+    "mapCtaBody": "Nhìn cùng nhau trên bản đồ giúp lên kế hoạch dễ hơn.",
+    "deleteConfirm": "Xóa khỏi danh sách?",
+    "noLocation": "Không có vị trí"
   },
   "memoryAlbum": {
     "title": "Album kỷ niệm ẩm thực",
