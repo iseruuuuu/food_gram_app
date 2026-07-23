@@ -10,6 +10,7 @@ import 'package:food_gram_app/core/local/providers/want_to_go_notifier.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
+import 'package:food_gram_app/core/model/want_to_go_item.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
@@ -148,8 +149,9 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                   final t = Translations.of(context);
                   final wantToGoList =
                       ref.watch(wantToGoNotifierProvider).valueOrNull ??
-                          const <String>[];
-                  final isInList = wantToGoList.contains(forNewPost.name);
+                          const <WantToGoItem>[];
+                  final isInList =
+                      wantToGoList.any((e) => e.name == forNewPost.name);
                   const wantToGoAccent = Color(0xFFFF8A00);
                   return SliverToBoxAdapter(
                     child: Padding(
@@ -187,7 +189,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                                   .read(
                                     wantToGoNotifierProvider.notifier,
                                   )
-                                  .toggle(forNewPost.name);
+                                  .toggle(forNewPost);
                               if (!context.mounted) {
                                 return;
                               }
