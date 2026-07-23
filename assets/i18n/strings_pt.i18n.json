@@ -50,6 +50,16 @@
     "albumEmptyListHint": "Crie um álbum abaixo e depois selecione-o.",
     "albumCreated": "Álbum criado"
   },
+  "wantToGo": {
+    "title": "Quero visitar",
+    "added": "Adicionado à sua lista",
+    "removed": "Removido da sua lista",
+    "emptyHint": "Adicione lugares pela busca no mapa",
+    "addToList": "Adicionar à lista",
+    "removeFromList": "Remover da lista",
+    "alreadyAdded": "Já está na lista",
+    "addToListHint": "Salve lugares que te interessam e veja novamente quando quiser"
+  },
   "memoryAlbum": {
     "title": "Álbuns de memórias gastronômicas",
     "create": "Criar álbum",
@@ -307,7 +317,8 @@
     "visibleAreaLoading": "Carregando...",
     "areaPopularLabel": "Principais gêneros",
     "noPostsAtPlace": "Ainda não há posts aqui. Que tal ser o primeiro?",
-    "firstPostCta": "Publicar"
+    "firstPostCta": "Primeira publicação",
+    "firstPostHint": "Registre uma memória deliciosa neste lugar"
   },
   "app": {
     "shareTitle": "Compartilhar",

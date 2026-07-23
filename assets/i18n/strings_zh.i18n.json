@@ -50,6 +50,16 @@
     "albumEmptyListHint": "请先在下方创建相册，然后再选择。",
     "albumCreated": "相册已创建"
   },
+  "wantToGo": {
+    "title": "想去的地方",
+    "added": "已添加到想去清单",
+    "removed": "已从想去清单移除",
+    "emptyHint": "可从地图搜索中添加",
+    "addToList": "添加到想去清单",
+    "removeFromList": "从想去清单移除",
+    "alreadyAdded": "已加入清单",
+    "addToListHint": "保存感兴趣的店，随时回头看"
+  },
   "memoryAlbum": {
     "title": "美食回忆相册",
     "create": "创建相册",
@@ -307,7 +317,8 @@
     "visibleAreaLoading": "加载中...",
     "areaPopularLabel": "主要类型",
     "noPostsAtPlace": "这里还没有动态，来做第一个发帖的人吧？",
-    "firstPostCta": "发帖"
+    "firstPostCta": "首次发帖",
+    "firstPostHint": "留下这家店的美味回忆吧"
   },
   "app": {
     "shareTitle": "分享",

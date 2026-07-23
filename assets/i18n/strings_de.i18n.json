@@ -50,6 +50,16 @@
     "albumEmptyListHint": "Erstelle unten ein Album und wähle es dann aus.",
     "albumCreated": "Album erstellt"
   },
+  "wantToGo": {
+    "title": "Möchte besuchen",
+    "added": "Zur Wunschliste hinzugefügt",
+    "removed": "Von der Wunschliste entfernt",
+    "emptyHint": "Über die Kartensuche hinzufügen",
+    "addToList": "Zur Wunschliste hinzufügen",
+    "removeFromList": "Von der Wunschliste entfernen",
+    "alreadyAdded": "Bereits auf der Liste",
+    "addToListHint": "Interessante Orte speichern und jederzeit wieder ansehen"
+  },
   "memoryAlbum": {
     "title": "Essens-Erinnerungsalben",
     "create": "Album erstellen",
@@ -307,7 +317,8 @@
     "visibleAreaLoading": "Wird geladen...",
     "areaPopularLabel": "Hauptgenres",
     "noPostsAtPlace": "Hier gibt es noch keine Beiträge. Möchtest du der Erste sein?",
-    "firstPostCta": "Beitrag erstellen"
+    "firstPostCta": "Erster Beitrag",
+    "firstPostHint": "Halte eine leckere Erinnerung an diesem Ort fest"
   },
   "app": {
     "shareTitle": "Teilen",

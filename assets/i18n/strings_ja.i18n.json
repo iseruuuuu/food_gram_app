@@ -50,6 +50,16 @@
     "albumEmptyListHint": "下でアルバムを作成してから選んでください。",
     "albumCreated": "アルバムを作成しました"
   },
+  "wantToGo": {
+    "title": "行きたいリスト",
+    "added": "行きたいリストに追加しました",
+    "removed": "行きたいリストから削除しました",
+    "emptyHint": "マップの検索から追加できます",
+    "addToList": "行きたいリストに追加",
+    "removeFromList": "行きたいリストから削除",
+    "alreadyAdded": "リストに追加済み",
+    "addToListHint": "気になるお店を保存して、いつでも見返そう"
+  },
   "memoryAlbum": {
     "title": "食の思い出アルバム",
     "create": "アルバムを作成",
@@ -307,7 +317,8 @@
     "visibleAreaLoading": "読み込み中…",
     "areaPopularLabel": "主なジャンル",
     "noPostsAtPlace": "まだ投稿がありません。初投稿してみませんか？",
-    "firstPostCta": "初投稿する"
+    "firstPostCta": "初投稿する",
+    "firstPostHint": "このお店での美味しい思い出を記録しよう"
   },
   "app": {
     "shareTitle": "共有",
