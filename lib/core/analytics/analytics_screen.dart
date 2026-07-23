@@ -26,6 +26,7 @@ abstract final class AnalyticsScreen {
   static const editPost = 'EditPost';
   static const draft = 'Draft';
   static const savedPosts = 'SavedPosts';
+  static const wantToGoList = 'WantToGoList';
   static const postDetail = 'PostDetail';
   static const authentication = 'Authentication';
   static const newAccount = 'NewAccount';
@@ -58,6 +59,7 @@ abstract final class AnalyticsScreen {
     editPost,
     draft,
     savedPosts,
+    wantToGoList,
     postDetail,
     authentication,
     newAccount,
@@ -84,6 +86,7 @@ abstract final class AnalyticsScreen {
     'setting_tutorial': introduction,
     'notifications': notification,
     'stored_post': savedPosts,
+    'want_to_go_list': wantToGoList,
     'stored_post_detail': postDetail,
     'memory_album_list': album,
     'memory_album_create': albumForm,
