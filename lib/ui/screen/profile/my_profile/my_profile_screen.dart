@@ -154,7 +154,6 @@ class MyProfileScreen extends HookConsumerWidget {
                                   users: users,
                                   length: postCount,
                                   heartAmount: heartAmount,
-                                  rankingUnlockedOverride: premiumUnlocked,
                                 ),
                               ],
                             );

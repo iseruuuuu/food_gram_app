@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/analytics/analytics_event.dart';
-import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
@@ -24,14 +22,12 @@ class AppProfileHeader extends ConsumerWidget {
     required this.users,
     required this.length,
     required this.heartAmount,
-    this.rankingUnlockedOverride,
     super.key,
   });
 
   final Users users;
   final int length;
   final int heartAmount;
-  final bool? rankingUnlockedOverride;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,8 +35,6 @@ class AppProfileHeader extends ConsumerWidget {
     final currentUser = ref.watch(currentUserProvider);
     final isViewerSubscribed =
         ref.watch(isSubscribeProvider).valueOrNull ?? false;
-    final rankingUnlocked = rankingUnlockedOverride ??
-        users.isSubscribe || (currentUser != null && isViewerSubscribed);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final headerBg = Theme.of(context).colorScheme.surface;
     final textColor = isDark ? Colors.white : Colors.black;
@@ -123,49 +117,19 @@ class AppProfileHeader extends ConsumerWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      if (rankingUnlocked) ...[
-                        const Gap(8),
-                        _RankBadge(
-                          rankLabel: _getRank(context, length),
-                          trophyAsset: _getTrophyAsset(length),
-                          isDark: isDark,
-                          rankSuffix: t.rank.label,
-                          levelLabel: level >= UserLevel.maxLevel
-                              ? t.profile.levelMax
-                              : t.profile.levelLabel.replaceAll(
-                                  '{level}',
-                                  level.toString(),
-                                ),
-                        ),
-                      ] else if (isOwnProfile) ...[
-                        const Gap(8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: isDark
-                                ? Colors.grey.shade700
-                                : Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Text(
-                            level >= UserLevel.maxLevel
-                                ? t.profile.levelMax
-                                : t.profile.levelLabel.replaceAll(
-                                    '{level}',
-                                    level.toString(),
-                                  ),
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                              color:
-                                  isDark ? Colors.white : Colors.grey.shade800,
-                            ),
-                          ),
-                        ),
-                      ],
+                      const Gap(8),
+                      _RankBadge(
+                        rankLabel: _getRank(context, length),
+                        trophyAsset: _getTrophyAsset(length),
+                        isDark: isDark,
+                        rankSuffix: t.rank.label,
+                        levelLabel: level >= UserLevel.maxLevel
+                            ? t.profile.levelMax
+                            : t.profile.levelLabel.replaceAll(
+                                '{level}',
+                                level.toString(),
+                              ),
+                      ),
                     ],
                   ),
                 ),
@@ -284,36 +248,12 @@ class AppProfileHeader extends ConsumerWidget {
                     color: isDark ? Colors.white24 : Colors.grey.shade300,
                   ),
                   Expanded(
-                    child: rankingUnlocked
-                        ? ProfileRankingUnlocked(
-                            userId: users.userId,
-                            textColor: textColor,
-                            mutedColor:
-                                isDark ? Colors.white70 : Colors.black54,
-                            rankingLabel: t.profile.rankingStats,
-                          )
-                        : ProfileRankingLocked(
-                            textColor: textColor,
-                            mutedColor:
-                                isDark ? Colors.white70 : Colors.black54,
-                            rankingLabel: t.profile.rankingStats,
-                            memberOnlyLabel: t.profile.memberOnlyBadge,
-                            isDark: isDark,
-                            onTap: () async {
-                              ref
-                                  .read(firebaseAnalyticsServiceProvider)
-                                  .logPremiumFeatureTap(
-                                    AnalyticsEvent.premiumRankingTap,
-                                  );
-                              try {
-                                await ref
-                                    .read(
-                                      revenueCatServiceProvider.notifier,
-                                    )
-                                    .presentPaywallGuarded();
-                              } on Exception catch (_) {}
-                            },
-                          ),
+                    child: ProfileRankingUnlocked(
+                      userId: users.userId,
+                      textColor: textColor,
+                      mutedColor: isDark ? Colors.white70 : Colors.black54,
+                      rankingLabel: t.profile.rankingStats,
+                    ),
                   ),
                 ],
               ),
