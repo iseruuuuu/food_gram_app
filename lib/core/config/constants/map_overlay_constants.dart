@@ -46,5 +46,5 @@ class MapOverlayConstants {
   static const double overviewExpandedSize = 0.36;
 
   /// 店舗詳細（Detail）の初期高さ比率
-  static const double detailInitialChildSize = 0.28;
+  static const double detailInitialChildSize = 0.34;
 }

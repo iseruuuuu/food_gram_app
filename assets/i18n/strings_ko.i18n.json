@@ -50,6 +50,33 @@
     "albumEmptyListHint": "아래에서 앨범을 만든 다음 선택해 주세요.",
     "albumCreated": "앨범이 생성되었습니다"
   },
+  "wantToGo": {
+    "title": "가보고 싶은 곳",
+    "added": "가보고 싶은 목록에 추가했습니다",
+    "removed": "가보고 싶은 목록에서 삭제했습니다",
+    "emptyHint": "지도 검색에서 추가할 수 있습니다",
+    "addToList": "가보고 싶은 목록에 추가",
+    "removeFromList": "가보고 싶은 목록에서 삭제",
+    "alreadyAdded": "목록에 추가됨",
+    "addToListHint": "관심 있는 가게를 저장하고 언제든 다시 보세요",
+    "headerLine1": "저장한 가게를 목록으로 확인할 수 있어요",
+    "headerLine2": "다녀온 뒤 게시하고 추억을 남겨 보세요",
+    "tabList": "리스트",
+    "tabMap": "맵",
+    "sortNewest": "추가한 지 최신순",
+    "sortOldest": "추가한 지 오래된순",
+    "count": {
+      "one": "$n곳",
+      "other": "$n곳"
+    },
+    "addedOn": "추가일: {date}",
+    "viewOnMap": "지도에서 보기",
+    "postAfterVisit": "이 가게의 추억을 남기기",
+    "mapCtaTitle": "가고 싶은 가게를 지도에서 확인!",
+    "mapCtaBody": "맵에서 모아 보면 나들이 계획이 쉬워져요.",
+    "deleteConfirm": "목록에서 삭제할까요?",
+    "noLocation": "위치 정보가 없습니다"
+  },
   "memoryAlbum": {
     "title": "음식 추억 앨범",
     "create": "앨범 만들기",
@@ -307,7 +334,8 @@
     "visibleAreaLoading": "불러오는 중...",
     "areaPopularLabel": "주요 장르",
     "noPostsAtPlace": "아직 이곳에 게시물이 없어요. 첫 게시물을 남겨볼까요?",
-    "firstPostCta": "게시하기"
+    "firstPostCta": "첫 게시하기",
+    "firstPostHint": "이 가게에서의 맛있는 추억을 남겨 보세요"
   },
   "app": {
     "shareTitle": "공유",

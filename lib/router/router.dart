@@ -180,6 +180,7 @@ final class RouterPath {
   // /tab/my_profile
   static const String notifications = 'notifications';
   static const String storedPost = 'stored_post';
+  static const String wantToGoList = 'want_to_go_list';
   static const String storedPostDetail = 'stored_post_detail';
   static const String memoryAlbumList = 'memory_album_list';
   static const String memoryAlbumCreate = 'memory_album_create';

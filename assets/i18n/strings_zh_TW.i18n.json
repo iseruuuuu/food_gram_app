@@ -50,6 +50,33 @@
     "albumEmptyListHint": "請先在下方建立相簿，然後再選擇。",
     "albumCreated": "相簿已建立"
   },
+  "wantToGo": {
+    "title": "想去的地方",
+    "added": "已加入想去清單",
+    "removed": "已從想去清單移除",
+    "emptyHint": "可從地圖搜尋中新增",
+    "addToList": "加入想去清單",
+    "removeFromList": "從想去清單移除",
+    "alreadyAdded": "已加入清單",
+    "addToListHint": "儲存感興趣的店，隨時回頭看",
+    "headerLine1": "可在列表中查看已儲存的店",
+    "headerLine2": "去過之後發文，留下回憶吧",
+    "tabList": "列表",
+    "tabMap": "地圖",
+    "sortNewest": "最新新增",
+    "sortOldest": "最早新增",
+    "count": {
+      "one": "$n家",
+      "other": "$n家"
+    },
+    "addedOn": "新增日：{date}",
+    "viewOnMap": "在地圖中查看",
+    "postAfterVisit": "留下這家店的回憶",
+    "mapCtaTitle": "在地圖上查看想去的店！",
+    "mapCtaBody": "在地圖上一起看，更容易規劃出行。",
+    "deleteConfirm": "從想去清單中刪除嗎？",
+    "noLocation": "沒有位置資訊"
+  },
   "memoryAlbum": {
     "title": "美食回憶相簿",
     "create": "建立相簿",
@@ -307,7 +334,8 @@
     "visibleAreaLoading": "載入中...",
     "areaPopularLabel": "主要類型",
     "noPostsAtPlace": "這裡還沒有貼文，要不要當第一個發文？",
-    "firstPostCta": "發文"
+    "firstPostCta": "首次發文",
+    "firstPostHint": "留下這家店的美味回憶吧"
   },
   "app": {
     "shareTitle": "分享",

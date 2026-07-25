@@ -50,6 +50,33 @@
     "albumEmptyListHint": "下でアルバムを作成してから選んでください。",
     "albumCreated": "アルバムを作成しました"
   },
+  "wantToGo": {
+    "title": "行きたいリスト",
+    "added": "行きたいリストに追加しました",
+    "removed": "行きたいリストから削除しました",
+    "emptyHint": "マップの検索から追加できます",
+    "addToList": "行きたいリストに追加",
+    "removeFromList": "行きたいリストから削除",
+    "alreadyAdded": "リストに追加済み",
+    "addToListHint": "気になるお店を保存して、いつでも見返そう",
+    "headerLine1": "保存したお店を一覧で確認できます",
+    "headerLine2": "行ったら投稿して、思い出を残しましょう",
+    "tabList": "リスト",
+    "tabMap": "マップ",
+    "sortNewest": "追加が新しい順",
+    "sortOldest": "追加が古い順",
+    "count": {
+      "one": "$n件",
+      "other": "$n件"
+    },
+    "addedOn": "追加日：{date}",
+    "viewOnMap": "地図で見る",
+    "postAfterVisit": "このお店の思い出を記録する",
+    "mapCtaTitle": "行きたいお店を地図でチェック！",
+    "mapCtaBody": "マップでまとめて見ると、おでかけの計画が立てやすくなります。",
+    "deleteConfirm": "行きたいリストから削除しますか？",
+    "noLocation": "位置情報がありません"
+  },
   "memoryAlbum": {
     "title": "食の思い出アルバム",
     "create": "アルバムを作成",
@@ -307,7 +334,8 @@
     "visibleAreaLoading": "読み込み中…",
     "areaPopularLabel": "主なジャンル",
     "noPostsAtPlace": "まだ投稿がありません。初投稿してみませんか？",
-    "firstPostCta": "初投稿する"
+    "firstPostCta": "初投稿する",
+    "firstPostHint": "このお店での美味しい思い出を記録しよう"
   },
   "app": {
     "shareTitle": "共有",

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
+import 'package:food_gram_app/core/local/want_to_go_actions.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
@@ -14,6 +15,7 @@ import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.d
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -86,7 +88,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
         final slivers = <Widget>[
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: 6, bottom: 10),
+              padding: const EdgeInsets.only(top: 6, bottom: 4),
               child: Center(
                 child: Container(
                   width: 36,
@@ -102,20 +104,23 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
           // レストラン名 + 右上バツボタン
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 4, 8, 8),
+              padding: const EdgeInsets.fromLTRB(16, 0, 8, 8),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: Text(
-                      selection.name,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: sheetFg,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        selection.name,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: sheetFg,
+                        ),
+                        maxLines: 1,
+                        softWrap: false,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   IconButton(
@@ -140,23 +145,20 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                 final forNewPost = selection.placeSearchRestaurant;
                 if (forNewPost != null) {
                   final t = Translations.of(context);
+                  final isInList = isWantToGoListed(ref, forNewPost);
+                  const wantToGoAccent = Color(0xFFFF8A00);
                   return SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
                       child: Column(
                         children: [
-                          Text(
-                            t.map.noPostsAtPlace,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 15,
-                              height: 1.45,
-                              color: sheetFg,
-                            ),
-                          ),
-                          const SizedBox(height: 18),
-                          FilledButton(
-                            onPressed: () {
+                          _MapEmptyPlaceActionCard(
+                            icon: Icons.edit_outlined,
+                            title: t.map.firstPostCta,
+                            subtitle: t.map.firstPostHint,
+                            accent: AppTheme.primaryBlue,
+                            isDark: isDark,
+                            onTap: () {
                               unawaited(
                                 context.pushNamed(
                                   RouterPath.mapDetailPost,
@@ -164,7 +166,23 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                                 ),
                               );
                             },
-                            child: Text(t.map.firstPostCta),
+                          ),
+                          const SizedBox(height: 8),
+                          _MapEmptyPlaceActionCard(
+                            icon: isInList
+                                ? Icons.bookmark
+                                : Icons.bookmark_border,
+                            title: isInList
+                                ? t.wantToGo.alreadyAdded
+                                : t.wantToGo.addToList,
+                            subtitle: t.wantToGo.addToListHint,
+                            accent: wantToGoAccent,
+                            isDark: isDark,
+                            onTap: () => toggleWantToGoWithFeedback(
+                              context: context,
+                              ref: ref,
+                              restaurant: forNewPost,
+                            ),
                           ),
                         ],
                       ),
@@ -299,6 +317,81 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _MapEmptyPlaceActionCard extends StatelessWidget {
+  const _MapEmptyPlaceActionCard({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.accent,
+    required this.isDark,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color accent;
+  final bool isDark;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final borderColor = isDark ? Colors.white24 : const Color(0xFFE5E5E5);
+    final subtitleColor = isDark ? Colors.white70 : const Color(0xFF555555);
+    return Material(
+      color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: borderColor),
+          ),
+          child: Row(
+            children: [
+              Icon(icon, color: accent, size: 36),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: accent,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        height: 1.25,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: subtitleColor,
+                        fontSize: 13,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -50,6 +50,33 @@
     "albumEmptyListHint": "Create an album below, then select it.",
     "albumCreated": "Album created"
   },
+  "wantToGo": {
+    "title": "Want to Go",
+    "added": "Added to your want-to-go list",
+    "removed": "Removed from your want-to-go list",
+    "emptyHint": "Add places from map search",
+    "addToList": "Add to want-to-go list",
+    "removeFromList": "Remove from want-to-go list",
+    "alreadyAdded": "Already on your list",
+    "addToListHint": "Save places you're curious about and revisit anytime",
+    "headerLine1": "Review your saved restaurants in one list",
+    "headerLine2": "Post after you visit and keep the memory",
+    "tabList": "List",
+    "tabMap": "Map",
+    "sortNewest": "Newest added",
+    "sortOldest": "Oldest added",
+    "count": {
+      "one": "$n place",
+      "other": "$n places"
+    },
+    "addedOn": "Added: {date}",
+    "viewOnMap": "View on map",
+    "postAfterVisit": "Record a memory at this place",
+    "mapCtaTitle": "Check your places on the map!",
+    "mapCtaBody": "Seeing them together on a map makes outing plans easier.",
+    "deleteConfirm": "Remove from your want-to-go list?",
+    "noLocation": "No location available"
+  },
   "memoryAlbum": {
     "title": "Food Memory Albums",
     "create": "Create album",
@@ -307,7 +334,8 @@
     "visibleAreaLoading": "Loading...",
     "areaPopularLabel": "Main genres",
     "noPostsAtPlace": "No posts yet here. Be the first to post?",
-    "firstPostCta": "Post"
+    "firstPostCta": "First post",
+    "firstPostHint": "Record a delicious memory at this place"
   },
   "app": {
     "shareTitle": "Share",

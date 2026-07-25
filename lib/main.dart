@@ -14,6 +14,7 @@ import 'package:food_gram_app/core/review/in_app_review_service.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -21,6 +22,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // デバイスのロケールで初期化
   LocaleSettings.useDeviceLocale();
+  await _initializeAppDateFormatting();
   await MapStatsHomeWidgetSync.configure();
   await initializeSystemSettings();
   await initializeThirdPartyServices();
@@ -32,6 +34,20 @@ void main() async {
   Future.delayed(const Duration(seconds: 3), () {
     InAppReviewService().maybeRequestReviewFor7DayMilestone();
   });
+}
+
+Future<void> _initializeAppDateFormatting() async {
+  final locales = <String>{
+    for (final locale in AppLocale.values) ...[
+      locale.languageCode,
+      if (locale.countryCode != null && locale.countryCode!.isNotEmpty)
+        '${locale.languageCode}_${locale.countryCode}',
+      locale.flutterLocale.toString(),
+    ],
+  };
+  for (final locale in locales) {
+    await initializeDateFormatting(locale);
+  }
 }
 
 Future<void> initializeSystemSettings() async {

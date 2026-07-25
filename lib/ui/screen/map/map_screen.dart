@@ -76,6 +76,7 @@ class MapScreen extends HookConsumerWidget {
     final fabBg = isDark ? Colors.black : Colors.white;
     const fabFg = AppTheme.primaryBlue;
     final fabBorder = AppTheme.fabBorderColor(context);
+    final hasModalSelection = ref.watch(mapModalSelectionProvider) != null;
     ref.listen<MapModalSelection?>(mapModalSelectionProvider, (_, next) {
       if (next == null || next.placeSearchRestaurant == null) {
         unawaited(controller.clearSearchResultPin());
@@ -254,33 +255,35 @@ class MapScreen extends HookConsumerWidget {
           ),
         ],
       ),
-      floatingActionButton: Builder(
-        builder: (context) {
-          return SizedBox(
-            width: 70,
-            height: 70,
-            child: FloatingActionButton(
-              heroTag: null,
-              backgroundColor: Colors.black,
-              foregroundColor: Colors.white,
-              elevation: 10,
-              shape: CircleBorder(
-                side: BorderSide(color: AppTheme.fabBorderColor(context)),
-              ),
-              onPressed: () async {
-                await context
-                    .pushNamed(RouterPath.timeLinePost)
-                    .then((value) async {
-                  if (value != null) {
-                    ref.invalidate(mapPostRepositoryProvider);
-                  }
-                });
+      floatingActionButton: hasModalSelection
+          ? null
+          : Builder(
+              builder: (context) {
+                return SizedBox(
+                  width: 70,
+                  height: 70,
+                  child: FloatingActionButton(
+                    heroTag: null,
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    elevation: 10,
+                    shape: CircleBorder(
+                      side: BorderSide(color: AppTheme.fabBorderColor(context)),
+                    ),
+                    onPressed: () async {
+                      await context
+                          .pushNamed(RouterPath.timeLinePost)
+                          .then((value) async {
+                        if (value != null) {
+                          ref.invalidate(mapPostRepositoryProvider);
+                        }
+                      });
+                    },
+                    child: const Icon(Icons.add, size: 35),
+                  ),
+                );
               },
-              child: const Icon(Icons.add, size: 35),
             ),
-          );
-        },
-      ),
     );
   }
 }

@@ -50,6 +50,33 @@
     "albumEmptyListHint": "Hãy tạo album bên dưới rồi chọn album đó.",
     "albumCreated": "Đã tạo album"
   },
+  "wantToGo": {
+    "title": "Muốn đến",
+    "added": "Đã thêm vào danh sách muốn đến",
+    "removed": "Đã xóa khỏi danh sách muốn đến",
+    "emptyHint": "Thêm từ tìm kiếm trên bản đồ",
+    "addToList": "Thêm vào danh sách muốn đến",
+    "removeFromList": "Xóa khỏi danh sách muốn đến",
+    "alreadyAdded": "Đã có trong danh sách",
+    "addToListHint": "Lưu quán bạn quan tâm và xem lại bất cứ lúc nào",
+    "headerLine1": "Xem các quán đã lưu trong một danh sách",
+    "headerLine2": "Đăng bài sau khi đến và giữ kỷ niệm",
+    "tabList": "Danh sách",
+    "tabMap": "Bản đồ",
+    "sortNewest": "Mới thêm trước",
+    "sortOldest": "Cũ thêm trước",
+    "count": {
+      "one": "$n quán",
+      "other": "$n quán"
+    },
+    "addedOn": "Đã thêm: {date}",
+    "viewOnMap": "Xem trên bản đồ",
+    "postAfterVisit": "Ghi lại kỷ niệm tại quán này",
+    "mapCtaTitle": "Xem quán muốn đến trên bản đồ!",
+    "mapCtaBody": "Nhìn cùng nhau trên bản đồ giúp lên kế hoạch dễ hơn.",
+    "deleteConfirm": "Xóa khỏi danh sách?",
+    "noLocation": "Không có vị trí"
+  },
   "memoryAlbum": {
     "title": "Album kỷ niệm ẩm thực",
     "create": "Tạo album",
@@ -307,7 +334,8 @@
     "visibleAreaLoading": "Đang tải...",
     "areaPopularLabel": "Thể loại chính",
     "noPostsAtPlace": "Chưa có bài đăng tại đây. Bạn muốn là người đầu tiên?",
-    "firstPostCta": "Đăng bài"
+    "firstPostCta": "Bài đăng đầu tiên",
+    "firstPostHint": "Ghi lại kỷ niệm ngon miệng tại quán này"
   },
   "app": {
     "shareTitle": "Chia sẻ",
