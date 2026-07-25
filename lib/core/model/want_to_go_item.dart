@@ -1,15 +1,21 @@
 import 'dart:convert';
 
 import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class WantToGoItem {
-  const WantToGoItem({
-    required this.name,
-    required this.address,
-    required this.lat,
-    required this.lng,
-    required this.addedAt,
-  });
+part 'want_to_go_item.freezed.dart';
+
+@freezed
+class WantToGoItem with _$WantToGoItem {
+  const factory WantToGoItem({
+    required String name,
+    required String address,
+    required double lat,
+    required double lng,
+    required DateTime addedAt,
+  }) = _WantToGoItem;
+
+  const WantToGoItem._();
 
   factory WantToGoItem.fromRestaurant(Restaurant restaurant) {
     return WantToGoItem(
@@ -57,12 +63,6 @@ class WantToGoItem {
         lat: restaurant.lat,
         lng: restaurant.lng,
       );
-
-  final String name;
-  final String address;
-  final double lat;
-  final double lng;
-  final DateTime addedAt;
 
   String get id => identityKey(name: name, lat: lat, lng: lng);
 
