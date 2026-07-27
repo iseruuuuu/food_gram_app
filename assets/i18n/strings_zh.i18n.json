@@ -946,5 +946,15 @@
     "countryProgress": "{count}个国家",
     "comparison": "较上月 {delta}{unit} {arrow}",
     "dateRange": "{start} – {end}"
+  },
+  "timeline": {
+    "recommendTitle": "为你推荐",
+    "recommendSubtitle": "今天来点这个？",
+    "everyonePosts": "大家记录的美食体验",
+    "seeAll": "查看全部",
+    "justNow": "刚刚",
+    "minutesAgo": "{count}分钟前",
+    "hoursAgo": "{count}小时前",
+    "daysAgo": "{count}天前"
   }
 }

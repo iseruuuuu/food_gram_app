@@ -946,5 +946,15 @@
     "countryProgress": "{count} ประเทศ",
     "comparison": "{delta}{unit} เทียบเดือนก่อน {arrow}",
     "dateRange": "{start} – {end}"
+  },
+  "timeline": {
+    "recommendTitle": "แนะนำสำหรับคุณ",
+    "recommendSubtitle": "วันนี้ลองอันนี้ไหม?",
+    "everyonePosts": "ประสบการณ์อาหารที่ทุกคนบันทึก",
+    "seeAll": "ดูทั้งหมด",
+    "justNow": "เมื่อสักครู่",
+    "minutesAgo": "{count} นาทีที่แล้ว",
+    "hoursAgo": "{count} ชั่วโมงที่แล้ว",
+    "daysAgo": "{count} วันที่แล้ว"
   }
 }

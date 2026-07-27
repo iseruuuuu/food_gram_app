@@ -946,5 +946,15 @@
     "countryProgress": "{count} Länder",
     "comparison": "{delta}{unit} ggü. Vormonat {arrow}",
     "dateRange": "{start} – {end}"
+  },
+  "timeline": {
+    "recommendTitle": "Empfohlen für dich",
+    "recommendSubtitle": "Wie wäre es heute damit?",
+    "everyonePosts": "Essenserlebnisse von allen",
+    "seeAll": "Alle ansehen",
+    "justNow": "Gerade eben",
+    "minutesAgo": "vor {count} Min.",
+    "hoursAgo": "vor {count} Std.",
+    "daysAgo": "vor {count} T."
   }
 }

@@ -946,5 +946,15 @@
     "countryProgress": "{count} quốc gia",
     "comparison": "{delta}{unit} so với tháng trước {arrow}",
     "dateRange": "{start} – {end}"
+  },
+  "timeline": {
+    "recommendTitle": "Gợi ý cho bạn",
+    "recommendSubtitle": "Hôm nay thử món này nhé?",
+    "everyonePosts": "Trải nghiệm ẩm thực của mọi người",
+    "seeAll": "Xem tất cả",
+    "justNow": "Vừa xong",
+    "minutesAgo": "{count} phút trước",
+    "hoursAgo": "{count} giờ trước",
+    "daysAgo": "{count} ngày trước"
   }
 }

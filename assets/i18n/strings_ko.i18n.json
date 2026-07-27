@@ -946,5 +946,15 @@
     "countryProgress": "{count}개국",
     "comparison": "지난달보다 {delta}{unit} {arrow}",
     "dateRange": "{start} ~ {end}"
+  },
+  "timeline": {
+    "recommendTitle": "회원님을 위한 추천",
+    "recommendSubtitle": "오늘은 이 어때요?",
+    "everyonePosts": "모두가 기록한 식경험",
+    "seeAll": "전체 보기",
+    "justNow": "방금",
+    "minutesAgo": "{count}분 전",
+    "hoursAgo": "{count}시간 전",
+    "daysAgo": "{count}일 전"
   }
 }

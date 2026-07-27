@@ -946,5 +946,15 @@
     "countryProgress": "{count}か国",
     "comparison": "先月より {delta}{unit} {arrow}",
     "dateRange": "{start} 〜 {end}"
+  },
+  "timeline": {
+    "recommendTitle": "あなたへのおすすめ",
+    "recommendSubtitle": "今日はこれ、いかが？",
+    "everyonePosts": "みんなが記録した食体験",
+    "seeAll": "すべて見る",
+    "justNow": "たった今",
+    "minutesAgo": "{count}分前",
+    "hoursAgo": "{count}時間前",
+    "daysAgo": "{count}日前"
   }
 }
