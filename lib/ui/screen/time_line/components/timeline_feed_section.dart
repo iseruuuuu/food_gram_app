@@ -89,34 +89,33 @@ class TimelineFeedSection extends HookConsumerWidget {
                   return const Expanded(child: SizedBox.shrink());
                 }
                 final post = feedPosts[itemIndex];
-                if (impressedPostIds.value.add(post.id)) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    if (!context.mounted) {
-                      return;
-                    }
-                    ref
-                        .read(firebaseAnalyticsServiceProvider)
-                        .logEventUnawaited(
-                      name: AnalyticsEvent.timelinePostImpression,
-                      parameters: {AnalyticsParam.postId: post.id},
-                    );
-                  });
-                }
                 return Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(
                       left: col == 0 ? 0 : 5,
                       right: col == 1 ? 0 : 5,
                     ),
-                    child: _TimelineFeedCard(
-                      post: post,
-                      onTap: () => openTimelinePostDetail(
-                        context: context,
-                        ref: ref,
-                        allPosts: allPosts,
+                    child: _VisibleImpression(
+                      postId: post.id,
+                      loggedIds: impressedPostIds.value,
+                      onVisible: (postId) {
+                        ref
+                            .read(firebaseAnalyticsServiceProvider)
+                            .logEventUnawaited(
+                          name: AnalyticsEvent.timelinePostImpression,
+                          parameters: {AnalyticsParam.postId: postId},
+                        );
+                      },
+                      child: _TimelineFeedCard(
                         post: post,
-                        refresh: refresh,
-                        categoryName: categoryName,
+                        onTap: () => openTimelinePostDetail(
+                          context: context,
+                          ref: ref,
+                          allPosts: allPosts,
+                          post: post,
+                          refresh: refresh,
+                          categoryName: categoryName,
+                        ),
                       ),
                     ),
                   ),
@@ -297,4 +296,83 @@ class _TimelineFeedCard extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// 実表示時のみインプレッションを記録する（キャッシュ領域の build では発火しない）
+class _VisibleImpression extends StatefulWidget {
+  const _VisibleImpression({
+    required this.postId,
+    required this.loggedIds,
+    required this.onVisible,
+    required this.child,
+  });
+
+  final int postId;
+  final Set<int> loggedIds;
+  final ValueChanged<int> onVisible;
+  final Widget child;
+
+  @override
+  State<_VisibleImpression> createState() => _VisibleImpressionState();
+}
+
+class _VisibleImpressionState extends State<_VisibleImpression> {
+  ScrollPosition? _position;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final position = Scrollable.maybeOf(context)?.position;
+    if (!identical(_position, position)) {
+      _position?.removeListener(_checkVisibility);
+      _position = position;
+      _position?.addListener(_checkVisibility);
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) => _checkVisibility());
+  }
+
+  @override
+  void dispose() {
+    _position?.removeListener(_checkVisibility);
+    super.dispose();
+  }
+
+  void _checkVisibility() {
+    if (!mounted) {
+      return;
+    }
+    if (widget.loggedIds.contains(widget.postId)) {
+      return;
+    }
+    if (!_isVisibleEnough()) {
+      return;
+    }
+    if (!widget.loggedIds.add(widget.postId)) {
+      return;
+    }
+    widget.onVisible(widget.postId);
+  }
+
+  bool _isVisibleEnough({double minFraction = 0.4}) {
+    final box = context.findRenderObject() as RenderBox?;
+    if (box == null || !box.hasSize || !box.attached) {
+      return false;
+    }
+    final itemRect = box.localToGlobal(Offset.zero) & box.size;
+    final media = MediaQuery.of(context);
+    final viewRect = Rect.fromLTWH(
+      0,
+      media.padding.top,
+      media.size.width,
+      media.size.height - media.padding.top - media.padding.bottom,
+    );
+    final visible = itemRect.intersect(viewRect);
+    if (visible.isEmpty || itemRect.height <= 0) {
+      return false;
+    }
+    return visible.height / itemRect.height >= minFraction;
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }

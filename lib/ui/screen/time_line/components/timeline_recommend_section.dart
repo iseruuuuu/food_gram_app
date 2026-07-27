@@ -235,6 +235,7 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final supabase = ref.watch(supabaseProvider);
     final isStored = useState<bool?>(null);
+    final isTogglingStore = useState(false);
     final storageKey = post.firstFoodImage;
     final imageUrl = storageKey.isEmpty
         ? ''
@@ -395,33 +396,57 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
                 right: isSubscribed ? 14 : 10,
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    ref.read(postDetailViewModelProvider().notifier).store(
-                          postId: post.id,
-                          openSnackBar: () {
-                            if (!context.mounted) {
-                              return;
-                            }
-                            SnackBarHelper().openSavedPostWithAlbumAction(
-                              context,
-                              title: t.stored.postSaved,
-                              subtitle: t.stored.postSavedMessage,
-                              addToAlbumLabel: t.stored.albumAddTo,
-                              onAddToAlbum: () {
-                                if (!context.mounted) {
-                                  return;
-                                }
-                                showSaveAlbumPickerSheet(
-                                  context: context,
-                                  ref: ref,
-                                  postId: post.id,
-                                );
-                              },
-                            );
-                          },
-                        );
-                    final now = isStored.value ?? false;
-                    isStored.value = !now;
+                  onTap: () async {
+                    if (isStored.value == null || isTogglingStore.value) {
+                      return;
+                    }
+                    final previous = isStored.value!;
+                    isTogglingStore.value = true;
+                    try {
+                      await ref
+                          .read(postDetailViewModelProvider().notifier)
+                          .store(
+                        postId: post.id,
+                        openSnackBar: () {
+                          if (!context.mounted) {
+                            return;
+                          }
+                          SnackBarHelper().openSavedPostWithAlbumAction(
+                            context,
+                            title: t.stored.postSaved,
+                            subtitle: t.stored.postSavedMessage,
+                            addToAlbumLabel: t.stored.albumAddTo,
+                            onAddToAlbum: () {
+                              if (!context.mounted) {
+                                return;
+                              }
+                              showSaveAlbumPickerSheet(
+                                context: context,
+                                ref: ref,
+                                postId: post.id,
+                              );
+                            },
+                          );
+                        },
+                      );
+                      if (!context.mounted) {
+                        return;
+                      }
+                      final list = await Preference()
+                          .getStringList(PreferenceKey.storeList);
+                      if (!context.mounted) {
+                        return;
+                      }
+                      isStored.value = list.contains(post.id.toString());
+                    } catch (_) {
+                      if (context.mounted) {
+                        isStored.value = previous;
+                      }
+                    } finally {
+                      if (context.mounted) {
+                        isTogglingStore.value = false;
+                      }
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(6),
@@ -429,7 +454,11 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
                       (isStored.value ?? false)
                           ? Icons.bookmark
                           : Icons.bookmark_border,
-                      color: Colors.white,
+                      color: Colors.white.withValues(
+                        alpha: isStored.value == null || isTogglingStore.value
+                            ? 0.45
+                            : 1,
+                      ),
                       size: isExpanded ? 22 : 18,
                     ),
                   ),
