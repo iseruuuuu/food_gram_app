@@ -20,18 +20,6 @@ class $AssetsGifGen {
   /// File path: assets/gif/error.gif
   AssetGenImage get error => const AssetGenImage('assets/gif/error.gif');
 
-  /// File path: assets/gif/login_1.gif
-  AssetGenImage get login1 => const AssetGenImage('assets/gif/login_1.gif');
-
-  /// File path: assets/gif/login_2.gif
-  AssetGenImage get login2 => const AssetGenImage('assets/gif/login_2.gif');
-
-  /// File path: assets/gif/login_3.gif
-  AssetGenImage get login3 => const AssetGenImage('assets/gif/login_3.gif');
-
-  /// File path: assets/gif/login_4.gif
-  AssetGenImage get login4 => const AssetGenImage('assets/gif/login_4.gif');
-
   /// File path: assets/gif/my_profile.gif
   AssetGenImage get myProfile =>
       const AssetGenImage('assets/gif/my_profile.gif');
@@ -68,10 +56,6 @@ class $AssetsGifGen {
   List<AssetGenImage> get values => [
         empty,
         error,
-        login1,
-        login2,
-        login3,
-        login4,
         myProfile,
         postSuccess,
         profileDetail,
