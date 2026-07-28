@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
+import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/theme/style/tutorial_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
+import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -25,7 +28,8 @@ class TutorialScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
-    final isAccept = useState(false);
+    final isAcceptTerms = useState(false);
+    final isAcceptPrivacy = useState(false);
     final isFinishedTutorial = useState(false);
     final notifier = useValueNotifier<double>(0);
     final pageController = usePageController();
@@ -35,7 +39,9 @@ class TutorialScreen extends HookConsumerWidget {
     useEffect(
       () {
         Future<void> loadPreference() async {
-          isAccept.value = await preference.getBool(PreferenceKey.isAccept);
+          final isAccepted = await preference.getBool(PreferenceKey.isAccept);
+          isAcceptTerms.value = isAccepted;
+          isAcceptPrivacy.value = isAccepted;
           isFinishedTutorial.value = await preference.getBool(
             PreferenceKey.isFinishedTutorial,
           );
@@ -67,14 +73,83 @@ class TutorialScreen extends HookConsumerWidget {
       [pageController],
     );
 
-    void goToNextPage() {
-      pageController.nextPage(
+    const totalPages = 7;
+    const locationPageIndex = 4;
+    const notificationPageIndex = 5;
+    const welcomePageIndex = 6;
+    final currentPage = currentPageIndex.value;
+    final showStandardNextButton = currentPage <= 3;
+    final showWelcomeButton = currentPage == welcomePageIndex;
+    final canStartWelcome =
+        isAcceptTerms.value && isAcceptPrivacy.value;
+
+    Future<void> goToNextPage() async {
+      await pageController.nextPage(
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
     }
 
-    const totalPages = 8;
+    Future<void> handleLocationPermission() async {
+      try {
+        final permission = await Geolocator.checkPermission();
+        if (permission == LocationPermission.denied) {
+          await Geolocator.requestPermission();
+        }
+      } catch (_) {
+        // 許可に失敗してもチュートリアルは続行する
+      }
+      await goToNextPage();
+    }
+
+    Future<void> handleNotificationPermission() async {
+      try {
+        await requestTutorialNotificationPermission().timeout(
+          const Duration(seconds: 30),
+        );
+      } catch (_) {
+        // 許可に失敗してもチュートリアルは続行する
+      }
+      unawaited(
+        initializeNotifications().timeout(
+          const Duration(seconds: 15),
+          onTimeout: () {},
+        ),
+      );
+      await goToNextPage();
+    }
+
+    Future<void> handleWelcomeStart() async {
+      if (!canStartWelcome) {
+        SnackBarHelper().openSimpleSnackBar(
+          context,
+          t.tutorial.agreeToTermsAndPrivacy,
+        );
+        return;
+      }
+
+      if (!isFinishedTutorial.value) {
+        await preference.setBool(PreferenceKey.isAccept);
+        await preference.setBool(PreferenceKey.isFinishedTutorial);
+        unawaited(
+          ref.read(firebaseAnalyticsServiceProvider).logEvent(
+                name: AnalyticsEvent.tutorialComplete,
+              ),
+        );
+        if (context.mounted) {
+          context.go(RouterPath.splash);
+        }
+      } else if (context.mounted) {
+        context.pop();
+      }
+    }
+
+    Future<void> handleNextPressed() async {
+      if (currentPageIndex.value < totalPages - 1) {
+        await goToNextPage();
+      }
+    }
+
     return Scaffold(
       body: Stack(
         children: [
@@ -84,503 +159,126 @@ class TutorialScreen extends HookConsumerWidget {
             pageCount: totalPages,
             pages: [
               // 1ページ目 コンセプト
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(),
-                  Lottie.asset(
-                    Assets.lottie.tutorial1,
-                    width: 250,
-                    height: 250,
-                  ),
-                  const Gap(24),
-                  Text(
-                    t.tutorial.firstPageTitle,
-                    style: TutorialStyle.title(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(18),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 4,
-                    runSpacing: 8,
-                    children: [
-                      _FeaturePill(
-                        icon: '📸',
-                        label: t.tutorial.pillPost,
-                      ),
-                      const Gap(4),
-                      _FeaturePill(
-                        icon: '🌎',
-                        label: t.tutorial.pillShareWorld,
-                      ),
-                      const Gap(4),
-                      _FeaturePill(
-                        icon: '📍',
-                        label: t.tutorial.pillMapRecord,
-                      ),
-                    ],
-                  ),
-                  const Gap(18),
-                  Text(
-                    t.tutorial.firstPageSubTitle1,
-                    style: TutorialStyle.subTitle(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(12),
-                  Text(
-                    t.tutorial.firstPageSubTitle2,
-                    style: TutorialStyle.subTitle(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Spacer(flex: 2),
-                ],
+              _TutorialContentPage(
+                lottie: Assets.lottie.tutorial1,
+                title: t.tutorial.firstPageTitle,
+                subtitle: t.tutorial.firstPageSubTitle1,
               ),
               // 2ページ目 探索
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(),
-                  Lottie.asset(
-                    Assets.lottie.tutorial2,
-                    width: 250,
-                    height: 250,
-                  ),
-                  const Gap(40),
-                  Text(
-                    t.tutorial.discoverTitle,
-                    style: TutorialStyle.title(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(18),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _FeaturePill(
-                        icon: '🍣',
-                        label: t.tutorial.pillSushi,
-                      ),
-                      const Gap(8),
-                      _FeaturePill(
-                        icon: '🍔',
-                        label: t.tutorial.pillBurger,
-                      ),
-                      const Gap(8),
-                      _FeaturePill(
-                        icon: '🍜',
-                        label: t.tutorial.pillRamen,
-                      ),
-                    ],
-                  ),
-                  const Gap(18),
-                  Text(
-                    t.tutorial.discoverSubTitle1,
-                    style: TutorialStyle.subTitle(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(12),
-                  Text(
-                    t.tutorial.discoverSubTitle2,
-                    style: TutorialStyle.subTitle(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Spacer(flex: 3),
-                ],
+              _TutorialContentPage(
+                lottie: Assets.lottie.tutorial2,
+                title: t.tutorial.discoverTitle,
+                subtitle: t.tutorial.discoverSubTitle1,
               ),
               // 3ページ目 世界マップ
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(),
-                  Lottie.asset(
-                    Assets.lottie.tutorial3,
-                    width: 400,
-                    height: 250,
-                  ),
-                  const Gap(32),
-                  Text(
-                    t.tutorial.secondPageTitle,
-                    style: TutorialStyle.title(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(18),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 4,
-                    runSpacing: 8,
-                    children: [
-                      _FeaturePill(
-                        icon: '🇯🇵',
-                        label: t.tutorial.pillJapan,
-                      ),
-                      const Gap(8),
-                      _FeaturePill(
-                        icon: '🇺🇸',
-                        label: t.tutorial.pillUSA,
-                      ),
-                      const Gap(8),
-                      _FeaturePill(
-                        icon: '🇩🇪',
-                        label: t.tutorial.pillGermany,
-                      ),
-                      const Gap(8),
-                      _FeaturePill(
-                        icon: '🇹🇼',
-                        label: t.tutorial.pillTaiwan,
-                      ),
-                      const Gap(8),
-                      _FeaturePill(
-                        icon: '',
-                        label: t.tutorial.pillMoreCountries,
-                      ),
-                    ],
-                  ),
-                  const Gap(18),
-                  Text(
-                    t.tutorial.secondPageSubTitle1,
-                    style: TutorialStyle.subTitle(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(12),
-                  Text(
-                    t.tutorial.secondPageSubTitle2,
-                    style: TutorialStyle.subTitle(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Spacer(flex: 2),
-                ],
+              _TutorialContentPage(
+                lottie: Assets.lottie.tutorial3,
+                lottieWidth: 400,
+                title: t.tutorial.secondPageTitle,
+                subtitle: t.tutorial.secondPageSubTitle1,
               ),
               // 4ページ目 投稿しよう
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(),
-                  Lottie.asset(
-                    Assets.lottie.tutorial4,
-                    width: 250,
-                    height: 250,
-                  ),
-                  const Gap(20),
-                  Text(
-                    t.tutorial.postPageTitle,
-                    style: TutorialStyle.title(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(18),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _FeaturePill(
-                        icon: '☕',
-                        label: t.tutorial.pillCafe,
-                      ),
-                      const Gap(8),
-                      _FeaturePill(
-                        icon: '🍜',
-                        label: t.tutorial.pillRamen,
-                      ),
-                      const Gap(8),
-                      _FeaturePill(
-                        icon: '🍱',
-                        label: t.tutorial.pillBento,
-                      ),
-                      const Gap(8),
-                      _FeaturePill(
-                        icon: '🍰',
-                        label: t.tutorial.pillCake,
-                      ),
-                    ],
-                  ),
-                  const Gap(18),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      t.tutorial.postPageMain,
-                      style: TutorialStyle.subTitle(context),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const Gap(12),
-                  Text(
-                    t.tutorial.postPagePastPhotoOk,
-                    style: TutorialStyle.subTitle(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(18),
-                  const Spacer(flex: 2),
-                ],
+              _TutorialContentPage(
+                lottie: Assets.lottie.tutorial4,
+                title: t.tutorial.postPageTitle,
+                subtitle: t.tutorial.postPageMain,
               ),
               // 5ページ目(位置情報の許可)
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(),
-                  Lottie.asset(
-                    Assets.lottie.location,
-                    width: 400,
-                    height: 250,
-                  ),
-                  const Gap(24),
-                  Text(
-                    t.tutorial.locationTitle,
-                    style: TutorialStyle.title(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: Text(
-                      t.tutorial.locationSubTitle,
-                      style: TutorialStyle.subTitle(context),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const Gap(18),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _FeaturePill(
-                        icon: '📍',
-                        label: t.tutorial.pillNearbyPosts,
-                      ),
-                      const Gap(4),
-                      _FeaturePill(
-                        icon: '🔥',
-                        label: t.tutorial.pillPopularSpots,
-                      ),
-                    ],
-                  ),
-                  const Gap(12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _FeaturePill(
-                        icon: '🗺',
-                        label: t.tutorial.pillMapDisplay,
-                      ),
-                      const Gap(4),
-                      _FeaturePill(
-                        icon: '🍜',
-                        label: t.tutorial.pillDiscoverWorldFood,
-                      ),
-                    ],
-                  ),
-                  const Gap(32),
-                  AppElevatedButton(
-                    onPressed: () async {
-                      final permission = await Geolocator.checkPermission();
-                      if (permission == LocationPermission.denied) {
-                        await Geolocator.requestPermission();
-                      }
-                      goToNextPage();
-                    },
-                    title: t.maybeNotFoodDialog.confirm,
-                  ),
-                  const Spacer(),
-                ],
+              _TutorialContentPage(
+                lottie: Assets.lottie.location,
+                lottieWidth: 400,
+                title: t.tutorial.locationTitle,
+                subtitle: t.tutorial.locationSubTitle,
               ),
               // 6ページ目（通知の許可）
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(),
-                  Lottie.asset(
-                    Assets.lottie.notification,
-                    width: 400,
-                    height: 250,
-                  ),
-                  const Gap(40),
-                  Text(
-                    t.tutorial.notificationTitle,
-                    style: TutorialStyle.title(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: Text(
-                      t.tutorial.notificationSubTitle,
-                      style: TutorialStyle.subTitle(context),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const Gap(12),
-                  _FeaturePill(
-                    icon: '👍️ ',
-                    label: t.tutorial.pillReactions,
-                  ),
-                  const Gap(12),
-                  _FeaturePill(
-                    icon: '🍱 ',
-                    label: t.tutorial.pillMealReminder,
-                  ),
-                  const Gap(36),
-                  AppElevatedButton(
-                    onPressed: () async {
-                      await initializeNotifications();
-                      goToNextPage();
-                    },
-                    title: t.maybeNotFoodDialog.confirm,
-                  ),
-                  const Spacer(),
-                ],
+              _TutorialContentPage(
+                lottie: Assets.lottie.notification,
+                lottieWidth: 400,
+                title: t.tutorial.notificationTitle,
+                subtitle: t.tutorial.notificationSubTitle,
               ),
               // 7ページ目 アプリ開始（モチベーション）
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(),
-                  Text(
-                    t.tutorial.welcomePageTitle,
-                    style: TutorialStyle.title(context),
-                  ),
-                  Lottie.asset(
-                    Assets.lottie.welcome,
-                    width: 400,
-                    height: 250,
-                  ),
-                  const Gap(12),
-                  Text(
-                    t.tutorial.welcomePageSubTitle,
-                    style: TutorialStyle.subTitle(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(12),
-                  Text(
-                    t.tutorial.welcomePageBody,
-                    style: TutorialStyle.subTitle(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(32),
-                  AppElevatedButton(
-                    onPressed: () async {
-                      goToNextPage();
-                    },
-                    title: t.maybeNotFoodDialog.confirm,
-                  ),
-                  const Spacer(),
-                ],
-              ),
-              // 最終ページ 利用規約
-              SingleChildScrollView(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Gap(60),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Gap(10),
-                          Assets.gif.tutorial1.image(width: 50),
-                          Text(
-                            t.tutorial.thirdPageTitle,
-                            style: TutorialStyle.thirdTitle(context),
-                          ),
-                          Assets.gif.tutorial1.image(width: 50),
-                          const Gap(10),
-                        ],
-                      ),
-                      const Gap(20),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: Text(
-                          t.tutorial.thirdPageSubTitle,
-                          style: TutorialStyle.thirdSubTitle(context),
-                        ),
-                      ),
-                      const Gap(30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            t.tutorial.thirdPageButton,
-                            style: TutorialStyle.accept(context),
-                          ),
-                          const Gap(10),
-                          Checkbox(
-                            checkColor: Theme.of(context).colorScheme.onPrimary,
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            value: isAccept.value,
-                            onChanged: (value) {
-                              isAccept.value = value ?? false;
-                            },
-                          ),
-                        ],
-                      ),
-                      const Gap(20),
-                      SizedBox(
-                        width: 200,
-                        child: ElevatedButton(
-                          style: TutorialStyle.button(context),
-                          onPressed: isAccept.value
-                              ? () async {
-                                  if (!isFinishedTutorial.value) {
-                                    await preference.setBool(
-                                      PreferenceKey.isFinishedTutorial,
-                                    );
-                                    unawaited(
-                                      ref
-                                          .read(
-                                            firebaseAnalyticsServiceProvider,
-                                          )
-                                          .logEvent(
-                                            name:
-                                                AnalyticsEvent.tutorialComplete,
-                                          ),
-                                    );
-                                    context.go(RouterPath.splash);
-                                  } else {
-                                    context.pop();
-                                  }
-                                }
-                              : null,
-                          child: Text(
-                            t.tutorial.thirdPageClose,
-                            style: TutorialStyle.close(context),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+              _TutorialContentPage(
+                lottie: Assets.lottie.welcome,
+                lottieWidth: 400,
+                title: t.tutorial.welcomePageTitle,
+                subtitle: t.tutorial.welcomePageBody,
+                bottomContent: _TutorialAgreementSection(
+                  agreeTermsLabel: t.tutorial.agreeToTerms,
+                  agreePrivacyLabel: t.tutorial.agreeToPrivacy,
+                  isTermsAccepted: isAcceptTerms.value,
+                  isPrivacyAccepted: isAcceptPrivacy.value,
+                  onTermsChanged: (value) {
+                    isAcceptTerms.value = value ?? false;
+                  },
+                  onPrivacyChanged: (value) {
+                    isAcceptPrivacy.value = value ?? false;
+                  },
+                  onOpenTerms: () {
+                    LaunchUrlHelper().open(URL.termsOfUse(context));
+                  },
+                  onOpenPrivacy: () {
+                    LaunchUrlHelper().open(URL.privacyPolicy(context));
+                  },
                 ),
+                bottomPadding: 180,
               ),
             ],
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const SizedBox(height: 16),
-              // 4ページ目（位置情報）・5ページ目（通知）の許可説明では矢印を表示しない
-              if (currentPageIndex.value != 4 && currentPageIndex.value != 5)
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Theme.of(context).colorScheme.onSurface,
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (showStandardNextButton)
+                      AppElevatedButton(
+                        onPressed: handleNextPressed,
+                        title: t.tutorial.nextButton,
+                        backgroundColor: AppTheme.primaryBlue,
+                        horizontalInset: 48,
+                      )
+                    else if (showWelcomeButton)
+                      Opacity(
+                        opacity: canStartWelcome ? 1 : 0.5,
+                        child: AppElevatedButton(
+                          onPressed: handleWelcomeStart,
+                          title: t.tutorial.welcomePageButton,
+                          backgroundColor: AppTheme.primaryBlue,
+                          horizontalInset: 48,
+                        ),
+                      )
+                    else if (currentPage == locationPageIndex)
+                      AppElevatedButton(
+                        onPressed: handleLocationPermission,
+                        title: t.tutorial.locationButton,
+                        backgroundColor: AppTheme.primaryBlue,
+                        horizontalInset: 48,
+                      )
+                    else if (currentPage == notificationPageIndex)
+                      AppElevatedButton(
+                        onPressed: handleNotificationPermission,
+                        title: t.tutorial.notificationButton,
+                        backgroundColor: AppTheme.primaryBlue,
+                        horizontalInset: 48,
+                      ),
+                    if (showStandardNextButton ||
+                        showWelcomeButton ||
+                        currentPage == locationPageIndex ||
+                        currentPage == notificationPageIndex)
+                      const Gap(16),
+                    _TutorialPageIndicator(
+                      count: totalPages,
+                      currentIndex: currentPageIndex.value,
                     ),
-                    onPressed: () async {
-                      final currentPage = pageController.page?.toInt() ?? 0;
-
-                      if (currentPage == totalPages - 1 && !isAccept.value) {
-                        SnackBarHelper().openSimpleSnackBar(
-                          context,
-                          Translations.of(context)
-                              .tutorial
-                              .agreeToTheTermsOfUse,
-                        );
-                      } else if (currentPage < totalPages - 1) {
-                        await pageController.nextPage(
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeInOut,
-                        );
-                      }
-                    },
-                  ),
+                  ],
                 ),
-              const SizedBox(height: 20),
-            ],
+              ),
+            ),
           ),
         ],
       ),
@@ -728,39 +426,213 @@ class _PastelBlob extends StatelessWidget {
   }
 }
 
-class _FeaturePill extends StatelessWidget {
-  const _FeaturePill({
-    required this.icon,
-    required this.label,
+class _TutorialContentPage extends StatelessWidget {
+  const _TutorialContentPage({
+    required this.lottie,
+    required this.title,
+    required this.subtitle,
+    this.lottieWidth = 250,
+    this.bottomContent,
+    this.bottomPadding = 120,
   });
 
-  final String icon;
-  final String label;
+  final String lottie;
+  final String title;
+  final String subtitle;
+  final double lottieWidth;
+  final Widget? bottomContent;
+  final double bottomPadding;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Spacer(),
+        Lottie.asset(
+          lottie,
+          width: lottieWidth,
+          height: 250,
+        ),
+        const Gap(24),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Text(
+            title,
+            style: TutorialStyle.title(context),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        const Gap(18),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Text(
+            subtitle,
+            style: TutorialStyle.subTitle(context),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        if (bottomContent != null) ...[
+          const Gap(24),
+          bottomContent!,
+        ],
+        const Spacer(flex: 2),
+        SizedBox(height: bottomPadding),
+      ],
+    );
+  }
+}
+
+class _TutorialAgreementSection extends StatelessWidget {
+  const _TutorialAgreementSection({
+    required this.agreeTermsLabel,
+    required this.agreePrivacyLabel,
+    required this.isTermsAccepted,
+    required this.isPrivacyAccepted,
+    required this.onTermsChanged,
+    required this.onPrivacyChanged,
+    required this.onOpenTerms,
+    required this.onOpenPrivacy,
+  });
+
+  final String agreeTermsLabel;
+  final String agreePrivacyLabel;
+  final bool isTermsAccepted;
+  final bool isPrivacyAccepted;
+  final ValueChanged<bool?> onTermsChanged;
+  final ValueChanged<bool?> onPrivacyChanged;
+  final VoidCallback onOpenTerms;
+  final VoidCallback onOpenPrivacy;
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: colorScheme.surface.withValues(alpha: 0.8),
-        borderRadius: BorderRadius.circular(999),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: colorScheme.outline.withValues(alpha: 0.2),
+          ),
+        ),
+        child: Column(
+          children: [
+            _TutorialAgreementRow(
+              label: agreeTermsLabel,
+              value: isTermsAccepted,
+              onChanged: onTermsChanged,
+              onOpen: onOpenTerms,
+            ),
+            Divider(
+              height: 1,
+              color: colorScheme.outline.withValues(alpha: 0.15),
+            ),
+            _TutorialAgreementRow(
+              label: agreePrivacyLabel,
+              value: isPrivacyAccepted,
+              onChanged: onPrivacyChanged,
+              onOpen: onOpenPrivacy,
+            ),
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class _TutorialAgreementRow extends StatelessWidget {
+  const _TutorialAgreementRow({
+    required this.label,
+    required this.value,
+    required this.onChanged,
+    required this.onOpen,
+  });
+
+  final String label;
+  final bool value;
+  final ValueChanged<bool?> onChanged;
+  final VoidCallback onOpen;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(icon, style: const TextStyle(fontSize: 14)),
-          const SizedBox(width: 4),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: colorScheme.onSurface,
+          Checkbox(
+            value: value,
+            onChanged: onChanged,
+            activeColor: AppTheme.primaryBlue,
+            checkColor: Colors.white,
+            side: const BorderSide(color: AppTheme.primaryBlue, width: 1.5),
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            visualDensity: VisualDensity.compact,
+          ),
+          Expanded(
+            child: InkWell(
+              onTap: onOpen,
+              borderRadius: BorderRadius.circular(8),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        label,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: AppTheme.primaryBlue,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    const Icon(
+                      Icons.chevron_right,
+                      color: AppTheme.primaryBlue,
+                      size: 22,
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _TutorialPageIndicator extends StatelessWidget {
+  const _TutorialPageIndicator({
+    required this.count,
+    required this.currentIndex,
+  });
+
+  final int count;
+  final int currentIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = Theme.of(context).colorScheme.onSurface;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(count, (index) {
+        final isActive = index == currentIndex;
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            width: isActive ? 10 : 7,
+            height: isActive ? 10 : 7,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: isActive ? color : color.withValues(alpha: 0.3),
+            ),
+          ),
+        );
+      }),
     );
   }
 }
