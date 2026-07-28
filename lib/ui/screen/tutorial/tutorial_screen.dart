@@ -83,6 +83,9 @@ class TutorialScreen extends HookConsumerWidget {
     final canStartWelcome = isAcceptTerms.value && isAcceptPrivacy.value;
 
     Future<void> goToNextPage() async {
+      if (!context.mounted || !pageController.hasClients) {
+        return;
+      }
       await pageController.nextPage(
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
@@ -98,6 +101,9 @@ class TutorialScreen extends HookConsumerWidget {
       } on Exception catch (_) {
         // 許可に失敗してもチュートリアルは続行する
       }
+      if (!context.mounted) {
+        return;
+      }
       await goToNextPage();
     }
 
@@ -109,12 +115,18 @@ class TutorialScreen extends HookConsumerWidget {
       } on Exception catch (_) {
         // 許可に失敗してもチュートリアルは続行する
       }
-      unawaited(
-        initializeNotifications().timeout(
-          const Duration(seconds: 15),
-          onTimeout: () {},
-        ),
-      );
+      unawaited(() async {
+        try {
+          await initializeNotifications().timeout(
+            const Duration(seconds: 15),
+          );
+        } on Exception catch (_) {
+          // バックグラウンド初期化失敗はチュートリアル進行を止めない
+        }
+      }());
+      if (!context.mounted) {
+        return;
+      }
       await goToNextPage();
     }
 
@@ -445,39 +457,58 @@ class _TutorialContentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Spacer(),
-        Lottie.asset(
-          lottie,
-          width: lottieWidth,
-          height: 250,
-        ),
-        const Gap(24),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: FittedBox(
-            child: Text(
-              title,
-              style: TutorialStyle.title(context),
-              textAlign: TextAlign.center,
-            ),
+        Expanded(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final lottieHeight =
+                  (constraints.maxHeight * 0.38).clamp(120.0, 250.0);
+              final lottieDisplayWidth = (lottieWidth * (lottieHeight / 250))
+                  .clamp(120.0, lottieWidth);
+
+              return SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Lottie.asset(
+                        lottie,
+                        width: lottieDisplayWidth,
+                        height: lottieHeight,
+                        fit: BoxFit.contain,
+                      ),
+                      const Gap(24),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Text(
+                          title,
+                          style: TutorialStyle.title(context),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const Gap(18),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Text(
+                          subtitle,
+                          style: TutorialStyle.subTitle(context),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      if (bottomContent != null) ...[
+                        const Gap(24),
+                        bottomContent!,
+                      ],
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         ),
-        const Gap(18),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Text(
-            subtitle,
-            style: TutorialStyle.subTitle(context),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        if (bottomContent != null) ...[
-          const Gap(24),
-          bottomContent!,
-        ],
-        const Spacer(flex: 2),
         SizedBox(height: bottomPadding),
       ],
     );
@@ -559,7 +590,7 @@ class _TutorialAgreementRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
       child: Row(
         children: [
           Checkbox(
@@ -568,36 +599,32 @@ class _TutorialAgreementRow extends StatelessWidget {
             activeColor: AppTheme.primaryBlue,
             checkColor: Colors.white,
             side: const BorderSide(color: AppTheme.primaryBlue, width: 1.5),
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            visualDensity: VisualDensity.compact,
           ),
           Expanded(
             child: InkWell(
-              onTap: onOpen,
+              onTap: () => onChanged(!value),
               borderRadius: BorderRadius.circular(8),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        label,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          color: AppTheme.primaryBlue,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    const Icon(
-                      Icons.chevron_right,
-                      color: AppTheme.primaryBlue,
-                      size: 22,
-                    ),
-                  ],
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Text(
+                  label,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: AppTheme.primaryBlue,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ),
+          ),
+          IconButton(
+            onPressed: onOpen,
+            icon: const Icon(
+              Icons.chevron_right,
+              color: AppTheme.primaryBlue,
+              size: 22,
+            ),
+            tooltip: label,
           ),
         ],
       ),
