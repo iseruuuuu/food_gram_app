@@ -946,5 +946,15 @@
     "countryProgress": "{count} países",
     "comparison": "{delta}{unit} vs mês passado {arrow}",
     "dateRange": "{start} – {end}"
+  },
+  "timeline": {
+    "recommendTitle": "Recomendado para você",
+    "recommendSubtitle": "Que tal isso hoje?",
+    "everyonePosts": "Experiências gastronômicas de todos",
+    "seeAll": "Ver tudo",
+    "justNow": "Agora",
+    "minutesAgo": "há {count} min",
+    "hoursAgo": "há {count} h",
+    "daysAgo": "há {count} d"
   }
 }

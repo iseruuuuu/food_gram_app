@@ -946,5 +946,15 @@
     "countryProgress": "{count} countries",
     "comparison": "{delta}{unit} vs last month {arrow}",
     "dateRange": "{start} – {end}"
+  },
+  "timeline": {
+    "recommendTitle": "Recommended for you",
+    "recommendSubtitle": "How about this today?",
+    "everyonePosts": "Food experiences from everyone",
+    "seeAll": "See all",
+    "justNow": "Just now",
+    "minutesAgo": "{count}m ago",
+    "hoursAgo": "{count}h ago",
+    "daysAgo": "{count}d ago"
   }
 }
