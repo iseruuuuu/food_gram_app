@@ -105,7 +105,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
           color: _splashBackgroundColor,
           child: SizedBox.expand(
             child: Assets.splash.splashPng.image(
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
             ),
           ),
         ),
