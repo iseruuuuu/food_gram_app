@@ -5,7 +5,7 @@ class TutorialStyle {
 
   static TextStyle title(BuildContext context) {
     return TextStyle(
-      fontSize: 20,
+      fontSize: 23,
       fontWeight: FontWeight.bold,
       color: Theme.of(context).colorScheme.onSurface,
     );
@@ -13,7 +13,7 @@ class TutorialStyle {
 
   static TextStyle subTitle(BuildContext context) {
     return TextStyle(
-      fontSize: 18,
+      fontSize: 20,
       fontWeight: FontWeight.normal,
       color: Theme.of(context).colorScheme.onSurface,
     );
