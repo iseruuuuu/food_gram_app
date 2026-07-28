@@ -483,19 +483,23 @@ class _TutorialContentPage extends StatelessWidget {
                       const Gap(24),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Text(
-                          title,
-                          style: TutorialStyle.title(context),
-                          textAlign: TextAlign.center,
+                        child: FittedBox(
+                          child: Text(
+                            title,
+                            style: TutorialStyle.title(context),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                       const Gap(18),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Text(
-                          subtitle,
-                          style: TutorialStyle.subTitle(context),
-                          textAlign: TextAlign.center,
+                        child: FittedBox(
+                          child: Text(
+                            subtitle,
+                            style: TutorialStyle.subTitle(context),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                       if (bottomContent != null) ...[
