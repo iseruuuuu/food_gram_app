@@ -239,10 +239,15 @@ class _TimelineFeedCard extends ConsumerWidget {
 
     // サブスク: 画像＋文字を1つの四角にし、外周に金色枠
     if (isSubscribed) {
+      const subscribedBorderRadius = BorderRadius.only(
+        bottomLeft: Radius.circular(radius),
+        bottomRight: Radius.circular(radius),
+      );
+
       return GestureDetector(
         onTap: onTap,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(radius),
+          borderRadius: subscribedBorderRadius,
           child: Stack(
             children: [
               Card(
@@ -251,7 +256,7 @@ class _TimelineFeedCard extends ConsumerWidget {
                 color: surface,
                 clipBehavior: Clip.antiAlias,
                 shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
+                  borderRadius: subscribedBorderRadius,
                 ),
                 child: cardBody,
               ),
