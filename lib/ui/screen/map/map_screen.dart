@@ -67,7 +67,13 @@ class MapScreen extends HookConsumerWidget {
           },
         );
         // 通知の初期化
-        initializeNotifications();
+        unawaited(() async {
+          try {
+            await initializeNotifications();
+          } on Exception catch (_) {
+            // マップ表示は続行し、通知初期化失敗は握りつぶす
+          }
+        }());
         return null;
       },
       [],

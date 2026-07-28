@@ -6,29 +6,40 @@ import 'package:food_gram_app/core/notification/notification_service.dart';
 import 'package:logger/logger.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
-/// 通知の初期化処理
+/// 通知の初期化処理。
+///
+/// プラットフォーム／プラグイン初期化の失敗は呼び出し元へ伝播する。
+/// 権限拒否やリマインダー設定の失敗は非致命として握りつぶす。
 Future<void> initializeNotifications() async {
   final logger = Logger();
+  tz.initializeTimeZones();
+
+  final notificationService = NotificationService();
+  await notificationService.initialize();
+
+  final firebaseMessagingService = FirebaseMessagingService();
+  await firebaseMessagingService.initialize();
+
   try {
-    tz.initializeTimeZones();
-
-    // ローカル通知サービスを初期化
-    final notificationService = NotificationService();
-    await notificationService.initialize();
-
-    // Firebase Messagingサービスを初期化
-    final firebaseMessagingService = FirebaseMessagingService();
-    await firebaseMessagingService.initialize();
-
-    // ローカル通知の権限をリクエスト
     final hasPermission = await notificationService.requestPermissions();
     if (hasPermission) {
       await notificationService.scheduleLunchReminder();
       await notificationService.scheduleDinnerReminder();
     }
-  } on Exception catch (e) {
-    logger.e('通知の初期化に失敗しました: $e');
+  } on Exception catch (e, stackTrace) {
+    logger.w(
+      '通知権限またはリマインダー設定をスキップしました: $e',
+      stackTrace: stackTrace,
+    );
   }
+}
+
+/// チュートリアル用: 権限ダイアログのみ表示（FCMトークン取得はしない）
+Future<void> requestTutorialNotificationPermission() async {
+  final notificationService = NotificationService();
+  await notificationService.initialize();
+  await notificationService.requestPermissions();
+  await FirebaseMessagingService().requestNotificationPermission();
 }
 
 /// バックグラウンドメッセージハンドラー
