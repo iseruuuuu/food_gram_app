@@ -26,9 +26,17 @@ Future<void> initializeNotifications() async {
       await notificationService.scheduleLunchReminder();
       await notificationService.scheduleDinnerReminder();
     }
-  } on Exception catch (e) {
-    logger.e('通知の初期化に失敗しました: $e');
+  } catch (e, stackTrace) {
+    logger.e('通知の初期化に失敗しました: $e', stackTrace: stackTrace);
   }
+}
+
+/// チュートリアル用: 権限ダイアログのみ表示（FCMトークン取得はしない）
+Future<void> requestTutorialNotificationPermission() async {
+  final notificationService = NotificationService();
+  await notificationService.initialize();
+  await notificationService.requestPermissions();
+  await FirebaseMessagingService().requestNotificationPermission();
 }
 
 /// バックグラウンドメッセージハンドラー
