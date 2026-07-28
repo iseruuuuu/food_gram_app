@@ -5,17 +5,22 @@ class AppElevatedButton extends StatelessWidget {
   const AppElevatedButton({
     required this.onPressed,
     required this.title,
+    this.backgroundColor,
+    this.horizontalInset = 100,
     super.key,
   });
 
   final VoidCallback onPressed;
   final String title;
+  final Color? backgroundColor;
+  final double horizontalInset;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final buttonColor = backgroundColor ?? Colors.black;
     return Container(
-      width: MediaQuery.of(context).size.width - 100,
+      width: MediaQuery.of(context).size.width - horizontalInset,
       height: 50,
       decoration: BoxDecoration(
         color: isDark ? null : Colors.white,
@@ -23,11 +28,11 @@ class AppElevatedButton extends StatelessWidget {
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.black,
+          backgroundColor: buttonColor,
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            side: isDark
+            side: isDark && backgroundColor == null
                 ? const BorderSide(color: Colors.white54)
                 : BorderSide.none,
           ),
