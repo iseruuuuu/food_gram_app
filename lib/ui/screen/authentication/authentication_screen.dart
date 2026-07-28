@@ -152,18 +152,6 @@ class AuthenticationScreen extends HookConsumerWidget {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Assets.gif.login1.image(width: 70, height: 70),
-                Assets.gif.login2.image(width: 70, height: 70),
-                Assets.gif.login3.image(width: 70, height: 70),
-                Assets.gif.login4.image(width: 70, height: 70),
-              ],
-            ),
-          ),
           AppProcessLoading(loading: loading, status: 'Loading...'),
         ],
       ),
