@@ -49,8 +49,6 @@ class TimelineFeedSection extends HookConsumerWidget {
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
               child: Row(
                 children: [
-                  // const Text('🌱', style: TextStyle(fontSize: 18)),
-                  // const SizedBox(width: 6),
                   Expanded(
                     child: Text(
                       t.timeline.everyonePosts,

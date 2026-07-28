@@ -216,7 +216,6 @@ class TimelineRecommendSection extends HookConsumerWidget {
 }
 
 /// おすすめカルーセル用カード（このファイル内専用）
-///
 /// [focus] は 1.0=中央、0.0=サイド。
 class _TimelineFeaturedCard extends HookConsumerWidget {
   const _TimelineFeaturedCard({
