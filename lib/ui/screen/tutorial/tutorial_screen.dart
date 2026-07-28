@@ -80,8 +80,7 @@ class TutorialScreen extends HookConsumerWidget {
     final currentPage = currentPageIndex.value;
     final showStandardNextButton = currentPage <= 3;
     final showWelcomeButton = currentPage == welcomePageIndex;
-    final canStartWelcome =
-        isAcceptTerms.value && isAcceptPrivacy.value;
+    final canStartWelcome = isAcceptTerms.value && isAcceptPrivacy.value;
 
     Future<void> goToNextPage() async {
       await pageController.nextPage(
@@ -96,7 +95,7 @@ class TutorialScreen extends HookConsumerWidget {
         if (permission == LocationPermission.denied) {
           await Geolocator.requestPermission();
         }
-      } catch (_) {
+      } on Exception catch (_) {
         // 許可に失敗してもチュートリアルは続行する
       }
       await goToNextPage();
@@ -107,7 +106,7 @@ class TutorialScreen extends HookConsumerWidget {
         await requestTutorialNotificationPermission().timeout(
           const Duration(seconds: 30),
         );
-      } catch (_) {
+      } on Exception catch (_) {
         // 許可に失敗してもチュートリアルは続行する
       }
       unawaited(
@@ -457,10 +456,12 @@ class _TutorialContentPage extends StatelessWidget {
         const Gap(24),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Text(
-            title,
-            style: TutorialStyle.title(context),
-            textAlign: TextAlign.center,
+          child: FittedBox(
+            child: Text(
+              title,
+              style: TutorialStyle.title(context),
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
         const Gap(18),
