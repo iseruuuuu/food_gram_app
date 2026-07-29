@@ -24,7 +24,6 @@ class EditViewModel extends _$EditViewModel {
   final logger = Logger();
 
   final nameTextController = TextEditingController();
-  final useNameTextController = TextEditingController();
   final selfIntroduceTextController = TextEditingController();
 
   Loading get loading => ref.read(loadingProvider.notifier);
@@ -41,7 +40,6 @@ class EditViewModel extends _$EditViewModel {
         await supabase.from('users').select().eq('user_id', userId!).single();
     final user = Users.fromJson(data);
     nameTextController.text = user.name;
-    useNameTextController.text = user.userName;
     selfIntroduceTextController.text = user.selfIntroduce;
     state = state.copyWith(
       number: int.parse(extractNumber(user.image)),
@@ -64,7 +62,6 @@ class EditViewModel extends _$EditViewModel {
     loading.state = true;
     final result = await ref.read(accountServiceProvider).update(
           name: nameTextController.text,
-          userName: useNameTextController.text,
           selfIntroduce: selfIntroduceTextController.text,
           image: state.number.toString(),
           uploadImage: uploadImage,

@@ -25,7 +25,6 @@ class AccountService {
 
   Future<Result<void, Exception>> createUsers({
     required String name,
-    required String userName,
     required int image,
   }) async {
     final userId = supabase.auth.currentUser?.id;
@@ -38,7 +37,6 @@ class AccountService {
         'user-create',
         body: {
           'name': name,
-          'user_name': userName,
           'image': image,
         },
       );
@@ -61,7 +59,6 @@ class AccountService {
 
   Future<Result<void, Exception>> update({
     required String name,
-    required String userName,
     required String selfIntroduce,
     required String image,
     required String favoriteTags,
@@ -77,7 +74,6 @@ class AccountService {
       final userData = await _getCurrentUserData();
       final updates = _createBaseUpdates(
         name: name,
-        userName: userName,
         selfIntroduce: selfIntroduce,
         favoriteTags: favoriteTags,
       );
@@ -91,7 +87,6 @@ class AccountService {
       final payload = <String, dynamic>{
         'user_id': _currentUserId,
         'name': updates['name'],
-        'user_name': updates['user_name'],
         'self_introduce': updates['self_introduce'],
         'tag': updates['tag'],
       };
@@ -139,13 +134,11 @@ class AccountService {
 
   Map<String, dynamic> _createBaseUpdates({
     required String name,
-    required String userName,
     required String selfIntroduce,
     required String favoriteTags,
   }) {
     return {
       'name': name,
-      'user_name': userName,
       'self_introduce': selfIntroduce,
       'updated_at': DateTime.now().toIso8601String(),
       'tag': favoriteTags,

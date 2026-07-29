@@ -81,10 +81,6 @@ class NewAccountScreen extends ConsumerWidget {
                     AppNameTextField(
                       controller: controller.nameTextController,
                     ),
-                    const Gap(20),
-                    AppUserNameTextField(
-                      controller: controller.userNameTextController,
-                    ),
                     const Gap(24),
                     AppElevatedButton(
                       onPressed: () {

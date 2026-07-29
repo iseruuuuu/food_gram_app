@@ -14,7 +14,6 @@ class NewAccountViewModel extends _$NewAccountViewModel {
   }) {
     ref.onDispose(() {
       nameTextController.dispose();
-      userNameTextController.dispose();
     });
     return initState;
   }
@@ -22,7 +21,6 @@ class NewAccountViewModel extends _$NewAccountViewModel {
   Loading get loading => ref.read(loadingProvider.notifier);
 
   final nameTextController = TextEditingController();
-  final userNameTextController = TextEditingController();
 
   void selectIcon(int number) {
     state = state.copyWith(number: number);
@@ -32,11 +30,9 @@ class NewAccountViewModel extends _$NewAccountViewModel {
     state = state.copyWith(loginStatus: '');
     primaryFocus?.unfocus();
     loading.state = true;
-    if (nameTextController.text.isNotEmpty &&
-        userNameTextController.text.isNotEmpty) {
+    if (nameTextController.text.isNotEmpty) {
       final result = await ref.read(accountServiceProvider).createUsers(
             name: nameTextController.text.trim(),
-            userName: userNameTextController.text.trim(),
             image: state.number,
           );
       result.when(

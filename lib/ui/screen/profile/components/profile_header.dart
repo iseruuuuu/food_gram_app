@@ -107,16 +107,6 @@ class AppProfileHeader extends ConsumerWidget {
                           ],
                         ],
                       ),
-                      const Gap(2),
-                      Text(
-                        '@${users.userName}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: isDark ? Colors.white60 : Colors.black54,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
                       const Gap(8),
                       _RankBadge(
                         rankLabel: _getRank(context, length),

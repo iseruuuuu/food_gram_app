@@ -134,17 +134,11 @@ class PostDetailListItem extends HookConsumerWidget {
                         style: DetailPostStyle.name(context),
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Builder(
-                        builder: (context) {
-                          final username = posts.isAnonymous
-                              ? t.anonymous.username
-                              : users.userName;
-                          return Text(
-                            '@$username',
-                            style: DetailPostStyle.userName(context),
-                          );
-                        },
-                      ),
+                      if (posts.isAnonymous)
+                        Text(
+                          '@${t.anonymous.username}',
+                          style: DetailPostStyle.userName(context),
+                        ),
                     ],
                   ),
                 ),

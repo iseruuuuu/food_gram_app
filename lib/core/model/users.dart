@@ -8,7 +8,6 @@ class Users with _$Users {
   const factory Users({
     required int id,
     required String name,
-    required String userName,
     required String selfIntroduce,
     required String image,
     required DateTime createdAt,
