@@ -10,6 +10,7 @@ import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
 import 'package:food_gram_app/core/theme/style/detail_post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -98,6 +99,35 @@ class PostDetailListItem extends HookConsumerWidget {
       return Center(child: Text('Error: ${snapshot.error}'));
     }
     final users = snapshot.data!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final asyncRank = ref.watch(postCountRankProvider(users.userId));
+    final rankWidget = asyncRank.when(
+      data: (rank) => _PostRankChip(
+        valueText: t.profile.rankingPositionFormat
+            .replaceAll('{rank}', rank.toString()),
+        label: t.profile.rankingStats,
+        isDark: isDark,
+      ),
+      loading: () => SizedBox(
+        width: 78,
+        height: 44,
+        child: Center(
+          child: SizedBox(
+            width: 18,
+            height: 18,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: isDark ? Colors.white70 : Colors.black54,
+            ),
+          ),
+        ),
+      ),
+      error: (_, __) => _PostRankChip(
+        valueText: t.profile.rankingHiddenPosition,
+        label: t.profile.rankingStats,
+        isDark: isDark,
+      ),
+    );
 
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
@@ -124,8 +154,7 @@ class PostDetailListItem extends HookConsumerWidget {
                     radius: 24,
                   ),
                 ),
-                SizedBox(
-                  width: deviceWidth - 150,
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -134,20 +163,19 @@ class PostDetailListItem extends HookConsumerWidget {
                         style: DetailPostStyle.name(context),
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Builder(
-                        builder: (context) {
-                          final username = posts.isAnonymous
-                              ? t.anonymous.username
-                              : users.userName;
-                          return Text(
-                            '@$username',
-                            style: DetailPostStyle.userName(context),
-                          );
-                        },
-                      ),
+                      if (posts.isAnonymous)
+                        Text(
+                          '@${t.anonymous.username}',
+                          style: DetailPostStyle.userName(context),
+                        ),
                     ],
                   ),
                 ),
+                if (!posts.isAnonymous)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 10),
+                    child: rankWidget,
+                  ),
               ],
             ),
           ),
@@ -554,35 +582,35 @@ class PostDetailListItem extends HookConsumerWidget {
                       children: [
                         if (posts.foodTag.isNotEmpty)
                           ...parseFoodTagIds(posts.foodTag).map(
-                                (tag) => Chip(
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.surface,
-                                  padding: const EdgeInsets.all(2),
-                                  label: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      FoodTagIcon(
-                                        tagId: tag,
-                                        size: 28,
-                                      ),
-                                      const Gap(8),
-                                      Text(
-                                        getLocalizedFoodName(
-                                          tag,
-                                          context,
-                                        ),
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
-                                        ),
-                                      ),
-                                    ],
+                            (tag) => Chip(
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.surface,
+                              padding: const EdgeInsets.all(2),
+                              label: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  FoodTagIcon(
+                                    tagId: tag,
+                                    size: 28,
                                   ),
-                                ),
+                                  const Gap(8),
+                                  Text(
+                                    getLocalizedFoodName(
+                                      tag,
+                                      context,
+                                    ),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface,
+                                    ),
+                                  ),
+                                ],
                               ),
+                            ),
+                          ),
                       ],
                     ),
                   ],
@@ -598,5 +626,53 @@ class PostDetailListItem extends HookConsumerWidget {
   String _formatDateTime(DateTime dateTime) {
     final formatter = DateFormat('yyyy/MM/dd');
     return formatter.format(dateTime);
+  }
+}
+
+class _PostRankChip extends StatelessWidget {
+  const _PostRankChip({
+    required this.valueText,
+    required this.label,
+    required this.isDark,
+  });
+
+  final String valueText;
+  final String label;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final mutedColor = isDark ? Colors.white70 : Colors.black54;
+    return Container(
+      width: 78,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(
+            valueText,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: scheme.onSurface,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Gap(2),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              color: mutedColor,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
   }
 }

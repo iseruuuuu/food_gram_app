@@ -303,10 +303,6 @@ class AppPostDetailSkeleton extends StatelessWidget {
                     'usernameeeeee',
                     style: TextStyle(color: textMuted),
                   ),
-                  Text(
-                    '@username',
-                    style: TextStyle(color: textMuted),
-                  ),
                 ],
               ),
             ],

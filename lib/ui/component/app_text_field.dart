@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -399,78 +398,6 @@ class AppSelfIntroductionTextField extends StatelessWidget {
                   controller: controller,
                   maxLines: 5,
                   autocorrect: false,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: scheme.onSurface,
-                    fontSize: 17,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class AppUserNameTextField extends StatelessWidget {
-  const AppUserNameTextField({
-    required this.controller,
-    super.key,
-  });
-
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        children: [
-          const Gap(10),
-          Expanded(
-            child: Semantics(
-              label: 'userNameField',
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: scheme.surface,
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: scheme.outlineVariant),
-                ),
-                child: TextField(
-                  contextMenuBuilder: (context, state) {
-                    if (SystemContextMenu.isSupported(context)) {
-                      return SystemContextMenu.editableText(
-                        editableTextState: state,
-                      );
-                    }
-                    return AdaptiveTextSelectionToolbar.editableText(
-                      editableTextState: state,
-                    );
-                  },
-                  selectionHeightStyle: BoxHeightStyle.strut,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 12,
-                    ),
-                    hintText: Translations.of(context).newAccount.userId,
-                    hintStyle: TextStyle(color: scheme.onSurfaceVariant),
-                    label: Text(
-                      Translations.of(context).newAccount.userIdInputField,
-                      style: TextStyle(color: scheme.onSurfaceVariant),
-                    ),
-                  ),
-                  controller: controller,
-                  autocorrect: false,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                      RegExp('[a-zA-Z0-9@_.-]'),
-                    ),
-                  ],
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: scheme.onSurface,

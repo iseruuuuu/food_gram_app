@@ -198,10 +198,6 @@ class EditScreen extends HookConsumerWidget {
                         controller: controller.nameTextController,
                       ),
                       const Gap(30),
-                      AppUserNameTextField(
-                        controller: controller.useNameTextController,
-                      ),
-                      const Gap(30),
                       AppSelfIntroductionTextField(
                         controller: controller.selfIntroduceTextController,
                       ),

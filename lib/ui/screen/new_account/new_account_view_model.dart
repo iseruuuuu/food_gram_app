@@ -12,17 +12,13 @@ class NewAccountViewModel extends _$NewAccountViewModel {
   NewAccountState build({
     NewAccountState initState = const NewAccountState(),
   }) {
-    ref.onDispose(() {
-      nameTextController.dispose();
-      userNameTextController.dispose();
-    });
+    ref.onDispose(nameTextController.dispose);
     return initState;
   }
 
   Loading get loading => ref.read(loadingProvider.notifier);
 
   final nameTextController = TextEditingController();
-  final userNameTextController = TextEditingController();
 
   void selectIcon(int number) {
     state = state.copyWith(number: number);
@@ -32,11 +28,10 @@ class NewAccountViewModel extends _$NewAccountViewModel {
     state = state.copyWith(loginStatus: '');
     primaryFocus?.unfocus();
     loading.state = true;
-    if (nameTextController.text.isNotEmpty &&
-        userNameTextController.text.isNotEmpty) {
+    final trimmedName = nameTextController.text.trim();
+    if (trimmedName.isNotEmpty) {
       final result = await ref.read(accountServiceProvider).createUsers(
-            name: nameTextController.text.trim(),
-            userName: userNameTextController.text.trim(),
+            name: trimmedName,
             image: state.number,
           );
       result.when(
