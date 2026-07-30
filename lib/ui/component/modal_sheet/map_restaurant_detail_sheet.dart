@@ -23,6 +23,7 @@ import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_overview_modal_sheet.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -62,18 +63,26 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
     if (selection == null) {
       return const MapRestaurantOverviewModalSheet();
     }
+    final minChildSize = (TabScreen.bottomNavHeightFraction(context) + 0.04)
+        .clamp(0.12, MapOverlayConstants.detailInitialChildSize);
+    final initialChildSize =
+        MapOverlayConstants.detailInitialChildSize < minChildSize
+            ? minChildSize
+            : MapOverlayConstants.detailInitialChildSize;
+    final snapSizes = <double>{
+      minChildSize,
+      initialChildSize,
+      0.95,
+    }.toList()
+      ..sort();
     return DraggableScrollableSheet(
       expand: false,
-      initialChildSize: MapOverlayConstants.detailInitialChildSize,
-      minChildSize: 0.12,
+      initialChildSize: initialChildSize,
+      minChildSize: minChildSize,
       maxChildSize: 0.95,
       snap: true,
       snapAnimationDuration: const Duration(milliseconds: 280),
-      snapSizes: const [
-        0.12,
-        MapOverlayConstants.detailInitialChildSize,
-        0.95,
-      ],
+      snapSizes: snapSizes,
       builder: (context, scrollController) {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         final sheetBg = isDark ? Colors.black : Colors.white;

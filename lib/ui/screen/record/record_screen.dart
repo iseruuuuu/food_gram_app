@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:food_gram_app/core/analytics/analytics_event.dart';
-import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
-import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
-import 'package:food_gram_app/core/supabase/user/services/user_service.dart';
-import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
-import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_detail_screen.dart';
 import 'package:food_gram_app/ui/screen/record/components/map/record_map.dart';
 import 'package:food_gram_app/ui/screen/record/record_view_model.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class RecordScreen extends ConsumerWidget {
@@ -52,38 +45,6 @@ class RecordScreen extends ConsumerWidget {
           ),
           AppMapLoading(loading: state.isLoading, hasError: state.hasError),
         ],
-      ),
-      floatingActionButton: SizedBox(
-        width: 70,
-        height: 70,
-        child: FloatingActionButton(
-          heroTag: null,
-          backgroundColor: Colors.black,
-          foregroundColor: Colors.white,
-          elevation: 10,
-          shape: CircleBorder(
-            side: BorderSide(color: AppTheme.fabBorderColor(context)),
-          ),
-          onPressed: () async {
-            ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
-                  name: AnalyticsEvent.recordPostOpen,
-                );
-            await context
-                .pushNamed(RouterPath.timeLinePost)
-                .then((value) async {
-              if (value != null) {
-                ref.invalidate(myMapRepositoryProvider);
-                final uid = ref.read(currentUserProvider);
-                if (uid != null) {
-                  ref
-                      .read(userServiceProvider.notifier)
-                      .invalidateUserCache(uid);
-                }
-              }
-            });
-          },
-          child: const Icon(Icons.add, size: 35),
-        ),
       ),
     );
   }

@@ -3,11 +3,21 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/summary/summary_launch_gate.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
+import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
+import 'package:food_gram_app/core/supabase/user/services/user_service.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/theme/style/tab_style.dart';
+import 'package:food_gram_app/core/utils/user_level.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/dialog/app_level_up_dialog.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -15,6 +25,42 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class TabScreen extends HookConsumerWidget {
   const TabScreen({super.key});
+
+  static const double _barHeight = 64;
+  static const double _postButtonSize = 64;
+
+  /// バー上端からはみ出す量（小さいほどボタンが下に寄る）
+  static const double _postButtonOverlap = 12;
+  static const double _horizontalMargin = 16;
+  static const double _bottomMargin = 8;
+
+  /// フローティングボトムナビが占める高さ（シート等をその上に載せる用）
+  ///
+  /// [MediaQuery.removePadding] 配下でもセーフエリアを拾えるよう
+  /// `viewPadding` を使う。inset の扱いをレイアウトと揃える。
+  static double bottomNavOccupiedHeight(BuildContext context) {
+    return _barHeight +
+        _postButtonOverlap +
+        _bottomMargin +
+        _bottomSafeInset(context);
+  }
+
+  /// ボトムナビに加算するセーフエリア（iOS のみ。Android は Scaffold 側で処理）
+  static double _bottomSafeInset(BuildContext context) {
+    if (!Platform.isIOS) {
+      return 0;
+    }
+    return MediaQuery.viewPaddingOf(context).bottom;
+  }
+
+  /// 画面高さに対するボトムナビの占有比率
+  static double bottomNavHeightFraction(BuildContext context) {
+    final screenHeight = MediaQuery.sizeOf(context).height;
+    if (screenHeight <= 0) {
+      return 0;
+    }
+    return bottomNavOccupiedHeight(context) / screenHeight;
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -58,142 +104,222 @@ class TabScreen extends HookConsumerWidget {
       const [],
     );
 
+    Future<void> onPostPressed() async {
+      final selectedIndex = state.selectedIndex;
+      if (selectedIndex == 2) {
+        ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+              name: AnalyticsEvent.recordPostOpen,
+            );
+      }
+
+      final oldPostCount =
+          ref.read(myPostStreamProvider).valueOrNull?.length ?? 0;
+      final result = await context.pushNamed(RouterPath.timeLinePost);
+      if (result == null || !context.mounted) {
+        return;
+      }
+
+      switch (selectedIndex) {
+        case 0:
+          ref.invalidate(mapPostRepositoryProvider);
+        case 1:
+          ref
+            ..invalidate(postsStreamProvider)
+            ..invalidate(blockListProvider);
+        case 2:
+          ref.invalidate(myMapRepositoryProvider);
+          final uid = ref.read(currentUserProvider);
+          if (uid != null) {
+            ref.read(userServiceProvider.notifier).invalidateUserCache(uid);
+          }
+        case 3:
+          ref.invalidate(myPostStreamProvider);
+          final uid = ref.read(currentUserProvider);
+          if (uid != null) {
+            ref.invalidate(postCountRankProvider(uid));
+          }
+          try {
+            await ref.read(myPostStreamProvider.future);
+          } on Object {
+            // 再取得失敗時はレベルアップ判定をスキップ
+            return;
+          }
+          final newPostCount =
+              ref.read(myPostStreamProvider).valueOrNull?.length ?? 0;
+          if (UserLevel.levelFromPostCount(newPostCount) >
+                  UserLevel.levelFromPostCount(oldPostCount) &&
+              context.mounted) {
+            await showLevelUpDialog(
+              context: context,
+              level: UserLevel.levelFromPostCount(newPostCount),
+            );
+          }
+      }
+    }
+
     return MediaQuery.removePadding(
       context: context,
       removeBottom: Platform.isIOS,
       child: Scaffold(
+        extendBody: true,
         body: Platform.isIOS
             ? controller.pageList[state.selectedIndex]
             : SafeArea(child: controller.pageList[state.selectedIndex]),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: Theme(
-          data: Theme.of(context).copyWith(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.fromLTRB(
+            _horizontalMargin,
+            0,
+            _horizontalMargin,
+            _bottomMargin + _bottomSafeInset(context),
           ),
-          child: BottomNavigationBar(
-            currentIndex: state.selectedIndex,
-            onTap: controller.onTap,
-            items: [
-              BottomNavigationBarItem(
-                icon: Column(
-                  children: [
-                    const Gap(12),
-                    Icon(
-                      state.selectedIndex == 0
-                          ? CupertinoIcons.map_fill
-                          : CupertinoIcons.map,
-                      color: TabStyle.tabColor(
-                        context,
-                        selected: state.selectedIndex == 0,
+          child: SizedBox(
+            height: _barHeight + _postButtonOverlap,
+            child: Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.bottomCenter,
+              children: [
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    height: _barHeight,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius: BorderRadius.circular(_barHeight / 2),
+                      border: Border.all(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white24
+                            : Colors.grey.shade300,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.08),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                    const Gap(6),
-                    Text(
-                      t.tab.map,
-                      style: TabStyle.tab(
-                        context,
-                        value: state.selectedIndex == 0,
-                      ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: _TabItem(
+                            selected: state.selectedIndex == 0,
+                            icon: state.selectedIndex == 0
+                                ? CupertinoIcons.map_fill
+                                : CupertinoIcons.map,
+                            label: t.tab.map,
+                            onTap: () => controller.onTap(0),
+                          ),
+                        ),
+                        Expanded(
+                          child: _TabItem(
+                            selected: state.selectedIndex == 1,
+                            icon: state.selectedIndex == 1
+                                ? Icons.fastfood
+                                : Icons.fastfood_outlined,
+                            label: t.tab.home,
+                            onTap: () => controller.onTap(1),
+                          ),
+                        ),
+                        const SizedBox(width: _postButtonSize),
+                        Expanded(
+                          child: _TabItem(
+                            selected: state.selectedIndex == 2,
+                            icon: state.selectedIndex == 2
+                                ? CupertinoIcons.map_pin_ellipse
+                                : CupertinoIcons.map_pin,
+                            iconSize: 28,
+                            label: t.tab.myMap,
+                            onTap: () => controller.onTap(2),
+                          ),
+                        ),
+                        Expanded(
+                          child: _TabItem(
+                            selected: state.selectedIndex == 3,
+                            icon: state.selectedIndex == 3
+                                ? CupertinoIcons.person_circle_fill
+                                : CupertinoIcons.person_circle,
+                            iconSize: 28,
+                            label: t.tab.myPage,
+                            onTap: () => controller.onTap(3),
+                          ),
+                        ),
+                      ],
                     ),
-                    const Gap(10),
-                  ],
+                  ),
                 ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Column(
-                  children: [
-                    const Gap(12),
-                    Icon(
-                      state.selectedIndex == 1
-                          ? Icons.fastfood
-                          : Icons.fastfood_outlined,
-                      color: TabStyle.tabColor(
-                        context,
-                        selected: state.selectedIndex == 1,
+                Positioned(
+                  bottom:
+                      (_barHeight - _postButtonSize) / 2 + _postButtonOverlap,
+                  child: Semantics(
+                    button: true,
+                    label: t.post.title,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: onPostPressed,
+                        customBorder: const CircleBorder(),
+                        child: Ink(
+                          width: _postButtonSize,
+                          height: _postButtonSize,
+                          decoration: const BoxDecoration(
+                            color: AppTheme.primaryBlue,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.add,
+                            size: 32,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
-                    const Gap(6),
-                    Text(
-                      t.tab.home,
-                      style: TabStyle.tab(
-                        context,
-                        value: state.selectedIndex == 1,
-                      ),
-                    ),
-                    const Gap(10),
-                  ],
+                  ),
                 ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Column(
-                  children: [
-                    const Gap(12),
-                    Icon(
-                      state.selectedIndex == 2
-                          ? CupertinoIcons.map_pin_ellipse
-                          : CupertinoIcons.map_pin,
-                      size: 30,
-                      color: TabStyle.tabColor(
-                        context,
-                        selected: state.selectedIndex == 2,
-                      ),
-                    ),
-                    const Gap(6),
-                    Text(
-                      t.tab.myMap,
-                      style: TabStyle.tab(
-                        context,
-                        value: state.selectedIndex == 2,
-                      ),
-                    ),
-                    const Gap(10),
-                  ],
-                ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Column(
-                  children: [
-                    const Gap(12),
-                    Icon(
-                      state.selectedIndex == 3
-                          ? CupertinoIcons.person_circle_fill
-                          : CupertinoIcons.person_circle,
-                      size: 30,
-                      color: TabStyle.tabColor(
-                        context,
-                        selected: state.selectedIndex == 3,
-                      ),
-                    ),
-                    const Gap(6),
-                    Text(
-                      t.tab.myPage,
-                      style: TabStyle.tab(
-                        context,
-                        value: state.selectedIndex == 3,
-                      ),
-                    ),
-                    const Gap(10),
-                  ],
-                ),
-                label: '',
-              ),
-            ],
-            type: BottomNavigationBarType.fixed,
-            selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-            elevation: 0,
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            selectedItemColor: Theme.of(context).colorScheme.onSurface,
-            unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
-            iconSize: 26,
-            selectedFontSize: 0,
-            unselectedFontSize: 0,
-            enableFeedback: false,
+              ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _TabItem extends StatelessWidget {
+  const _TabItem({
+    required this.selected,
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    this.iconSize = 24,
+  });
+
+  final bool selected;
+  final IconData icon;
+  final double iconSize;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = TabStyle.tabColor(context, selected: selected);
+    return InkWell(
+      onTap: onTap,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: iconSize, color: color),
+          const Gap(4),
+          Text(
+            label,
+            style: TabStyle.tab(context, value: selected),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
       ),
     );
   }
