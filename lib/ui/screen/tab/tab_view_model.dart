@@ -9,7 +9,6 @@ import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/ui/screen/map/map_screen.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_screen.dart';
 import 'package:food_gram_app/ui/screen/record/record_screen.dart';
-import 'package:food_gram_app/ui/screen/setting/setting_screen.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
 import 'package:food_gram_app/ui/screen/time_line/time_line_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -39,7 +38,6 @@ class TabViewModel extends _$TabViewModel {
     const TimeLineScreen(),
     const RecordScreen(),
     const MyProfileScreen(),
-    const SettingScreen(),
   ];
 
   void _logInitialTabIfNeeded() {
@@ -108,8 +106,6 @@ class TabViewModel extends _$TabViewModel {
         analytics.logEventUnawaited(name: AnalyticsEvent.myMapOpen);
       case 3:
         analytics.logEventUnawaited(name: AnalyticsEvent.profileOpen);
-      case 4:
-        analytics.logEventUnawaited(name: AnalyticsEvent.settingOpen);
     }
   }
 }

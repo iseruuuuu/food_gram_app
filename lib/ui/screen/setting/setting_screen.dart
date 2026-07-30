@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
@@ -28,18 +31,44 @@ class SettingScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useEffect(
+      () {
+        ref
+            .read(firebaseAnalyticsServiceProvider)
+            .logEventUnawaited(name: AnalyticsEvent.settingOpen);
+        return null;
+      },
+      const [],
+    );
     final loading = ref.watch(loadingProvider);
     final state = ref.watch(settingViewModelProvider());
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final hasUser = ref.watch(currentUserProvider) != null;
     final t = Translations.of(context);
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(0),
-        child: AppBar(
-          surfaceTintColor: Colors.transparent,
-          forceMaterialTransparency: true,
-          elevation: 0,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Theme.of(context).colorScheme.surface,
+        surfaceTintColor: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Theme.of(context).colorScheme.surface,
+        title: Text(
+          t.setting.appBar,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        centerTitle: true,
+        elevation: 0.5,
+        leading: IconButton(
+          onPressed: () => context.pop(),
+          icon: Icon(
+            Icons.close,
+            size: 32,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
       ),
       body: Stack(

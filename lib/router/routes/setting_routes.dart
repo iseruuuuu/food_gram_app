@@ -3,8 +3,12 @@ part of '../router.dart';
 final settingRouter = GoRoute(
   path: RouterPath.setting,
   name: RouterPath.setting,
-  builder: (context, state) {
-    return const SettingScreen();
+  pageBuilder: (context, state) {
+    return whiteOut(
+      const SettingScreen(),
+      key: state.pageKey,
+      name: AnalyticsScreen.setting,
+    );
   },
   routes: <RouteBase>[
     GoRoute(

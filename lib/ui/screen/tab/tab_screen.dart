@@ -181,32 +181,6 @@ class TabScreen extends HookConsumerWidget {
                 ),
                 label: '',
               ),
-              BottomNavigationBarItem(
-                icon: Column(
-                  children: [
-                    const Gap(12),
-                    Icon(
-                      state.selectedIndex == 4
-                          ? Icons.settings
-                          : Icons.settings_outlined,
-                      color: TabStyle.tabColor(
-                        context,
-                        selected: state.selectedIndex == 4,
-                      ),
-                    ),
-                    const Gap(6),
-                    Text(
-                      t.tab.setting,
-                      style: TabStyle.tab(
-                        context,
-                        value: state.selectedIndex == 4,
-                      ),
-                    ),
-                    const Gap(10),
-                  ],
-                ),
-                label: '',
-              ),
             ],
             type: BottomNavigationBarType.fixed,
             selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
