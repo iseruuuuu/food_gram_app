@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
@@ -16,6 +13,7 @@ import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// ピン/一覧タップでモーダル内表示を切り替えるための選択状態
@@ -23,8 +21,23 @@ final mapModalSelectionProvider =
     StateProvider<MapModalSelection?>((ref) => null);
 
 /// マップ画面の「最初のモーダル」（近くのレストラン一覧）を表示するシート。
-class MapRestaurantOverviewModalSheet extends HookConsumerWidget {
+class MapRestaurantOverviewModalSheet extends ConsumerWidget {
   const MapRestaurantOverviewModalSheet({super.key});
+
+  /// ボトムナビより少し高い、常時表示のシート高さ（画面比）
+  static double openSheetSize(BuildContext context) {
+    final screenHeight = MediaQuery.sizeOf(context).height;
+    if (screenHeight <= 0) {
+      return MapOverlayConstants.overviewCollapsedSize;
+    }
+    final size = (TabScreen.bottomNavOccupiedHeight(context) +
+            MapOverlayConstants.overviewOpenPeekPx) /
+        screenHeight;
+    return size.clamp(
+      MapOverlayConstants.overviewCollapsedSize,
+      MapOverlayConstants.overviewExpandedSize,
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,37 +52,22 @@ class MapRestaurantOverviewModalSheet extends HookConsumerWidget {
         ? null
         : ref.watch(map_repo.getNearByPostsProvider(cameraCenter));
 
-    final sheetController = useMemoized(DraggableScrollableController.new);
-    useEffect(
-      () => sheetController.dispose,
-      [sheetController],
-    );
-    useListenable(sheetController);
-
-    final isCollapsed = !sheetController.isAttached ||
-        sheetController.size <=
-            MapOverlayConstants.overviewCollapsedSize + 0.02;
-
-    Future<void> expandSheet() {
-      return sheetController.animateTo(
+    final sheetSize = openSheetSize(context);
+    final snapSizes = <double>{
+      sheetSize,
+      if (MapOverlayConstants.overviewExpandedSize > sheetSize + 0.01)
         MapOverlayConstants.overviewExpandedSize,
-        duration: const Duration(milliseconds: 280),
-        curve: Curves.easeOutCubic,
-      );
-    }
+    }.toList()
+      ..sort();
 
     return DraggableScrollableSheet(
       expand: false,
-      controller: sheetController,
-      initialChildSize: MapOverlayConstants.overviewCollapsedSize,
-      minChildSize: MapOverlayConstants.overviewCollapsedSize,
+      initialChildSize: sheetSize,
+      minChildSize: sheetSize,
       maxChildSize: 0.95,
       snap: true,
       snapAnimationDuration: const Duration(milliseconds: 280),
-      snapSizes: const [
-        MapOverlayConstants.overviewCollapsedSize,
-        MapOverlayConstants.overviewExpandedSize,
-      ],
+      snapSizes: snapSizes,
       builder: (context, scrollController) {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         final sheetBg = isDark ? Colors.black : Colors.white;
@@ -77,29 +75,21 @@ class MapRestaurantOverviewModalSheet extends HookConsumerWidget {
         final t = Translations.of(context);
         final slivers = <Widget>[
           SliverToBoxAdapter(
-            child: GestureDetector(
-              onTap: () {
-                if (isCollapsed) {
-                  unawaited(expandSheet());
-                }
-              },
-              behavior: HitTestBehavior.opaque,
-              child: SizedBox(
-                width: double.infinity,
-                height: 36,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 36,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: handleColor,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
+            child: SizedBox(
+              width: double.infinity,
+              height: 36,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 36,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: handleColor,
+                      borderRadius: BorderRadius.circular(2),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -355,7 +345,7 @@ class MapRestaurantOverviewModalSheet extends HookConsumerWidget {
           child: CustomScrollView(
             controller: scrollController,
             primary: false,
-            // 折りたたみ時も上スワイプでシートを広げられるようにする
+            // 上スワイプでシートを広げられるようにする
             physics: const AlwaysScrollableScrollPhysics(
               parent: ClampingScrollPhysics(),
             ),

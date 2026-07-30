@@ -39,10 +39,13 @@ class MapOverlayConstants {
   static const double countryOverview = 3.8;
 
   // 下シート
-  /// 近くの店舗一覧（Overview）折りたたみ時（ハンドルのみ）
+  /// 近くの店舗一覧（Overview）折りたたみ時（ハンドルのみ）※互換用
   static const double overviewCollapsedSize = 0.042;
 
-  /// 近くの店舗一覧（Overview）タップで開いたとき
+  /// ボトムナビ上に常時見せる追加の高さ（px）
+  static const double overviewOpenPeekPx = 56;
+
+  /// 近くの店舗一覧（Overview）タップで開いたとき（さらに引き伸ばしたとき）
   static const double overviewExpandedSize = 0.36;
 
   /// 店舗詳細（Detail）の初期高さ比率

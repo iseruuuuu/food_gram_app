@@ -18,7 +18,6 @@ import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
@@ -29,7 +28,6 @@ import 'package:food_gram_app/ui/screen/map/components/map_category_chip_bar.dar
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:food_gram_app/ui/screen/tab/use_tab_loading_on_mount.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -82,7 +80,6 @@ class MapScreen extends HookConsumerWidget {
     final fabBg = isDark ? Colors.black : Colors.white;
     const fabFg = AppTheme.primaryBlue;
     final fabBorder = AppTheme.fabBorderColor(context);
-    final hasModalSelection = ref.watch(mapModalSelectionProvider) != null;
     ref.listen<MapModalSelection?>(mapModalSelectionProvider, (_, next) {
       if (next == null || next.placeSearchRestaurant == null) {
         unawaited(controller.clearSearchResultPin());
@@ -261,35 +258,6 @@ class MapScreen extends HookConsumerWidget {
           ),
         ],
       ),
-      floatingActionButton: hasModalSelection
-          ? null
-          : Builder(
-              builder: (context) {
-                return SizedBox(
-                  width: 70,
-                  height: 70,
-                  child: FloatingActionButton(
-                    heroTag: null,
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    elevation: 10,
-                    shape: CircleBorder(
-                      side: BorderSide(color: AppTheme.fabBorderColor(context)),
-                    ),
-                    onPressed: () async {
-                      await context
-                          .pushNamed(RouterPath.timeLinePost)
-                          .then((value) async {
-                        if (value != null) {
-                          ref.invalidate(mapPostRepositoryProvider);
-                        }
-                      });
-                    },
-                    child: const Icon(Icons.add, size: 35),
-                  ),
-                );
-              },
-            ),
     );
   }
 }
