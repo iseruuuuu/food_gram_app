@@ -466,10 +466,10 @@ class _RankBadge extends StatelessWidget {
     final badgeText = isDark ? const Color(0xFFE8C87A) : Colors.black;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5.5),
       decoration: BoxDecoration(
         color: badgeBg,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(22),
         border: Border.all(color: badgeBorder),
       ),
       child: Row(
@@ -477,15 +477,15 @@ class _RankBadge extends StatelessWidget {
         children: [
           Image.asset(
             trophyAsset,
-            width: 16,
-            height: 16,
+            width: 18,
+            height: 18,
           ),
-          const Gap(6),
+          const Gap(7),
           Flexible(
             child: Text(
               '$levelLabel $rankLabel $rankSuffix',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 13.5,
                 fontWeight: FontWeight.bold,
                 color: badgeText,
               ),

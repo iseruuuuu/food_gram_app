@@ -71,9 +71,17 @@ class MyProfileScreen extends HookConsumerWidget {
           length: 2,
           child: Scaffold(
             appBar: AppBar(
-              surfaceTintColor: Colors.transparent,
+              surfaceTintColor: Colors.white,
+              backgroundColor: Colors.white,
               elevation: 0,
               centerTitle: true,
+              leading: IconButton(
+                onPressed: () => context.pushNamed(RouterPath.notifications),
+                icon: const Icon(
+                  Icons.favorite_border,
+                  color: Colors.red,
+                ),
+              ),
               title: Text(
                 Translations.of(context).tab.myPage,
                 style: TextStyle(
@@ -84,27 +92,24 @@ class MyProfileScreen extends HookConsumerWidget {
               ),
               actions: [
                 IconButton(
-                  onPressed: () =>
-                      context.pushNamed(RouterPath.wantToGoList),
+                  onPressed: () => context.pushNamed(RouterPath.wantToGoList),
                   icon: Icon(
                     Icons.place_outlined,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 IconButton(
-                  onPressed: () =>
-                      context.pushNamed(RouterPath.storedPost),
+                  onPressed: () => context.pushNamed(RouterPath.storedPost),
                   icon: Icon(
                     Icons.bookmark_border,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 IconButton(
-                  onPressed: () =>
-                      context.pushNamed(RouterPath.notifications),
-                  icon: const Icon(
-                    Icons.favorite_border,
-                    color: Colors.red,
+                  onPressed: () => context.pushNamed(RouterPath.setting),
+                  icon: Icon(
+                    Icons.settings_outlined,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ],
