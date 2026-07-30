@@ -130,7 +130,6 @@ abstract final class AnalyticsScreen {
       1 => food,
       2 => record,
       3 => profile,
-      4 => setting,
       _ => map,
     };
   }

@@ -18,7 +18,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'router.g.dart';
 part 'routes/time_line_routes.dart';
 part 'routes/my_profile_routes.dart';
-part 'routes/setting_routes.dart';
 part 'routes/map_routes.dart';
 
 @riverpod
@@ -117,7 +116,6 @@ GoRouter router(Ref ref) {
           timeLineRouter,
           mapRouter,
           myProfileRouter,
-          settingRouter,
         ],
       ),
     ],
@@ -173,11 +171,10 @@ final class RouterPath {
   static const String timeLine = 'time_line';
   static const String map = 'map';
   static const String myProfile = 'my_profile';
+  // /tab/my_profile
   static const String setting = 'setting';
-  // /tab/setting
   static const String license = 'license';
   static const String settingTutorial = 'setting_tutorial';
-  // /tab/my_profile
   static const String notifications = 'notifications';
   static const String storedPost = 'stored_post';
   static const String wantToGoList = 'want_to_go_list';

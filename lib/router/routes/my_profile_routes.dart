@@ -266,5 +266,36 @@ final myProfileRouter = GoRoute(
         );
       },
     ),
+    GoRoute(
+      path: RouterPath.setting,
+      name: RouterPath.setting,
+      pageBuilder: (context, state) {
+        return whiteOut(
+          const SettingScreen(),
+          key: state.pageKey,
+          name: AnalyticsScreen.setting,
+        );
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: RouterPath.license,
+          name: RouterPath.license,
+          pageBuilder: (context, state) {
+            return scaleUpTransition(
+              const LicensePage(),
+              key: state.pageKey,
+              name: AnalyticsScreen.license,
+            );
+          },
+        ),
+        GoRoute(
+          path: RouterPath.settingTutorial,
+          name: RouterPath.settingTutorial,
+          builder: (context, state) {
+            return const TutorialScreen();
+          },
+        ),
+      ],
+    ),
   ],
 );
