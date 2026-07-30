@@ -37,12 +37,20 @@ class TabScreen extends HookConsumerWidget {
   /// フローティングボトムナビが占める高さ（シート等をその上に載せる用）
   ///
   /// [MediaQuery.removePadding] 配下でもセーフエリアを拾えるよう
-  /// `viewPadding` を使う。
+  /// `viewPadding` を使う。inset の扱いをレイアウトと揃える。
   static double bottomNavOccupiedHeight(BuildContext context) {
     return _barHeight +
         _postButtonOverlap +
         _bottomMargin +
-        MediaQuery.viewPaddingOf(context).bottom;
+        _bottomSafeInset(context);
+  }
+
+  /// ボトムナビに加算するセーフエリア（iOS のみ。Android は Scaffold 側で処理）
+  static double _bottomSafeInset(BuildContext context) {
+    if (!Platform.isIOS) {
+      return 0;
+    }
+    return MediaQuery.viewPaddingOf(context).bottom;
   }
 
   /// 画面高さに対するボトムナビの占有比率
@@ -59,7 +67,6 @@ class TabScreen extends HookConsumerWidget {
     final state = ref.watch(tabViewModelProvider());
     final controller = ref.watch(tabViewModelProvider().notifier);
     final t = Translations.of(context);
-    final bottomInset = MediaQuery.paddingOf(context).bottom;
 
     useEffect(
       () {
@@ -131,7 +138,12 @@ class TabScreen extends HookConsumerWidget {
           if (uid != null) {
             ref.invalidate(postCountRankProvider(uid));
           }
-          await ref.read(myPostStreamProvider.future);
+          try {
+            await ref.read(myPostStreamProvider.future);
+          } on Object {
+            // 再取得失敗時はレベルアップ判定をスキップ
+            return;
+          }
           final newPostCount =
               ref.read(myPostStreamProvider).valueOrNull?.length ?? 0;
           if (UserLevel.levelFromPostCount(newPostCount) >
@@ -158,7 +170,7 @@ class TabScreen extends HookConsumerWidget {
             _horizontalMargin,
             0,
             _horizontalMargin,
-            _bottomMargin + (Platform.isIOS ? bottomInset : 0),
+            _bottomMargin + _bottomSafeInset(context),
           ),
           child: SizedBox(
             height: _barHeight + _postButtonOverlap,
@@ -240,22 +252,26 @@ class TabScreen extends HookConsumerWidget {
                 Positioned(
                   bottom:
                       (_barHeight - _postButtonSize) / 2 + _postButtonOverlap,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: onPostPressed,
-                      customBorder: const CircleBorder(),
-                      child: Ink(
-                        width: _postButtonSize,
-                        height: _postButtonSize,
-                        decoration: const BoxDecoration(
-                          color: AppTheme.primaryBlue,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.add,
-                          size: 32,
-                          color: Colors.white,
+                  child: Semantics(
+                    button: true,
+                    label: t.post.title,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: onPostPressed,
+                        customBorder: const CircleBorder(),
+                        child: Ink(
+                          width: _postButtonSize,
+                          height: _postButtonSize,
+                          decoration: const BoxDecoration(
+                            color: AppTheme.primaryBlue,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.add,
+                            size: 32,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
