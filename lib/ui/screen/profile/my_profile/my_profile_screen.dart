@@ -6,9 +6,7 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
-import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/core/utils/user_level.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_premium_membership_card.dart';
@@ -18,7 +16,6 @@ import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
-import 'package:food_gram_app/ui/component/dialog/app_level_up_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/app_promote_dialog.dart';
 import 'package:food_gram_app/ui/screen/profile/components/profile_header.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
@@ -185,58 +182,6 @@ class MyProfileScreen extends HookConsumerWidget {
                           child: AppEmpty(),
                         ),
                     ],
-                  ),
-                );
-              },
-            ),
-            floatingActionButton: Builder(
-              builder: (context) {
-                return SizedBox(
-                  width: 70,
-                  height: 70,
-                  child: FloatingActionButton(
-                    heroTag: null,
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    elevation: 10,
-                    shape: CircleBorder(
-                      side: BorderSide(
-                        color: AppTheme.fabBorderColor(context),
-                      ),
-                    ),
-                    onPressed: () async {
-                      final oldPostCount =
-                          ref.read(myPostStreamProvider).valueOrNull?.length ??
-                              0;
-                      final result =
-                          await context.pushNamed(RouterPath.myProfilePost);
-                      if (result != null) {
-                        ref.invalidate(myPostStreamProvider);
-                        final uid = ref.read(currentUserProvider);
-                        if (uid != null) {
-                          ref.invalidate(postCountRankProvider(uid));
-                        }
-                        await ref.read(myPostStreamProvider.future);
-                        final newPostCount = ref
-                                .read(myPostStreamProvider)
-                                .valueOrNull
-                                ?.length ??
-                            0;
-                        if (UserLevel.levelFromPostCount(newPostCount) >
-                                UserLevel.levelFromPostCount(oldPostCount) &&
-                            context.mounted) {
-                          await showLevelUpDialog(
-                            context: context,
-                            level: UserLevel.levelFromPostCount(newPostCount),
-                          );
-                        }
-                      }
-                    },
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: 35,
-                    ),
                   ),
                 );
               },

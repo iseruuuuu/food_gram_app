@@ -8,8 +8,6 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
-import 'package:food_gram_app/core/theme/app_theme.dart';
-import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
@@ -17,7 +15,6 @@ import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dar
 import 'package:food_gram_app/ui/screen/time_line/components/timeline_category_tab_bar.dart';
 import 'package:food_gram_app/ui/screen/time_line/components/timeline_feed_section.dart';
 import 'package:food_gram_app/ui/screen/time_line/components/timeline_recommend_section.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class TimeLineScreen extends HookConsumerWidget {
@@ -145,29 +142,6 @@ class TimeLineScreen extends HookConsumerWidget {
               ],
             ),
           ],
-        ),
-      ),
-      floatingActionButton: SizedBox(
-        width: 70,
-        height: 70,
-        child: FloatingActionButton(
-          heroTag: null,
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.black,
-          elevation: 10,
-          shape: CircleBorder(
-            side: BorderSide(color: AppTheme.fabBorderColor(context)),
-          ),
-          onPressed: () async {
-            await context
-                .pushNamed(RouterPath.timeLinePost)
-                .then((value) async {
-              if (value != null) {
-                refreshProviders();
-              }
-            });
-          },
-          child: const Icon(Icons.add, size: 35),
         ),
       ),
     );
