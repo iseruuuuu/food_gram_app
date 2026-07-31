@@ -105,6 +105,14 @@ class PostStyle {
     );
   }
 
+  static TextStyle collapsibleHeaderTitle(BuildContext context) {
+    return TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.bold,
+      color: Theme.of(context).colorScheme.onSurface,
+    );
+  }
+
   static TextStyle fieldLabel(Color accent) {
     return TextStyle(
       fontSize: 14,
