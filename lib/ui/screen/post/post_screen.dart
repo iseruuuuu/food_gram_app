@@ -68,6 +68,7 @@ class PostScreen extends HookConsumerWidget {
     final lastShownNearbyGps = useRef<String?>(null);
     final loading = ref.watch(loadingProvider);
     final foodTags = useState<List<String>>([]);
+    final isOptionalExpanded = useState(false);
     final foodTexts = useMemoized(
       () => ValueNotifier<List<String>>(
         foodTags.value
@@ -102,6 +103,13 @@ class PostScreen extends HookConsumerWidget {
                   applyRestaurant: restaurant == null,
                 );
             foodTags.value = List<String>.from(draft.foodTags);
+            final hasOptionalDraft = draft.foodTags.isNotEmpty ||
+                draft.comment.trim().isNotEmpty ||
+                draft.priceInput.trim().isNotEmpty ||
+                draft.star > 0;
+            if (hasOptionalDraft) {
+              isOptionalExpanded.value = true;
+            }
             SnackBarHelper().openSuccessSnackBar(
               context,
               t.post.title,
@@ -195,7 +203,7 @@ class PostScreen extends HookConsumerWidget {
     // プレビューサイズに合わせて縮小デコード（物理解像度で指定）
     final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
     final previewWidth = (deviceWidth * 0.85 * devicePixelRatio).round();
-    final previewHeight = (deviceWidth / 1.7 * devicePixelRatio).round();
+    final previewHeight = (deviceWidth / 2.05 * devicePixelRatio).round();
     final viewModel = ref.read(postViewModelProvider().notifier);
     const requiredAccent = PostStyle.requiredAccent;
     const optionalAccent = PostStyle.optionalAccent;
@@ -272,7 +280,6 @@ class PostScreen extends HookConsumerWidget {
                           PostSectionHeader(
                             title: t.post.requiredSectionTitle,
                             badge: t.post.requiredBadge,
-                            subtitle: t.post.requiredSectionSubtitle,
                             accent: requiredAccent,
                           ),
                           const Gap(14),
@@ -286,7 +293,7 @@ class PostScreen extends HookConsumerWidget {
                             accent: requiredAccent,
                             borderColor: PostStyle.requiredBorder(context),
                           ),
-                          const Gap(16),
+                          const Gap(12),
                           PostFieldLabel(
                             icon: Icons.fastfood_outlined,
                             label: t.post.foodNameRequired,
@@ -297,7 +304,7 @@ class PostScreen extends HookConsumerWidget {
                             controller: viewModel.foodController,
                             hint: t.post.foodNamePlaceholder,
                           ),
-                          const Gap(16),
+                          const Gap(12),
                           PostFieldLabel(
                             icon: Icons.place_outlined,
                             label: t.post.restaurantNameRequired,
@@ -315,20 +322,14 @@ class PostScreen extends HookConsumerWidget {
                       ),
                     ),
                     const Gap(16),
-                    PostSectionCard(
-                      accent: optionalAccent,
-                      backgroundColor: PostStyle.optionalBg(context),
-                      borderColor: PostStyle.optionalBorder(context),
+                    PostCollapsibleOptionalSection(
+                      isExpanded: isOptionalExpanded.value,
+                      onToggle: () {
+                        isOptionalExpanded.value = !isOptionalExpanded.value;
+                      },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          PostSectionHeader(
-                            title: t.post.optionalSectionTitle,
-                            badge: t.post.optionalBadge,
-                            subtitle: t.post.optionalSectionSubtitle,
-                            accent: optionalAccent,
-                          ),
-                          const Gap(14),
                           PostFoodTagField(
                             foodTags: foodTags.value,
                             foodTexts: foodTexts,

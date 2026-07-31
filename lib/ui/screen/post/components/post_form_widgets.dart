@@ -16,6 +16,7 @@ class PostSectionCard extends StatelessWidget {
     required this.backgroundColor,
     required this.borderColor,
     required this.child,
+    this.padding = const EdgeInsets.all(14),
     super.key,
   });
 
@@ -23,18 +24,128 @@ class PostSectionCard extends StatelessWidget {
   final Color backgroundColor;
   final Color borderColor;
   final Widget child;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(14),
+      padding: padding,
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: borderColor),
       ),
       child: child,
+    );
+  }
+}
+
+/// 任意項目を折りたたみ表示するセクション。
+class PostCollapsibleOptionalSection extends StatelessWidget {
+  const PostCollapsibleOptionalSection({
+    required this.isExpanded,
+    required this.onToggle,
+    required this.child,
+    super.key,
+  });
+
+  final bool isExpanded;
+  final VoidCallback onToggle;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translations.of(context);
+    const accent = PostStyle.optionalAccent;
+
+    return PostSectionCard(
+      accent: accent,
+      backgroundColor: PostStyle.optionalBg(context),
+      borderColor: PostStyle.optionalBorder(context),
+      padding: EdgeInsets.zero,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onToggle,
+              borderRadius: BorderRadius.circular(12),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(14, 14, 12, 14),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  t.post.optionalDetailsExpand,
+                                  style:
+                                      PostStyle.collapsibleHeaderTitle(context),
+                                ),
+                              ),
+                              const Gap(8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: accent,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  t.post.optionalBadge,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Gap(4),
+                          Text(
+                            t.post.optionalDetailsContents,
+                            style: PostStyle.sectionSubtitle(context),
+                          ),
+                        ],
+                      ),
+                    ),
+                    AnimatedRotation(
+                      turns: isExpanded ? 0.5 : 0,
+                      duration: const Duration(milliseconds: 200),
+                      child: Icon(
+                        Icons.expand_more,
+                        size: 28,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          AnimatedCrossFade(
+            firstChild: const SizedBox(width: double.infinity),
+            secondChild: Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
+              child: child,
+            ),
+            crossFadeState: isExpanded
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            duration: const Duration(milliseconds: 220),
+            sizeCurve: Curves.easeInOut,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -202,7 +313,7 @@ class PostPhotoArea extends StatelessWidget {
         onTap: onAddPhoto,
         child: Container(
           width: double.infinity,
-          height: deviceWidth / 1.9,
+          height: deviceWidth / 2.05,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(8),
@@ -231,7 +342,7 @@ class PostPhotoArea extends StatelessWidget {
     }
 
     return SizedBox(
-      height: deviceWidth / 1.9,
+      height: deviceWidth / 2.05,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: foodImages.length + 1,
@@ -269,7 +380,7 @@ class PostPhotoArea extends StatelessWidget {
                     border: Border.all(color: borderColor),
                   ),
                   width: deviceWidth * 0.75,
-                  height: deviceWidth / 1.9,
+                  height: deviceWidth / 2.05,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.file(
