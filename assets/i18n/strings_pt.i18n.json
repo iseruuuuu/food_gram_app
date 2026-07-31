@@ -163,7 +163,7 @@
     "ratingOptionalLabel": "Avaliação",
     "requiredSectionTitle": "Itens obrigatórios",
     "requiredBadge": "Obrigatório",
-    "requiredSectionHint": "Basta foto + restaurante para postar",
+    "requiredSectionHint": "Basta foto, nome do prato e restaurante para postar",
     "requiredSectionSubtitle": "Onde você come vira seu mapa gastronômico",
     "addPhotoRequired": "Adicionar foto (Obrigatório)",
     "optionalSectionTitle": "Informações adicionais",

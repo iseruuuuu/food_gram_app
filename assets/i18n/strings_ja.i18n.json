@@ -163,7 +163,7 @@
     "ratingOptionalLabel": "星評価",
     "requiredSectionTitle": "必須項目",
     "requiredBadge": "必須",
-    "requiredSectionHint": "写真＋店名だけで投稿できます",
+    "requiredSectionHint": "写真・料理名・店名だけで投稿できます",
     "requiredSectionSubtitle": "食べた場所が、あなたのフードマップになります",
     "addPhotoRequired": "写真を追加 (必須)",
     "optionalSectionTitle": "追加情報",

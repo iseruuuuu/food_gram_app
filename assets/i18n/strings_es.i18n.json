@@ -163,7 +163,7 @@
     "ratingOptionalLabel": "Calificación",
     "requiredSectionTitle": "Campos obligatorios",
     "requiredBadge": "Obligatorio",
-    "requiredSectionHint": "Basta con foto + restaurante",
+    "requiredSectionHint": "Basta con foto, plato y restaurante",
     "requiredSectionSubtitle": "Donde comes se convierte en tu mapa gastronómico",
     "addPhotoRequired": "Agregar foto (Obligatorio)",
     "optionalSectionTitle": "Información adicional",

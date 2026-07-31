@@ -84,7 +84,9 @@ class PostCollapsibleOptionalSection extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: Text(
-                                  t.post.optionalDetailsExpand,
+                                  isExpanded
+                                      ? t.post.optionalDetailsCollapse
+                                      : t.post.optionalDetailsExpand,
                                   style:
                                       PostStyle.collapsibleHeaderTitle(context),
                                 ),
