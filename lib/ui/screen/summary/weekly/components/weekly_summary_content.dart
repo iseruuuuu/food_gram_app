@@ -172,7 +172,7 @@ class _StreakCard extends StatelessWidget {
     final borderColor = isDark ? Colors.white12 : const Color(0xFFE8E4DC);
     final labels = weeklySummaryWeekdayLabels(t);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -187,55 +187,53 @@ class _StreakCard extends StatelessWidget {
               children: [
                 Text(
                   t.weeklySummary.streakLabel,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 12,
                     color: isDark ? Colors.white60 : Colors.black54,
                   ),
                 ),
                 const Gap(4),
-                Row(
-                  children: [
-                    Text(
-                      t.weeklySummary.streakWeeks
-                          .replaceAll('{weeks}', '$streakWeeks'),
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                        color: isDark ? Colors.white : Colors.black87,
-                      ),
-                    ),
-                    const Gap(4),
-                    Icon(
-                      Icons.local_fire_department,
-                      size: 22,
-                      color: Colors.orange.shade600,
-                    ),
-                  ],
+                Text(
+                  t.weeklySummary.streakWeeks
+                      .replaceAll('{weeks}', '$streakWeeks'),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
+                    color: isDark ? Colors.white : Colors.black87,
+                  ),
                 ),
               ],
             ),
           ),
           Container(width: 1, height: 48, color: borderColor),
-          const Gap(12),
+          const Gap(8),
           Expanded(
             flex: 3,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(7, (index) {
                 final posted =
                     index < postedWeekdays.length && postedWeekdays[index];
-                return Column(
-                  children: [
-                    Text(
-                      labels[index],
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: isDark ? Colors.white54 : Colors.black45,
+                return Expanded(
+                  child: Column(
+                    children: [
+                      Text(
+                        labels[index],
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: isDark ? Colors.white54 : Colors.black45,
+                        ),
                       ),
-                    ),
-                    const Gap(6),
-                    _DayCircle(posted: posted, isDark: isDark),
-                  ],
+                      const Gap(6),
+                      _DayCircle(posted: posted, isDark: isDark),
+                    ],
+                  ),
                 );
               }),
             ),
