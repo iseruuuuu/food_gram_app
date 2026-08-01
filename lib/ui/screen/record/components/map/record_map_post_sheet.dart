@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -13,7 +13,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// 記録タブ（日本／世界マップ）のピンタップ時に投稿を表示するシート
-class RecordMapPostSheet extends ConsumerWidget {
+class RecordMapPostSheet extends HookConsumerWidget {
   const RecordMapPostSheet({
     required this.post,
     super.key,
@@ -23,6 +23,7 @@ class RecordMapPostSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isOpeningPost = useRef(false);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final surface = isDark ? const Color(0xFF1E1E1E) : Colors.white;
     final sheetHeight = MediaQuery.of(context).size.height * 0.125;
@@ -59,6 +60,7 @@ class RecordMapPostSheet extends ConsumerWidget {
                 post: e.p,
                 postList: post,
                 index: e.index,
+                isOpeningPost: isOpeningPost,
               );
             },
           ),
@@ -73,11 +75,13 @@ class _RecordMapPostTile extends ConsumerWidget {
     required this.post,
     required this.postList,
     required this.index,
+    required this.isOpeningPost,
   });
 
   final Posts post;
   final List<Posts?> postList;
   final int index;
+  final ObjectRef<bool> isOpeningPost;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -93,30 +97,32 @@ class _RecordMapPostTile extends ConsumerWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () {
-          EasyDebounce.debounce(
-            'record_map_pin_detail',
-            Duration.zero,
-            () async {
-              final userResult = await ref
-                  .read(userRepositoryProvider.notifier)
-                  .getUserFromPost(postList[index]!);
-              await userResult.whenOrNull(
-                success: (postUsers) async {
-                  final model = Model(postUsers, postList[index]!);
-                  final value = await context.pushNamed(
-                    RouterPath.mapDetail,
-                    extra: model,
-                  );
-                  if (value != null && context.mounted) {
-                    ref
-                      ..invalidate(postsStreamProvider)
-                      ..invalidate(blockListProvider);
-                  }
-                },
-              );
-            },
-          );
+        onTap: () async {
+          if (isOpeningPost.value) {
+            return;
+          }
+          isOpeningPost.value = true;
+          try {
+            final userResult = await ref
+                .read(userRepositoryProvider.notifier)
+                .getUserFromPost(postList[index]!);
+            await userResult.whenOrNull(
+              success: (postUsers) async {
+                final model = Model(postUsers, postList[index]!);
+                final value = await context.pushNamed(
+                  RouterPath.mapDetail,
+                  extra: model,
+                );
+                if (value != null && context.mounted) {
+                  ref
+                    ..invalidate(postsStreamProvider)
+                    ..invalidate(blockListProvider);
+                }
+              },
+            );
+          } finally {
+            isOpeningPost.value = false;
+          }
         },
         child: SizedBox(
           height: tileHeight,

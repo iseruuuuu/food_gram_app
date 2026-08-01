@@ -1,8 +1,6 @@
-import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
@@ -59,6 +57,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isOpeningPost = useRef(false);
     final selection = ref.watch(mapModalSelectionProvider);
     if (selection == null) {
       return const MapRestaurantOverviewModalSheet();
@@ -167,13 +166,19 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                             subtitle: t.map.firstPostHint,
                             accent: AppTheme.primaryBlue,
                             isDark: isDark,
-                            onTap: () {
-                              unawaited(
-                                context.pushNamed(
+                            onTap: () async {
+                              if (isOpeningPost.value) {
+                                return;
+                              }
+                              isOpeningPost.value = true;
+                              try {
+                                await context.pushNamed(
                                   RouterPath.mapDetailPost,
                                   extra: forNewPost,
-                                ),
-                              );
+                                );
+                              } finally {
+                                isOpeningPost.value = false;
+                              }
                             },
                           ),
                           const SizedBox(height: 8),
@@ -223,44 +228,43 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                               .from('food')
                               .getPublicUrl(firstImage);
                       return GestureDetector(
-                        onTap: () {
-                          EasyDebounce.debounce(
-                            'click map sheet detail grid',
-                            Duration.zero,
-                            () async {
-                              ref
-                                  .read(firebaseAnalyticsServiceProvider)
-                                  .logEventUnawaited(
-                                name: AnalyticsEvent.mapPostOpen,
-                                parameters: {
-                                  AnalyticsParam.postId: postItem.id,
-                                },
-                              );
-                              final userResult = await ref
-                                  .read(
-                                    userRepositoryProvider.notifier,
-                                  )
-                                  .getUserFromPost(postItem);
-                              await userResult.whenOrNull(
-                                success: (postUsers) async {
-                                  final model = Model(postUsers, postItem);
-                                  await context
-                                      .pushNamed(
-                                    RouterPath.mapDetail,
-                                    extra: model,
-                                  )
-                                      .then((value) {
-                                    if (value != null) {
-                                      _refreshRestaurantPosts(
-                                        ref,
-                                        selection,
-                                      );
-                                    }
-                                  });
-                                },
-                              );
-                            },
-                          );
+                        onTap: () async {
+                          if (isOpeningPost.value) {
+                            return;
+                          }
+                          isOpeningPost.value = true;
+                          try {
+                            ref
+                                .read(firebaseAnalyticsServiceProvider)
+                                .logEventUnawaited(
+                              name: AnalyticsEvent.mapPostOpen,
+                              parameters: {
+                                AnalyticsParam.postId: postItem.id,
+                              },
+                            );
+                            final userResult = await ref
+                                .read(
+                                  userRepositoryProvider.notifier,
+                                )
+                                .getUserFromPost(postItem);
+                            await userResult.whenOrNull(
+                              success: (postUsers) async {
+                                final model = Model(postUsers, postItem);
+                                final value = await context.pushNamed(
+                                  RouterPath.mapDetail,
+                                  extra: model,
+                                );
+                                if (value != null) {
+                                  _refreshRestaurantPosts(
+                                    ref,
+                                    selection,
+                                  );
+                                }
+                              },
+                            );
+                          } finally {
+                            isOpeningPost.value = false;
+                          }
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),

@@ -44,6 +44,7 @@ class PostViewModel extends _$PostViewModel {
   bool _restoredFromDraft = false;
   bool _priceCurrencyManuallySet = false;
   bool _disposed = false;
+  bool _isPosting = false;
   int _currencyAutoDetectSeq = 0;
   int _activePostSubmitId = 0;
   PostSubmitCancellation? _postSubmitCancellation;
@@ -68,6 +69,7 @@ class PostViewModel extends _$PostViewModel {
     _priceController = TextEditingController();
     ref.onDispose(() {
       _disposed = true;
+      _isPosting = false;
       _foodController.dispose();
       _commentController.dispose();
       _priceController.dispose();
@@ -88,8 +90,12 @@ class PostViewModel extends _$PostViewModel {
     required String foodTag,
     Locale? locale,
   }) async {
+    // 連打で二重投稿されないよう、進行中は無視する
+    if (_isPosting || _disposed) {
+      return false;
+    }
+    _isPosting = true;
     primaryFocus?.unfocus();
-    _postSubmitCancellation?.cancel();
     final submitId = ++_activePostSubmitId;
     final cancellation = PostSubmitCancellation();
     _postSubmitCancellation = cancellation;
@@ -154,6 +160,7 @@ class PostViewModel extends _$PostViewModel {
           _postSubmitCancellation = null;
         }
         loading.state = false;
+        _isPosting = false;
       }
     }
   }
