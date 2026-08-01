@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -16,7 +14,6 @@ import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
-import 'package:food_gram_app/ui/component/dialog/app_promote_dialog.dart';
 import 'package:food_gram_app/ui/screen/profile/components/profile_header.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
 import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dart';
@@ -43,25 +40,6 @@ class MyProfileScreen extends HookConsumerWidget {
     );
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final loading = ref.watch(loadingProvider);
-    useEffect(() {
-      users.whenOrNull(
-        data: (users, ___) {
-          if (users.isSubscribe) {
-            return;
-          }
-          WidgetsBinding.instance.addPostFrameCallback((_) async {
-            final value = math.Random().nextInt(10);
-            if (value == 0) {
-              await showDialog<void>(
-                context: context,
-                builder: (context) => const AppPromoteDialog(),
-              );
-            }
-          });
-        },
-      );
-      return null;
-    });
     return Stack(
       children: [
         DefaultTabController(
