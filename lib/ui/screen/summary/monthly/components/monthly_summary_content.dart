@@ -369,58 +369,66 @@ class _CompactDetails extends StatelessWidget {
   final MonthlySummary summary;
   final _MonthlyStrings strings;
 
+  /// 画面左右パディング（[MonthlySummaryScreen] の 16 * 2）を除いた幅の閾値。
+  static const _sideBySideMinWidth = 330.0;
+  static const _horizontalInset = 32.0;
+
   @override
   Widget build(BuildContext context) {
     final colors = _Colors.of(context);
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth < 330) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _GenreTop3(summary: summary, strings: strings),
-              const Gap(14),
-              _VisitFootprint(summary: summary, strings: strings),
-            ],
-          );
-        }
+    // SingleChildScrollView 内の LayoutBuilder は縦方向が unbounded になり、
+    // IntrinsicHeight と組み合わせると hasSize アサーションで落ちるため MediaQuery を使う。
+    final contentWidth =
+        MediaQuery.sizeOf(context).width - _horizontalInset;
 
-        return Container(
-          padding: const EdgeInsets.fromLTRB(14, 13, 14, 16),
-          decoration: BoxDecoration(
-            color: colors.surface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: colors.border),
-          ),
-          child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  flex: 8,
-                  child: _GenreTop3(
-                    summary: summary,
-                    strings: strings,
-                    embedded: true,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: VerticalDivider(width: 1, color: colors.border),
-                ),
-                Expanded(
-                  flex: 12,
-                  child: _VisitFootprint(
-                    summary: summary,
-                    strings: strings,
-                    embedded: true,
-                  ),
-                ),
-              ],
+    if (contentWidth < _sideBySideMinWidth) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _GenreTop3(summary: summary, strings: strings),
+          const Gap(14),
+          _VisitFootprint(summary: summary, strings: strings),
+        ],
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 13, 14, 16),
+      decoration: BoxDecoration(
+        color: colors.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: colors.border),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 8,
+            child: _GenreTop3(
+              summary: summary,
+              strings: strings,
+              embedded: true,
             ),
           ),
-        );
-      },
+          Expanded(
+            flex: 12,
+            child: Container(
+              margin: const EdgeInsets.only(left: 10),
+              padding: const EdgeInsets.only(left: 10),
+              decoration: BoxDecoration(
+                border: Border(
+                  left: BorderSide(color: colors.border),
+                ),
+              ),
+              child: _VisitFootprint(
+                summary: summary,
+                strings: strings,
+                embedded: true,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
