@@ -558,19 +558,6 @@
     "bronze": "ブロンズ",
     "label": "ランク"
   },
-  "promoteDialog": {
-    "title": "✨プレミアム会員になろう✨",
-    "trophyTitle": "トロフィー機能",
-    "trophyDesc": "特定の活動に応じてトロフィーを表示できるようになります。",
-    "tagTitle": "カスタムタグ",
-    "tagDesc": "お気に入りのフードに独自のタグを設定できます。",
-    "iconTitle": "カスタムアイコン",
-    "iconDesc": "プロフィールアイコンを自由な画像に設定できます!!",
-    "adTitle": "広告フリー",
-    "adDesc": "すべての広告が表示されなくなります!!",
-    "button": "プレミアム会員になる",
-    "later": "後で考える"
-  },
   "paywall": {
     "title": "FoodGram Premium",
     "premiumTitle": "✨ プレミアム特典 ✨",

@@ -558,19 +558,6 @@
     "bronze": "Đồng",
     "label": "Rank"
   },
-  "promoteDialog": {
-    "title": "✨ Trở thành thành viên Premium ✨",
-    "trophyTitle": "Tính năng Cúp",
-    "trophyDesc": "Hiển thị cúp dựa trên hoạt động của bạn.",
-    "tagTitle": "Thẻ tùy chỉnh",
-    "tagDesc": "Đặt thẻ tùy chỉnh cho món ăn yêu thích của bạn.",
-    "iconTitle": "Biểu tượng tùy chỉnh",
-    "iconDesc": "Đặt biểu tượng hồ sơ của bạn thành bất kỳ hình ảnh nào bạn thích!!",
-    "adTitle": "Không quảng cáo",
-    "adDesc": "Loại bỏ tất cả quảng cáo!!",
-    "button": "Nâng cấp Premium",
-    "later": "Có thể sau"
-  },
   "paywall": {
     "title": "FoodGram Premium",
     "premiumTitle": "✨ Lợi ích Premium ✨",

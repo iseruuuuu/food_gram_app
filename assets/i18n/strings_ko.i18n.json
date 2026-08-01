@@ -558,19 +558,6 @@
     "bronze": "브론즈",
     "label": "Rank"
   },
-  "promoteDialog": {
-    "title": "✨프리미엄 회원이 되세요✨",
-    "trophyTitle": "트로피 기능",
-    "trophyDesc": "활동에 따라 트로피를 표시합니다.",
-    "tagTitle": "커스텀 태그",
-    "tagDesc": "즐겨찾기 음식에 커스텀 태그를 설정할 수 있습니다.",
-    "iconTitle": "커스텀 아이콘",
-    "iconDesc": "프로필 아이콘을 원하는 이미지로 설정할 수 있습니다!!",
-    "adTitle": "광고 없음",
-    "adDesc": "모든 광고가 제거됩니다!!",
-    "button": "프리미엄 회원 되기",
-    "later": "나중에"
-  },
   "paywall": {
     "title": "FoodGram 프리미엄",
     "premiumTitle": "✨ 프리미엄 혜택 ✨",

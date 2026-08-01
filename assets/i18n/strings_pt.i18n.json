@@ -558,19 +558,6 @@
     "bronze": "Bronze",
     "label": "Rank"
   },
-  "promoteDialog": {
-    "title": "✨Torne-se um Membro Premium✨",
-    "trophyTitle": "Função Troféu",
-    "trophyDesc": "Exibe troféus baseados em suas atividades.",
-    "tagTitle": "Tags Personalizadas",
-    "tagDesc": "Defina tags personalizadas para suas comidas favoritas.",
-    "iconTitle": "Ícone Personalizado",
-    "iconDesc": "Defina seu ícone de perfil para qualquer imagem que você goste !!",
-    "adTitle": "Sem Anúncios",
-    "adDesc": "Remove todos os anúncios !!",
-    "button": "Tornar-se Premium",
-    "later": "Talvez Depois"
-  },
   "paywall": {
     "title": "FoodGram Premium",
     "premiumTitle": "✨ Benefícios Premium ✨",

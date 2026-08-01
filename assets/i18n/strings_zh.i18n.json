@@ -558,19 +558,6 @@
     "bronze": "青铜",
     "label": "Rank"
   },
-  "promoteDialog": {
-    "title": "✨成为高级会员✨",
-    "trophyTitle": "奖杯功能",
-    "trophyDesc": "根据您的活动显示奖杯。",
-    "tagTitle": "自定义标签",
-    "tagDesc": "为您喜爱的食物设置自定义标签。",
-    "iconTitle": "自定义图标",
-    "iconDesc": "将您的个人资料图标设置为任何您喜欢的图片！！",
-    "adTitle": "无广告",
-    "adDesc": "移除所有广告！！",
-    "button": "成为高级会员",
-    "later": "稍后再说"
-  },
   "paywall": {
     "title": "FoodGram高级版",
     "premiumTitle": "✨ 高级特权 ✨",
