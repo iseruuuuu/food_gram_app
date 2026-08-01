@@ -136,25 +136,35 @@ class RecordViewModel extends _$RecordViewModel {
       }
       if (!_symbolTapHandlerRegistered) {
         state.mapController?.onSymbolTapped.add((symbol) async {
+          if (state.isLoading) {
+            return;
+          }
           state = state.copyWith(isLoading: true);
-          final latLng = symbol.options.geometry;
-          final restaurant = await ref
-              .read(mapPostRepositoryProvider.notifier)
-              .getRestaurantPosts(lat: latLng!.latitude, lng: latLng.longitude);
-          restaurant.whenOrNull(
-            success: (posts) {
-              ref.read(firebaseAnalyticsServiceProvider).logMapPinTap(
-                    source: 'mymap',
-                  );
-              onPinTap(posts);
-            },
-          );
-          await state.mapController?.animateCamera(
-            CameraUpdate.newLatLng(latLng),
-            duration: const Duration(seconds: 1),
-          );
-          isInitialLoading = false;
-          state = state.copyWith(isLoading: false, hasError: false);
+          try {
+            final latLng = symbol.options.geometry;
+            final restaurant = await ref
+                .read(mapPostRepositoryProvider.notifier)
+                .getRestaurantPosts(
+                  lat: latLng!.latitude,
+                  lng: latLng.longitude,
+                );
+            restaurant.whenOrNull(
+              success: (posts) {
+                ref.read(firebaseAnalyticsServiceProvider).logMapPinTap(
+                      source: 'mymap',
+                    );
+                onPinTap(posts);
+              },
+            );
+            await state.mapController?.animateCamera(
+              CameraUpdate.newLatLng(latLng),
+              duration: const Duration(seconds: 1),
+            );
+            isInitialLoading = false;
+            state = state.copyWith(hasError: false);
+          } finally {
+            state = state.copyWith(isLoading: false);
+          }
         });
         _symbolTapHandlerRegistered = true;
       }

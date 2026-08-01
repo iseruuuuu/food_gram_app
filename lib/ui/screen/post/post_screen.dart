@@ -69,6 +69,7 @@ class PostScreen extends HookConsumerWidget {
     final loading = ref.watch(loadingProvider);
     final foodTags = useState<List<String>>([]);
     final isOptionalExpanded = useState(false);
+    final isSubmittingPost = useState(false);
     final foodTexts = useMemoized(
       () => ValueNotifier<List<String>>(
         foodTags.value
@@ -491,120 +492,127 @@ class PostScreen extends HookConsumerWidget {
                       width: double.infinity,
                       height: 52,
                       child: ElevatedButton(
-                        onPressed: () async {
-                          final foodTagString = foodTags.value.isEmpty
-                              ? ''
-                              : foodTags.value.join(',');
-                          final comment = ref
-                              .read(postViewModelProvider().notifier)
-                              .commentController
-                              .text;
-                          if (comment.trim().isNotEmpty) {
-                            ref
-                                .read(firebaseAnalyticsServiceProvider)
-                                .logEventUnawaited(
-                                  name: AnalyticsEvent.postCommentInput,
-                                );
-                          }
-                          final result = await ref
-                              .read(postViewModelProvider().notifier)
-                              .post(
-                                foodTag: foodTagString,
-                                locale: Localizations.localeOf(context),
-                              );
-                          if (!context.mounted) {
-                            return;
-                          }
-                          if (result) {
-                            final postCount = (ref
-                                        .read(myPostStreamProvider)
-                                        .valueOrNull
-                                        ?.length ??
-                                    0) +
-                                1;
-                            unawaited(
-                              ref
-                                  .read(firebaseAnalyticsServiceProvider)
-                                  .logPostCountMilestones(postCount),
-                            );
-                            // ストリークを更新
-                            final streakService =
-                                ref.read(streakServiceProvider.notifier);
-                            final streakResult =
-                                await streakService.updateStreak();
-                            if (!context.mounted) {
-                              return;
-                            }
-                            // ストリークが更新された場合のみダイアログを表示
-                            if (streakResult.isUpdated) {
-                              final analytics =
-                                  ref.read(firebaseAnalyticsServiceProvider);
-                              analytics.logEventUnawaited(
-                                name: AnalyticsEvent.streakView,
-                                parameters: {
-                                  AnalyticsParam.streakWeeks:
-                                      streakResult.newStreakWeeks,
-                                },
-                              );
-                              if (streakResult.newStreakWeeks > 1) {
-                                analytics.logEventUnawaited(
-                                  name: AnalyticsEvent.streakContinue,
-                                  parameters: {
-                                    AnalyticsParam.streakWeeks:
-                                        streakResult.newStreakWeeks,
-                                  },
-                                );
-                              }
-                              // ダイアログを表示（初回投稿かどうかを判定）
-                              final isFirstTime =
-                                  streakResult.newStreakWeeks == 1;
-                              // ストリークの節目（3週、5週、10週）を判定
-                              final milestoneWeeks = [3, 5, 10];
-                              final isMilestone = milestoneWeeks
-                                  .contains(streakResult.newStreakWeeks);
-
-                              await showStreakDialog(
-                                context: context,
-                                streakWeeks: streakResult.newStreakWeeks,
-                                isFirstTime: isFirstTime,
-                              );
-
-                              // 初回投稿またはストリークの節目の場合、レビューを表示
-                              if (isFirstTime || isMilestone) {
+                        onPressed: isSubmittingPost.value
+                            ? null
+                            : () async {
+                                isSubmittingPost.value = true;
+                                final foodTagString = foodTags.value.isEmpty
+                                    ? ''
+                                    : foodTags.value.join(',');
+                                final comment = ref
+                                    .read(postViewModelProvider().notifier)
+                                    .commentController
+                                    .text;
+                                if (comment.trim().isNotEmpty) {
+                                  ref
+                                      .read(firebaseAnalyticsServiceProvider)
+                                      .logEventUnawaited(
+                                        name: AnalyticsEvent.postCommentInput,
+                                      );
+                                }
+                                final result = await ref
+                                    .read(postViewModelProvider().notifier)
+                                    .post(
+                                      foodTag: foodTagString,
+                                      locale: Localizations.localeOf(context),
+                                    );
                                 if (!context.mounted) {
                                   return;
                                 }
-                                // ストリークダイアログ表示後、少し間を置いてからレビューを表示
-                                await Future<void>.delayed(
-                                  const Duration(seconds: 2),
-                                );
-                                if (!context.mounted) {
-                                  return;
+                                if (result) {
+                                  final postCount = (ref
+                                              .read(myPostStreamProvider)
+                                              .valueOrNull
+                                              ?.length ??
+                                          0) +
+                                      1;
+                                  unawaited(
+                                    ref
+                                        .read(firebaseAnalyticsServiceProvider)
+                                        .logPostCountMilestones(postCount),
+                                  );
+                                  // ストリークを更新
+                                  final streakService =
+                                      ref.read(streakServiceProvider.notifier);
+                                  final streakResult =
+                                      await streakService.updateStreak();
+                                  if (!context.mounted) {
+                                    return;
+                                  }
+                                  // ストリークが更新された場合のみダイアログを表示
+                                  if (streakResult.isUpdated) {
+                                    final analytics = ref
+                                        .read(firebaseAnalyticsServiceProvider);
+                                    analytics.logEventUnawaited(
+                                      name: AnalyticsEvent.streakView,
+                                      parameters: {
+                                        AnalyticsParam.streakWeeks:
+                                            streakResult.newStreakWeeks,
+                                      },
+                                    );
+                                    if (streakResult.newStreakWeeks > 1) {
+                                      analytics.logEventUnawaited(
+                                        name: AnalyticsEvent.streakContinue,
+                                        parameters: {
+                                          AnalyticsParam.streakWeeks:
+                                              streakResult.newStreakWeeks,
+                                        },
+                                      );
+                                    }
+                                    // ダイアログを表示（初回投稿かどうかを判定）
+                                    final isFirstTime =
+                                        streakResult.newStreakWeeks == 1;
+                                    // ストリークの節目（3週、5週、10週）を判定
+                                    final milestoneWeeks = [3, 5, 10];
+                                    final isMilestone = milestoneWeeks
+                                        .contains(streakResult.newStreakWeeks);
+
+                                    await showStreakDialog(
+                                      context: context,
+                                      streakWeeks: streakResult.newStreakWeeks,
+                                      isFirstTime: isFirstTime,
+                                    );
+
+                                    // 初回投稿またはストリークの節目の場合、レビューを表示
+                                    if (isFirstTime || isMilestone) {
+                                      if (!context.mounted) {
+                                        return;
+                                      }
+                                      // ストリークダイアログ表示後、少し間を置いてからレビューを表示
+                                      await Future<void>.delayed(
+                                        const Duration(seconds: 2),
+                                      );
+                                      if (!context.mounted) {
+                                        return;
+                                      }
+                                      final reviewService =
+                                          InAppReviewService();
+                                      await reviewService.requestReview();
+                                    }
+                                  }
+                                  if (context.mounted) {
+                                    context.pop(true);
+                                  }
+                                } else {
+                                  isSubmittingPost.value = false;
+                                  final latestStatus =
+                                      ref.read(postViewModelProvider()).status;
+                                  final isNetworkError = latestStatus ==
+                                      PostStatus.networkError.name;
+                                  SnackBarHelper().openErrorSnackBar(
+                                    context,
+                                    isNetworkError
+                                        ? t.error.title
+                                        : t.post.error,
+                                    isNetworkError
+                                        ? t.error.description2
+                                        : _getLocalizedStatus(
+                                            context,
+                                            latestStatus,
+                                          ),
+                                  );
                                 }
-                                final reviewService = InAppReviewService();
-                                await reviewService.requestReview();
-                              }
-                            }
-                            if (context.mounted) {
-                              context.pop(true);
-                            }
-                          } else {
-                            final latestStatus =
-                                ref.read(postViewModelProvider()).status;
-                            final isNetworkError =
-                                latestStatus == PostStatus.networkError.name;
-                            SnackBarHelper().openErrorSnackBar(
-                              context,
-                              isNetworkError ? t.error.title : t.post.error,
-                              isNetworkError
-                                  ? t.error.description2
-                                  : _getLocalizedStatus(
-                                      context,
-                                      latestStatus,
-                                    ),
-                            );
-                          }
-                        },
+                              },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
                               Theme.of(context).brightness == Brightness.dark

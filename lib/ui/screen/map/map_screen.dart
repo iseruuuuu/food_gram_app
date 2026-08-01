@@ -50,6 +50,7 @@ class MapScreen extends HookConsumerWidget {
     final isEarthStyle = useState(false);
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final pinTapCount = useRef(0);
+    final isHandlingPinTap = useRef(false);
     final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
     final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
     final loading = ref.watch(loadingProvider);
@@ -110,31 +111,37 @@ class MapScreen extends HookConsumerWidget {
                       await controller.setMapController(
                         mapLibre,
                         onPinTap: (posts) async {
-                          if (posts.isEmpty) {
+                          if (posts.isEmpty || isHandlingPinTap.value) {
                             return;
                           }
-                          await ref
-                              .read(firebaseAnalyticsServiceProvider)
-                              .logMapPinTap(source: 'map');
-                          final first = posts.first;
-                          void openStoreSheet() {
-                            ref.read(mapModalSelectionProvider.notifier).state =
-                                MapModalSelection(
-                              name: first.restaurant,
-                              lat: first.lat,
-                              lng: first.lng,
-                            );
-                          }
+                          isHandlingPinTap.value = true;
+                          try {
+                            await ref
+                                .read(firebaseAnalyticsServiceProvider)
+                                .logMapPinTap(source: 'map');
+                            final first = posts.first;
+                            void openStoreSheet() {
+                              ref
+                                  .read(mapModalSelectionProvider.notifier)
+                                  .state = MapModalSelection(
+                                name: first.restaurant,
+                                lat: first.lat,
+                                lng: first.lng,
+                              );
+                            }
 
-                          adInterstitial.createAd();
-                          pinTapCount.value++;
-                          if (pinTapCount.value >= mapPinTapAdInterval) {
-                            pinTapCount.value = 0;
-                            await adInterstitial.showAd(
-                              onAdClosed: openStoreSheet,
-                            );
-                          } else {
-                            openStoreSheet();
+                            adInterstitial.createAd();
+                            pinTapCount.value++;
+                            if (pinTapCount.value >= mapPinTapAdInterval) {
+                              pinTapCount.value = 0;
+                              await adInterstitial.showAd(
+                                onAdClosed: openStoreSheet,
+                              );
+                            } else {
+                              openStoreSheet();
+                            }
+                          } finally {
+                            isHandlingPinTap.value = false;
                           }
                         },
                         iconSize: _calculateIconSize(context),

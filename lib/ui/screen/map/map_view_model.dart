@@ -39,6 +39,7 @@ class MapViewModel extends _$MapViewModel {
   double? _currentZoom;
   bool _heatmapLayerAdded = false;
   bool _symbolTapHandlerRegistered = false;
+  bool _isHandlingPinTap = false;
   void Function(List<Posts> posts)? _onPinTapHandler;
 
   /// 地名検索で選んだ地点（スタイル標準の marker_11 を重ねる）
@@ -98,24 +99,35 @@ class MapViewModel extends _$MapViewModel {
       );
       if (!_symbolTapHandlerRegistered) {
         state.mapController?.onSymbolTapped.add((symbol) async {
-          state = state.copyWith(isLoading: true);
-          final latLng = symbol.options.geometry;
-          if (latLng == null) {
-            state = state.copyWith(isLoading: false);
+          if (_isHandlingPinTap) {
             return;
           }
-          final result = await ref
-              .read(mapPostRepositoryProvider.notifier)
-              .getRestaurantPosts(lat: latLng.latitude, lng: latLng.longitude);
-          final handler = _onPinTapHandler;
-          if (handler != null) {
-            result.whenOrNull(success: handler);
+          _isHandlingPinTap = true;
+          state = state.copyWith(isLoading: true);
+          try {
+            final latLng = symbol.options.geometry;
+            if (latLng == null) {
+              return;
+            }
+            final result = await ref
+                .read(mapPostRepositoryProvider.notifier)
+                .getRestaurantPosts(
+                  lat: latLng.latitude,
+                  lng: latLng.longitude,
+                );
+            final handler = _onPinTapHandler;
+            if (handler != null) {
+              result.whenOrNull(success: handler);
+            }
+            await state.mapController?.animateCamera(
+              CameraUpdate.newLatLngZoom(latLng, MapOverlayConstants.pinTap),
+              duration: const Duration(seconds: 1),
+            );
+            state = state.copyWith(hasError: false);
+          } finally {
+            _isHandlingPinTap = false;
+            state = state.copyWith(isLoading: false);
           }
-          await state.mapController?.animateCamera(
-            CameraUpdate.newLatLngZoom(latLng, MapOverlayConstants.pinTap),
-            duration: const Duration(seconds: 1),
-          );
-          state = state.copyWith(isLoading: false, hasError: false);
         });
         _symbolTapHandlerRegistered = true;
       }
