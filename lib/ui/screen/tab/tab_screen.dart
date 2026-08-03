@@ -162,9 +162,18 @@ class TabScreen extends HookConsumerWidget {
       removeBottom: Platform.isIOS,
       child: Scaffold(
         extendBody: true,
+        // IndexedStack で非選択タブも保持し、往復時の再生成・再購読を防ぐ
         body: Platform.isIOS
-            ? controller.pageList[state.selectedIndex]
-            : SafeArea(child: controller.pageList[state.selectedIndex]),
+            ? IndexedStack(
+                index: state.selectedIndex,
+                children: controller.pageList,
+              )
+            : SafeArea(
+                child: IndexedStack(
+                  index: state.selectedIndex,
+                  children: controller.pageList,
+                ),
+              ),
         bottomNavigationBar: Padding(
           padding: EdgeInsets.fromLTRB(
             _horizontalMargin,

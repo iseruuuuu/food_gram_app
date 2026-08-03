@@ -33,7 +33,7 @@ class TimeLineScreen extends HookConsumerWidget {
         : (categoriesData[selectedCategoryIndex.value].isAllCategory
             ? ''
             : categoriesData[selectedCategoryIndex.value].name);
-    final state = ref.watch(postsStreamProvider(selectedCategoryName));
+    final state = ref.watch(postsStreamProvider);
     final scrollController = useScrollController();
     useScrollToTopOnTabTrigger(
       ref: ref,
@@ -84,7 +84,11 @@ class TimeLineScreen extends HookConsumerWidget {
               ),
             ),
             ...state.when(
-              data: (posts) {
+              skipLoadingOnReload: true,
+              skipLoadingOnRefresh: true,
+              data: (allPosts) {
+                final posts =
+                    filterPostsByCategory(allPosts, selectedCategoryName);
                 if (posts.isEmpty) {
                   return [
                     const SliverToBoxAdapter(child: AppEmpty()),
@@ -135,8 +139,7 @@ class TimeLineScreen extends HookConsumerWidget {
                 SliverFillRemaining(
                   hasScrollBody: false,
                   child: AppTabError.food(
-                    onRetry: () => ref
-                        .refresh(postsStreamProvider(selectedCategoryName)),
+                    onRetry: () => ref.refresh(postsStreamProvider),
                   ),
                 ),
               ],
