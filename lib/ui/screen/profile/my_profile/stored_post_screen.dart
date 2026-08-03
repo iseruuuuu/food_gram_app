@@ -15,8 +15,43 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class StoredPostScreen extends HookConsumerWidget {
+class StoredPostScreen extends StatelessWidget {
   const StoredPostScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Theme.of(context).colorScheme.surface,
+        surfaceTintColor: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Theme.of(context).colorScheme.surface,
+        title: Text(
+          Translations.of(context).stored.savedPosts,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () => context.pop(),
+        ),
+      ),
+      body: const _StoredPostContent(logOpenEvent: true),
+    );
+  }
+}
+
+/// アルバムチップ + グリッド。IndexedStack でも状態を保てるよう同一ファイル内で共有する。
+class _StoredPostContent extends HookConsumerWidget {
+  const _StoredPostContent({
+    this.logOpenEvent = false,
+  });
+
+  final bool logOpenEvent;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,114 +66,106 @@ class StoredPostScreen extends HookConsumerWidget {
     final scrollController = useScrollController();
     useEffect(
       () {
-        ref
-            .read(firebaseAnalyticsServiceProvider)
-            .logEventUnawaited(name: AnalyticsEvent.savedPostOpen);
+        if (logOpenEvent) {
+          ref
+              .read(firebaseAnalyticsServiceProvider)
+              .logEventUnawaited(name: AnalyticsEvent.savedPostOpen);
+        }
         return null;
       },
       const [],
     );
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).brightness == Brightness.light
-            ? Colors.white
-            : Theme.of(context).colorScheme.surface,
-        surfaceTintColor: Theme.of(context).brightness == Brightness.light
-            ? Colors.white
-            : Theme.of(context).colorScheme.surface,
-        title: Text(
-          t.stored.savedPosts,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () => context.pop(),
-        ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(
-            height: 48,
-            child: albumsAsync.when(
-              data: (albums) {
-                return ListView(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  children: [
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SizedBox(
+          height: 48,
+          child: albumsAsync.when(
+            data: (albums) {
+              return ListView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 6, top: 8),
+                    child: FilterChip(
+                      label: Text(t.stored.albumAll),
+                      selected: selectedAlbumId.value == null,
+                      onSelected: (_) {
+                        selectedAlbumId.value = null;
+                      },
+                    ),
+                  ),
+                  for (final a in albums)
                     Padding(
                       padding: const EdgeInsets.only(right: 6, top: 8),
                       child: FilterChip(
-                        label: Text(t.stored.albumAll),
-                        selected: selectedAlbumId.value == null,
-                        onSelected: (_) {
-                          selectedAlbumId.value = null;
-                        },
-                      ),
-                    ),
-                    for (final a in albums)
-                      Padding(
-                        padding: const EdgeInsets.only(right: 6, top: 8),
-                        child: FilterChip(
-                          label: Text(
-                            a.name,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          selected: selectedAlbumId.value == a.id,
-                          onSelected: (_) {
-                            selectedAlbumId.value = a.id;
-                          },
+                        label: Text(
+                          a.name,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4, top: 4),
-                      child: IconButton(
-                        tooltip: t.stored.albumNew,
-                        onPressed: () async {
-                          await showCreateAlbumDialog(context: context);
+                        selected: selectedAlbumId.value == a.id,
+                        onSelected: (_) {
+                          selectedAlbumId.value = a.id;
                         },
-                        icon: const Icon(Icons.add_circle_outline),
                       ),
                     ),
-                  ],
-                );
-              },
-              loading: () => const SizedBox.shrink(),
-              error: (_, __) => const SizedBox.shrink(),
-            ),
-          ),
-          const Gap(12),
-          Expanded(
-            child: listAsync.when(
-              loading: () => const Center(child: AppContentLoading()),
-              data: (posts) {
-                if (posts.isEmpty) {
-                  return const AppFavoritePostEmpty();
-                }
-                return CustomScrollView(
-                  key: ValueKey<String>(
-                    'stored_grid_${selectedAlbumId.value ?? 'all'}',
-                  ),
-                  controller: scrollController,
-                  slivers: [
-                    AppListView(
-                      posts: posts,
-                      routerPath: RouterPath.storedPostDetail,
-                      type: AppListViewType.stored,
-                      controller: scrollController,
-                      refresh: reloadPosts,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4, top: 4),
+                    child: IconButton(
+                      tooltip: t.stored.albumNew,
+                      onPressed: () async {
+                        await showCreateAlbumDialog(context: context);
+                      },
+                      icon: const Icon(Icons.add_circle_outline),
                     ),
-                  ],
-                );
-              },
-              error: (_, __) => AppTabError.myPage(onRetry: reloadPosts),
-            ),
+                  ),
+                ],
+              );
+            },
+            loading: () => const SizedBox.shrink(),
+            error: (_, __) => const SizedBox.shrink(),
           ),
-        ],
-      ),
+        ),
+        const Gap(12),
+        Expanded(
+          child: listAsync.when(
+            loading: () => const Center(child: AppContentLoading()),
+            data: (posts) {
+              if (posts.isEmpty) {
+                return const AppFavoritePostEmpty();
+              }
+              return CustomScrollView(
+                key: ValueKey<String>(
+                  'stored_grid_${selectedAlbumId.value ?? 'all'}',
+                ),
+                controller: scrollController,
+                slivers: [
+                  AppListView(
+                    posts: posts,
+                    routerPath: RouterPath.storedPostDetail,
+                    type: AppListViewType.stored,
+                    controller: scrollController,
+                    refresh: reloadPosts,
+                  ),
+                ],
+              );
+            },
+            error: (_, __) => AppTabError.myPage(onRetry: reloadPosts),
+          ),
+        ),
+      ],
     );
+  }
+}
+
+/// 行きたいリストの IndexedStack 用。別ファイルに切り出さずここから公開する。
+class WantToGoStoredPostTab extends StatelessWidget {
+  const WantToGoStoredPostTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const _StoredPostContent();
   }
 }
