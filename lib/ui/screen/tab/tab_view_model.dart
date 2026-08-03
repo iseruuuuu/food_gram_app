@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/admob/services/admob_open.dart';
@@ -70,6 +68,7 @@ class TabViewModel extends _$TabViewModel {
       final appOpen = ref.read(admobOpenNotifierProvider);
       appOpen.loadAd();
 
+      // 40回に1回だけ全画面（最低間隔5分もあり）
       if (appOpen.registerTabSwitchAndShouldShow()) {
         await appOpen.ensureAdReady(resetAttempts: true);
         await appOpen.showAdIfAvailable(onAdClosed: switchTab);
