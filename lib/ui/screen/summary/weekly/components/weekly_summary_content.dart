@@ -11,6 +11,7 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/food_tag_icon.dart';
 import 'package:food_gram_app/ui/screen/summary/weekly/weekly_summary_format.dart';
 import 'package:gap/gap.dart';
+import 'package:lottie/lottie.dart';
 
 /// 今週のまとめ本体（ヘッダー〜ジャンルTOP3）
 class WeeklySummaryContent extends ConsumerWidget {
@@ -143,7 +144,8 @@ class _WeeklySummaryHeader extends StatelessWidget {
                   color: Colors.amber.shade400.withValues(alpha: 0.9),
                 ),
               ),
-              Assets.gif.sammaryDog.image(
+              Lottie.asset(
+                Assets.lottie.sammaryDog,
                 width: 88,
                 height: 88,
                 fit: BoxFit.contain,

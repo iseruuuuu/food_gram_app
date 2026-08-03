@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:lottie/lottie.dart';
 
 /// ストリークバッジ取得・更新ダイアログを表示
 Future<void> showStreakDialog({
@@ -37,7 +38,8 @@ Future<void> showStreakDialog({
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Assets.gif.postSuccess.image(
+              Lottie.asset(
+                Assets.lottie.postSuccess,
                 height: 250,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {

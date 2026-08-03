@@ -8,6 +8,7 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 /// 記録タブ：今日の思い出セクション
 class RecordTodayMemoriesSection extends StatelessWidget {
@@ -259,7 +260,8 @@ class _NoTodayCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Assets.gif.recordNopost.image(
+          Lottie.asset(
+            Assets.lottie.recordNopost,
             width: 64,
             height: 64,
             fit: BoxFit.contain,
@@ -606,7 +608,8 @@ class _EmptyMemoryCard extends StatelessWidget {
           ),
           Expanded(
             child: Center(
-              child: Assets.gif.recordNopost.image(
+              child: Lottie.asset(
+                Assets.lottie.recordNopost,
                 width: 100,
                 height: 100,
                 fit: BoxFit.contain,
