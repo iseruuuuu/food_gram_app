@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/local/providers/want_to_go_notifier.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/want_to_go_item.dart';
@@ -14,7 +13,6 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
-import 'package:food_gram_app/ui/screen/profile/my_profile/stored_post_body.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/stored_post_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -23,14 +21,13 @@ import 'package:intl/intl.dart';
 
 enum _WantToGoHubTab { places, saved }
 
-class WantToGoListScreen extends HookConsumerWidget {
+class WantToGoListScreen extends ConsumerWidget {
   const WantToGoListScreen({super.key});
 
   static const _accentOrange = Color(0xFFFF8A00);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedTab = useState(_WantToGoHubTab.places);
     final listAsync = ref.watch(wantToGoNotifierProvider);
     final savedAsync = ref.watch(storedPostListProvider(null));
     final t = Translations.of(context);
@@ -49,6 +46,11 @@ class WantToGoListScreen extends HookConsumerWidget {
         lng: post.lng,
       );
       postsByPlace.putIfAbsent(key, () => <Posts>[]).add(post);
+    }
+
+    Future<void> openSavedPosts() async {
+      await context.pushNamed(RouterPath.storedPost);
+      ref.invalidate(storedPostListProvider(null));
     }
 
     return Scaffold(
@@ -86,9 +88,11 @@ class WantToGoListScreen extends HookConsumerWidget {
                   icon: const Icon(Icons.bookmark_border, size: 18),
                 ),
               ],
-              selected: {selectedTab.value},
+              selected: const {_WantToGoHubTab.places},
               onSelectionChanged: (selected) {
-                selectedTab.value = selected.first;
+                if (selected.first == _WantToGoHubTab.saved) {
+                  openSavedPosts();
+                }
               },
               style: ButtonStyle(
                 visualDensity: VisualDensity.compact,
@@ -99,44 +103,39 @@ class WantToGoListScreen extends HookConsumerWidget {
             ),
           ),
           Expanded(
-            child: selectedTab.value == _WantToGoHubTab.saved
-                ? const StoredPostBody()
-                : listAsync.when(
-                    loading: () => const Center(child: AppContentLoading()),
-                    error: (_, __) => AppTabError.myPage(
-                      onRetry: () =>
-                          ref.invalidate(wantToGoNotifierProvider),
-                    ),
-                    data: (items) {
-                      if (items.isEmpty) {
-                        return Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(32),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const AppEmpty(),
-                                const SizedBox(height: 8),
-                                Text(
-                                  t.wantToGo.emptyHint,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: muted),
-                                ),
-                                if (savedPosts.isNotEmpty) ...[
-                                  const Gap(20),
-                                  TextButton.icon(
-                                    onPressed: () {
-                                      selectedTab.value = _WantToGoHubTab.saved;
-                                    },
-                                    icon: const Icon(Icons.bookmark_border),
-                                    label: Text(t.wantToGo.seeSavedPosts),
-                                  ),
-                                ],
-                              ],
-                            ),
+            child: listAsync.when(
+              loading: () => const Center(child: AppContentLoading()),
+              error: (_, __) => AppTabError.myPage(
+                onRetry: () => ref.invalidate(wantToGoNotifierProvider),
+              ),
+              data: (items) {
+                if (items.isEmpty) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(32),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const AppEmpty(),
+                          const SizedBox(height: 8),
+                          Text(
+                            t.wantToGo.emptyHint,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: muted),
                           ),
-                        );
-                      }
+                          if (savedPosts.isNotEmpty) ...[
+                            const Gap(20),
+                            TextButton.icon(
+                              onPressed: openSavedPosts,
+                              icon: const Icon(Icons.bookmark_border),
+                              label: Text(t.wantToGo.seeSavedPosts),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  );
+                }
 
                       final sorted = List<WantToGoItem>.from(items)
                         ..sort((a, b) => b.addedAt.compareTo(a.addedAt));
