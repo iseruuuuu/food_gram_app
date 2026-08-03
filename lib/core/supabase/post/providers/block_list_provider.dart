@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'block_list_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<String>> blockList(Ref ref) async {
   final preference = Preference();
   return preference.getStringList(PreferenceKey.blockList);

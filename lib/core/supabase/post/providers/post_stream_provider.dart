@@ -13,7 +13,7 @@ final _postsStreamLog = Logger();
 /// Realtime が一瞬切れただけで [StreamProvider] が error になりエラー画面に飛ぶのを防ぐ。
 /// 失敗時は指数バックオフで購読し直し、Riverpod にはエラーを流さない（直前の data は維持されやすい）。
 Stream<List<Posts>> _postsStreamWithReconnect({
-  required String categoryName,
+  required String label,
   required Stream<List<Posts>> Function() createStream,
 }) async* {
   const initialBackoff = Duration(seconds: 1);
@@ -28,7 +28,7 @@ Stream<List<Posts>> _postsStreamWithReconnect({
       return;
     } on Object catch (err, st) {
       _postsStreamLog.e(
-        'postsStream error (category: "$categoryName"), '
+        'postsStream error ($label), '
         'reconnecting in ${backoff.inSeconds}s',
         error: err,
         stackTrace: st,
@@ -41,12 +41,32 @@ Stream<List<Posts>> _postsStreamWithReconnect({
   }
 }
 
-/// 全取得・カテゴリーごとの取得のためのStreamProvider
-@riverpod
-Stream<List<Posts>> postsStream(
-  Ref ref,
-  String categoryName,
-) {
+/// カテゴリ名で投稿を絞り込む（空文字は全件）。
+///
+/// Realtime 購読は [postsStream] の1本に集約し、切替時はここだけ使う。
+List<Posts> filterPostsByCategory(List<Posts> posts, String categoryName) {
+  if (categoryName.isEmpty) {
+    return posts;
+  }
+  final categoryTagIds = foodCategory[categoryName];
+  if (categoryTagIds == null) {
+    _postsStreamLog.w(
+      'Unknown category passed to filterPostsByCategory: "$categoryName". '
+      'No posts will match.',
+    );
+  }
+  final tagIds = categoryTagIds ?? <String>[];
+  return posts.where((post) {
+    final postTags = parseFoodTagIds(post.foodTag);
+    return postTags.any(tagIds.contains);
+  }).toList();
+}
+
+/// 全投稿の Realtime Stream（ブロック除外済み）。
+///
+/// カテゴリ切替のたびに購読を張り直さないよう、パラメータなし + keepAlive。
+@Riverpod(keepAlive: true)
+Stream<List<Posts>> postsStream(Ref ref) {
   final blockList = ref.watch(blockListProvider).asData?.value ?? [];
   final supabase = ref.read(supabaseProvider);
 
@@ -67,30 +87,15 @@ Stream<List<Posts>> postsStream(
             );
           }
         }
-        final filtered =
-            mapped.where((post) => !blockList.contains(post.userId)).toList();
-        if (categoryName.isNotEmpty) {
-          final categoryTagIds = foodCategory[categoryName];
-          if (categoryTagIds == null) {
-            _postsStreamLog.w(
-              'Unknown category passed to postsStream: "$categoryName". '
-              'No posts will match.',
-            );
-          }
-          final tagIds = categoryTagIds ?? <String>[];
-          final result = filtered.where((post) {
-            final postTags = parseFoodTagIds(post.foodTag);
-            return postTags.any(tagIds.contains);
-          }).toList();
-          return result;
-        }
-        return filtered;
+        return mapped
+            .where((post) => !blockList.contains(post.userId))
+            .toList();
       },
     );
   }
 
   return _postsStreamWithReconnect(
-    categoryName: categoryName,
+    label: 'all_posts',
     createStream: createMappedStream,
   );
 }
@@ -128,7 +133,7 @@ Stream<List<Posts>> myPostStream(Ref ref) {
   }
 
   return _postsStreamWithReconnect(
-    categoryName: 'my_posts',
+    label: 'my_posts',
     createStream: createMappedStream,
   );
 }
