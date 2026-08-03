@@ -55,7 +55,7 @@ class TabViewModel extends _$TabViewModel {
     _isHandlingTap = true;
     try {
       if (index == state.selectedIndex) {
-        if (index == 1 || index == 3) {
+        if (index == 1 || index == 2 || index == 3) {
           final current = ref.read(scrollToTopForTabProvider);
           ref.read(scrollToTopForTabProvider.notifier).state = (
             tabIndex: index,
@@ -84,7 +84,7 @@ class TabViewModel extends _$TabViewModel {
 
   void _switchToTab(int index) {
     _logTabAnalytics(index);
-    if (index == 1 || index == 3) {
+    if (index == 1 || index == 2 || index == 3) {
       final current = ref.read(scrollToTopForTabProvider);
       ref.read(scrollToTopForTabProvider.notifier).state = (
         tabIndex: index,

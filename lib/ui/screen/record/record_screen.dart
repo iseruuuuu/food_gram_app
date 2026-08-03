@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
@@ -8,10 +9,13 @@ import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_detail_screen.dart';
 import 'package:food_gram_app/ui/screen/record/components/map/record_map.dart';
 import 'package:food_gram_app/ui/screen/record/record_view_model.dart';
+import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class RecordScreen extends ConsumerWidget {
+class RecordScreen extends HookConsumerWidget {
   const RecordScreen({super.key});
+
+  static const int _tabIndex = 2;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,6 +23,12 @@ class RecordScreen extends ConsumerWidget {
     final controller = ref.watch(recordViewModelProvider.notifier);
     final location = ref.watch(locationProvider);
     final mapService = ref.watch(myMapRepositoryProvider);
+    final scrollController = useScrollController();
+    useScrollToTopOnTabTrigger(
+      ref: ref,
+      scrollController: scrollController,
+      tabIndex: _tabIndex,
+    );
     return Scaffold(
       body: Stack(
         children: [
@@ -33,7 +43,10 @@ class RecordScreen extends ConsumerWidget {
             },
             onData: (value) {
               if (state.viewType == MapViewType.detail) {
-                return RecordDetailScreen(posts: value.$2);
+                return RecordDetailScreen(
+                  posts: value.$2,
+                  scrollController: scrollController,
+                );
               }
               return RecordMap(
                 state: state,

@@ -21,9 +21,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// 記録タブの全体のUI
 class RecordDetailScreen extends HookConsumerWidget {
-  const RecordDetailScreen({required this.posts, super.key});
+  const RecordDetailScreen({
+    required this.posts,
+    required this.scrollController,
+    super.key,
+  });
 
   final List<Posts> posts;
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -83,6 +88,7 @@ class RecordDetailScreen extends HookConsumerWidget {
     return Stack(
       children: [
         SingleChildScrollView(
+          controller: scrollController,
           padding:
               EdgeInsets.fromLTRB(16, selectorTop + viewTypeTabHeight, 16, 16),
           child: Column(
