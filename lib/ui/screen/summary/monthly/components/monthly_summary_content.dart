@@ -7,6 +7,7 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/food_tag_icon.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 class MonthlySummaryContent extends StatelessWidget {
   const MonthlySummaryContent({
@@ -156,7 +157,8 @@ class _Greeting extends StatelessWidget {
               ],
             ),
           ),
-          Assets.gif.sammaryDog.image(
+          Lottie.asset(
+            Assets.lottie.sammaryDog,
             width: 104,
             height: 104,
             fit: BoxFit.contain,

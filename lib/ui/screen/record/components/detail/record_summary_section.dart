@@ -3,6 +3,7 @@ import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 /// 記録タブ：あなたの食の軌跡カード（統計）
 class RecordSummarySection extends StatelessWidget {
@@ -49,7 +50,8 @@ class RecordSummarySection extends StatelessWidget {
             right: -12,
             child: Opacity(
               opacity: isDark ? 0.1 : 0.07,
-              child: Assets.gif.recordFootprints.image(
+              child: Lottie.asset(
+                Assets.lottie.recordFootprints,
                 width: 500,
                 height: 500,
                 fit: BoxFit.contain,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
+import 'package:lottie/lottie.dart';
 
 class AppEmpty extends StatelessWidget {
   const AppEmpty({super.key});
@@ -47,7 +48,11 @@ class AppSearchResultEmpty extends StatelessWidget {
             color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
-        Assets.gif.error.image(width: 180, height: 180),
+        Lottie.asset(
+          Assets.lottie.error,
+          width: 180,
+          height: 180,
+        ),
       ],
     );
   }
@@ -63,7 +68,11 @@ class AppSearchEmpty extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Spacer(),
-          Assets.gif.empty.image(width: 100, height: 100),
+          Lottie.asset(
+            Assets.lottie.empty,
+            width: 100,
+            height: 100,
+          ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Text(
@@ -186,7 +195,11 @@ class AppFavoritePostEmpty extends StatelessWidget {
               color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
-          Assets.gif.error.image(width: 180, height: 180),
+          Lottie.asset(
+            Assets.lottie.error,
+            width: 180,
+            height: 180,
+          ),
         ],
       ),
     );

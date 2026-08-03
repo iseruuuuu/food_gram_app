@@ -11,62 +11,6 @@
 
 import 'package:flutter/widgets.dart';
 
-class $AssetsGifGen {
-  const $AssetsGifGen();
-
-  /// File path: assets/gif/empty.gif
-  AssetGenImage get empty => const AssetGenImage('assets/gif/empty.gif');
-
-  /// File path: assets/gif/error.gif
-  AssetGenImage get error => const AssetGenImage('assets/gif/error.gif');
-
-  /// File path: assets/gif/my_profile.gif
-  AssetGenImage get myProfile =>
-      const AssetGenImage('assets/gif/my_profile.gif');
-
-  /// File path: assets/gif/post_success.gif
-  AssetGenImage get postSuccess =>
-      const AssetGenImage('assets/gif/post_success.gif');
-
-  /// File path: assets/gif/profile_detail.gif
-  AssetGenImage get profileDetail =>
-      const AssetGenImage('assets/gif/profile_detail.gif');
-
-  /// File path: assets/gif/record_dog.gif
-  AssetGenImage get recordDog =>
-      const AssetGenImage('assets/gif/record_dog.gif');
-
-  /// File path: assets/gif/record_footprints.gif
-  AssetGenImage get recordFootprints =>
-      const AssetGenImage('assets/gif/record_footprints.gif');
-
-  /// File path: assets/gif/record_nopost.gif
-  AssetGenImage get recordNopost =>
-      const AssetGenImage('assets/gif/record_nopost.gif');
-
-  /// File path: assets/gif/sammary_dog.gif
-  AssetGenImage get sammaryDog =>
-      const AssetGenImage('assets/gif/sammary_dog.gif');
-
-  /// File path: assets/gif/tutorial1.gif
-  AssetGenImage get tutorial1 =>
-      const AssetGenImage('assets/gif/tutorial1.gif');
-
-  /// List of all assets
-  List<AssetGenImage> get values => [
-        empty,
-        error,
-        myProfile,
-        postSuccess,
-        profileDetail,
-        recordDog,
-        recordFootprints,
-        recordNopost,
-        sammaryDog,
-        tutorial1
-      ];
-}
-
 class $AssetsIconGen {
   const $AssetsIconGen();
 
@@ -142,9 +86,6 @@ class $AssetsImageGen {
   /// File path: assets/image/frame.png
   AssetGenImage get frame => const AssetGenImage('assets/image/frame.png');
 
-  /// File path: assets/image/loading.gif
-  AssetGenImage get loading => const AssetGenImage('assets/image/loading.gif');
-
   /// File path: assets/image/loading_food.png
   AssetGenImage get loadingFood =>
       const AssetGenImage('assets/image/loading_food.png');
@@ -164,10 +105,6 @@ class $AssetsImageGen {
   /// File path: assets/image/logo_google.png
   AssetGenImage get logoGoogle =>
       const AssetGenImage('assets/image/logo_google.png');
-
-  /// File path: assets/image/paywall2.gif
-  AssetGenImage get paywall2 =>
-      const AssetGenImage('assets/image/paywall2.gif');
 
   /// File path: assets/image/paywall_background.png
   AssetGenImage get paywallBackground =>
@@ -219,13 +156,11 @@ class $AssetsImageGen {
         food,
         foodgramer,
         frame,
-        loading,
         loadingFood,
         loadingMap,
         loadingMypage,
         loadingRecord,
         logoGoogle,
-        paywall2,
         paywallBackground,
         pin,
         pinIcon,
@@ -242,6 +177,12 @@ class $AssetsImageGen {
 class $AssetsLottieGen {
   const $AssetsLottieGen();
 
+  /// File path: assets/lottie/empty.json
+  String get empty => 'assets/lottie/empty.json';
+
+  /// File path: assets/lottie/error.json
+  String get error => 'assets/lottie/error.json';
+
   /// File path: assets/lottie/heart.json
   String get heart => 'assets/lottie/heart.json';
 
@@ -256,6 +197,18 @@ class $AssetsLottieGen {
 
   /// File path: assets/lottie/permission.json
   String get permission => 'assets/lottie/permission.json';
+
+  /// File path: assets/lottie/post_success.json
+  String get postSuccess => 'assets/lottie/post_success.json';
+
+  /// File path: assets/lottie/record_footprints.json
+  String get recordFootprints => 'assets/lottie/record_footprints.json';
+
+  /// File path: assets/lottie/record_nopost.json
+  String get recordNopost => 'assets/lottie/record_nopost.json';
+
+  /// File path: assets/lottie/sammary_dog.json
+  String get sammaryDog => 'assets/lottie/sammary_dog.json';
 
   /// File path: assets/lottie/tutorial1.json
   String get tutorial1 => 'assets/lottie/tutorial1.json';
@@ -274,11 +227,17 @@ class $AssetsLottieGen {
 
   /// List of all assets
   List<String> get values => [
+        empty,
+        error,
         heart,
         loading,
         location,
         notification,
         permission,
+        postSuccess,
+        recordFootprints,
+        recordNopost,
+        sammaryDog,
         tutorial1,
         tutorial2,
         tutorial3,
@@ -331,20 +290,11 @@ class $AssetsMapGen {
 class $AssetsSplashGen {
   const $AssetsSplashGen();
 
-  /// File path: assets/splash/splash.gif
-  AssetGenImage get splashGif =>
-      const AssetGenImage('assets/splash/splash.gif');
-
   /// File path: assets/splash/splash.png
-  AssetGenImage get splashPng =>
-      const AssetGenImage('assets/splash/splash.png');
-
-  /// File path: assets/splash/splash_dark.gif
-  AssetGenImage get splashDark =>
-      const AssetGenImage('assets/splash/splash_dark.gif');
+  AssetGenImage get splash => const AssetGenImage('assets/splash/splash.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [splashGif, splashPng, splashDark];
+  List<AssetGenImage> get values => [splash];
 }
 
 class $AssetsTagGen {
@@ -438,7 +388,6 @@ class $AssetsTrophyGen {
 class Assets {
   const Assets._();
 
-  static const $AssetsGifGen gif = $AssetsGifGen();
   static const $AssetsIconGen icon = $AssetsIconGen();
   static const $AssetsImageGen image = $AssetsImageGen();
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
