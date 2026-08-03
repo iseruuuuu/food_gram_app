@@ -74,13 +74,6 @@ class MyProfileScreen extends HookConsumerWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => context.pushNamed(RouterPath.storedPost),
-                  icon: Icon(
-                    Icons.bookmark_border,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-                IconButton(
                   onPressed: () => context.pushNamed(RouterPath.setting),
                   icon: Icon(
                     Icons.settings_outlined,
