@@ -46,8 +46,12 @@ class MyProfileScreen extends HookConsumerWidget {
           length: 2,
           child: Scaffold(
             appBar: AppBar(
-              surfaceTintColor: Colors.white,
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).brightness == Brightness.light
+                  ? Colors.white
+                  : Theme.of(context).colorScheme.surface,
+              surfaceTintColor: Theme.of(context).brightness == Brightness.light
+                  ? Colors.white
+                  : Theme.of(context).colorScheme.surface,
               elevation: 0,
               centerTitle: true,
               leading: IconButton(
