@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/api/restaurant/google_places_language.dart';
 import 'package:food_gram_app/core/api/restaurant/photo_nearby_food_types.dart';
 import 'package:food_gram_app/core/model/photo_restaurant_candidate.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
@@ -25,14 +26,15 @@ Future<List<PhotoRestaurantCandidate>> googlePhotoTextSearchService(
   final location = '$latitude,$longitude';
   final merged = <PhotoRestaurantCandidate>[];
 
-  for (final query in photoNearbyTextSearchQueries) {
+  final language = googlePlacesLanguageCode();
+  for (final query in photoNearbyTextSearchQueries()) {
     try {
       final supabase = ref.read(supabaseProvider);
       final response = await supabase.functions.invoke(
         'Google-Place-Restaurant-Search-',
         body: {
           'query': query,
-          'language': 'ja',
+          'language': language,
           'location': location,
           'platform': Platform.isIOS ? 'ios' : 'android',
         },

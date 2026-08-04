@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/api/restaurant/google_places_language.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
@@ -42,7 +43,7 @@ Future<List<Restaurant>> _search(Ref ref, String keyword) async {
       'Google-Place-Restaurant-Search-',
       body: {
         'query': keyword,
-        'language': 'ja',
+        'language': googlePlacesLanguageCode(),
         if (location != null) 'location': location,
         // 端末別キー利用のため、Edge側で分岐できるようにplatformを送る
         'platform': Platform.isIOS ? 'ios' : 'android',
