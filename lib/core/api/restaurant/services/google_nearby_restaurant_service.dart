@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/api/restaurant/google_places_language.dart';
 import 'package:food_gram_app/core/api/restaurant/photo_nearby_food_types.dart';
 import 'package:food_gram_app/core/model/photo_restaurant_candidate.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -37,7 +38,7 @@ Future<List<PhotoRestaurantCandidate>> googleNearbyRestaurantService(
         'radiusMeters': radiusMeters,
         'maxResultCount': 20,
         'includedTypes': photoNearbyFoodPlaceTypes,
-        'language': 'ja',
+        'language': googlePlacesLanguageCode(),
         'platform': Platform.isIOS ? 'ios' : 'android',
       },
     );
