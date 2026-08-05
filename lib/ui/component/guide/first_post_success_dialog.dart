@@ -70,8 +70,9 @@ class _FirstPostCompleteDialog extends ConsumerWidget {
     }
 
     final restaurant = post?.restaurant.trim() ?? '';
+    final localeTag = Localizations.localeOf(context).toLanguageTag();
     final dateLabel = post != null
-        ? DateFormat('yyyy/M/d').format(post!.createdAt.toLocal())
+        ? DateFormat.yMd(localeTag).format(post!.createdAt.toLocal())
         : '';
 
     return Dialog(

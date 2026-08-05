@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/guide/first_post_guide_gate.dart';
+import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/summary/summary_launch_gate.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
@@ -128,7 +129,11 @@ class TabScreen extends HookConsumerWidget {
 
     Future<void> dismissFirstPostGuide({required bool tappedPost}) async {
       showFirstPostGuide.value = false;
-      await markFirstPostGuideShown();
+      try {
+        await markFirstPostGuideShown();
+      } on Object {
+        // 既読保存失敗でも analytics / 投稿導線は続行する
+      }
       final analytics = ref.read(firebaseAnalyticsServiceProvider);
       analytics.logEventUnawaited(
         name: tappedPost
@@ -145,9 +150,16 @@ class TabScreen extends HookConsumerWidget {
             );
       }
 
-      final oldPostCount =
-          ref.read(myPostStreamProvider).valueOrNull?.length ?? 0;
-      final isFirstPost = oldPostCount == 0;
+      // valueOrNull ?? 0 だと loading 中に「初回投稿」と誤判定されるため、
+      // future で確定件数を取る。失敗時は初回扱いしない。
+      int? previousPostCount;
+      try {
+        previousPostCount =
+            (await ref.read(myPostStreamProvider.future)).length;
+      } on Object {
+        previousPostCount = null;
+      }
+      final isFirstPost = previousPostCount == 0;
       final result = await context.pushNamed(RouterPath.timeLinePost);
       if (result == null || !context.mounted) {
         return;
@@ -173,44 +185,45 @@ class TabScreen extends HookConsumerWidget {
             ref.invalidate(postCountRankProvider(uid));
           }
           // 初回投稿完了ガイドがある場合はレベルアップ演出と重ねない
-          if (!isFirstPost) {
+          if (!isFirstPost && previousPostCount != null) {
             try {
-              await ref.read(myPostStreamProvider.future);
+              final refreshedPosts =
+                  await ref.read(myPostStreamProvider.future);
+              final newPostCount = refreshedPosts.length;
+              if (UserLevel.levelFromPostCount(newPostCount) >
+                      UserLevel.levelFromPostCount(previousPostCount) &&
+                  context.mounted) {
+                await showLevelUpDialog(
+                  context: context,
+                  level: UserLevel.levelFromPostCount(newPostCount),
+                );
+              }
             } on Object {
               // 再取得失敗時はレベルアップ判定をスキップ
-              break;
-            }
-            final newPostCount =
-                ref.read(myPostStreamProvider).valueOrNull?.length ?? 0;
-            if (UserLevel.levelFromPostCount(newPostCount) >
-                    UserLevel.levelFromPostCount(oldPostCount) &&
-                context.mounted) {
-              await showLevelUpDialog(
-                context: context,
-                level: UserLevel.levelFromPostCount(newPostCount),
-              );
             }
           }
       }
 
       // 初回投稿完了ガイド（ストリーク等のあとに Tab へ戻ってから表示）
       if (isFirstPost && context.mounted) {
-        final shouldShow = await shouldShowFirstPostSuccessGuide();
+        final shouldShow = await shouldShowFirstPostSuccessGuide(
+          previousPostCount: 0,
+        );
         if (!shouldShow || !context.mounted) {
           return;
         }
         // 最新投稿を取得してプレビューに使う
         ref.invalidate(myPostStreamProvider);
+        Posts? latestPost;
         try {
-          await ref.read(myPostStreamProvider.future);
+          final posts = await ref.read(myPostStreamProvider.future);
+          latestPost = posts.isEmpty ? null : posts.last;
         } on Object {
           // プレビューなしでもガイドは出す
         }
         if (!context.mounted) {
           return;
         }
-        final posts = ref.read(myPostStreamProvider).valueOrNull;
-        final latestPost = posts == null || posts.isEmpty ? null : posts.last;
         ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
               name: AnalyticsEvent.firstPostSuccessGuideShow,
             );
@@ -218,7 +231,11 @@ class TabScreen extends HookConsumerWidget {
           context: context,
           post: latestPost,
         );
-        await markFirstPostSuccessGuideShown();
+        try {
+          await markFirstPostSuccessGuideShown();
+        } on Object {
+          // 既読保存失敗でも地図/アルバム導線は続行する
+        }
         if (!context.mounted || action == null) {
           return;
         }

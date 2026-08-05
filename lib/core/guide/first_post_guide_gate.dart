@@ -29,11 +29,17 @@ Future<void> markFirstPostGuideShown({Preference? preference}) async {
 }
 
 /// 初回投稿完了後のガイドを表示すべきか。
+///
+/// [previousPostCount] は投稿前の件数。0 以外なら出さない。
 Future<bool> shouldShowFirstPostSuccessGuide({
+  required int previousPostCount,
   Preference? preference,
 }) async {
   if (debugForceFirstPostGuide) {
     return true;
+  }
+  if (previousPostCount > 0) {
+    return false;
   }
   final prefs = preference ?? Preference();
   final hasSeen =
