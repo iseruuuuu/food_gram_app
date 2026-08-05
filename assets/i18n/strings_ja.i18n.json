@@ -954,5 +954,17 @@
     "minutesAgo": "{count}分前",
     "hoursAgo": "{count}時間前",
     "daysAgo": "{count}日前"
+  },
+  "firstPostGuide": {
+    "tapHint": "タップしてはじめよう！",
+    "promptTitle": "最初の一皿を記録しよう！",
+    "promptSubtitle": "写真を投稿すると地図に思い出が残ります",
+    "successTitle": "投稿完了！",
+    "successSubtitle": "あなたのFood Mapに追加されました",
+    "nextTitle": "もっと楽しもう！",
+    "nextSubtitle": "あなたの食の旅を広げていこう",
+    "viewMap": "地図を見る",
+    "viewAlbum": "アルバムを見る",
+    "seeLater": "あとで見る"
   }
 }

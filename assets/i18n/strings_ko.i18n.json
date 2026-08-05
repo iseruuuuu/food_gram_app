@@ -954,5 +954,17 @@
     "minutesAgo": "{count}분 전",
     "hoursAgo": "{count}시간 전",
     "daysAgo": "{count}일 전"
+  },
+  "firstPostGuide": {
+    "tapHint": "탭해서 시작해요!",
+    "promptTitle": "첫 한 끼를 기록해 봐요!",
+    "promptSubtitle": "사진을 올리면 지도에 추억이 남아요",
+    "successTitle": "게시 완료!",
+    "successSubtitle": "나의 Food Map에 추가되었어요",
+    "nextTitle": "더 즐겨봐요!",
+    "nextSubtitle": "음식 여행을 더 넓혀 가요",
+    "viewMap": "지도 보기",
+    "viewAlbum": "앨범 보기",
+    "seeLater": "나중에 보기"
   }
 }

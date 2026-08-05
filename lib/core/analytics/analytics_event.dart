@@ -13,6 +13,17 @@ abstract final class AnalyticsEvent {
   // --- チュートリアル ---
   static const String tutorialStart = 'tutorial_start';
   static const String tutorialComplete = 'tutorial_complete';
+  static const String firstPostGuideShow = 'first_post_guide_show';
+  static const String firstPostGuideTap = 'first_post_guide_tap';
+  static const String firstPostGuideDismiss = 'first_post_guide_dismiss';
+  static const String firstPostSuccessGuideShow =
+      'first_post_success_guide_show';
+  static const String firstPostSuccessGuideMap =
+      'first_post_success_guide_map';
+  static const String firstPostSuccessGuideAlbum =
+      'first_post_success_guide_album';
+  static const String firstPostSuccessGuideLater =
+      'first_post_success_guide_later';
 
   // --- タイムライン (Food) ---
   static const String timelineOpen = 'timeline_open';

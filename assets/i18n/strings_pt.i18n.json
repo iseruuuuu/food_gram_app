@@ -954,5 +954,17 @@
     "minutesAgo": "há {count} min",
     "hoursAgo": "há {count} h",
     "daysAgo": "há {count} d"
+  },
+  "firstPostGuide": {
+    "tapHint": "Toque para começar!",
+    "promptTitle": "Registre seu primeiro prato!",
+    "promptSubtitle": "Poste uma foto e deixe memórias no mapa",
+    "successTitle": "Publicação concluída!",
+    "successSubtitle": "Adicionado ao seu Food Map",
+    "nextTitle": "Aproveite mais!",
+    "nextSubtitle": "Amplie sua jornada gastronômica",
+    "viewMap": "Ver mapa",
+    "viewAlbum": "Ver álbum",
+    "seeLater": "Ver depois"
   }
 }
