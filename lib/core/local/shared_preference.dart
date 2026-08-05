@@ -28,6 +28,8 @@ enum PreferenceKey {
   lastWeeklySummaryWeekStart,
   lastMonthlySummaryMonthStart,
   wantToGoList,
+  hasSeenFirstPostGuide,
+  hasSeenFirstPostSuccessGuide,
 }
 
 class Preference {
