@@ -12,9 +12,6 @@ class MapPinStyle {
   /// JSONレイヤーの icon-size と同等の線形補間（Annotation用フォールバック）
   static double interpolatedIconSize(double zoom) {
     final anchors = <double, double>{
-      3.5: 0.17,
-      5.0: 0.21,
-      7.0: 0.25,
       9.0: 0.31,
       10.5: 0.35,
       12.0: 0.41,

@@ -5,18 +5,20 @@ class MapOverlayConstants {
   // ランタイムスタイル（SymbolLayer）
   static const String runtimeSourceId = 'fg_posts_source';
   static const String runtimeLayerId = 'fg_posts_layer';
+  static const String runtimeDotsLayerId = 'fg_posts_dots_layer';
 
   // ヒートマップ
   static const String heatmapSourceId = 'fg_heatmap_source';
   static const String heatmapLayerId = 'fg_heatmap_layer';
 
-  /// ズームこの値以下でヒートマップ表示（国全体より広域）
-  static const double heatmapZoomThreshold = 3;
+  /// ズームこの値以下でヒートマップ表示（0 なら実質オフ）
+  static const double heatmapZoomThreshold = 0;
 
-  /// ズームこの値以下で小さな赤ドット表示
-  static const double smallDotZoomThreshold = 13;
+  /// ★ここで切替ズームを調整★（JSON の minzoom / maxzoom にも反映される）
+  /// この値未満 → 赤い点 / この値以上 → カテゴリーピン
+  static const double smallDotZoomThreshold = 9;
 
-  /// 小さな赤ドットの iconSize（マップ上）
+  /// 小さな赤ドットの iconSize（Annotation フォールバック用）
   static const double smallRedDotIconSize = 0.55;
 
   /// OSM Bright スプライトの標準マーカー（local / earth 共通 sprite URL）
@@ -38,7 +40,7 @@ class MapOverlayConstants {
   /// 位置情報なし時（日本全体）※互換・広域表示用
   static const double countryOverview = 3.8;
 
-  /// 位置情報なし時（端末Localeの国全体）
+  /// ★位置情報なしの初期ズーム★（国全体なら 3.5〜5 付近）
   static const double localeFallback = 4;
 
   // 下シート

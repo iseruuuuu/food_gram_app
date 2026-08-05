@@ -23,24 +23,84 @@ class MapHeatmapLayer {
         };
       }).toList();
 
-      final source = {
-        'type': 'geojson',
-        'data': {
-          'type': 'FeatureCollection',
-          'features': features,
-        },
-      };
-
-      final dynamic ctrl = controller;
       try {
-        await ctrl.removeLayer(MapOverlayConstants.heatmapLayerId);
+        await controller.removeLayer(MapOverlayConstants.heatmapLayerId);
       } on Exception catch (_) {}
       try {
-        await ctrl.removeSource(MapOverlayConstants.heatmapSourceId);
+        await controller.removeSource(MapOverlayConstants.heatmapSourceId);
       } on Exception catch (_) {}
 
-      await ctrl.addSource(MapOverlayConstants.heatmapSourceId, source);
-      await ctrl.addLayer(_heatmapLayerDefinition);
+      await controller.addSource(
+        MapOverlayConstants.heatmapSourceId,
+        GeojsonSourceProperties(
+          data: {
+            'type': 'FeatureCollection',
+            'features': features,
+          },
+        ),
+      );
+
+      const heat = MapOverlayConstants.heatmapZoomThreshold;
+      await controller.addHeatmapLayer(
+        MapOverlayConstants.heatmapSourceId,
+        MapOverlayConstants.heatmapLayerId,
+        HeatmapLayerProperties(
+          heatmapWeight: [
+            'interpolate',
+            ['linear'],
+            ['get', 'weight'],
+            0,
+            0,
+            1,
+            1,
+          ],
+          heatmapIntensity: [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0,
+            1,
+            heat,
+            3,
+          ],
+          heatmapColor: [
+            'interpolate',
+            ['linear'],
+            ['heatmap-density'],
+            0,
+            'rgba(33,102,172,0)',
+            0.2,
+            'rgb(103,169,207)',
+            0.4,
+            'rgb(209,229,240)',
+            0.6,
+            'rgb(253,219,199)',
+            0.8,
+            'rgb(239,138,98)',
+            1,
+            'rgb(178,24,43)',
+          ],
+          heatmapRadius: [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0,
+            2,
+            heat,
+            20,
+          ],
+          heatmapOpacity: [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0,
+            0.8,
+            heat,
+            0.6,
+          ],
+        ),
+        maxzoom: heat,
+      );
       return true;
     } on Exception catch (_) {
       return false;
@@ -49,12 +109,11 @@ class MapHeatmapLayer {
 
   /// ヒートマップレイヤーを削除する
   static Future<void> remove(MapLibreMapController controller) async {
-    final dynamic ctrl = controller;
     try {
-      await ctrl.removeLayer(MapOverlayConstants.heatmapLayerId);
+      await controller.removeLayer(MapOverlayConstants.heatmapLayerId);
     } on Exception catch (_) {}
     try {
-      await ctrl.removeSource(MapOverlayConstants.heatmapSourceId);
+      await controller.removeSource(MapOverlayConstants.heatmapSourceId);
     } on Exception catch (_) {}
   }
 
@@ -63,57 +122,14 @@ class MapHeatmapLayer {
     MapLibreMapController controller, {
     required bool visible,
   }) async {
-    final value = visible ? 'visible' : 'none';
-    final dynamic ctrl = controller;
-    try {
-      await ctrl.setLayoutProperty(
-        MapOverlayConstants.runtimeLayerId,
-        'visibility',
-        value,
-      );
-      await ctrl.setLayoutProperty(
-        '${MapOverlayConstants.runtimeLayerId}_selected',
-        'visibility',
-        value,
-      );
-    } on Exception catch (_) {}
+    for (final id in [
+      MapOverlayConstants.runtimeDotsLayerId,
+      MapOverlayConstants.runtimeLayerId,
+      '${MapOverlayConstants.runtimeLayerId}_selected',
+    ]) {
+      try {
+        await controller.setLayerVisibility(id, visible);
+      } on Exception catch (_) {}
+    }
   }
-
-  static final Map<String, dynamic> _heatmapLayerDefinition = {
-    'id': MapOverlayConstants.heatmapLayerId,
-    'type': 'heatmap',
-    'source': MapOverlayConstants.heatmapSourceId,
-    'maxzoom': MapOverlayConstants.heatmapZoomThreshold,
-    'paint': {
-      'heatmap-weight': [
-        'interpolate', ['linear'], ['get', 'weight'],
-        0, 0,
-        1, 1,
-      ],
-      'heatmap-intensity': [
-        'interpolate', ['linear'], ['zoom'],
-        0, 1,
-        MapOverlayConstants.heatmapZoomThreshold, 3,
-      ],
-      'heatmap-color': [
-        'interpolate', ['linear'], ['heatmap-density'],
-        0, 'rgba(33,102,172,0)',
-        0.2, 'rgb(103,169,207)',
-        0.4, 'rgb(209,229,240)',
-        0.6, 'rgb(253,219,199)',
-        0.8, 'rgb(239,138,98)',
-        1, 'rgb(178,24,43)',
-      ],
-      'heatmap-radius': [
-        'interpolate', ['linear'], ['zoom'],
-        0, 2,
-        MapOverlayConstants.heatmapZoomThreshold, 20,
-      ],
-      'heatmap-opacity': [
-        'interpolate', ['linear'], ['zoom'],
-        0, 0.8,
-        MapOverlayConstants.heatmapZoomThreshold, 0.6,
-      ],
-    },
-  };
 }
