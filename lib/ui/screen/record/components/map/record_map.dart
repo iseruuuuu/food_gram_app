@@ -33,7 +33,7 @@ class RecordMap extends HookConsumerWidget {
     final isTapPin = useState(false);
     final post = useState<List<Posts?>>([]);
     final isEarthStyle = useState(false);
-    final isLocationEnabled = latitude != 0 && longitude != 0;
+    final isLocationEnabled = latitude != 0 || longitude != 0;
     final fallbackLocation = defaultLocationFromDeviceLocale();
     return Stack(
       alignment: Alignment.bottomCenter,

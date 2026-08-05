@@ -44,21 +44,7 @@ const Map<String, LatLng> _byLanguageCountry = {
   'vi_VN': _hoChiMinh,
 };
 
-/// 言語のみ（端末の使用言語に合わせる。曖昧な言語は代表都市）
-const Map<String, LatLng> _byLanguage = {
-  'ja': _tokyo,
-  'en': _newYork,
-  'ko': _seoul,
-  'fr': _paris,
-  'de': _berlin,
-  'th': _bangkok,
-  'vi': _hoChiMinh,
-  'es': _madrid,
-  'pt': _saoPaulo,
-  'zh': _shanghai,
-};
-
-/// 国コードのみ（言語で決まらないときの弱いフォールバック）
+/// 国コードのみ（完全一致の次に優先）
 const Map<String, LatLng> _byCountry = {
   'JP': _tokyo,
   'US': _newYork,
@@ -78,10 +64,24 @@ const Map<String, LatLng> _byCountry = {
   'VN': _hoChiMinh,
 };
 
+/// 言語のみ（国が取れない／未対応のときのフォールバック。曖昧な言語は代表都市）
+const Map<String, LatLng> _byLanguage = {
+  'ja': _tokyo,
+  'en': _newYork,
+  'ko': _seoul,
+  'fr': _paris,
+  'de': _berlin,
+  'th': _bangkok,
+  'vi': _hoChiMinh,
+  'es': _madrid,
+  'pt': _saoPaulo,
+  'zh': _shanghai,
+};
+
 /// 端末ロケールから地図の初期表示位置を決める。
 ///
-/// 解決順: `language_COUNTRY` → `languageCode` → `countryCode` → 日本中心。
-/// 言語を地域より優先する（例: `en_JP` → 英語としてニューヨーク）。
+/// 解決順: `language_COUNTRY` → `countryCode` → `languageCode` → 日本中心。
+/// 例: `en_JP` → 完全一致なし → 国 `JP` → 東京。
 /// [locale] 省略時は [ui.PlatformDispatcher.instance.locale] を使う。
 LatLng defaultLocationFromDeviceLocale([Locale? locale]) {
   final l = locale ?? ui.PlatformDispatcher.instance.locale;
@@ -95,18 +95,15 @@ LatLng defaultLocationFromDeviceLocale([Locale? locale]) {
     if (byExact != null) {
       return byExact;
     }
+    final byCountry = _byCountry[country];
+    if (byCountry != null) {
+      return byCountry;
+    }
   }
 
   final byLanguage = _byLanguage[language];
   if (byLanguage != null) {
     return byLanguage;
-  }
-
-  if (hasCountry) {
-    final byCountry = _byCountry[country];
-    if (byCountry != null) {
-      return byCountry;
-    }
   }
 
   return japanDefaultLocation;
