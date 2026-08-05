@@ -15,6 +15,7 @@ import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
+import 'package:food_gram_app/core/utils/location/locale_default_location.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
@@ -31,8 +32,6 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
-// 日本の中心付近の座標
-const defaultLocation = LatLng(36.2048, 137.9777);
 const mapPinTapAdInterval = 5;
 
 class MapScreen extends HookConsumerWidget {
@@ -101,13 +100,14 @@ class MapScreen extends HookConsumerWidget {
             onData: (value) {
               final isLocationEnabled =
                   value.$1.latitude != 0 && value.$1.longitude != 0;
+              final fallbackLocation = defaultLocationFromDeviceLocale();
               return Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
                   MapLibreMap(
                     onMapCreated: (mapLibre) async {
                       final initialCenter =
-                          isLocationEnabled ? value.$1 : defaultLocation;
+                          isLocationEnabled ? value.$1 : fallbackLocation;
                       await controller.setMapController(
                         mapLibre,
                         onPinTap: (posts) async {
@@ -157,10 +157,11 @@ class MapScreen extends HookConsumerWidget {
                     key: const ValueKey('mapWidget'),
                     myLocationEnabled: isLocationEnabled,
                     initialCameraPosition: CameraPosition(
-                      target: isLocationEnabled ? value.$1 : defaultLocation,
+                      target:
+                          isLocationEnabled ? value.$1 : fallbackLocation,
                       zoom: isLocationEnabled
                           ? MapOverlayConstants.initial
-                          : MapOverlayConstants.countryOverview,
+                          : MapOverlayConstants.localeFallback,
                     ),
                     trackCameraPosition: true,
                     tiltGesturesEnabled: false,

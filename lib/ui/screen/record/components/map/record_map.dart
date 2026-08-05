@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/utils/location/locale_default_location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/ui/screen/record/components/map/record_map_button.dart';
 import 'package:food_gram_app/ui/screen/record/components/map/record_map_post_sheet.dart';
@@ -32,8 +34,7 @@ class RecordMap extends HookConsumerWidget {
     final post = useState<List<Posts?>>([]);
     final isEarthStyle = useState(false);
     final isLocationEnabled = latitude != 0 && longitude != 0;
-    // 日本の中心付近の座標（位置情報オフ時の初期表示）
-    const recordMapDefaultLocation = LatLng(36.2048, 137.9777);
+    final fallbackLocation = defaultLocationFromDeviceLocale();
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
@@ -58,8 +59,10 @@ class RecordMap extends HookConsumerWidget {
           initialCameraPosition: CameraPosition(
             target: isLocationEnabled
                 ? LatLng(latitude, longitude)
-                : recordMapDefaultLocation,
-            zoom: 7,
+                : fallbackLocation,
+            zoom: isLocationEnabled
+                ? 7
+                : MapOverlayConstants.localeFallback,
           ),
           trackCameraPosition: true,
           tiltGesturesEnabled: false,

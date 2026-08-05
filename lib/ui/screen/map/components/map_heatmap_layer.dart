@@ -83,7 +83,7 @@ class MapHeatmapLayer {
     'id': MapOverlayConstants.heatmapLayerId,
     'type': 'heatmap',
     'source': MapOverlayConstants.heatmapSourceId,
-    'maxzoom': 10,
+    'maxzoom': MapOverlayConstants.heatmapZoomThreshold,
     'paint': {
       'heatmap-weight': [
         'interpolate', ['linear'], ['get', 'weight'],
@@ -93,7 +93,7 @@ class MapHeatmapLayer {
       'heatmap-intensity': [
         'interpolate', ['linear'], ['zoom'],
         0, 1,
-        10, 3,
+        MapOverlayConstants.heatmapZoomThreshold, 3,
       ],
       'heatmap-color': [
         'interpolate', ['linear'], ['heatmap-density'],
@@ -107,12 +107,12 @@ class MapHeatmapLayer {
       'heatmap-radius': [
         'interpolate', ['linear'], ['zoom'],
         0, 2,
-        10, 20,
+        MapOverlayConstants.heatmapZoomThreshold, 20,
       ],
       'heatmap-opacity': [
         'interpolate', ['linear'], ['zoom'],
         0, 0.8,
-        10, 0.6,
+        MapOverlayConstants.heatmapZoomThreshold, 0.6,
       ],
     },
   };
