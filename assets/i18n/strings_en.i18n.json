@@ -954,5 +954,17 @@
     "minutesAgo": "{count}m ago",
     "hoursAgo": "{count}h ago",
     "daysAgo": "{count}d ago"
+  },
+  "firstPostGuide": {
+    "tapHint": "Tap to get started!",
+    "promptTitle": "Record your first dish!",
+    "promptSubtitle": "Post a photo and leave memories on the map",
+    "successTitle": "Post complete!",
+    "successSubtitle": "Added to your Food Map",
+    "nextTitle": "Let's enjoy more!",
+    "nextSubtitle": "Expand your food journey",
+    "viewMap": "View Map",
+    "viewAlbum": "View Album",
+    "seeLater": "See later"
   }
 }

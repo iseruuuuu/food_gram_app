@@ -954,5 +954,17 @@
     "minutesAgo": "{count}分鐘前",
     "hoursAgo": "{count}小時前",
     "daysAgo": "{count}天前"
+  },
+  "firstPostGuide": {
+    "tapHint": "點一下開始吧！",
+    "promptTitle": "記錄你的第一道菜！",
+    "promptSubtitle": "發布照片，把回憶留在地圖上",
+    "successTitle": "發布完成！",
+    "successSubtitle": "已加到你的 Food Map",
+    "nextTitle": "一起玩得更開心！",
+    "nextSubtitle": "繼續拓展你的美食之旅",
+    "viewMap": "查看地圖",
+    "viewAlbum": "查看相簿",
+    "seeLater": "稍後再看"
   }
 }

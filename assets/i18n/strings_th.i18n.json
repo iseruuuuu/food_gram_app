@@ -954,5 +954,17 @@
     "minutesAgo": "{count} นาทีที่แล้ว",
     "hoursAgo": "{count} ชั่วโมงที่แล้ว",
     "daysAgo": "{count} วันที่แล้ว"
+  },
+  "firstPostGuide": {
+    "tapHint": "แตะเพื่อเริ่มต้น!",
+    "promptTitle": "บันทึกจานแรกของคุณ!",
+    "promptSubtitle": "โพสต์รูปแล้วความทรงจำจะอยู่บนแผนที่",
+    "successTitle": "โพสต์สำเร็จ!",
+    "successSubtitle": "เพิ่มลง Food Map ของคุณแล้ว",
+    "nextTitle": "สนุกกันต่อเถอะ!",
+    "nextSubtitle": "ขยายการเดินทางด้านอาหารของคุณ",
+    "viewMap": "ดูแผนที่",
+    "viewAlbum": "ดูอัลบั้ม",
+    "seeLater": "ดูทีหลัง"
   }
 }

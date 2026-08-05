@@ -954,5 +954,17 @@
     "minutesAgo": "il y a {count} min",
     "hoursAgo": "il y a {count} h",
     "daysAgo": "il y a {count} j"
+  },
+  "firstPostGuide": {
+    "tapHint": "Appuyez pour commencer !",
+    "promptTitle": "Enregistrez votre premier plat !",
+    "promptSubtitle": "Publiez une photo et gardez des souvenirs sur la carte",
+    "successTitle": "Publication terminée !",
+    "successSubtitle": "Ajouté à votre Food Map",
+    "nextTitle": "Profitez encore plus !",
+    "nextSubtitle": "Élargissez votre voyage culinaire",
+    "viewMap": "Voir la carte",
+    "viewAlbum": "Voir l'album",
+    "seeLater": "Plus tard"
   }
 }

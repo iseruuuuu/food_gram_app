@@ -954,5 +954,17 @@
     "minutesAgo": "{count} phút trước",
     "hoursAgo": "{count} giờ trước",
     "daysAgo": "{count} ngày trước"
+  },
+  "firstPostGuide": {
+    "tapHint": "Chạm để bắt đầu!",
+    "promptTitle": "Ghi lại món đầu tiên nào!",
+    "promptSubtitle": "Đăng ảnh để lưu kỷ niệm trên bản đồ",
+    "successTitle": "Đăng thành công!",
+    "successSubtitle": "Đã thêm vào Food Map của bạn",
+    "nextTitle": "Cùng vui hơn nữa!",
+    "nextSubtitle": "Mở rộng hành trình ẩm thực của bạn",
+    "viewMap": "Xem bản đồ",
+    "viewAlbum": "Xem album",
+    "seeLater": "Xem sau"
   }
 }
