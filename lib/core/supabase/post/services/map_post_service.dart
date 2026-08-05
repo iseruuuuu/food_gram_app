@@ -3,6 +3,7 @@ import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/utils/geo_distance.dart';
+import 'package:food_gram_app/core/utils/location/locale_default_location.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:logger/logger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart' as maplibre;
@@ -87,8 +88,8 @@ class MapPostService extends _$MapPostService {
     );
   }
 
-  /// 指定座標（または現在地・日本中心）から近い投稿を20件取得
-  /// [centerLatLng] null の場合は現在地、現在地が (0,0) の場合は日本中心を使用
+  /// 指定座標（または現在地・端末Localeの都市中心）から近い投稿を20件取得
+  /// [centerLatLng] null の場合は現在地、現在地が (0,0) の場合はLocaleフォールバックを使用
   Future<List<Map<String, dynamic>>> getNearbyPosts({
     maplibre.LatLng? centerLatLng,
   }) async {
@@ -101,8 +102,9 @@ class MapPostService extends _$MapPostService {
     } else {
       final currentLocation = await ref.read(locationProvider.future);
       if (currentLocation == const maplibre.LatLng(0, 0)) {
-        lat = 36.2048;
-        lng = 137.9777;
+        final fallback = defaultLocationFromDeviceLocale();
+        lat = fallback.latitude;
+        lng = fallback.longitude;
       } else {
         lat = currentLocation.latitude;
         lng = currentLocation.longitude;

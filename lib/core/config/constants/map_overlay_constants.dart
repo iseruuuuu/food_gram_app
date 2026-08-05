@@ -10,14 +10,14 @@ class MapOverlayConstants {
   static const String heatmapSourceId = 'fg_heatmap_source';
   static const String heatmapLayerId = 'fg_heatmap_layer';
 
-  /// ズームこの値以下でヒートマップ表示
-  static const double heatmapZoomThreshold = 10;
+  /// ズームこの値以下でヒートマップ表示（国全体より広域）
+  static const double heatmapZoomThreshold = 3;
 
   /// ズームこの値以下で小さな赤ドット表示
   static const double smallDotZoomThreshold = 13;
 
   /// 小さな赤ドットの iconSize（マップ上）
-  static const double smallRedDotIconSize = 0.39;
+  static const double smallRedDotIconSize = 0.55;
 
   /// OSM Bright スプライトの標準マーカー（local / earth 共通 sprite URL）
   static const String styleDefaultMarkerIconId = 'marker_11';
@@ -35,8 +35,11 @@ class MapOverlayConstants {
   /// 投稿詳細などから店舗マップへ
   static const double fromPostDetail = 17;
 
-  /// 位置情報なし時（日本全体）
+  /// 位置情報なし時（日本全体）※互換・広域表示用
   static const double countryOverview = 3.8;
+
+  /// 位置情報なし時（端末Localeの国全体）
+  static const double localeFallback = 4;
 
   // 下シート
   /// 近くの店舗一覧（Overview）折りたたみ時（ハンドルのみ）※互換用
