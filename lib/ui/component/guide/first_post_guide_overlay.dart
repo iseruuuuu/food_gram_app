@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
@@ -8,7 +10,7 @@ import 'package:gap/gap.dart';
 /// 投稿 FAB への初回誘導オーバーレイ。
 ///
 /// 発光する投稿ボタン + 「タップしてはじめよう！」→ 吹き出し。
-class FirstPostGuideOverlay extends StatefulWidget {
+class FirstPostGuideOverlay extends HookWidget {
   const FirstPostGuideOverlay({
     required this.buttonKey,
     required this.onTapPost,
@@ -21,88 +23,95 @@ class FirstPostGuideOverlay extends StatefulWidget {
   final VoidCallback onDismiss;
 
   @override
-  State<FirstPostGuideOverlay> createState() => _FirstPostGuideOverlayState();
-}
-
-class _FirstPostGuideOverlayState extends State<FirstPostGuideOverlay>
-    with TickerProviderStateMixin {
-  late final AnimationController _pulseController;
-  late final AnimationController _bubbleController;
-  Rect? _buttonRect;
-
-  @override
-  void initState() {
-    super.initState();
-    _pulseController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1400),
-    )..repeat(reverse: true);
-    _bubbleController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 450),
-    );
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _updateButtonRect();
-      Future<void>.delayed(const Duration(milliseconds: 900), () {
-        if (mounted) {
-          _bubbleController.forward();
-        }
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _pulseController.dispose();
-    _bubbleController.dispose();
-    super.dispose();
-  }
-
-  void _updateButtonRect() {
-    final buttonContext = widget.buttonKey.currentContext;
-    if (buttonContext == null || !mounted) {
-      return;
-    }
-    final box = buttonContext.findRenderObject() as RenderBox?;
-    final overlayBox = context.findRenderObject() as RenderBox?;
-    if (box == null || !box.hasSize || overlayBox == null) {
-      return;
-    }
-    final globalOffset = box.localToGlobal(Offset.zero);
-    final localOffset = overlayBox.globalToLocal(globalOffset);
-    setState(() {
-      _buttonRect = localOffset & box.size;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final translations = Translations.of(context);
-    final buttonRect = _buttonRect;
-    if (buttonRect == null) {
-      // 初回フレームでサイズを取るため、領域だけ確保する
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          _updateButtonRect();
+    final buttonRect = useState<Rect?>(null);
+    final overlayKey = useMemoized(GlobalKey.new);
+
+    final pulseController = useAnimationController(
+      duration: const Duration(milliseconds: 1400),
+    );
+    final bubbleController = useAnimationController(
+      duration: const Duration(milliseconds: 450),
+    );
+
+    void updateButtonRect() {
+      final buttonContext = buttonKey.currentContext;
+      final overlayContext = overlayKey.currentContext;
+      if (buttonContext == null || overlayContext == null) {
+        return;
+      }
+      final box = buttonContext.findRenderObject() as RenderBox?;
+      final overlayBox = overlayContext.findRenderObject() as RenderBox?;
+      if (box == null || !box.hasSize || overlayBox == null) {
+        return;
+      }
+      final globalOffset = box.localToGlobal(Offset.zero);
+      final localOffset = overlayBox.globalToLocal(globalOffset);
+      buttonRect.value = localOffset & box.size;
+    }
+
+    useEffect(
+      () {
+        pulseController.repeat(reverse: true);
+        var cancelled = false;
+        Timer? bubbleTimer;
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (cancelled) {
+            return;
+          }
+          updateButtonRect();
+          bubbleTimer = Timer(const Duration(milliseconds: 900), () {
+            if (!cancelled) {
+              bubbleController.forward();
+            }
+          });
+        });
+
+        return () {
+          cancelled = true;
+          bubbleTimer?.cancel();
+        };
+      },
+      [pulseController, bubbleController],
+    );
+
+    // FAB 座標が取れるまで再計測
+    useEffect(
+      () {
+        if (buttonRect.value != null) {
+          return null;
         }
-      });
-      return const Material(
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          updateButtonRect();
+        });
+        return null;
+      },
+      [buttonRect.value],
+    );
+
+    final rect = buttonRect.value;
+    if (rect == null) {
+      return Material(
+        key: overlayKey,
         type: MaterialType.transparency,
-        child: SizedBox.expand(),
+        child: const SizedBox.expand(),
       );
     }
 
-    final center = buttonRect.center;
-    final holeRadius = buttonRect.width / 2 + 10;
+    final center = rect.center;
+    final holeRadius = rect.width / 2 + 10;
 
     return Material(
+      key: overlayKey,
       type: MaterialType.transparency,
       child: Stack(
         children: [
           Positioned.fill(
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: widget.onDismiss,
+              onTap: onDismiss,
               child: CustomPaint(
                 painter: _HoleMaskPainter(
                   holeCenter: center,
@@ -112,9 +121,9 @@ class _FirstPostGuideOverlayState extends State<FirstPostGuideOverlay>
             ),
           ),
           AnimatedBuilder(
-            animation: _pulseController,
+            animation: pulseController,
             builder: (context, child) {
-              final pulse = Curves.easeInOut.transform(_pulseController.value);
+              final pulse = Curves.easeInOut.transform(pulseController.value);
               final scale = 1.0 + pulse * 0.35;
               final opacity = 0.55 - pulse * 0.35;
               return Positioned(
@@ -146,13 +155,13 @@ class _FirstPostGuideOverlayState extends State<FirstPostGuideOverlay>
             left: 24,
             right: 24,
             top: 0,
-            height: math.max(0, buttonRect.top - 16),
+            height: math.max(0, rect.top - 16),
             child: IgnorePointer(
               child: AnimatedBuilder(
-                animation: _bubbleController,
+                animation: bubbleController,
                 builder: (context, child) {
                   return Opacity(
-                    opacity: (1 - _bubbleController.value).clamp(0.0, 1.0),
+                    opacity: (1 - bubbleController.value).clamp(0.0, 1.0),
                     child: child,
                   );
                 },
@@ -168,17 +177,17 @@ class _FirstPostGuideOverlayState extends State<FirstPostGuideOverlay>
             left: 28,
             right: 28,
             top: 0,
-            height: math.max(0, buttonRect.top - 12),
+            height: math.max(0, rect.top - 12),
             child: IgnorePointer(
               child: FadeTransition(
-                opacity: _bubbleController,
+                opacity: bubbleController,
                 child: SlideTransition(
                   position: Tween<Offset>(
                     begin: const Offset(0, 0.12),
                     end: Offset.zero,
                   ).animate(
                     CurvedAnimation(
-                      parent: _bubbleController,
+                      parent: bubbleController,
                       curve: Curves.easeOutCubic,
                     ),
                   ),
@@ -194,14 +203,14 @@ class _FirstPostGuideOverlayState extends State<FirstPostGuideOverlay>
             ),
           ),
           Positioned(
-            left: buttonRect.left,
-            top: buttonRect.top,
-            width: buttonRect.width,
-            height: buttonRect.height,
+            left: rect.left,
+            top: rect.top,
+            width: rect.width,
+            height: rect.height,
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: widget.onTapPost,
+                onTap: onTapPost,
                 customBorder: const CircleBorder(),
                 child: Ink(
                   decoration: const BoxDecoration(
