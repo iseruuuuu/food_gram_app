@@ -23,9 +23,22 @@ class MapRuntimeSetupResult {
 /// 投稿ピンのランタイムレイヤー。
 /// - ズーム < [MapOverlayConstants.smallDotZoomThreshold] → 赤い円
 /// - ズーム >= 同閾値 → カテゴリーピン
-/// 切替は minzoom / maxzoom のみ（Dart で付け外ししない）
+///
+/// 切替は paint の zoom 式 + minzoom / maxzoom に任せる。
+/// camera idle でレイヤーを載せ外ししない（チラつき防止）。
 class MapRuntimeLayer {
   MapRuntimeLayer._();
+
+  static const double _threshold = MapOverlayConstants.smallDotZoomThreshold;
+
+  /// zoom < threshold → [below] / zoom >= threshold → [atOrAbove]
+  static List<Object> _stepByZoom(num below, num atOrAbove) => [
+        'step',
+        ['zoom'],
+        below,
+        _threshold,
+        atOrAbove,
+      ];
 
   static Future<MapRuntimeSetupResult> setup(
     MapLibreMapController controller,
@@ -75,12 +88,8 @@ class MapRuntimeLayer {
         ),
       );
 
-      // --- 低ズーム: 赤い点（必ず載せる） ---
+      // 赤点を先に載せ、カテゴリーピンを上に重ねる
       dotsReady = await _addDotsLayer(controller);
-
-      // --- 高ズーム: カテゴリーピン（常に minzoom 付き） ---
-      // 赤点が失敗しても、低ズームで画像ピンを出さない
-      const pinMinZoom = MapOverlayConstants.smallDotZoomThreshold;
 
       final pinLayout = await _loadSymbolLayout(Assets.map.overlayPostsLayer);
       await controller.addSymbolLayer(
@@ -95,6 +104,8 @@ class MapRuntimeLayer {
                 'interpolate',
                 ['linear'],
                 ['zoom'],
+                8,
+                0.28,
                 9,
                 0.31,
                 14,
@@ -102,9 +113,10 @@ class MapRuntimeLayer {
                 16,
                 0.61,
               ],
-          iconOpacity: pinLayout['icon-opacity'] ?? 0.85,
+          // 薄く見える原因だった zoom 連動 opacity は使わない
+          iconOpacity: 1.0,
         ),
-        minzoom: pinMinZoom,
+        minzoom: _threshold,
         filter: [
           '!=',
           ['get', 'selected'],
@@ -122,17 +134,17 @@ class MapRuntimeLayer {
           iconAllowOverlap: true,
           iconIgnorePlacement: true,
           iconSize: selectedLayout['icon-size'] ?? 0.62,
-          iconOpacity: selectedLayout['icon-opacity'] ?? 1.0,
+          iconOpacity: 1.0,
         ),
-        minzoom: pinMinZoom,
+        minzoom: _threshold,
         filter: [
           '==',
           ['get', 'selected'],
           true,
         ],
       );
-
       pinsReady = true;
+
       return MapRuntimeSetupResult(
         pinsReady: pinsReady,
         dotsReady: dotsReady,
@@ -145,27 +157,28 @@ class MapRuntimeLayer {
     }
   }
 
-  /// 赤い円を追加。複雑な expression がダメなら単純な円でリトライする
   static Future<bool> _addDotsLayer(MapLibreMapController controller) async {
-    // 1) JSON の見た目を試す
+    final paint = await _loadDotsPaint();
+    final props = CircleLayerProperties(
+      circleRadius: paint['circle-radius'] ?? _stepByZoom(4.0, 0),
+      circleColor: paint['circle-color'] ?? '#E53935',
+      circleStrokeWidth: paint['circle-stroke-width'] ?? _stepByZoom(1.2, 0),
+      circleStrokeColor: paint['circle-stroke-color'] ?? '#FFFFFF',
+      circleOpacity: paint['circle-opacity'] ?? _stepByZoom(0.92, 0),
+      circleStrokeOpacity:
+          paint['circle-stroke-opacity'] ?? _stepByZoom(1.0, 0),
+    );
+
     try {
-      final paint = await _loadDotsPaint();
       await controller.addCircleLayer(
         MapOverlayConstants.runtimeSourceId,
         MapOverlayConstants.runtimeDotsLayerId,
-        CircleLayerProperties(
-          circleRadius: paint['circle-radius'] ?? 4.0,
-          circleColor: paint['circle-color'] ?? '#E53935',
-          circleStrokeWidth: paint['circle-stroke-width'] ?? 1.2,
-          circleStrokeColor: paint['circle-stroke-color'] ?? '#FFFFFF',
-          circleOpacity: paint['circle-opacity'] ?? 0.92,
-        ),
-        maxzoom: MapOverlayConstants.smallDotZoomThreshold,
+        props,
+        maxzoom: _threshold,
       );
       return true;
     } on Exception catch (_) {}
 
-    // 2) 単純な円で必ず載せる
     try {
       try {
         await controller.removeLayer(MapOverlayConstants.runtimeDotsLayerId);
@@ -173,14 +186,15 @@ class MapRuntimeLayer {
       await controller.addCircleLayer(
         MapOverlayConstants.runtimeSourceId,
         MapOverlayConstants.runtimeDotsLayerId,
-        const CircleLayerProperties(
-          circleRadius: 4.0,
+        CircleLayerProperties(
+          circleRadius: _stepByZoom(4.0, 0),
           circleColor: '#E53935',
-          circleStrokeWidth: 1.2,
+          circleStrokeWidth: _stepByZoom(1.2, 0),
           circleStrokeColor: '#FFFFFF',
-          circleOpacity: 0.92,
+          circleOpacity: _stepByZoom(0.92, 0),
+          circleStrokeOpacity: _stepByZoom(1.0, 0),
         ),
-        maxzoom: MapOverlayConstants.smallDotZoomThreshold,
+        maxzoom: _threshold,
       );
       return true;
     } on Exception catch (_) {
@@ -190,24 +204,19 @@ class MapRuntimeLayer {
 
   static Future<Map<String, dynamic>> _loadDotsPaint() async {
     try {
-      final raw =
-          await rootBundle.loadString(Assets.map.overlayPostsDotsLayer);
+      final raw = await rootBundle.loadString(Assets.map.overlayPostsDotsLayer);
       final json = jsonDecode(raw) as Map<String, dynamic>;
       final paint = json['paint'];
       if (paint is Map<String, dynamic>) {
-        return paint;
+        return Map<String, dynamic>.from(paint);
       }
     } on Exception catch (_) {}
-    return {
-      'circle-radius': 4.0,
-      'circle-color': '#E53935',
-      'circle-stroke-width': 1.2,
-      'circle-stroke-color': '#FFFFFF',
-      'circle-opacity': 0.92,
-    };
+    return {};
   }
 
-  static Future<Map<String, dynamic>> _loadSymbolLayout(String assetPath) async {
+  static Future<Map<String, dynamic>> _loadSymbolLayout(
+    String assetPath,
+  ) async {
     try {
       final raw = await rootBundle.loadString(assetPath);
       final json = jsonDecode(raw) as Map<String, dynamic>;

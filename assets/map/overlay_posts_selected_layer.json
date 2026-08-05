@@ -2,7 +2,7 @@
     "id": "fg_posts_layer_selected",
     "type": "symbol",
     "source": "fg_posts_source",
-    "minzoom": 9,
+    "minzoom": 8,
     "filter": [
         "==",
         ["get", "selected"],
@@ -16,6 +16,7 @@
             "interpolate",
             ["linear"],
             ["zoom"],
+            8, 0.32,
             9, 0.35,
             14, 0.62,
             15, 0.66,

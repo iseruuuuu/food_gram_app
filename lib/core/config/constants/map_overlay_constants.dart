@@ -16,7 +16,7 @@ class MapOverlayConstants {
 
   /// ★ここで切替ズームを調整★（JSON の minzoom / maxzoom にも反映される）
   /// この値未満 → 赤い点 / この値以上 → カテゴリーピン
-  static const double smallDotZoomThreshold = 9;
+  static const double smallDotZoomThreshold = 8;
 
   /// 小さな赤ドットの iconSize（Annotation フォールバック用）
   static const double smallRedDotIconSize = 0.55;
