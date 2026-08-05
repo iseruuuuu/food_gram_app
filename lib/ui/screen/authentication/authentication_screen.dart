@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:auth_buttons/auth_buttons.dart';
+import 'package:auth_button_kit/auth_button_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
@@ -24,7 +24,6 @@ class AuthenticationScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final loading = ref.watch(loadingProvider);
-    final buttonWidth = MediaQuery.of(context).size.width;
     final controller = ref.watch(authenticationViewModelProvider().notifier);
     final supabase = ref.read(supabaseProvider);
     final hasNavigatedRef = useRef(false);
@@ -115,12 +114,17 @@ class AuthenticationScreen extends HookConsumerWidget {
                   const Gap(14),
                   Divider(color: Theme.of(context).colorScheme.outlineVariant),
                   const Gap(14),
-                  AppleAuthButton(
-                    style: AuthenticationStyle.authButtonStyle(
-                      context,
-                      buttonWidth,
-                    ),
-                    onPressed: () {
+                  AuthButton(
+                    brand: Method.apple,
+                    backgroundColor:
+                        AuthenticationStyle.authButtonBackground(context),
+                    textColor: AuthenticationStyle.authButtonTextColor(context),
+                    shape: AuthenticationStyle.authButtonShape(context),
+                    fontWeight: FontWeight.bold,
+                    padding: EdgeInsets.zero,
+                    splashEffect:
+                        Theme.of(context).brightness != Brightness.dark,
+                    onPressed: (_) {
                       if (Platform.isIOS) {
                         controller.loginApple(context);
                       } else {
@@ -133,20 +137,31 @@ class AuthenticationScreen extends HookConsumerWidget {
                     },
                   ),
                   const Gap(24),
-                  GoogleAuthButton(
-                    onPressed: () => controller.loginGoogle(context),
-                    style: AuthenticationStyle.authButtonStyle(
-                      context,
-                      buttonWidth,
-                    ),
+                  AuthButton(
+                    brand: Method.google,
+                    backgroundColor:
+                        AuthenticationStyle.authButtonBackground(context),
+                    textColor: AuthenticationStyle.authButtonTextColor(context),
+                    shape: AuthenticationStyle.authButtonShape(context),
+                    fontWeight: FontWeight.bold,
+                    padding: EdgeInsets.zero,
+                    splashEffect:
+                        Theme.of(context).brightness != Brightness.dark,
+                    onPressed: (_) => controller.loginGoogle(context),
                   ),
                   const Gap(24),
-                  TwitterAuthButton(
-                    onPressed: () => controller.loginTwitter(context),
-                    style: AuthenticationStyle.authButtonStyle(
-                      context,
-                      buttonWidth,
-                    ),
+                  AuthButton(
+                    brand: Method.twitter,
+                    text: 'Continue with X',
+                    backgroundColor:
+                        AuthenticationStyle.authButtonBackground(context),
+                    textColor: AuthenticationStyle.authButtonTextColor(context),
+                    shape: AuthenticationStyle.authButtonShape(context),
+                    fontWeight: FontWeight.bold,
+                    padding: EdgeInsets.zero,
+                    splashEffect:
+                        Theme.of(context).brightness != Brightness.dark,
+                    onPressed: (_) => controller.loginTwitter(context),
                   ),
                 ],
               ),
