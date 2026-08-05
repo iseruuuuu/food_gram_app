@@ -1,4 +1,3 @@
-import 'package:auth_buttons/auth_buttons.dart';
 import 'package:flutter/material.dart';
 
 class AuthenticationStyle {
@@ -32,18 +31,25 @@ class AuthenticationStyle {
     );
   }
 
-  static AuthButtonStyle authButtonStyle(BuildContext context, double width) {
+  static Color authButtonBackground(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return AuthButtonStyle(
-      shadowColor: isDark ? Colors.transparent : Colors.grey,
-      height: 50,
-      elevation: isDark ? 0 : 3,
-      borderRadius: 10,
-      width: width,
-      textStyle: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        color: Theme.of(context).colorScheme.onSurface,
+    return isDark
+        ? Theme.of(context).colorScheme.surfaceContainerHighest
+        : Colors.white;
+  }
+
+  static Color authButtonTextColor(BuildContext context) {
+    return Theme.of(context).colorScheme.onSurface;
+  }
+
+  static OutlinedBorder authButtonShape(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+      side: BorderSide(
+        color: isDark
+            ? Theme.of(context).colorScheme.outlineVariant
+            : Colors.grey.shade300,
       ),
     );
   }

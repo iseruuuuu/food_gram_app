@@ -9,7 +9,7 @@ environment:
   flutter: ^3.41.0
 dependencies:
   app_tracking_transparency: ^2.0.6
-  auth_buttons: ^3.0.0
+  auth_button_kit: ^1.1.7
   auto_animated: ^3.2.0
   cached_network_image: ^3.3.0
   confetti: ^0.8.0
