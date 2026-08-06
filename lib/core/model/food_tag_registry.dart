@@ -15,6 +15,14 @@ class CustomFoodTag {
 }
 
 const Map<String, CustomFoodTag> customFoodTags = {
+  'tag:meibutsu': CustomFoodTag(
+    id: 'tag:meibutsu',
+    assetPath: 'assets/tag/meibutsu.png',
+  ),
+  'tag:souvenir': CustomFoodTag(
+    id: 'tag:souvenir',
+    assetPath: 'assets/tag/souvenir.png',
+  ),
   'tag:udon': CustomFoodTag(
     id: 'tag:udon',
     assetPath: 'assets/tag/udon.png',
@@ -76,6 +84,10 @@ String? customFoodTagAssetPath(String tagId) {
 /// カスタムタグIDから Assets.gen のパスを取得（存在しない場合は null）
 String? customFoodTagAssetGenPath(String tagId) {
   switch (tagId) {
+    case 'tag:meibutsu':
+      return Assets.tag.meibutsu.path;
+    case 'tag:souvenir':
+      return Assets.tag.souvenir.path;
     case 'tag:udon':
       return Assets.tag.udon.path;
     case 'tag:soba':

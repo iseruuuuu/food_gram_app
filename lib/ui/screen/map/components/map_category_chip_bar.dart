@@ -5,10 +5,11 @@ import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/component/food_tag_icon.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// マップ上部に常に見せたい大カテゴリ（All の次）
-const mapPrimaryCategoryNames = ['麺類', '肉料理', '軽食系'];
+const mapPrimaryCategoryNames = ['ご当地', '麺類', '肉料理', '軽食系'];
 
 /// マップカテゴリフィルターのアクセントカラー（アプリの青系）
 const _mapCategoryBlue = AppTheme.primaryBlue;
@@ -223,12 +224,14 @@ class _PrimaryCategoryChip extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (icon != null) ...[
-                Text(
-                  icon!,
-                  style: TextStyle(
+                FoodTagIcon(
+                  tagId: icon!,
+                  size: 16,
+                  textStyle: TextStyle(
                     fontSize: 16,
                     color: textColor,
                   ),
+                  clipOval: true,
                 ),
                 const SizedBox(width: 6),
               ],
