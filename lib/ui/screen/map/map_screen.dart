@@ -47,8 +47,6 @@ class MapScreen extends HookConsumerWidget {
       dataReady: location.hasValue && mapService.hasValue,
     );
     final isEarthStyle = useState(false);
-    // TODO(debug): 一時的なズーム確認用。確認後に削除する
-    final debugZoom = useState<double?>(null);
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final pinTapCount = useRef(0);
     final isHandlingPinTap = useRef(false);
@@ -154,18 +152,8 @@ class MapScreen extends HookConsumerWidget {
                       }
                     },
                     onStyleLoadedCallback: controller.onStyleLoaded,
-                    onCameraIdle: () {
-                      debugZoom.value = ref
-                          .read(mapViewModelProvider)
-                          .mapController
-                          ?.cameraPosition
-                          ?.zoom;
-                      controller.scheduleUpdateAfterCameraIdle();
-                    },
-                    onCameraMove: (position) {
-                      debugZoom.value = position.zoom;
-                      controller.onCameraMove(position);
-                    },
+                    onCameraIdle: controller.scheduleUpdateAfterCameraIdle,
+                    onCameraMove: controller.onCameraMove,
                     annotationOrder: const [AnnotationType.symbol],
                     key: const ValueKey('mapWidget'),
                     myLocationEnabled: isLocationEnabled,
@@ -179,32 +167,6 @@ class MapScreen extends HookConsumerWidget {
                     tiltGesturesEnabled: false,
                     styleString:
                         _localizedStyleAsset(context, isEarthStyle.value),
-                  ),
-                  // TODO(debug): 一時的なズーム確認用。確認後に削除する
-                  Positioned(
-                    top: MediaQuery.paddingOf(context).top + 200,
-                    left: 10,
-                    child: IgnorePointer(
-                      child: Material(
-                        color: Colors.black.withValues(alpha: 0.72),
-                        borderRadius: BorderRadius.circular(8),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 6,
-                          ),
-                          child: Text(
-                            'zoom: ${(debugZoom.value ?? (isLocationEnabled ? MapOverlayConstants.initial : MapOverlayConstants.localeFallback)).toStringAsFixed(2)}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              fontFeatures: [FontFeature.tabularFigures()],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
                   ),
                   // selection の状態に応じて Overview / Detail を内部で切り替える
                   const MapRestaurantDetailSheet(),
