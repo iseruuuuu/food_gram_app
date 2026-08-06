@@ -73,7 +73,7 @@ class MyProfileScreen extends HookConsumerWidget {
                 IconButton(
                   onPressed: () => context.pushNamed(RouterPath.wantToGoList),
                   icon: Icon(
-                    Icons.place_outlined,
+                    Icons.bookmark_added_sharp,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
