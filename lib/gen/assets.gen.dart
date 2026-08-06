@@ -323,8 +323,7 @@ class $AssetsTagGen {
   AssetGenImage get soba => const AssetGenImage('assets/tag/soba.png');
 
   /// File path: assets/tag/souvenir.png
-  AssetGenImage get souvenir =>
-      const AssetGenImage('assets/tag/souvenir.png');
+  AssetGenImage get souvenir => const AssetGenImage('assets/tag/souvenir.png');
 
   /// File path: assets/tag/stew.png
   AssetGenImage get stew => const AssetGenImage('assets/tag/stew.png');
