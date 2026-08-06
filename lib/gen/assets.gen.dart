@@ -304,6 +304,9 @@ class $AssetsTagGen {
   AssetGenImage get frenchtoast =>
       const AssetGenImage('assets/tag/frenchtoast.png');
 
+  /// File path: assets/tag/meibutsu.png
+  AssetGenImage get meibutsu => const AssetGenImage('assets/tag/meibutsu.png');
+
   /// File path: assets/tag/montblanc.png
   AssetGenImage get montblanc =>
       const AssetGenImage('assets/tag/montblanc.png');
@@ -313,6 +316,10 @@ class $AssetsTagGen {
 
   /// File path: assets/tag/soba.png
   AssetGenImage get soba => const AssetGenImage('assets/tag/soba.png');
+
+  /// File path: assets/tag/souvenir.png
+  AssetGenImage get souvenir =>
+      const AssetGenImage('assets/tag/souvenir.png');
 
   /// File path: assets/tag/stew.png
   AssetGenImage get stew => const AssetGenImage('assets/tag/stew.png');
@@ -343,9 +350,11 @@ class $AssetsTagGen {
   /// List of all assets
   List<AssetGenImage> get values => [
         frenchtoast,
+        meibutsu,
         montblanc,
         omurice,
         soba,
+        souvenir,
         stew,
         takoyaki,
         tamagoyaki,

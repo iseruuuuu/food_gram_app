@@ -541,6 +541,7 @@
     "error": "오류가 발생했습니다"
   },
   "foodCategory": {
+    "localSpecialties": "현지",
     "noodles": "면류",
     "meat": "고기",
     "fastFood": "패스트푸드",
@@ -699,6 +700,7 @@
     "lebaneseCuisine": "레바논 요리",
     "syrianCuisine": "시리아 요리",
     "jordanianCuisine": "요르단 요리",
+    "localSpecialties": "현지",
     "noodles": "면류",
     "meatDishes": "고기 요리",
     "fastFood": "패스트푸드",
@@ -710,6 +712,8 @@
     "vegetables": "채소",
     "beverages": "음료",
     "others": "기타",
+    "meibutsu": "명물",
+    "souvenir": "기념품",
     "pasta": "파스타",
     "ramen": "라멘",
     "udon": "우동",

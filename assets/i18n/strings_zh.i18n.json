@@ -541,6 +541,7 @@
     "error": "发生错误"
   },
   "foodCategory": {
+    "localSpecialties": "当地",
     "noodles": "面条",
     "meat": "肉类",
     "fastFood": "快餐",
@@ -699,6 +700,7 @@
     "lebaneseCuisine": "黎巴嫩料理",
     "syrianCuisine": "叙利亚料理",
     "jordanianCuisine": "约旦料理",
+    "localSpecialties": "当地",
     "noodles": "面条",
     "meatDishes": "肉类料理",
     "fastFood": "快餐",
@@ -710,6 +712,8 @@
     "vegetables": "蔬菜",
     "beverages": "饮料",
     "others": "其他",
+    "meibutsu": "名产",
+    "souvenir": "伴手礼",
     "pasta": "意大利面",
     "ramen": "拉面",
     "udon": "乌冬面",

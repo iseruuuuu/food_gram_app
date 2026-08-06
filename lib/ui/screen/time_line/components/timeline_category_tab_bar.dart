@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/model/food_tag_registry.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/component/food_tag_icon.dart';
 
 class TimelineCategoryTabBar extends StatelessWidget {
   const TimelineCategoryTabBar({
@@ -55,9 +57,13 @@ class TimelineCategoryTabBar extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                     alignment: Alignment.center,
-                    child: Text(
-                      category.displayIcon,
-                      style: const TextStyle(fontSize: _iconFontSize),
+                    child: FoodTagIcon(
+                      tagId: category.displayIcon,
+                      size: isCustomFoodTag(category.displayIcon)
+                          ? _circleSize
+                          : _iconFontSize,
+                      textStyle: const TextStyle(fontSize: _iconFontSize),
+                      clipOval: true,
                     ),
                   ),
                   Text(

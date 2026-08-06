@@ -541,6 +541,7 @@
     "error": "เกิดข้อผิดพลาด"
   },
   "foodCategory": {
+    "localSpecialties": "ท้องถิ่น",
     "noodles": "ก๋วยเตี๋ยว",
     "meat": "เนื้อ",
     "fastFood": "อาหารจานด่วน",
@@ -699,6 +700,7 @@
     "lebaneseCuisine": "อาหารเลบานอน",
     "syrianCuisine": "อาหารซีเรีย",
     "jordanianCuisine": "อาหารจอร์แดน",
+    "localSpecialties": "ท้องถิ่น",
     "noodles": "ก๋วยเตี๋ยว",
     "meatDishes": "อาหารเนื้อ",
     "fastFood": "อาหารจานด่วน",
@@ -710,6 +712,8 @@
     "vegetables": "ผัก",
     "beverages": "เครื่องดื่ม",
     "others": "อื่นๆ",
+    "meibutsu": "ของขึ้นชื่อ",
+    "souvenir": "ของฝาก",
     "pasta": "พาสต้า",
     "ramen": "ราเมน",
     "udon": "อุด้ง",

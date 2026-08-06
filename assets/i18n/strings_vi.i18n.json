@@ -541,6 +541,7 @@
     "error": "Đã xảy ra lỗi"
   },
   "foodCategory": {
+    "localSpecialties": "Địa phương",
     "noodles": "Mì",
     "meat": "Thịt",
     "fastFood": "Đồ ăn nhanh",
@@ -699,6 +700,7 @@
     "lebaneseCuisine": "Ẩm thực Lebanon",
     "syrianCuisine": "Ẩm thực Syria",
     "jordanianCuisine": "Ẩm thực Jordan",
+    "localSpecialties": "Địa phương",
     "noodles": "Mì",
     "meatDishes": "Món thịt",
     "fastFood": "Đồ ăn nhanh",
@@ -710,6 +712,8 @@
     "vegetables": "Rau củ",
     "beverages": "Đồ uống",
     "others": "Khác",
+    "meibutsu": "Đặc sản",
+    "souvenir": "Quà lưu niệm",
     "pasta": "Pasta",
     "ramen": "Ramen",
     "udon": "Udon",

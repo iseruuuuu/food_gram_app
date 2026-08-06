@@ -132,6 +132,10 @@ String getLocalizedCountryName(String emoji, BuildContext context) {
 }
 
 final Map<String, List<String>> foodCategory = {
+  'ご当地': [
+    'tag:meibutsu',
+    'tag:souvenir',
+  ],
   '麺類': [
     '🍝',
     '🍜',
@@ -166,6 +170,8 @@ String getLocalizedFoodName(String tagId, BuildContext context) {
   final t = Translations.of(context);
 
   final customFoodNameMap = {
+    'tag:meibutsu': t.tag.meibutsu,
+    'tag:souvenir': t.tag.souvenir,
     'tag:udon': t.tag.udon,
     'tag:soba': t.tag.soba,
     'tag:yakisoba': t.tag.yakisoba,
@@ -326,6 +332,8 @@ String getLocalizedCategoryName(String categoryName, BuildContext context) {
   final t = Translations.of(context);
 
   switch (categoryName) {
+    case 'ご当地':
+      return t.tag.localSpecialties;
     case '麺類':
       return t.tag.noodles;
     case '肉料理':
