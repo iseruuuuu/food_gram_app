@@ -20,9 +20,9 @@ import 'package:screenshot/screenshot.dart';
 part 'map_view_model.g.dart';
 
 /// マップ投稿ピンの表示方針:
-/// - 基本の見た目切替は minzoom / maxzoom（ジェスチャ中はネイティブ側）
-/// - カメラ停止後にズームを1回だけ読み、閾値を跨いだときだけ Dart で同期
-/// - 連続ポーリングはしない（負荷を抑える）
+/// - ズーム < 8 → 赤点（CircleLayer）
+/// - ズーム >= 8 → カスタムピン（Annotation）
+/// - ランタイム SymbolLayer は使わない（端末で消える問題があるため）
 @riverpod
 class MapViewModel extends _$MapViewModel {
   @override
@@ -41,7 +41,7 @@ class MapViewModel extends _$MapViewModel {
   List<Posts>? _cachedPosts;
   Map<String, String>? _cachedImageKeys;
   bool _heatmapLayerAdded = false;
-  bool _runtimeReady = false;
+  bool _dotsLayerReady = false;
   bool _tapHandlerRegistered = false;
   bool _isHandlingPinTap = false;
   void Function(List<Posts> posts)? _onPinTapHandler;
@@ -49,10 +49,10 @@ class MapViewModel extends _$MapViewModel {
   /// 地名検索で選んだ地点（スプライト marker_11）
   LatLng? _searchResultPinLatLng;
 
-  /// null = 未同期。閾値跨ぎ検知用（true=赤点モード）
+  /// null = 未同期。true=赤点モード / false=ピンモード
   bool? _isDotMode;
 
-  /// camera idle 後のデバウンス（ジェスチャ中は何もしない）
+  /// heatmap など重い処理用（ピン切替とは別）
   static const Duration _cameraIdleDebounceDuration =
       Duration(milliseconds: 350);
   Timer? _cameraIdleDebounceTimer;
@@ -86,17 +86,15 @@ class MapViewModel extends _$MapViewModel {
     }
     _tapHandlerRegistered = true;
 
-    // ランタイムレイヤー（赤点 / カテゴリーピン）のタップ
+    // 赤点レイヤーのタップ
     controller.onFeatureTapped.add((point, latLng, id, layerId, annotation) {
-      if (layerId != MapOverlayConstants.runtimeLayerId &&
-          layerId != MapOverlayConstants.runtimeDotsLayerId &&
-          layerId != '${MapOverlayConstants.runtimeLayerId}_selected') {
+      if (layerId != MapOverlayConstants.runtimeDotsLayerId) {
         return;
       }
       unawaited(_handlePinTap(latLng));
     });
 
-    // Annotation フォールバック時のタップ
+    // カスタムピン（Annotation）のタップ
     controller.onSymbolTapped.add((symbol) {
       final latLng = symbol.options.geometry;
       if (latLng == null) {
@@ -141,7 +139,7 @@ class MapViewModel extends _$MapViewModel {
       if (posts.isEmpty) {
         _cachedPosts = const <Posts>[];
         _cachedImageKeys = const <String, String>{};
-        _runtimeReady = false;
+        _dotsLayerReady = false;
         _isDotMode = null;
         await _refreshSearchHighlightOnly();
         return;
@@ -160,30 +158,50 @@ class MapViewModel extends _$MapViewModel {
     }
   }
 
-  /// ランタイム優先。失敗時のみ Annotation で表示（安定フォールバック）
+  /// 赤点レイヤー + ズームに応じた Annotation カスタムピン
   Future<void> _installPins(
     MapLibreMapController controller,
     List<Posts> posts,
     Map<String, String> imageKeys,
   ) async {
-    final result = await MapRuntimeLayer.setup(controller, imageKeys, posts);
-    _runtimeReady = result.pinsReady;
+    final result = await MapRuntimeLayer.setupDots(controller, posts);
+    _dotsLayerReady = result.dotsReady;
 
     final zoom =
         controller.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
     final wantDots = zoom < MapOverlayConstants.smallDotZoomThreshold;
+    _isDotMode = null; // force 適用させる
+    await _applyPinMode(
+      controller,
+      wantDots: wantDots,
+      posts: posts,
+      imageKeys: imageKeys,
+    );
+  }
+
+  /// 赤点 visibility と Annotation ピンを排他で切り替える
+  Future<void> _applyPinMode(
+    MapLibreMapController controller, {
+    required bool wantDots,
+    required List<Posts> posts,
+    required Map<String, String> imageKeys,
+  }) async {
     _isDotMode = wantDots;
 
-    if (_runtimeReady) {
-      // ランタイムは zoom 式で切替。Annotation の画像ピンは残さない
-      await _refreshSearchHighlightOnly();
-      return;
+    if (_dotsLayerReady) {
+      await MapRuntimeLayer.setDotsVisible(controller, visible: wantDots);
     }
 
-    // ランタイム全体が失敗したときだけ Annotation フォールバック
     if (wantDots) {
-      await _addSmallRedDotSymbols(controller, posts);
+      // 広域: Annotation ピンは消して赤点だけ
+      if (_dotsLayerReady) {
+        await _refreshSearchHighlightOnly();
+      } else {
+        // Circle がダメなら Annotation の赤点で代用
+        await _addSmallRedDotSymbols(controller, posts);
+      }
     } else {
+      // 近景: カスタムピン（Annotation）を出す
       await _addNormalPinSymbols(controller, posts, imageKeys);
     }
   }
@@ -284,7 +302,7 @@ class MapViewModel extends _$MapViewModel {
     _pinLoader.clearRegisteredKeys();
     _tapHandlerRegistered = false;
     _searchResultPinLatLng = null;
-    _runtimeReady = false;
+    _dotsLayerReady = false;
     _isDotMode = null;
   }
 
@@ -341,7 +359,7 @@ class MapViewModel extends _$MapViewModel {
   Future<void> _handleStyleLoaded() async {
     _pinLoader.clearRegisteredKeys();
     _heatmapLayerAdded = false;
-    _runtimeReady = false;
+    _dotsLayerReady = false;
     _isDotMode = null;
     _registerTapHandlers(state.mapController!);
 
@@ -368,51 +386,45 @@ class MapViewModel extends _$MapViewModel {
     }
   }
 
-  /// カメラ停止後: ズームを1回読み、閾値跨ぎ時のみピン表示を同期。
+  /// ジェスチャ中のズーム変化で、閾値を跨いだら即時切替する。
+  void onCameraMove(CameraPosition position) {
+    unawaited(_syncPinModeForZoom(position.zoom));
+  }
+
+  /// カメラ停止後: 表示モードを再同期 + ヒートマップはデバウンス。
   void scheduleUpdateAfterCameraIdle() {
+    final zoom = state.mapController?.cameraPosition?.zoom ??
+        MapOverlayConstants.localeFallback;
+    unawaited(_syncPinModeForZoom(zoom));
+
     _cameraIdleDebounceTimer?.cancel();
     _cameraIdleDebounceTimer = Timer(_cameraIdleDebounceDuration, () {
       _cameraIdleDebounceTimer = null;
-      unawaited(_onCameraIdleSettled());
+      unawaited(_updateHeatmapIfNeeded());
     });
   }
 
-  Future<void> _onCameraIdleSettled() async {
-    await _syncPinModeForCurrentZoom();
-    await _updateHeatmapIfNeeded();
-  }
-
-  /// 閾値を跨いだとき／ピンモード時は赤点を確実に消す。
-  Future<void> _syncPinModeForCurrentZoom() async {
+  /// ズームから bool を決め、赤点 / カスタムピンを切り替える。
+  Future<void> _syncPinModeForZoom(double zoom) async {
     final ctrl = state.mapController;
     if (ctrl == null) {
       return;
     }
-    final zoom =
-        ctrl.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
     final wantDots = zoom < MapOverlayConstants.smallDotZoomThreshold;
-
-    if (_runtimeReady) {
-      return;
-    }
-
     if (_isDotMode == wantDots) {
       return;
     }
-    _isDotMode = wantDots;
-
-    // Annotation フォールバック時のみシンボルを付け替え
-    if (_cachedPosts == null || _cachedPosts!.isEmpty) {
+    if (_cachedPosts == null ||
+        _cachedPosts!.isEmpty ||
+        _cachedImageKeys == null) {
       return;
     }
-    await ctrl.clearSymbols();
-    if (wantDots) {
-      await _addSmallRedDotSymbols(ctrl, _cachedPosts!);
-    } else if (_cachedImageKeys != null) {
-      await _addNormalPinSymbols(ctrl, _cachedPosts!, _cachedImageKeys!);
-    } else {
-      await _refreshSearchHighlightOnly();
-    }
+    await _applyPinMode(
+      ctrl,
+      wantDots: wantDots,
+      posts: _cachedPosts!,
+      imageKeys: _cachedImageKeys!,
+    );
   }
 
   /// 互換のため残す（カテゴリ変更などから呼ばれる）
@@ -431,12 +443,10 @@ class MapViewModel extends _$MapViewModel {
       if (_heatmapLayerAdded) {
         return;
       }
-      await MapHeatmapLayer.setRuntimeLayersVisible(ctrl, visible: false);
-      if (_runtimeReady) {
-        // 検索ピン以外の Annotation は元々無い想定
-      } else {
-        await ctrl.clearSymbols();
+      if (_dotsLayerReady) {
+        await MapRuntimeLayer.setDotsVisible(ctrl, visible: false);
       }
+      await ctrl.clearSymbols();
       if (await MapHeatmapLayer.add(ctrl, _cachedPosts!)) {
         _heatmapLayerAdded = true;
       }
@@ -444,17 +454,12 @@ class MapViewModel extends _$MapViewModel {
     } else if (_heatmapLayerAdded) {
       await MapHeatmapLayer.remove(ctrl);
       _heatmapLayerAdded = false;
-      if (_runtimeReady) {
-        await _refreshSearchHighlightOnly();
-      } else if (_cachedPosts != null && _cachedImageKeys != null) {
-        await MapHeatmapLayer.setRuntimeLayersVisible(ctrl, visible: true);
-        await _addNormalPinSymbols(
-          ctrl,
-          _cachedPosts!,
-          _cachedImageKeys!,
-        );
+      _isDotMode = null;
+      final z =
+          ctrl.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
+      if (_cachedImageKeys != null) {
+        await _syncPinModeForZoom(z);
       } else {
-        await MapHeatmapLayer.setRuntimeLayersVisible(ctrl, visible: true);
         await _refreshSearchHighlightOnly();
       }
     }
@@ -466,7 +471,7 @@ class MapViewModel extends _$MapViewModel {
     }
     _pinLoader.clearRegisteredKeys();
     _heatmapLayerAdded = false;
-    _runtimeReady = false;
+    _dotsLayerReady = false;
     _isDotMode = null;
     await setPin();
   }

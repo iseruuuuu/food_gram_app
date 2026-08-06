@@ -2,37 +2,11 @@
     "id": "fg_posts_dots_layer",
     "type": "circle",
     "source": "fg_posts_source",
-    "maxzoom": 8,
     "paint": {
-        "circle-radius": [
-            "step",
-            ["zoom"],
-            4,
-            8,
-            0
-        ],
+        "circle-radius": 4,
         "circle-color": "#E53935",
-        "circle-stroke-width": [
-            "step",
-            ["zoom"],
-            1.2,
-            8,
-            0
-        ],
+        "circle-stroke-width": 1.2,
         "circle-stroke-color": "#FFFFFF",
-        "circle-opacity": [
-            "step",
-            ["zoom"],
-            0.92,
-            8,
-            0
-        ],
-        "circle-stroke-opacity": [
-            "step",
-            ["zoom"],
-            1,
-            8,
-            0
-        ]
+        "circle-opacity": 0.92
     }
 }

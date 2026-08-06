@@ -162,6 +162,10 @@ class MapScreen extends HookConsumerWidget {
                           ?.zoom;
                       controller.scheduleUpdateAfterCameraIdle();
                     },
+                    onCameraMove: (position) {
+                      debugZoom.value = position.zoom;
+                      controller.onCameraMove(position);
+                    },
                     annotationOrder: const [AnnotationType.symbol],
                     key: const ValueKey('mapWidget'),
                     myLocationEnabled: isLocationEnabled,

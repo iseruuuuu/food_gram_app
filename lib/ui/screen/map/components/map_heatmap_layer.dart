@@ -117,19 +117,16 @@ class MapHeatmapLayer {
     } on Exception catch (_) {}
   }
 
-  /// 通常ピン用ランタイムレイヤーの表示を切り替える（ヒートマップ表示時に非表示にする用）
+  /// 赤点レイヤーの表示を切り替える（ヒートマップ表示時に非表示にする用）
   static Future<void> setRuntimeLayersVisible(
     MapLibreMapController controller, {
     required bool visible,
   }) async {
-    for (final id in [
-      MapOverlayConstants.runtimeDotsLayerId,
-      MapOverlayConstants.runtimeLayerId,
-      '${MapOverlayConstants.runtimeLayerId}_selected',
-    ]) {
-      try {
-        await controller.setLayerVisibility(id, visible);
-      } on Exception catch (_) {}
-    }
+    try {
+      await controller.setLayerVisibility(
+        MapOverlayConstants.runtimeDotsLayerId,
+        visible,
+      );
+    } on Exception catch (_) {}
   }
 }

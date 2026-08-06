@@ -267,12 +267,12 @@ class $AssetsMapGen {
   /// File path: assets/map/local_ja.json
   String get localJa => 'assets/map/local_ja.json';
 
-  /// File path: assets/map/overlay_posts_layer.json
-  String get overlayPostsLayer => 'assets/map/overlay_posts_layer.json';
-
   /// File path: assets/map/overlay_posts_dots_layer.json
   String get overlayPostsDotsLayer =>
       'assets/map/overlay_posts_dots_layer.json';
+
+  /// File path: assets/map/overlay_posts_layer.json
+  String get overlayPostsLayer => 'assets/map/overlay_posts_layer.json';
 
   /// File path: assets/map/overlay_posts_selected_layer.json
   String get overlayPostsSelectedLayer =>
