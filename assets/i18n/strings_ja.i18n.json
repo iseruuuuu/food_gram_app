@@ -541,6 +541,7 @@
     "error": "エラーが発生しました"
   },
   "foodCategory": {
+    "localSpecialties": "ご当地",
     "noodles": "麺類",
     "meat": "肉料理",
     "fastFood": "ファストフード",
@@ -699,6 +700,7 @@
     "lebaneseCuisine": "レバノン料理",
     "syrianCuisine": "シリア料理",
     "jordanianCuisine": "ヨルダン料理",
+    "localSpecialties": "ご当地",
     "noodles": "麺類",
     "meatDishes": "肉料理",
     "fastFood": "軽食系",
@@ -710,6 +712,8 @@
     "vegetables": "野菜類",
     "beverages": "ドリンク",
     "others": "その他",
+    "meibutsu": "名物",
+    "souvenir": "お土産",
     "pasta": "パスタ",
     "ramen": "ラーメン",
     "udon": "うどん",

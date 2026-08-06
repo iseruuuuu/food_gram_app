@@ -541,6 +541,7 @@
     "error": "Ocorreu um erro"
   },
   "foodCategory": {
+    "localSpecialties": "Local",
     "noodles": "Macarrão",
     "meat": "Carne",
     "fastFood": "Fast Food",
@@ -699,6 +700,7 @@
     "lebaneseCuisine": "Cozinha Libanesa",
     "syrianCuisine": "Cozinha Síria",
     "jordanianCuisine": "Cozinha Jordaniana",
+    "localSpecialties": "Local",
     "noodles": "Macarrão",
     "meatDishes": "Pratos de Carne",
     "fastFood": "Fast Food",
@@ -710,6 +712,8 @@
     "vegetables": "Legumes",
     "beverages": "Bebidas",
     "others": "Outros",
+    "meibutsu": "Especialidade",
+    "souvenir": "Souvenir",
     "pasta": "Macarrão",
     "ramen": "Ramen",
     "udon": "Udon",
