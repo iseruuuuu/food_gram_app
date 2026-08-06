@@ -52,6 +52,12 @@ class MapViewModel extends _$MapViewModel {
   /// null = 未同期。true=赤点モード / false=ピンモード
   bool? _isDotMode;
 
+  /// カスタムピンを載せたときのズーム（サイズ更新判定用）
+  double? _lastPinIconZoom;
+
+  /// この差以上ズームが動いたらピンサイズを付け直す
+  static const double _pinSizeRefreshZoomDelta = 0.5;
+
   /// heatmap など重い処理用（ピン切替とは別）
   static const Duration _cameraIdleDebounceDuration =
       Duration(milliseconds: 350);
@@ -194,6 +200,7 @@ class MapViewModel extends _$MapViewModel {
 
     if (wantDots) {
       // 広域: Annotation ピンは消して赤点だけ
+      _lastPinIconZoom = null;
       if (_dotsLayerReady) {
         await _refreshSearchHighlightOnly();
       } else {
@@ -203,6 +210,8 @@ class MapViewModel extends _$MapViewModel {
     } else {
       // 近景: カスタムピン（Annotation）を出す
       await _addNormalPinSymbols(controller, posts, imageKeys);
+      _lastPinIconZoom =
+          controller.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
     }
   }
 
@@ -391,11 +400,11 @@ class MapViewModel extends _$MapViewModel {
     unawaited(_syncPinModeForZoom(position.zoom));
   }
 
-  /// カメラ停止後: 表示モードを再同期 + ヒートマップはデバウンス。
+  /// カメラ停止後: モード切替 + ピンサイズ更新 + ヒートマップ
   void scheduleUpdateAfterCameraIdle() {
     final zoom = state.mapController?.cameraPosition?.zoom ??
         MapOverlayConstants.localeFallback;
-    unawaited(_syncPinModeForZoom(zoom));
+    unawaited(_syncPinModeForZoom(zoom, refreshPinSize: true));
 
     _cameraIdleDebounceTimer?.cancel();
     _cameraIdleDebounceTimer = Timer(_cameraIdleDebounceDuration, () {
@@ -404,16 +413,36 @@ class MapViewModel extends _$MapViewModel {
     });
   }
 
-  /// ズームから bool を決め、赤点 / カスタムピンを切り替える。
-  Future<void> _syncPinModeForZoom(double zoom) async {
+  /// ズームから赤点 / カスタムピンを切り替える。
+  /// [refreshPinSize] が true なら、ピンモード中のサイズもズームに追従させる。
+  Future<void> _syncPinModeForZoom(
+    double zoom, {
+    bool refreshPinSize = false,
+  }) async {
     final ctrl = state.mapController;
     if (ctrl == null) {
       return;
     }
     final wantDots = zoom < MapOverlayConstants.smallDotZoomThreshold;
-    if (_isDotMode == wantDots) {
+    final modeChanged = _isDotMode != wantDots;
+
+    if (!modeChanged) {
+      // ピンモード中: idle 時だけサイズをズームに合わせて付け直し
+      if (refreshPinSize &&
+          !wantDots &&
+          _cachedPosts != null &&
+          _cachedPosts!.isNotEmpty &&
+          _cachedImageKeys != null) {
+        final last = _lastPinIconZoom;
+        if (last == null ||
+            (zoom - last).abs() >= _pinSizeRefreshZoomDelta) {
+          await _addNormalPinSymbols(ctrl, _cachedPosts!, _cachedImageKeys!);
+          _lastPinIconZoom = zoom;
+        }
+      }
       return;
     }
+
     if (_cachedPosts == null ||
         _cachedPosts!.isEmpty ||
         _cachedImageKeys == null) {
