@@ -9,21 +9,18 @@ import 'package:maplibre_gl/maplibre_gl.dart';
 class MapPinStyle {
   MapPinStyle._();
 
-  /// JSONレイヤーの icon-size と同等の線形補間（Annotation用フォールバック）
+  /// カスタムピンの iconSize（ズーム連動）
   static double interpolatedIconSize(double zoom) {
     final anchors = <double, double>{
-      3.5: 0.17,
-      5.0: 0.21,
-      7.0: 0.25,
-      9.0: 0.31,
-      10.5: 0.35,
-      12.0: 0.41,
-      13.0: 0.47,
-      14.0: 0.53,
-      15.0: 0.57,
-      16.0: 0.61,
-      17.0: 0.61,
-      22.0: 0.61,
+      8.0: 0.28,
+      9.0: 0.30,
+      10.5: 0.33,
+      12.0: 0.37,
+      13.0: 0.42,
+      14.0: 0.47,
+      15.0: 0.52,
+      16.0: 0.56,
+      22.0: 0.56,
     };
     final keys = anchors.keys.toList()..sort();
     final z = zoom.clamp(keys.first, keys.last);

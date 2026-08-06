@@ -19,6 +19,10 @@ import 'package:screenshot/screenshot.dart';
 
 part 'map_view_model.g.dart';
 
+/// マップ投稿ピンの表示方針:
+/// - ズーム < 8 → 赤点（CircleLayer）
+/// - ズーム >= 8 → カスタムピン（Annotation）
+/// - ランタイム SymbolLayer は使わない（端末で消える問題があるため）
 @riverpod
 class MapViewModel extends _$MapViewModel {
   @override
@@ -36,20 +40,29 @@ class MapViewModel extends _$MapViewModel {
 
   List<Posts>? _cachedPosts;
   Map<String, String>? _cachedImageKeys;
-  double? _currentZoom;
   bool _heatmapLayerAdded = false;
-  bool _symbolTapHandlerRegistered = false;
+  bool _dotsLayerReady = false;
+  bool _tapHandlerRegistered = false;
   bool _isHandlingPinTap = false;
   void Function(List<Posts> posts)? _onPinTapHandler;
 
-  /// 地名検索で選んだ地点（スタイル標準の marker_11 を重ねる）
+  /// 地名検索で選んだ地点（スプライト marker_11）
   LatLng? _searchResultPinLatLng;
 
-  /// マップ移動後、この時間経過してから表示を更新
-  static const Duration _cameraIdleDebounceDuration = Duration(seconds: 1);
+  /// null = 未同期。true=赤点モード / false=ピンモード
+  bool? _isDotMode;
+
+  /// カスタムピンを載せたときのズーム（サイズ更新判定用）
+  double? _lastPinIconZoom;
+
+  /// この差以上ズームが動いたらピンサイズを付け直す
+  static const double _pinSizeRefreshZoomDelta = 0.5;
+
+  /// heatmap など重い処理用（ピン切替とは別）
+  static const Duration _cameraIdleDebounceDuration =
+      Duration(milliseconds: 350);
   Timer? _cameraIdleDebounceTimer;
 
-  /// スタイル読込後も含め、初期ズームを確実に適用する
   Future<void> applyInitialCameraZoom(LatLng center) async {
     await state.mapController?.moveCamera(
       CameraUpdate.newLatLngZoom(center, MapOverlayConstants.initial),
@@ -69,8 +82,59 @@ class MapViewModel extends _$MapViewModel {
       cameraCenterLatLng: initialCenter ?? state.cameraCenterLatLng,
     );
     _onPinTapHandler = onPinTap;
+    _registerTapHandlers(controller);
     await setPin();
-    await updateVisibleMealsCount();
+  }
+
+  void _registerTapHandlers(MapLibreMapController controller) {
+    if (_tapHandlerRegistered) {
+      return;
+    }
+    _tapHandlerRegistered = true;
+
+    // 赤点レイヤーのタップ
+    controller.onFeatureTapped.add((point, latLng, id, layerId, annotation) {
+      if (layerId != MapOverlayConstants.runtimeDotsLayerId) {
+        return;
+      }
+      unawaited(_handlePinTap(latLng));
+    });
+
+    // カスタムピン（Annotation）のタップ
+    controller.onSymbolTapped.add((symbol) {
+      final latLng = symbol.options.geometry;
+      if (latLng == null) {
+        return;
+      }
+      unawaited(_handlePinTap(latLng));
+    });
+  }
+
+  Future<void> _handlePinTap(LatLng latLng) async {
+    if (_isHandlingPinTap) {
+      return;
+    }
+    _isHandlingPinTap = true;
+    state = state.copyWith(isLoading: true);
+    try {
+      final result =
+          await ref.read(mapPostRepositoryProvider.notifier).getRestaurantPosts(
+                lat: latLng.latitude,
+                lng: latLng.longitude,
+              );
+      final handler = _onPinTapHandler;
+      if (handler != null) {
+        result.whenOrNull(success: handler);
+      }
+      await state.mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(latLng, MapOverlayConstants.pinTap),
+        duration: const Duration(seconds: 1),
+      );
+      state = state.copyWith(hasError: false);
+    } finally {
+      _isHandlingPinTap = false;
+      state = state.copyWith(isLoading: false);
+    }
   }
 
   Future<void> setPin() async {
@@ -81,7 +145,9 @@ class MapViewModel extends _$MapViewModel {
       if (posts.isEmpty) {
         _cachedPosts = const <Posts>[];
         _cachedImageKeys = const <String, String>{};
-        await _refreshPinsKeepingZoom();
+        _dotsLayerReady = false;
+        _isDotMode = null;
+        await _refreshSearchHighlightOnly();
         return;
       }
       final unique = MapPinData.dedupeByLatLng(posts);
@@ -92,47 +158,92 @@ class MapViewModel extends _$MapViewModel {
         imageTypes,
         unique,
       );
-      await _addNormalPinSymbols(
-        state.mapController!,
-        unique,
-        _cachedImageKeys!,
-      );
-      if (!_symbolTapHandlerRegistered) {
-        state.mapController?.onSymbolTapped.add((symbol) async {
-          if (_isHandlingPinTap) {
-            return;
-          }
-          _isHandlingPinTap = true;
-          state = state.copyWith(isLoading: true);
-          try {
-            final latLng = symbol.options.geometry;
-            if (latLng == null) {
-              return;
-            }
-            final result = await ref
-                .read(mapPostRepositoryProvider.notifier)
-                .getRestaurantPosts(
-                  lat: latLng.latitude,
-                  lng: latLng.longitude,
-                );
-            final handler = _onPinTapHandler;
-            if (handler != null) {
-              result.whenOrNull(success: handler);
-            }
-            await state.mapController?.animateCamera(
-              CameraUpdate.newLatLngZoom(latLng, MapOverlayConstants.pinTap),
-              duration: const Duration(seconds: 1),
-            );
-            state = state.copyWith(hasError: false);
-          } finally {
-            _isHandlingPinTap = false;
-            state = state.copyWith(isLoading: false);
-          }
-        });
-        _symbolTapHandlerRegistered = true;
-      }
+      await _installPins(state.mapController!, unique, _cachedImageKeys!);
     } on PlatformException catch (_) {
       state = state.copyWith(isLoading: false, hasError: true);
+    }
+  }
+
+  /// 赤点レイヤー + ズームに応じた Annotation カスタムピン
+  Future<void> _installPins(
+    MapLibreMapController controller,
+    List<Posts> posts,
+    Map<String, String> imageKeys,
+  ) async {
+    final result = await MapRuntimeLayer.setupDots(controller, posts);
+    _dotsLayerReady = result.dotsReady;
+
+    final zoom =
+        controller.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
+    final wantDots = zoom < MapOverlayConstants.smallDotZoomThreshold;
+    _isDotMode = null; // force 適用させる
+    await _applyPinMode(
+      controller,
+      wantDots: wantDots,
+      posts: posts,
+      imageKeys: imageKeys,
+    );
+  }
+
+  /// 赤点 visibility と Annotation ピンを排他で切り替える
+  Future<void> _applyPinMode(
+    MapLibreMapController controller, {
+    required bool wantDots,
+    required List<Posts> posts,
+    required Map<String, String> imageKeys,
+  }) async {
+    _isDotMode = wantDots;
+
+    if (_dotsLayerReady) {
+      await MapRuntimeLayer.setDotsVisible(controller, visible: wantDots);
+    }
+
+    if (wantDots) {
+      // 広域: Annotation ピンは消して赤点だけ
+      _lastPinIconZoom = null;
+      if (_dotsLayerReady) {
+        await _refreshSearchHighlightOnly();
+      } else {
+        // Circle がダメなら Annotation の赤点で代用
+        await _addSmallRedDotSymbols(controller, posts);
+      }
+    } else {
+      // 近景: カスタムピン（Annotation）を出す
+      await _addNormalPinSymbols(controller, posts, imageKeys);
+      _lastPinIconZoom =
+          controller.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
+    }
+  }
+
+  Future<void> _addSmallRedDotSymbols(
+    MapLibreMapController controller,
+    List<Posts> posts,
+  ) async {
+    const key = 'small_red_dot';
+    if (!_pinLoader.cache.containsKey(key)) {
+      await _pinLoader.preload();
+    }
+    final bytes = _pinLoader.cache[key];
+    if (bytes == null) {
+      // 赤点が作れないときだけ通常ピン（何も出さないよりマシ）
+      if (_cachedImageKeys != null) {
+        await _addNormalPinSymbols(controller, posts, _cachedImageKeys!);
+      }
+      return;
+    }
+    if (!_pinLoader.registeredKeys.contains(key)) {
+      await _pinLoader.registerImage(controller, key, bytes);
+    }
+    final zoom =
+        controller.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
+    final symbols = MapPinStyle.smallRedDotSymbols(posts);
+    final append = _searchHighlightSymbolOptions(zoom);
+    if (symbols.isNotEmpty || append != null) {
+      await MapPinStyle.addSymbolsToMap(
+        controller,
+        symbols,
+        appendSymbol: append,
+      );
     }
   }
 
@@ -147,7 +258,6 @@ class MapViewModel extends _$MapViewModel {
         );
   }
 
-  /// 現在のカメラ中心を「近くの場所を検索」の基準にし、APIを1回だけ呼ぶ
   void setNearbySearchCenterFromCamera() {
     final ctrl = state.mapController;
     if (ctrl == null) {
@@ -160,7 +270,6 @@ class MapViewModel extends _$MapViewModel {
     state = state.copyWith(cameraCenterLatLng: target);
   }
 
-  /// 外部（例: 検索結果タップ）から指定座標を「近くの場所を検索」の基準にする
   void setNearbySearchCenterFromLatLng({
     required double lat,
     required double lng,
@@ -200,23 +309,23 @@ class MapViewModel extends _$MapViewModel {
   void handleStyleChange() {
     state.mapController?.clearSymbols();
     _pinLoader.clearRegisteredKeys();
-    _symbolTapHandlerRegistered = false;
+    _tapHandlerRegistered = false;
     _searchResultPinLatLng = null;
+    _dotsLayerReady = false;
+    _isDotMode = null;
   }
 
-  /// 検索で選んだ場所に一時ピン（スプライト `marker_11`）を表示
   Future<void> setSearchResultPin(double lat, double lng) async {
     _searchResultPinLatLng = LatLng(lat, lng);
-    await _refreshPinsKeepingZoom();
+    await _refreshSearchHighlightOnly();
   }
 
-  /// 検索ピンを消す（モーダルを閉じた・ピン選択に切り替えたときなど）
   Future<void> clearSearchResultPin() async {
     if (_searchResultPinLatLng == null) {
       return;
     }
     _searchResultPinLatLng = null;
-    await _refreshPinsKeepingZoom();
+    await _refreshSearchHighlightOnly();
   }
 
   SymbolOptions? _searchHighlightSymbolOptions(double zoom) {
@@ -232,23 +341,18 @@ class MapViewModel extends _$MapViewModel {
     );
   }
 
-  Future<void> _refreshPinsKeepingZoom() async {
-    final zoom = state.mapController?.cameraPosition?.zoom ?? 14.0;
-    await _updateDisplayMode(zoom);
-  }
-
-  Future<void> _showSearchHighlightOnly() async {
+  Future<void> _refreshSearchHighlightOnly() async {
     final ctrl = state.mapController;
     if (ctrl == null) {
       return;
     }
-    final zoom = ctrl.cameraPosition?.zoom ?? 14.0;
+    final zoom =
+        ctrl.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
     final opt = _searchHighlightSymbolOptions(zoom);
+    await ctrl.clearSymbols();
     if (opt == null) {
-      await ctrl.clearSymbols();
       return;
     }
-    await ctrl.clearSymbols();
     await ctrl.addSymbol(opt);
     await ctrl.setSymbolIconIgnorePlacement(true);
     await ctrl.setSymbolIconAllowOverlap(true);
@@ -258,214 +362,147 @@ class MapViewModel extends _$MapViewModel {
     if (state.mapController == null) {
       return;
     }
-    _heatmapLayerAdded = false;
-    if (_cachedPosts != null && _cachedImageKeys != null) {
-      _restorePinsFromCache();
-    } else {
-      _addPinsToMap();
-    }
-    updateVisibleMealsCount();
+    unawaited(_handleStyleLoaded());
   }
 
-  /// 1秒待ってから中心座標・近くの投稿を更新し、DB呼び出しを抑える
+  Future<void> _handleStyleLoaded() async {
+    _pinLoader.clearRegisteredKeys();
+    _heatmapLayerAdded = false;
+    _dotsLayerReady = false;
+    _isDotMode = null;
+    _registerTapHandlers(state.mapController!);
+
+    if (_cachedPosts != null &&
+        _cachedPosts!.isNotEmpty &&
+        _cachedImageKeys != null) {
+      for (final entry in _cachedImageKeys!.entries) {
+        final bytes = _pinLoader.cache[entry.key];
+        if (bytes != null) {
+          await _pinLoader.registerImage(
+            state.mapController!,
+            entry.value,
+            bytes,
+          );
+        }
+      }
+      await _installPins(
+        state.mapController!,
+        _cachedPosts!,
+        _cachedImageKeys!,
+      );
+    } else {
+      await setPin();
+    }
+  }
+
+  /// ジェスチャ中のズーム変化で、閾値を跨いだら即時切替する。
+  void onCameraMove(CameraPosition position) {
+    unawaited(_syncPinModeForZoom(position.zoom));
+  }
+
+  /// カメラ停止後: モード切替 + ピンサイズ更新 + ヒートマップ
   void scheduleUpdateAfterCameraIdle() {
+    final zoom = state.mapController?.cameraPosition?.zoom ??
+        MapOverlayConstants.localeFallback;
+    unawaited(_syncPinModeForZoom(zoom, refreshPinSize: true));
+
     _cameraIdleDebounceTimer?.cancel();
     _cameraIdleDebounceTimer = Timer(_cameraIdleDebounceDuration, () {
       _cameraIdleDebounceTimer = null;
-      updateVisibleMealsCount();
+      unawaited(_updateHeatmapIfNeeded());
     });
   }
 
-  Future<void> updateVisibleMealsCount() async {
+  /// ズームから赤点 / カスタムピンを切り替える。
+  /// [refreshPinSize] が true なら、ピンモード中のサイズもズームに追従させる。
+  Future<void> _syncPinModeForZoom(
+    double zoom, {
+    bool refreshPinSize = false,
+  }) async {
     final ctrl = state.mapController;
     if (ctrl == null) {
       return;
     }
-    final position = ctrl.cameraPosition;
-    final zoom = position?.zoom ?? 14.0;
-    const heat = MapOverlayConstants.heatmapZoomThreshold;
-    const dot = MapOverlayConstants.smallDotZoomThreshold;
-    final zoomChanged = _currentZoom == null ||
-        (_currentZoom! <= heat && zoom > heat) ||
-        (_currentZoom! > heat && zoom <= heat) ||
-        (_currentZoom! <= dot && zoom > dot) ||
-        (_currentZoom! > dot && zoom <= dot);
-    _currentZoom = zoom;
-    if (zoomChanged) {
-      await _updateDisplayMode(zoom);
-    }
-  }
+    final wantDots = zoom < MapOverlayConstants.smallDotZoomThreshold;
+    final modeChanged = _isDotMode != wantDots;
 
-  Future<void> _updateDisplayMode(double zoom) async {
-    if (state.mapController == null) {
-      return;
-    }
-    if (_cachedPosts == null || _cachedPosts!.isEmpty) {
-      await _showSearchHighlightOnly();
-      return;
-    }
-    try {
-      if (zoom <= MapOverlayConstants.heatmapZoomThreshold) {
-        await _showHeatmap();
-      } else {
-        await _hideHeatmap();
-        if (zoom <= MapOverlayConstants.smallDotZoomThreshold) {
-          await _showSmallRedDots();
-        } else {
-          await _showNormalPins();
+    if (!modeChanged) {
+      // ピンモード中: idle 時だけサイズをズームに合わせて付け直し
+      if (refreshPinSize &&
+          !wantDots &&
+          _cachedPosts != null &&
+          _cachedPosts!.isNotEmpty &&
+          _cachedImageKeys != null) {
+        final last = _lastPinIconZoom;
+        if (last == null ||
+            (zoom - last).abs() >= _pinSizeRefreshZoomDelta) {
+          await _addNormalPinSymbols(ctrl, _cachedPosts!, _cachedImageKeys!);
+          _lastPinIconZoom = zoom;
         }
       }
-    } on Exception catch (_) {}
-  }
-
-  Future<void> _showHeatmap() async {
-    if (state.mapController == null ||
-        _cachedPosts == null ||
-        _heatmapLayerAdded) {
       return;
     }
-    try {
-      await MapHeatmapLayer.setRuntimeLayersVisible(
-        state.mapController!,
-        visible: false,
-      );
-      await state.mapController!.clearSymbols();
-      if (await MapHeatmapLayer.add(state.mapController!, _cachedPosts!)) {
-        _heatmapLayerAdded = true;
-      }
-      final heatZoom = state.mapController!.cameraPosition?.zoom ?? 10.0;
-      final highlight = _searchHighlightSymbolOptions(heatZoom);
-      if (highlight != null) {
-        await state.mapController!.addSymbol(highlight);
-        await state.mapController!.setSymbolIconIgnorePlacement(true);
-        await state.mapController!.setSymbolIconAllowOverlap(true);
-      }
-    } on Exception catch (_) {}
-  }
 
-  Future<void> _hideHeatmap() async {
-    if (state.mapController == null || !_heatmapLayerAdded) {
-      return;
-    }
-    try {
-      await MapHeatmapLayer.remove(state.mapController!);
-      _heatmapLayerAdded = false;
-      await MapHeatmapLayer.setRuntimeLayersVisible(
-        state.mapController!,
-        visible: true,
-      );
-    } on Exception catch (_) {}
-  }
-
-  Future<void> _showSmallRedDots() async {
-    if (state.mapController == null || _cachedPosts == null) {
-      return;
-    }
-    try {
-      const key = 'small_red_dot';
-      if (!_pinLoader.registeredKeys.contains(key) &&
-          _pinLoader.cache.containsKey(key)) {
-        await _pinLoader.registerImage(
-          state.mapController!,
-          key,
-          _pinLoader.cache[key]!,
-        );
-      }
-      final symbols = MapPinStyle.smallRedDotSymbols(_cachedPosts!);
-      final zoom = state.mapController!.cameraPosition?.zoom ?? 14.0;
-      final append = _searchHighlightSymbolOptions(zoom);
-      if (symbols.isNotEmpty || append != null) {
-        await MapPinStyle.addSymbolsToMap(
-          state.mapController!,
-          symbols,
-          appendSymbol: append,
-        );
-      }
-    } on Exception catch (_) {
-      await _showNormalPins();
-    }
-  }
-
-  Future<void> _showNormalPins() async {
-    if (state.mapController == null ||
-        _cachedPosts == null ||
+    if (_cachedPosts == null ||
+        _cachedPosts!.isEmpty ||
         _cachedImageKeys == null) {
       return;
     }
-    final zoom = state.mapController?.cameraPosition?.zoom ?? 14.0;
-    final symbols =
-        MapPinStyle.normalPinSymbols(_cachedPosts!, _cachedImageKeys!, zoom);
-    final append = _searchHighlightSymbolOptions(zoom);
-    if (symbols.isNotEmpty || append != null) {
-      await MapPinStyle.addSymbolsToMap(
-        state.mapController!,
-        symbols,
-        appendSymbol: append,
-      );
-    }
+    await _applyPinMode(
+      ctrl,
+      wantDots: wantDots,
+      posts: _cachedPosts!,
+      imageKeys: _cachedImageKeys!,
+    );
   }
 
-  Future<void> _restorePinsFromCache() async {
+  /// 互換のため残す（カテゴリ変更などから呼ばれる）
+  Future<void> updateVisibleMealsCount() async {
+    await _updateHeatmapIfNeeded();
+  }
+
+  Future<void> _updateHeatmapIfNeeded() async {
     final ctrl = state.mapController;
-    if (ctrl == null || _cachedPosts == null || _cachedImageKeys == null) {
+    if (ctrl == null || _cachedPosts == null || _cachedPosts!.isEmpty) {
       return;
     }
-
-    await ctrl.clearSymbols();
-    for (final entry in _cachedImageKeys!.entries) {
-      final bytes = _pinLoader.cache[entry.key];
-      if (bytes != null) {
-        await _pinLoader.registerImage(ctrl, entry.value, bytes);
+    final zoom =
+        ctrl.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
+    if (zoom <= MapOverlayConstants.heatmapZoomThreshold) {
+      if (_heatmapLayerAdded) {
+        return;
+      }
+      if (_dotsLayerReady) {
+        await MapRuntimeLayer.setDotsVisible(ctrl, visible: false);
+      }
+      await ctrl.clearSymbols();
+      if (await MapHeatmapLayer.add(ctrl, _cachedPosts!)) {
+        _heatmapLayerAdded = true;
+      }
+      await _refreshSearchHighlightOnly();
+    } else if (_heatmapLayerAdded) {
+      await MapHeatmapLayer.remove(ctrl);
+      _heatmapLayerAdded = false;
+      _isDotMode = null;
+      final z =
+          ctrl.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
+      if (_cachedImageKeys != null) {
+        await _syncPinModeForZoom(z);
+      } else {
+        await _refreshSearchHighlightOnly();
       }
     }
-    if (_pinLoader.cache.containsKey('small_red_dot')) {
-      await _pinLoader.registerImage(
-        ctrl,
-        'small_red_dot',
-        _pinLoader.cache['small_red_dot']!,
-      );
-    }
-
-    _currentZoom = ctrl.cameraPosition?.zoom ?? 14.0;
-    await _updateDisplayMode(_currentZoom!);
   }
 
-  Future<void> _addPinsToMap() async {
-    final ctrl = state.mapController;
-    if (ctrl == null) {
-      return;
-    }
-    final posts =
-        ref.read(filteredMapPostsProvider).whenOrNull(data: (v) => v) ??
-            const <Posts>[];
-    if (posts.isEmpty) {
-      _cachedPosts = const <Posts>[];
-      _cachedImageKeys = const <String, String>{};
-      await _showSearchHighlightOnly();
-      return;
-    }
-
-    final unique = MapPinData.dedupeByLatLng(posts);
-    _cachedPosts = unique;
-    final imageTypes = MapPinData.collectImageTypes(unique);
-    _cachedImageKeys =
-        await _pinLoader.generatePinImages(ctrl, imageTypes, unique);
-
-    final ok = await MapRuntimeLayer.setup(ctrl, _cachedImageKeys!, unique);
-    if (!ok) {
-      await _addNormalPinSymbols(ctrl, unique, _cachedImageKeys!);
-    }
-  }
-
-  /// カテゴリーフィルター変更時に、カメラ状態を維持したままピンのみ更新する
   Future<void> refreshPinsForCategoryFilter() async {
     if (state.mapController == null) {
       return;
     }
     _pinLoader.clearRegisteredKeys();
     _heatmapLayerAdded = false;
+    _dotsLayerReady = false;
+    _isDotMode = null;
     await setPin();
-    await updateVisibleMealsCount();
   }
 
   Future<void> _addNormalPinSymbols(
@@ -473,7 +510,8 @@ class MapViewModel extends _$MapViewModel {
     List<Posts> posts,
     Map<String, String> imageKeys,
   ) async {
-    final zoom = controller.cameraPosition?.zoom ?? 14.0;
+    final zoom =
+        controller.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
     final symbols = MapPinStyle.normalPinSymbols(posts, imageKeys, zoom);
     final append = _searchHighlightSymbolOptions(zoom);
     if (symbols.isNotEmpty || append != null) {

@@ -153,12 +153,12 @@ class MapScreen extends HookConsumerWidget {
                     },
                     onStyleLoadedCallback: controller.onStyleLoaded,
                     onCameraIdle: controller.scheduleUpdateAfterCameraIdle,
+                    onCameraMove: controller.onCameraMove,
                     annotationOrder: const [AnnotationType.symbol],
                     key: const ValueKey('mapWidget'),
                     myLocationEnabled: isLocationEnabled,
                     initialCameraPosition: CameraPosition(
-                      target:
-                          isLocationEnabled ? value.$1 : fallbackLocation,
+                      target: isLocationEnabled ? value.$1 : fallbackLocation,
                       zoom: isLocationEnabled
                           ? MapOverlayConstants.initial
                           : MapOverlayConstants.localeFallback,

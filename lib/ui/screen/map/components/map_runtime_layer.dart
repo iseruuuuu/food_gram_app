@@ -4,68 +4,151 @@ import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
-import 'package:food_gram_app/ui/screen/map/components/map_pin_data.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
-/// ランタイムの Symbol レイヤー（通常ピン用）の追加・更新
+/// ランタイム赤点レイヤーのセットアップ結果
+class MapRuntimeSetupResult {
+  const MapRuntimeSetupResult({required this.dotsReady});
+
+  final bool dotsReady;
+}
+
+/// 広域表示用の赤い点（CircleLayer）のみを担当する。
+/// カスタムピンは Annotation（addSymbol）側で出す（安定）。
+///
+/// `showDots: true`  → 赤点表示
+/// `showDots: false` → 赤点非表示
 class MapRuntimeLayer {
   MapRuntimeLayer._();
 
-  /// ソースとレイヤーを追加。失敗時は false を返す（Annotation フォールバック用）
-  static Future<bool> setup(
+  /// 赤点の表示 / 非表示
+  static Future<void> setDotsVisible(
+    MapLibreMapController controller, {
+    required bool visible,
+  }) async {
+    try {
+      await controller.setLayerVisibility(
+        MapOverlayConstants.runtimeDotsLayerId,
+        visible,
+      );
+    } on Exception catch (_) {}
+  }
+
+  static Future<void> setDotsMode(
+    MapLibreMapController controller, {
+    required bool showDots,
+  }) =>
+      setDotsVisible(controller, visible: showDots);
+
+  /// GeoJSON ソース + 赤点 CircleLayer を載せる（カスタムピン Symbol は載せない）
+  static Future<MapRuntimeSetupResult> setupDots(
     MapLibreMapController controller,
-    Map<String, String> imageKeys,
     List<Posts> posts,
   ) async {
     try {
-      final features = posts.map((post) {
-        final imageType = MapPinData.imageTypeFor(post);
-        return {
-          'type': 'Feature',
-          'geometry': {
-            'type': 'Point',
-            'coordinates': [post.lng, post.lat],
-          },
-          'properties': {
-            'icon': imageKeys[imageType],
-            'lat': post.lat,
-            'lng': post.lng,
-            'selected': false,
-          },
-        };
-      }).toList();
+      final features = posts
+          .map(
+            (post) => {
+              'type': 'Feature',
+              'geometry': {
+                'type': 'Point',
+                'coordinates': [post.lng, post.lat],
+              },
+              'properties': {
+                'lat': post.lat,
+                'lng': post.lng,
+              },
+            },
+          )
+          .toList();
 
-      final source = {
-        'type': 'geojson',
-        'data': {'type': 'FeatureCollection', 'features': features},
-      };
-
-      final layerJson =
-          await rootBundle.loadString(Assets.map.overlayPostsLayer);
-      final layer = jsonDecode(layerJson) as Map<String, dynamic>
-        ..['id'] = MapOverlayConstants.runtimeLayerId
-        ..['source'] = MapOverlayConstants.runtimeSourceId;
-
-      final selectedJson =
-          await rootBundle.loadString(Assets.map.overlayPostsSelectedLayer);
-      final selectedLayer = jsonDecode(selectedJson) as Map<String, dynamic>
-        ..['id'] = '${MapOverlayConstants.runtimeLayerId}_selected'
-        ..['source'] = MapOverlayConstants.runtimeSourceId;
-
-      final dynamic c = controller;
+      for (final id in [
+        '${MapOverlayConstants.runtimeLayerId}_selected',
+        MapOverlayConstants.runtimeLayerId,
+        MapOverlayConstants.runtimeDotsLayerId,
+      ]) {
+        try {
+          await controller.removeLayer(id);
+        } on Exception catch (_) {}
+      }
       try {
-        await c.removeLayer(MapOverlayConstants.runtimeLayerId);
-      } on Exception catch (_) {}
-      try {
-        await c.removeSource(MapOverlayConstants.runtimeSourceId);
+        await controller.removeSource(MapOverlayConstants.runtimeSourceId);
       } on Exception catch (_) {}
 
-      await c.addSource(MapOverlayConstants.runtimeSourceId, source);
-      await c.addLayer(layer);
-      await c.addLayer(selectedLayer);
+      await controller.addSource(
+        MapOverlayConstants.runtimeSourceId,
+        GeojsonSourceProperties(
+          data: {
+            'type': 'FeatureCollection',
+            'features': features,
+          },
+        ),
+      );
+
+      final ok = await _addDotsLayer(controller);
+      return MapRuntimeSetupResult(dotsReady: ok);
+    } on Exception catch (_) {
+      return const MapRuntimeSetupResult(dotsReady: false);
+    }
+  }
+
+  static Future<bool> _addDotsLayer(MapLibreMapController controller) async {
+    final paint = await _loadDotsPaint();
+    final props = CircleLayerProperties(
+      circleRadius: _asDouble(paint['circle-radius'], 4),
+      circleColor: paint['circle-color'] is String
+          ? paint['circle-color'] as String
+          : '#E53935',
+      circleStrokeWidth: _asDouble(paint['circle-stroke-width'], 1.2),
+      circleStrokeColor: paint['circle-stroke-color'] is String
+          ? paint['circle-stroke-color'] as String
+          : '#FFFFFF',
+      circleOpacity: _asDouble(paint['circle-opacity'], 0.92),
+    );
+
+    try {
+      await controller.addCircleLayer(
+        MapOverlayConstants.runtimeSourceId,
+        MapOverlayConstants.runtimeDotsLayerId,
+        props,
+      );
+      return true;
+    } on Exception catch (_) {}
+
+    try {
+      await controller.addCircleLayer(
+        MapOverlayConstants.runtimeSourceId,
+        MapOverlayConstants.runtimeDotsLayerId,
+        const CircleLayerProperties(
+          circleRadius: 4,
+          circleColor: '#E53935',
+          circleStrokeWidth: 1.2,
+          circleStrokeColor: '#FFFFFF',
+          circleOpacity: 0.92,
+        ),
+      );
       return true;
     } on Exception catch (_) {
       return false;
     }
+  }
+
+  static double _asDouble(Object? value, double fallback) {
+    if (value is num) {
+      return value.toDouble();
+    }
+    return fallback;
+  }
+
+  static Future<Map<String, dynamic>> _loadDotsPaint() async {
+    try {
+      final raw = await rootBundle.loadString(Assets.map.overlayPostsDotsLayer);
+      final json = jsonDecode(raw) as Map<String, dynamic>;
+      final paint = json['paint'];
+      if (paint is Map<String, dynamic>) {
+        return Map<String, dynamic>.from(paint);
+      }
+    } on Exception catch (_) {}
+    return {};
   }
 }
