@@ -309,8 +309,24 @@ class $AssetsTagGen {
   AssetGenImage get frenchtoast =>
       const AssetGenImage('assets/tag/frenchtoast.png');
 
+  /// File path: assets/tag/hamburg.png
+  AssetGenImage get hamburg => const AssetGenImage('assets/tag/hamburg.png');
+
+  /// File path: assets/tag/kaisendon.png
+  AssetGenImage get kaisendon =>
+      const AssetGenImage('assets/tag/kaisendon.png');
+
+  /// File path: assets/tag/katsudon.png
+  AssetGenImage get katsudon => const AssetGenImage('assets/tag/katsudon.png');
+
   /// File path: assets/tag/meibutsu.png
   AssetGenImage get meibutsu => const AssetGenImage('assets/tag/meibutsu.png');
+
+  /// File path: assets/tag/melonpan.png
+  AssetGenImage get melonpan => const AssetGenImage('assets/tag/melonpan.png');
+
+  /// File path: assets/tag/mochi.png
+  AssetGenImage get mochi => const AssetGenImage('assets/tag/mochi.png');
 
   /// File path: assets/tag/montblanc.png
   AssetGenImage get montblanc =>
@@ -339,6 +355,9 @@ class $AssetsTagGen {
   AssetGenImage get tantanmen =>
       const AssetGenImage('assets/tag/tantanmen.png');
 
+  /// File path: assets/tag/tendon.png
+  AssetGenImage get tendon => const AssetGenImage('assets/tag/tendon.png');
+
   /// File path: assets/tag/tonkatsu.png
   AssetGenImage get tonkatsu => const AssetGenImage('assets/tag/tonkatsu.png');
 
@@ -348,13 +367,21 @@ class $AssetsTagGen {
   /// File path: assets/tag/udon.png
   AssetGenImage get udon => const AssetGenImage('assets/tag/udon.png');
 
+  /// File path: assets/tag/yakiniku.png
+  AssetGenImage get yakiniku => const AssetGenImage('assets/tag/yakiniku.png');
+
   /// File path: assets/tag/yakisoba.png
   AssetGenImage get yakisoba => const AssetGenImage('assets/tag/yakisoba.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
         frenchtoast,
+        hamburg,
+        kaisendon,
+        katsudon,
         meibutsu,
+        melonpan,
+        mochi,
         montblanc,
         omurice,
         soba,
@@ -363,9 +390,11 @@ class $AssetsTagGen {
         takoyaki,
         tamagoyaki,
         tantanmen,
+        tendon,
         tonkatsu,
         tsukune,
         udon,
+        yakiniku,
         yakisoba
       ];
 }
