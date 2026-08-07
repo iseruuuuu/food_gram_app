@@ -132,27 +132,17 @@ String getLocalizedCountryName(String emoji, BuildContext context) {
 }
 
 final Map<String, List<String>> foodCategory = {
-  'ご当地': [
-    'tag:meibutsu',
-    'tag:souvenir',
-  ],
-  '麺類': [
-    '🍝',
-    '🍜',
-    'tag:udon',
-    'tag:soba',
-    'tag:yakisoba',
-    'tag:tantanmen',
-  ],
-  '肉料理': ['🥩', '🍗', '🍖', '🥓', 'tag:tonkatsu', 'tag:tsukune'],
-  '軽食系': ['🍔', '🍟', '🍕', '🥙', '🌯', '🍤', '🥟', 'tag:takoyaki'],
-  'ご飯物': ['🍲', '🍛', '🫕', '🍙', '🍚', '🍱', '🥘', '🍳', 'tag:omurice', 'tag:stew'],
-  '魚介類': ['🍣', '🐟', '🐙', '🦑', '🦐', '🦀', '🐚', '🦪', '🐡', '🦞', '🐳', '🦈'],
-  'パン類': ['🍞', '🥪', '🌭', '🍩', '🥐', '🥯', '🥖', '🥨', 'tag:frenchtoast'],
-  'おやつ': ['🍦', '🍮', '🍘', '🍡', '🍧', '🍨', '🥧', '🍭', '🍫', '🍿', '🍪', '🥜', '🌰', '🥮', '🍯', '🥞', '🍰', '🧁', '🧇', 'tag:montblanc'],
+  'ご当地': ['tag:meibutsu', 'tag:souvenir'],
+  '麺類': ['🍝', '🍜', 'tag:udon', 'tag:soba', 'tag:yakisoba', 'tag:tantanmen'],
+  '肉料理': ['🥩', 'tag:yakiniku', 'tag:hamburg', '🍗', 'tag:tsukune', 'tag:tonkatsu', '🥓', '🍖'],
+  '軽食系': ['🍔', '🍟', '🍕', '🥙', '🌯', 'tag:takoyaki', '🍤', '🥟'],
+  'ご飯物': ['🍙', '🍚', 'tag:tendon', 'tag:katsudon', 'tag:omurice', '🍱', '🍳', '🍛', 'tag:stew', '🍲', '🥘', '🫕'],
+  '魚介類': ['🍣', 'tag:kaisendon', '🐟', '🦐', '🦀', '🦑', '🐙', '🐚', '🦪', '🐡', '🦞', '🐳', '🦈'],
+  'パン類': ['🍞', '🥖', '🥐', '🥯', 'tag:melonpan', 'tag:frenchtoast', '🍩', '🥪', '🌭', '🥨'],
+  'おやつ': ['🍦', '🍮', '🍘', '🍡', '🍧', '🍨', '🥧', '🍭', '🍫', '🍿', '🍪', '🥜', '🌰', '🥮', '🍯', '🥞', '🍰', '🧁', '🧇', 'tag:montblanc', 'tag:mochi'],
   'フルーツ': ['🍎', '🍐', '🍊', '🍋', '🍋‍🟩', '🍌', '🍉', '🍇', '🍓', '🫐', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝'],
-  '野菜類': ['🥗', '🍅', '🍆', '🥑', '🫛', '🥦', '🥬', '🥒', '🌶️', '🫑', '🌽', '🥕', '🫒', '🧄', '🧅', '🥔', '🍠', '🫚', '🍄‍🟫'],
-  'ドリンク': ['🫖', '☕️', '🍵', '🧃', '🥤', '🧋', '🍶', '🍺', '🥂', '🍷', '🥃', '🍸', '🍹', '🧉', '🍾', '🍼'],
+  '野菜類': ['🥗', '🍅', '🍆', '🥑', '🫛', '🥦', '🥒', '🌶️', '🫑', '🌽', '🥕', '🫒', '🧄', '🧅', '🥔', '🍠', '🫚', '🍄‍🟫'],
+  'ドリンク': ['🫖', '☕️', '🍵', '🧃', '🥤', '🧋', '🍶', '🍺', '🍷', '🥃', '🍸', '🍹', '🧉', '🍾', '🍼'],
   'その他': ['🍥', '🍢', '🧀', '🥚', '🧈', 'tag:tamagoyaki'],
 };
 
@@ -184,6 +174,13 @@ String getLocalizedFoodName(String tagId, BuildContext context) {
     'tag:frenchtoast': t.tag.frenchToast,
     'tag:montblanc': t.tag.montBlanc,
     'tag:stew': t.tag.stew,
+    'tag:hamburg': t.tag.hamburg,
+    'tag:yakiniku': t.tag.yakiniku,
+    'tag:tendon': t.tag.tendon,
+    'tag:katsudon': t.tag.katsudon,
+    'tag:kaisendon': t.tag.kaisendon,
+    'tag:mochi': t.tag.mochi,
+    'tag:melonpan': t.tag.melonpan,
   };
   final customName = customFoodNameMap[tagId];
   if (customName != null) {
@@ -194,7 +191,7 @@ String getLocalizedFoodName(String tagId, BuildContext context) {
     '🍝': t.tag.pasta,
     '🍜': t.tag.ramen,
     '🥩': t.tag.steak,
-    '🍖': t.tag.yakiniku,
+    '🍖': t.tag.otherMeat,
     '🍗': t.tag.chicken,
     '🥓': t.tag.bacon,
     '🍔': t.tag.hamburger,
@@ -279,7 +276,6 @@ String getLocalizedFoodName(String tagId, BuildContext context) {
     '🥑': t.tag.avocado,
     '🫛': t.tag.greenBeans,
     '🥦': t.tag.broccoli,
-    '🥬': t.tag.lettuce,
     '🥒': t.tag.cucumber,
     '🌶️': t.tag.chili,
     '🫑': t.tag.bellPepper,
@@ -300,7 +296,6 @@ String getLocalizedFoodName(String tagId, BuildContext context) {
     '🧋': t.tag.bubbleTea,
     '🍶': t.tag.sake,
     '🍺': t.tag.beer,
-    '🥂': t.tag.champagne,
     '🍷': t.tag.wine,
     '🥃': t.tag.whiskey,
     '🍸': t.tag.cocktail,
