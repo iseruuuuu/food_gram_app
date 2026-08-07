@@ -71,6 +71,34 @@ const Map<String, CustomFoodTag> customFoodTags = {
     id: 'tag:stew',
     assetPath: 'assets/tag/stew.png',
   ),
+  'tag:hamburg': CustomFoodTag(
+    id: 'tag:hamburg',
+    assetPath: 'assets/tag/hamburg.png',
+  ),
+  'tag:yakiniku': CustomFoodTag(
+    id: 'tag:yakiniku',
+    assetPath: 'assets/tag/yakiniku.png',
+  ),
+  'tag:tendon': CustomFoodTag(
+    id: 'tag:tendon',
+    assetPath: 'assets/tag/tendon.png',
+  ),
+  'tag:katsudon': CustomFoodTag(
+    id: 'tag:katsudon',
+    assetPath: 'assets/tag/katsudon.png',
+  ),
+  'tag:kaisendon': CustomFoodTag(
+    id: 'tag:kaisendon',
+    assetPath: 'assets/tag/kaisendon.png',
+  ),
+  'tag:mochi': CustomFoodTag(
+    id: 'tag:mochi',
+    assetPath: 'assets/tag/mochi.png',
+  ),
+  'tag:melonpan': CustomFoodTag(
+    id: 'tag:melonpan',
+    assetPath: 'assets/tag/melonpan.png',
+  ),
 };
 
 bool isCustomFoodTag(String tagId) {
@@ -112,6 +140,20 @@ String? customFoodTagAssetGenPath(String tagId) {
       return Assets.tag.montblanc.path;
     case 'tag:stew':
       return Assets.tag.stew.path;
+    case 'tag:hamburg':
+      return Assets.tag.hamburg.path;
+    case 'tag:yakiniku':
+      return Assets.tag.yakiniku.path;
+    case 'tag:tendon':
+      return Assets.tag.tendon.path;
+    case 'tag:katsudon':
+      return Assets.tag.katsudon.path;
+    case 'tag:kaisendon':
+      return Assets.tag.kaisendon.path;
+    case 'tag:mochi':
+      return Assets.tag.mochi.path;
+    case 'tag:melonpan':
+      return Assets.tag.melonpan.path;
     default:
       return null;
   }
