@@ -2,16 +2,36 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Attach dev (Hot Reload)",
+            "name": "Debug dev (Android)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "ZT322Z66BZ",
+            "args": [
+                "--dart-define-from-file=dart_defines/dev.env"
+            ]
+        },
+        {
+            "name": "Debug prod (Android)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "ZT322Z66BZ",
+            "args": [
+                "--dart-define-from-file=dart_defines/prod.env"
+            ]
+        },
+        {
+            "name": "Attach dev (Android)",
             "request": "attach",
             "type": "dart",
-            "deviceId": "00008110-0009593C34F1801E",
+            "deviceId": "ZT322Z66BZ",
             "args": [
                 "--device-connection=attached"
             ]
         },
         {
-            "name": "Debug dev",
+            "name": "Debug dev (iOS)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
@@ -21,13 +41,22 @@
             ]
         },
         {
-            "name": "Debug prod",
+            "name": "Debug prod (iOS)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
             "deviceId": "00008110-0009593C34F1801E",
             "args": [
                 "--dart-define-from-file=dart_defines/prod.env"
+            ]
+        },
+        {
+            "name": "Attach dev (iOS)",
+            "request": "attach",
+            "type": "dart",
+            "deviceId": "00008110-0009593C34F1801E",
+            "args": [
+                "--device-connection=attached"
             ]
         }
     ]
