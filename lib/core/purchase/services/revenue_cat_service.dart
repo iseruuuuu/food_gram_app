@@ -24,11 +24,9 @@ class RevenueCatService extends _$RevenueCatService {
   bool isSubscribed = false;
   late Offerings offerings;
   bool _isInitialized = false;
-  static const String _entitlementId = 'foodgram_premium_membership';
-  static const String _membershipOfferingId = 'FoodGramのメンバーシップ';
-
   String? get user => ref.read(currentUserProvider);
-  String get entitlementId => _entitlementId;
+  String get entitlementId => Env.entitlementId;
+  String get entitlementOffering => Env.entitlementOffering;
 
   @override
   Future<bool> build() {
@@ -76,7 +74,7 @@ class RevenueCatService extends _$RevenueCatService {
   Future<bool> presentPaywallGuarded() async {
     final beforeInfo = await Purchases.getCustomerInfo();
     final wasActive =
-        beforeInfo.entitlements.all[_entitlementId]?.isActive ?? false;
+        beforeInfo.entitlements.all[entitlementId]?.isActive ?? false;
     final analytics = ref.read(firebaseAnalyticsServiceProvider);
     analytics.logScreen(AnalyticsScreen.paywall);
     analytics.logEventUnawaited(name: AnalyticsEvent.paywallOpen);
@@ -86,7 +84,8 @@ class RevenueCatService extends _$RevenueCatService {
 
     final latest = await Purchases.getOfferings();
     offerings = latest;
-    final offering = latest.getOffering(_membershipOfferingId) ?? latest.current;
+    final offering =
+        latest.getOffering(entitlementOffering) ?? latest.current;
     logger.d(
       'Paywall offerings current=${latest.current?.identifier} '
       'keys=${latest.all.keys.toList()} '
@@ -109,7 +108,7 @@ class RevenueCatService extends _$RevenueCatService {
 
     final afterInfo = await Purchases.getCustomerInfo();
     final isActiveNow =
-        afterInfo.entitlements.all[_entitlementId]?.isActive ?? false;
+        afterInfo.entitlements.all[entitlementId]?.isActive ?? false;
 
     final loading = ref.read(loadingProvider.notifier);
     try {
@@ -145,7 +144,7 @@ class RevenueCatService extends _$RevenueCatService {
   Future<bool> syncAfterPaywall() async {
     try {
       final info = await Purchases.getCustomerInfo();
-      final active = info.entitlements.all[_entitlementId]?.isActive ?? false;
+      final active = info.entitlements.all[entitlementId]?.isActive ?? false;
       if (active) {
         final result =
             await ref.read(accountServiceProvider).updateIsSubscribe();
@@ -181,7 +180,7 @@ class RevenueCatService extends _$RevenueCatService {
   Future<bool> restorePurchase() async {
     try {
       final customerInfo = await Purchases.restorePurchases();
-      final isActive = await _updatePurchases(customerInfo, _entitlementId);
+      final isActive = await _updatePurchases(customerInfo, entitlementId);
       if (!isActive) {
         logger.w('購入情報なし');
         return false;
@@ -215,7 +214,7 @@ class RevenueCatService extends _$RevenueCatService {
 
   Future<void> _getPurchaserInfo(CustomerInfo customerInfo) async {
     try {
-      isSubscribed = await _updatePurchases(customerInfo, _entitlementId);
+      isSubscribed = await _updatePurchases(customerInfo, entitlementId);
     } on PlatformException catch (e) {
       logger.e('getPurchaserInfo error $e');
     }
