@@ -25,6 +25,7 @@ class RevenueCatService extends _$RevenueCatService {
   late Offerings offerings;
   bool _isInitialized = false;
   static const String _entitlementId = 'foodgram_premium_membership';
+  static const String _membershipOfferingId = 'FoodGramのメンバーシップ';
 
   String? get user => ref.read(currentUserProvider);
   String get entitlementId => _entitlementId;
@@ -82,7 +83,30 @@ class RevenueCatService extends _$RevenueCatService {
     if (!wasActive) {
       analytics.logEventUnawaited(name: AnalyticsEvent.purchaseStart);
     }
-    await RevenueCatUI.presentPaywall();
+
+    final latest = await Purchases.getOfferings();
+    offerings = latest;
+    final offering = latest.getOffering(_membershipOfferingId) ?? latest.current;
+    logger.d(
+      'Paywall offerings current=${latest.current?.identifier} '
+      'keys=${latest.all.keys.toList()} '
+      'selected=${offering?.identifier} '
+      'packages=${offering?.availablePackages.length}',
+    );
+    if (offering == null) {
+      logger.e('No offering available for paywall');
+      analytics.logEventUnawaited(name: AnalyticsEvent.purchaseFailed);
+      return false;
+    }
+
+    try {
+      await RevenueCatUI.presentPaywall(offering: offering);
+    } on PlatformException catch (e) {
+      logger.e('presentPaywall failed: $e');
+      analytics.logEventUnawaited(name: AnalyticsEvent.purchaseFailed);
+      return false;
+    }
+
     final afterInfo = await Purchases.getCustomerInfo();
     final isActiveNow =
         afterInfo.entitlements.all[_entitlementId]?.isActive ?? false;

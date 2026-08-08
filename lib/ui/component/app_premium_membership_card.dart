@@ -60,11 +60,12 @@ class AppPremiumMembershipCard extends ConsumerWidget {
                 ),
                 onTap: () async {
                   try {
+                    await ref.read(revenueCatServiceProvider.future);
                     await ref
                         .read(revenueCatServiceProvider.notifier)
                         .presentPaywallGuarded();
-                  } on Exception catch (_) {
-                    return;
+                  } on Exception catch (e) {
+                    debugPrint('presentPaywallGuarded failed: $e');
                   }
                 },
               ),
