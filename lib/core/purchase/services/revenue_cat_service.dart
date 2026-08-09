@@ -41,8 +41,9 @@ class RevenueCatService extends _$RevenueCatService {
         await _getPurchaserInfo(customerInfo);
         final active =
             customerInfo.entitlements.all[entitlementId]?.isActive ?? false;
-        await _syncSubscriptionToDatabase(active: active);
-        return active;
+        final synced = await _syncSubscriptionToDatabase(active: active);
+        // active なのに DB 反映できなければ購読済み扱いにしない
+        return active && synced;
       }
       late PurchasesConfiguration configuration;
       if (Platform.isAndroid) {
@@ -61,8 +62,9 @@ class RevenueCatService extends _$RevenueCatService {
           result.customerInfo.entitlements.all[entitlementId]?.isActive ??
               false;
       // 起動時に RevenueCat を正として DB の is_subscribe を同期する
-      await _syncSubscriptionToDatabase(active: active);
-      return active;
+      final synced = await _syncSubscriptionToDatabase(active: active);
+      // active なのに DB 反映できなければ購読済み扱いにしない
+      return active && synced;
     } on PlatformException catch (e) {
       logger.e('initInAppPurchase error caught! $e');
       // 取得失敗時は誤って false に落とさない
@@ -117,12 +119,16 @@ class RevenueCatService extends _$RevenueCatService {
     try {
       loading.isLoading(value: true);
       if (isActiveNow && !wasActive) {
-        await syncAfterPaywall();
-        analytics.logEventUnawaited(name: AnalyticsEvent.purchaseSuccess);
-        return true;
+        final synced = await syncAfterPaywall();
+        if (synced) {
+          analytics.logEventUnawaited(name: AnalyticsEvent.purchaseSuccess);
+          return true;
+        }
+        analytics.logEventUnawaited(name: AnalyticsEvent.purchaseFailed);
+        return false;
       }
       // 即時には有効になっていなくても、年間プランなどで遅れて反映されることがあるため1回同期
-      await syncAfterPaywall();
+      final synced = await syncAfterPaywall();
       if (!isActiveNow) {
         // まだ有効でなければ少し待って再取得してからもう1回同期
         await Future<void>.delayed(const Duration(seconds: 2));
@@ -131,11 +137,11 @@ class RevenueCatService extends _$RevenueCatService {
           analytics.logEventUnawaited(name: AnalyticsEvent.purchaseSuccess);
           return true;
         }
-      }
-      if (!isActiveNow) {
         analytics.logEventUnawaited(name: AnalyticsEvent.purchaseFailed);
+        return false;
       }
-      return isActiveNow;
+      // すでに active でも DB 反映に失敗したら成功扱いにしない
+      return synced;
     } finally {
       loading.isLoading(value: false);
     }
@@ -178,7 +184,7 @@ class RevenueCatService extends _$RevenueCatService {
   }
 
   /// RevenueCat の結果を DB / ローカル Provider に反映する。
-  /// ネットワーク等で DB 更新に失敗しても、[active] 自体は呼び出し元へ返す。
+  /// 成功時 true、DB 更新失敗時 false。
   Future<bool> _syncSubscriptionToDatabase({required bool active}) async {
     final result = await ref
         .read(accountServiceProvider)
