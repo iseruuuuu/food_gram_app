@@ -36,12 +36,15 @@ class AppTranslatableText extends ConsumerStatefulWidget {
 
 class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
   String? _translated;
-  // 二重実行防止のためのフラグ
   bool _isTranslating = false;
   // ユーザーが原文表示を選んだ場合は自動翻訳結果を出さない
   bool _showOriginal = false;
   Locale? _lastLocale;
   String? _lastSourceText;
+  // テキスト / ロケール変更のたびに増え、古い翻訳結果を捨てる
+  int _generation = 0;
+  // 翻訳中に新しい自動翻訳要求が来た場合に再実行する
+  bool _pendingAutoTranslate = false;
 
   @override
   void didChangeDependencies() {
@@ -49,10 +52,7 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
     final locale = Localizations.localeOf(context);
     if (widget.autoTranslate &&
         (_lastLocale != locale || _lastSourceText != widget.text)) {
-      _lastLocale = locale;
-      _lastSourceText = widget.text;
-      _showOriginal = false;
-      _translated = null;
+      _invalidateTranslation(locale: locale, sourceText: widget.text);
       _scheduleAutoTranslate();
     }
   }
@@ -62,18 +62,34 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.text != widget.text ||
         oldWidget.autoTranslate != widget.autoTranslate) {
-      _showOriginal = false;
-      _translated = null;
-      _lastSourceText = widget.text;
+      _invalidateTranslation(
+        locale: _lastLocale ?? Localizations.localeOf(context),
+        sourceText: widget.text,
+      );
       if (widget.autoTranslate) {
         _scheduleAutoTranslate();
       }
     }
   }
 
+  void _invalidateTranslation({
+    required Locale locale,
+    required String sourceText,
+  }) {
+    _generation++;
+    _showOriginal = false;
+    _translated = null;
+    _lastLocale = locale;
+    _lastSourceText = sourceText;
+  }
+
   void _scheduleAutoTranslate() {
+    if (_isTranslating) {
+      _pendingAutoTranslate = true;
+      return;
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) {
+      if (!mounted || !widget.autoTranslate) {
         return;
       }
       _handleTranslate(silent: true);
@@ -154,17 +170,29 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
   }
 
   Future<void> _handleTranslate({required bool silent}) async {
-    // 多重翻訳の連打対策
     if (_isTranslating) {
+      if (silent) {
+        _pendingAutoTranslate = true;
+      }
       return;
     }
+
     final svc = ref.read(translationServiceProvider);
+    final sourceText = widget.text;
     final locale = Localizations.localeOf(context);
-    // 同一言語であれば何もしない
+    final requestGeneration = _generation;
+
     final need = await svc.shouldTranslate(
-      text: widget.text,
+      text: sourceText,
       targetLocale: locale,
     );
+    if (!_isCurrentRequest(
+      generation: requestGeneration,
+      sourceText: sourceText,
+      locale: locale,
+    )) {
+      return;
+    }
     if (!need) {
       if (!mounted || silent) {
         return;
@@ -175,17 +203,22 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
       );
       return;
     }
+
     setState(() => _isTranslating = true);
     try {
       final out = await svc.translateIfNeeded(
-        text: widget.text,
+        text: sourceText,
         targetLocale: locale,
       );
-      if (!mounted) {
+      if (!_isCurrentRequest(
+        generation: requestGeneration,
+        sourceText: sourceText,
+        locale: locale,
+      )) {
         return;
       }
       // 翻訳できなかった（原文と同じ）の場合
-      if (out.trim() == widget.text.trim()) {
+      if (out.trim() == sourceText.trim()) {
         if (!silent) {
           final t = Translations.of(context);
           ScaffoldMessenger.of(context).showSnackBar(
@@ -206,8 +239,27 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
     } finally {
       if (mounted) {
         setState(() => _isTranslating = false);
+      } else {
+        _isTranslating = false;
+      }
+      if (_pendingAutoTranslate && mounted && widget.autoTranslate) {
+        _pendingAutoTranslate = false;
+        _scheduleAutoTranslate();
       }
     }
+  }
+
+  bool _isCurrentRequest({
+    required int generation,
+    required String sourceText,
+    required Locale locale,
+  }) {
+    if (!mounted) {
+      return false;
+    }
+    return generation == _generation &&
+        sourceText == widget.text &&
+        locale == Localizations.localeOf(context);
   }
 
   Future<void> _handleCopy() async {
