@@ -13,6 +13,7 @@ import 'package:food_gram_app/core/supabase/post/repository/detail_post_reposito
 import 'package:food_gram_app/core/supabase/user/providers/subscribed_users_provider.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/app_translatable_text.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -196,11 +197,13 @@ class AppListView extends HookConsumerWidget {
                                   horizontal: 8,
                                   vertical: 3,
                                 ),
-                                child: Text(
+                                child: AppTranslatableText(
                                   post.restaurant,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.center,
+                                  enableCopy: false,
+                                  autoTranslate: true,
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 9,

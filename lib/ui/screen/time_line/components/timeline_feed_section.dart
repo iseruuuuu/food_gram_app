@@ -9,6 +9,7 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/subscribed_users_provider.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/component/app_translatable_text.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/screen/time_line/components/timeline_post_navigation.dart';
 import 'package:gap/gap.dart';
@@ -185,10 +186,12 @@ class _TimelineFeedCard extends ConsumerWidget {
           ),
           const Gap(4),
           Expanded(
-            child: Text(
+            child: AppTranslatableText(
               post.restaurant.isNotEmpty ? post.restaurant : post.foodName,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
+              enableCopy: false,
+              autoTranslate: true,
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
