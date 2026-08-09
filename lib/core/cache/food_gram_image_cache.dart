@@ -2,16 +2,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart' as fcm;
 
-/// セッション向けの画像ディスクキャッシュ。
+/// 画像ディスクキャッシュ。
 ///
-/// - アプリ起動中のみ使う想定（件数・期限を抑える）
-/// - バックグラウンド移行時・明示クリア時・次回起動時に空にする
+/// - 利用中は件数・期限を抑えて肥大化を防ぐ
+/// - 完全終了後の次回起動時、または設定の明示クリアで空にする
+/// - ホームへ戻るだけでは消さない（アプリ切替時の再ダウンロードを避ける）
 final class FoodGramImageCache {
   FoodGramImageCache._();
 
   static const _key = 'foodGramImageCache';
 
-  /// 起動中の上限: 件数を抑え、長時間放置で肥大しないようにする。
+  /// 利用中の上限: 件数を抑え、長時間放置で肥大しないようにする。
   static final fcm.CacheManager instance = fcm.CacheManager(
     fcm.Config(
       _key,

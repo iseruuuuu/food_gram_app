@@ -29,7 +29,7 @@ void main() async {
   await initializeThirdPartyServices();
   await initializePurchases();
   await MobileAds.instance.initialize();
-  // 画像ディスクキャッシュは起動中のみ使う。前回残分も起動時に空にする。
+  // 画像キャッシュの上限付きマネージャを適用し、前回終了分を起動時に空にする。
   FoodGramImageCache.installAsDefault();
   await FoodGramImageCache.clear();
   // TranslationProviderでラップ

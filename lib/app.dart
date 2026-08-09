@@ -1,12 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
-import 'package:food_gram_app/core/cache/food_gram_image_cache.dart';
 import 'package:food_gram_app/core/notification/firebase_messaging_service.dart';
 import 'package:food_gram_app/core/supabase/auth/providers/auth_state_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
@@ -43,15 +40,12 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       case AppLifecycleState.resumed:
         analytics.logEventUnawaited(name: AnalyticsEvent.appForeground);
       case AppLifecycleState.paused:
-        analytics.logEventUnawaited(name: AnalyticsEvent.appBackground);
-        // ホームへ戻る・他アプリへ切替時にディスク画像キャッシュを空にする。
-        // inactive（通知センター等）では消さない。
-        unawaited(FoodGramImageCache.clear());
       case AppLifecycleState.inactive:
         analytics.logEventUnawaited(name: AnalyticsEvent.appBackground);
       case AppLifecycleState.detached:
-        unawaited(FoodGramImageCache.clear());
       case AppLifecycleState.hidden:
+        // 画像キャッシュはバックグラウンドでは消さない。
+        // 完全終了後の次回起動時 / 設定の「キャッシュ削除」でクリアする。
         break;
     }
   }
