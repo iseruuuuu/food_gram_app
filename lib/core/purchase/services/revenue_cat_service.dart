@@ -39,8 +39,11 @@ class RevenueCatService extends _$RevenueCatService {
         offerings = await Purchases.getOfferings();
         final customerInfo = await Purchases.getCustomerInfo();
         await _getPurchaserInfo(customerInfo);
-        final isSubscription = customerInfo.entitlements.active;
-        return isSubscription.isNotEmpty;
+        final active =
+            customerInfo.entitlements.all[entitlementId]?.isActive ?? false;
+        final synced = await _syncSubscriptionToDatabase(active: active);
+        // active なのに DB 反映できなければ購読済み扱いにしない
+        return active && synced;
       }
       late PurchasesConfiguration configuration;
       if (Platform.isAndroid) {
@@ -55,14 +58,16 @@ class RevenueCatService extends _$RevenueCatService {
       final result = await Purchases.logIn(user!);
       await _getPurchaserInfo(result.customerInfo);
       _isInitialized = true;
-      final isSubscription = result.customerInfo.entitlements.active;
-      if (isSubscription.isEmpty) {
-        return false;
-      } else {
-        return true;
-      }
+      final active =
+          result.customerInfo.entitlements.all[entitlementId]?.isActive ??
+              false;
+      // 起動時に RevenueCat を正として DB の is_subscribe を同期する
+      final synced = await _syncSubscriptionToDatabase(active: active);
+      // active なのに DB 反映できなければ購読済み扱いにしない
+      return active && synced;
     } on PlatformException catch (e) {
       logger.e('initInAppPurchase error caught! $e');
+      // 取得失敗時は誤って false に落とさない
       return false;
     }
   }
@@ -114,12 +119,16 @@ class RevenueCatService extends _$RevenueCatService {
     try {
       loading.isLoading(value: true);
       if (isActiveNow && !wasActive) {
-        await syncAfterPaywall();
-        analytics.logEventUnawaited(name: AnalyticsEvent.purchaseSuccess);
-        return true;
+        final synced = await syncAfterPaywall();
+        if (synced) {
+          analytics.logEventUnawaited(name: AnalyticsEvent.purchaseSuccess);
+          return true;
+        }
+        analytics.logEventUnawaited(name: AnalyticsEvent.purchaseFailed);
+        return false;
       }
       // 即時には有効になっていなくても、年間プランなどで遅れて反映されることがあるため1回同期
-      await syncAfterPaywall();
+      final synced = await syncAfterPaywall();
       if (!isActiveNow) {
         // まだ有効でなければ少し待って再取得してからもう1回同期
         await Future<void>.delayed(const Duration(seconds: 2));
@@ -128,45 +137,26 @@ class RevenueCatService extends _$RevenueCatService {
           analytics.logEventUnawaited(name: AnalyticsEvent.purchaseSuccess);
           return true;
         }
-      }
-      if (!isActiveNow) {
         analytics.logEventUnawaited(name: AnalyticsEvent.purchaseFailed);
+        return false;
       }
-      return isActiveNow;
+      // すでに active でも DB 反映に失敗したら成功扱いにしない
+      return synced;
     } finally {
       loading.isLoading(value: false);
     }
   }
 
-  /// RevenueCat の購入状態を再取得
-  /// 購入状態が有効なら、DBを更新し、UI側の購読フラグを再評価する。
-  /// updateIsSubscribe() が失敗した場合は false を返し、購読済み扱いにしない。
+  /// RevenueCat の購入状態を再取得し、DB の is_subscribe を true/false 両方へ同期する。
+  /// active なのに DB 更新が失敗した場合は false を返し、購読済み扱いにしない。
   Future<bool> syncAfterPaywall() async {
     try {
       final info = await Purchases.getCustomerInfo();
       final active = info.entitlements.all[entitlementId]?.isActive ?? false;
-      if (active) {
-        final result =
-            await ref.read(accountServiceProvider).updateIsSubscribe();
-        final ok = result.when(
-          success: (_) {
-            final userId = ref.read(currentUserProvider);
-            if (userId != null) {
-              CacheManager().invalidateUserCache(userId);
-            }
-            return true;
-          },
-          failure: (e) {
-            logger.e('updateIsSubscribe failed: $e');
-            return false;
-          },
-        );
-        if (!ok) {
-          await ref.read(isSubscribeProvider.notifier).refresh();
-          return false;
-        }
+      final synced = await _syncSubscriptionToDatabase(active: active);
+      if (active && !synced) {
+        return false;
       }
-      await ref.read(isSubscribeProvider.notifier).refresh();
       return active;
     } on PlatformException catch (e) {
       logger.e('syncAfterPaywall error $e');
@@ -176,40 +166,47 @@ class RevenueCatService extends _$RevenueCatService {
 
   /// 購入の復元
   /// iosの場合は、購入の復元（以前の購入履歴を復元する）を実装することが必要。
-  /// updateIsSubscribe() が失敗した場合は false を返す。
   Future<bool> restorePurchase() async {
     try {
       final customerInfo = await Purchases.restorePurchases();
       final isActive = await _updatePurchases(customerInfo, entitlementId);
+      await _getPurchaserInfo(customerInfo);
+      final synced = await _syncSubscriptionToDatabase(active: isActive);
       if (!isActive) {
         logger.w('購入情報なし');
         return false;
       }
-      await _getPurchaserInfo(customerInfo);
-      final result = await ref.read(accountServiceProvider).updateIsSubscribe();
-      final ok = result.when(
-        success: (_) {
-          final userId = ref.read(currentUserProvider);
-          if (userId != null) {
-            CacheManager().invalidateUserCache(userId);
-          }
-          return true;
-        },
-        failure: (e) {
-          logger.e('updateIsSubscribe failed: $e');
-          return false;
-        },
-      );
-      if (!ok) {
-        await ref.read(isSubscribeProvider.notifier).refresh();
-        return false;
-      }
-      await ref.read(isSubscribeProvider.notifier).refresh();
-      return true;
+      return synced;
     } on PlatformException catch (e) {
       logger.e('purchase repo  restorePurchase error $e');
       return false;
     }
+  }
+
+  /// RevenueCat の結果を DB / ローカル Provider に反映する。
+  /// 成功時 true、DB 更新失敗時 false。
+  Future<bool> _syncSubscriptionToDatabase({required bool active}) async {
+    final result = await ref
+        .read(accountServiceProvider)
+        .updateIsSubscribe(isSubscribe: active);
+    final ok = result.when(
+      success: (_) {
+        final userId = ref.read(currentUserProvider);
+        if (userId != null) {
+          CacheManager().invalidateUserCache(userId);
+        }
+        return true;
+      },
+      failure: (e) {
+        logger.e('updateIsSubscribe(isSubscribe: $active) failed: $e');
+        return false;
+      },
+    );
+    await ref.read(isSubscribeProvider.notifier).refresh();
+    if (!ok) {
+      logger.w('DB sync failed; local provider refreshed from current DB');
+    }
+    return ok;
   }
 
   Future<void> _getPurchaserInfo(CustomerInfo customerInfo) async {
