@@ -239,12 +239,19 @@ class AccountService {
         .uploadBinary('/$_currentUserId/$uploadImage', imageBytes);
   }
 
-  Future<Result<void, Exception>> updateIsSubscribe() async {
+  /// RevenueCat の購読状態を DB の `is_subscribe` に反映する。
+  /// [isSubscribe] が true/false のどちらでも Edge Function 経由で更新する。
+  Future<Result<void, Exception>> updateIsSubscribe({
+    required bool isSubscribe,
+  }) async {
     if (supabase.auth.currentUser?.id == null) {
       return Failure(Exception('User not authenticated'));
     }
     try {
-      final res = await supabase.functions.invoke('user-subscribe');
+      final res = await supabase.functions.invoke(
+        'user-subscribe',
+        body: {'is_subscribe': isSubscribe},
+      );
       final data = res.data;
       final ok = data is Map<String, dynamic> && data['ok'] == true;
       if (!ok) {
