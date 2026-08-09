@@ -25,6 +25,7 @@ dependencies:
   firebase_messaging: ^15.1.3
   flutter:
     sdk: flutter
+  flutter_cache_manager: ^3.4.1
   flutter_dotenv: ^5.1.0
   flutter_hooks: ^0.20.5
   flutter_local_notifications: ^19.3.0
