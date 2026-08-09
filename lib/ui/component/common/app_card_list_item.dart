@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/ui/component/app_translatable_text.dart';
 
 class AppCardListItem extends ConsumerWidget {
   const AppCardListItem({
@@ -97,7 +98,7 @@ class AppCardListItem extends ConsumerWidget {
                 color: Colors.black.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Text(
+              child: AppTranslatableText(
                 restaurantName,
                 style: const TextStyle(
                   color: Colors.white,
@@ -107,6 +108,8 @@ class AppCardListItem extends ConsumerWidget {
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 softWrap: false,
+                enableCopy: false,
+                autoTranslate: true,
               ),
             ),
           ),

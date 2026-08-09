@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/theme/style/restaurant_review_style.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
+import 'package:food_gram_app/ui/component/app_translatable_text.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -70,9 +71,10 @@ class RestaurantReviewScreen extends HookConsumerWidget {
           child: const Icon(Icons.close, size: 30),
         ),
         title: FittedBox(
-          child: Text(
+          child: AppTranslatableText(
             posts.restaurant,
             style: RestaurantReviewStyle.restaurant(colorScheme.onSurface),
+            autoTranslate: true,
           ),
         ),
       ),

@@ -13,6 +13,7 @@ import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/location/prefecture_detector.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/component/app_translatable_text.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/save_album_picker_sheet.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
 import 'package:food_gram_app/ui/screen/time_line/components/timeline_post_navigation.dart';
@@ -488,10 +489,12 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
                           ),
                           if (isExpanded && post.restaurant.isNotEmpty) ...[
                             const Gap(4),
-                            Text(
+                            AppTranslatableText(
                               post.restaurant,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
+                              enableCopy: false,
+                              autoTranslate: true,
                               style: TextStyle(
                                 color: Colors.white.withValues(alpha: 0.92),
                                 fontSize: 13,

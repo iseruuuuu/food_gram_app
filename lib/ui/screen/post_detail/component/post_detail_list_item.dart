@@ -503,6 +503,7 @@ class PostDetailListItem extends HookConsumerWidget {
                     AppTranslatableText(
                       posts.foodName,
                       style: DetailPostStyle.foodName(context),
+                      autoTranslate: true,
                     ),
                     const Gap(4),
                     Row(
@@ -515,10 +516,22 @@ class PostDetailListItem extends HookConsumerWidget {
                                 extra: posts,
                               );
                             },
-                            child: Text(
-                              'In ${posts.restaurant}',
-                              style: DetailPostStyle.restaurant(context),
-                              overflow: TextOverflow.ellipsis,
+                            child: Row(
+                              children: [
+                                Text(
+                                  'In ',
+                                  style: DetailPostStyle.restaurant(context),
+                                ),
+                                Expanded(
+                                  child: AppTranslatableText(
+                                    posts.restaurant,
+                                    style: DetailPostStyle.restaurant(context),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    autoTranslate: true,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -568,6 +581,7 @@ class PostDetailListItem extends HookConsumerWidget {
                       AppTranslatableText(
                         posts.comment,
                         style: DetailPostStyle.comment(context),
+                        autoTranslate: true,
                       ),
                     const Gap(4),
                     Text(
