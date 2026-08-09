@@ -48,7 +48,7 @@ class TranslationService {
     // 言語を推定
     final detected = await _safeIdentifyLanguage(trimmed);
     final targetBcp47 = _localeToBcp47(targetLocale);
-    if (detected == null || detected == targetBcp47) {
+    if (detected == null || _isSameLanguage(detected, targetBcp47)) {
       return text;
     }
 
@@ -103,7 +103,12 @@ class TranslationService {
       return false;
     }
     final targetBcp47 = _localeToBcp47(targetLocale);
-    return detected != targetBcp47;
+    return !_isSameLanguage(detected, targetBcp47);
+  }
+
+  /// 言語コードのみを比較する（例: ja と ja-JP は同一言語）。
+  bool _isSameLanguage(String a, String b) {
+    return a.split('-').first.toLowerCase() == b.split('-').first.toLowerCase();
   }
 
   /// 文字列の言語を推定し、BCP-47 形式（正規化後）で返す。
