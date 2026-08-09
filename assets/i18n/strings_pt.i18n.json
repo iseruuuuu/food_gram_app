@@ -149,7 +149,10 @@
     "restoreFailureSubtitle": "Sem histórico de compras? Entre em contato com o suporte",
     "restore": "Restaurar",
     "purchaseError": "Ocorreu um erro durante a compra",
-    "premiumMembership": "Torne-se membro Premium"
+    "premiumMembership": "Torne-se membro Premium",
+    "clearCache": "Limpar cache",
+    "clearCacheSuccessTitle": "Cache limpo",
+    "clearCacheSuccessSubtitle": "Dados temporários como imagens foram removidos"
   },
   "post": {
     "foodName": "Nome da Comida",

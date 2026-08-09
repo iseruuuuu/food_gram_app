@@ -149,7 +149,10 @@
     "restoreFailureSubtitle": "沒有購買記錄？請聯絡客服",
     "restore": "還原購買",
     "purchaseError": "購買過程中發生錯誤",
-    "premiumMembership": "成為進階會員，享受特別體驗"
+    "premiumMembership": "成為進階會員，享受特別體驗",
+    "clearCache": "清除快取",
+    "clearCacheSuccessTitle": "已清除快取",
+    "clearCacheSuccessSubtitle": "已刪除圖片等暫存資料"
   },
   "post": {
     "foodName": "食物名稱",

@@ -149,7 +149,10 @@
     "restoreFailureSubtitle": "No purchase history? Contact support",
     "restore": "Restore",
     "purchaseError": "An error occurred during purchase",
-    "premiumMembership": "Become Premium Member Ship"
+    "premiumMembership": "Become Premium Member Ship",
+    "clearCache": "Clear cache",
+    "clearCacheSuccessTitle": "Cache cleared",
+    "clearCacheSuccessSubtitle": "Temporary data such as images has been removed"
   },
   "post": {
     "foodName": "Food Name",

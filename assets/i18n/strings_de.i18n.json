@@ -149,7 +149,10 @@
     "restoreFailureSubtitle": "Keine Kaufhistorie? Kontaktieren Sie den Support",
     "restore": "Wiederherstellen",
     "purchaseError": "Beim Kauf ist ein Fehler aufgetreten",
-    "premiumMembership": "Premium-Mitglied werden"
+    "premiumMembership": "Premium-Mitglied werden",
+    "clearCache": "Cache leeren",
+    "clearCacheSuccessTitle": "Cache geleert",
+    "clearCacheSuccessSubtitle": "Temporäre Daten wie Bilder wurden entfernt"
   },
   "post": {
     "foodName": "Essensname",

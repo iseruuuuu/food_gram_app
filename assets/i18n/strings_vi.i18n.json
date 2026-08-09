@@ -149,7 +149,10 @@
     "restoreFailureSubtitle": "Không có lịch sử mua? Liên hệ hỗ trợ",
     "restore": "Khôi phục",
     "purchaseError": "Đã xảy ra lỗi trong quá trình mua",
-    "premiumMembership": "Trở thành Premium"
+    "premiumMembership": "Trở thành Premium",
+    "clearCache": "Xóa bộ nhớ đệm",
+    "clearCacheSuccessTitle": "Đã xóa bộ nhớ đệm",
+    "clearCacheSuccessSubtitle": "Đã xóa dữ liệu tạm như hình ảnh"
   },
   "post": {
     "foodName": "Tên món ăn",
