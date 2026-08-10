@@ -16,7 +16,6 @@ import 'package:food_gram_app/core/utils/location/image_gps_reader.dart';
 import 'package:food_gram_app/core/utils/location/post_price_currency_from_location.dart';
 import 'package:food_gram_app/core/utils/post/post_submit_cancellation.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/core/vision/food_image_labeler.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/screen/post/post_state.dart';
 import 'package:go_router/go_router.dart';
@@ -33,14 +32,12 @@ class PostViewModel extends _$PostViewModel {
   static const _postSubmitTimeout = Duration(seconds: 20);
   final _logger = Logger();
   final _picker = ImagePicker();
-  final _foodLabeler = FoodImageLabeler();
   final _preference = Preference();
   late final TextEditingController _foodController;
   late final TextEditingController _commentController;
   late final TextEditingController _priceController;
   final Map<String, Uint8List> _imageBytesMap = {};
   final Map<String, ({double latitude, double longitude})> _imageGpsByPath = {};
-  Completer<void>? _maybeNotFoodCompleter;
   bool _restoredFromDraft = false;
   bool _priceCurrencyManuallySet = false;
   bool _disposed = false;
@@ -73,10 +70,6 @@ class PostViewModel extends _$PostViewModel {
       _foodController.dispose();
       _commentController.dispose();
       _priceController.dispose();
-      if (!(_maybeNotFoodCompleter?.isCompleted ?? true)) {
-        _maybeNotFoodCompleter!.complete();
-      }
-      _maybeNotFoodCompleter = null;
       _imageBytesMap.clear();
       _imageGpsByPath.clear();
       _currencyAutoDetectSeq++;
@@ -333,9 +326,6 @@ class PostViewModel extends _$PostViewModel {
         final bytes = await _openImageEditor(context, image.path);
         if (bytes != null) {
           await _processImageFromBytes(bytes, photoGps: photoGps);
-          if (state.status == PostStatus.maybeNotFood.name) {
-            await _waitMaybeNotFoodHandled();
-          }
         }
       }
       return state.foodImages.isNotEmpty;
@@ -381,12 +371,9 @@ class PostViewModel extends _$PostViewModel {
     final imagePath = cropImage.path;
     _imageBytesMap[imagePath] = imageBytes;
     final updatedImages = [...state.foodImages, imagePath];
-    // 画像を一旦追加した上で、食べ物判定
-    final isFood = await _foodLabeler.isFood(imagePath);
     state = state.copyWith(
       foodImages: updatedImages,
-      status:
-          isFood ? PostStatus.photoSuccess.name : PostStatus.maybeNotFood.name,
+      status: PostStatus.photoSuccess.name,
     );
     if (photoGps != null) {
       _imageGpsByPath[imagePath] = photoGps;
@@ -418,13 +405,6 @@ class PostViewModel extends _$PostViewModel {
       nearbySuggestionDismissed:
           imagePaths.isNotEmpty && state.nearbySuggestionDismissed,
     );
-  }
-
-  Future<void> _waitMaybeNotFoodHandled() async {
-    // UI側のダイアログで「続行」または「削除」によって
-    // resetStatus() が呼ばれ、Completer が完了するまで待機
-    _maybeNotFoodCompleter = Completer<void>();
-    return _maybeNotFoodCompleter!.future;
   }
 
   // --- レストラン ---
@@ -533,8 +513,6 @@ class PostViewModel extends _$PostViewModel {
 
   void resetStatus() {
     state = state.copyWith(status: PostStatus.initial.name);
-    _maybeNotFoodCompleter?.complete();
-    _maybeNotFoodCompleter = null;
   }
 
   // --- 下書き ---
@@ -602,6 +580,5 @@ enum PostStatus {
   missingPhoto,
   missingFoodName,
   missingRestaurant,
-  maybeNotFood,
   invalidPrice,
 }

@@ -14,7 +14,6 @@ import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:food_gram_app/core/utils/image/upload_image_bytes.dart';
 import 'package:food_gram_app/core/utils/location/post_price_currency_from_location.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
-import 'package:food_gram_app/core/vision/food_image_labeler.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/screen/edit_post/edit_post_state.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
@@ -29,7 +28,6 @@ part 'edit_post_view_model.g.dart';
 @riverpod
 class EditPostViewModel extends _$EditPostViewModel {
   final logger = Logger();
-  final _foodLabeler = FoodImageLabeler();
   final _foodController = TextEditingController();
   final _commentController = TextEditingController();
   final _priceController = TextEditingController();
@@ -291,11 +289,9 @@ class EditPostViewModel extends _$EditPostViewModel {
     final imagePath = cropImage.path;
     _imageBytesMap[imagePath] = imageBytes;
     final updatedImages = [...state.foodImages, imagePath];
-    final isFood = await _foodLabeler.isFood(imagePath);
     state = state.copyWith(
       foodImages: updatedImages,
-      status:
-          isFood ? EditStatus.photoSuccess.name : EditStatus.maybeNotFood.name,
+      status: EditStatus.photoSuccess.name,
     );
   }
 
@@ -378,6 +374,5 @@ enum EditStatus {
   success,
   loading,
   initial,
-  maybeNotFood,
   invalidPrice,
 }
