@@ -109,12 +109,6 @@
     "sortOldest": "Älteste zuerst",
     "albumLimitBody": "Im kostenlosen Plan ist 1 Album möglich. Mit Premium unbegrenzt hinzufügen."
   },
-  "maybeNotFoodDialog": {
-    "title": "Kurze Bestätigung 🍽️",
-    "text": "Bild {index},\nDieses Foto zeigt möglicherweise kein Essen… 🤔\\n\\nTrotzdem posten?",
-    "confirm": "Fortfahren",
-    "delete": "Bild löschen"
-  },
   "setting": {
     "icon": "Symbol auswählen",
     "appBar": "Einstellungen",
@@ -149,7 +143,12 @@
     "restoreFailureSubtitle": "Keine Kaufhistorie? Kontaktieren Sie den Support",
     "restore": "Wiederherstellen",
     "purchaseError": "Beim Kauf ist ein Fehler aufgetreten",
-    "premiumMembership": "Premium-Mitglied werden"
+    "premiumMembership": "Premium-Mitglied werden",
+    "clearCache": "Cache leeren",
+    "clearCacheSuccessTitle": "Cache geleert",
+    "clearCacheSuccessSubtitle": "Temporäre Daten wie Bilder wurden entfernt",
+    "clearCacheFailureTitle": "Cache konnte nicht geleert werden",
+    "clearCacheFailureSubtitle": "Bitte später erneut versuchen"
   },
   "post": {
     "foodName": "Essensname",

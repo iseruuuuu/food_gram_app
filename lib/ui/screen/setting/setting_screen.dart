@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
+import 'package:food_gram_app/core/cache/food_gram_image_cache.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
@@ -150,6 +151,32 @@ class SettingScreen extends HookConsumerWidget {
                             title: t.setting.tutorial,
                             onTap: () =>
                                 context.pushNamed(RouterPath.settingTutorial),
+                          ),
+                          SettingTile(
+                            icon: Icons.cleaning_services_outlined,
+                            title: t.setting.clearCache,
+                            onTap: () async {
+                              try {
+                                await FoodGramImageCache.clear();
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                SnackBarHelper().openSuccessSnackBar(
+                                  context,
+                                  t.setting.clearCacheSuccessTitle,
+                                  t.setting.clearCacheSuccessSubtitle,
+                                );
+                              } on Object catch (_) {
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                SnackBarHelper().openErrorSnackBar(
+                                  context,
+                                  t.setting.clearCacheFailureTitle,
+                                  t.setting.clearCacheFailureSubtitle,
+                                );
+                              }
+                            },
                           ),
                           SettingTile(
                             icon: CupertinoIcons.cube_box_fill,

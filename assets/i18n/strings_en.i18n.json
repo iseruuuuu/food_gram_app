@@ -109,12 +109,6 @@
     "sortOldest": "Oldest first",
     "albumLimitBody": "Free plan allows up to 1 album. Upgrade to Premium for unlimited albums."
   },
-  "maybeNotFoodDialog": {
-    "title": "Just a quick check 🍽️",
-    "text": "Image {index},\nThis photo might not be food… 🤔\n\nDo you want to post it anyway?",
-    "confirm": "Continue",
-    "delete": "Delete image"
-  },
   "setting": {
     "icon": "Select Icon",
     "appBar": "Settings",
@@ -149,7 +143,12 @@
     "restoreFailureSubtitle": "No purchase history? Contact support",
     "restore": "Restore",
     "purchaseError": "An error occurred during purchase",
-    "premiumMembership": "Become Premium Member Ship"
+    "premiumMembership": "Become a Premium Member",
+    "clearCache": "Clear cache",
+    "clearCacheSuccessTitle": "Cache cleared",
+    "clearCacheSuccessSubtitle": "Temporary data such as images has been removed",
+    "clearCacheFailureTitle": "Failed to clear cache",
+    "clearCacheFailureSubtitle": "Please try again later"
   },
   "post": {
     "foodName": "Food Name",

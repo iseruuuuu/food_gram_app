@@ -109,12 +109,6 @@
     "sortOldest": "Mais antigos",
     "albumLimitBody": "O plano gratuito permite 1 álbum. Com Premium, adicione quantos quiser."
   },
-  "maybeNotFoodDialog": {
-    "title": "Só conferindo 🍽️",
-    "text": "Imagem {index},\nEsta foto pode não ser de comida… 🤔\\n\\nDeseja publicar mesmo assim?",
-    "confirm": "Continuar",
-    "delete": "Excluir imagem"
-  },
   "setting": {
     "icon": "Selecionar Ícone",
     "appBar": "Configurações",
@@ -149,7 +143,12 @@
     "restoreFailureSubtitle": "Sem histórico de compras? Entre em contato com o suporte",
     "restore": "Restaurar",
     "purchaseError": "Ocorreu um erro durante a compra",
-    "premiumMembership": "Torne-se membro Premium"
+    "premiumMembership": "Torne-se membro Premium",
+    "clearCache": "Limpar cache",
+    "clearCacheSuccessTitle": "Cache limpo",
+    "clearCacheSuccessSubtitle": "Dados temporários como imagens foram removidos",
+    "clearCacheFailureTitle": "Falha ao limpar o cache",
+    "clearCacheFailureSubtitle": "Tente novamente mais tarde"
   },
   "post": {
     "foodName": "Nome da Comida",

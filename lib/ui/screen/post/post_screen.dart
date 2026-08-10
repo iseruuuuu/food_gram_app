@@ -15,7 +15,6 @@ import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
-import 'package:food_gram_app/ui/component/dialog/app_maybe_not_food_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/app_photo_nearby_restaurant_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/app_streak_dialog.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
@@ -124,38 +123,6 @@ class PostScreen extends HookConsumerWidget {
     );
     useEffect(
       () {
-        if (postState.status == PostStatus.maybeNotFood.name) {
-          WidgetsBinding.instance.addPostFrameCallback((_) async {
-            if (!context.mounted) {
-              return;
-            }
-            final images = ref.read(postViewModelProvider()).foodImages;
-            final index = images.length;
-            await showMaybeNotFoodDialog(
-              context: context,
-              title: Translations.of(context).maybeNotFoodDialog.title,
-              text: _maybeNotFoodDialogText(context, index),
-              onContinue: () {
-                ref.read(postViewModelProvider().notifier).resetStatus();
-              },
-              onDelete: () {
-                final images = ref.read(postViewModelProvider()).foodImages;
-                if (images.isNotEmpty) {
-                  ref
-                      .read(postViewModelProvider().notifier)
-                      .removeImage(images.last);
-                }
-                ref.read(postViewModelProvider().notifier).resetStatus();
-              },
-            );
-          });
-        }
-        return null;
-      },
-      [postState.status],
-    );
-    useEffect(
-      () {
         final lat = nearbyTrigger.photoLat;
         final lng = nearbyTrigger.photoLng;
         if (!nearbyTrigger.hasImages || lat == null || lng == null) {
@@ -166,9 +133,6 @@ class PostScreen extends HookConsumerWidget {
           return null;
         }
         if (nearbyTrigger.restaurant != PostViewModel.defaultRestaurantText) {
-          return null;
-        }
-        if (nearbyTrigger.status == PostStatus.maybeNotFood.name) {
           return null;
         }
 
@@ -676,17 +640,10 @@ class PostScreen extends HookConsumerWidget {
         return t.post.missingFoodName;
       case PostStatus.missingRestaurant:
         return t.post.missingRestaurant;
-      case PostStatus.maybeNotFood:
-        return t.maybeNotFoodDialog.title;
       case PostStatus.invalidPrice:
         return t.post.priceInvalid;
       case PostStatus.initial:
         return 'Loading...';
     }
   }
-}
-
-String _maybeNotFoodDialogText(BuildContext context, int index) {
-  final t = Translations.of(context);
-  return t.maybeNotFoodDialog.text.replaceFirst('{index}', index.toString());
 }

@@ -109,12 +109,6 @@
     "sortOldest": "เก่าสุด",
     "albumLimitBody": "แผนฟรีสร้างอัลบั้มได้ 1 อัน อัปเกรดพรีเมียมเพื่อเพิ่มได้ไม่จำกัด"
   },
-  "maybeNotFoodDialog": {
-    "title": "ขอตรวจสอบสักครู่ 🍽️",
-    "text": "รูปที่ {index},\nภาพนี้อาจไม่ใช่อาหาร... 🤔\\n\\nต้องการโพสต์ต่อหรือไม่?",
-    "confirm": "ดำเนินการต่อ",
-    "delete": "ลบรูปภาพ"
-  },
   "setting": {
     "icon": "เลือกไอคอน",
     "appBar": "การตั้งค่า",
@@ -149,7 +143,12 @@
     "restoreFailureSubtitle": "ไม่มีประวัติซื้อ? ติดต่อสนับสนุน",
     "restore": "กู้คืน",
     "purchaseError": "เกิดข้อผิดพลาดระหว่างการซื้อ",
-    "premiumMembership": "เป็นพรีเมียม"
+    "premiumMembership": "เป็นพรีเมียม",
+    "clearCache": "ล้างแคช",
+    "clearCacheSuccessTitle": "ล้างแคชแล้ว",
+    "clearCacheSuccessSubtitle": "ลบข้อมูลชั่วคราว เช่น รูปภาพแล้ว",
+    "clearCacheFailureTitle": "ล้างแคชไม่สำเร็จ",
+    "clearCacheFailureSubtitle": "โปรดลองอีกครั้งในภายหลัง"
   },
   "post": {
     "foodName": "ชื่ออาหาร",

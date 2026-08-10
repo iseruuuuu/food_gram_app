@@ -44,6 +44,8 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         analytics.logEventUnawaited(name: AnalyticsEvent.appBackground);
       case AppLifecycleState.detached:
       case AppLifecycleState.hidden:
+        // 画像キャッシュはバックグラウンドでは消さない。
+        // 完全終了後の次回起動時 / 設定の「キャッシュ削除」でクリアする。
         break;
     }
   }

@@ -109,12 +109,6 @@
     "sortOldest": "Cũ nhất",
     "albumLimitBody": "Gói miễn phí tối đa 1 album. Nâng cấp Premium để thêm không giới hạn."
   },
-  "maybeNotFoodDialog": {
-    "title": "Kiểm tra nhanh 🍽️",
-    "text": "Ảnh {index},\nẢnh này có thể không phải là đồ ăn… 🤔\\n\\nBạn vẫn muốn đăng chứ?",
-    "confirm": "Tiếp tục",
-    "delete": "Xóa ảnh"
-  },
   "setting": {
     "icon": "Chọn biểu tượng",
     "appBar": "Cài đặt",
@@ -149,7 +143,12 @@
     "restoreFailureSubtitle": "Không có lịch sử mua? Liên hệ hỗ trợ",
     "restore": "Khôi phục",
     "purchaseError": "Đã xảy ra lỗi trong quá trình mua",
-    "premiumMembership": "Trở thành Premium"
+    "premiumMembership": "Trở thành Premium",
+    "clearCache": "Xóa bộ nhớ đệm",
+    "clearCacheSuccessTitle": "Đã xóa bộ nhớ đệm",
+    "clearCacheSuccessSubtitle": "Đã xóa dữ liệu tạm như hình ảnh",
+    "clearCacheFailureTitle": "Xóa bộ nhớ đệm thất bại",
+    "clearCacheFailureSubtitle": "Vui lòng thử lại sau"
   },
   "post": {
     "foodName": "Tên món ăn",

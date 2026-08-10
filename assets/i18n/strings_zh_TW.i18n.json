@@ -109,12 +109,6 @@
     "sortOldest": "最早",
     "albumLimitBody": "免費版最多1個相簿。升級進階版可無限新增。"
   },
-  "maybeNotFoodDialog": {
-    "title": "稍作確認 🍽️",
-    "text": "第{index}張照片，\n這張照片可能不是食物… 🤔\\n\\n仍要發布嗎？",
-    "confirm": "繼續",
-    "delete": "刪除圖片"
-  },
   "setting": {
     "icon": "選擇圖示",
     "appBar": "設定",
@@ -149,7 +143,12 @@
     "restoreFailureSubtitle": "沒有購買記錄？請聯絡客服",
     "restore": "還原購買",
     "purchaseError": "購買過程中發生錯誤",
-    "premiumMembership": "成為進階會員，享受特別體驗"
+    "premiumMembership": "成為進階會員，享受特別體驗",
+    "clearCache": "清除快取",
+    "clearCacheSuccessTitle": "已清除快取",
+    "clearCacheSuccessSubtitle": "已刪除圖片等暫存資料",
+    "clearCacheFailureTitle": "清除快取失敗",
+    "clearCacheFailureSubtitle": "請稍後再試"
   },
   "post": {
     "foodName": "食物名稱",

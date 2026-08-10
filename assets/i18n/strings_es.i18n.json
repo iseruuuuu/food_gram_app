@@ -109,12 +109,6 @@
     "sortOldest": "Más antiguos",
     "albumLimitBody": "El plan gratuito permite 1 álbum. Con Premium puedes añadir ilimitados."
   },
-  "maybeNotFoodDialog": {
-    "title": "Una pequeña confirmación 🍽️",
-    "text": "Imagen {index},\nEsta foto podría no ser comida… 🤔\\n\\n¿Quieres publicarla de todos modos?",
-    "confirm": "Continuar",
-    "delete": "Eliminar imagen"
-  },
   "setting": {
     "icon": "Seleccionar Icono",
     "appBar": "Configuración",
@@ -149,7 +143,12 @@
     "restoreFailureSubtitle": "¿Sin historial de compras? Contacte soporte",
     "restore": "Restaurar compra",
     "purchaseError": "Ha ocurrido un error durante la compra",
-    "premiumMembership": "Hazte miembro Premium"
+    "premiumMembership": "Hazte miembro Premium",
+    "clearCache": "Borrar caché",
+    "clearCacheSuccessTitle": "Caché borrada",
+    "clearCacheSuccessSubtitle": "Se eliminaron datos temporales como imágenes",
+    "clearCacheFailureTitle": "No se pudo borrar la caché",
+    "clearCacheFailureSubtitle": "Inténtalo de nuevo más tarde"
   },
   "post": {
     "foodName": "Nombre del Alimento",

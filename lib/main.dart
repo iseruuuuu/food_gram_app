@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/app.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
+import 'package:food_gram_app/core/cache/food_gram_image_cache.dart';
 import 'package:food_gram_app/core/home_widget/map_stats_home_widget_sync.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/core/review/in_app_review_service.dart';
@@ -28,6 +29,10 @@ void main() async {
   await initializeThirdPartyServices();
   await initializePurchases();
   await MobileAds.instance.initialize();
+  // 画像キャッシュの上限付きマネージャを適用し、前回終了分を起動時に空にする。
+  // 削除失敗でも起動は続行する。
+  FoodGramImageCache.installAsDefault();
+  await FoodGramImageCache.clearBestEffort();
   // TranslationProviderでラップ
   runApp(TranslationProvider(child: const ProviderScope(child: MyApp())));
   // アプリ起動後、表示が落ち着いてから7日経過時レビューをチェック
