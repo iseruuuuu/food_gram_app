@@ -109,12 +109,6 @@
     "sortOldest": "最早",
     "albumLimitBody": "免費版最多1個相簿。升級進階版可無限新增。"
   },
-  "maybeNotFoodDialog": {
-    "title": "稍作確認 🍽️",
-    "text": "第{index}張照片，\n這張照片可能不是食物… 🤔\\n\\n仍要發布嗎？",
-    "confirm": "繼續",
-    "delete": "刪除圖片"
-  },
   "setting": {
     "icon": "選擇圖示",
     "appBar": "設定",

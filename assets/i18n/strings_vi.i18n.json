@@ -109,12 +109,6 @@
     "sortOldest": "Cũ nhất",
     "albumLimitBody": "Gói miễn phí tối đa 1 album. Nâng cấp Premium để thêm không giới hạn."
   },
-  "maybeNotFoodDialog": {
-    "title": "Kiểm tra nhanh 🍽️",
-    "text": "Ảnh {index},\nẢnh này có thể không phải là đồ ăn… 🤔\\n\\nBạn vẫn muốn đăng chứ?",
-    "confirm": "Tiếp tục",
-    "delete": "Xóa ảnh"
-  },
   "setting": {
     "icon": "Chọn biểu tượng",
     "appBar": "Cài đặt",

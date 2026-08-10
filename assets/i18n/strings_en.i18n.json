@@ -109,12 +109,6 @@
     "sortOldest": "Oldest first",
     "albumLimitBody": "Free plan allows up to 1 album. Upgrade to Premium for unlimited albums."
   },
-  "maybeNotFoodDialog": {
-    "title": "Just a quick check 🍽️",
-    "text": "Image {index},\nThis photo might not be food… 🤔\n\nDo you want to post it anyway?",
-    "confirm": "Continue",
-    "delete": "Delete image"
-  },
   "setting": {
     "icon": "Select Icon",
     "appBar": "Settings",

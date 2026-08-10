@@ -109,12 +109,6 @@
     "sortOldest": "古い順",
     "albumLimitBody": "無料プランではアルバムは1個までです。プレミアムで無制限に追加できます。"
   },
-  "maybeNotFoodDialog": {
-    "title": "ちょっと確認 🍽️",
-    "text": "{index}枚目の写真、\n食べものじゃないかも…？と\nFoodGramが首をかしげています 🤔\n\nそれでも投稿しますか？",
-    "confirm": "続ける",
-    "delete": "画像を削除"
-  },
   "setting": {
     "icon": "アイコンの設定",
     "appBar": "基本設定",

@@ -109,12 +109,6 @@
     "sortOldest": "Mais antigos",
     "albumLimitBody": "O plano gratuito permite 1 álbum. Com Premium, adicione quantos quiser."
   },
-  "maybeNotFoodDialog": {
-    "title": "Só conferindo 🍽️",
-    "text": "Imagem {index},\nEsta foto pode não ser de comida… 🤔\\n\\nDeseja publicar mesmo assim?",
-    "confirm": "Continuar",
-    "delete": "Excluir imagem"
-  },
   "setting": {
     "icon": "Selecionar Ícone",
     "appBar": "Configurações",

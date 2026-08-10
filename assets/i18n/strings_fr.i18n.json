@@ -109,12 +109,6 @@
     "sortOldest": "Plus anciens",
     "albumLimitBody": "Le plan gratuit permet 1 album. Passez à Premium pour un nombre illimité."
   },
-  "maybeNotFoodDialog": {
-    "title": "Petite vérification 🍽️",
-    "text": "Image {index},\nCette photo n'est peut-être pas de la nourriture… 🤔\\n\\nVoulez-vous la publier quand même ?",
-    "confirm": "Continuer",
-    "delete": "Supprimer l'image"
-  },
   "setting": {
     "icon": "Sélectionner l'icône",
     "appBar": "Paramètres",
