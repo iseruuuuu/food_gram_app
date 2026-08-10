@@ -146,7 +146,9 @@
     "premiumMembership": "Hazte miembro Premium",
     "clearCache": "Borrar caché",
     "clearCacheSuccessTitle": "Caché borrada",
-    "clearCacheSuccessSubtitle": "Se eliminaron datos temporales como imágenes"
+    "clearCacheSuccessSubtitle": "Se eliminaron datos temporales como imágenes",
+    "clearCacheFailureTitle": "No se pudo borrar la caché",
+    "clearCacheFailureSubtitle": "Inténtalo de nuevo más tarde"
   },
   "post": {
     "foodName": "Nombre del Alimento",

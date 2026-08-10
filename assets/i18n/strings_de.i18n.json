@@ -146,7 +146,9 @@
     "premiumMembership": "Premium-Mitglied werden",
     "clearCache": "Cache leeren",
     "clearCacheSuccessTitle": "Cache geleert",
-    "clearCacheSuccessSubtitle": "Temporäre Daten wie Bilder wurden entfernt"
+    "clearCacheSuccessSubtitle": "Temporäre Daten wie Bilder wurden entfernt",
+    "clearCacheFailureTitle": "Cache konnte nicht geleert werden",
+    "clearCacheFailureSubtitle": "Bitte später erneut versuchen"
   },
   "post": {
     "foodName": "Essensname",

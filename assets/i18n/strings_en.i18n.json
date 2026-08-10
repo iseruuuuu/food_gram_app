@@ -143,10 +143,12 @@
     "restoreFailureSubtitle": "No purchase history? Contact support",
     "restore": "Restore",
     "purchaseError": "An error occurred during purchase",
-    "premiumMembership": "Become Premium Member Ship",
+    "premiumMembership": "Become a Premium Member",
     "clearCache": "Clear cache",
     "clearCacheSuccessTitle": "Cache cleared",
-    "clearCacheSuccessSubtitle": "Temporary data such as images has been removed"
+    "clearCacheSuccessSubtitle": "Temporary data such as images has been removed",
+    "clearCacheFailureTitle": "Failed to clear cache",
+    "clearCacheFailureSubtitle": "Please try again later"
   },
   "post": {
     "foodName": "Food Name",

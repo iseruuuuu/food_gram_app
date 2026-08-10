@@ -156,15 +156,26 @@ class SettingScreen extends HookConsumerWidget {
                             icon: Icons.cleaning_services_outlined,
                             title: t.setting.clearCache,
                             onTap: () async {
-                              await FoodGramImageCache.clear();
-                              if (!context.mounted) {
-                                return;
+                              try {
+                                await FoodGramImageCache.clear();
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                SnackBarHelper().openSuccessSnackBar(
+                                  context,
+                                  t.setting.clearCacheSuccessTitle,
+                                  t.setting.clearCacheSuccessSubtitle,
+                                );
+                              } on Object catch (_) {
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                SnackBarHelper().openErrorSnackBar(
+                                  context,
+                                  t.setting.clearCacheFailureTitle,
+                                  t.setting.clearCacheFailureSubtitle,
+                                );
                               }
-                              SnackBarHelper().openSuccessSnackBar(
-                                context,
-                                t.setting.clearCacheSuccessTitle,
-                                t.setting.clearCacheSuccessSubtitle,
-                              );
                             },
                           ),
                           SettingTile(

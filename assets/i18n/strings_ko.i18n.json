@@ -146,7 +146,9 @@
     "premiumMembership": "프리미엄 회원이 되어 특별한 경험을",
     "clearCache": "캐시 삭제",
     "clearCacheSuccessTitle": "캐시를 삭제했습니다",
-    "clearCacheSuccessSubtitle": "이미지 등 임시 데이터를 삭제했습니다"
+    "clearCacheSuccessSubtitle": "이미지 등 임시 데이터를 삭제했습니다",
+    "clearCacheFailureTitle": "캐시 삭제에 실패했습니다",
+    "clearCacheFailureSubtitle": "잠시 후 다시 시도해 주세요"
   },
   "post": {
     "foodName": "음식 이름",

@@ -146,7 +146,9 @@
     "premiumMembership": "Trở thành Premium",
     "clearCache": "Xóa bộ nhớ đệm",
     "clearCacheSuccessTitle": "Đã xóa bộ nhớ đệm",
-    "clearCacheSuccessSubtitle": "Đã xóa dữ liệu tạm như hình ảnh"
+    "clearCacheSuccessSubtitle": "Đã xóa dữ liệu tạm như hình ảnh",
+    "clearCacheFailureTitle": "Xóa bộ nhớ đệm thất bại",
+    "clearCacheFailureSubtitle": "Vui lòng thử lại sau"
   },
   "post": {
     "foodName": "Tên món ăn",

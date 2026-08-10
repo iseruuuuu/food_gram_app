@@ -146,7 +146,9 @@
     "premiumMembership": "プレミアム会員になって特別な体験を",
     "clearCache": "キャッシュ削除",
     "clearCacheSuccessTitle": "キャッシュを削除しました",
-    "clearCacheSuccessSubtitle": "画像などの一時データを削除しました"
+    "clearCacheSuccessSubtitle": "画像などの一時データを削除しました",
+    "clearCacheFailureTitle": "キャッシュの削除に失敗しました",
+    "clearCacheFailureSubtitle": "時間をおいて再度お試しください"
   },
   "post": {
     "foodName": "食べたもの",

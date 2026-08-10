@@ -30,8 +30,9 @@ void main() async {
   await initializePurchases();
   await MobileAds.instance.initialize();
   // 画像キャッシュの上限付きマネージャを適用し、前回終了分を起動時に空にする。
+  // 削除失敗でも起動は続行する。
   FoodGramImageCache.installAsDefault();
-  await FoodGramImageCache.clear();
+  await FoodGramImageCache.clearBestEffort();
   // TranslationProviderでラップ
   runApp(TranslationProvider(child: const ProviderScope(child: MyApp())));
   // アプリ起動後、表示が落ち着いてから7日経過時レビューをチェック

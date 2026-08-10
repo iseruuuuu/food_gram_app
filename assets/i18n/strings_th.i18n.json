@@ -146,7 +146,9 @@
     "premiumMembership": "เป็นพรีเมียม",
     "clearCache": "ล้างแคช",
     "clearCacheSuccessTitle": "ล้างแคชแล้ว",
-    "clearCacheSuccessSubtitle": "ลบข้อมูลชั่วคราว เช่น รูปภาพแล้ว"
+    "clearCacheSuccessSubtitle": "ลบข้อมูลชั่วคราว เช่น รูปภาพแล้ว",
+    "clearCacheFailureTitle": "ล้างแคชไม่สำเร็จ",
+    "clearCacheFailureSubtitle": "โปรดลองอีกครั้งในภายหลัง"
   },
   "post": {
     "foodName": "ชื่ออาหาร",
