@@ -43,6 +43,13 @@ class TabViewModel extends _$TabViewModel {
     _pageController = controller;
   }
 
+  void clearPageController(PageController controller) {
+    // 同じコントローラーの場合のみクリア
+    if (_pageController == controller) {
+      _pageController = null;
+    }
+  }
+
   void _logInitialTabIfNeeded() {
     if (_didLogInitialTab) {
       return;
@@ -97,12 +104,16 @@ class TabViewModel extends _$TabViewModel {
     }
     
     // PageControllerを使ってスムーズにページを切り替え
-    if (_pageController != null) {
-      _pageController!.animateToPage(
-        index,
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOutCubic,
-      );
+    if (_pageController != null && _pageController!.hasClients) {
+      try {
+        _pageController!.animateToPage(
+          index,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeInOutCubic,
+        );
+      } catch (e) {
+        // PageControllerが破棄済みの場合は無視
+      }
     }
     
     state = TabState(selectedIndex: index);

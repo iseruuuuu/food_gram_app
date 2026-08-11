@@ -77,15 +77,19 @@ class TabScreen extends HookConsumerWidget {
     final pageController =
         useMemoized(() => PageController(initialPage: state.selectedIndex));
 
-    // PageControllerをViewModelに設定
+    // PageControllerをViewModelに設定し、適切にクリーンアップ
     useEffect(
       () {
         controller.setPageController(pageController);
-        return () {};
+        return () {
+          // TabScreenがアンマウントされる時にPageControllerの参照をクリア
+          controller.clearPageController(pageController);
+        };
       },
-      [pageController],
+      [], // pageControllerをキーに含めない（memoizedなので）
     );
-
+    // PageControllerの破棄処理
+    useEffect(() => pageController.dispose, []);
     useEffect(
       () {
         var cancelled = false;
