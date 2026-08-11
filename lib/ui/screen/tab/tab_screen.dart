@@ -19,6 +19,7 @@ import 'package:food_gram_app/core/theme/style/tab_style.dart';
 import 'package:food_gram_app/core/utils/user_level.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/common/keep_alive_page_view.dart';
 import 'package:food_gram_app/ui/component/dialog/app_level_up_dialog.dart';
 import 'package:food_gram_app/ui/component/guide/first_post_guide_overlay.dart';
 import 'package:food_gram_app/ui/component/guide/first_post_success_dialog.dart';
@@ -73,7 +74,22 @@ class TabScreen extends HookConsumerWidget {
     final t = Translations.of(context);
     final postButtonKey = useMemoized(GlobalKey.new);
     final showFirstPostGuide = useState(false);
+    final pageController =
+        useMemoized(() => PageController(initialPage: state.selectedIndex));
 
+    // PageControllerをViewModelに設定し、適切にクリーンアップ
+    useEffect(
+      () {
+        controller.setPageController(pageController);
+        return () {
+          // TabScreenがアンマウントされる時にPageControllerの参照をクリア
+          controller.clearPageController(pageController);
+        };
+      },
+      [], // pageControllerをキーに含めない（memoizedなので）
+    );
+    // PageControllerの破棄処理
+    useEffect(() => pageController.dispose, []);
     useEffect(
       () {
         var cancelled = false;
@@ -266,15 +282,17 @@ class TabScreen extends HookConsumerWidget {
           removeBottom: Platform.isIOS,
           child: Scaffold(
             extendBody: true,
-            // IndexedStack で非選択タブも保持し、往復時の再生成・再購読を防ぐ
+            // KeepAlivePageView でスムーズなアニメーション + 状態保持を実装
             body: Platform.isIOS
-                ? IndexedStack(
-                    index: state.selectedIndex,
+                ? KeepAlivePageView(
+                    controller: pageController,
+                    physics: const NeverScrollableScrollPhysics(), // スワイプ無効
                     children: controller.pageList,
                   )
                 : SafeArea(
-                    child: IndexedStack(
-                      index: state.selectedIndex,
+                    child: KeepAlivePageView(
+                      controller: pageController,
+                      physics: const NeverScrollableScrollPhysics(), // スワイプ無効
                       children: controller.pageList,
                     ),
                   ),
@@ -373,9 +391,8 @@ class TabScreen extends HookConsumerWidget {
                           key: postButtonKey,
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap: showFirstPostGuide.value
-                                ? null
-                                : onPostPressed,
+                            onTap:
+                                showFirstPostGuide.value ? null : onPostPressed,
                             customBorder: const CircleBorder(),
                             child: Ink(
                               width: _postButtonSize,
