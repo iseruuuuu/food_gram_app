@@ -20,6 +20,7 @@ final scrollToTopForTabProvider =
 class TabViewModel extends _$TabViewModel {
   bool _isHandlingTap = false;
   bool _didLogInitialTab = false;
+  PageController? _pageController;
 
   @override
   TabState build({
@@ -37,6 +38,10 @@ class TabViewModel extends _$TabViewModel {
     const RecordScreen(),
     const MyProfileScreen(),
   ];
+
+  void setPageController(PageController controller) {
+    _pageController = controller;
+  }
 
   void _logInitialTabIfNeeded() {
     if (_didLogInitialTab) {
@@ -90,6 +95,16 @@ class TabViewModel extends _$TabViewModel {
         trigger: (current?.trigger ?? -1) + 1,
       );
     }
+    
+    // PageControllerを使ってスムーズにページを切り替え
+    if (_pageController != null) {
+      _pageController!.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOutCubic,
+      );
+    }
+    
     state = TabState(selectedIndex: index);
   }
 
