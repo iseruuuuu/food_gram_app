@@ -207,6 +207,9 @@ class $AssetsLottieGen {
   /// File path: assets/lottie/record_nopost.json
   String get recordNopost => 'assets/lottie/record_nopost.json';
 
+  /// File path: assets/lottie/restaurant_search.json
+  String get restaurantSearch => 'assets/lottie/restaurant_search.json';
+
   /// File path: assets/lottie/sammary_dog.json
   String get sammaryDog => 'assets/lottie/sammary_dog.json';
 
@@ -237,6 +240,7 @@ class $AssetsLottieGen {
         postSuccess,
         recordFootprints,
         recordNopost,
+        restaurantSearch,
         sammaryDog,
         tutorial1,
         tutorial2,
