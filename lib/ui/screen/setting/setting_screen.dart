@@ -84,12 +84,12 @@ class SettingScreen extends HookConsumerWidget {
                       Wrap(
                         children: [
                           SettingTile(
-                            icon: FontAwesomeIcons.twitter,
+                            icon: FontAwesomeIcons.twitter.data,
                             title: t.setting.developer,
                             onTap: () => LaunchUrlHelper().openSNSUrl(URL.sns),
                           ),
                           SettingTile(
-                            icon: FontAwesomeIcons.github,
+                            icon: FontAwesomeIcons.github.data,
                             title: t.setting.github,
                             onTap: () =>
                                 LaunchUrlHelper().openSNSUrl(URL.github),
