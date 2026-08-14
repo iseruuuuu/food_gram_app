@@ -6,7 +6,7 @@ version: 1.48.0+83
 
 environment:
   sdk: '>=3.1.5 <4.0.0'
-  flutter: ^3.41.0
+  flutter: ^3.44.9
 dependencies:
   app_tracking_transparency: ^2.0.6
   auth_button_kit: ^1.1.7
@@ -15,7 +15,7 @@ dependencies:
   confetti: ^0.8.0
   crypto: ^3.0.3
   cupertino_icons: ^1.0.2
-  device_info_plus: ^9.1.1
+  device_info_plus: ^10.1.2
   easy_debounce: ^2.0.3
   enum_to_string: ^2.0.1
   envied: ^1.0.0
@@ -35,7 +35,7 @@ dependencies:
   flutter_riverpod: ^2.4.5
   flutter_sliding_tutorial: ^2.0.0+1
   flutter_staggered_grid_view: ^0.7.0
-  font_awesome_flutter: ^10.7.0
+  font_awesome_flutter: ^11.0.0
   freezed_annotation: ^2.4.1
   gap: ^3.0.1
   geocoding: ^4.0.0
@@ -58,8 +58,8 @@ dependencies:
   map_launcher: ^3.0.0
   maplibre_gl: ^0.24.1
   motor: ^1.1.0
-  new_version_plus: ^0.0.11
-  package_info_plus: ^8.1.0
+  new_version_plus: ^1.0.1
+  package_info_plus: ^9.0.0
   path_provider: ^2.1.5
   permission_handler: ^11.3.1
   photo_viewer: ^0.0.3
