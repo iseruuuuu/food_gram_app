@@ -68,211 +68,218 @@ class RestaurantScreen extends HookConsumerWidget {
         ),
       ),
       resizeToAvoidBottomInset: false,
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // レストランを検索 テキスト
-            Text(
-              t.restaurant.searchTitle,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
-            const Gap(24),
-
-            // 検索バー
-            AppSearchTextField(onSubmitted: (value) => keyword.value = value),
-            const Gap(16),
-
-            // フィルターチップ
-            GestureDetector(
-              onTap: () {
-                const restaurant =
-                    Restaurant(name: '不明', address: '', lat: 0, lng: 0);
-                primaryFocus?.unfocus();
-                context.pop(restaurant);
-              },
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .outline
-                        .withValues(alpha: 0.3),
-                    width: 1,
+      body: GestureDetector(
+        onTap: () {
+          // テキストフィールド以外をタップした時にキーボードを閉じる
+          FocusScope.of(context).unfocus();
+        },
+        behavior: HitTestBehavior.translucent,
+        child: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height -
+                MediaQuery.of(context).padding.top -
+                kToolbarHeight,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  t.restaurant.searchTitle,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.close,
-                      size: 16,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.7),
-                    ),
-                    const Gap(4),
-                    Text(
-                      t.restaurant.unknownChip,
-                      style: TextStyle(
-                        fontSize: 14,
+                const Gap(24),
+                AppSearchTextField(
+                  onSubmitted: (value) => keyword.value = value,
+                ),
+                const Gap(16),
+                GestureDetector(
+                  onTap: () {
+                    const restaurant =
+                        Restaurant(name: '不明', address: '', lat: 0, lng: 0);
+                    primaryFocus?.unfocus();
+                    context.pop(restaurant);
+                  },
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
                         color: Theme.of(context)
                             .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.7),
+                            .outline
+                            .withValues(alpha: 0.3),
                       ),
                     ),
-                  ],
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.close,
+                          size: 16,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.7),
+                        ),
+                        const Gap(4),
+                        Text(
+                          t.restaurant.unknownChip,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.7),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-
-            // 中央の空白スペースと検索結果
-            Expanded(
-              child: keyword.value.isEmpty
-                  ? _buildSearchEmptyState(context, t)
-                  : AsyncValueSwitcher(
-                      asyncValue: isKakao.value ? kakaoRestaurant : restaurant,
-                      errorType: TabLoadingType.map,
-                      onErrorTap: () {
-                        ref.invalidate(
-                          googleRestaurantRepositoryProvider(keyword.value),
-                        );
-                        ref.invalidate(
-                          kakaoRestaurantRepositoryProvider(keyword.value),
-                        );
-                      },
-                      onData: (value) {
-                        return value.isNotEmpty
-                            ? ListView.builder(
-                                itemCount: value.length,
-                                itemBuilder: (context, index) {
-                                  final restaurant = Restaurant(
-                                    name: value[index].name,
-                                    address: value[index].address,
-                                    lat: value[index].lat,
-                                    lng: value[index].lng,
-                                  );
-                                  return ListTile(
-                                    onTap: () async {
-                                      primaryFocus?.unfocus();
-                                      // 現在のルートパスに基づいて適切なルート名を決定
-                                      final currentPath =
-                                          GoRouterState.of(context).uri.path;
-                                      final routeName = currentPath.contains(
-                                        RouterPath.timeLine,
-                                      )
-                                          ? RouterPath.restaurantMap
-                                          : currentPath.contains(
-                                              RouterPath.mapDetailPost,
-                                            )
-                                              ? RouterPath.restaurantMapFromMap
-                                              : RouterPath
-                                                  .restaurantMapMyProfile;
-                                      // pushNamed の結果を待つ
-                                      final result =
-                                          await context.pushNamed<Restaurant>(
-                                        routeName,
-                                        extra: restaurant,
+                Expanded(
+                  child: keyword.value.isEmpty
+                      ? _buildSearchEmptyState(context, t)
+                      : AsyncValueSwitcher(
+                          asyncValue:
+                              isKakao.value ? kakaoRestaurant : restaurant,
+                          errorType: TabLoadingType.map,
+                          onErrorTap: () {
+                            ref.invalidate(
+                              googleRestaurantRepositoryProvider(keyword.value),
+                            );
+                            ref.invalidate(
+                              kakaoRestaurantRepositoryProvider(keyword.value),
+                            );
+                          },
+                          onData: (value) {
+                            return value.isNotEmpty
+                                ? ListView.builder(
+                                    itemCount: value.length,
+                                    itemBuilder: (context, index) {
+                                      final restaurant = Restaurant(
+                                        name: value[index].name,
+                                        address: value[index].address,
+                                        lat: value[index].lat,
+                                        lng: value[index].lng,
                                       );
-                                      // restaurantが返ってきたら、さらにPostScreenに戻す
-                                      if (result != null && context.mounted) {
-                                        context.pop(result);
-                                      }
+                                      return ListTile(
+                                        onTap: () async {
+                                          primaryFocus?.unfocus();
+                                          // 現在のルートパスに基づいて適切なルート名を決定
+                                          final currentPath =
+                                              GoRouterState.of(context)
+                                                  .uri
+                                                  .path;
+                                          final routeName = currentPath
+                                                  .contains(
+                                            RouterPath.timeLine,
+                                          )
+                                              ? RouterPath.restaurantMap
+                                              : currentPath.contains(
+                                                  RouterPath.mapDetailPost,
+                                                )
+                                                  ? RouterPath
+                                                      .restaurantMapFromMap
+                                                  : RouterPath
+                                                      .restaurantMapMyProfile;
+                                          final result = await context
+                                              .pushNamed<Restaurant>(
+                                            routeName,
+                                            extra: restaurant,
+                                          );
+                                          // restaurantが返ってきたら、さらにPostScreenに戻す
+                                          if (result != null &&
+                                              context.mounted) {
+                                            context.pop(result);
+                                          }
+                                        },
+                                        trailing: Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 20,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                        ),
+                                        title: Text(
+                                          value[index].name,
+                                          style: RestaurantStyle.name(context),
+                                        ),
+                                        subtitle: Text(
+                                          value[index].address,
+                                          style:
+                                              RestaurantStyle.address(context),
+                                        ),
+                                      );
                                     },
-                                    trailing: Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 20,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface,
-                                    ),
-                                    title: Text(
-                                      value[index].name,
-                                      style: RestaurantStyle.name(context),
-                                    ),
-                                    subtitle: Text(
-                                      value[index].address,
-                                      style: RestaurantStyle.address(context),
-                                    ),
-                                  );
-                                },
-                              )
-                            : const Center(child: AppSearchResultEmpty());
-                      },
+                                  )
+                                : const Center(child: AppSearchResultEmpty());
+                          },
+                        ),
+                ),
+                if (keyword.value.isEmpty)
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .surfaceContainerHighest
+                          .withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(12),
                     ),
+                    child: Column(
+                      children: [
+                        _buildHintRow(
+                          context,
+                          Icons.location_on_outlined,
+                          t.restaurant.hintsTitle,
+                          Theme.of(context).colorScheme.primary,
+                        ),
+                        const Gap(12),
+                        _buildHintRow(
+                          context,
+                          Icons.my_location_outlined,
+                          t.restaurant.hintLocation,
+                          Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.6),
+                        ),
+                        const Gap(8),
+                        _buildHintRow(
+                          context,
+                          Icons.restaurant_outlined,
+                          t.restaurant.hintCuisine,
+                          Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.6),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
             ),
-
-            // 底部のヒント情報（検索していない時のみ表示）
-            if (keyword.value.isEmpty)
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .surfaceContainerHighest
-                      .withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  children: [
-                    _buildHintRow(
-                      context,
-                      Icons.location_on_outlined,
-                      t.restaurant.hintsTitle,
-                      Theme.of(context).colorScheme.primary,
-                    ),
-                    const Gap(12),
-                    _buildHintRow(
-                      context,
-                      Icons.my_location_outlined,
-                      t.restaurant.hintLocation,
-                      Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.6),
-                    ),
-                    const Gap(8),
-                    _buildHintRow(
-                      context,
-                      Icons.restaurant_outlined,
-                      t.restaurant.hintCuisine,
-                      Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.6),
-                    ),
-                  ],
-                ),
-              ),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  /// 検索前の空状態UI
   Widget _buildSearchEmptyState(BuildContext context, Translations t) {
     final colorScheme = Theme.of(context).colorScheme;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // 検索アニメーション（Lottie）
           Stack(
             alignment: Alignment.center,
             children: [
-              // 背景の影
               Container(
                 width: 180,
                 height: 180,
@@ -287,7 +294,6 @@ class RestaurantScreen extends HookConsumerWidget {
                   ],
                 ),
               ),
-              // Lottieアニメーション
               SizedBox(
                 width: 180,
                 height: 180,
@@ -304,7 +310,6 @@ class RestaurantScreen extends HookConsumerWidget {
             ],
           ),
           const Gap(4),
-          // メッセージテキスト
           Text(
             t.restaurant.emptyMessage,
             textAlign: TextAlign.center,
@@ -319,7 +324,6 @@ class RestaurantScreen extends HookConsumerWidget {
     );
   }
 
-  /// ヒント行のUI
   Widget _buildHintRow(
     BuildContext context,
     IconData icon,
