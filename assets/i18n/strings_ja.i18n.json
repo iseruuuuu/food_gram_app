@@ -273,6 +273,15 @@
     "emptyHintLocation": "位置情報をオンにすると近い順で表示します",
     "emptyHintSearch": "店舗名や料理ジャンルで検索できます"
   },
+  "restaurant": {
+    "searchTitle": "レストランを検索",
+    "searchPlaceholder": "店名・料理名で検索",
+    "unknownChip": "不明・ヒットなし",
+    "emptyMessage": "店名や料理名で検索して\nレストランを探しましょう",
+    "hintsTitle": "検索のヒント",
+    "hintLocation": "位置情報をオンにするとより正確に検索できます",
+    "hintCuisine": "「ラーメン」「カフェ」など料理名でも検索できます"
+  },
   "profile": {
     "postCount": "投稿",
     "pointCount": "ポイント",

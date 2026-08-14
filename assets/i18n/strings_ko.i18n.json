@@ -273,6 +273,16 @@
     "emptyHintLocation": "위치를 켜면 가까운 결과가 먼저 표시됩니다",
     "emptyHintSearch": "레스토랑 이름이나 요리 유형으로 검색하세요"
   },
+  "restaurant": {
+    "searchTitle": "레스토랑 검색",
+    "searchPlaceholder": "매장명·음식명으로 검색",
+    "unknownChip": "불명·히트 없음",
+    "emptyMessage": "매장명이나 음식명으로 검색해서\n레스토랑을 찾아보세요",
+    "hintsTitle": "검색 힌트",
+    "hintLocation": "위치정보를 켜면 더 정확하게 검색할 수 있습니다",
+    "hintCuisine": "「라멘」「카페」등 음식명으로도 검색할 수 있습니다",
+    "hintHistory": "최근 검색한 매장은 히스토리에서 확인할 수 있습니다"
+  },
   "profile": {
     "postCount": "게시물",
     "pointCount": "포인트",

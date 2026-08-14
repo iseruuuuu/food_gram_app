@@ -273,6 +273,15 @@
     "emptyHintLocation": "Turn on location to show nearby results first",
     "emptyHintSearch": "Search by restaurant name or cuisine type"
   },
+  "restaurant": {
+    "searchTitle": "Search Restaurants",
+    "searchPlaceholder": "Search by name or cuisine",
+    "unknownChip": "Unknown・No Hits",
+    "emptyMessage": "Search by restaurant name or cuisine\nto find places to eat",
+    "hintsTitle": "Search Tips",
+    "hintLocation": "Turn on location for more accurate search results",
+    "hintCuisine": "You can search by cuisine like \"Ramen\" or \"Cafe\""
+  },
   "profile": {
     "postCount": "Posts",
     "pointCount": "Points",
