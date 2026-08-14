@@ -15,12 +15,14 @@ import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lottie/lottie.dart';
 
 class RestaurantScreen extends HookConsumerWidget {
   const RestaurantScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final t = Translations.of(context);
     useEffect(
       () {
         ref
@@ -67,12 +69,26 @@ class RestaurantScreen extends HookConsumerWidget {
       ),
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Gap(5),
+            // レストランを検索 テキスト
+            Text(
+              t.restaurant.searchTitle,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+            const Gap(24),
+
+            // 検索バー
             AppSearchTextField(onSubmitted: (value) => keyword.value = value),
-            const Gap(10),
+            const Gap(16),
+
+            // フィルターチップ
             GestureDetector(
               onTap: () {
                 const restaurant =
@@ -80,26 +96,51 @@ class RestaurantScreen extends HookConsumerWidget {
                 primaryFocus?.unfocus();
                 context.pop(restaurant);
               },
-              child: Chip(
-                backgroundColor: Theme.of(context).colorScheme.surface,
-                label: Text(Translations.of(context).unknown),
-                labelStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Theme.of(context).colorScheme.onSurface,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .outline
+                        .withValues(alpha: 0.3),
+                    width: 1,
+                  ),
                 ),
-                avatar: Icon(
-                  Icons.restaurant_menu,
-                  size: 20,
-                  color: Theme.of(context).colorScheme.onSurface,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.close,
+                      size: 16,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.7),
+                    ),
+                    const Gap(4),
+                    Text(
+                      t.restaurant.unknownChip,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: 0.7),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            const Gap(10),
+
+            // 中央の空白スペースと検索結果
             Expanded(
-              flex: 10,
               child: keyword.value.isEmpty
-                  ? const AppSearchEmpty()
+                  ? _buildSearchEmptyState(context, t)
                   : AsyncValueSwitcher(
                       asyncValue: isKakao.value ? kakaoRestaurant : restaurant,
                       errorType: TabLoadingType.map,
@@ -128,18 +169,16 @@ class RestaurantScreen extends HookConsumerWidget {
                                       // 現在のルートパスに基づいて適切なルート名を決定
                                       final currentPath =
                                           GoRouterState.of(context).uri.path;
-                                      final routeName =
-                                          currentPath.contains(
+                                      final routeName = currentPath.contains(
                                         RouterPath.timeLine,
                                       )
-                                              ? RouterPath.restaurantMap
-                                              : currentPath.contains(
-                                                  RouterPath.mapDetailPost,
-                                                )
-                                                  ? RouterPath
-                                                      .restaurantMapFromMap
-                                                  : RouterPath
-                                                      .restaurantMapMyProfile;
+                                          ? RouterPath.restaurantMap
+                                          : currentPath.contains(
+                                              RouterPath.mapDetailPost,
+                                            )
+                                              ? RouterPath.restaurantMapFromMap
+                                              : RouterPath
+                                                  .restaurantMapMyProfile;
                                       // pushNamed の結果を待つ
                                       final result =
                                           await context.pushNamed<Restaurant>(
@@ -169,13 +208,144 @@ class RestaurantScreen extends HookConsumerWidget {
                                   );
                                 },
                               )
-                            : const AppSearchResultEmpty();
+                            : const Center(child: AppSearchResultEmpty());
                       },
                     ),
             ),
+
+            // 底部のヒント情報（検索していない時のみ表示）
+            if (keyword.value.isEmpty)
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .surfaceContainerHighest
+                      .withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    _buildHintRow(
+                      context,
+                      Icons.location_on_outlined,
+                      t.restaurant.hintsTitle,
+                      Theme.of(context).colorScheme.primary,
+                    ),
+                    const Gap(12),
+                    _buildHintRow(
+                      context,
+                      Icons.my_location_outlined,
+                      t.restaurant.hintLocation,
+                      Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.6),
+                    ),
+                    const Gap(8),
+                    _buildHintRow(
+                      context,
+                      Icons.restaurant_outlined,
+                      t.restaurant.hintCuisine,
+                      Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.6),
+                    ),
+                  ],
+                ),
+              ),
           ],
         ),
       ),
+    );
+  }
+
+  /// 検索前の空状態UI
+  Widget _buildSearchEmptyState(BuildContext context, Translations t) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // 検索アニメーション（Lottie）
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              // 背景の影
+              Container(
+                width: 180,
+                height: 180,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: colorScheme.shadow.withValues(alpha: 0.1),
+                      blurRadius: 20,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+              ),
+              // Lottieアニメーション
+              SizedBox(
+                width: 180,
+                height: 180,
+                child: Lottie.asset(
+                  'assets/lottie/restaurant_search.json',
+                  fit: BoxFit.contain,
+                  repeat: true,
+                  animate: true,
+                  options: LottieOptions(
+                    enableMergePaths: true,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const Gap(4),
+          // メッセージテキスト
+          Text(
+            t.restaurant.emptyMessage,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              color: colorScheme.onSurface.withValues(alpha: 0.6),
+              height: 1.5,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// ヒント行のUI
+  Widget _buildHintRow(
+    BuildContext context,
+    IconData icon,
+    String text,
+    Color color,
+  ) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(
+          icon,
+          size: 18,
+          color: color,
+        ),
+        const Gap(8),
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 13,
+              color: color,
+              height: 1.3,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
