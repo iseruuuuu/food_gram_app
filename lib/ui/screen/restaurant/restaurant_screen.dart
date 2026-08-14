@@ -70,7 +70,6 @@ class RestaurantScreen extends HookConsumerWidget {
       resizeToAvoidBottomInset: false,
       body: GestureDetector(
         onTap: () {
-          // テキストフィールド以外をタップした時にキーボードを閉じる
           FocusScope.of(context).unfocus();
         },
         behavior: HitTestBehavior.translucent,
