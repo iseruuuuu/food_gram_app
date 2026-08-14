@@ -464,7 +464,7 @@ SPEC CHECKSUMS:
   app_tracking_transparency: 3d84f147f67ca82d3c15355c36b1fa6b66ca7c92
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   AppCheckCore: e215d35177a9cf469927863e69c13e220df32a8b
-  device_info_plus: 335f3ce08d2e174b9fdc3db3db0f4e3b1f66bd89
+  device_info_plus: 71ffc6ab7634ade6267c7a93088ed7e4f74e5896
   Firebase: d99ac19b909cd2c548339c2241ecd0d1599ab02e
   firebase_analytics: 0e25ca1d4001ccedd40b4e5b74c0ec34e18f6425
   firebase_core: 995454a784ff288be5689b796deb9e9fa3601818
@@ -540,4 +540,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 63df06fccb4a72a5f2dea19f70a14fdf65c95af1
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.17.0
