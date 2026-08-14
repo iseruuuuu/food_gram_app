@@ -39,7 +39,7 @@ class AppPremiumMembershipCard extends ConsumerWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(
+                      const FaIcon(
                         FontAwesomeIcons.crown,
                         color: Colors.yellow,
                         size: 22,
@@ -50,7 +50,7 @@ class AppPremiumMembershipCard extends ConsumerWidget {
                         style: SettingStyle.premium(),
                       ),
                       const Gap(18),
-                      const Icon(
+                      const FaIcon(
                         FontAwesomeIcons.crown,
                         color: Colors.yellow,
                         size: 22,
