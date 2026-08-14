@@ -79,7 +79,9 @@ class AppSearchTextField extends HookWidget {
                       .textTheme
                       .bodyMedium!
                       .copyWith(color: hintColor),
-                  label: Text(Translations.of(context).app.restaurantLabel),
+                  label: Text(
+                    Translations.of(context).restaurant.searchPlaceholder,
+                  ),
                   labelStyle: Theme.of(context)
                       .textTheme
                       .bodyMedium!

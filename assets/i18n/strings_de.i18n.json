@@ -273,6 +273,16 @@
     "emptyHintLocation": "Aktivieren Sie den Standort, um zuerst nahegelegene Ergebnisse anzuzeigen",
     "emptyHintSearch": "Suchen Sie nach Restaurantname oder Küchentyp"
   },
+  "restaurant": {
+    "searchTitle": "Search Restaurants",
+    "searchPlaceholder": "Search by name or cuisine",
+    "unknownChip": "Unknown・No Hits",
+    "emptyMessage": "Search by restaurant name or cuisine\nto find places to eat",
+    "hintsTitle": "Search Tips",
+    "hintLocation": "Turn on location for more accurate search results",
+    "hintCuisine": "You can search by cuisine like \"Ramen\" or \"Cafe\"",
+    "hintHistory": "Recently searched restaurants can be found in history"
+  },
   "profile": {
     "postCount": "Beiträge",
     "pointCount": "Punkte",

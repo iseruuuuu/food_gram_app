@@ -273,6 +273,16 @@
     "emptyHintLocation": "开启位置信息可优先显示附近结果",
     "emptyHintSearch": "可通过餐厅名称或菜系类型搜索"
   },
+  "restaurant": {
+    "searchTitle": "搜索餐厅",
+    "searchPlaceholder": "按店名・菜名搜索",
+    "unknownChip": "未知・无结果",
+    "emptyMessage": "通过店名或菜名搜索\n找到想去的餐厅",
+    "hintsTitle": "搜索提示",
+    "hintLocation": "开启位置信息可获得更准确的搜索结果",
+    "hintCuisine": "可以用「拉面」「咖啡厅」等料理名搜索",
+    "hintHistory": "可在历史记录中查看最近搜索的店铺"
+  },
   "profile": {
     "postCount": "帖子",
     "pointCount": "积分",
