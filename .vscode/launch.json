@@ -58,6 +58,35 @@
             "args": [
                 "--device-connection=attached"
             ]
+        },
+        {
+            "name": "Debug dev (iOS / iPhone)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "00008101-0008498A2E2B001E",
+            "args": [
+                "--dart-define-from-file=dart_defines/dev.env"
+            ]
+        },
+        {
+            "name": "Debug prod (iOS / iPhone)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "00008101-0008498A2E2B001E",
+            "args": [
+                "--dart-define-from-file=dart_defines/prod.env"
+            ]
+        },
+        {
+            "name": "Attach dev (iOS / iPhone)",
+            "request": "attach",
+            "type": "dart",
+            "deviceId": "00008101-0008498A2E2B001E",
+            "args": [
+                "--device-connection=attached"
+            ]
         }
     ]
 }
