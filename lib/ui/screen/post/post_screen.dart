@@ -39,7 +39,6 @@ class PostScreen extends HookConsumerWidget {
     // 複数画像編集で2枚目以降も開くため、常に有効な context（build の context）を渡す
     final navigatorContext = context;
     final t = Translations.of(context);
-    final deviceWidth = MediaQuery.of(context).size.width;
     final postState = ref.watch(
       postViewModelProvider().select(
         (s) => (
@@ -165,10 +164,6 @@ class PostScreen extends HookConsumerWidget {
         nearbyTrigger.status,
       ],
     );
-    // プレビューサイズに合わせて縮小デコード（物理解像度で指定）
-    final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    final previewWidth = (deviceWidth * 0.85 * devicePixelRatio).round();
-    final previewHeight = (deviceWidth / 2.05 * devicePixelRatio).round();
     final viewModel = ref.read(postViewModelProvider().notifier);
     const requiredAccent = PostStyle.requiredAccent;
     const optionalAccent = PostStyle.optionalAccent;
@@ -250,9 +245,6 @@ class PostScreen extends HookConsumerWidget {
                           const Gap(14),
                           PostPhotoArea(
                             foodImages: postState.foodImages,
-                            deviceWidth: deviceWidth,
-                            previewWidth: previewWidth,
-                            previewHeight: previewHeight,
                             onAddPhoto: openImagePicker,
                             onRemoveImage: viewModel.removeImage,
                             accent: requiredAccent,
