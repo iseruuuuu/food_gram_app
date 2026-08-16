@@ -41,8 +41,9 @@ class EditPostScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final deviceWidth = MediaQuery.of(context).size.width;
     final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    final previewWidth = (deviceWidth * 0.85 * devicePixelRatio).round();
-    final previewHeight = (deviceWidth / 1.7 * devicePixelRatio).round();
+    final previewSize = deviceWidth - 30;
+    // cacheWidth のみ指定して縦横比を維持する（両方指定すると画像が歪む）
+    final previewCacheWidth = (previewSize * devicePixelRatio).round();
     final loading = ref.watch(loadingProvider);
     final status =
         ref.watch(editPostViewModelProvider().select((s) => s.status));
@@ -153,7 +154,7 @@ class EditPostScreen extends HookConsumerWidget {
                             key: ValueKey(
                               'existing_${existingImagePaths.join('|')}',
                             ),
-                            height: deviceWidth / 1.7,
+                            height: previewSize,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: existingImagePaths.length,
@@ -187,8 +188,8 @@ class EditPostScreen extends HookConsumerWidget {
                                           border:
                                               Border.all(color: Colors.black87),
                                         ),
-                                        width: deviceWidth * 0.85,
-                                        height: deviceWidth / 1.7,
+                                        width: previewSize,
+                                        height: previewSize,
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(8),
@@ -203,8 +204,7 @@ class EditPostScreen extends HookConsumerWidget {
                                               : CachedNetworkImage(
                                                   imageUrl: existingImageUrl,
                                                   fit: BoxFit.cover,
-                                                  memCacheWidth: previewWidth,
-                                                  memCacheHeight: previewHeight,
+                                                  memCacheWidth: previewCacheWidth,
                                                 ),
                                         ),
                                       ),
@@ -255,7 +255,7 @@ class EditPostScreen extends HookConsumerWidget {
                         if (foodImages.isNotEmpty)
                           SizedBox(
                             key: ValueKey('food_${foodImages.join('|')}'),
-                            height: deviceWidth / 1.7,
+                            height: previewSize,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: foodImages.length,
@@ -281,8 +281,8 @@ class EditPostScreen extends HookConsumerWidget {
                                           border:
                                               Border.all(color: Colors.black87),
                                         ),
-                                        width: deviceWidth * 0.85,
-                                        height: deviceWidth / 1.7,
+                                        width: previewSize,
+                                        height: previewSize,
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(8),
@@ -296,9 +296,10 @@ class EditPostScreen extends HookConsumerWidget {
                                                 )
                                               : Image.file(
                                                   File(imagePath),
+                                                  width: previewSize,
+                                                  height: previewSize,
                                                   fit: BoxFit.cover,
-                                                  cacheWidth: previewWidth,
-                                                  cacheHeight: previewHeight,
+                                                  cacheWidth: previewCacheWidth,
                                                   filterQuality:
                                                       FilterQuality.high,
                                                 ),
@@ -393,8 +394,8 @@ class EditPostScreen extends HookConsumerWidget {
                                     border:
                                         Border.all(color: placeholderBorder),
                                   ),
-                                  width: deviceWidth,
-                                  height: deviceWidth / 1.7,
+                                  width: previewSize,
+                                  height: previewSize,
                                   child: foodImageUrl.isNotEmpty
                                       ? ClipRRect(
                                           borderRadius:
@@ -402,8 +403,7 @@ class EditPostScreen extends HookConsumerWidget {
                                           child: CachedNetworkImage(
                                             imageUrl: foodImageUrl,
                                             fit: BoxFit.cover,
-                                            memCacheWidth: previewWidth,
-                                            memCacheHeight: previewHeight,
+                                            memCacheWidth: previewCacheWidth,
                                           ),
                                         )
                                       : Icon(

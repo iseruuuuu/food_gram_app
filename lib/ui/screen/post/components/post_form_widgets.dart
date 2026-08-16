@@ -288,9 +288,6 @@ class PostTextInputField extends StatelessWidget {
 class PostPhotoArea extends StatelessWidget {
   const PostPhotoArea({
     required this.foodImages,
-    required this.deviceWidth,
-    required this.previewWidth,
-    required this.previewHeight,
     required this.onAddPhoto,
     required this.onRemoveImage,
     required this.accent,
@@ -299,9 +296,6 @@ class PostPhotoArea extends StatelessWidget {
   });
 
   final List<String> foodImages;
-  final double deviceWidth;
-  final int previewWidth;
-  final int previewHeight;
   final VoidCallback onAddPhoto;
   final ValueChanged<String> onRemoveImage;
   final Color accent;
@@ -310,114 +304,125 @@ class PostPhotoArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
-    if (foodImages.isEmpty) {
-      return GestureDetector(
-        onTap: onAddPhoto,
-        child: Container(
-          width: double.infinity,
-          height: deviceWidth / 2.05,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: PostStyle.photoAreaBorder(context, borderColor),
-              width: 1.5,
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.add_a_photo_outlined,
-                size: 36,
-                color: accent,
-              ),
-              const Gap(8),
-              Text(
-                t.post.addPhotoRequired,
-                style: PostStyle.fieldLabel(accent),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    return SizedBox(
-      height: deviceWidth / 2.05,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: foodImages.length + 1,
-        itemBuilder: (context, index) {
-          if (index == foodImages.length) {
-            return Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: GestureDetector(
-                onTap: onAddPhoto,
-                child: Container(
-                  width: 80,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: PostStyle.photoAreaBorder(context, borderColor),
-                      width: 1.5,
-                    ),
-                  ),
-                  child: Icon(Icons.add, size: 32, color: accent),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final tileSize = constraints.maxWidth;
+        // cacheWidth のみ指定して縦横比を維持する（両方指定すると画像が歪む）
+        final cacheWidth =
+            (tileSize * MediaQuery.devicePixelRatioOf(context)).round();
+        if (foodImages.isEmpty) {
+          return GestureDetector(
+            onTap: onAddPhoto,
+            child: Container(
+              width: tileSize,
+              height: tileSize,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: PostStyle.photoAreaBorder(context, borderColor),
+                  width: 1.5,
                 ),
               ),
-            );
-          }
-
-          final imagePath = foodImages[index];
-          return Padding(
-            padding: EdgeInsets.only(right: index < foodImages.length ? 10 : 0),
-            child: Stack(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: borderColor),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.add_a_photo_outlined,
+                    size: 36,
+                    color: accent,
                   ),
-                  width: deviceWidth * 0.75,
-                  height: deviceWidth / 2.05,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.file(
-                      File(imagePath),
-                      fit: BoxFit.cover,
-                      cacheWidth: previewWidth,
-                      cacheHeight: previewHeight,
-                      filterQuality: FilterQuality.high,
-                    ),
+                  const Gap(8),
+                  Text(
+                    t.post.addPhotoRequired,
+                    style: PostStyle.fieldLabel(accent),
                   ),
-                ),
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: GestureDetector(
-                    onTap: () => onRemoveImage(imagePath),
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.close,
-                        size: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
-        },
-      ),
+        }
+
+        return SizedBox(
+          height: tileSize,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: foodImages.length + 1,
+            itemBuilder: (context, index) {
+              if (index == foodImages.length) {
+                return Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: GestureDetector(
+                    onTap: onAddPhoto,
+                    child: Container(
+                      width: 80,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: PostStyle.photoAreaBorder(context, borderColor),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Icon(Icons.add, size: 32, color: accent),
+                    ),
+                  ),
+                );
+              }
+
+              final imagePath = foodImages[index];
+              return Padding(
+                padding: EdgeInsets.only(
+                  right: index < foodImages.length ? 10 : 0,
+                ),
+                child: Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: borderColor),
+                      ),
+                      width: tileSize,
+                      height: tileSize,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.file(
+                          File(imagePath),
+                          width: tileSize,
+                          height: tileSize,
+                          fit: BoxFit.cover,
+                          cacheWidth: cacheWidth,
+                          filterQuality: FilterQuality.high,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: GestureDetector(
+                        onTap: () => onRemoveImage(imagePath),
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.close,
+                            size: 18,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
