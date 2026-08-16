@@ -306,47 +306,51 @@ class PostPhotoArea extends StatelessWidget {
     final t = Translations.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
-        final tileSize = constraints.maxWidth;
+        final tileSize = constraints.maxWidth * 0.75;
         // cacheWidth のみ指定して縦横比を維持する（両方指定すると画像が歪む）
         final cacheWidth =
             (tileSize * MediaQuery.devicePixelRatioOf(context)).round();
         if (foodImages.isEmpty) {
-          return GestureDetector(
-            onTap: onAddPhoto,
-            child: Container(
-              width: tileSize,
-              height: tileSize,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: PostStyle.photoAreaBorder(context, borderColor),
-                  width: 1.5,
+          return Center(
+            child: GestureDetector(
+              onTap: onAddPhoto,
+              child: Container(
+                width: tileSize,
+                height: tileSize,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: PostStyle.photoAreaBorder(context, borderColor),
+                    width: 1.5,
+                  ),
                 ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.add_a_photo_outlined,
-                    size: 36,
-                    color: accent,
-                  ),
-                  const Gap(8),
-                  Text(
-                    t.post.addPhotoRequired,
-                    style: PostStyle.fieldLabel(accent),
-                  ),
-                ],
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.add_a_photo_outlined,
+                      size: 36,
+                      color: accent,
+                    ),
+                    const Gap(8),
+                    Text(
+                      t.post.addPhotoRequired,
+                      style: PostStyle.fieldLabel(accent),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
         }
 
+        final sideInset = (constraints.maxWidth - tileSize) / 2;
         return SizedBox(
           height: tileSize,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.symmetric(horizontal: sideInset),
             itemCount: foodImages.length + 1,
             itemBuilder: (context, index) {
               if (index == foodImages.length) {

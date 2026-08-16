@@ -41,7 +41,8 @@ class EditPostScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final deviceWidth = MediaQuery.of(context).size.width;
     final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    final previewSize = deviceWidth - 30;
+    final previewSize = (deviceWidth - 30) * 0.75;
+    final previewSideInset = ((deviceWidth - 30) - previewSize) / 2;
     // cacheWidth のみ指定して縦横比を維持する（両方指定すると画像が歪む）
     final previewCacheWidth = (previewSize * devicePixelRatio).round();
     final loading = ref.watch(loadingProvider);
@@ -157,6 +158,9 @@ class EditPostScreen extends HookConsumerWidget {
                             height: previewSize,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: previewSideInset,
+                              ),
                               itemCount: existingImagePaths.length,
                               itemBuilder: (context, index) {
                                 final imagePath = existingImagePaths[index];
@@ -258,6 +262,9 @@ class EditPostScreen extends HookConsumerWidget {
                             height: previewSize,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: previewSideInset,
+                              ),
                               itemCount: foodImages.length,
                               itemBuilder: (context, index) {
                                 final imagePath = foodImages[index];
@@ -360,8 +367,9 @@ class EditPostScreen extends HookConsumerWidget {
                                   isDark ? Colors.white54 : Colors.black87;
                               final plusIconColor =
                                   isDark ? Colors.white : Colors.black;
-                              return GestureDetector(
-                                onTap: () async {
+                              return Center(
+                                child: GestureDetector(
+                                  onTap: () async {
                                   primaryFocus?.unfocus();
                                   await showModalBottomSheet<void>(
                                     context: navigatorContext,
@@ -412,7 +420,8 @@ class EditPostScreen extends HookConsumerWidget {
                                           color: plusIconColor,
                                         ),
                                 ),
-                              );
+                              ),
+                            );
                             },
                           ),
                       ],
