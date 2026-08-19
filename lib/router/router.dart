@@ -113,6 +113,7 @@ GoRouter router(Ref ref) {
           imageEditorRoute,
           monthlySummaryRoute,
           weeklySummaryRoute,
+          recordYearlyPostsRoute,
           timeLineRouter,
           mapRouter,
           myProfileRouter,
@@ -142,6 +143,29 @@ final monthlySummaryRoute = GoRoute(
       const MonthlySummaryScreen(),
       key: state.pageKey,
       name: AnalyticsScreen.monthlySummary,
+    );
+  },
+);
+
+final recordYearlyPostsRoute = GoRoute(
+  path: RouterPath.recordYearlyPosts,
+  name: RouterPath.recordYearlyPosts,
+  pageBuilder: (context, state) {
+    final extra = state.extra;
+    if (extra is! RecordYearlyPostsExtra) {
+      return slideUpTransition(
+        const Scaffold(body: RouterErrorWidget()),
+        key: state.pageKey,
+      );
+    }
+    return slideUpTransition(
+      RecordYearlyPostsScreen(
+        year: extra.year,
+        title: extra.title,
+        posts: extra.posts,
+      ),
+      key: state.pageKey,
+      name: AnalyticsScreen.recordYearlyPosts,
     );
   },
 );
@@ -215,4 +239,5 @@ final class RouterPath {
   // /tab
   static const String weeklySummary = 'weekly_summary';
   static const String monthlySummary = 'monthly_summary';
+  static const String recordYearlyPosts = 'record_yearly_posts';
 }
