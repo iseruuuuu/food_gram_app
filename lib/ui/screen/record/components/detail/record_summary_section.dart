@@ -63,32 +63,11 @@ class RecordSummarySection extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.location_on,
-                      color: Color(0xFFEF4444),
-                      size: 24,
-                    ),
-                    const Gap(6),
-                    Flexible(
-                      child: Text(
-                        t.myMapRecord.footprintTitle,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const Gap(4),
                 Text(
-                  t.myMapRecord.footprintSubtitle,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: isDark ? Colors.white60 : Colors.black54,
-                    fontWeight: FontWeight.w600,
+                  t.myMapRecord.footprintTitle,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const Gap(14),
@@ -164,36 +143,27 @@ class _JourneyStatColumn extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 4),
         child: Column(
           children: [
-            Container(
-              width: 44,
-              height: 44,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: accent.withValues(alpha: isDark ? 0.2 : 0.12),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                icon,
-                color: accent,
-                size: 22,
-              ),
+            Icon(
+              icon,
+              color: accent,
+              size: 32,
             ),
-            const Gap(10),
+            const Gap(4),
             FittedBox(
               child: Text(
                 value,
                 style: TextStyle(
-                  fontSize: 22,
+                  fontSize: 20,
                   fontWeight: FontWeight.w900,
                   color: accent,
                   height: 1,
                 ),
               ),
             ),
-            const Gap(6),
+            const Gap(4),
             Text(
               label,
               maxLines: 1,

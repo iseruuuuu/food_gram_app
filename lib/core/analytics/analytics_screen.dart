@@ -37,6 +37,7 @@ abstract final class AnalyticsScreen {
   static const restaurantMap = 'RestaurantMap';
   static const weeklySummary = 'WeeklySummary';
   static const monthlySummary = 'MonthlySummary';
+  static const recordYearlyPosts = 'RecordYearlyPosts';
 
   static const Set<String> all = {
     splash,
@@ -70,6 +71,7 @@ abstract final class AnalyticsScreen {
     restaurantMap,
     weeklySummary,
     monthlySummary,
+    recordYearlyPosts,
   };
 
   /// GoRouter の RouterPath（snake_case）→ Analytics screen_name
@@ -120,6 +122,7 @@ abstract final class AnalyticsScreen {
     'restaurant_map_map': restaurantMap,
     'weekly_summary': weeklySummary,
     'monthly_summary': monthlySummary,
+    'record_yearly_posts': recordYearlyPosts,
     'image_editor': imageEditor,
   };
 

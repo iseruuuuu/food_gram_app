@@ -127,6 +127,24 @@ int recordLongestDailyStreak(List<Posts> posts) {
   return longest;
 }
 
+/// 連続記録が今日または昨日まで続いているか（ハイライトの「記録更新中」判定）
+bool recordIsDailyStreakUpdating(List<Posts> posts) {
+  if (posts.isEmpty) {
+    return false;
+  }
+  final days = posts
+      .map(
+        (p) =>
+            DateTime.utc(p.createdAt.year, p.createdAt.month, p.createdAt.day),
+      )
+      .toSet()
+      .toList()
+    ..sort();
+  final now = DateTime.now();
+  final today = DateTime.utc(now.year, now.month, now.day);
+  return today.difference(days.last).inDays <= 1;
+}
+
 /// 先月と比べた今月の投稿数の増加率（%）。先月が0件の場合はnull。
 int? recordMonthlyGrowthPercent(List<Posts> posts) {
   final now = DateTime.now();

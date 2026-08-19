@@ -2,16 +2,17 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/post/analyzer/record_food_traits_analyzer.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/component/food_tag_icon.dart';
 import 'package:gap/gap.dart';
 
-/// 記録タブ：プレミアム向けの「食の旅のハイライト」カード群
+/// 記録タブ：プレミアム向けの「食のハイライト」カード群
 class RecordFoodTraitsSection extends StatelessWidget {
   const RecordFoodTraitsSection({
     required this.posts,
     required this.cardColor,
-    required this.mutedColor,
     required this.isSubscribed,
     required this.onTapPremiumCta,
     super.key,
@@ -19,32 +20,35 @@ class RecordFoodTraitsSection extends StatelessWidget {
 
   final List<Posts> posts;
   final Color cardColor;
-  final Color mutedColor;
   final bool isSubscribed;
   final VoidCallback onTapPremiumCta;
 
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final summary = analyzeRecordFoodTraits(posts);
     final total = summary.totalPosts == 0 ? 1 : summary.totalPosts;
     final newShopsThisYear = recordNewShopsThisYear(posts);
     final longestStreak = recordLongestDailyStreak(posts);
+    final isStreakUpdating = recordIsDailyStreakUpdating(posts);
+    final topFoodId = summary.topGenre;
+    final topFoodLabel = topFoodId == null
+        ? t.myMapRecord.foodTraits.noData
+        : getLocalizedFoodName(topFoodId, context);
     final highlights = [
       _HighlightItem(
-        icon: '🍜',
-        accent: const Color(0xFFEA4335),
+        background: isDark ? const Color(0xFF1A2740) : const Color(0xFFE8F2FC),
         title: t.myMapRecord.mostEatenFoodTitle,
-        value: summary.topGenre ?? t.myMapRecord.foodTraits.noData,
-        valueFontSize: 26,
-        sub: summary.topGenre == null
+        value: topFoodLabel,
+        sub: topFoodId == null
             ? null
             : t.myMapRecord.foodCountUnit
                 .replaceAll('{count}', '${summary.topGenreCount}'),
+        trailing: _FoodTrailing(tagId: topFoodId),
       ),
       _HighlightItem(
-        icon: '🕐',
-        accent: const Color(0xFFF59E0B),
+        background: isDark ? const Color(0xFF241E38) : const Color(0xFFEEE8F8),
         title: t.myMapRecord.eatingTimeTitle,
         value: summary.topTimeSlot == null
             ? t.myMapRecord.foodTraits.noData
@@ -55,105 +59,109 @@ class RecordFoodTraitsSection extends StatelessWidget {
                 '{percent}',
                 '${recordFoodTraitsRatio(summary.topTimeCount, total)}',
               ),
+        trailing: _EmojiTrailing(
+          emoji: _timeSlotEmoji(summary.topTimeSlot),
+        ),
       ),
       _HighlightItem(
-        icon: '🏪',
-        accent: const Color(0xFF3B82F6),
+        background: isDark ? const Color(0xFF2A2218) : const Color(0xFFFFF0E4),
         title: t.myMapRecord.newShopsTitle,
         value: t.myMapRecord.newShopsThisYear
             .replaceAll('{count}', '$newShopsThisYear'),
         sub: t.myMapRecord.explorationRateShort
             .replaceAll('{percent}', '${summary.explorationRatio}'),
+        trailing: const _EmojiTrailing(emoji: '🏪'),
       ),
       _HighlightItem(
-        icon: '🔥',
-        accent: const Color(0xFFA855F7),
+        background: isDark ? const Color(0xFF2A2718) : const Color(0xFFFFF6D8),
         title: t.myMapRecord.longestRecordTitle,
         value: t.myMapRecord.streakDaysValue
             .replaceAll('{days}', '$longestStreak'),
-        sub: t.myMapRecord.streakUpdating,
+        sub: isStreakUpdating
+            ? t.myMapRecord.streakUpdating
+            : t.myMapRecord.streakPersonalBest,
+        subColor: isStreakUpdating ? const Color(0xFFF97316) : null,
+        trailing: const _EmojiTrailing(emoji: '📅'),
       ),
     ];
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: cardColor,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 16,
-              offset: const Offset(0, 5),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            t.myMapRecord.highlightsTitle,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
             ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                const Text('👑', style: TextStyle(fontSize: 17)),
-                const Gap(6),
-                Text(
-                  t.myMapRecord.highlightsTitle,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
+          ),
+          const Gap(12),
+          Stack(
+            children: [
+              GridView.count(
+                padding: EdgeInsets.zero,
+                crossAxisCount: 2,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 1.38,
+                children: highlights
+                    .map((item) => _HighlightCard(item: item))
+                    .toList(),
+              ),
+              if (!isSubscribed)
+                Positioned.fill(
+                  child: _NonSubscriberOverlay(
+                    t: t,
+                    onTapPremiumCta: onTapPremiumCta,
                   ),
                 ),
-              ],
-            ),
-            const Gap(12),
-            Stack(
-              children: [
-                GridView.count(
-                  padding: EdgeInsets.zero,
-                  crossAxisCount: 2,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 1.5,
-                  children: highlights
-                      .map((item) => _HighlightCard(item: item))
-                      .toList(),
-                ),
-                if (!isSubscribed)
-                  Positioned.fill(
-                    child: _NonSubscriberOverlay(
-                      t: t,
-                      onTapPremiumCta: onTapPremiumCta,
-                    ),
-                  ),
-              ],
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
     );
   }
 }
 
+String _timeSlotEmoji(RecordMealTimeSlot? slot) {
+  return switch (slot) {
+    RecordMealTimeSlot.evening || RecordMealTimeSlot.lateNight => '🌙',
+    _ => '☀️',
+  };
+}
+
 class _HighlightItem {
   const _HighlightItem({
-    required this.icon,
-    required this.accent,
+    required this.background,
     required this.title,
     required this.value,
+    required this.trailing,
     this.sub,
-    this.valueFontSize = 17,
+    this.subColor,
   });
 
-  final String icon;
-  final Color accent;
+  final Color background;
   final String title;
   final String value;
   final String? sub;
-  final double valueFontSize;
+  final Color? subColor;
+  final Widget trailing;
 }
 
 class _HighlightCard extends StatelessWidget {
@@ -164,52 +172,103 @@ class _HighlightCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final muted = isDark ? Colors.white60 : Colors.black;
     return Container(
-      padding: const EdgeInsets.all(11),
+      padding: const EdgeInsets.fromLTRB(12, 12, 10, 10),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1D1D1D) : const Color(0xFFF8FAFC),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: isDark ? Colors.white10 : const Color(0xFFECECEC),
-        ),
+        color: item.background,
+        borderRadius: BorderRadius.circular(16),
       ),
-      child: Column(
+      child: Row(
         children: [
-          Text(
-            item.title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              color: isDark ? Colors.white60 : Colors.black54,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FittedBox(
+                  child: Text(
+                    item.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: muted,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  item.value,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    height: 1.2,
+                  ),
+                ),
+                if (item.sub != null) ...[
+                  const Spacer(),
+                  FittedBox(
+                    child: Text(
+                      item.sub!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: item.subColor ?? muted,
+                      ),
+                    ),
+                  ),
+                ],
+              ],
             ),
           ),
-          const Gap(9),
-          Text(
-            item.value,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: item.valueFontSize,
-              fontWeight: FontWeight.w900,
-              height: 1.1,
-            ),
-          ),
-          if (item.sub != null) ...[
-            const Gap(6),
-            Text(
-              item.sub!,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 10.5,
-                fontWeight: FontWeight.w700,
-                color: item.accent,
-              ),
-            ),
-          ],
+          const Gap(4),
+          item.trailing,
         ],
+      ),
+    );
+  }
+}
+
+class _FoodTrailing extends StatelessWidget {
+  const _FoodTrailing({required this.tagId});
+
+  final String? tagId;
+
+  @override
+  Widget build(BuildContext context) {
+    if (tagId == null) {
+      return const _EmojiTrailing(emoji: '🍽️');
+    }
+    return SizedBox(
+      width: 50,
+      height: 50,
+      child: FoodTagIcon(
+        tagId: tagId!,
+        size: 40,
+        textStyle: const TextStyle(fontSize: 30),
+        centerText: true,
+      ),
+    );
+  }
+}
+
+class _EmojiTrailing extends StatelessWidget {
+  const _EmojiTrailing({required this.emoji});
+
+  final String emoji;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 50,
+      height: 50,
+      child: Center(
+        child: Text(emoji, style: const TextStyle(fontSize: 30)),
       ),
     );
   }
@@ -228,7 +287,7 @@ class _NonSubscriberOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return ClipRRect(
-      borderRadius: BorderRadius.circular(14),
+      borderRadius: BorderRadius.circular(16),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
         child: Container(
