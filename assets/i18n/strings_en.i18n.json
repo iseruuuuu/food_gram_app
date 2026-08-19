@@ -415,6 +415,7 @@
   },
   "myMapRecord": {
     "yearlyTitle": "Year in review",
+    "yearLabel": "{year}",
     "recentTitle": "Popular posts",
     "noPostsYet": "Nothing posted yet",
     "countUnit": "items",

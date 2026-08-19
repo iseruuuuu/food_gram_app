@@ -416,6 +416,7 @@
   },
   "myMapRecord": {
     "yearlyTitle": "年度紀錄",
+    "yearLabel": "{year}年",
     "recentTitle": "熱門投稿",
     "noPostsYet": "尚無貼文",
     "countUnit": "筆",

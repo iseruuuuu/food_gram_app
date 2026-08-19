@@ -416,6 +416,7 @@
   },
   "myMapRecord": {
     "yearlyTitle": "Registros anuales",
+    "yearLabel": "{year}",
     "recentTitle": "Publicaciones populares",
     "noPostsYet": "Aún no hay publicaciones",
     "countUnit": "elementos",

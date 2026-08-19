@@ -415,6 +415,7 @@
   },
   "myMapRecord": {
     "yearlyTitle": "年間の記録",
+    "yearLabel": "{year}年",
     "recentTitle": "人気の投稿",
     "noPostsYet": "まだ投稿がありません",
     "countUnit": "件",

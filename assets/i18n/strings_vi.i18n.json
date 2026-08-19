@@ -416,6 +416,7 @@
   },
   "myMapRecord": {
     "yearlyTitle": "Tổng kết theo năm",
+    "yearLabel": "Năm {year}",
     "recentTitle": "Bài viết phổ biến",
     "noPostsYet": "Chưa có bài đăng nào",
     "countUnit": "mục",
