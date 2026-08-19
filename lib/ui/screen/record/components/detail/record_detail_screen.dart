@@ -7,16 +7,21 @@ import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/analyzer/record_food_traits_analyzer.dart';
+import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_food_traits_section.dart';
-import 'package:food_gram_app/ui/screen/record/components/detail/record_recent_section.dart';
+import 'package:food_gram_app/ui/screen/record/components/detail/record_intro_section.dart';
+import 'package:food_gram_app/ui/screen/record/components/detail/record_journey_map_section.dart';
+import 'package:food_gram_app/ui/screen/record/components/detail/record_memories_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_summary_section.dart';
-import 'package:food_gram_app/ui/screen/record/components/detail/record_today_memories_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_yearly_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/record_tab.dart';
 import 'package:food_gram_app/ui/screen/record/record_view_model.dart';
+import 'package:food_gram_app/ui/screen/record/record_yearly_posts_screen.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// 記録タブの全体のUI
@@ -59,89 +64,181 @@ class RecordDetailScreen extends HookConsumerWidget {
       },
       const [],
     );
+    final selectedYear = useState<int?>(null);
+    final pastMemoriesKey = useMemoized(GlobalKey.new);
     final isSubscribe = ref.watch(isSubscribeProvider).valueOrNull ?? false;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = isDark ? const Color(0xFF161616) : Colors.white;
     final mutedColor = isDark ? Colors.white70 : Colors.black54;
     final recentPosts = [...posts]
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    final mostLiked3 = ([...posts]
+    final featuredIds =
+        recordFeaturedMemoryPosts(posts).map((post) => post.id).toSet();
+    final pastPosts =
+        recentPosts.where((post) => !featuredIds.contains(post.id)).toList()
           ..sort((a, b) {
             final heartCompare = b.heart.compareTo(a.heart);
             if (heartCompare != 0) {
               return heartCompare;
             }
             return b.createdAt.compareTo(a.createdAt);
-          }))
-        .take(3)
-        .toList();
+          });
+    final displayedPastPosts = selectedYear.value == null
+        ? pastPosts
+        : (recentPosts
+              .where((post) => post.createdAt.year == selectedYear.value)
+              .toList()
+            ..sort((a, b) {
+              final heartCompare = b.heart.compareTo(a.heart);
+              if (heartCompare != 0) {
+                return heartCompare;
+              }
+              return b.createdAt.compareTo(a.createdAt);
+            }));
     final yearlyCounts = <int, int>{};
     for (final post in posts) {
       final year = post.createdAt.year;
       yearlyCounts[year] = (yearlyCounts[year] ?? 0) + 1;
     }
-    final sortedYears = yearlyCounts.keys.toList()..sort();
+    final sortedYears = yearlyCounts.keys.toList()
+      ..sort((a, b) => b.compareTo(a));
     final uniqueShops = _countUniqueRestaurants(posts);
     final monthlyGrowth = recordMonthlyGrowthPercent(posts);
     final selectorTop = recordMapOverlayTopForContext(context);
     const viewTypeTabHeight = 68.0;
+    const bottomPadding = 96.0;
     return Stack(
       children: [
-        SingleChildScrollView(
-          controller: scrollController,
-          padding:
-              EdgeInsets.fromLTRB(16, selectorTop + viewTypeTabHeight, 16, 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RecordTodayMemoriesSection(
-                posts: posts,
+        if (posts.isEmpty)
+          Positioned.fill(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                16,
+                selectorTop + viewTypeTabHeight,
+                16,
+                bottomPadding,
               ),
-              const Gap(14),
-              RecordSummarySection(
-                mealsCount: posts.length,
-                shopsCount: uniqueShops,
-                prefecturesCount: recordVisitedPrefecturesCount(posts),
-                countriesCount: recordVisitedCountriesCount(posts),
-              ),
-              const Gap(14),
-              RecordFoodTraitsSection(
-                posts: posts,
-                cardColor: cardColor,
-                mutedColor: mutedColor,
-                isSubscribed: isSubscribe,
-                onTapPremiumCta: () {
-                  ref
-                      .read(firebaseAnalyticsServiceProvider)
-                      .logPremiumFeatureTap(
-                        AnalyticsEvent.premiumRankingTap,
+              child: RecordEmptySection(
+                onRecordTap: () async {
+                  ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                        name: AnalyticsEvent.recordPostOpen,
                       );
-                  ref
-                      .read(revenueCatServiceProvider.notifier)
-                      .presentPaywallGuarded();
+                  final result = await context.pushNamed(
+                    RouterPath.timeLinePost,
+                  );
+                  if (result == null || !context.mounted) {
+                    return;
+                  }
+                  ref.invalidate(myMapRepositoryProvider);
                 },
               ),
-              if (monthlyGrowth != null && monthlyGrowth > 0) ...[
-                const Gap(14),
-                _MonthlyGrowthBanner(percent: monthlyGrowth),
-              ],
-              const Gap(14),
-              RecordYearlySection(
-                cardColor: cardColor,
-                mutedColor: mutedColor,
-                sortedYears: sortedYears,
-                yearlyCounts: yearlyCounts,
-                recentPosts: recentPosts,
-              ),
-              const Gap(14),
-              RecordRecentSection(
-                cardColor: cardColor,
-                mutedColor: mutedColor,
-                latestPosts: mostLiked3,
+            ),
+          )
+        else
+          CustomScrollView(
+            controller: scrollController,
+            slivers: [
+              SliverPadding(
+                padding: EdgeInsets.fromLTRB(
+                  16,
+                  selectorTop + viewTypeTabHeight,
+                  16,
+                  bottomPadding,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const RecordWelcomeSection(),
+                      const Gap(8),
+                      RecordTodayMemoriesSection(posts: posts),
+                      const Gap(14),
+                      RecordSummarySection(
+                        mealsCount: posts.length,
+                        shopsCount: uniqueShops,
+                        prefecturesCount: recordVisitedPrefecturesCount(posts),
+                        countriesCount: recordVisitedCountriesCount(posts),
+                      ),
+                      const Gap(14),
+                      RecordJourneyMapSection(
+                        posts: posts,
+                        cardColor: cardColor,
+                        onSeeMore: () {
+                          ref
+                              .read(recordViewModelProvider.notifier)
+                              .changeViewType(MapViewType.world);
+                        },
+                      ),
+                      const Gap(14),
+                      RecordFoodTraitsSection(
+                        posts: posts,
+                        cardColor: cardColor,
+                        isSubscribed: isSubscribe,
+                        onTapPremiumCta: () {
+                          ref
+                              .read(firebaseAnalyticsServiceProvider)
+                              .logPremiumFeatureTap(
+                                AnalyticsEvent.premiumRankingTap,
+                              );
+                          ref
+                              .read(revenueCatServiceProvider.notifier)
+                              .presentPaywallGuarded();
+                        },
+                      ),
+                      if (monthlyGrowth != null && monthlyGrowth > 0) ...[
+                        const Gap(14),
+                        _MonthlyGrowthBanner(percent: monthlyGrowth),
+                      ],
+                      const Gap(14),
+                      RecordYearlySection(
+                        cardColor: cardColor,
+                        mutedColor: mutedColor,
+                        sortedYears: sortedYears,
+                        yearlyCounts: yearlyCounts,
+                        recentPosts: recentPosts,
+                        selectedYear: selectedYear.value,
+                        onYearSelected: (year) {
+                          selectedYear.value =
+                              selectedYear.value == year ? null : year;
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            final target = pastMemoriesKey.currentContext;
+                            if (target == null) {
+                              return;
+                            }
+                            Scrollable.ensureVisible(
+                              target,
+                              duration: const Duration(milliseconds: 280),
+                              alignment: 0.15,
+                            );
+                          });
+                        },
+                      ),
+                      if (displayedPastPosts.isNotEmpty) ...[
+                        const Gap(14),
+                        RecordRecentSection(
+                          key: pastMemoriesKey,
+                          cardColor: cardColor,
+                          pastPosts: displayedPastPosts,
+                          onSeeMore: () {
+                            context.pushNamed(
+                              RouterPath.recordYearlyPosts,
+                              extra: RecordYearlyPostsExtra(
+                                posts: displayedPastPosts,
+                                title: Translations.of(context)
+                                    .myMapRecord
+                                    .pastMemoriesLabel,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                      const Gap(20),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
-        ),
         Positioned(
           top: selectorTop,
           left: 0,
