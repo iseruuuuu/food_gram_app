@@ -417,7 +417,7 @@
   "myMapRecord": {
     "yearlyTitle": "สถิติรายปี",
     "yearLabel": "ปี {year}",
-    "recentTitle": "โพสต์ยอดนิยม",
+    "recentTitle": "โพสต์ล่าสุด",
     "noPostsYet": "ยังไม่มีโพสต์",
     "countUnit": "รายการ",
     "todayMemoriesTitle": "ความทรงจำล่าสุด",

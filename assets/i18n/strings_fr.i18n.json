@@ -417,7 +417,7 @@
   "myMapRecord": {
     "yearlyTitle": "Bilan annuel",
     "yearLabel": "{year}",
-    "recentTitle": "Publications populaires",
+    "recentTitle": "Publications récentes",
     "noPostsYet": "Aucune publication pour le moment",
     "countUnit": "éléments",
     "todayMemoriesTitle": "Souvenirs récents",

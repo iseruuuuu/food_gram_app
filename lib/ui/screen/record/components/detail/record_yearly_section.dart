@@ -164,8 +164,8 @@ class RecordYearCard extends StatelessWidget {
                       )
                     else
                       Container(
-                        width: 36,
-                        height: 36,
+                        width: 60,
+                        height: 60,
                         decoration: BoxDecoration(
                           color:
                               isDark ? Colors.white10 : const Color(0xFFE8EEF4),

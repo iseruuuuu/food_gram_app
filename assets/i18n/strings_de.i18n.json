@@ -417,7 +417,7 @@
   "myMapRecord": {
     "yearlyTitle": "Jahresrückblick",
     "yearLabel": "{year}",
-    "recentTitle": "Beliebte Beiträge",
+    "recentTitle": "Neueste Beiträge",
     "noPostsYet": "Noch keine Beiträge",
     "countUnit": "Einträge",
     "todayMemoriesTitle": "Neueste Erinnerungen",

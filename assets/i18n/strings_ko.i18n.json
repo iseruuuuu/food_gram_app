@@ -417,7 +417,7 @@
   "myMapRecord": {
     "yearlyTitle": "연간 기록",
     "yearLabel": "{year}년",
-    "recentTitle": "인기 게시물",
+    "recentTitle": "최근 게시물",
     "noPostsYet": "아직 게시물이 없습니다",
     "countUnit": "건",
     "todayMemoriesTitle": "최근 추억",

@@ -124,6 +124,9 @@ class RecordYearlyPostsScreen extends HookConsumerWidget {
                       'record_yearly_post_tap',
                       const Duration(milliseconds: 200),
                       () async {
+                        if (!context.mounted) {
+                          return;
+                        }
                         final result = await ref
                             .read(detailPostRepositoryProvider.notifier)
                             .getPostData(sortedPosts, index);

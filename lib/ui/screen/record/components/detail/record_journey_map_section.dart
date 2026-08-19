@@ -119,9 +119,30 @@ class _RecordJourneyPreviewMapState extends State<_RecordJourneyPreviewMap> {
   bool _layersReady = false;
 
   @override
+  void didUpdateWidget(covariant _RecordJourneyPreviewMap oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!_hasMapRelevantChanges(oldWidget.posts, widget.posts)) {
+      return;
+    }
+    _layersReady = false;
+    _renderOverlays();
+  }
+
+  @override
   void dispose() {
     _controller = null;
     super.dispose();
+  }
+
+  bool _hasMapRelevantChanges(List<Posts> previous, List<Posts> next) {
+    String signature(List<Posts> posts) {
+      return posts
+          .where((post) => post.lat != 0 && post.lng != 0)
+          .map((post) => '${post.id}:${post.lat}:${post.lng}')
+          .join('|');
+    }
+
+    return signature(previous) != signature(next);
   }
 
   String _styleAsset(BuildContext context) {

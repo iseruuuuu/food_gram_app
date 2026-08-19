@@ -284,6 +284,9 @@ void _openRecordPost({
     'record_past_memory_tap',
     const Duration(milliseconds: 200),
     () async {
+      if (!context.mounted) {
+        return;
+      }
       final result = await ref
           .read(detailPostRepositoryProvider.notifier)
           .getPostData(posts, index);

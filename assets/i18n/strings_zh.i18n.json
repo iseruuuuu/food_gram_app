@@ -417,7 +417,7 @@
   "myMapRecord": {
     "yearlyTitle": "年度记录",
     "yearLabel": "{year}年",
-    "recentTitle": "热门投稿",
+    "recentTitle": "最近的投稿",
     "noPostsYet": "还没有发布",
     "countUnit": "条",
     "todayMemoriesTitle": "最近的回忆",

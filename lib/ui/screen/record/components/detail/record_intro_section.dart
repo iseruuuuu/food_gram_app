@@ -80,16 +80,27 @@ class RecordWelcomeSection extends HookWidget {
                         ),
                       ),
                       const Gap(4),
-                      Row(
-                        children: [
-                          for (var i = 0; i < tagIds.length; i++) ...[
-                            _WelcomeTagChip(
-                              tagId: tagIds[i],
-                              isDark: isDark,
-                            ),
-                            if (i != tagIds.length - 1) const Gap(8),
-                          ],
-                        ],
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          const chipSize = 46.0;
+                          const chipGap = 8.0;
+                          final maxChips = ((constraints.maxWidth + chipGap) /
+                                  (chipSize + chipGap))
+                              .floor()
+                              .clamp(1, tagIds.length);
+                          final visibleIds = tagIds.take(maxChips).toList();
+                          return Wrap(
+                            spacing: chipGap,
+                            runSpacing: chipGap,
+                            children: [
+                              for (final tagId in visibleIds)
+                                _WelcomeTagChip(
+                                  tagId: tagId,
+                                  isDark: isDark,
+                                ),
+                            ],
+                          );
+                        },
                       ),
                     ],
                   ),
