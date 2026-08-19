@@ -7,9 +7,9 @@ import 'package:logger/logger.dart';
 
 /// 画像ディスクキャッシュ。
 ///
-/// - 利用中は件数・期限を抑えて肥大化を防ぐ
-/// - 完全終了後の次回起動時、または設定の明示クリアで空にする
-/// - ホームへ戻るだけでは消さない（アプリ切替時の再ダウンロードを避ける）
+/// - 起動・バックグラウンド復帰では消さない（再ダウンロードで真っ白になるのを防ぐ）
+/// - 件数と期限で上限をかけ、古いものから自動削除する
+/// - 設定の「キャッシュ削除」でのみ空にする
 ///
 /// [clear] は呼び出し時点のエントリを削除する。進行中のダウンロード自体は
 /// キャンセルしない。連続呼び出しは直列化し、実行中の clear を共有する。
@@ -20,12 +20,15 @@ final class FoodGramImageCache {
   static final _logger = Logger();
   static Future<void>? _clearInFlight;
 
-  /// 利用中の上限: 件数を抑え、長時間放置で肥大しないようにする。
+  /// ディスク上限。1枚 300〜800KB 想定で、だいたい 60〜160MB 程度。
+  static const int maxCachedImages = 200;
+  static const Duration stalePeriod = Duration(days: 14);
+
   static final fcm.CacheManager instance = fcm.CacheManager(
     fcm.Config(
       _key,
-      stalePeriod: const Duration(hours: 1),
-      maxNrOfCacheObjects: 50,
+      stalePeriod: stalePeriod,
+      maxNrOfCacheObjects: maxCachedImages,
     ),
   );
 

@@ -95,14 +95,7 @@ class TabViewModel extends _$TabViewModel {
 
   void _switchToTab(int index) {
     _logTabAnalytics(index);
-    if (index == 1 || index == 2 || index == 3) {
-      final current = ref.read(scrollToTopForTabProvider);
-      ref.read(scrollToTopForTabProvider.notifier).state = (
-        tabIndex: index,
-        trigger: (current?.trigger ?? -1) + 1,
-      );
-    }
-    
+
     // PageControllerを使ってスムーズにページを切り替え
     if (_pageController != null && _pageController!.hasClients) {
       try {

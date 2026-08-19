@@ -21,14 +21,20 @@ class KeepAlivePageView extends StatelessWidget {
       controller: controller,
       physics: physics,
       onPageChanged: onPageChanged,
-      children: children.map((child) => _KeepAlivePage(child: child)).toList(),
+      children: [
+        for (var i = 0; i < children.length; i++)
+          _KeepAlivePage(
+            key: ValueKey('keep_alive_tab_$i'),
+            child: children[i],
+          ),
+      ],
     );
   }
 }
 
 /// 各ページを状態保持するラッパークラス
 class _KeepAlivePage extends StatefulWidget {
-  const _KeepAlivePage({required this.child});
+  const _KeepAlivePage({required this.child, super.key});
   
   final Widget child;
 

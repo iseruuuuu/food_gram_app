@@ -34,6 +34,8 @@ class TimeLineScreen extends HookConsumerWidget {
             ? ''
             : categoriesData[selectedCategoryIndex.value].name);
     final state = ref.watch(postsStreamProvider);
+    final blockList =
+        ref.watch(blockListProvider).valueOrNull ?? const <String>[];
     final scrollController = useScrollController();
     useScrollToTopOnTabTrigger(
       ref: ref,
@@ -83,71 +85,88 @@ class TimeLineScreen extends HookConsumerWidget {
                 },
               ),
             ),
-            ...state.when(
-              skipLoadingOnReload: true,
-              skipLoadingOnRefresh: true,
-              data: (allPosts) {
-                final posts =
-                    filterPostsByCategory(allPosts, selectedCategoryName);
-                if (posts.isEmpty) {
-                  return [
-                    const SliverToBoxAdapter(child: AppEmpty()),
-                  ];
-                }
-                final sorted = List<Posts>.from(posts)
-                  ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-                final recommended = _pickRecommendedPosts(
-                  posts: sorted,
-                  count: _recommendCount,
-                  seed: recommendSeed.value ^ selectedCategoryName.hashCode,
-                );
-                final recommendedIds =
-                    recommended.map((post) => post.id).toSet();
-                final remainingPosts = sorted
-                    .where((post) => !recommendedIds.contains(post.id))
-                    .toList();
-                final feedPosts =
-                    remainingPosts.isNotEmpty ? remainingPosts : sorted;
-                final categoryName = selectedCategoryName.isEmpty
-                    ? null
-                    : selectedCategoryName;
-
-                return [
-                  SliverToBoxAdapter(
-                    child: TimelineRecommendSection(
-                      recommendedPosts: recommended,
-                      allPosts: sorted,
-                      refresh: refreshProviders,
-                      categoryName: categoryName,
-                    ),
-                  ),
-                  TimelineFeedSection(
-                    feedPosts: feedPosts,
-                    allPosts: sorted,
-                    refresh: refreshProviders,
-                    categoryName: categoryName,
-                  ),
-                ];
-              },
-              loading: () => [
-                const SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: AppTabLoading.food(),
-                ),
-              ],
-              error: (_, __) => [
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: AppTabError.food(
-                    onRetry: () => ref.refresh(postsStreamProvider),
-                  ),
-                ),
-              ],
+            ..._timelineFeedSlivers(
+              ref: ref,
+              state: state,
+              blockList: blockList,
+              selectedCategoryName: selectedCategoryName,
+              recommendSeed: recommendSeed.value,
+              refreshProviders: refreshProviders,
             ),
           ],
         ),
       ),
     );
+  }
+
+  /// 取得済みの投稿があればローディングで消さず、そのまま表示する。
+  static List<Widget> _timelineFeedSlivers({
+    required WidgetRef ref,
+    required AsyncValue<List<Posts>> state,
+    required List<String> blockList,
+    required String selectedCategoryName,
+    required int recommendSeed,
+    required VoidCallback refreshProviders,
+  }) {
+    final rawPosts = state.valueOrNull;
+    if (rawPosts == null) {
+      if (state.hasError) {
+        return [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: AppTabError.food(
+              onRetry: () => ref.refresh(postsStreamProvider),
+            ),
+          ),
+        ];
+      }
+      return [
+        const SliverFillRemaining(
+          hasScrollBody: false,
+          child: AppTabLoading.food(),
+        ),
+      ];
+    }
+
+    final posts = filterPostsByCategory(
+      filterBlockedPosts(rawPosts, blockList),
+      selectedCategoryName,
+    );
+    if (posts.isEmpty) {
+      return [
+        const SliverToBoxAdapter(child: AppEmpty()),
+      ];
+    }
+    final sorted = List<Posts>.from(posts)
+      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    final recommended = _pickRecommendedPosts(
+      posts: sorted,
+      count: _recommendCount,
+      seed: recommendSeed ^ selectedCategoryName.hashCode,
+    );
+    final recommendedIds = recommended.map((post) => post.id).toSet();
+    final remainingPosts =
+        sorted.where((post) => !recommendedIds.contains(post.id)).toList();
+    final feedPosts = remainingPosts.isNotEmpty ? remainingPosts : sorted;
+    final categoryName =
+        selectedCategoryName.isEmpty ? null : selectedCategoryName;
+
+    return [
+      SliverToBoxAdapter(
+        child: TimelineRecommendSection(
+          recommendedPosts: recommended,
+          allPosts: sorted,
+          refresh: refreshProviders,
+          categoryName: categoryName,
+        ),
+      ),
+      TimelineFeedSection(
+        feedPosts: feedPosts,
+        allPosts: sorted,
+        refresh: refreshProviders,
+        categoryName: categoryName,
+      ),
+    ];
   }
 
   /// ランダムに最大 [count] 件のおすすめ投稿を選ぶ

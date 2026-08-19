@@ -2,13 +2,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
-import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'post_stream_provider.g.dart';
 
 final _postsStreamLog = Logger();
+
+/// Realtime 再購読中も直前の投稿を即座に出せるよう、メモリに保持する。
+List<Posts>? _cachedAllPosts;
 
 /// Realtime が一瞬切れただけで [StreamProvider] が error になりエラー画面に飛ぶのを防ぐ。
 /// 失敗時は指数バックオフで購読し直し、Riverpod にはエラーを流さない（直前の data は維持されやすい）。
@@ -25,7 +27,11 @@ Stream<List<Posts>> _postsStreamWithReconnect({
         backoff = initialBackoff;
         yield posts;
       }
-      return;
+      _postsStreamLog.w(
+        'postsStream completed ($label), '
+        'reconnecting in ${backoff.inSeconds}s',
+      );
+      await Future<void>.delayed(backoff);
     } on Object catch (err, st) {
       _postsStreamLog.e(
         'postsStream error ($label), '
@@ -62,12 +68,21 @@ List<Posts> filterPostsByCategory(List<Posts> posts, String categoryName) {
   }).toList();
 }
 
-/// 全投稿の Realtime Stream（ブロック除外済み）。
+/// ブロックユーザーの投稿を除外する。
+List<Posts> filterBlockedPosts(List<Posts> posts, List<String> blockList) {
+  if (blockList.isEmpty) {
+    return posts;
+  }
+  return posts.where((post) => !blockList.contains(post.userId)).toList();
+}
+
+/// 全投稿の Realtime Stream。
 ///
-/// カテゴリ切替のたびに購読を張り直さないよう、パラメータなし + keepAlive。
+/// カテゴリ切替・ブロックリスト更新のたびに購読を張り直さないよう、
+/// パラメータなし + keepAlive。ブロック除外は [filterBlockedPosts] で行う。
+/// 再購読時は直前の一覧を先に yield し、ローディングで画面を消さない。
 @Riverpod(keepAlive: true)
-Stream<List<Posts>> postsStream(Ref ref) {
-  final blockList = ref.watch(blockListProvider).asData?.value ?? [];
+Stream<List<Posts>> postsStream(Ref ref) async* {
   final supabase = ref.read(supabaseProvider);
 
   Stream<List<Posts>> createMappedStream() {
@@ -87,17 +102,23 @@ Stream<List<Posts>> postsStream(Ref ref) {
             );
           }
         }
-        return mapped
-            .where((post) => !blockList.contains(post.userId))
-            .toList();
+        return mapped;
       },
     );
   }
 
-  return _postsStreamWithReconnect(
+  final cached = _cachedAllPosts;
+  if (cached != null) {
+    yield cached;
+  }
+
+  yield* _postsStreamWithReconnect(
     label: 'all_posts',
     createStream: createMappedStream,
-  );
+  ).map((posts) {
+    _cachedAllPosts = posts;
+    return posts;
+  });
 }
 
 /// 自分の投稿の取得のためのStreamProvider
