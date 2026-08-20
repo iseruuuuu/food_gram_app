@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/admob/admob_gate.dart';
 import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/analytics_screen.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/ui/screen/map/map_screen.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_screen.dart';
 import 'package:food_gram_app/ui/screen/record/record_screen.dart';
@@ -20,13 +24,14 @@ final scrollToTopForTabProvider =
 class TabViewModel extends _$TabViewModel {
   bool _isHandlingTap = false;
   bool _didLogInitialTab = false;
-  PageController? _pageController;
 
   @override
   TabState build({
     TabState initState = const TabState(),
   }) {
-    ref.read(admobOpenNotifierProvider).loadAd();
+    if (canRequestAds(ref.watch(isSubscribeProvider))) {
+      ref.read(admobOpenNotifierProvider).loadAd();
+    }
     // 初回表示タブの ScreenView（Observer では取れない）
     Future.microtask(_logInitialTabIfNeeded);
     return initState;
@@ -38,17 +43,6 @@ class TabViewModel extends _$TabViewModel {
     const RecordScreen(),
     const MyProfileScreen(),
   ];
-
-  void setPageController(PageController controller) {
-    _pageController = controller;
-  }
-
-  void clearPageController(PageController controller) {
-    // 同じコントローラーの場合のみクリア
-    if (_pageController == controller) {
-      _pageController = null;
-    }
-  }
 
   void _logInitialTabIfNeeded() {
     if (_didLogInitialTab) {
@@ -65,7 +59,7 @@ class TabViewModel extends _$TabViewModel {
     _isHandlingTap = true;
     try {
       if (index == state.selectedIndex) {
-        if (index == 1 || index == 2 || index == 3) {
+        if (index != TabIndex.map) {
           final current = ref.read(scrollToTopForTabProvider);
           ref.read(scrollToTopForTabProvider.notifier).state = (
             tabIndex: index,
@@ -75,19 +69,21 @@ class TabViewModel extends _$TabViewModel {
         return;
       }
 
-      void switchTab() => _switchToTab(index);
+      _switchToTab(index);
 
-      final appOpen = ref.read(admobOpenNotifierProvider);
-      appOpen.loadAd();
-
-      // 40回に1回だけ全画面（最低間隔5分もあり）
-      if (appOpen.registerTabSwitchAndShouldShow()) {
-        await appOpen.ensureAdReady(resetAttempts: true);
-        await appOpen.showAdIfAvailable(onAdClosed: switchTab);
+      if (!canRequestAds(ref.read(isSubscribeProvider))) {
         return;
       }
 
-      switchTab();
+      final appOpen = ref.read(admobOpenNotifierProvider);
+      if (appOpen.registerTabSwitchAndShouldShow()) {
+        unawaited(() async {
+          await appOpen.ensureAdReady(resetAttempts: true);
+          await appOpen.showAdIfAvailable();
+        }());
+      } else {
+        appOpen.loadAd();
+      }
     } finally {
       _isHandlingTap = false;
     }
@@ -95,20 +91,6 @@ class TabViewModel extends _$TabViewModel {
 
   void _switchToTab(int index) {
     _logTabAnalytics(index);
-
-    // PageControllerを使ってスムーズにページを切り替え
-    if (_pageController != null && _pageController!.hasClients) {
-      try {
-        _pageController!.animateToPage(
-          index,
-          duration: const Duration(milliseconds: 400),
-          curve: Curves.easeInOutCubic,
-        );
-      } catch (e) {
-        // PageControllerが破棄済みの場合は無視
-      }
-    }
-    
     state = TabState(selectedIndex: index);
   }
 
@@ -116,13 +98,13 @@ class TabViewModel extends _$TabViewModel {
     final analytics = ref.read(firebaseAnalyticsServiceProvider);
     analytics.logScreen(AnalyticsScreen.forTabIndex(index));
     switch (index) {
-      case 0:
-        analytics.logEventUnawaited(name: AnalyticsEvent.mapOpen);
-      case 1:
+      case TabIndex.home:
         analytics.logEventUnawaited(name: AnalyticsEvent.timelineOpen);
-      case 2:
+      case TabIndex.map:
+        analytics.logEventUnawaited(name: AnalyticsEvent.mapOpen);
+      case TabIndex.myMap:
         analytics.logEventUnawaited(name: AnalyticsEvent.myMapOpen);
-      case 3:
+      case TabIndex.myPage:
         analytics.logEventUnawaited(name: AnalyticsEvent.profileOpen);
     }
   }
