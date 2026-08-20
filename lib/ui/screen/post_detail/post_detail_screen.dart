@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/admob/admob_gate.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/admob/services/admob_rectangle_banner.dart';
@@ -10,6 +11,7 @@ import 'package:food_gram_app/core/model/post_deail_list_mode.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/env.dart';
@@ -60,8 +62,7 @@ class PostDetailScreen extends HookConsumerWidget {
     final menuLoading = useState(false);
     // 編集後の投稿を id ごとに保持し、詳細リストへ即時反映する
     final postOverrides = useState<Map<int, Posts>>(const {});
-    final currentPosts =
-        postOverrides.value[memoizedPosts.id] ?? memoizedPosts;
+    final currentPosts = postOverrides.value[memoizedPosts.id] ?? memoizedPosts;
     final loading = ref.watch(loadingProvider);
     final currentUser = ref.watch(currentUserProvider);
     final detailState = ref.watch(postDetailViewModelProvider());
@@ -90,10 +91,7 @@ class PostDetailScreen extends HookConsumerWidget {
     final isClosing = useState(false);
 
     Future<void> closeDetail() async {
-      if (isClosing.value ||
-          loading ||
-          menuLoading.value ||
-          isInitialLoading) {
+      if (isClosing.value || loading || menuLoading.value || isInitialLoading) {
         return;
       }
       isClosing.value = true;
@@ -104,7 +102,8 @@ class PostDetailScreen extends HookConsumerWidget {
           }
         }
 
-        if (adInterstitial.registerPostDetailCloseAndShouldShow()) {
+        if (canRequestAds(ref.read(isSubscribeProvider)) &&
+            adInterstitial.registerPostDetailCloseAndShouldShow()) {
           await adInterstitial.ensureAdReady(resetAttempts: true);
           await adInterstitial.showAd(onAdClosed: popDetail);
         } else {
@@ -231,8 +230,7 @@ class PostDetailScreen extends HookConsumerWidget {
                       }
                       final postIndex = index - (index ~/ (adInterval + 1));
                       final listPost = posts[postIndex];
-                      final post =
-                          postOverrides.value[listPost.id] ?? listPost;
+                      final post = postOverrides.value[listPost.id] ?? listPost;
                       return PostDetailListItem(
                         key: ValueKey('post_${post.id}'),
                         posts: post,
