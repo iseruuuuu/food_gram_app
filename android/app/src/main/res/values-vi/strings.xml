@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- FCM loc-key strings. Must match Edge Function titleLocKey / bodyLocKey. -->
+    <string name="heart_notification_title_0">Trông ngon quá! 😋</string>
+    <string name="heart_notification_body_0">%1$s nghĩ món này trông ngon.</string>
+    <string name="heart_notification_title_1">Bài viết của bạn được thích ❤️</string>
+    <string name="heart_notification_body_1">%1$s đã thích bài viết của bạn.</string>
+    <string name="heart_notification_title_2">Một món gây chú ý 🍽️</string>
+    <string name="heart_notification_body_2">%1$s bị cuốn hút bởi món đó.</string>
+    <string name="heart_notification_title_3">Gây thèm thành công 🤤</string>
+    <string name="heart_notification_body_3">%1$s bị thèm vì bài viết của bạn.</string>
+    <string name="heart_notification_title_4">Muốn thử món này!</string>
+    <string name="heart_notification_body_4">%1$s muốn thử món đó.</string>
+</resources>

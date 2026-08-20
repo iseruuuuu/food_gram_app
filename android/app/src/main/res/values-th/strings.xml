@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- FCM loc-key strings. Must match Edge Function titleLocKey / bodyLocKey. -->
+    <string name="heart_notification_title_0">ดูอร่อยจัง! 😋</string>
+    <string name="heart_notification_body_0">%1$s คิดว่าดูอร่อย</string>
+    <string name="heart_notification_title_1">โพสต์ของคุณได้รับไลก์ ❤️</string>
+    <string name="heart_notification_body_1">%1$s ถูกใจโพสต์ของคุณ</string>
+    <string name="heart_notification_title_2">จานที่สะดุดตา 🍽️</string>
+    <string name="heart_notification_body_2">%1$s ถูกใจจานนั้น</string>
+    <string name="heart_notification_title_3">สำเร็จการยั่วน้ำลาย 🤤</string>
+    <string name="heart_notification_body_3">%1$s หิวเพราะโพสต์ของคุณ</string>
+    <string name="heart_notification_title_4">อยากลองชิม!</string>
+    <string name="heart_notification_body_4">%1$s อยากลองชิมเมนูนั้น</string>
+</resources>

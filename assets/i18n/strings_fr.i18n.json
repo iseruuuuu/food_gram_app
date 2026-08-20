@@ -886,7 +886,19 @@
     "lunchTitle": "#Avez-vous déjà posté le repas d'aujourd'hui ? 🍜",
     "lunchBody": "Pourquoi ne pas enregistrer le déjeuner d'aujourd'hui tant que vous vous en souvenez ?",
     "dinnerTitle": "#Avez-vous déjà posté le repas d'aujourd'hui ? 🍛",
-    "dinnerBody": "Postez le repas d'aujourd'hui et terminez la journée en douceur 📷"
+    "dinnerBody": "Postez le repas d'aujourd'hui et terminez la journée en douceur 📷",
+    "heartPush": {
+      "title0": "On dirait que c'est bon ! 😋",
+      "body0": "{name} trouve que ça a l'air délicieux.",
+      "title1": "Ton post a reçu un j'aime ❤️",
+      "body1": "{name} aime ton post.",
+      "title2": "Un plat qui attire l'œil 🍽️",
+      "body2": "{name} a craqué pour ce plat.",
+      "title3": "Tentation réussie 🤤",
+      "body3": "{name} a eu faim grâce à ton post.",
+      "title4": "Je veux goûter !",
+      "body4": "{name} a envie de goûter ce plat."
+    }
   },
   "mapApp": {
     "google": "Google Maps",

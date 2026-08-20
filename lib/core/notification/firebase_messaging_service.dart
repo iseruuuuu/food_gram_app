@@ -8,8 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/users.dart';
+import 'package:food_gram_app/core/notification/heart_push_localization.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart'
     as detail_repo;
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger/logger.dart';
@@ -284,10 +286,18 @@ class FirebaseMessagingService {
     }
   }
 
+  /// 受信端末の言語で文言を解決する。
+  /// バックグラウンドの FCM は OS が loc-key を引くため、ここは主にフォアグラウンド用。
+  Translations _deviceTranslations() => devicePushTranslations();
+
   /// いいね通知を送信
   /// [postOwnerId] 投稿者のユーザーID
   /// [postId] 投稿ID
   /// [likerName] いいねをした人の名前
+  ///
+  /// Edge Function `FirebaseMessaging` は本文を送らず loc-key だけ送ること。
+  /// `heart_notification_title_{0-4}` / `heart_notification_body_{0-4}`
+  /// title / body を同時に送ると loc-key より優先され、言語が固定される。
   Future<void> sendHeartNotification({
     required String postOwnerId,
     required int postId,
@@ -472,14 +482,17 @@ class FirebaseMessagingService {
   /// いいね通知を表示
   Future<void> _showHeartNotification(RemoteMessage message) async {
     try {
-      // ユーザー名を取得（dataから取得、なければnotification.bodyから取得）
+      final translations = _deviceTranslations();
       final userName = message.data['userName'] as String? ??
-          message.notification?.body?.split('さん')[0] ??
-          '誰か';
-
-      // タイトルとサブタイトルを設定
-      const title = 'あなたの投稿に「いいね！」が届きました 🍰';
-      final subtitle = '$userNameさんも、おいしそうって思ったみたい！';
+          message.data['likerName'] as String? ??
+          '';
+      final copy = heartPushCopy(
+        translations: translations,
+        variant: parseHeartPushVariant(message.data['messageVariant']),
+        userName: userName,
+      );
+      final title = copy.title;
+      final subtitle = copy.body;
 
       final androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'food_gram_fcm_channel',

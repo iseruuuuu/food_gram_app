@@ -1,0 +1,11 @@
+/* FCM loc-key strings. Must match Edge Function titleLocKey / locKey. */
+"heart_notification_title_0" = "看起來好好吃！😋";
+"heart_notification_body_0" = "%@ 覺得看起來很好吃。";
+"heart_notification_title_1" = "貼文收到一個讚 ❤️";
+"heart_notification_body_1" = "%@ 喜歡了你的貼文。";
+"heart_notification_title_2" = "令人心動的一盤 🍽️";
+"heart_notification_body_2" = "%@ 被那道菜吸引了。";
+"heart_notification_title_3" = "美食誘惑成功 🤤";
+"heart_notification_body_3" = "%@ 被你的貼文饞到了。";
+"heart_notification_title_4" = "好想吃！";
+"heart_notification_body_4" = "%@ 想嚐嚐那道菜。";

@@ -886,7 +886,19 @@
     "lunchTitle": "#Bạn đã đăng bữa ăn hôm nay chưa? 🍜",
     "lunchBody": "Ghi lại bữa trưa hôm nay nhé!",
     "dinnerTitle": "#Bạn đã đăng bữa ăn hôm nay chưa? 🍛",
-    "dinnerBody": "Đăng bữa ăn hôm nay và kết thúc ngày nhẹ nhàng 📷"
+    "dinnerBody": "Đăng bữa ăn hôm nay và kết thúc ngày nhẹ nhàng 📷",
+    "heartPush": {
+      "title0": "Trông ngon quá! 😋",
+      "body0": "{name} nghĩ món này trông ngon.",
+      "title1": "Bài viết của bạn được thích ❤️",
+      "body1": "{name} đã thích bài viết của bạn.",
+      "title2": "Một món gây chú ý 🍽️",
+      "body2": "{name} bị cuốn hút bởi món đó.",
+      "title3": "Gây thèm thành công 🤤",
+      "body3": "{name} bị thèm vì bài viết của bạn.",
+      "title4": "Muốn thử món này!",
+      "body4": "{name} muốn thử món đó."
+    }
   },
   "mapApp": {
     "google": "Google Maps",

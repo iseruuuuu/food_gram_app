@@ -886,7 +886,19 @@
     "lunchTitle": "#今天的飯菜，已經發了嗎？🍜",
     "lunchBody": "今天的午餐，趁還記得的時候記錄一下吧？",
     "dinnerTitle": "#今天的飯菜，已經發了嗎？🍛",
-    "dinnerBody": "發布今天的飯菜，輕鬆結束這一天吧📷"
+    "dinnerBody": "發布今天的飯菜，輕鬆結束這一天吧📷",
+    "heartPush": {
+      "title0": "看起來好好吃！😋",
+      "body0": "{name} 覺得看起來很好吃。",
+      "title1": "貼文收到一個讚 ❤️",
+      "body1": "{name} 喜歡了你的貼文。",
+      "title2": "令人心動的一盤 🍽️",
+      "body2": "{name} 被那道菜吸引了。",
+      "title3": "美食誘惑成功 🤤",
+      "body3": "{name} 被你的貼文饞到了。",
+      "title4": "好想吃！",
+      "body4": "{name} 想嚐嚐那道菜。"
+    }
   },
   "mapApp": {
     "google": "Google地圖",

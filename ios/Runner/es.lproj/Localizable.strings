@@ -1,0 +1,11 @@
+/* FCM loc-key strings. Must match Edge Function titleLocKey / locKey. */
+"heart_notification_title_0" = "¡Se ve delicioso! 😋";
+"heart_notification_body_0" = "%@ piensa que se ve delicioso.";
+"heart_notification_title_1" = "Tu publicación recibió un me gusta ❤️";
+"heart_notification_body_1" = "A %@ le gustó tu publicación.";
+"heart_notification_title_2" = "Un plato que llama la atención 🍽️";
+"heart_notification_body_2" = "%@ se sintió atraído por ese plato.";
+"heart_notification_title_3" = "¡Éxito de tentación! 🤤";
+"heart_notification_body_3" = "%@ se tentó con tu publicación.";
+"heart_notification_title_4" = "¡Quiero probarlo!";
+"heart_notification_body_4" = "%@ quiere probar ese plato.";

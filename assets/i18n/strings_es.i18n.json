@@ -886,7 +886,19 @@
     "lunchTitle": "#¿Ya publicaste la comida de hoy? 🍜",
     "lunchBody": "¿Por qué no registras el almuerzo de hoy mientras lo recuerdas?",
     "dinnerTitle": "#¿Ya publicaste la comida de hoy? 🍛",
-    "dinnerBody": "Publica la comida de hoy y termina el día suavemente 📷"
+    "dinnerBody": "Publica la comida de hoy y termina el día suavemente 📷",
+    "heartPush": {
+      "title0": "¡Se ve delicioso! 😋",
+      "body0": "{name} piensa que se ve delicioso.",
+      "title1": "Tu publicación recibió un me gusta ❤️",
+      "body1": "A {name} le gustó tu publicación.",
+      "title2": "Un plato que llama la atención 🍽️",
+      "body2": "{name} se sintió atraído por ese plato.",
+      "title3": "¡Éxito de tentación! 🤤",
+      "body3": "{name} se tentó con tu publicación.",
+      "title4": "¡Quiero probarlo!",
+      "body4": "{name} quiere probar ese plato."
+    }
   },
   "mapApp": {
     "google": "Google Maps",
