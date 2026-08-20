@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
 import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dart';
 import 'package:food_gram_app/ui/screen/time_line/components/timeline_category_tab_bar.dart';
 import 'package:food_gram_app/ui/screen/time_line/components/timeline_feed_section.dart';
@@ -20,7 +21,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class TimeLineScreen extends HookConsumerWidget {
   const TimeLineScreen({super.key});
 
-  static const int _tabIndex = 1;
+  static const int _tabIndex = TabIndex.home;
   static const int _recommendCount = 4;
 
   @override

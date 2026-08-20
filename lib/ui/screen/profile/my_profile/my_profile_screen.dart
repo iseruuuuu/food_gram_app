@@ -16,6 +16,7 @@ import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/screen/profile/components/profile_header.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
 import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -23,7 +24,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class MyProfileScreen extends HookConsumerWidget {
   const MyProfileScreen({super.key});
 
-  static const int _tabIndex = 3;
+  static const int _tabIndex = TabIndex.myPage;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
