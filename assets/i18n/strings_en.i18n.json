@@ -885,7 +885,19 @@
     "lunchTitle": "#Did you post today's meal? 🍜",
     "lunchBody": "Why not record today's lunch while you still remember it?",
     "dinnerTitle": "#Did you post today's meal? 🍛",
-    "dinnerBody": "Post today's meal and wrap up your day gently 📷"
+    "dinnerBody": "Post today's meal and wrap up your day gently 📷",
+    "heartPush": {
+      "title0": "Looks delicious! 😋",
+      "body0": "{name} thinks it looks delicious.",
+      "title1": "Your post got a like ❤️",
+      "body1": "{name} liked your post.",
+      "title2": "A dish that caught their eye 🍽️",
+      "body2": "{name} was drawn to that dish.",
+      "title3": "Food tease success 🤤",
+      "body3": "{name} got hungry from your post.",
+      "title4": "I want to try that!",
+      "body4": "{name} wants to try that dish."
+    }
   },
   "mapApp": {
     "google": "Google Maps",

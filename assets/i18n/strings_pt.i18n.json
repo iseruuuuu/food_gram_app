@@ -886,7 +886,19 @@
     "lunchTitle": "#Já postou a refeição de hoje? 🍜",
     "lunchBody": "Que tal registrar o almoço de hoje enquanto ainda se lembra?",
     "dinnerTitle": "#Já postou a refeição de hoje? 🍛",
-    "dinnerBody": "Poste a refeição de hoje e termine o dia suavemente 📷"
+    "dinnerBody": "Poste a refeição de hoje e termine o dia suavemente 📷",
+    "heartPush": {
+      "title0": "Parece delicioso! 😋",
+      "body0": "{name} acha que parece delicioso.",
+      "title1": "Sua publicação recebeu um like ❤️",
+      "body1": "{name} curtiu sua publicação.",
+      "title2": "Um prato que chama atenção 🍽️",
+      "body2": "{name} se encantou com esse prato.",
+      "title3": "Tentação gastronômica 🤤",
+      "body3": "{name} ficou com fome com sua publicação.",
+      "title4": "Quero experimentar!",
+      "body4": "{name} quer experimentar esse prato."
+    }
   },
   "mapApp": {
     "google": "Google Maps",
