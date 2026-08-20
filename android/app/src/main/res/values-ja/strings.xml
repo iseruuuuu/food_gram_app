@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- FCM loc-key strings. Must match Edge Function titleLocKey / bodyLocKey. -->
+    <string name="heart_notification_title_0">おいしそう！😋</string>
+    <string name="heart_notification_body_0">%1$sがおいしそう！と思っています。</string>
+    <string name="heart_notification_title_1">投稿にいいねが付きました ❤️</string>
+    <string name="heart_notification_body_1">%1$sがあなたの投稿を気に入りました。</string>
+    <string name="heart_notification_title_2">気になる一皿 🍽️</string>
+    <string name="heart_notification_body_2">%1$sがその一皿に惹かれました。</string>
+    <string name="heart_notification_title_3">飯テロ成功 🤤</string>
+    <string name="heart_notification_body_3">%1$sがあなたの投稿で飯テロを受けました。</string>
+    <string name="heart_notification_title_4">食べてみたい！</string>
+    <string name="heart_notification_body_4">%1$sがその料理を食べてみたいようです。</string>
+</resources>

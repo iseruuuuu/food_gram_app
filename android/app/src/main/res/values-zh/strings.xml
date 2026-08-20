@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- FCM loc-key strings. Must match Edge Function titleLocKey / bodyLocKey. -->
+    <string name="heart_notification_title_0">看起来好好吃！😋</string>
+    <string name="heart_notification_body_0">%1$s 觉得看起来很好吃。</string>
+    <string name="heart_notification_title_1">帖子收到了一个赞 ❤️</string>
+    <string name="heart_notification_body_1">%1$s 喜欢了你的帖子。</string>
+    <string name="heart_notification_title_2">令人心动的一盘 🍽️</string>
+    <string name="heart_notification_body_2">%1$s 被那道菜吸引了。</string>
+    <string name="heart_notification_title_3">美食诱惑成功 🤤</string>
+    <string name="heart_notification_body_3">%1$s 被你的帖子馋到了。</string>
+    <string name="heart_notification_title_4">好想吃！</string>
+    <string name="heart_notification_body_4">%1$s 想尝尝那道菜。</string>
+</resources>

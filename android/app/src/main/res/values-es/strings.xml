@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- FCM loc-key strings. Must match Edge Function titleLocKey / bodyLocKey. -->
+    <string name="heart_notification_title_0">¡Se ve delicioso! 😋</string>
+    <string name="heart_notification_body_0">%1$s piensa que se ve delicioso.</string>
+    <string name="heart_notification_title_1">Tu publicación recibió un me gusta ❤️</string>
+    <string name="heart_notification_body_1">A %1$s le gustó tu publicación.</string>
+    <string name="heart_notification_title_2">Un plato que llama la atención 🍽️</string>
+    <string name="heart_notification_body_2">%1$s se sintió atraído por ese plato.</string>
+    <string name="heart_notification_title_3">¡Éxito de tentación! 🤤</string>
+    <string name="heart_notification_body_3">%1$s se tentó con tu publicación.</string>
+    <string name="heart_notification_title_4">¡Quiero probarlo!</string>
+    <string name="heart_notification_body_4">%1$s quiere probar ese plato.</string>
+</resources>
