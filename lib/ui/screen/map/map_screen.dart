@@ -53,32 +53,7 @@ class MapScreen extends HookConsumerWidget {
         loc != null && (loc.latitude != 0 || loc.longitude != 0);
     final postsFailed = mapService.hasError && mapService.valueOrNull == null;
     final dataReady = location.hasValue && mapService.hasValue;
-    final showMapLoading = useState(true);
-    final loadingStartedAt = useMemoized(DateTime.now);
-    useEffect(
-      () {
-        if (postsFailed) {
-          showMapLoading.value = false;
-          return null;
-        }
-        if (!dataReady) {
-          showMapLoading.value = true;
-          return null;
-        }
-        const minDuration = Duration(milliseconds: 450);
-        final remaining =
-            minDuration - DateTime.now().difference(loadingStartedAt);
-        if (remaining <= Duration.zero) {
-          showMapLoading.value = false;
-          return null;
-        }
-        final timer = Timer(remaining, () {
-          showMapLoading.value = false;
-        });
-        return timer.cancel;
-      },
-      [dataReady, postsFailed],
-    );
+    final showMapLoading = !postsFailed && !dataReady;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final fabBg = isDark ? Colors.black : Colors.white;
     const fabFg = AppTheme.primaryBlue;
@@ -119,7 +94,7 @@ class MapScreen extends HookConsumerWidget {
                   ..invalidate(mapRepositoryProvider);
               },
             )
-          else if (showMapLoading.value)
+          else if (showMapLoading)
             const AppTabLoading.map()
           else
             Stack(

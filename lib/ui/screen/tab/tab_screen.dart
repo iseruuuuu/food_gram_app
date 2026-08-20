@@ -83,31 +83,26 @@ class TabScreen extends HookConsumerWidget {
 
     useEffect(
       () {
-        unawaited(AdTrackingPermission().requestTracking());
-        ref.read(forceUpdateCheckerProvider.notifier).checkForceUpdate(
-          openDialog: () {
-            DialogHelper().forceUpdateDialog(context);
-          },
-        );
-        unawaited(() async {
-          try {
-            await initializeNotifications();
-          } on Exception catch (_) {
-            // 起動は続行し、通知初期化失敗は握りつぶす
-          }
-        }());
-        return null;
-      },
-      const [],
-    );
-    useEffect(
-      () {
         var cancelled = false;
-        Future<void>.delayed(const Duration(milliseconds: 400), () {
-          if (cancelled) {
-            return;
-          }
-          unawaited(ref.read(mapRepositoryProvider.future));
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          unawaited(
+            Future<void>.delayed(const Duration(milliseconds: 800), () async {
+              if (cancelled || !context.mounted) {
+                return;
+              }
+              unawaited(AdTrackingPermission().requestTracking());
+              ref.read(forceUpdateCheckerProvider.notifier).checkForceUpdate(
+                openDialog: () {
+                  DialogHelper().forceUpdateDialog(context);
+                },
+              );
+              try {
+                await initializeNotifications();
+              } on Exception catch (_) {
+                // 起動は続行し、通知初期化失敗は握りつぶす
+              }
+            }),
+          );
         });
         return () {
           cancelled = true;
