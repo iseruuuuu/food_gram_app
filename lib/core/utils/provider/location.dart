@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -18,25 +20,35 @@ Future<bool> isLocationEnabled(Ref ref) async {
 }
 
 Future<LatLng> getLocation() async {
-  bool serviceEnabled;
-  LocationPermission permission;
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  final serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
     return const LatLng(0, 0);
   }
-  permission = await Geolocator.checkPermission();
+  var permission = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
       return const LatLng(0, 0);
     }
   }
-  if (permission == LocationPermission.whileInUse ||
-      permission == LocationPermission.always) {
-    final position = await Geolocator.getCurrentPosition();
-    final latitude = position.latitude;
-    final longitude = position.longitude;
-    return LatLng(latitude, longitude);
+  if (permission != LocationPermission.whileInUse &&
+      permission != LocationPermission.always) {
+    return const LatLng(0, 0);
   }
-  return const LatLng(0, 0);
+
+  // 高精度GPS待ちで起動が止まらないよう、前回位置があればそれを使う
+  final last = await Geolocator.getLastKnownPosition();
+  if (last != null) {
+    return LatLng(last.latitude, last.longitude);
+  }
+
+  try {
+    final position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.low,
+      timeLimit: const Duration(seconds: 4),
+    );
+    return LatLng(position.latitude, position.longitude);
+  } on TimeoutException {
+    return const LatLng(0, 0);
+  }
 }

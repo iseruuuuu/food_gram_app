@@ -27,8 +27,10 @@ void main() async {
   await MapStatsHomeWidgetSync.configure();
   await initializeSystemSettings();
   await initializeThirdPartyServices();
-  await initializePurchases();
-  await MobileAds.instance.initialize();
+  await Future.wait<void>([
+    initializePurchases(),
+    MobileAds.instance.initialize(),
+  ]);
   // 画像ディスクキャッシュを適用する。起動時は消さず、件数・期限の上限で自動整理する。
   FoodGramImageCache.installAsDefault();
   // TranslationProviderでラップ
@@ -48,9 +50,7 @@ Future<void> _initializeAppDateFormatting() async {
       locale.flutterLocale.toString(),
     ],
   };
-  for (final locale in locales) {
-    await initializeDateFormatting(locale);
-  }
+  await Future.wait(locales.map(initializeDateFormatting));
 }
 
 Future<void> initializeSystemSettings() async {
@@ -82,7 +82,9 @@ Future<void> initializeThirdPartyServices() async {
 
 /// RevenueCatの初期化処理
 Future<void> initializePurchases() async {
-  await Purchases.setLogLevel(LogLevel.debug);
+  await Purchases.setLogLevel(
+    kDebugMode ? LogLevel.debug : LogLevel.error,
+  );
   await Purchases.configure(
     PurchasesConfiguration(
       Platform.isAndroid ? Env.androidPurchaseKey : Env.iOSPurchaseKey,

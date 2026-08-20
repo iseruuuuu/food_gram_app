@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:food_gram_app/core/admob/admob_gate.dart';
 import 'package:food_gram_app/core/admob/config/admob_config.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -12,15 +13,15 @@ part 'admob_interstitial.g.dart';
 /// インタースティシャル広告の状態を管理するクラス
 class AdmobInterstitial {
   AdmobInterstitial({
-    required this.isSubscribed,
+    required bool Function() isAdsBlocked,
     this.onAdStateChanged,
-  });
+  }) : _isAdsBlocked = isAdsBlocked;
 
   final logger = Logger();
   static const int maxLoadAttempts = 2;
   static const Duration adReadyTimeout = Duration(seconds: 5);
 
-  final bool isSubscribed;
+  final bool Function() _isAdsBlocked;
   final void Function({required bool isReady})? onAdStateChanged;
 
   InterstitialAd? _interstitialAd;
@@ -48,7 +49,7 @@ class AdmobInterstitial {
 
   /// 広告を作成して読み込む
   void createAd({bool resetAttempts = false}) {
-    if (isSubscribed || _isDisposed) {
+    if (_isAdsBlocked() || _isDisposed) {
       return;
     }
     if (resetAttempts) {
@@ -101,7 +102,7 @@ class AdmobInterstitial {
     Duration timeout = adReadyTimeout,
     bool resetAttempts = false,
   }) async {
-    if (isSubscribed) {
+    if (_isAdsBlocked()) {
       return false;
     }
     if (_isAdReady && _interstitialAd != null) {
@@ -158,6 +159,9 @@ class AdmobInterstitial {
   }
 
   bool _canShowAd() {
+    if (_isAdsBlocked()) {
+      return false;
+    }
     if (_isAdShowing) {
       return false;
     }
@@ -172,10 +176,6 @@ class AdmobInterstitial {
         logger.i('Skipping ad due to minimum duration not met');
         return false;
       }
-    }
-
-    if (isSubscribed) {
-      return false;
     }
 
     return true;
@@ -228,6 +228,14 @@ class AdmobInterstitial {
     }
   }
 
+  void discardLoadedAd() {
+    _loadGeneration++;
+    _interstitialAd?.dispose();
+    _interstitialAd = null;
+    _isAdReady = false;
+    _isAdLoading = false;
+  }
+
   void dispose() {
     _loadGeneration++;
     _isDisposed = true;
@@ -246,30 +254,18 @@ class AdmobInterstitialNotifier extends _$AdmobInterstitialNotifier {
 
   @override
   AdmobInterstitial build() {
-    final subscriptionState = ref.watch(isSubscribeProvider);
+    final allowAds = canRequestAds(ref.watch(isSubscribeProvider));
 
     ref.onDispose(() => _admobInterstitial?.dispose());
 
-    return subscriptionState.when(
-      data: (isSubscribed) {
-        if (_admobInterstitial == null ||
-            _admobInterstitial!.isSubscribed != isSubscribed) {
-          _admobInterstitial?.dispose();
-          _admobInterstitial = AdmobInterstitial(isSubscribed: isSubscribed);
-          _admobInterstitial!.createAd();
-        }
-        return _admobInterstitial!;
-      },
-      loading: () {
-        // ローディング中は広告を表示しない
-        _admobInterstitial ??= AdmobInterstitial(isSubscribed: true);
-        return _admobInterstitial!;
-      },
-      error: (_, __) {
-        // エラー時は広告を表示しない
-        _admobInterstitial ??= AdmobInterstitial(isSubscribed: true);
-        return _admobInterstitial!;
-      },
+    _admobInterstitial ??= AdmobInterstitial(
+      isAdsBlocked: () => !canRequestAdsFrom(ref),
     );
+    if (allowAds) {
+      _admobInterstitial!.createAd();
+    } else {
+      _admobInterstitial!.discardLoadedAd();
+    }
+    return _admobInterstitial!;
   }
 }

@@ -1,12 +1,16 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/guide/first_post_guide_gate.dart';
+import 'package:food_gram_app/core/local/force_update_checker.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/core/summary/summary_launch_gate.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
@@ -16,6 +20,7 @@ import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provi
 import 'package:food_gram_app/core/supabase/user/services/user_service.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/theme/style/tab_style.dart';
+import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/user_level.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -23,6 +28,7 @@ import 'package:food_gram_app/ui/component/common/keep_alive_page_view.dart';
 import 'package:food_gram_app/ui/component/dialog/app_level_up_dialog.dart';
 import 'package:food_gram_app/ui/component/guide/first_post_guide_overlay.dart';
 import 'package:food_gram_app/ui/component/guide/first_post_success_dialog.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -74,22 +80,36 @@ class TabScreen extends HookConsumerWidget {
     final t = Translations.of(context);
     final postButtonKey = useMemoized(GlobalKey.new);
     final showFirstPostGuide = useState(false);
-    final pageController =
-        useMemoized(() => PageController(initialPage: state.selectedIndex));
 
-    // PageControllerをViewModelに設定し、適切にクリーンアップ
     useEffect(
       () {
-        controller.setPageController(pageController);
+        var cancelled = false;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          unawaited(
+            Future<void>.delayed(const Duration(milliseconds: 800), () async {
+              if (cancelled || !context.mounted) {
+                return;
+              }
+              unawaited(AdTrackingPermission().requestTracking());
+              ref.read(forceUpdateCheckerProvider.notifier).checkForceUpdate(
+                openDialog: () {
+                  DialogHelper().forceUpdateDialog(context);
+                },
+              );
+              try {
+                await initializeNotifications();
+              } on Exception catch (_) {
+                // 起動は続行し、通知初期化失敗は握りつぶす
+              }
+            }),
+          );
+        });
         return () {
-          // TabScreenがアンマウントされる時にPageControllerの参照をクリア
-          controller.clearPageController(pageController);
+          cancelled = true;
         };
       },
-      [], // pageControllerをキーに含めない（memoizedなので）
+      const [],
     );
-    // PageControllerの破棄処理
-    useEffect(() => pageController.dispose, []);
     useEffect(
       () {
         var cancelled = false;
@@ -160,7 +180,7 @@ class TabScreen extends HookConsumerWidget {
 
     Future<void> onPostPressed() async {
       final selectedIndex = state.selectedIndex;
-      if (selectedIndex == 2) {
+      if (selectedIndex == TabIndex.myMap) {
         ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
               name: AnalyticsEvent.recordPostOpen,
             );
@@ -182,19 +202,19 @@ class TabScreen extends HookConsumerWidget {
       }
 
       switch (selectedIndex) {
-        case 0:
+        case TabIndex.map:
           ref.invalidate(mapPostRepositoryProvider);
-        case 1:
+        case TabIndex.home:
           ref
             ..invalidate(postsStreamProvider)
             ..invalidate(blockListProvider);
-        case 2:
+        case TabIndex.myMap:
           ref.invalidate(myMapRepositoryProvider);
           final uid = ref.read(currentUserProvider);
           if (uid != null) {
             ref.read(userServiceProvider.notifier).invalidateUserCache(uid);
           }
-        case 3:
+        case TabIndex.myPage:
           ref.invalidate(myPostStreamProvider);
           final uid = ref.read(currentUserProvider);
           if (uid != null) {
@@ -261,12 +281,12 @@ class TabScreen extends HookConsumerWidget {
             analytics.logEventUnawaited(
               name: AnalyticsEvent.firstPostSuccessGuideMap,
             );
-            await controller.onTap(0);
+            await controller.onTap(TabIndex.map);
           case FirstPostSuccessAction.viewAlbum:
             analytics.logEventUnawaited(
               name: AnalyticsEvent.firstPostSuccessGuideAlbum,
             );
-            await controller.onTap(3);
+            await controller.onTap(TabIndex.myPage);
           case FirstPostSuccessAction.later:
             analytics.logEventUnawaited(
               name: AnalyticsEvent.firstPostSuccessGuideLater,
@@ -282,17 +302,15 @@ class TabScreen extends HookConsumerWidget {
           removeBottom: Platform.isIOS,
           child: Scaffold(
             extendBody: true,
-            // KeepAlivePageView でスムーズなアニメーション + 状態保持を実装
+            // 未表示タブは遅延構築。切替は短いスライド＋フェードにする
             body: Platform.isIOS
                 ? KeepAlivePageView(
-                    controller: pageController,
-                    physics: const NeverScrollableScrollPhysics(), // スワイプ無効
+                    index: state.selectedIndex,
                     children: controller.pageList,
                   )
                 : SafeArea(
                     child: KeepAlivePageView(
-                      controller: pageController,
-                      physics: const NeverScrollableScrollPhysics(), // スワイプ無効
+                      index: state.selectedIndex,
                       children: controller.pageList,
                     ),
                   ),
@@ -336,45 +354,46 @@ class TabScreen extends HookConsumerWidget {
                           children: [
                             Expanded(
                               child: _TabItem(
-                                selected: state.selectedIndex == 0,
-                                icon: state.selectedIndex == 0
+                                selected: state.selectedIndex == TabIndex.map,
+                                icon: state.selectedIndex == TabIndex.map
                                     ? CupertinoIcons.map_fill
                                     : CupertinoIcons.map,
                                 label: t.tab.map,
-                                onTap: () => controller.onTap(0),
+                                onTap: () => controller.onTap(TabIndex.map),
                               ),
                             ),
                             Expanded(
                               child: _TabItem(
-                                selected: state.selectedIndex == 1,
-                                icon: state.selectedIndex == 1
+                                selected: state.selectedIndex == TabIndex.home,
+                                icon: state.selectedIndex == TabIndex.home
                                     ? Icons.fastfood
                                     : Icons.fastfood_outlined,
                                 label: t.tab.home,
-                                onTap: () => controller.onTap(1),
+                                onTap: () => controller.onTap(TabIndex.home),
                               ),
                             ),
                             const SizedBox(width: _postButtonSize),
                             Expanded(
                               child: _TabItem(
-                                selected: state.selectedIndex == 2,
-                                icon: state.selectedIndex == 2
+                                selected: state.selectedIndex == TabIndex.myMap,
+                                icon: state.selectedIndex == TabIndex.myMap
                                     ? CupertinoIcons.map_pin_ellipse
                                     : CupertinoIcons.map_pin,
                                 iconSize: 28,
                                 label: t.tab.myMap,
-                                onTap: () => controller.onTap(2),
+                                onTap: () => controller.onTap(TabIndex.myMap),
                               ),
                             ),
                             Expanded(
                               child: _TabItem(
-                                selected: state.selectedIndex == 3,
-                                icon: state.selectedIndex == 3
+                                selected:
+                                    state.selectedIndex == TabIndex.myPage,
+                                icon: state.selectedIndex == TabIndex.myPage
                                     ? CupertinoIcons.person_circle_fill
                                     : CupertinoIcons.person_circle,
                                 iconSize: 28,
                                 label: t.tab.myPage,
-                                onTap: () => controller.onTap(3),
+                                onTap: () => controller.onTap(TabIndex.myPage),
                               ),
                             ),
                           ],

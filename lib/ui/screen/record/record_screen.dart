@@ -9,13 +9,14 @@ import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_detail_screen.dart';
 import 'package:food_gram_app/ui/screen/record/components/map/record_map.dart';
 import 'package:food_gram_app/ui/screen/record/record_view_model.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
 import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class RecordScreen extends HookConsumerWidget {
   const RecordScreen({super.key});
 
-  static const int _tabIndex = 2;
+  static const int _tabIndex = TabIndex.myMap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

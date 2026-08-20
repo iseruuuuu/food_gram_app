@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
+import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:go_router/go_router.dart';
@@ -41,6 +45,21 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
     ref.read(currentUserProvider.notifier).update();
 
     final destinationFuture = _resolveDestination();
+    unawaited(
+      destinationFuture.then((destination) {
+        if (!mounted || destination != _SplashDestination.tab) {
+          return;
+        }
+        // スプラッシュ表示中にマップ用データを先読みし、タブ遷移直後の待ちを短くする
+        unawaited(
+          ref.read(mapRepositoryProvider.future).then<void>(
+            (_) {},
+            onError: (Object _, StackTrace __) {},
+          ),
+        );
+        unawaited(ref.read(locationProvider.future));
+      }),
+    );
 
     await Future.wait<void>([
       Future<void>.delayed(_displayDuration),
