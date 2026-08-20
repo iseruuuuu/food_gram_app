@@ -1,0 +1,11 @@
+/* FCM loc-key strings. Must match Edge Function titleLocKey / locKey. */
+"heart_notification_title_0" = "ดูอร่อยจัง! 😋";
+"heart_notification_body_0" = "%@ คิดว่าดูอร่อย";
+"heart_notification_title_1" = "โพสต์ของคุณได้รับไลก์ ❤️";
+"heart_notification_body_1" = "%@ ถูกใจโพสต์ของคุณ";
+"heart_notification_title_2" = "จานที่สะดุดตา 🍽️";
+"heart_notification_body_2" = "%@ ถูกใจจานนั้น";
+"heart_notification_title_3" = "สำเร็จการยั่วน้ำลาย 🤤";
+"heart_notification_body_3" = "%@ หิวเพราะโพสต์ของคุณ";
+"heart_notification_title_4" = "อยากลองชิม!";
+"heart_notification_body_4" = "%@ อยากลองชิมเมนูนั้น";

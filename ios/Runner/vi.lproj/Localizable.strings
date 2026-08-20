@@ -1,0 +1,11 @@
+/* FCM loc-key strings. Must match Edge Function titleLocKey / locKey. */
+"heart_notification_title_0" = "Trông ngon quá! 😋";
+"heart_notification_body_0" = "%@ nghĩ món này trông ngon.";
+"heart_notification_title_1" = "Bài viết của bạn được thích ❤️";
+"heart_notification_body_1" = "%@ đã thích bài viết của bạn.";
+"heart_notification_title_2" = "Một món gây chú ý 🍽️";
+"heart_notification_body_2" = "%@ bị cuốn hút bởi món đó.";
+"heart_notification_title_3" = "Gây thèm thành công 🤤";
+"heart_notification_body_3" = "%@ bị thèm vì bài viết của bạn.";
+"heart_notification_title_4" = "Muốn thử món này!";
+"heart_notification_body_4" = "%@ muốn thử món đó.";

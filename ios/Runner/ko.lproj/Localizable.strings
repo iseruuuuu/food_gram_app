@@ -1,0 +1,11 @@
+/* FCM loc-key strings. Must match Edge Function titleLocKey / locKey. */
+"heart_notification_title_0" = "맛있어 보여요! 😋";
+"heart_notification_body_0" = "%@ 님이 맛있어 보인다고 생각했어요.";
+"heart_notification_title_1" = "게시물에 좋아요가 달렸어요 ❤️";
+"heart_notification_body_1" = "%@ 님이 회원님의 게시물을 좋아합니다.";
+"heart_notification_title_2" = "눈길을 끄는 한 접시 🍽️";
+"heart_notification_body_2" = "%@ 님이 그 요리에 끌렸어요.";
+"heart_notification_title_3" = "음식 테러 성공 🤤";
+"heart_notification_body_3" = "%@ 님이 회원님의 게시물에 식욕을 자극받았어요.";
+"heart_notification_title_4" = "먹어보고 싶어!";
+"heart_notification_body_4" = "%@ 님이 그 요리를 먹어보고 싶어 해요.";
