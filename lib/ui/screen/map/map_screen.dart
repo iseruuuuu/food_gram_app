@@ -4,30 +4,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
-import 'package:food_gram_app/core/admob/tracking/ad_tracking_permission.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
-import 'package:food_gram_app/core/local/force_update_checker.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
-import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
+import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
-import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/location/locale_default_location.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
-import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_detail_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_overview_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_category_chip_bar.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
-import 'package:food_gram_app/ui/screen/tab/use_tab_loading_on_mount.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -43,38 +39,45 @@ class MapScreen extends HookConsumerWidget {
     final controller = ref.watch(mapViewModelProvider.notifier);
     final location = ref.watch(locationProvider);
     final mapService = ref.watch(mapRepositoryProvider);
-    final showTabLoading = useTabLoadingOnMount(
-      dataReady: location.hasValue && mapService.hasValue,
-    );
     final isEarthStyle = useState(false);
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final pinTapCount = useRef(0);
     final isHandlingPinTap = useRef(false);
+    final didApplyGpsCamera = useRef(false);
     final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
     final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
     final loading = ref.watch(loadingProvider);
+    final fallbackLocation = useMemoized(defaultLocationFromDeviceLocale);
+    final loc = location.valueOrNull;
+    final isLocationEnabled =
+        loc != null && (loc.latitude != 0 || loc.longitude != 0);
+    final postsFailed = mapService.hasError && mapService.valueOrNull == null;
+    final dataReady = location.hasValue && mapService.hasValue;
+    final showMapLoading = useState(true);
+    final loadingStartedAt = useMemoized(DateTime.now);
     useEffect(
       () {
-        // map_open / ScreenView(Map) は TabViewModel で送信
-        // トラッキング許可を取得
-        AdTrackingPermission().requestTracking();
-        // 強制更新チェック
-        ref.read(forceUpdateCheckerProvider.notifier).checkForceUpdate(
-          openDialog: () {
-            DialogHelper().forceUpdateDialog(context);
-          },
-        );
-        // 通知の初期化
-        unawaited(() async {
-          try {
-            await initializeNotifications();
-          } on Exception catch (_) {
-            // マップ表示は続行し、通知初期化失敗は握りつぶす
-          }
-        }());
-        return null;
+        if (postsFailed) {
+          showMapLoading.value = false;
+          return null;
+        }
+        if (!dataReady) {
+          showMapLoading.value = true;
+          return null;
+        }
+        const minDuration = Duration(milliseconds: 450);
+        final remaining =
+            minDuration - DateTime.now().difference(loadingStartedAt);
+        if (remaining <= Duration.zero) {
+          showMapLoading.value = false;
+          return null;
+        }
+        final timer = Timer(remaining, () {
+          showMapLoading.value = false;
+        });
+        return timer.cancel;
       },
-      [],
+      [dataReady, postsFailed],
     );
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final fabBg = isDark ? Colors.black : Colors.white;
@@ -85,177 +88,195 @@ class MapScreen extends HookConsumerWidget {
         unawaited(controller.clearSearchResultPin());
       }
     });
+    ref.listen(locationProvider, (_, next) {
+      final gps = next.valueOrNull;
+      if (didApplyGpsCamera.value || gps == null) {
+        return;
+      }
+      if (gps.latitude == 0 && gps.longitude == 0) {
+        return;
+      }
+      if (ref.read(mapViewModelProvider).mapController == null) {
+        return;
+      }
+      didApplyGpsCamera.value = true;
+      unawaited(controller.applyInitialCameraZoom(gps));
+    });
+    ref.listen(filteredMapPostsProvider, (previous, next) {
+      if (!next.hasValue || previous?.valueOrNull == next.valueOrNull) {
+        return;
+      }
+      unawaited(controller.setPin());
+    });
     return Scaffold(
       body: Stack(
         children: [
-          AsyncValueSwitcher(
-            asyncValue: AsyncValueGroup.group2(location, mapService),
-            onLoading: const AppTabLoading.map(),
-            errorType: TabLoadingType.map,
-            onErrorTap: () {
-              ref
-                ..invalidate(locationProvider)
-                ..invalidate(mapPostRepositoryProvider);
-            },
-            onData: (value) {
-              final isLocationEnabled =
-                  value.$1.latitude != 0 || value.$1.longitude != 0;
-              final fallbackLocation = defaultLocationFromDeviceLocale();
-              return Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  MapLibreMap(
-                    onMapCreated: (mapLibre) async {
-                      final initialCenter =
-                          isLocationEnabled ? value.$1 : fallbackLocation;
-                      await controller.setMapController(
-                        mapLibre,
-                        onPinTap: (posts) async {
-                          if (posts.isEmpty || isHandlingPinTap.value) {
+          if (postsFailed)
+            AppTabError.map(
+              onRetry: () {
+                ref
+                  ..invalidate(locationProvider)
+                  ..invalidate(mapRepositoryProvider);
+              },
+            )
+          else if (showMapLoading.value)
+            const AppTabLoading.map()
+          else
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                MapLibreMap(
+                  onMapCreated: (mapLibre) async {
+                    await controller.setMapController(
+                      mapLibre,
+                      onPinTap: (posts) async {
+                        if (posts.isEmpty || isHandlingPinTap.value) {
+                          return;
+                        }
+                        isHandlingPinTap.value = true;
+                        try {
+                          await ref
+                              .read(firebaseAnalyticsServiceProvider)
+                              .logMapPinTap(source: 'map');
+                          final first = posts.first;
+                          void openStoreSheet() {
+                            ref.read(mapModalSelectionProvider.notifier).state =
+                                MapModalSelection(
+                              name: first.restaurant,
+                              lat: first.lat,
+                              lng: first.lng,
+                            );
+                          }
+
+                          if (isSubscribed) {
+                            openStoreSheet();
                             return;
                           }
-                          isHandlingPinTap.value = true;
-                          try {
-                            await ref
-                                .read(firebaseAnalyticsServiceProvider)
-                                .logMapPinTap(source: 'map');
-                            final first = posts.first;
-                            void openStoreSheet() {
-                              ref
-                                  .read(mapModalSelectionProvider.notifier)
-                                  .state = MapModalSelection(
-                                name: first.restaurant,
-                                lat: first.lat,
-                                lng: first.lng,
-                              );
-                            }
-
-                            adInterstitial.createAd();
-                            pinTapCount.value++;
-                            if (pinTapCount.value >= mapPinTapAdInterval) {
-                              pinTapCount.value = 0;
-                              await adInterstitial.showAd(
-                                onAdClosed: openStoreSheet,
-                              );
-                            } else {
-                              openStoreSheet();
-                            }
-                          } finally {
-                            isHandlingPinTap.value = false;
+                          adInterstitial.createAd();
+                          pinTapCount.value++;
+                          if (pinTapCount.value >= mapPinTapAdInterval) {
+                            pinTapCount.value = 0;
+                            await adInterstitial.showAd(
+                              onAdClosed: openStoreSheet,
+                            );
+                          } else {
+                            openStoreSheet();
                           }
-                        },
-                        iconSize: _calculateIconSize(context),
-                        initialCenter: initialCenter,
-                      );
-                      if (isLocationEnabled) {
-                        await controller.applyInitialCameraZoom(initialCenter);
-                      }
-                    },
-                    onStyleLoadedCallback: controller.onStyleLoaded,
-                    onCameraIdle: controller.scheduleUpdateAfterCameraIdle,
-                    onCameraMove: controller.onCameraMove,
-                    annotationOrder: const [AnnotationType.symbol],
-                    key: const ValueKey('mapWidget'),
-                    myLocationEnabled: isLocationEnabled,
-                    initialCameraPosition: CameraPosition(
-                      target: isLocationEnabled ? value.$1 : fallbackLocation,
-                      zoom: isLocationEnabled
-                          ? MapOverlayConstants.initial
-                          : MapOverlayConstants.localeFallback,
-                    ),
-                    trackCameraPosition: true,
-                    tiltGesturesEnabled: false,
-                    styleString:
-                        _localizedStyleAsset(context, isEarthStyle.value),
+                        } finally {
+                          isHandlingPinTap.value = false;
+                        }
+                      },
+                      iconSize: _calculateIconSize(context),
+                      initialCenter: isLocationEnabled ? loc : fallbackLocation,
+                    );
+                    final gps = ref.read(locationProvider).valueOrNull;
+                    if (gps != null &&
+                        (gps.latitude != 0 || gps.longitude != 0)) {
+                      didApplyGpsCamera.value = true;
+                      await controller.applyInitialCameraZoom(gps);
+                    }
+                  },
+                  onStyleLoadedCallback: controller.onStyleLoaded,
+                  onCameraIdle: controller.scheduleUpdateAfterCameraIdle,
+                  onCameraMove: controller.onCameraMove,
+                  annotationOrder: const [AnnotationType.symbol],
+                  key: const ValueKey('mapWidget'),
+                  myLocationEnabled: isLocationEnabled,
+                  initialCameraPosition: CameraPosition(
+                    target: isLocationEnabled ? loc : fallbackLocation,
+                    zoom: isLocationEnabled
+                        ? MapOverlayConstants.initial
+                        : MapOverlayConstants.localeFallback,
                   ),
-                  // selection の状態に応じて Overview / Detail を内部で切り替える
-                  const MapRestaurantDetailSheet(),
-                  Positioned(
-                    top: _calculateTopPosition(context),
-                    left: 0,
-                    right: 0,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // 1) 一番上：検索バー（横幅いっぱい）
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: AppMapPlaceSearchTextField(
-                            mapController: controller,
-                          ),
+                  trackCameraPosition: true,
+                  tiltGesturesEnabled: false,
+                  styleString:
+                      _localizedStyleAsset(context, isEarthStyle.value),
+                ),
+                // selection の状態に応じて Overview / Detail を内部で切り替える
+                const MapRestaurantDetailSheet(),
+                Positioned(
+                  top: _calculateTopPosition(context),
+                  left: 0,
+                  right: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // 1) 一番上：検索バー（横幅いっぱい）
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: AppMapPlaceSearchTextField(
+                          mapController: controller,
                         ),
-                        const Gap(8),
-                        MapCategoryChipBar(
-                          onCategoryChanged:
-                              controller.refreshPinsForCategoryFilter,
-                        ),
-                        const Gap(8),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                _MapSideFab(
-                                  heroTag: 'style_toggle',
-                                  fabBg: fabBg,
-                                  fabFg: fabFg,
-                                  fabBorder: fabBorder,
-                                  icon: isEarthStyle.value
-                                      ? CupertinoIcons.globe
-                                      : CupertinoIcons.map,
-                                  onPressed: () async {
-                                    if (!isSubscribed) {
-                                      try {
-                                        await ref
-                                            .read(
-                                              revenueCatServiceProvider
-                                                  .notifier,
-                                            )
-                                            .presentPaywallGuarded();
-                                      } on Exception catch (_) {
-                                        return;
-                                      }
-                                    } else {
-                                      isEarthStyle.value = !isEarthStyle.value;
-                                      controller.handleStyleChange();
+                      ),
+                      const Gap(8),
+                      MapCategoryChipBar(
+                        onCategoryChanged:
+                            controller.refreshPinsForCategoryFilter,
+                      ),
+                      const Gap(8),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              _MapSideFab(
+                                heroTag: 'style_toggle',
+                                fabBg: fabBg,
+                                fabFg: fabFg,
+                                fabBorder: fabBorder,
+                                icon: isEarthStyle.value
+                                    ? CupertinoIcons.globe
+                                    : CupertinoIcons.map,
+                                onPressed: () async {
+                                  if (!isSubscribed) {
+                                    try {
+                                      await ref
+                                          .read(
+                                            revenueCatServiceProvider.notifier,
+                                          )
+                                          .presentPaywallGuarded();
+                                    } on Exception catch (_) {
+                                      return;
                                     }
-                                  },
-                                ),
-                                if (isLocationEnabled) ...[
-                                  const Gap(8),
-                                  _MapSideFab(
-                                    heroTag: 'map_current_location',
-                                    fabBg: fabBg,
-                                    fabFg: fabFg,
-                                    fabBorder: fabBorder,
-                                    icon: CupertinoIcons.location,
-                                    onPressed: controller.moveToCurrentLocation,
-                                  ),
-                                ],
+                                  } else {
+                                    isEarthStyle.value = !isEarthStyle.value;
+                                    controller.handleStyleChange();
+                                  }
+                                },
+                              ),
+                              if (isLocationEnabled) ...[
                                 const Gap(8),
                                 _MapSideFab(
-                                  heroTag: 'compass',
+                                  heroTag: 'map_current_location',
                                   fabBg: fabBg,
                                   fabFg: fabFg,
                                   fabBorder: fabBorder,
-                                  icon: CupertinoIcons.compass,
-                                  iconSize: 28,
-                                  onPressed: controller.resetBearing,
+                                  icon: CupertinoIcons.location,
+                                  onPressed: controller.moveToCurrentLocation,
                                 ),
                               ],
-                            ),
+                              const Gap(8),
+                              _MapSideFab(
+                                heroTag: 'compass',
+                                fabBg: fabBg,
+                                fabFg: fabFg,
+                                fabBorder: fabBorder,
+                                icon: CupertinoIcons.compass,
+                                iconSize: 28,
+                                onPressed: controller.resetBearing,
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              );
-            },
-          ),
-          if (showTabLoading) const Positioned.fill(child: AppTabLoading.map()),
+                ),
+              ],
+            ),
           AppMapLoading(
             loading: state.isLoading,
             hasError: state.hasError,
