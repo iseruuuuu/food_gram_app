@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:food_gram_app/core/admob/admob_gate.dart';
 import 'package:food_gram_app/core/admob/config/admob_config.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -12,8 +13,8 @@ part 'admob_open.g.dart';
 /// アプリオープン広告を管理するクラス
 class AdmobOpen {
   AdmobOpen({
-    required this.isSubscribed,
-  });
+    required bool Function() isAdsBlocked,
+  }) : _isAdsBlocked = isAdsBlocked;
 
   AppOpenAd? _appOpenAd;
   bool _isAdShowing = false;
@@ -23,7 +24,7 @@ class AdmobOpen {
   DateTime? _appOpenLoadTime;
   int _tabSwitchCount = 0;
   final logger = Logger();
-  final bool isSubscribed;
+  final bool Function() _isAdsBlocked;
 
   static const int maxLoadAttempts = 2;
   static const Duration adReadyTimeout = Duration(seconds: 5);
@@ -33,7 +34,8 @@ class AdmobOpen {
 
   /// 広告を読み込む
   void loadAd({bool resetAttempts = false}) {
-    if (isSubscribed) {
+    if (_isAdsBlocked()) {
+      _disposeAd();
       return;
     }
 
@@ -74,7 +76,7 @@ class AdmobOpen {
     Duration timeout = adReadyTimeout,
     bool resetAttempts = false,
   }) async {
-    if (isSubscribed) {
+    if (_isAdsBlocked()) {
       return false;
     }
     if (_appOpenAd != null) {
@@ -134,8 +136,8 @@ class AdmobOpen {
   }
 
   bool _canShowAd() {
-    if (isSubscribed) {
-      logger.d('App open ad skipped: subscribed');
+    if (_isAdsBlocked()) {
+      logger.d('App open ad skipped: subscribed or undetermined');
       return false;
     }
     if (_isAdShowing) {
@@ -221,6 +223,11 @@ class AdmobOpen {
     }
   }
 
+  void discardLoadedAd() {
+    _disposeAd();
+    _isAdLoading = false;
+  }
+
   void dispose() {
     _disposeAd();
     _isAdShowing = false;
@@ -236,27 +243,18 @@ class AdmobOpenNotifier extends _$AdmobOpenNotifier {
 
   @override
   AdmobOpen build() {
-    final subscriptionState = ref.watch(isSubscribeProvider);
+    final allowAds = canRequestAds(ref.watch(isSubscribeProvider));
 
     ref.onDispose(() => _admobOpen?.dispose());
 
-    return subscriptionState.when(
-      data: (isSubscribed) {
-        if (_admobOpen == null || _admobOpen!.isSubscribed != isSubscribed) {
-          _admobOpen?.dispose();
-          _admobOpen = AdmobOpen(isSubscribed: isSubscribed);
-          _admobOpen!.loadAd();
-        }
-        return _admobOpen!;
-      },
-      loading: () {
-        _admobOpen ??= AdmobOpen(isSubscribed: true);
-        return _admobOpen!;
-      },
-      error: (_, __) {
-        _admobOpen ??= AdmobOpen(isSubscribed: true);
-        return _admobOpen!;
-      },
+    _admobOpen ??= AdmobOpen(
+      isAdsBlocked: () => !canRequestAdsFrom(ref),
     );
+    if (allowAds) {
+      _admobOpen!.loadAd();
+    } else {
+      _admobOpen!.discardLoadedAd();
+    }
+    return _admobOpen!;
   }
 }
