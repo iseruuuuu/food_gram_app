@@ -51,7 +51,12 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
           return;
         }
         // スプラッシュ表示中にマップ用データを先読みし、タブ遷移直後の待ちを短くする
-        unawaited(ref.read(mapRepositoryProvider.future));
+        unawaited(
+          ref.read(mapRepositoryProvider.future).then<void>(
+            (_) {},
+            onError: (Object _, StackTrace __) {},
+          ),
+        );
         unawaited(ref.read(locationProvider.future));
       }),
     );

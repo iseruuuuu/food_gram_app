@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/admob/admob_gate.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
@@ -123,7 +124,7 @@ class MapScreen extends HookConsumerWidget {
                             );
                           }
 
-                          if (isSubscribed) {
+                          if (!canRequestAds(ref.read(isSubscribeProvider))) {
                             openStoreSheet();
                             return;
                           }

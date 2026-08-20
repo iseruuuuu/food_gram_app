@@ -164,11 +164,16 @@ class AdmobOpen {
   }
 
   void _onAdLoaded(AppOpenAd ad) {
+    _isAdLoading = false;
+    if (_isAdsBlocked()) {
+      logger.d('App open ad discarded: subscribed or undetermined');
+      ad.dispose();
+      return;
+    }
     logger.d('App open ad loaded successfully');
     _appOpenAd?.dispose();
     _appOpenAd = ad;
     _appOpenLoadTime = DateTime.now();
-    _isAdLoading = false;
     _loadAttempts = 0;
   }
 
