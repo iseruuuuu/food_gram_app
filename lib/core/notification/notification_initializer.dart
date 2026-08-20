@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:food_gram_app/core/notification/firebase_messaging_service.dart';
+import 'package:food_gram_app/core/notification/heart_push_localization.dart';
 import 'package:food_gram_app/core/notification/notification_service.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:logger/logger.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -75,15 +77,28 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await flutterLocalNotificationsPlugin.initialize(initSettings);
 
   if (messageType == 'heart') {
-    final userName = message.data['userName'] as String? ?? '誰か';
+    final userName = message.data['userName'] as String? ??
+        message.data['likerName'] as String? ??
+        '';
     logger.i(
       'バックグラウンドでいいね通知を受信しました: ${message.messageId}, '
       'ユーザー: $userName',
     );
 
-    // いいね通知を表示
-    const title = 'あなたの投稿に「いいね！」が届きました 🍰';
-    final subtitle = '$userNameさんも、おいしそうって思ったみたい！';
+    // notification / loc-key 付きの場合は OS が端末言語で表示する。
+    // ここでローカル通知を出すと日本語固定の二重表示になる。
+    if (message.notification != null) {
+      return;
+    }
+
+    LocaleSettings.useDeviceLocale();
+    final copy = heartPushCopy(
+      translations: devicePushTranslations(),
+      variant: parseHeartPushVariant(message.data['messageVariant']),
+      userName: userName,
+    );
+    final title = copy.title;
+    final subtitle = copy.body;
 
     const androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'food_gram_fcm_channel',
