@@ -258,7 +258,8 @@ class PostTextInputField extends StatelessWidget {
       child: TextField(
         controller: controller,
         keyboardType: keyboardType,
-        autocorrect: false,
+        autocorrect: true,
+        textCapitalization: TextCapitalization.words,
         contextMenuBuilder: (context, state) {
           if (SystemContextMenu.isSupported(context)) {
             return SystemContextMenu.editableText(editableTextState: state);
@@ -364,7 +365,8 @@ class PostPhotoArea extends StatelessWidget {
                         color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: PostStyle.photoAreaBorder(context, borderColor),
+                          color:
+                              PostStyle.photoAreaBorder(context, borderColor),
                           width: 1.5,
                         ),
                       ),
@@ -964,6 +966,9 @@ class PostCommentField extends HookWidget {
                 textInputAction: TextInputAction.newline,
                 maxLines: 4,
                 maxLength: maxLength,
+                autocorrect: true,
+                enableSuggestions: true,
+                textCapitalization: TextCapitalization.sentences,
                 buildCounter: (
                   context, {
                   required currentLength,
@@ -991,7 +996,6 @@ class PostCommentField extends HookWidget {
                   hintText: t.post.commentPlaceholder,
                   hintStyle: PostStyle.fieldHint(context),
                 ),
-                autocorrect: false,
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
