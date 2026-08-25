@@ -63,7 +63,6 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     required Posts posts,
     required String currentUser,
     required String userId,
-    required VoidCallback? onHeartLimitReached,
   }) async {
     if (userId == currentUser) {
       return false;
@@ -87,18 +86,12 @@ class PostDetailViewModel extends _$PostDetailViewModel {
       logger.e('いいねの減算に失敗しました: ${(result as Failure).error}');
       return false;
     }
-    final canLike = await preference.canLike();
-    if (!canLike) {
-      onHeartLimitReached?.call();
-      return false;
-    }
     final result = await heartRepo.incrementHeart(posts);
     if (result is Success) {
       state = state.copyWith(
         isAppearHeart: true,
         heartList: List.from(state.heartList)..add(postId),
       );
-      await preference.incrementHeartCount();
       await preference.setStringList(
         PreferenceKey.heartList,
         state.heartList,

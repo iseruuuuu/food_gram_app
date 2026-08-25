@@ -33,13 +33,11 @@ import 'package:photo_viewer/photo_viewer.dart';
 class PostDetailListItem extends HookConsumerWidget {
   const PostDetailListItem({
     required this.posts,
-    required this.onHeartLimitReached,
     required this.menuLoading,
     super.key,
   });
 
   final Posts posts;
-  final VoidCallback onHeartLimitReached;
   final ValueNotifier<bool> menuLoading;
 
   @override
@@ -234,7 +232,6 @@ class PostDetailListItem extends HookConsumerWidget {
                                   posts: posts,
                                   currentUser: currentUser,
                                   userId: users.userId,
-                                  onHeartLimitReached: onHeartLimitReached,
                                 );
                             if (!ok) {
                               isHearted.value = wasHearted;
@@ -319,7 +316,6 @@ class PostDetailListItem extends HookConsumerWidget {
                             posts: posts,
                             currentUser: currentUser,
                             userId: users.userId,
-                            onHeartLimitReached: onHeartLimitReached,
                           );
                       if (!ok) {
                         isHearted.value = wasHearted;
