@@ -97,7 +97,8 @@ class AppSearchTextField extends HookWidget {
                 ),
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.search,
-                autocorrect: false,
+                autocorrect: true,
+                textCapitalization: TextCapitalization.words,
                 controller: controller,
                 onSubmitted: (_) {
                   onSubmitted?.call(controller.text);
@@ -203,7 +204,8 @@ class AppFoodTextField extends StatelessWidget {
                 ),
                 controller: controller,
                 keyboardType: TextInputType.text,
-                autocorrect: false,
+                autocorrect: true,
+                textCapitalization: TextCapitalization.words,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: scheme.onSurface,
@@ -267,7 +269,8 @@ class AppCommentTextField extends StatelessWidget {
         keyboardType: TextInputType.multiline,
         textInputAction: TextInputAction.newline,
         maxLines: 6,
-        autocorrect: false,
+        autocorrect: true,
+        textCapitalization: TextCapitalization.sentences,
         style: TextStyle(
           fontWeight: FontWeight.bold,
           color: scheme.onSurface,
