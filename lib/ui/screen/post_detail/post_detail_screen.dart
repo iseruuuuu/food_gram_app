@@ -12,10 +12,8 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
-import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/env.dart';
-import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_heart.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
@@ -58,7 +56,6 @@ class PostDetailScreen extends HookConsumerWidget {
       },
       [posts.id],
     );
-    final t = Translations.of(context);
     final menuLoading = useState(false);
     // 編集後の投稿を id ごとに保持し、詳細リストへ即時反映する
     final postOverrides = useState<Map<int, Posts>>(const {});
@@ -235,12 +232,6 @@ class PostDetailScreen extends HookConsumerWidget {
                         key: ValueKey('post_${post.id}'),
                         posts: post,
                         menuLoading: menuLoading,
-                        onHeartLimitReached: () {
-                          SnackBarHelper().openWarningSnackBar(
-                            context,
-                            t.heartLimitMessage,
-                          );
-                        },
                       );
                     },
                   );
