@@ -97,7 +97,8 @@ class AppSearchTextField extends HookWidget {
                 ),
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.search,
-                autocorrect: false,
+                autocorrect: true,
+                textCapitalization: TextCapitalization.words,
                 controller: controller,
                 onSubmitted: (_) {
                   onSubmitted?.call(controller.text);
