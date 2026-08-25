@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/admob/admob_gate.dart';
 import 'package:food_gram_app/core/admob/config/admob_config.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -13,20 +14,17 @@ final rectangleBannerProvider =
 /// レクタングル広告の状態を管理するNotifier
 class RectangleBannerNotifier extends StateNotifier<BannerAd?> {
   RectangleBannerNotifier(this.ref, this.id) : super(null) {
-    _checkSubscriptionAndLoadAd();
+    ref.listen<AsyncValue<bool>>(isSubscribeProvider, (_, next) {
+      if (!canRequestAds(next)) {
+        disposeAd();
+        return;
+      }
+      _loadAd();
+    }, fireImmediately: true);
   }
 
   final Ref ref;
   final String id;
-
-  void _checkSubscriptionAndLoadAd() {
-    final subscriptionState = ref.read(isSubscribeProvider);
-    subscriptionState.whenData((isSubscribed) {
-      if (!isSubscribed) {
-        _loadAd();
-      }
-    });
-  }
 
   /// 広告を破棄する（サブスクリプション時に使用）
   void disposeAd() {
@@ -35,7 +33,7 @@ class RectangleBannerNotifier extends StateNotifier<BannerAd?> {
   }
 
   void _loadAd() {
-    if (state != null) {
+    if (!canRequestAdsFrom(ref) || state != null) {
       return;
     }
 
@@ -49,16 +47,12 @@ class RectangleBannerNotifier extends StateNotifier<BannerAd?> {
           state = null;
         },
         onAdLoaded: (ad) {
-          // 読み込み後にサブスクリプション状態を再確認
-          final subscriptionState = ref.read(isSubscribeProvider);
-          subscriptionState.whenData((isSubscribed) {
-            if (isSubscribed) {
-              ad.dispose();
-              state = null;
-            } else {
-              state = ad as BannerAd;
-            }
-          });
+          if (!canRequestAdsFrom(ref)) {
+            ad.dispose();
+            state = null;
+            return;
+          }
+          state = ad as BannerAd;
         },
       ),
     ).load();
@@ -82,26 +76,13 @@ class RectangleBanner extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final allowAds = canRequestAds(ref.watch(isSubscribeProvider));
+    if (!allowAds) {
+      return const SizedBox.shrink();
+    }
+
     final bannerAd = ref.watch(rectangleBannerProvider(id));
-    final subscriptionState = ref.watch(isSubscribeProvider);
-
-    return subscriptionState.when(
-      data: (isSubscribed) {
-        // サブスクリプション状態が変更されたときに広告を破棄
-        if (isSubscribed && bannerAd != null) {
-          Future.microtask(() {
-            ref.read(rectangleBannerProvider(id).notifier).disposeAd();
-          });
-        }
-        return _buildBannerContainer(bannerAd, isSubscribed);
-      },
-      error: (_, __) => const SizedBox.shrink(),
-      loading: () => _buildLoadingContainer(bannerAd),
-    );
-  }
-
-  Widget _buildBannerContainer(BannerAd? bannerAd, bool isSubscribed) {
-    if (isSubscribed || bannerAd == null) {
+    if (bannerAd == null) {
       return const SizedBox.shrink();
     }
 
@@ -114,9 +95,5 @@ class RectangleBanner extends ConsumerWidget {
         child: AdWidget(ad: bannerAd),
       ),
     );
-  }
-
-  Widget _buildLoadingContainer(BannerAd? bannerAd) {
-    return const SizedBox.shrink();
   }
 }

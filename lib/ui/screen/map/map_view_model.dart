@@ -434,8 +434,7 @@ class MapViewModel extends _$MapViewModel {
           _cachedPosts!.isNotEmpty &&
           _cachedImageKeys != null) {
         final last = _lastPinIconZoom;
-        if (last == null ||
-            (zoom - last).abs() >= _pinSizeRefreshZoomDelta) {
+        if (last == null || (zoom - last).abs() >= _pinSizeRefreshZoomDelta) {
           await _addNormalPinSymbols(ctrl, _cachedPosts!, _cachedImageKeys!);
           _lastPinIconZoom = zoom;
         }
@@ -484,8 +483,7 @@ class MapViewModel extends _$MapViewModel {
       await MapHeatmapLayer.remove(ctrl);
       _heatmapLayerAdded = false;
       _isDotMode = null;
-      final z =
-          ctrl.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
+      final z = ctrl.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
       if (_cachedImageKeys != null) {
         await _syncPinModeForZoom(z);
       } else {
