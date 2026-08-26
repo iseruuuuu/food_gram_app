@@ -879,12 +879,12 @@
   },
   "favoritePostEmpty": {
     "title": "Noch keine gespeicherten Beiträge",
-    "subtitle": "Speichern Sie Beiträge, die Sie interessieren!",
+    "subtitle": "Speichere Beiträge, die dich interessieren!",
     "cta": "Beiträge ansehen"
   },
   "myPostEmpty": {
-    "title": "✨ Erstellen Sie Ihren ersten Beitrag!",
-    "subtitle": "Halten Sie fest, was Sie gegessen haben und wo Sie waren – Ihre Einträge erscheinen dann hier."
+    "title": "✨ Erstelle deinen ersten Beitrag!",
+    "subtitle": "Halte fest, was du gegessen hast und wo du warst – deine Einträge erscheinen dann hier."
   },
   "notification": {
     "likeNotificationsTitle": "Gefällt-mir-Benachrichtigungen",
@@ -895,7 +895,7 @@
       "hintTitle": "Tipp",
       "hintBody": "Teile leckeres Essen und vernetze dich mit allen!",
       "ctaPost": "Jetzt posten",
-      "ctaBack": "Zurück zu Meiner Seite"
+      "ctaBack": "Zurück zu meiner Seite"
     },
     "someoneLikedYourPost": "Jemand hat deinen Beitrag mit „Gefällt mir“ markiert.",
     "userLikedYourPost": "{name} hat deinen Beitrag mit „Gefällt mir“ markiert.",
