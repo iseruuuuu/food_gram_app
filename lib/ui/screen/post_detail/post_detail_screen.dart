@@ -52,6 +52,12 @@ class PostDetailScreen extends HookConsumerWidget {
         ref
             .read(postDetailViewModelProvider().notifier)
             .initializeHeartState(posts.id, posts.heart);
+        // 閉じる瞬間に待たせないため、滞在時間を使って先読みしておく
+        if (canRequestAds(ref.read(isSubscribeProvider))) {
+          ref
+              .read(admobInterstitialNotifierProvider)
+              .createAd(resetAttempts: true);
+        }
         return;
       },
       [posts.id],
@@ -87,27 +93,18 @@ class PostDetailScreen extends HookConsumerWidget {
     final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
     final isClosing = useState(false);
 
-    Future<void> closeDetail() async {
+    void closeDetail() {
       if (isClosing.value || loading || menuLoading.value || isInitialLoading) {
         return;
       }
       isClosing.value = true;
-      try {
-        void popDetail() {
-          if (context.mounted) {
-            context.pop();
-          }
-        }
-
-        if (canRequestAds(ref.read(isSubscribeProvider)) &&
-            adInterstitial.registerPostDetailCloseAndShouldShow()) {
-          await adInterstitial.ensureAdReady(resetAttempts: true);
-          await adInterstitial.showAd(onAdClosed: popDetail);
-        } else {
-          popDetail();
-        }
-      } finally {
-        isClosing.value = false;
+      // 準備済みの広告があるときだけ表示する。未準備ならこの回は諦め、
+      // 表示権は次に閉じたときへ持ち越される。
+      final showAdOnClose = canRequestAds(ref.read(isSubscribeProvider)) &&
+          adInterstitial.registerPostDetailCloseAndShouldShow();
+      context.pop();
+      if (showAdOnClose) {
+        unawaited(adInterstitial.showAd());
       }
     }
 
@@ -119,7 +116,7 @@ class PostDetailScreen extends HookConsumerWidget {
         if (didPop || !canClose) {
           return;
         }
-        unawaited(closeDetail());
+        closeDetail();
       },
       child: Scaffold(
         appBar: AppBar(

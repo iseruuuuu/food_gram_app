@@ -244,22 +244,26 @@ class AdmobOpen {
 /// アプリオープン広告の状態を管理するプロバイダー
 @Riverpod(keepAlive: true)
 class AdmobOpenNotifier extends _$AdmobOpenNotifier {
-  AdmobOpen? _admobOpen;
-
   @override
   AdmobOpen build() {
-    final allowAds = canRequestAds(ref.watch(isSubscribeProvider));
-
-    ref.onDispose(() => _admobOpen?.dispose());
-
-    _admobOpen ??= AdmobOpen(
+    final admobOpen = AdmobOpen(
       isAdsBlocked: () => !canRequestAdsFrom(ref),
     );
-    if (allowAds) {
-      _admobOpen!.loadAd();
-    } else {
-      _admobOpen!.discardLoadedAd();
-    }
-    return _admobOpen!;
+    // watch にすると購読状態が変わるたび build が再実行され、
+    // 前回ビルド分の onDispose で読み込み済み広告とタブ切り替え回数が
+    // リセットされてしまう。
+    ref.listen(
+      isSubscribeProvider,
+      (_, next) {
+        if (canRequestAds(next)) {
+          admobOpen.loadAd(resetAttempts: true);
+        } else {
+          admobOpen.discardLoadedAd();
+        }
+      },
+      fireImmediately: true,
+    );
+    ref.onDispose(admobOpen.dispose);
+    return admobOpen;
   }
 }
