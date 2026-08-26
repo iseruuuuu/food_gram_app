@@ -227,6 +227,96 @@ class AppNotificationEmpty extends StatelessWidget {
   }
 }
 
+class AppMemoryAlbumEmpty extends StatelessWidget {
+  const AppMemoryAlbumEmpty({
+    required this.onCreateTap,
+    super.key,
+  });
+
+  final VoidCallback onCreateTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translations.of(context).memoryAlbum;
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 28),
+        child: Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Lottie.asset(
+                        Assets.lottie.noNotification,
+                        width: 220,
+                        height: 220,
+                      ),
+                      Text(
+                        t.emptyTitle,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: onSurface,
+                        ),
+                      ),
+                      const Gap(10),
+                      Text(
+                        t.emptyBody,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          height: 1.5,
+                          color: onSurface.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: ElevatedButton(
+                onPressed: onCreateTap,
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor: isDark ? Colors.white : Colors.black,
+                  foregroundColor: isDark ? Colors.black : Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.add, size: 22),
+                    const Gap(8),
+                    Text(
+                      t.create,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const Gap(24),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class AppSearchResultEmpty extends StatelessWidget {
   const AppSearchResultEmpty({super.key});
 
