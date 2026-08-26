@@ -255,12 +255,17 @@ class AdmobInterstitial {
     }
   }
 
+  /// 読み込み済みの広告と持ち越し中の表示権を破棄する。
+  ///
+  /// 表示権を残すと、再び広告対象に戻った直後の1回目で
+  /// 設定した間隔を待たずに表示されてしまう。
   void discardLoadedAd() {
     _loadGeneration++;
     _interstitialAd?.dispose();
     _interstitialAd = null;
     _isAdReady = false;
     _isAdLoading = false;
+    _hasPendingPostDetailAd = false;
   }
 
   void dispose() {
