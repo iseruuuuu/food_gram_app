@@ -33,32 +33,58 @@ class AdmobInterstitial {
   bool _isAdShowing = false;
   DateTime? _lastAdShowTime;
   int _postDetailCloseCount = 0;
+  bool _hasPendingPostDetailAd = false;
 
   bool get isAdReady => _isAdReady;
 
-  /// 投稿詳細を閉じた回数を記録し、表示タイミングかどうかを返す
+  /// 投稿詳細を閉じた回数を記録し、いま広告を表示すべきかを返す。
+  ///
+  /// 表示タイミングに当たっても未準備・クールダウン中なら false を返し、
+  /// 表示権は次に閉じたときへ持ち越す。閉じる操作をロード待ちで
+  /// ブロックしないための仕組み。
   bool registerPostDetailCloseAndShouldShow() {
     _postDetailCloseCount++;
-    final shouldShow = _postDetailCloseCount % postDetailCloseAdInterval == 0;
+    if (_postDetailCloseCount % postDetailCloseAdInterval == 0) {
+      _hasPendingPostDetailAd = true;
+    }
     logger.d(
       'Post detail close count: $_postDetailCloseCount / '
-      'interval: $postDetailCloseAdInterval, shouldShow: $shouldShow',
+      'interval: $postDetailCloseAdInterval, '
+      'pending: $_hasPendingPostDetailAd',
     );
-    return shouldShow;
+    if (!_hasPendingPostDetailAd) {
+      return false;
+    }
+    if (!_canShowAd()) {
+      logger.i('Post detail ad deferred to the next close');
+      createAd();
+      return false;
+    }
+    return true;
   }
 
   /// 広告を作成して読み込む
   void createAd({bool resetAttempts = false}) {
-    if (_isAdsBlocked() || _isDisposed) {
+    final isBlocked = _isAdsBlocked();
+    if (isBlocked || _isDisposed) {
+      logger.d(
+        'Interstitial load skipped: blocked=$isBlocked, '
+        'disposed=$_isDisposed',
+      );
       return;
     }
     if (resetAttempts) {
       _loadAttempts = 0;
     }
     if (_isAdReady || _isAdLoading || _loadAttempts >= maxLoadAttempts) {
+      logger.d(
+        'Interstitial load skipped: ready=$_isAdReady, '
+        'loading=$_isAdLoading, attempts=$_loadAttempts',
+      );
       return;
     }
 
+    logger.d('Interstitial load requested');
     final loadGeneration = ++_loadGeneration;
     _isAdLoading = true;
     InterstitialAd.load(
@@ -189,6 +215,7 @@ class AdmobInterstitial {
       onAdShowedFullScreenContent: (ad) {
         _isAdShowing = true;
         _lastAdShowTime = DateTime.now();
+        _hasPendingPostDetailAd = false;
         logger.i('Ad displayed');
         onAdShown?.call();
       },
@@ -228,12 +255,17 @@ class AdmobInterstitial {
     }
   }
 
+  /// 読み込み済みの広告と持ち越し中の表示権を破棄する。
+  ///
+  /// 表示権を残すと、再び広告対象に戻った直後の1回目で
+  /// 設定した間隔を待たずに表示されてしまう。
   void discardLoadedAd() {
     _loadGeneration++;
     _interstitialAd?.dispose();
     _interstitialAd = null;
     _isAdReady = false;
     _isAdLoading = false;
+    _hasPendingPostDetailAd = false;
   }
 
   void dispose() {
@@ -244,28 +276,33 @@ class AdmobInterstitial {
     _isAdReady = false;
     _isAdLoading = false;
     _isAdShowing = false;
+    _hasPendingPostDetailAd = false;
   }
 }
 
 /// インタースティシャル広告の状態を管理するプロバイダー
 @Riverpod(keepAlive: true)
 class AdmobInterstitialNotifier extends _$AdmobInterstitialNotifier {
-  AdmobInterstitial? _admobInterstitial;
-
   @override
   AdmobInterstitial build() {
-    final allowAds = canRequestAds(ref.watch(isSubscribeProvider));
-
-    ref.onDispose(() => _admobInterstitial?.dispose());
-
-    _admobInterstitial ??= AdmobInterstitial(
+    final interstitial = AdmobInterstitial(
       isAdsBlocked: () => !canRequestAdsFrom(ref),
     );
-    if (allowAds) {
-      _admobInterstitial!.createAd();
-    } else {
-      _admobInterstitial!.discardLoadedAd();
-    }
-    return _admobInterstitial!;
+    // watch にすると購読状態が変わるたび build が再実行され、
+    // 前回ビルド分の onDispose が走って広告インスタンスが無効化される。
+    // listen なら build は一度だけで、onDispose も本当の破棄時にしか走らない。
+    ref.listen(
+      isSubscribeProvider,
+      (_, next) {
+        if (canRequestAds(next)) {
+          interstitial.createAd(resetAttempts: true);
+        } else {
+          interstitial.discardLoadedAd();
+        }
+      },
+      fireImmediately: true,
+    );
+    ref.onDispose(interstitial.dispose);
+    return interstitial;
   }
 }
