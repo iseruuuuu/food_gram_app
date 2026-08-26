@@ -192,6 +192,9 @@ class $AssetsLottieGen {
   /// File path: assets/lottie/location.json
   String get location => 'assets/lottie/location.json';
 
+  /// File path: assets/lottie/no_notification.json
+  String get noNotification => 'assets/lottie/no_notification.json';
+
   /// File path: assets/lottie/no_record.json
   String get noRecord => 'assets/lottie/no_record.json';
 
@@ -200,6 +203,9 @@ class $AssetsLottieGen {
 
   /// File path: assets/lottie/permission.json
   String get permission => 'assets/lottie/permission.json';
+
+  /// File path: assets/lottie/post_empty.json
+  String get postEmpty => 'assets/lottie/post_empty.json';
 
   /// File path: assets/lottie/post_success.json
   String get postSuccess => 'assets/lottie/post_success.json';
@@ -238,9 +244,11 @@ class $AssetsLottieGen {
         heart,
         loading,
         location,
+        noNotification,
         noRecord,
         notification,
         permission,
+        postEmpty,
         postSuccess,
         recordFootprints,
         recordNopost,

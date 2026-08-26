@@ -54,6 +54,10 @@
     "added": "Adicionado à sua lista",
     "removed": "Removido da sua lista",
     "emptyHint": "Adicione lugares pela busca no mapa",
+    "emptyTitle": "Ainda não há lugares para ir",
+    "emptyBody": "Adicione restaurantes e lugares que te interessam\nà sua lista de lugares para ir!",
+    "emptyCta": "Adicionar um lugar",
+    "searchOnMap": "Buscar no mapa",
     "addToList": "Adicionar à lista",
     "removeFromList": "Remover da lista",
     "alreadyAdded": "Já está na lista",
@@ -874,12 +878,25 @@
     "butter": "Manteiga"
   },
   "favoritePostEmpty": {
-    "title": "Nenhuma postagem salva",
-    "subtitle": "Salve postagens que te interessam!"
+    "title": "Ainda não há postagens salvas",
+    "subtitle": "Salve postagens que te interessam!",
+    "cta": "Ver postagens"
+  },
+  "myPostEmpty": {
+    "title": "✨ Faça sua primeira postagem!",
+    "subtitle": "Registre o que você comeu e os lugares que visitou, e seu histórico aparecerá aqui."
   },
   "notification": {
     "likeNotificationsTitle": "Notificações de curtidas",
     "loadFailed": "Falha ao carregar",
+    "empty": {
+      "title": "Ainda não há curtidas",
+      "subtitle": "Quando suas postagens receberem curtidas,\nas notificações aparecerão aqui.",
+      "hintTitle": "Dica",
+      "hintBody": "Compartilhe comida deliciosa e conecte-se com todos!",
+      "ctaPost": "Publicar agora",
+      "ctaBack": "Voltar à minha página"
+    },
     "someoneLikedYourPost": "Alguém curtiu sua publicação.",
     "userLikedYourPost": "{name} curtiu sua publicação.",
     "lunchTitle": "#Já postou a refeição de hoje? 🍜",

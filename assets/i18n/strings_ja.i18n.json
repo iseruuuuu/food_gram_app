@@ -54,6 +54,10 @@
     "added": "行きたいリストに追加しました",
     "removed": "行きたいリストから削除しました",
     "emptyHint": "マップの検索から追加できます",
+    "emptyTitle": "まだ「行きたい」がありません",
+    "emptyBody": "気になるお店やスポットを\n「行きたいリスト」に追加しておこう！",
+    "emptyCta": "行きたいを追加する",
+    "searchOnMap": "マップから探す",
     "addToList": "行きたいリストに追加",
     "removeFromList": "行きたいリストから削除",
     "alreadyAdded": "リストに追加済み",
@@ -85,7 +89,7 @@
     "create": "アルバムを作成",
     "edit": "アルバムを編集",
     "emptyTitle": "まだアルバムがありません",
-    "emptyBody": "投稿をまとめて、食の思い出を振り返りましょう",
+    "emptyBody": "大切な食の思い出をアルバムにまとめて、\nいつでも振り返りましょう。",
     "titleHint": "タイトル（例: カフェ巡り）",
     "descriptionHint": "コメント・説明",
     "selectPosts": "投稿を選択",
@@ -145,7 +149,7 @@
     "premiumMembership": "プレミアム会員になって特別な体験を",
     "clearCache": "キャッシュ削除",
     "clearCacheSuccessTitle": "キャッシュを削除しました",
-    "clearCacheSuccessSubtitle": "画像などの一時データを削除しました",
+    "clearCacheSuccessSubtitle": "画像など一時データを削除しました",
     "clearCacheFailureTitle": "キャッシュの削除に失敗しました",
     "clearCacheFailureSubtitle": "時間をおいて再度お試しください"
   },
@@ -873,12 +877,25 @@
     "butter": "バター"
   },
   "favoritePostEmpty": {
-    "title": "保存した投稿がありません",
-    "subtitle": "気になった投稿を保存してみましょう!"
+    "title": "まだ保存した投稿がありません",
+    "subtitle": "気になった投稿を保存してみましょう！",
+    "cta": "みんなの投稿を見る"
+  },
+  "myPostEmpty": {
+    "title": "✨ 最初の1投稿をしてみよう！",
+    "subtitle": "食べたものや行ったお店を記録すると、\nここにあなたの記録が並びます。"
   },
   "notification": {
     "likeNotificationsTitle": "いいね通知",
     "loadFailed": "読み込みに失敗しました",
+    "empty": {
+      "title": "まだ「いいね」がありません",
+      "subtitle": "あなたの投稿に「いいね」がつくと、\nここにお知らせが届きます！",
+      "hintTitle": "ヒント",
+      "hintBody": "おいしい食べ物をシェアして、みんなとつながりましょう！",
+      "ctaPost": "投稿してみる",
+      "ctaBack": "マイページに戻る"
+    },
     "someoneLikedYourPost": "誰かがあなたの投稿にいいねをつけました。",
     "userLikedYourPost": "{name}があなたの投稿にいいねをつけました。",
     "lunchTitle": "#今日のごはん、もう投稿した？🍜",

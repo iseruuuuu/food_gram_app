@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/dialog/memory_album_dialog.dart';
@@ -130,54 +131,9 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
         error: (_, __) => AppTabError.myPage(onRetry: reload),
         data: (albums) {
           if (albums.isEmpty) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.photo_album_outlined,
-                      size: 72,
-                      color: isDark ? Colors.white24 : Colors.amber.shade200,
-                    ),
-                    const Gap(20),
-                    Text(
-                      t.memoryAlbum.emptyTitle,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const Gap(8),
-                    Text(
-                      t.memoryAlbum.listSubtitle,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14,
-                        height: 1.5,
-                        color: isDark ? Colors.white60 : Colors.black54,
-                      ),
-                    ),
-                    const Gap(28),
-                    FilledButton.icon(
-                      style: FilledButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 14,
-                        ),
-                      ),
-                      onPressed: () =>
-                          unawaited(openMemoryAlbumCreate(context, ref)),
-                      icon: const Icon(Icons.add),
-                      label: Text(t.memoryAlbum.create),
-                    ),
-                  ],
-                ),
-              ),
+            return AppMemoryAlbumEmpty(
+              onCreateTap: () =>
+                  unawaited(openMemoryAlbumCreate(context, ref)),
             );
           }
 

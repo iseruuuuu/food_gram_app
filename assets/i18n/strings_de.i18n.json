@@ -54,6 +54,10 @@
     "added": "Zur Wunschliste hinzugefügt",
     "removed": "Von der Wunschliste entfernt",
     "emptyHint": "Über die Kartensuche hinzufügen",
+    "emptyTitle": "Noch keine Wunschorte",
+    "emptyBody": "Füge interessante Läden und Orte\nzu deiner Wunschliste hinzu!",
+    "emptyCta": "Ort hinzufügen",
+    "searchOnMap": "Auf der Karte suchen",
     "addToList": "Zur Wunschliste hinzufügen",
     "removeFromList": "Von der Wunschliste entfernen",
     "alreadyAdded": "Bereits auf der Liste",
@@ -874,12 +878,25 @@
     "butter": "Butter"
   },
   "favoritePostEmpty": {
-    "title": "Keine gespeicherten Beiträge",
-    "subtitle": "Speichern Sie Beiträge, die Sie interessieren!"
+    "title": "Noch keine gespeicherten Beiträge",
+    "subtitle": "Speichere Beiträge, die dich interessieren!",
+    "cta": "Beiträge ansehen"
+  },
+  "myPostEmpty": {
+    "title": "✨ Erstelle deinen ersten Beitrag!",
+    "subtitle": "Halte fest, was du gegessen hast und wo du warst – deine Einträge erscheinen dann hier."
   },
   "notification": {
     "likeNotificationsTitle": "Gefällt-mir-Benachrichtigungen",
     "loadFailed": "Laden fehlgeschlagen",
+    "empty": {
+      "title": "Noch keine Likes",
+      "subtitle": "Wenn deine Beiträge Likes bekommen,\nerscheinen Benachrichtigungen hier.",
+      "hintTitle": "Tipp",
+      "hintBody": "Teile leckeres Essen und vernetze dich mit allen!",
+      "ctaPost": "Jetzt posten",
+      "ctaBack": "Zurück zu meiner Seite"
+    },
     "someoneLikedYourPost": "Jemand hat deinen Beitrag mit „Gefällt mir“ markiert.",
     "userLikedYourPost": "{name} hat deinen Beitrag mit „Gefällt mir“ markiert.",
     "lunchTitle": "#Hast du heute schon dein Essen gepostet? 🍜",

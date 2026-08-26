@@ -48,7 +48,6 @@ class ProfileStat extends StatelessWidget {
             color: textColor,
           ),
         ),
-        const Gap(4),
         Text(
           label,
           textAlign: TextAlign.center,

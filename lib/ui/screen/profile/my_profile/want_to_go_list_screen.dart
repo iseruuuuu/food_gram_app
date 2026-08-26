@@ -18,6 +18,8 @@ import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/stored_post_screen.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/stored_post_view_model.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -122,32 +124,23 @@ class WantToGoListScreen extends HookConsumerWidget {
                   ),
                   data: (items) {
                     if (items.isEmpty) {
-                      return Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(32),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const AppEmpty(),
-                              const SizedBox(height: 8),
-                              Text(
-                                t.wantToGo.emptyHint,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: muted),
-                              ),
-                              if (savedPosts.isNotEmpty) ...[
-                                const Gap(20),
-                                TextButton.icon(
-                                  onPressed: () {
-                                    selectTab(_WantToGoHubTab.saved);
-                                  },
-                                  icon: const Icon(Icons.bookmark_border),
-                                  label: Text(t.wantToGo.seeSavedPosts),
-                                ),
-                              ],
-                            ],
-                          ),
-                        ),
+                      return AppWantToGoEmpty(
+                        onAddTap: () {
+                          ref
+                              .read(tabViewModelProvider().notifier)
+                              .onTap(TabIndex.map);
+                          if (context.mounted) {
+                            context.pop();
+                          }
+                        },
+                        onSearchMapTap: () {
+                          ref
+                              .read(tabViewModelProvider().notifier)
+                              .onTap(TabIndex.map);
+                          if (context.mounted) {
+                            context.pop();
+                          }
+                        },
                       );
                     }
 

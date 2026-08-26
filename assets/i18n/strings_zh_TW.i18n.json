@@ -54,6 +54,10 @@
     "added": "已加入想去清單",
     "removed": "已從想去清單移除",
     "emptyHint": "可從地圖搜尋中新增",
+    "emptyTitle": "還沒有想去的地方",
+    "emptyBody": "把感興趣的店家和地點\n加入想去清單吧！",
+    "emptyCta": "新增想去的地方",
+    "searchOnMap": "從地圖尋找",
     "addToList": "加入想去清單",
     "removeFromList": "從想去清單移除",
     "alreadyAdded": "已加入清單",
@@ -874,12 +878,25 @@
     "butter": "奶油"
   },
   "favoritePostEmpty": {
-    "title": "沒有儲存的貼文",
-    "subtitle": "儲存您感興趣的貼文吧！"
+    "title": "還沒有儲存的貼文",
+    "subtitle": "儲存您感興趣的貼文吧！",
+    "cta": "看看大家的貼文"
+  },
+  "myPostEmpty": {
+    "title": "✨ 來發布第一篇貼文吧！",
+    "subtitle": "記錄吃過的美食和去過的店家，您的記錄就會顯示在這裡。"
   },
   "notification": {
     "likeNotificationsTitle": "按讚通知",
     "loadFailed": "載入失敗",
+    "empty": {
+      "title": "還沒有按讚",
+      "subtitle": "當你的貼文收到按讚時，\n通知會顯示在這裡！",
+      "hintTitle": "提示",
+      "hintBody": "分享美食，和大家建立連結吧！",
+      "ctaPost": "去發文",
+      "ctaBack": "返回我的主頁"
+    },
     "someoneLikedYourPost": "有人對你的貼文按了讚。",
     "userLikedYourPost": "{name} 對你的貼文按了讚。",
     "lunchTitle": "#今天的飯菜，已經發了嗎？🍜",

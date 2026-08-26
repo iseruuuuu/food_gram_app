@@ -54,6 +54,10 @@
     "added": "Añadido a tu lista de deseos",
     "removed": "Eliminado de tu lista de deseos",
     "emptyHint": "Añade lugares desde la búsqueda del mapa",
+    "emptyTitle": "Aún no hay lugares que quieras visitar",
+    "emptyBody": "¡Añade restaurantes y sitios que te interesen\na tu lista de sitios por visitar!",
+    "emptyCta": "Añadir un lugar",
+    "searchOnMap": "Buscar en el mapa",
     "addToList": "Añadir a la lista",
     "removeFromList": "Quitar de la lista",
     "alreadyAdded": "Ya está en tu lista",
@@ -874,12 +878,25 @@
     "butter": "Mantequilla"
   },
   "favoritePostEmpty": {
-    "title": "No hay publicaciones guardadas",
-    "subtitle": "¡Guarda publicaciones que te interesen!"
+    "title": "Aún no hay publicaciones guardadas",
+    "subtitle": "¡Guarda publicaciones que te interesen!",
+    "cta": "Ver publicaciones"
+  },
+  "myPostEmpty": {
+    "title": "✨ ¡Haz tu primera publicación!",
+    "subtitle": "Registra lo que comiste y los lugares que visitaste, y tu historial aparecerá aquí."
   },
   "notification": {
     "likeNotificationsTitle": "Notificaciones de Me gusta",
     "loadFailed": "Error al cargar",
+    "empty": {
+      "title": "Aún no hay Me gusta",
+      "subtitle": "Cuando tus publicaciones reciban Me gusta,\nlas notificaciones aparecerán aquí.",
+      "hintTitle": "Consejo",
+      "hintBody": "¡Comparte comida deliciosa y conéctate con todos!",
+      "ctaPost": "Publicar ahora",
+      "ctaBack": "Volver a Mi página"
+    },
     "someoneLikedYourPost": "Alguien indicó que le gusta tu publicación.",
     "userLikedYourPost": "{name} indicó que le gusta tu publicación.",
     "lunchTitle": "#¿Ya publicaste la comida de hoy? 🍜",

@@ -54,6 +54,10 @@
     "added": "Added to your want-to-go list",
     "removed": "Removed from your want-to-go list",
     "emptyHint": "Add places from map search",
+    "emptyTitle": "No want-to-go places yet",
+    "emptyBody": "Add shops and spots you're curious about\nto your want-to-go list!",
+    "emptyCta": "Add a place",
+    "searchOnMap": "Search on the map",
     "addToList": "Add to want-to-go list",
     "removeFromList": "Remove from want-to-go list",
     "alreadyAdded": "Already on your list",
@@ -873,12 +877,25 @@
     "butter": "Butter"
   },
   "favoritePostEmpty": {
-    "title": "No saved posts",
-    "subtitle": "Save posts that interest you!"
+    "title": "No saved posts yet",
+    "subtitle": "Save posts that interest you!",
+    "cta": "Browse posts"
+  },
+  "myPostEmpty": {
+    "title": "✨ Try making your first post!",
+    "subtitle": "Record what you ate and the places you visited, and your history will appear here."
   },
   "notification": {
     "likeNotificationsTitle": "Likes",
     "loadFailed": "Failed to load",
+    "empty": {
+      "title": "No likes yet",
+      "subtitle": "When your posts get likes,\nnotifications will appear here!",
+      "hintTitle": "Tip",
+      "hintBody": "Share delicious food and connect with everyone!",
+      "ctaPost": "Try posting",
+      "ctaBack": "Back to My Page"
+    },
     "someoneLikedYourPost": "Someone liked your post.",
     "userLikedYourPost": "{name} liked your post.",
     "lunchTitle": "#Did you post today's meal? 🍜",

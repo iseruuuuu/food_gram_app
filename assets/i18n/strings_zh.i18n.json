@@ -54,6 +54,10 @@
     "added": "已添加到想去清单",
     "removed": "已从想去清单移除",
     "emptyHint": "可从地图搜索中添加",
+    "emptyTitle": "还没有想去的地方",
+    "emptyBody": "把感兴趣的店铺和地点\n加入想去清单吧！",
+    "emptyCta": "添加想去的地方",
+    "searchOnMap": "从地图查找",
     "addToList": "添加到想去清单",
     "removeFromList": "从想去清单移除",
     "alreadyAdded": "已加入清单",
@@ -874,12 +878,25 @@
     "butter": "黄油"
   },
   "favoritePostEmpty": {
-    "title": "没有保存的帖子",
-    "subtitle": "保存您感兴趣的帖子吧！"
+    "title": "还没有保存的帖子",
+    "subtitle": "保存您感兴趣的帖子吧！",
+    "cta": "看看大家的帖子"
+  },
+  "myPostEmpty": {
+    "title": "✨ 来发布第一篇帖子吧！",
+    "subtitle": "记录吃过的美食和去过的店铺，您的记录就会显示在这里。"
   },
   "notification": {
     "likeNotificationsTitle": "点赞通知",
     "loadFailed": "加载失败",
+    "empty": {
+      "title": "还没有点赞",
+      "subtitle": "当你的帖子收到点赞时，\n通知会显示在这里！",
+      "hintTitle": "提示",
+      "hintBody": "分享美食，和大家建立连接吧！",
+      "ctaPost": "去发帖",
+      "ctaBack": "返回我的主页"
+    },
     "someoneLikedYourPost": "有人给你的帖子点了赞。",
     "userLikedYourPost": "{name} 给你的帖子点了赞。",
     "lunchTitle": "#今天的饭菜，已经发了吗？🍜",

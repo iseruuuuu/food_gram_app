@@ -54,6 +54,10 @@
     "added": "Đã thêm vào danh sách muốn đến",
     "removed": "Đã xóa khỏi danh sách muốn đến",
     "emptyHint": "Thêm từ tìm kiếm trên bản đồ",
+    "emptyTitle": "Chưa có địa điểm muốn đến",
+    "emptyBody": "Thêm quán và địa điểm bạn quan tâm\nvào danh sách muốn đến nhé!",
+    "emptyCta": "Thêm địa điểm",
+    "searchOnMap": "Tìm trên bản đồ",
     "addToList": "Thêm vào danh sách muốn đến",
     "removeFromList": "Xóa khỏi danh sách muốn đến",
     "alreadyAdded": "Đã có trong danh sách",
@@ -874,12 +878,25 @@
     "butter": "Bơ"
   },
   "favoritePostEmpty": {
-    "title": "Không có bài đăng đã lưu",
-    "subtitle": "Lưu các bài đăng mà bạn quan tâm!"
+    "title": "Chưa có bài đăng đã lưu",
+    "subtitle": "Lưu các bài đăng mà bạn quan tâm!",
+    "cta": "Xem bài đăng"
+  },
+  "myPostEmpty": {
+    "title": "✨ Hãy đăng bài đầu tiên của bạn!",
+    "subtitle": "Ghi lại món bạn đã ăn và quán bạn đã đến, ghi chép của bạn sẽ hiển thị ở đây."
   },
   "notification": {
     "likeNotificationsTitle": "Thông báo lượt thích",
     "loadFailed": "Tải thất bại",
+    "empty": {
+      "title": "Chưa có lượt thích",
+      "subtitle": "Khi bài đăng của bạn được thích,\nthông báo sẽ xuất hiện ở đây!",
+      "hintTitle": "Gợi ý",
+      "hintBody": "Hãy chia sẻ món ngon và kết nối với mọi người!",
+      "ctaPost": "Đăng bài",
+      "ctaBack": "Quay lại trang của tôi"
+    },
     "someoneLikedYourPost": "Ai đó đã thích bài viết của bạn.",
     "userLikedYourPost": "{name} đã thích bài viết của bạn.",
     "lunchTitle": "#Bạn đã đăng bữa ăn hôm nay chưa? 🍜",

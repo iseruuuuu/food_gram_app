@@ -11,6 +11,8 @@ import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/save_album_picker_sheet.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/stored_post_view_model.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -134,7 +136,16 @@ class _StoredPostContent extends HookConsumerWidget {
             loading: () => const Center(child: AppContentLoading()),
             data: (posts) {
               if (posts.isEmpty) {
-                return const AppFavoritePostEmpty();
+                return AppFavoritePostEmpty(
+                  onBrowseTap: () {
+                    ref
+                        .read(tabViewModelProvider().notifier)
+                        .onTap(TabIndex.home);
+                    if (context.mounted) {
+                      context.pop();
+                    }
+                  },
+                );
               }
               return CustomScrollView(
                 key: ValueKey<String>(

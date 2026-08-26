@@ -66,7 +66,10 @@ class NotificationsScreen extends HookConsumerWidget {
         ),
         data: (notifications) {
           if (notifications.isEmpty) {
-            return const AppEmpty();
+            return AppNotificationEmpty(
+              onPostTap: () => context.pushNamed(RouterPath.myProfilePost),
+              onBackTap: () => context.pop(),
+            );
           }
           final supabase = ref.watch(supabaseProvider);
           final posts = notifications.map((n) => n.post).toList();

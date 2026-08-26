@@ -46,7 +46,7 @@ class AppProfileHeader extends ConsumerWidget {
     return ColoredBox(
       color: headerBg,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 10),
+        padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -138,7 +138,7 @@ class AppProfileHeader extends ConsumerWidget {
               ),
             ],
             if (isOwnProfile && level < UserLevel.maxLevel) ...[
-              const Gap(12),
+              const Gap(8),
               Builder(
                 builder: (context) {
                   final parts = t.profile.nextLevelBanner.split('{count}');
@@ -195,7 +195,7 @@ class AppProfileHeader extends ConsumerWidget {
                 ),
               ),
             ],
-            const Gap(20),
+            const Gap(16),
             IntrinsicHeight(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

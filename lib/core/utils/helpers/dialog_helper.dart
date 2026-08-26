@@ -92,7 +92,7 @@ class DialogHelper {
       titleColor: colorScheme.onSurface,
       textColor: colorScheme.onSurface,
       confirmBtnTextStyle: TextStyle(
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: FontWeight.bold,
         color: colorScheme.onPrimary,
       ),
@@ -100,7 +100,7 @@ class DialogHelper {
       cancelBtnText: t.cancel,
       onCancelBtnTap: () => context.pop(),
       cancelBtnTextStyle: TextStyle(
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),

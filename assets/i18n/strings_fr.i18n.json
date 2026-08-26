@@ -54,6 +54,10 @@
     "added": "Ajouté à votre liste",
     "removed": "Retiré de votre liste",
     "emptyHint": "Ajoutez des lieux depuis la recherche sur la carte",
+    "emptyTitle": "Pas encore de lieux à visiter",
+    "emptyBody": "Ajoutez les restaurants et spots qui vous intéressent\nà votre liste de lieux à visiter !",
+    "emptyCta": "Ajouter un lieu",
+    "searchOnMap": "Chercher sur la carte",
     "addToList": "Ajouter à la liste",
     "removeFromList": "Retirer de la liste",
     "alreadyAdded": "Déjà dans la liste",
@@ -874,12 +878,25 @@
     "butter": "Beurre"
   },
   "favoritePostEmpty": {
-    "title": "Aucune publication sauvegardée",
-    "subtitle": "Sauvegardez les publications qui vous intéressent !"
+    "title": "Pas encore de publications sauvegardées",
+    "subtitle": "Sauvegardez les publications qui vous intéressent !",
+    "cta": "Voir les publications"
+  },
+  "myPostEmpty": {
+    "title": "✨ Publiez votre première photo !",
+    "subtitle": "Enregistrez ce que vous avez mangé et les lieux visités, et votre historique apparaîtra ici."
   },
   "notification": {
     "likeNotificationsTitle": "Mentions J'aime",
     "loadFailed": "Échec du chargement",
+    "empty": {
+      "title": "Pas encore de J'aime",
+      "subtitle": "Quand vos publications reçoivent des J'aime,\nles notifications apparaîtront ici.",
+      "hintTitle": "Astuce",
+      "hintBody": "Partagez de délicieux plats et connectez-vous avec tout le monde !",
+      "ctaPost": "Publier",
+      "ctaBack": "Retour à ma page"
+    },
     "someoneLikedYourPost": "Quelqu'un aime votre publication.",
     "userLikedYourPost": "{name} aime votre publication.",
     "lunchTitle": "#Avez-vous déjà posté le repas d'aujourd'hui ? 🍜",

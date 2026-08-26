@@ -54,6 +54,10 @@
     "added": "가보고 싶은 목록에 추가했습니다",
     "removed": "가보고 싶은 목록에서 삭제했습니다",
     "emptyHint": "지도 검색에서 추가할 수 있습니다",
+    "emptyTitle": "아직 가보고 싶은 곳이 없습니다",
+    "emptyBody": "관심 있는 가게와 장소를\n가보고 싶은 목록에 추가해 보세요!",
+    "emptyCta": "가보고 싶은 곳 추가",
+    "searchOnMap": "지도에서 찾기",
     "addToList": "가보고 싶은 목록에 추가",
     "removeFromList": "가보고 싶은 목록에서 삭제",
     "alreadyAdded": "목록에 추가됨",
@@ -874,12 +878,25 @@
     "butter": "버터"
   },
   "favoritePostEmpty": {
-    "title": "저장된 게시물이 없습니다",
-    "subtitle": "관심 있는 게시물을 저장해보세요!"
+    "title": "아직 저장한 게시물이 없습니다",
+    "subtitle": "관심 있는 게시물을 저장해보세요!",
+    "cta": "게시물 둘러보기"
+  },
+  "myPostEmpty": {
+    "title": "✨ 첫 게시물을 올려보세요!",
+    "subtitle": "먹은 음식과 방문한 가게를 기록하면 여기에 나의 기록이 쌓입니다."
   },
   "notification": {
     "likeNotificationsTitle": "좋아요 알림",
     "loadFailed": "불러오기에 실패했어요",
+    "empty": {
+      "title": "아직 좋아요가 없습니다",
+      "subtitle": "게시물에 좋아요가 달리면\n여기에 알림이 도착합니다!",
+      "hintTitle": "힌트",
+      "hintBody": "맛있는 음식을 공유하고 모두와 연결해 보세요!",
+      "ctaPost": "게시해 보기",
+      "ctaBack": "마이페이지로 돌아가기"
+    },
     "someoneLikedYourPost": "누군가가 당신의 게시글을 좋아합니다.",
     "userLikedYourPost": "{name}님이 당신의 게시글을 좋아합니다.",
     "lunchTitle": "#오늘의 식사, 이미 올렸나요? 🍜",
