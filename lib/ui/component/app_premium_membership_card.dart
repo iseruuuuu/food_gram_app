@@ -49,12 +49,6 @@ class AppPremiumMembershipCard extends ConsumerWidget {
                         t.setting.premiumMembership,
                         style: SettingStyle.premium(),
                       ),
-                      const Gap(18),
-                      const FaIcon(
-                        FontAwesomeIcons.crown,
-                        color: Colors.yellow,
-                        size: 22,
-                      ),
                     ],
                   ),
                 ),

@@ -33,7 +33,7 @@ class MemoryAlbumEntryCard extends ConsumerWidget {
           borderRadius: BorderRadius.circular(20),
           child: Ink(
             decoration: MemoryAlbumTheme.cardDecoration(isDark: isDark),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
                 Expanded(
@@ -65,8 +65,10 @@ class MemoryAlbumEntryCard extends ConsumerWidget {
                       const Gap(4),
                       Text(
                         t.memoryAlbum.entrySubtitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 13,
+                          fontSize: 12,
                           color: isDark ? Colors.white60 : Colors.black54,
                         ),
                       ),

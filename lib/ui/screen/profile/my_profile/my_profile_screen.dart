@@ -16,6 +16,7 @@ import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/screen/profile/components/profile_header.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_screen.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
 import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dart';
 import 'package:go_router/go_router.dart';
@@ -41,6 +42,8 @@ class MyProfileScreen extends HookConsumerWidget {
     );
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
     final loading = ref.watch(loadingProvider);
+    // フローティングボトムナビの下に最終行が隠れないよう、末尾に余白を確保する
+    final bottomInset = TabScreen.bottomNavOccupiedHeight(context) + 30;
     return Stack(
       children: [
         DefaultTabController(
@@ -144,7 +147,7 @@ class MyProfileScreen extends HookConsumerWidget {
                       ),
                       if (value.isNotEmpty)
                         SliverPadding(
-                          padding: const EdgeInsets.only(top: 8),
+                          padding: EdgeInsets.only(top: 8, bottom: bottomInset),
                           sliver: AppListView(
                             posts: value,
                             routerPath: RouterPath.myProfileDetail,
@@ -154,8 +157,11 @@ class MyProfileScreen extends HookConsumerWidget {
                           ),
                         )
                       else
-                        const SliverToBoxAdapter(
-                          child: AppEmpty(),
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: bottomInset),
+                            child: const AppMyPostEmpty(),
+                          ),
                         ),
                     ],
                   ),
