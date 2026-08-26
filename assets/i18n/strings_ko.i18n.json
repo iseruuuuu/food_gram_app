@@ -877,6 +877,10 @@
     "title": "저장된 게시물이 없습니다",
     "subtitle": "관심 있는 게시물을 저장해보세요!"
   },
+  "myPostEmpty": {
+    "title": "✨ 첫 게시물을 올려보세요!",
+    "subtitle": "먹은 음식과 방문한 가게를 기록하면 여기에 나의 기록이 쌓입니다."
+  },
   "notification": {
     "likeNotificationsTitle": "좋아요 알림",
     "loadFailed": "불러오기에 실패했어요",

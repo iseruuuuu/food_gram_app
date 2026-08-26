@@ -876,6 +876,10 @@
     "title": "保存した投稿がありません",
     "subtitle": "気になった投稿を保存してみましょう!"
   },
+  "myPostEmpty": {
+    "title": "✨ 最初の1投稿をしてみよう！",
+    "subtitle": "食べたものや行ったお店を記録すると、\nここにあなたの記録が並びます。"
+  },
   "notification": {
     "likeNotificationsTitle": "いいね通知",
     "loadFailed": "読み込みに失敗しました",

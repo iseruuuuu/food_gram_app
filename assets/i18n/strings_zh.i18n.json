@@ -877,6 +877,10 @@
     "title": "没有保存的帖子",
     "subtitle": "保存您感兴趣的帖子吧！"
   },
+  "myPostEmpty": {
+    "title": "✨ 来发布第一篇帖子吧！",
+    "subtitle": "记录吃过的美食和去过的店铺，您的记录就会显示在这里。"
+  },
   "notification": {
     "likeNotificationsTitle": "点赞通知",
     "loadFailed": "加载失败",

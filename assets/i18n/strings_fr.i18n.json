@@ -877,6 +877,10 @@
     "title": "Aucune publication sauvegardée",
     "subtitle": "Sauvegardez les publications qui vous intéressent !"
   },
+  "myPostEmpty": {
+    "title": "✨ Publiez votre première photo !",
+    "subtitle": "Enregistrez ce que vous avez mangé et les lieux visités, et votre historique apparaîtra ici."
+  },
   "notification": {
     "likeNotificationsTitle": "Mentions J'aime",
     "loadFailed": "Échec du chargement",

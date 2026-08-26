@@ -877,6 +877,10 @@
     "title": "沒有儲存的貼文",
     "subtitle": "儲存您感興趣的貼文吧！"
   },
+  "myPostEmpty": {
+    "title": "✨ 來發布第一篇貼文吧！",
+    "subtitle": "記錄吃過的美食和去過的店家，您的記錄就會顯示在這裡。"
+  },
   "notification": {
     "likeNotificationsTitle": "按讚通知",
     "loadFailed": "載入失敗",

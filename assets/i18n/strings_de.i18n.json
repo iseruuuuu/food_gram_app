@@ -877,6 +877,10 @@
     "title": "Keine gespeicherten Beiträge",
     "subtitle": "Speichern Sie Beiträge, die Sie interessieren!"
   },
+  "myPostEmpty": {
+    "title": "✨ Erstellen Sie Ihren ersten Beitrag!",
+    "subtitle": "Halten Sie fest, was Sie gegessen haben und wo Sie waren – Ihre Einträge erscheinen dann hier."
+  },
   "notification": {
     "likeNotificationsTitle": "Gefällt-mir-Benachrichtigungen",
     "loadFailed": "Laden fehlgeschlagen",

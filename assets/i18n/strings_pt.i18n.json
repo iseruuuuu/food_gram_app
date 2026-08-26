@@ -877,6 +877,10 @@
     "title": "Nenhuma postagem salva",
     "subtitle": "Salve postagens que te interessam!"
   },
+  "myPostEmpty": {
+    "title": "✨ Faça sua primeira postagem!",
+    "subtitle": "Registre o que você comeu e os lugares que visitou, e seu histórico aparecerá aqui."
+  },
   "notification": {
     "likeNotificationsTitle": "Notificações de curtidas",
     "loadFailed": "Falha ao carregar",

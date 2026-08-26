@@ -877,6 +877,10 @@
     "title": "No hay publicaciones guardadas",
     "subtitle": "¡Guarda publicaciones que te interesen!"
   },
+  "myPostEmpty": {
+    "title": "✨ ¡Haz tu primera publicación!",
+    "subtitle": "Registra lo que comiste y los lugares que visitaste, y tu historial aparecerá aquí."
+  },
   "notification": {
     "likeNotificationsTitle": "Notificaciones de Me gusta",
     "loadFailed": "Error al cargar",

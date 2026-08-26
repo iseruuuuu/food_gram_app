@@ -876,6 +876,10 @@
     "title": "No saved posts",
     "subtitle": "Save posts that interest you!"
   },
+  "myPostEmpty": {
+    "title": "✨ Try making your first post!",
+    "subtitle": "Record what you ate and the places you visited, and your history will appear here."
+  },
   "notification": {
     "likeNotificationsTitle": "Likes",
     "loadFailed": "Failed to load",

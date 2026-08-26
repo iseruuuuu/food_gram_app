@@ -877,6 +877,10 @@
     "title": "Không có bài đăng đã lưu",
     "subtitle": "Lưu các bài đăng mà bạn quan tâm!"
   },
+  "myPostEmpty": {
+    "title": "✨ Hãy đăng bài đầu tiên của bạn!",
+    "subtitle": "Ghi lại món bạn đã ăn và quán bạn đã đến, ghi chép của bạn sẽ hiển thị ở đây."
+  },
   "notification": {
     "likeNotificationsTitle": "Thông báo lượt thích",
     "loadFailed": "Tải thất bại",
