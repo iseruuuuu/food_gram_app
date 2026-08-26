@@ -884,6 +884,14 @@
   "notification": {
     "likeNotificationsTitle": "Notificações de curtidas",
     "loadFailed": "Falha ao carregar",
+    "empty": {
+      "title": "Ainda não há curtidas",
+      "subtitle": "Quando suas postagens receberem curtidas,\nas notificações aparecerão aqui.",
+      "hintTitle": "Dica",
+      "hintBody": "Compartilhe comida deliciosa e conecte-se com todos!",
+      "ctaPost": "Publicar agora",
+      "ctaBack": "Voltar à minha página"
+    },
     "someoneLikedYourPost": "Alguém curtiu sua publicação.",
     "userLikedYourPost": "{name} curtiu sua publicação.",
     "lunchTitle": "#Já postou a refeição de hoje? 🍜",

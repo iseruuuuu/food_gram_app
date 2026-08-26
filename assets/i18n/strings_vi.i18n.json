@@ -884,6 +884,14 @@
   "notification": {
     "likeNotificationsTitle": "Thông báo lượt thích",
     "loadFailed": "Tải thất bại",
+    "empty": {
+      "title": "Chưa có lượt thích",
+      "subtitle": "Khi bài đăng của bạn được thích,\nthông báo sẽ xuất hiện ở đây!",
+      "hintTitle": "Gợi ý",
+      "hintBody": "Hãy chia sẻ món ngon và kết nối với mọi người!",
+      "ctaPost": "Đăng bài",
+      "ctaBack": "Quay lại trang của tôi"
+    },
     "someoneLikedYourPost": "Ai đó đã thích bài viết của bạn.",
     "userLikedYourPost": "{name} đã thích bài viết của bạn.",
     "lunchTitle": "#Bạn đã đăng bữa ăn hôm nay chưa? 🍜",

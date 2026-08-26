@@ -884,6 +884,14 @@
   "notification": {
     "likeNotificationsTitle": "按讚通知",
     "loadFailed": "載入失敗",
+    "empty": {
+      "title": "還沒有按讚",
+      "subtitle": "當你的貼文收到按讚時，\n通知會顯示在這裡！",
+      "hintTitle": "提示",
+      "hintBody": "分享美食，和大家建立連結吧！",
+      "ctaPost": "去發文",
+      "ctaBack": "返回我的主頁"
+    },
     "someoneLikedYourPost": "有人對你的貼文按了讚。",
     "userLikedYourPost": "{name} 對你的貼文按了讚。",
     "lunchTitle": "#今天的飯菜，已經發了嗎？🍜",

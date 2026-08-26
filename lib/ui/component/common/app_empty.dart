@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
@@ -65,6 +66,160 @@ class AppMyPostEmpty extends StatelessWidget {
                 color: onSurface.withValues(alpha: 0.7),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AppNotificationEmpty extends StatelessWidget {
+  const AppNotificationEmpty({
+    required this.onPostTap,
+    required this.onBackTap,
+    super.key,
+  });
+
+  final VoidCallback onPostTap;
+  final VoidCallback onBackTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translations.of(context).notification.empty;
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 28),
+        child: Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Lottie.asset(
+                        Assets.lottie.noNotification,
+                        width: 220,
+                        height: 220,
+                      ),
+                      Text(
+                        t.title,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: onSurface,
+                        ),
+                      ),
+                      const Gap(10),
+                      Text(
+                        t.subtitle,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          height: 1.5,
+                          color: onSurface.withValues(alpha: 0.7),
+                        ),
+                      ),
+                      const Gap(20),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          color: isDark
+                              ? const Color(0xFF3A3428)
+                              : const Color(0xFFFFF6E8),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.lightbulb_outline,
+                              size: 22,
+                              color: isDark
+                                  ? Colors.amber.shade200
+                                  : const Color(0xFFE8A317),
+                            ),
+                            const Gap(10),
+                            Expanded(
+                              child: Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: '${t.hintTitle}  ',
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w700,
+                                        color: onSurface,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: t.hintBody,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        height: 1.4,
+                                        color: onSurface.withValues(alpha: 0.75),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: ElevatedButton(
+                onPressed: onPostTap,
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor: AppTheme.primaryBlue,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.edit_outlined, size: 20),
+                    const Gap(8),
+                    Text(
+                      t.ctaPost,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const Gap(8),
+            TextButton(
+              onPressed: onBackTap,
+              child: Text(
+                t.ctaBack,
+                style: const TextStyle(
+                  color: AppTheme.primaryBlue,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            const Gap(12),
           ],
         ),
       ),

@@ -884,6 +884,14 @@
   "notification": {
     "likeNotificationsTitle": "点赞通知",
     "loadFailed": "加载失败",
+    "empty": {
+      "title": "还没有点赞",
+      "subtitle": "当你的帖子收到点赞时，\n通知会显示在这里！",
+      "hintTitle": "提示",
+      "hintBody": "分享美食，和大家建立连接吧！",
+      "ctaPost": "去发帖",
+      "ctaBack": "返回我的主页"
+    },
     "someoneLikedYourPost": "有人给你的帖子点了赞。",
     "userLikedYourPost": "{name} 给你的帖子点了赞。",
     "lunchTitle": "#今天的饭菜，已经发了吗？🍜",

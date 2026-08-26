@@ -884,6 +884,14 @@
   "notification": {
     "likeNotificationsTitle": "Gefällt-mir-Benachrichtigungen",
     "loadFailed": "Laden fehlgeschlagen",
+    "empty": {
+      "title": "Noch keine Likes",
+      "subtitle": "Wenn deine Beiträge Likes bekommen,\nerscheinen Benachrichtigungen hier.",
+      "hintTitle": "Tipp",
+      "hintBody": "Teile leckeres Essen und vernetze dich mit allen!",
+      "ctaPost": "Jetzt posten",
+      "ctaBack": "Zurück zu Meiner Seite"
+    },
     "someoneLikedYourPost": "Jemand hat deinen Beitrag mit „Gefällt mir“ markiert.",
     "userLikedYourPost": "{name} hat deinen Beitrag mit „Gefällt mir“ markiert.",
     "lunchTitle": "#Hast du heute schon dein Essen gepostet? 🍜",

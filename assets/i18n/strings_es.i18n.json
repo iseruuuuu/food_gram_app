@@ -884,6 +884,14 @@
   "notification": {
     "likeNotificationsTitle": "Notificaciones de Me gusta",
     "loadFailed": "Error al cargar",
+    "empty": {
+      "title": "Aún no hay Me gusta",
+      "subtitle": "Cuando tus publicaciones reciban Me gusta,\nlas notificaciones aparecerán aquí.",
+      "hintTitle": "Consejo",
+      "hintBody": "¡Comparte comida deliciosa y conéctate con todos!",
+      "ctaPost": "Publicar ahora",
+      "ctaBack": "Volver a Mi página"
+    },
     "someoneLikedYourPost": "Alguien indicó que le gusta tu publicación.",
     "userLikedYourPost": "{name} indicó que le gusta tu publicación.",
     "lunchTitle": "#¿Ya publicaste la comida de hoy? 🍜",

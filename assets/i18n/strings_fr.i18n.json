@@ -884,6 +884,14 @@
   "notification": {
     "likeNotificationsTitle": "Mentions J'aime",
     "loadFailed": "Échec du chargement",
+    "empty": {
+      "title": "Pas encore de J'aime",
+      "subtitle": "Quand vos publications reçoivent des J'aime,\nles notifications apparaîtront ici.",
+      "hintTitle": "Astuce",
+      "hintBody": "Partagez de délicieux plats et connectez-vous avec tout le monde !",
+      "ctaPost": "Publier",
+      "ctaBack": "Retour à ma page"
+    },
     "someoneLikedYourPost": "Quelqu'un aime votre publication.",
     "userLikedYourPost": "{name} aime votre publication.",
     "lunchTitle": "#Avez-vous déjà posté le repas d'aujourd'hui ? 🍜",

@@ -884,6 +884,14 @@
   "notification": {
     "likeNotificationsTitle": "좋아요 알림",
     "loadFailed": "불러오기에 실패했어요",
+    "empty": {
+      "title": "아직 좋아요가 없습니다",
+      "subtitle": "게시물에 좋아요가 달리면\n여기에 알림이 도착합니다!",
+      "hintTitle": "힌트",
+      "hintBody": "맛있는 음식을 공유하고 모두와 연결해 보세요!",
+      "ctaPost": "게시해 보기",
+      "ctaBack": "마이페이지로 돌아가기"
+    },
     "someoneLikedYourPost": "누군가가 당신의 게시글을 좋아합니다.",
     "userLikedYourPost": "{name}님이 당신의 게시글을 좋아합니다.",
     "lunchTitle": "#오늘의 식사, 이미 올렸나요? 🍜",

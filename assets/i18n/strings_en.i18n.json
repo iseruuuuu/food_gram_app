@@ -883,6 +883,14 @@
   "notification": {
     "likeNotificationsTitle": "Likes",
     "loadFailed": "Failed to load",
+    "empty": {
+      "title": "No likes yet",
+      "subtitle": "When your posts get likes,\nnotifications will appear here!",
+      "hintTitle": "Tip",
+      "hintBody": "Share delicious food and connect with everyone!",
+      "ctaPost": "Try posting",
+      "ctaBack": "Back to My Page"
+    },
     "someoneLikedYourPost": "Someone liked your post.",
     "userLikedYourPost": "{name} liked your post.",
     "lunchTitle": "#Did you post today's meal? 🍜",

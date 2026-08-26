@@ -883,6 +883,14 @@
   "notification": {
     "likeNotificationsTitle": "いいね通知",
     "loadFailed": "読み込みに失敗しました",
+    "empty": {
+      "title": "まだ「いいね」がありません",
+      "subtitle": "あなたの投稿に「いいね」がつくと、\nここにお知らせが届きます！",
+      "hintTitle": "ヒント",
+      "hintBody": "おいしい食べ物をシェアして、みんなとつながりましょう！",
+      "ctaPost": "投稿してみる",
+      "ctaBack": "マイページに戻る"
+    },
     "someoneLikedYourPost": "誰かがあなたの投稿にいいねをつけました。",
     "userLikedYourPost": "{name}があなたの投稿にいいねをつけました。",
     "lunchTitle": "#今日のごはん、もう投稿した？🍜",
