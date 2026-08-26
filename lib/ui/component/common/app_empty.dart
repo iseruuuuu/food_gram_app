@@ -32,6 +32,46 @@ class AppEmpty extends StatelessWidget {
   }
 }
 
+class AppMyPostEmpty extends StatelessWidget {
+  const AppMyPostEmpty({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translations.of(context).myPostEmpty;
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Gap(10),
+            Text(
+              t.title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: onSurface,
+              ),
+            ),
+            const Gap(14),
+            Text(
+              t.subtitle,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                height: 1.5,
+                color: onSurface.withValues(alpha: 0.7),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class AppSearchResultEmpty extends StatelessWidget {
   const AppSearchResultEmpty({super.key});
 
