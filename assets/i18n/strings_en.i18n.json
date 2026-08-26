@@ -54,6 +54,10 @@
     "added": "Added to your want-to-go list",
     "removed": "Removed from your want-to-go list",
     "emptyHint": "Add places from map search",
+    "emptyTitle": "No want-to-go places yet",
+    "emptyBody": "Add shops and spots you're curious about\nto your want-to-go list!",
+    "emptyCta": "Add a place",
+    "searchOnMap": "Search on the map",
     "addToList": "Add to want-to-go list",
     "removeFromList": "Remove from want-to-go list",
     "alreadyAdded": "Already on your list",
@@ -873,8 +877,9 @@
     "butter": "Butter"
   },
   "favoritePostEmpty": {
-    "title": "No saved posts",
-    "subtitle": "Save posts that interest you!"
+    "title": "No saved posts yet",
+    "subtitle": "Save posts that interest you!",
+    "cta": "Browse posts"
   },
   "myPostEmpty": {
     "title": "✨ Try making your first post!",

@@ -317,6 +317,112 @@ class AppMemoryAlbumEmpty extends StatelessWidget {
   }
 }
 
+class AppWantToGoEmpty extends StatelessWidget {
+  const AppWantToGoEmpty({
+    required this.onAddTap,
+    required this.onSearchMapTap,
+    super.key,
+  });
+
+  final VoidCallback onAddTap;
+  final VoidCallback onSearchMapTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translations.of(context).wantToGo;
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 28),
+        child: Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Lottie.asset(
+                        Assets.lottie.noNotification,
+                        width: 220,
+                        height: 220,
+                      ),
+                      Text(
+                        t.emptyTitle,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: onSurface,
+                        ),
+                      ),
+                      const Gap(10),
+                      Text(
+                        t.emptyBody,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          height: 1.5,
+                          color: onSurface.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: ElevatedButton(
+                onPressed: onAddTap,
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor: AppTheme.primaryBlue,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.add, size: 22),
+                    const Gap(8),
+                    Text(
+                      t.emptyCta,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const Gap(8),
+            TextButton.icon(
+              onPressed: onSearchMapTap,
+              icon: const Icon(Icons.map_outlined, size: 18),
+              label: Text(
+                t.searchOnMap,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                foregroundColor: AppTheme.primaryBlue,
+              ),
+            ),
+            const Gap(12),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class AppSearchResultEmpty extends StatelessWidget {
   const AppSearchResultEmpty({super.key});
 
@@ -457,35 +563,82 @@ class AppSearchEmpty extends StatelessWidget {
 }
 
 class AppFavoritePostEmpty extends StatelessWidget {
-  const AppFavoritePostEmpty({super.key});
+  const AppFavoritePostEmpty({
+    required this.onBrowseTap,
+    super.key,
+  });
+
+  final VoidCallback onBrowseTap;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            Translations.of(context).favoritePostEmpty.title,
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
+    final t = Translations.of(context).favoritePostEmpty;
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 28),
+        child: Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Lottie.asset(
+                        Assets.lottie.noNotification,
+                        width: 220,
+                        height: 220,
+                      ),
+                      Text(
+                        t.title,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: onSurface,
+                        ),
+                      ),
+                      const Gap(10),
+                      Text(
+                        t.subtitle,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          height: 1.5,
+                          color: onSurface.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-          Text(
-            Translations.of(context).favoritePostEmpty.subtitle,
-            style: TextStyle(
-              fontSize: 14,
-              color: Theme.of(context).colorScheme.onSurface,
+            SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: ElevatedButton(
+                onPressed: onBrowseTap,
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor: AppTheme.primaryBlue,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                child: Text(
+                  t.cta,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
             ),
-          ),
-          Lottie.asset(
-            Assets.lottie.error,
-            width: 180,
-            height: 180,
-          ),
-        ],
+            const Gap(24),
+          ],
+        ),
       ),
     );
   }

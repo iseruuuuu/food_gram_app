@@ -54,6 +54,10 @@
     "added": "已添加到想去清单",
     "removed": "已从想去清单移除",
     "emptyHint": "可从地图搜索中添加",
+    "emptyTitle": "还没有想去的地方",
+    "emptyBody": "把感兴趣的店铺和地点\n加入想去清单吧！",
+    "emptyCta": "添加想去的地方",
+    "searchOnMap": "从地图查找",
     "addToList": "添加到想去清单",
     "removeFromList": "从想去清单移除",
     "alreadyAdded": "已加入清单",
@@ -874,8 +878,9 @@
     "butter": "黄油"
   },
   "favoritePostEmpty": {
-    "title": "没有保存的帖子",
-    "subtitle": "保存您感兴趣的帖子吧！"
+    "title": "还没有保存的帖子",
+    "subtitle": "保存您感兴趣的帖子吧！",
+    "cta": "看看大家的帖子"
   },
   "myPostEmpty": {
     "title": "✨ 来发布第一篇帖子吧！",

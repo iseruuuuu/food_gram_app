@@ -54,6 +54,10 @@
     "added": "가보고 싶은 목록에 추가했습니다",
     "removed": "가보고 싶은 목록에서 삭제했습니다",
     "emptyHint": "지도 검색에서 추가할 수 있습니다",
+    "emptyTitle": "아직 가보고 싶은 곳이 없습니다",
+    "emptyBody": "관심 있는 가게와 장소를\n가보고 싶은 목록에 추가해 보세요!",
+    "emptyCta": "가보고 싶은 곳 추가",
+    "searchOnMap": "지도에서 찾기",
     "addToList": "가보고 싶은 목록에 추가",
     "removeFromList": "가보고 싶은 목록에서 삭제",
     "alreadyAdded": "목록에 추가됨",
@@ -874,8 +878,9 @@
     "butter": "버터"
   },
   "favoritePostEmpty": {
-    "title": "저장된 게시물이 없습니다",
-    "subtitle": "관심 있는 게시물을 저장해보세요!"
+    "title": "아직 저장한 게시물이 없습니다",
+    "subtitle": "관심 있는 게시물을 저장해보세요!",
+    "cta": "게시물 둘러보기"
   },
   "myPostEmpty": {
     "title": "✨ 첫 게시물을 올려보세요!",

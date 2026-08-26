@@ -54,6 +54,10 @@
     "added": "Zur Wunschliste hinzugefügt",
     "removed": "Von der Wunschliste entfernt",
     "emptyHint": "Über die Kartensuche hinzufügen",
+    "emptyTitle": "Noch keine Wunschorte",
+    "emptyBody": "Füge interessante Läden und Orte\nzu deiner Wunschliste hinzu!",
+    "emptyCta": "Ort hinzufügen",
+    "searchOnMap": "Auf der Karte suchen",
     "addToList": "Zur Wunschliste hinzufügen",
     "removeFromList": "Von der Wunschliste entfernen",
     "alreadyAdded": "Bereits auf der Liste",
@@ -874,8 +878,9 @@
     "butter": "Butter"
   },
   "favoritePostEmpty": {
-    "title": "Keine gespeicherten Beiträge",
-    "subtitle": "Speichern Sie Beiträge, die Sie interessieren!"
+    "title": "Noch keine gespeicherten Beiträge",
+    "subtitle": "Speichern Sie Beiträge, die Sie interessieren!",
+    "cta": "Beiträge ansehen"
   },
   "myPostEmpty": {
     "title": "✨ Erstellen Sie Ihren ersten Beitrag!",
