@@ -76,6 +76,22 @@ List<Posts> filterBlockedPosts(List<Posts> posts, List<String> blockList) {
   return posts.where((post) => !blockList.contains(post.userId)).toList();
 }
 
+/// 自分 + 登録済みフレンドの投稿だけ残す。
+List<Posts> filterFriendPosts({
+  required List<Posts> posts,
+  required List<String> friendUserIds,
+  required String? currentUserId,
+}) {
+  final allowed = <String>{
+    ...friendUserIds,
+    if (currentUserId != null && currentUserId.isNotEmpty) currentUserId,
+  };
+  if (allowed.isEmpty) {
+    return const [];
+  }
+  return posts.where((post) => allowed.contains(post.userId)).toList();
+}
+
 /// 全投稿の Realtime Stream。
 ///
 /// カテゴリ切替・ブロックリスト更新のたびに購読を張り直さないよう、
