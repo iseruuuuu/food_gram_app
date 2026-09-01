@@ -114,6 +114,7 @@ GoRouter router(Ref ref) {
           monthlySummaryRoute,
           weeklySummaryRoute,
           recordYearlyPostsRoute,
+          friendAddRoute,
           timeLineRouter,
           mapRouter,
           myProfileRouter,
@@ -183,6 +184,18 @@ final imageEditorRoute = GoRoute(
   },
 );
 
+final friendAddRoute = GoRoute(
+  path: RouterPath.friendAdd,
+  name: RouterPath.friendAdd,
+  pageBuilder: (context, state) {
+    return whiteOut(
+      const FriendAddScreen(),
+      key: state.pageKey,
+      name: AnalyticsScreen.friendAdd,
+    );
+  },
+);
+
 final class RouterPath {
   //　root（先頭 `/`）
   static const String splash = 'splash';
@@ -240,4 +253,5 @@ final class RouterPath {
   static const String weeklySummary = 'weekly_summary';
   static const String monthlySummary = 'monthly_summary';
   static const String recordYearlyPosts = 'record_yearly_posts';
+  static const String friendAdd = 'friend_add';
 }
