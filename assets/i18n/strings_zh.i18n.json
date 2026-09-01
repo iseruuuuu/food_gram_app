@@ -1011,7 +1011,31 @@
     "justNow": "刚刚",
     "minutesAgo": "{count}分钟前",
     "hoursAgo": "{count}小时前",
-    "daysAgo": "{count}天前"
+    "daysAgo": "{count}天前",
+    "feedAll": "全部",
+    "feedFriends": "好友"
+  },
+  "friend": {
+    "addTitle": "添加好友",
+    "yourCode": "你的好友代码",
+    "copy": "复制",
+    "copied": "已复制",
+    "inputLabel": "输入好友代码",
+    "inputHint": "在此输入",
+    "addButton": "添加好友",
+    "notFound": "找不到该好友代码",
+    "cannotAddSelf": "不能添加自己为好友",
+    "alreadyFriend": "已经是好友",
+    "addSuccess": "已添加好友",
+    "addFailed": "添加好友失败",
+    "emptyCode": "请输入好友代码",
+    "emptyTitle": "还没有好友",
+    "emptySubtitle": "输入朋友的 FoodGram 代码，就能看到彼此的美食记录。",
+    "emptyBenefit1Title": "可以看到彼此的帖子",
+    "emptyBenefit1Body": "在时间线上查看朋友的美食记录！",
+    "emptyBenefit3Title": "连接美食回忆",
+    "emptyBenefit3Body": "一起吃过的记录会更特别。",
+    "codeMissing": "无法获取好友代码"
   },
   "firstPostGuide": {
     "tapHint": "点击开始吧！",

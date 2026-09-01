@@ -1011,7 +1011,31 @@
     "justNow": "เมื่อสักครู่",
     "minutesAgo": "{count} นาทีที่แล้ว",
     "hoursAgo": "{count} ชั่วโมงที่แล้ว",
-    "daysAgo": "{count} วันที่แล้ว"
+    "daysAgo": "{count} วันที่แล้ว",
+    "feedAll": "ทั้งหมด",
+    "feedFriends": "เพื่อน"
+  },
+  "friend": {
+    "addTitle": "เพิ่มเพื่อน",
+    "yourCode": "รหัสเพื่อนของคุณ",
+    "copy": "คัดลอก",
+    "copied": "คัดลอกแล้ว",
+    "inputLabel": "กรอกรหัสเพื่อน",
+    "inputHint": "กรอกที่นี่",
+    "addButton": "เพิ่มเพื่อน",
+    "notFound": "ไม่พบรหัสเพื่อน",
+    "cannotAddSelf": "ไม่สามารถเพิ่มตัวเองเป็นเพื่อนได้",
+    "alreadyFriend": "เป็นเพื่อนอยู่แล้ว",
+    "addSuccess": "เพิ่มเพื่อนแล้ว",
+    "addFailed": "เพิ่มเพื่อนไม่สำเร็จ",
+    "emptyCode": "กรุณากรอกรหัสเพื่อน",
+    "emptyTitle": "ยังไม่มีเพื่อน",
+    "emptySubtitle": "กรอกรหัส FoodGram ของเพื่อน เพื่อดูบันทึกอาหารของกันและกัน",
+    "emptyBenefit1Title": "เห็นโพสต์ของกันและกัน",
+    "emptyBenefit1Body": "เช็กบันทึกอาหารของเพื่อนในไทม์ไลน์!",
+    "emptyBenefit3Title": "เชื่อมความทรงจำเรื่องอาหาร",
+    "emptyBenefit3Body": "มื้อที่กินด้วยกันจะพิเศษยิ่งขึ้น",
+    "codeMissing": "ไม่สามารถโหลดรหัสเพื่อนได้"
   },
   "firstPostGuide": {
     "tapHint": "แตะเพื่อเริ่มต้น!",

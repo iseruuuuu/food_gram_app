@@ -1010,7 +1010,31 @@
     "justNow": "Just now",
     "minutesAgo": "{count}m ago",
     "hoursAgo": "{count}h ago",
-    "daysAgo": "{count}d ago"
+    "daysAgo": "{count}d ago",
+    "feedAll": "All",
+    "feedFriends": "Friends"
+  },
+  "friend": {
+    "addTitle": "Add Friend",
+    "yourCode": "Your friend code",
+    "copy": "Copy",
+    "copied": "Copied",
+    "inputLabel": "Enter friend code",
+    "inputHint": "Enter here",
+    "addButton": "Add Friend",
+    "notFound": "Friend code not found",
+    "cannotAddSelf": "You cannot add yourself as a friend",
+    "alreadyFriend": "Already friends",
+    "addSuccess": "Friend added",
+    "addFailed": "Failed to add friend",
+    "emptyCode": "Please enter a friend code",
+    "emptyTitle": "No friends yet",
+    "emptySubtitle": "Enter a friend's FoodGram code to see each other's food records.",
+    "emptyBenefit1Title": "See each other's posts",
+    "emptyBenefit1Body": "Check your friends' food records on the timeline!",
+    "emptyBenefit3Title": "Connect food memories",
+    "emptyBenefit3Body": "Meals you shared become even more special.",
+    "codeMissing": "Could not get your friend code"
   },
   "firstPostGuide": {
     "tapHint": "Tap to get started!",

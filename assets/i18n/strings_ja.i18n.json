@@ -1010,7 +1010,31 @@
     "justNow": "たった今",
     "minutesAgo": "{count}分前",
     "hoursAgo": "{count}時間前",
-    "daysAgo": "{count}日前"
+    "daysAgo": "{count}日前",
+    "feedAll": "全体",
+    "feedFriends": "フレンド"
+  },
+  "friend": {
+    "addTitle": "フレンドを追加",
+    "yourCode": "あなたのフレンドコード",
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "inputLabel": "フレンドコードを入力",
+    "inputHint": "入力はこちら",
+    "addButton": "フレンドを追加",
+    "notFound": "フレンドコードが見つかりません",
+    "cannotAddSelf": "自分自身はフレンドに追加できません",
+    "alreadyFriend": "すでにフレンドです",
+    "addSuccess": "フレンドを追加しました",
+    "addFailed": "フレンドの追加に失敗しました",
+    "emptyCode": "フレンドコードを入力してください",
+    "emptyTitle": "まだフレンドがいません",
+    "emptySubtitle": "友人のフレンドコードを入力すると、\nお互いの食の記録を見ることができます。",
+    "emptyBenefit1Title": "お互いの投稿が見られる",
+    "emptyBenefit1Body": "友人の投稿をタイムラインでチェック！",
+    "emptyBenefit3Title": "食の思い出をつなげる",
+    "emptyBenefit3Body": "一緒に食べた記録が、もっと特別に。",
+    "codeMissing": "フレンドコードを取得できませんでした"
   },
   "firstPostGuide": {
     "tapHint": "タップしてはじめよう！",

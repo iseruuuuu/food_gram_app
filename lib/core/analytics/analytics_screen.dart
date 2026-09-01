@@ -35,6 +35,7 @@ abstract final class AnalyticsScreen {
   static const imageEditor = 'ImageEditor';
   static const userProfile = 'UserProfile';
   static const restaurantMap = 'RestaurantMap';
+  static const friendAdd = 'FriendAdd';
   static const weeklySummary = 'WeeklySummary';
   static const monthlySummary = 'MonthlySummary';
   static const recordYearlyPosts = 'RecordYearlyPosts';
@@ -69,6 +70,7 @@ abstract final class AnalyticsScreen {
     imageEditor,
     userProfile,
     restaurantMap,
+    friendAdd,
     weeklySummary,
     monthlySummary,
     recordYearlyPosts,
@@ -124,6 +126,7 @@ abstract final class AnalyticsScreen {
     'monthly_summary': monthlySummary,
     'record_yearly_posts': recordYearlyPosts,
     'image_editor': imageEditor,
+    'friend_add': friendAdd,
   };
 
   /// Tab index → screen_name

@@ -18,8 +18,7 @@ abstract final class AnalyticsEvent {
   static const String firstPostGuideDismiss = 'first_post_guide_dismiss';
   static const String firstPostSuccessGuideShow =
       'first_post_success_guide_show';
-  static const String firstPostSuccessGuideMap =
-      'first_post_success_guide_map';
+  static const String firstPostSuccessGuideMap = 'first_post_success_guide_map';
   static const String firstPostSuccessGuideAlbum =
       'first_post_success_guide_album';
   static const String firstPostSuccessGuideLater =
@@ -33,6 +32,10 @@ abstract final class AnalyticsEvent {
   static const String timelinePostSave = 'timeline_post_save';
   static const String timelinePostShare = 'timeline_post_share';
   static const String timelineRefresh = 'timeline_refresh';
+  static const String timelineFriendTab = 'timeline_friend_tab';
+  static const String friendAddOpen = 'friend_add_open';
+  static const String friendAddSuccess = 'friend_add_success';
+  static const String friendAddFailed = 'friend_add_failed';
 
   // --- 投稿 ---
   static const String postStart = 'post_start';

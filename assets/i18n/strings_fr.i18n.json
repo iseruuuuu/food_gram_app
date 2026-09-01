@@ -1011,7 +1011,31 @@
     "justNow": "À l'instant",
     "minutesAgo": "il y a {count} min",
     "hoursAgo": "il y a {count} h",
-    "daysAgo": "il y a {count} j"
+    "daysAgo": "il y a {count} j",
+    "feedAll": "Tous",
+    "feedFriends": "Amis"
+  },
+  "friend": {
+    "addTitle": "Ajouter un ami",
+    "yourCode": "Votre code ami",
+    "copy": "Copier",
+    "copied": "Copié",
+    "inputLabel": "Saisir le code ami",
+    "inputHint": "Saisir ici",
+    "addButton": "Ajouter un ami",
+    "notFound": "Code ami introuvable",
+    "cannotAddSelf": "Vous ne pouvez pas vous ajouter vous-même",
+    "alreadyFriend": "Déjà ami",
+    "addSuccess": "Ami ajouté",
+    "addFailed": "Échec de l'ajout de l'ami",
+    "emptyCode": "Veuillez saisir un code ami",
+    "emptyTitle": "Pas encore d'amis",
+    "emptySubtitle": "Saisissez le code FoodGram d'un ami pour voir vos souvenirs culinaires.",
+    "emptyBenefit1Title": "Voir les publications de chacun",
+    "emptyBenefit1Body": "Retrouvez les souvenirs culinaires de vos amis dans le fil !",
+    "emptyBenefit3Title": "Relier les souvenirs culinaires",
+    "emptyBenefit3Body": "Les repas partagés deviennent encore plus spéciaux.",
+    "codeMissing": "Impossible de récupérer votre code ami"
   },
   "firstPostGuide": {
     "tapHint": "Appuyez pour commencer !",

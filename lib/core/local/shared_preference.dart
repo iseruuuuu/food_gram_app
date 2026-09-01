@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 enum PreferenceKey {
   blockList,
+  friendList,
   isFinishedTutorial,
   isAccept,
   heartList,
@@ -41,7 +42,25 @@ class Preference {
   static Preference? _instance;
   late final Future<SharedPreferences> _prefs;
 
+  final Map<String, Future<void>> _stringListWriteChains = {};
+
   String _getKey(PreferenceKey key) => EnumToString.convertToString(key);
+
+  String _getUserKey(PreferenceKey key, String userId) =>
+      '${_getKey(key)}_$userId';
+
+  Future<T> _withSerializedStringListWrite<T>(
+    String storageKey,
+    Future<T> Function() action,
+  ) {
+    final previous = _stringListWriteChains[storageKey] ?? Future<void>.value();
+    final next = previous.catchError((_) {}).then((_) => action());
+    _stringListWriteChains[storageKey] = next.then<void>(
+      (_) {},
+      onError: (_) {},
+    );
+    return next;
+  }
 
   Future<void> setStringList(PreferenceKey key, List<String> value) async {
     final pref = await _prefs;
@@ -51,6 +70,35 @@ class Preference {
   Future<List<String>> getStringList(PreferenceKey key) async {
     final pref = await _prefs;
     return pref.getStringList(_getKey(key)) ?? [];
+  }
+
+  Future<void> remove(PreferenceKey key) async {
+    final pref = await _prefs;
+    await pref.remove(_getKey(key));
+  }
+
+  Future<List<String>> getStringListForUser(
+    PreferenceKey key,
+    String userId,
+  ) async {
+    final pref = await _prefs;
+    return pref.getStringList(_getUserKey(key, userId)) ?? [];
+  }
+
+  /// 同一ユーザーキーへの read-modify-write を直列化する。
+  Future<List<String>> updateStringListForUser(
+    PreferenceKey key,
+    String userId,
+    List<String> Function(List<String> current) update,
+  ) {
+    final storageKey = _getUserKey(key, userId);
+    return _withSerializedStringListWrite(storageKey, () async {
+      final pref = await _prefs;
+      final current = pref.getStringList(storageKey) ?? [];
+      final next = update(current);
+      await pref.setStringList(storageKey, next);
+      return next;
+    });
   }
 
   Future<void> setBool(PreferenceKey key) async {

@@ -5,6 +5,152 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
 
+class AppFriendEmpty extends StatelessWidget {
+  const AppFriendEmpty({
+    required this.onAddTap,
+    super.key,
+  });
+
+  final VoidCallback onAddTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translations.of(context).friend;
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+    final muted = onSurface.withValues(alpha: 0.7);
+    final divider = Theme.of(context).colorScheme.outlineVariant;
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(28, 0, 28, 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Lottie.asset(
+            Assets.lottie.noFriend,
+            width: 150,
+            height: 150,
+            fit: BoxFit.contain,
+          ),
+          const Gap(16),
+          Text(
+            t.emptyTitle,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: onSurface,
+            ),
+          ),
+          const Gap(8),
+          Text(
+            t.emptySubtitle,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14,
+              height: 1.5,
+              color: muted,
+            ),
+          ),
+          const Gap(20),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(
+                Icons.chat_bubble_outline,
+                color: AppTheme.primaryBlue,
+                size: 28,
+              ),
+              const Gap(14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      t.emptyBenefit1Title,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: onSurface,
+                      ),
+                    ),
+                    const Gap(4),
+                    Text(
+                      t.emptyBenefit1Body,
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.4,
+                        color: onSurface.withValues(alpha: 0.65),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Divider(height: 24, color: divider),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(
+                Icons.wine_bar_outlined,
+                color: AppTheme.primaryBlue,
+                size: 28,
+              ),
+              const Gap(14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      t.emptyBenefit3Title,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: onSurface,
+                      ),
+                    ),
+                    const Gap(4),
+                    Text(
+                      t.emptyBenefit3Body,
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.4,
+                        color: onSurface.withValues(alpha: 0.65),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const Gap(20),
+          SizedBox(
+            width: double.infinity,
+            height: 52,
+            child: ElevatedButton(
+              onPressed: onAddTap,
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                backgroundColor: AppTheme.primaryBlue,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              child: Text(
+                t.addButton,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class AppEmpty extends StatelessWidget {
   const AppEmpty({super.key});
 
@@ -163,7 +309,8 @@ class AppNotificationEmpty extends StatelessWidget {
                                       style: TextStyle(
                                         fontSize: 13,
                                         height: 1.4,
-                                        color: onSurface.withValues(alpha: 0.75),
+                                        color:
+                                            onSurface.withValues(alpha: 0.75),
                                       ),
                                     ),
                                   ],

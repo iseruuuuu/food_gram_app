@@ -1011,7 +1011,31 @@
     "justNow": "Vừa xong",
     "minutesAgo": "{count} phút trước",
     "hoursAgo": "{count} giờ trước",
-    "daysAgo": "{count} ngày trước"
+    "daysAgo": "{count} ngày trước",
+    "feedAll": "Tất cả",
+    "feedFriends": "Bạn bè"
+  },
+  "friend": {
+    "addTitle": "Thêm bạn",
+    "yourCode": "Mã bạn bè của bạn",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
+    "inputLabel": "Nhập mã bạn bè",
+    "inputHint": "Nhập vào đây",
+    "addButton": "Thêm bạn",
+    "notFound": "Không tìm thấy mã bạn bè",
+    "cannotAddSelf": "Bạn không thể tự thêm chính mình",
+    "alreadyFriend": "Đã là bạn bè",
+    "addSuccess": "Đã thêm bạn",
+    "addFailed": "Không thể thêm bạn",
+    "emptyCode": "Vui lòng nhập mã bạn bè",
+    "emptyTitle": "Chưa có bạn bè",
+    "emptySubtitle": "Nhập mã FoodGram của bạn bè để xem nhật ký ẩm thực của nhau.",
+    "emptyBenefit1Title": "Xem bài đăng của nhau",
+    "emptyBenefit1Body": "Xem nhật ký ẩm thực của bạn bè trên timeline!",
+    "emptyBenefit3Title": "Kết nối kỷ niệm ẩm thực",
+    "emptyBenefit3Body": "Những bữa ăn cùng nhau trở nên đặc biệt hơn.",
+    "codeMissing": "Không lấy được mã bạn bè"
   },
   "firstPostGuide": {
     "tapHint": "Chạm để bắt đầu!",
