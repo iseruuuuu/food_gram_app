@@ -51,16 +51,76 @@ class AppFriendEmpty extends StatelessWidget {
             ),
           ),
           const Gap(20),
-          _FriendEmptyBenefit(
-            icon: Icons.chat_bubble_outline,
-            title: t.emptyBenefit1Title,
-            body: t.emptyBenefit1Body,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(
+                Icons.chat_bubble_outline,
+                color: AppTheme.primaryBlue,
+                size: 28,
+              ),
+              const Gap(14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      t.emptyBenefit1Title,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: onSurface,
+                      ),
+                    ),
+                    const Gap(4),
+                    Text(
+                      t.emptyBenefit1Body,
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.4,
+                        color: onSurface.withValues(alpha: 0.65),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
           Divider(height: 24, color: divider),
-          _FriendEmptyBenefit(
-            icon: Icons.wine_bar_outlined,
-            title: t.emptyBenefit3Title,
-            body: t.emptyBenefit3Body,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(
+                Icons.wine_bar_outlined,
+                color: AppTheme.primaryBlue,
+                size: 28,
+              ),
+              const Gap(14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      t.emptyBenefit3Title,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: onSurface,
+                      ),
+                    ),
+                    const Gap(4),
+                    Text(
+                      t.emptyBenefit3Body,
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.4,
+                        color: onSurface.withValues(alpha: 0.65),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
           const Gap(20),
           SizedBox(
@@ -87,54 +147,6 @@ class AppFriendEmpty extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _FriendEmptyBenefit extends StatelessWidget {
-  const _FriendEmptyBenefit({
-    required this.icon,
-    required this.title,
-    required this.body,
-  });
-
-  final IconData icon;
-  final String title;
-  final String body;
-
-  @override
-  Widget build(BuildContext context) {
-    final onSurface = Theme.of(context).colorScheme.onSurface;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, color: AppTheme.primaryBlue, size: 28),
-        const Gap(14),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: onSurface,
-                ),
-              ),
-              const Gap(4),
-              Text(
-                body,
-                style: TextStyle(
-                  fontSize: 13,
-                  height: 1.4,
-                  color: onSurface.withValues(alpha: 0.65),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
