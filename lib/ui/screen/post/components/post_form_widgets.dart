@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:food_gram_app/core/theme/style/post_style.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
+import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:gap/gap.dart';
@@ -684,7 +685,10 @@ class PostPriceAndRatingRow extends StatelessWidget {
                         Icons.star,
                         color: Colors.amber,
                       ),
-                      onRatingUpdate: onRatingUpdate,
+                      onRatingUpdate: (rating) {
+                        HapticFeedbackHelper.light();
+                        onRatingUpdate(rating);
+                      },
                     ),
                   ),
                 ),
@@ -903,7 +907,10 @@ class PostRatingField extends StatelessWidget {
                   Icons.star,
                   color: Colors.amber,
                 ),
-                onRatingUpdate: onRatingUpdate,
+                onRatingUpdate: (rating) {
+                  HapticFeedbackHelper.light();
+                  onRatingUpdate(rating);
+                },
               ),
             ),
             const Gap(8),

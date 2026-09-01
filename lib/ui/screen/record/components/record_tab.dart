@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
+import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 
@@ -38,7 +39,10 @@ class RecordTab extends StatelessWidget {
           final isSelected = type == currentViewType;
           return Expanded(
             child: GestureDetector(
-              onTap: () => onViewTypeChanged(type),
+              onTap: () {
+                HapticFeedbackHelper.selection();
+                onViewTypeChanged(type);
+              },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(

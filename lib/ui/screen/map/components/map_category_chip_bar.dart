@@ -4,6 +4,7 @@ import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
+import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/food_tag_icon.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -137,6 +138,7 @@ class MapCategoryChipBar extends ConsumerWidget {
     required String categoryName,
     required bool isSelected,
   }) async {
+    HapticFeedbackHelper.selection();
     ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
           name: AnalyticsEvent.mapFilterOpen,
         );
@@ -163,6 +165,7 @@ class MapCategoryChipBar extends ConsumerWidget {
     required String? subTagId,
     required bool isSelected,
   }) async {
+    HapticFeedbackHelper.selection();
     ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
           name: AnalyticsEvent.mapFilterOpen,
         );

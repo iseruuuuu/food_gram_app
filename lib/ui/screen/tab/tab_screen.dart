@@ -21,6 +21,7 @@ import 'package:food_gram_app/core/supabase/user/services/user_service.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/theme/style/tab_style.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
+import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/utils/user_level.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -179,6 +180,7 @@ class TabScreen extends HookConsumerWidget {
     }
 
     Future<void> onPostPressed() async {
+      HapticFeedbackHelper.medium();
       final selectedIndex = state.selectedIndex;
       if (selectedIndex == TabIndex.myMap) {
         ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(

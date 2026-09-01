@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
+import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 
 enum TimelineFeedMode { all, friends }
@@ -42,7 +43,10 @@ class TimelineFeedModeTabBar extends StatelessWidget {
             isFirst: true,
             isLast: false,
             unselectedTextColor: unselectedTextColor,
-            onTap: () => onModeChanged(TimelineFeedMode.all),
+            onTap: () {
+              HapticFeedbackHelper.selection();
+              onModeChanged(TimelineFeedMode.all);
+            },
           ),
           _TabItem(
             label: t.timeline.feedFriends,
@@ -50,7 +54,10 @@ class TimelineFeedModeTabBar extends StatelessWidget {
             isFirst: false,
             isLast: true,
             unselectedTextColor: unselectedTextColor,
-            onTap: () => onModeChanged(TimelineFeedMode.friends),
+            onTap: () {
+              HapticFeedbackHelper.selection();
+              onModeChanged(TimelineFeedMode.friends);
+            },
           ),
         ],
       ),

@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/model/post_draft.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
+import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/utils/image/upload_image_bytes.dart';
 import 'package:food_gram_app/core/utils/location/image_gps_reader.dart';
 import 'package:food_gram_app/core/utils/location/post_price_currency_from_location.dart';
@@ -202,6 +203,7 @@ class PostViewModel extends _$PostViewModel {
         if (!isActiveSubmit()) {
           return;
         }
+        HapticFeedbackHelper.heavy();
         final fromDraft = _restoredFromDraft;
         _restoredFromDraft = false;
         final existingDraft = await _preference.getPostDraft();

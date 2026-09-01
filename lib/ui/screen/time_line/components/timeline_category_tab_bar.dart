@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/food_tag_registry.dart';
 import 'package:food_gram_app/core/model/tag.dart';
+import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/food_tag_icon.dart';
 
@@ -42,7 +43,10 @@ class TimelineCategoryTabBar extends StatelessWidget {
               ? Translations.of(context).share.categoryAll
               : getLocalizedCategoryName(category.name, context);
           return GestureDetector(
-            onTap: () => onCategorySelected(index),
+            onTap: () {
+              HapticFeedbackHelper.selection();
+              onCategorySelected(index);
+            },
             behavior: HitTestBehavior.opaque,
             child: SizedBox(
               width: _itemWidth,
