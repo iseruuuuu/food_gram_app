@@ -460,6 +460,11 @@
     "firstRecordTitle": "Primeiro registro",
     "yearlyPostsTitle": "Memórias de {year}",
     "yearlyLikedOrder": "Mais curtidos",
+    "worldEatingTitle": "Comer pelo mundo",
+    "worldCountriesConquered": "países visitados!",
+    "recentVisitedCountries": "Países visitados recentemente",
+    "countryPostUnit": "publicações",
+    "noVisitedCountries": "Nenhum país visitado ainda",
     "foodTraits": {
       "noData": "Sem dados",
       "morningLabel": "Manhã (5-10)",

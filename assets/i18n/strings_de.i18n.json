@@ -460,6 +460,11 @@
     "firstRecordTitle": "Erster Eintrag",
     "yearlyPostsTitle": "Erinnerungen {year}",
     "yearlyLikedOrder": "Meiste Likes",
+    "worldEatingTitle": "Essen rund um die Welt",
+    "worldCountriesConquered": "Länder besucht!",
+    "recentVisitedCountries": "Zuletzt besuchte Länder",
+    "countryPostUnit": "Beiträge",
+    "noVisitedCountries": "Noch keine Länder besucht",
     "foodTraits": {
       "noData": "Keine Daten",
       "morningLabel": "Morgen (5-10)",

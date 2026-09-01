@@ -459,6 +459,11 @@
     "firstRecordTitle": "はじめての記録",
     "yearlyPostsTitle": "{year}年の思い出",
     "yearlyLikedOrder": "いいねが多い順",
+    "worldEatingTitle": "世界の食べ歩き",
+    "worldCountriesConquered": "国・地域を制覇！",
+    "recentVisitedCountries": "最近訪れた国",
+    "countryPostUnit": "投稿",
+    "noVisitedCountries": "まだ訪れた国がありません",
     "foodTraits": {
       "noData": "データなし",
       "morningLabel": "朝 (5-10時)",

@@ -460,6 +460,11 @@
     "firstRecordTitle": "第一次记录",
     "yearlyPostsTitle": "{year}年的回忆",
     "yearlyLikedOrder": "按点赞数",
+    "worldEatingTitle": "环球美食足迹",
+    "worldCountriesConquered": "个国家/地区已征服！",
+    "recentVisitedCountries": "最近到访的国家",
+    "countryPostUnit": "帖子",
+    "noVisitedCountries": "还没有到访过的国家",
     "foodTraits": {
       "noData": "暂无数据",
       "morningLabel": "早晨 (5-10点)",
