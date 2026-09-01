@@ -44,7 +44,7 @@ class MapHeatmapLayer {
       await controller.addHeatmapLayer(
         MapOverlayConstants.heatmapSourceId,
         MapOverlayConstants.heatmapLayerId,
-        HeatmapLayerProperties(
+        const HeatmapLayerProperties(
           heatmapWeight: [
             'interpolate',
             ['linear'],

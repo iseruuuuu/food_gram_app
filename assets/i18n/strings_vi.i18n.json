@@ -460,6 +460,11 @@
     "firstRecordTitle": "Kỷ lục đầu tiên",
     "yearlyPostsTitle": "Kỷ niệm năm {year}",
     "yearlyLikedOrder": "Nhiều lượt thích nhất",
+    "worldEatingTitle": "Ăn uống khắp thế giới",
+    "worldCountriesConquered": "quốc gia đã chinh phục!",
+    "recentVisitedCountries": "Quốc gia đã đến gần đây",
+    "countryPostUnit": "bài đăng",
+    "noVisitedCountries": "Chưa đến quốc gia nào",
     "foodTraits": {
       "noData": "Không có dữ liệu",
       "morningLabel": "Sáng (5-10)",

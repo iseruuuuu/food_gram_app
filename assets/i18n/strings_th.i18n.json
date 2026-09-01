@@ -460,6 +460,11 @@
     "firstRecordTitle": "บันทึกครั้งแรก",
     "yearlyPostsTitle": "ความทรงจำปี {year}",
     "yearlyLikedOrder": "ถูกใจมากสุด",
+    "worldEatingTitle": "กินเที่ยวรอบโลก",
+    "worldCountriesConquered": "ประเทศที่พิชิตแล้ว!",
+    "recentVisitedCountries": "ประเทศที่เพิ่งไป",
+    "countryPostUnit": "โพสต์",
+    "noVisitedCountries": "ยังไม่มีประเทศที่ไป",
     "foodTraits": {
       "noData": "ไม่มีข้อมูล",
       "morningLabel": "เช้า (5-10 น.)",

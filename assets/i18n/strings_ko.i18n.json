@@ -460,6 +460,11 @@
     "firstRecordTitle": "첫 기록",
     "yearlyPostsTitle": "{year}년의 추억",
     "yearlyLikedOrder": "좋아요 많은 순",
+    "worldEatingTitle": "세계 맛집 탐방",
+    "worldCountriesConquered": "국가·지역 정복!",
+    "recentVisitedCountries": "최근 방문한 나라",
+    "countryPostUnit": "게시물",
+    "noVisitedCountries": "아직 방문한 나라가 없습니다",
     "foodTraits": {
       "noData": "데이터 없음",
       "morningLabel": "아침 (5-10시)",

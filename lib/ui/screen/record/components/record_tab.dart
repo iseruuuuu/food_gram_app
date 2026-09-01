@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
-import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
+import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 
 /// 記録タブ：記録 / 日本マップ / 世界マップ の切り替え

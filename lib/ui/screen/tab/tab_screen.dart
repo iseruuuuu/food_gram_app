@@ -92,15 +92,20 @@ class TabScreen extends HookConsumerWidget {
                 return;
               }
               unawaited(AdTrackingPermission().requestTracking());
-              ref.read(forceUpdateCheckerProvider.notifier).checkForceUpdate(
-                openDialog: () {
-                  DialogHelper().forceUpdateDialog(context);
-                },
-              );
               try {
-                await initializeNotifications();
-              } on Exception catch (_) {
-                // 起動は続行し、通知初期化失敗は握りつぶす
+                await ref
+                    .read(forceUpdateCheckerProvider.notifier)
+                    .checkForceUpdate(
+                  openDialog: () {
+                    DialogHelper().forceUpdateDialog(context);
+                  },
+                );
+              } finally {
+                try {
+                  await initializeNotifications();
+                } on Exception catch (_) {
+                  // 起動は続行し、通知初期化失敗は握りつぶす
+                }
               }
             }),
           );
