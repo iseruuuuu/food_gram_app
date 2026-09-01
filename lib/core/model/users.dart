@@ -18,6 +18,7 @@ class Users with _$Users {
     required String tag,
     DateTime? lastPostDate,
     @Default(0) int streakWeeks,
+    @Default('') String friendCode,
   }) = _Users;
 
   const Users._();
