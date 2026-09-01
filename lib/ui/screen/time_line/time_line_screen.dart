@@ -163,10 +163,20 @@ class TimeLineScreen extends HookConsumerWidget {
   }) {
     if (isFriendsFeed) {
       final friendAsync = friendIdsAsync;
+      if (friendAsync != null &&
+          friendAsync.hasError &&
+          friendAsync.valueOrNull == null) {
+        return [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: AppTabError.food(
+              onRetry: () => ref.invalidate(friendUserIdsProvider),
+            ),
+          ),
+        ];
+      }
       final friendIds = friendAsync?.valueOrNull;
-      final showFriendEmpty = friendAsync?.hasError == true ||
-          (friendIds != null && friendIds.isEmpty);
-      if (showFriendEmpty) {
+      if (friendIds != null && friendIds.isEmpty) {
         return [
           SliverFillRemaining(
             hasScrollBody: false,

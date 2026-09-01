@@ -25,7 +25,7 @@ class FriendRepository extends _$FriendRepository {
       return await _friendService.getFriendUserIds();
     } on Exception catch (e) {
       logger.e('Unexpected error fetching friend ids: $e');
-      return const [];
+      rethrow;
     }
   }
 
@@ -49,7 +49,7 @@ class FriendRepository extends _$FriendRepository {
         return AddFriendResult.self;
       }
 
-      final found = await _friendService.findUserByFriendCode(code);
+      final found = await _friendService.findUserByFriendCode(rawCode);
       if (found == null) {
         return AddFriendResult.notFound;
       }
@@ -59,11 +59,12 @@ class FriendRepository extends _$FriendRepository {
         return AddFriendResult.self;
       }
 
-      if (await _friendService.isAlreadyFriend(target.userId)) {
+      final added = await _friendService.insertFriend(
+        friendUserId: target.userId,
+      );
+      if (!added) {
         return AddFriendResult.alreadyFriend;
       }
-
-      await _friendService.insertFriend(friendUserId: target.userId);
       return AddFriendResult.success;
     } on PostgrestException catch (e) {
       logger.e('Failed to add friend: ${e.message}');
