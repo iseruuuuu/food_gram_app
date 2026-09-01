@@ -1011,7 +1011,31 @@
     "justNow": "剛剛",
     "minutesAgo": "{count}分鐘前",
     "hoursAgo": "{count}小時前",
-    "daysAgo": "{count}天前"
+    "daysAgo": "{count}天前",
+    "feedAll": "全部",
+    "feedFriends": "好友"
+  },
+  "friend": {
+    "addTitle": "新增好友",
+    "yourCode": "你的好友代碼",
+    "copy": "複製",
+    "copied": "已複製",
+    "inputLabel": "輸入好友代碼",
+    "inputHint": "FGxxxxxx",
+    "addButton": "新增好友",
+    "notFound": "找不到此好友代碼",
+    "cannotAddSelf": "不能將自己加為好友",
+    "alreadyFriend": "已經是好友",
+    "addSuccess": "已新增好友",
+    "addFailed": "新增好友失敗",
+    "emptyCode": "請輸入好友代碼",
+    "emptyTitle": "還沒有好友",
+    "emptySubtitle": "輸入朋友的 FoodGram 代碼，就能看到彼此的美食紀錄。",
+    "emptyBenefit1Title": "可以看到彼此的貼文",
+    "emptyBenefit1Body": "在時間軸上查看朋友的美食紀錄！",
+    "emptyBenefit3Title": "串連美食回憶",
+    "emptyBenefit3Body": "一起吃過的紀錄會更特別。",
+    "codeMissing": "無法取得好友代碼"
   },
   "firstPostGuide": {
     "tapHint": "點一下開始吧！",

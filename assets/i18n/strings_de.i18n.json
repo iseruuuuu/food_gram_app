@@ -1011,7 +1011,31 @@
     "justNow": "Gerade eben",
     "minutesAgo": "vor {count} Min.",
     "hoursAgo": "vor {count} Std.",
-    "daysAgo": "vor {count} T."
+    "daysAgo": "vor {count} T.",
+    "feedAll": "Alle",
+    "feedFriends": "Freunde"
+  },
+  "friend": {
+    "addTitle": "Freund hinzufügen",
+    "yourCode": "Dein Freundcode",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "inputLabel": "Freundcode eingeben",
+    "inputHint": "FGxxxxxx",
+    "addButton": "Freund hinzufügen",
+    "notFound": "Freundcode nicht gefunden",
+    "cannotAddSelf": "Du kannst dich nicht selbst hinzufügen",
+    "alreadyFriend": "Bereits befreundet",
+    "addSuccess": "Freund hinzugefügt",
+    "addFailed": "Freund konnte nicht hinzugefügt werden",
+    "emptyCode": "Bitte gib einen Freundcode ein",
+    "emptyTitle": "Noch keine Freunde",
+    "emptySubtitle": "Gib den FoodGram-Code eines Freundes ein, um eure Essens-Erinnerungen zu sehen.",
+    "emptyBenefit1Title": "Beiträge der anderen sehen",
+    "emptyBenefit1Body": "Schau dir die Food-Erinnerungen deiner Freunde in der Timeline an!",
+    "emptyBenefit3Title": "Food-Erinnerungen verbinden",
+    "emptyBenefit3Body": "Gemeinsame Mahlzeiten werden noch besonderer.",
+    "codeMissing": "Freundcode konnte nicht geladen werden"
   },
   "firstPostGuide": {
     "tapHint": "Tippe zum Starten!",

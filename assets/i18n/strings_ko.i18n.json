@@ -1011,7 +1011,31 @@
     "justNow": "방금",
     "minutesAgo": "{count}분 전",
     "hoursAgo": "{count}시간 전",
-    "daysAgo": "{count}일 전"
+    "daysAgo": "{count}일 전",
+    "feedAll": "전체",
+    "feedFriends": "친구"
+  },
+  "friend": {
+    "addTitle": "친구 추가",
+    "yourCode": "내 친구 코드",
+    "copy": "복사",
+    "copied": "복사했습니다",
+    "inputLabel": "친구 코드 입력",
+    "inputHint": "FGxxxxxx",
+    "addButton": "친구 추가",
+    "notFound": "친구 코드를 찾을 수 없습니다",
+    "cannotAddSelf": "자기 자신은 친구로 추가할 수 없습니다",
+    "alreadyFriend": "이미 친구입니다",
+    "addSuccess": "친구를 추가했습니다",
+    "addFailed": "친구 추가에 실패했습니다",
+    "emptyCode": "친구 코드를 입력해 주세요",
+    "emptyTitle": "아직 친구가 없습니다",
+    "emptySubtitle": "친구의 FoodGram 코드를 입력하면 서로의 음식 기록을 볼 수 있습니다.",
+    "emptyBenefit1Title": "서로의 게시물을 볼 수 있어요",
+    "emptyBenefit1Body": "친구의 음식 기록을 타임라인에서 확인해 보세요!",
+    "emptyBenefit3Title": "음식 추억을 이어가요",
+    "emptyBenefit3Body": "함께 먹은 기록이 더 특별해져요.",
+    "codeMissing": "친구 코드를 가져올 수 없습니다"
   },
   "firstPostGuide": {
     "tapHint": "탭해서 시작해요!",

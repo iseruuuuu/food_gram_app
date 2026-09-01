@@ -1011,7 +1011,31 @@
     "justNow": "Agora",
     "minutesAgo": "há {count} min",
     "hoursAgo": "há {count} h",
-    "daysAgo": "há {count} d"
+    "daysAgo": "há {count} d",
+    "feedAll": "Todos",
+    "feedFriends": "Amigos"
+  },
+  "friend": {
+    "addTitle": "Adicionar amigo",
+    "yourCode": "Seu código de amigo",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "inputLabel": "Digite o código de amigo",
+    "inputHint": "FGxxxxxx",
+    "addButton": "Adicionar amigo",
+    "notFound": "Código de amigo não encontrado",
+    "cannotAddSelf": "Você não pode adicionar a si mesmo",
+    "alreadyFriend": "Já são amigos",
+    "addSuccess": "Amigo adicionado",
+    "addFailed": "Falha ao adicionar amigo",
+    "emptyCode": "Digite um código de amigo",
+    "emptyTitle": "Ainda não há amigos",
+    "emptySubtitle": "Digite o código FoodGram de um amigo para ver os registros de comida um do outro.",
+    "emptyBenefit1Title": "Ver as publicações um do outro",
+    "emptyBenefit1Body": "Veja os registros de comida dos amigos no feed!",
+    "emptyBenefit3Title": "Conectar memórias gastronômicas",
+    "emptyBenefit3Body": "As refeições juntos ficam ainda mais especiais.",
+    "codeMissing": "Não foi possível obter seu código de amigo"
   },
   "firstPostGuide": {
     "tapHint": "Toque para começar!",
