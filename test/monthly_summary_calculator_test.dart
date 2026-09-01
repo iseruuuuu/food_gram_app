@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/summary/monthly/monthly_summary_calculator.dart';
 import 'package:food_gram_app/core/summary/monthly/monthly_summary_period.dart';
+import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/ui/screen/summary/monthly/monthly_summary_screen.dart';
 
 Posts _post({
@@ -30,6 +33,14 @@ Posts _post({
     );
 
 void main() {
+  setUpAll(() {
+    final geoJson =
+        File('assets/map/world_countries.geojson').readAsStringSync();
+    CountryDetector.loadFromGeoJsonString(geoJson);
+  });
+
+  tearDownAll(CountryDetector.resetForTest);
+
   test('月間まとめ画面を構築できる', () {
     expect(const MonthlySummaryScreen(), isA<MonthlySummaryScreen>());
   });

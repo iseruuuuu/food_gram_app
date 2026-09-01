@@ -9,6 +9,7 @@ import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/analyzer/record_food_traits_analyzer.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_food_traits_section.dart';
@@ -64,6 +65,7 @@ class RecordDetailScreen extends HookConsumerWidget {
       },
       const [],
     );
+    useFuture(useMemoized(CountryDetector.ensureLoaded));
     final selectedYear = useState<int?>(null);
     final pastMemoriesKey = useMemoized(GlobalKey.new);
     final isSubscribe = ref.watch(isSubscribeProvider).valueOrNull ?? false;
@@ -86,15 +88,15 @@ class RecordDetailScreen extends HookConsumerWidget {
     final displayedPastPosts = selectedYear.value == null
         ? pastPosts
         : (recentPosts
-              .where((post) => post.createdAt.year == selectedYear.value)
-              .toList()
-            ..sort((a, b) {
-              final heartCompare = b.heart.compareTo(a.heart);
-              if (heartCompare != 0) {
-                return heartCompare;
-              }
-              return b.createdAt.compareTo(a.createdAt);
-            }));
+            .where((post) => post.createdAt.year == selectedYear.value)
+            .toList()
+          ..sort((a, b) {
+            final heartCompare = b.heart.compareTo(a.heart);
+            if (heartCompare != 0) {
+              return heartCompare;
+            }
+            return b.createdAt.compareTo(a.createdAt);
+          }));
     final yearlyCounts = <int, int>{};
     for (final post in posts) {
       final year = post.createdAt.year;

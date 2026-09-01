@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/core/utils/location/country_display.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_country_fill_layer.dart';
@@ -66,6 +67,7 @@ class _RecordWorldFillMapState extends State<RecordWorldFillMap> {
       return;
     }
     try {
+      await CountryDetector.ensureLoaded();
       await MapCountryFillLayer.render(
         controller,
         countryPostCounts: recordCountryPostCounts(widget.posts),

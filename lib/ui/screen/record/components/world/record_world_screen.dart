@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/core/utils/location/country_display.dart';
 import 'package:food_gram_app/core/utils/map_stats_presentation.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -16,7 +17,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 /// 記録タブ：世界ビュー（上の情報・地図・下の国リスト）
-class RecordWorldScreen extends ConsumerWidget {
+class RecordWorldScreen extends HookConsumerWidget {
   const RecordWorldScreen({
     required this.posts,
     super.key,
@@ -26,9 +27,12 @@ class RecordWorldScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final polygons = useFuture(useMemoized(CountryDetector.ensureLoaded));
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = isDark ? const Color(0xFF161616) : Colors.white;
-    final countries = recordVisitedCountryStats(posts);
+    final countries = polygons.connectionState == ConnectionState.done
+        ? recordVisitedCountryStats(posts)
+        : const <RecordCountryVisit>[];
     final selectorTop = recordMapOverlayTopForContext(context);
     const bottomPadding = 120.0;
     return Padding(

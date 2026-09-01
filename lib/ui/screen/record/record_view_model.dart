@@ -27,6 +27,7 @@ class RecordViewModel extends _$RecordViewModel {
   @override
   RecordState build() {
     _preloadDefaultImages();
+    unawaited(CountryDetector.ensureLoaded());
     return const RecordState();
   }
 
@@ -75,6 +76,7 @@ class RecordViewModel extends _$RecordViewModel {
       if (posts == null) {
         return;
       }
+      await CountryDetector.ensureLoaded();
       final prefecturePostCounts = _collectPrefecturePostCounts(posts);
       await MapPrefectureFillLayer.render(
         state.mapController!,
