@@ -8,6 +8,7 @@ import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/analytics_screen.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/ui/screen/map/map_screen.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_screen.dart';
 import 'package:food_gram_app/ui/screen/record/record_screen.dart';
@@ -56,6 +57,7 @@ class TabViewModel extends _$TabViewModel {
     if (_isHandlingTap) {
       return;
     }
+    HapticFeedbackHelper.selection();
     _isHandlingTap = true;
     try {
       if (index == state.selectedIndex) {

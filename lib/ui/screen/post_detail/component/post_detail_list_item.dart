@@ -12,6 +12,7 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
 import 'package:food_gram_app/core/theme/style/detail_post_style.dart';
+import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/go_router_extension.dart';
@@ -305,6 +306,7 @@ class PostDetailListItem extends HookConsumerWidget {
                       if (currentUser == null || currentUser == users.userId) {
                         return;
                       }
+                      HapticFeedbackHelper.light();
                       final wasHearted = isHearted.value;
                       isHearted.value = !wasHearted;
                       heartCount.value = wasHearted
@@ -336,6 +338,7 @@ class PostDetailListItem extends HookConsumerWidget {
                   ),
                   IconButton(
                     onPressed: () {
+                      HapticFeedbackHelper.medium();
                       ref.read(postDetailViewModelProvider().notifier).store(
                             postId: posts.id,
                             openSnackBar: () {

@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/review/in_app_review_service.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/services/streak_service.dart';
 import 'package:food_gram_app/core/theme/style/post_style.dart';
+import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -451,6 +452,7 @@ class PostScreen extends HookConsumerWidget {
                         onPressed: isSubmittingPost.value
                             ? null
                             : () async {
+                                HapticFeedbackHelper.medium();
                                 isSubmittingPost.value = true;
                                 final foodTagString = foodTags.value.isEmpty
                                     ? ''
