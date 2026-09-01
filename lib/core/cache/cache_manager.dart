@@ -73,6 +73,11 @@ class CacheManager {
     invalidate('ramen_posts');
   }
 
+  /// フレンド ID 一覧キャッシュを無効化
+  void invalidateFriendIdsCache(String userId) {
+    invalidate('friend_ids_$userId');
+  }
+
   /// ユーザー関連のキャッシュを無効化
   void invalidateUserCache(String userId) {
     invalidate('user_$userId');
