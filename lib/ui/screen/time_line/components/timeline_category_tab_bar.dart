@@ -44,7 +44,9 @@ class TimelineCategoryTabBar extends StatelessWidget {
               : getLocalizedCategoryName(category.name, context);
           return GestureDetector(
             onTap: () {
-              HapticFeedbackHelper.selection();
+              if (index != selectedIndex) {
+                HapticFeedbackHelper.selection();
+              }
               onCategorySelected(index);
             },
             behavior: HitTestBehavior.opaque,

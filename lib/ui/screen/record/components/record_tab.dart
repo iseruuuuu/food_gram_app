@@ -40,7 +40,9 @@ class RecordTab extends StatelessWidget {
           return Expanded(
             child: GestureDetector(
               onTap: () {
-                HapticFeedbackHelper.selection();
+                if (type != currentViewType) {
+                  HapticFeedbackHelper.selection();
+                }
                 onViewTypeChanged(type);
               },
               child: Container(
