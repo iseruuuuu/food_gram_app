@@ -92,7 +92,9 @@ class TabScreen extends HookConsumerWidget {
                 return;
               }
               unawaited(AdTrackingPermission().requestTracking());
-              ref.read(forceUpdateCheckerProvider.notifier).checkForceUpdate(
+              await ref
+                  .read(forceUpdateCheckerProvider.notifier)
+                  .checkForceUpdate(
                 openDialog: () {
                   DialogHelper().forceUpdateDialog(context);
                 },

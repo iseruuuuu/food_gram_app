@@ -23,10 +23,7 @@ class RecordWorldFillMap extends StatefulWidget {
 }
 
 class _RecordWorldFillMapState extends State<RecordWorldFillMap> {
-  static const _worldCamera = CameraPosition(
-    target: LatLng(20, 10),
-    zoom: 0,
-  );
+  static const _worldCamera = CameraPosition(target: LatLng(20, 10));
 
   MapLibreMapController? _controller;
   bool _layersReady = false;
