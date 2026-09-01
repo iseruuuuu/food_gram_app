@@ -1021,7 +1021,7 @@
     "copy": "Copiar",
     "copied": "Copiado",
     "inputLabel": "Introduce el código de amigo",
-    "inputHint": "FGxxxxxx",
+    "inputHint": "Escribe aquí",
     "addButton": "Añadir amigo",
     "notFound": "Código de amigo no encontrado",
     "cannotAddSelf": "No puedes añadirte a ti mismo",

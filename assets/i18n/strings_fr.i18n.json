@@ -1021,7 +1021,7 @@
     "copy": "Copier",
     "copied": "Copié",
     "inputLabel": "Saisir le code ami",
-    "inputHint": "FGxxxxxx",
+    "inputHint": "Saisir ici",
     "addButton": "Ajouter un ami",
     "notFound": "Code ami introuvable",
     "cannotAddSelf": "Vous ne pouvez pas vous ajouter vous-même",

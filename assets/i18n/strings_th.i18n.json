@@ -1021,7 +1021,7 @@
     "copy": "คัดลอก",
     "copied": "คัดลอกแล้ว",
     "inputLabel": "กรอกรหัสเพื่อน",
-    "inputHint": "FGxxxxxx",
+    "inputHint": "กรอกที่นี่",
     "addButton": "เพิ่มเพื่อน",
     "notFound": "ไม่พบรหัสเพื่อน",
     "cannotAddSelf": "ไม่สามารถเพิ่มตัวเองเป็นเพื่อนได้",

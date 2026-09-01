@@ -1020,7 +1020,7 @@
     "copy": "Copy",
     "copied": "Copied",
     "inputLabel": "Enter friend code",
-    "inputHint": "FGxxxxxx",
+    "inputHint": "Enter here",
     "addButton": "Add Friend",
     "notFound": "Friend code not found",
     "cannotAddSelf": "You cannot add yourself as a friend",

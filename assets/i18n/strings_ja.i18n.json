@@ -1020,7 +1020,7 @@
     "copy": "コピー",
     "copied": "コピーしました",
     "inputLabel": "フレンドコードを入力",
-    "inputHint": "FGxxxxxx",
+    "inputHint": "入力はこちら",
     "addButton": "フレンドを追加",
     "notFound": "フレンドコードが見つかりません",
     "cannotAddSelf": "自分自身はフレンドに追加できません",

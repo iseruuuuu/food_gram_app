@@ -1021,7 +1021,7 @@
     "copy": "複製",
     "copied": "已複製",
     "inputLabel": "輸入好友代碼",
-    "inputHint": "FGxxxxxx",
+    "inputHint": "在此輸入",
     "addButton": "新增好友",
     "notFound": "找不到此好友代碼",
     "cannotAddSelf": "不能將自己加為好友",

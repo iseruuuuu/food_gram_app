@@ -1021,7 +1021,7 @@
     "copy": "복사",
     "copied": "복사했습니다",
     "inputLabel": "친구 코드 입력",
-    "inputHint": "FGxxxxxx",
+    "inputHint": "여기에 입력",
     "addButton": "친구 추가",
     "notFound": "친구 코드를 찾을 수 없습니다",
     "cannotAddSelf": "자기 자신은 친구로 추가할 수 없습니다",
