@@ -12,16 +12,20 @@ class ForceUpdateChecker extends _$ForceUpdateChecker {
   /// ストアのバージョンと現在のバージョンを比較し、
   /// 強制アップデートが必要な場合はダイアログを表示する
   Future<void> checkForceUpdate({required void Function() openDialog}) async {
-    final currentVersion = await _getCurrentVersion();
-    final storeVersion = await _getStoreVersion();
+    try {
+      final currentVersion = await _getCurrentVersion();
+      final storeVersion = await _getStoreVersion();
 
-    if (storeVersion == null) {
-      /// ストア情報が取得できない場合、強制アップデートはしない
-      return;
-    }
+      if (storeVersion == null) {
+        /// ストア情報が取得できない場合、強制アップデートはしない
+        return;
+      }
 
-    if (shouldForceUpdate(currentVersion, storeVersion)) {
-      openDialog();
+      if (shouldForceUpdate(currentVersion, storeVersion)) {
+        openDialog();
+      }
+    } on Object {
+      /// バージョン取得に失敗しても強制アップデートはしない
     }
   }
 
