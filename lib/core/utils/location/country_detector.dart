@@ -515,19 +515,19 @@ class CountryDetector {
 
   /// 緯度経度から国を判定
   static String? detectCountry(double lat, double lng) {
-    for (final country in countries) {
-      if (country.contains(lat, lng)) {
-        return country.name;
-      }
-    }
-    return 'その他';
+    return find(lat, lng)?.name ?? 'その他';
   }
 
   /// 国コードを取得
   static String? getCountryCode(double lat, double lng) {
+    return find(lat, lng)?.code;
+  }
+
+  /// 緯度経度から国データを取得。範囲外なら null
+  static Country? find(double lat, double lng) {
     for (final country in countries) {
       if (country.contains(lat, lng)) {
-        return country.code;
+        return country;
       }
     }
     return null;
