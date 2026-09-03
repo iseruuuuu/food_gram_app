@@ -1,5 +1,7 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:food_gram_app/core/model/post_draft.dart';
+import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/core/model/restaurant_search_history.dart';
 import 'package:food_gram_app/core/model/want_to_go_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,6 +31,7 @@ enum PreferenceKey {
   wantToGoList,
   hasSeenFirstPostGuide,
   hasSeenFirstPostSuccessGuide,
+  restaurantSearchHistory,
 }
 
 class Preference {
@@ -176,5 +179,16 @@ class Preference {
   Future<void> saveWantToGoList(List<WantToGoItem> items) => setString(
         PreferenceKey.wantToGoList,
         WantToGoStore(items).toJsonString(),
+      );
+
+  Future<List<Restaurant>> getRestaurantSearchHistory() async {
+    final raw = await getString(PreferenceKey.restaurantSearchHistory);
+    return RestaurantSearchHistoryStore.fromJsonString(raw).items;
+  }
+
+  Future<void> saveRestaurantSearchHistory(List<Restaurant> items) =>
+      setString(
+        PreferenceKey.restaurantSearchHistory,
+        RestaurantSearchHistoryStore(items).toJsonString(),
       );
 }

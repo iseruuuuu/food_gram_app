@@ -4,6 +4,7 @@ import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/api/restaurant/repository/google_restaurant_repository.dart';
 import 'package:food_gram_app/core/api/restaurant/repository/kakao_restaurant_repository.dart';
+import 'package:food_gram_app/core/local/providers/restaurant_search_history_notifier.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/theme/style/restaurant_style.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -34,6 +35,9 @@ class RestaurantScreen extends HookConsumerWidget {
     );
     final keyword = useState('');
     final isKakao = useState(false);
+    final history =
+        ref.watch(restaurantSearchHistoryNotifierProvider).valueOrNull ??
+            const <Restaurant>[];
     final restaurant =
         ref.watch(googleRestaurantRepositoryProvider(keyword.value));
     final kakaoRestaurant =
@@ -143,7 +147,7 @@ class RestaurantScreen extends HookConsumerWidget {
                 ),
                 Expanded(
                   child: keyword.value.isEmpty
-                      ? _buildSearchEmptyState(context, t)
+                      ? _buildSearchEmptyState(context, ref, t, history)
                       : AsyncValueSwitcher(
                           asyncValue:
                               isKakao.value ? kakaoRestaurant : restaurant,
@@ -168,36 +172,11 @@ class RestaurantScreen extends HookConsumerWidget {
                                         lng: value[index].lng,
                                       );
                                       return ListTile(
-                                        onTap: () async {
-                                          primaryFocus?.unfocus();
-                                          // 現在のルートパスに基づいて適切なルート名を決定
-                                          final currentPath =
-                                              GoRouterState.of(context)
-                                                  .uri
-                                                  .path;
-                                          final routeName = currentPath
-                                                  .contains(
-                                            RouterPath.timeLine,
-                                          )
-                                              ? RouterPath.restaurantMap
-                                              : currentPath.contains(
-                                                  RouterPath.mapDetailPost,
-                                                )
-                                                  ? RouterPath
-                                                      .restaurantMapFromMap
-                                                  : RouterPath
-                                                      .restaurantMapMyProfile;
-                                          final result = await context
-                                              .pushNamed<Restaurant>(
-                                            routeName,
-                                            extra: restaurant,
-                                          );
-                                          // restaurantが返ってきたら、さらにPostScreenに戻す
-                                          if (result != null &&
-                                              context.mounted) {
-                                            context.pop(result);
-                                          }
-                                        },
+                                        onTap: () => _selectRestaurant(
+                                          context,
+                                          ref,
+                                          restaurant,
+                                        ),
                                         trailing: Icon(
                                           Icons.arrow_forward_ios,
                                           size: 20,
@@ -221,7 +200,7 @@ class RestaurantScreen extends HookConsumerWidget {
                           },
                         ),
                 ),
-                if (keyword.value.isEmpty)
+                if (keyword.value.isEmpty && history.isEmpty)
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -270,7 +249,107 @@ class RestaurantScreen extends HookConsumerWidget {
     );
   }
 
-  Widget _buildSearchEmptyState(BuildContext context, Translations t) {
+  Future<void> _selectRestaurant(
+    BuildContext context,
+    WidgetRef ref,
+    Restaurant restaurant,
+  ) async {
+    primaryFocus?.unfocus();
+    final currentPath = GoRouterState.of(context).uri.path;
+    final routeName = currentPath.contains(RouterPath.timeLine)
+        ? RouterPath.restaurantMap
+        : currentPath.contains(RouterPath.mapDetailPost)
+            ? RouterPath.restaurantMapFromMap
+            : RouterPath.restaurantMapMyProfile;
+    final result = await context.pushNamed<Restaurant>(
+      routeName,
+      extra: restaurant,
+    );
+    if (result == null || !context.mounted) {
+      return;
+    }
+    await ref
+        .read(restaurantSearchHistoryNotifierProvider.notifier)
+        .add(result);
+    if (context.mounted) {
+      context.pop(result);
+    }
+  }
+
+  Widget _buildSearchEmptyState(
+    BuildContext context,
+    WidgetRef ref,
+    Translations t,
+    List<Restaurant> history,
+  ) {
+    if (history.isEmpty) {
+      return _buildSearchEmptyIllustration(context, t);
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Gap(16),
+        Text(
+          t.restaurant.historyTitle,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context)
+                .colorScheme
+                .onSurface
+                .withValues(alpha: 0.7),
+          ),
+        ),
+        const Gap(8),
+        Expanded(
+          child: ListView.builder(
+            itemCount: history.length,
+            itemBuilder: (context, index) {
+              final restaurant = history[index];
+              return ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Icon(
+                  Icons.history,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.6),
+                ),
+                onTap: () => _selectRestaurant(context, ref, restaurant),
+                title: Text(
+                  restaurant.name,
+                  style: RestaurantStyle.name(context),
+                ),
+                subtitle: restaurant.address.isEmpty
+                    ? null
+                    : Text(
+                        restaurant.address,
+                        style: RestaurantStyle.address(context),
+                      ),
+                trailing: IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    size: 18,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.5),
+                  ),
+                  onPressed: () {
+                    ref
+                        .read(restaurantSearchHistoryNotifierProvider.notifier)
+                        .remove(restaurant);
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSearchEmptyIllustration(BuildContext context, Translations t) {
     final colorScheme = Theme.of(context).colorScheme;
     return Center(
       child: Column(
