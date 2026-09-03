@@ -100,6 +100,7 @@ class AppSearchTextField extends HookWidget {
                 autocorrect: true,
                 textCapitalization: TextCapitalization.words,
                 controller: controller,
+                onTapOutside: (_) => primaryFocus?.unfocus(),
                 onSubmitted: (_) {
                   onSubmitted?.call(controller.text);
                 },

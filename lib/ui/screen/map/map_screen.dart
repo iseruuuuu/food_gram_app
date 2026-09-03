@@ -106,6 +106,7 @@ class MapScreen extends HookConsumerWidget {
                     await controller.setMapController(
                       mapLibre,
                       onPinTap: (posts) async {
+                        primaryFocus?.unfocus();
                         if (posts.isEmpty || isHandlingPinTap.value) {
                           return;
                         }
@@ -153,6 +154,7 @@ class MapScreen extends HookConsumerWidget {
                     }
                   },
                   onStyleLoadedCallback: controller.onStyleLoaded,
+                  onMapClick: (_, __) => primaryFocus?.unfocus(),
                   onCameraIdle: controller.scheduleUpdateAfterCameraIdle,
                   onCameraMove: controller.onCameraMove,
                   annotationOrder: const [AnnotationType.symbol],
