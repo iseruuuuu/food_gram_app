@@ -294,6 +294,9 @@ class $AssetsMapGen {
   String get overlayPostsSelectedLayer =>
       'assets/map/overlay_posts_selected_layer.json';
 
+  /// File path: assets/map/world_countries.geojson
+  String get worldCountries => 'assets/map/world_countries.geojson';
+
   /// List of all assets
   List<String> get values => [
         earthEn,
@@ -304,7 +307,8 @@ class $AssetsMapGen {
         localJa,
         overlayPostsDotsLayer,
         overlayPostsLayer,
-        overlayPostsSelectedLayer
+        overlayPostsSelectedLayer,
+        worldCountries
       ];
 }
 
