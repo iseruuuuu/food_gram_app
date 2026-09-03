@@ -284,7 +284,8 @@
     "hintsTitle": "搜索提示",
     "hintLocation": "开启位置信息可获得更准确的搜索结果",
     "hintCuisine": "可以用「拉面」「咖啡厅」等料理名搜索",
-    "hintHistory": "可在历史记录中查看最近搜索的店铺"
+    "hintHistory": "可在历史记录中查看最近搜索的店铺",
+    "historyTitle": "最近选择的餐厅"
   },
   "profile": {
     "postCount": "帖子",

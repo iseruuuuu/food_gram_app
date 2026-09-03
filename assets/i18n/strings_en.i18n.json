@@ -283,7 +283,8 @@
     "emptyMessage": "Search by restaurant name or cuisine\nto find places to eat",
     "hintsTitle": "Search Tips",
     "hintLocation": "Turn on location for more accurate search results",
-    "hintCuisine": "You can search by cuisine like \"Ramen\" or \"Cafe\""
+    "hintCuisine": "You can search by cuisine like \"Ramen\" or \"Cafe\"",
+    "historyTitle": "Recent restaurants"
   },
   "profile": {
     "postCount": "Posts",
