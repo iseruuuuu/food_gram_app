@@ -35,11 +35,10 @@ class MapSelectedPostCard extends StatelessWidget {
         ? ''
         : priceRange.min == priceRange.max
             ? priceRange.min
-            : Translations.of(context)
-                .map
-                .priceRange
-                .replaceAll('{min}', priceRange.min)
-                .replaceAll('{max}', priceRange.max);
+            : Translations.of(context).map.priceRange(
+                  min: priceRange.min,
+                  max: priceRange.max,
+                );
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 8, 4),

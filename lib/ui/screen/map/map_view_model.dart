@@ -297,7 +297,11 @@ class MapViewModel extends _$MapViewModel {
         keepZoom ? (pos?.zoom ?? MapOverlayConstants.initial) : zoom;
     var target = LatLng(lat, lng);
     if (focusAboveSheet) {
-      target = await _offsetTargetAboveSheet(target);
+      target = await _offsetTargetAboveSheet(
+        target,
+        zoom: targetZoom,
+        bearing: pos?.bearing ?? 0,
+      );
     }
     await ctrl.animateCamera(
       CameraUpdate.newCameraPosition(
@@ -312,22 +316,48 @@ class MapViewModel extends _$MapViewModel {
     );
   }
 
-  /// 下部カード分だけカメラ中心を南へずらし、ピンを画面の見やすい位置に置く
-  Future<LatLng> _offsetTargetAboveSheet(LatLng pin) async {
+  /// 下部シート分だけカメラ中心を画面下方向へずらす。
+  /// 変換は目的のズームと現在の bearing で行い、ピンがシートに隠れない位置へ置く。
+  Future<LatLng> _offsetTargetAboveSheet(
+    LatLng pin, {
+    required double zoom,
+    required double bearing,
+  }) async {
     final ctrl = state.mapController;
     if (ctrl == null) {
       return pin;
     }
+    final pos = ctrl.cameraPosition;
     try {
-      final metersPerPixel =
-          await ctrl.getMetersPerPixelAtLatitude(pin.latitude);
-      final offsetMeters =
-          MapOverlayConstants.pinTapFocusOffsetY * metersPerPixel;
-      const metersPerDegreeLat = 111320.0;
-      final latOffset = offsetMeters / metersPerDegreeLat;
-      return LatLng(pin.latitude - latOffset, pin.longitude);
+      final currentZoom = pos?.zoom ?? zoom;
+      final scale = math.pow(2, currentZoom - zoom).toDouble();
+      final offsetY = MapOverlayConstants.pinTapFocusOffsetY * scale;
+      final screen = await ctrl.toScreenLocation(pin);
+      return await ctrl.toLatLng(
+        math.Point<num>(screen.x, screen.y + offsetY),
+      );
     } on Exception catch (_) {
-      return pin;
+      try {
+        final currentZoom = pos?.zoom ?? zoom;
+        final metersPerPixel =
+            await ctrl.getMetersPerPixelAtLatitude(pin.latitude) *
+                math.pow(2, currentZoom - zoom);
+        final offsetMeters =
+            MapOverlayConstants.pinTapFocusOffsetY * metersPerPixel;
+        const metersPerDegreeLat = 111320.0;
+        final latRad = pin.latitude * math.pi / 180;
+        final metersPerDegreeLng =
+            metersPerDegreeLat * math.cos(latRad).clamp(0.01, 1);
+        final bearingRad = bearing * math.pi / 180;
+        final dNorth = -offsetMeters * math.cos(bearingRad);
+        final dEast = -offsetMeters * math.sin(bearingRad);
+        return LatLng(
+          pin.latitude + dNorth / metersPerDegreeLat,
+          pin.longitude + dEast / metersPerDegreeLng,
+        );
+      } on Exception catch (_) {
+        return pin;
+      }
     }
   }
 

@@ -356,7 +356,7 @@
     "noPostsAtPlace": "Aún no hay publicaciones aquí. ¿Quieres ser el primero?",
     "firstPostCta": "Primera publicación",
     "firstPostHint": "Guarda un delicioso recuerdo en este lugar",
-    "priceRange": "{min} – {max}"
+    "priceRange": "$min – $max"
   },
   "app": {
     "shareTitle": "Compartir",

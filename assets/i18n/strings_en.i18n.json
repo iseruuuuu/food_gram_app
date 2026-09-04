@@ -355,7 +355,7 @@
     "noPostsAtPlace": "No posts yet here. Be the first to post?",
     "firstPostCta": "First post",
     "firstPostHint": "Record a delicious memory at this place",
-    "priceRange": "{min} – {max}"
+    "priceRange": "$min – $max"
   },
   "app": {
     "shareTitle": "Share",

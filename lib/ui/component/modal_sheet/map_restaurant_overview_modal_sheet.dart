@@ -390,10 +390,13 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
 }
 
 /// 「同じレストラン」とみなすために、店名と座標の近さでグループ化する。
+/// 代表投稿が最新になるよう、先に createdAt 降順へ揃えてからまとめる。
 List<RestaurantGroup> _groupByRestaurantName(List<Posts> posts) {
   const threshold = 0.0003; // 約 30m 前後を想定
+  final newestFirst = [...posts]
+    ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
   final groups = <RestaurantGroup>[];
-  for (final p in posts) {
+  for (final p in newestFirst) {
     final name = p.restaurant.trim();
     // 既存グループの中から「同じ店」とみなせるものを探す
     final existingIndex = groups.indexWhere(

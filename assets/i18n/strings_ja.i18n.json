@@ -355,7 +355,7 @@
     "noPostsAtPlace": "まだ投稿がありません。初投稿してみませんか？",
     "firstPostCta": "初投稿する",
     "firstPostHint": "このお店での美味しい思い出を記録しよう",
-    "priceRange": "{min}〜{max}"
+    "priceRange": "$min〜$max"
   },
   "app": {
     "shareTitle": "共有",

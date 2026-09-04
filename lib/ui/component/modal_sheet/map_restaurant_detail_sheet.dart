@@ -10,6 +10,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
+import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
@@ -103,6 +104,9 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
             final userResult = await ref
                 .read(userRepositoryProvider.notifier)
                 .getUserFromPost(postItem);
+            if (!context.mounted) {
+              return;
+            }
             await userResult.whenOrNull(
               success: (postUsers) async {
                 final model = Model(postUsers, postItem);
@@ -153,8 +157,14 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
           ),
           postsAsync.when(
             data: (postsByRestaurant) {
-              if (postsByRestaurant.isEmpty) {
-                final forNewPost = selection.placeSearchRestaurant;
+              final filter = ref.watch(mapCategoryFilterProvider);
+              final visiblePosts = postsByRestaurant
+                  .where((post) => postMatchesMapFilter(filter, post))
+                  .toList();
+              if (visiblePosts.isEmpty) {
+                final forNewPost = postsByRestaurant.isEmpty
+                    ? selection.placeSearchRestaurant
+                    : null;
                 final header = SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(16, 0, 8, 8),
@@ -254,7 +264,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                 slivers: [
                   SliverToBoxAdapter(
                     child: MapSelectedPostCard(
-                      posts: postsByRestaurant,
+                      posts: visiblePosts,
                       restaurantName: selection.name,
                       onClose: () => ref
                           .read(mapModalSelectionProvider.notifier)
@@ -272,7 +282,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                       ),
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                          final postItem = postsByRestaurant[index];
+                          final postItem = visiblePosts[index];
                           final firstImage = postItem.firstFoodImage;
                           final imageUrl = firstImage.isEmpty
                               ? null
@@ -303,7 +313,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                             ),
                           );
                         },
-                        childCount: postsByRestaurant.length,
+                        childCount: visiblePosts.length,
                       ),
                     ),
                   ),
