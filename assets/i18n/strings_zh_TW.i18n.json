@@ -300,7 +300,8 @@
     "rankingStats": "排行榜",
     "rankingPositionFormat": "#{rank}",
     "rankingHiddenPosition": "???",
-    "memberOnlyBadge": "會員專屬"
+    "memberOnlyBadge": "會員專屬",
+    "memberNumber": "FoodGram 第 {number} 位成員"
   },
   "postDetailSheet": {
     "title": "關於此貼文",
@@ -580,7 +581,11 @@
   },
   "accountRegistration": {
     "success": "帳戶註冊完成",
-    "error": "發生錯誤"
+    "error": "發生錯誤",
+    "welcomeTitle": "歡迎來到\nFoodGram",
+    "memberNumber": "FoodGram 第 {number} 位成員",
+    "body": "從現在起，你的美食紀錄將\n加入 FoodGram 地圖。",
+    "cta": "留下美食回憶 →"
   },
   "foodCategory": {
     "localSpecialties": "當地",

@@ -300,7 +300,8 @@
     "rankingStats": "Rangliste",
     "rankingPositionFormat": "#{rank}",
     "rankingHiddenPosition": "???",
-    "memberOnlyBadge": "Nur für Mitglieder"
+    "memberOnlyBadge": "Nur für Mitglieder",
+    "memberNumber": "FoodGram-Mitglied Nr. {number}"
   },
   "postDetailSheet": {
     "title": "Über diesen Beitrag",
@@ -580,7 +581,11 @@
   },
   "accountRegistration": {
     "success": "Kontoregistrierung abgeschlossen",
-    "error": "Ein Fehler ist aufgetreten"
+    "error": "Ein Fehler ist aufgetreten",
+    "welcomeTitle": "Willkommen bei\nFoodGram",
+    "memberNumber": "FoodGram-Mitglied Nr. {number}",
+    "body": "Ab jetzt werden deine Essenserinnerungen\nder FoodGram-Karte hinzugefügt.",
+    "cta": "Eine Essenserinnerung festhalten →"
   },
   "foodCategory": {
     "localSpecialties": "Lokal",

@@ -300,7 +300,8 @@
     "rankingStats": "랭킹",
     "rankingPositionFormat": "#{rank}",
     "rankingHiddenPosition": "???",
-    "memberOnlyBadge": "멤버 전용"
+    "memberOnlyBadge": "멤버 전용",
+    "memberNumber": "FoodGram {number}번째 멤버"
   },
   "postDetailSheet": {
     "title": "이 게시물에 대해",
@@ -580,7 +581,11 @@
   },
   "accountRegistration": {
     "success": "계정 등록이 완료되었습니다",
-    "error": "오류가 발생했습니다"
+    "error": "오류가 발생했습니다",
+    "welcomeTitle": "FoodGram에\n오신 것을 환영합니다",
+    "memberNumber": "FoodGram {number}번째 멤버",
+    "body": "앞으로 당신의 음식 기록이\nFoodGram 지도에 더해집니다.",
+    "cta": "음식 추억을 남겨보기 →"
   },
   "foodCategory": {
     "localSpecialties": "현지",

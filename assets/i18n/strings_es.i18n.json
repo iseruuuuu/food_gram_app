@@ -300,7 +300,8 @@
     "rankingStats": "Clasificación",
     "rankingPositionFormat": "#{rank}",
     "rankingHiddenPosition": "???",
-    "memberOnlyBadge": "Solo miembros"
+    "memberOnlyBadge": "Solo miembros",
+    "memberNumber": "Miembro n.º {number} de FoodGram"
   },
   "postDetailSheet": {
     "title": "Acerca de esta publicación",
@@ -580,7 +581,11 @@
   },
   "accountRegistration": {
     "success": "Registro de cuenta completado",
-    "error": "Ha ocurrido un error"
+    "error": "Ha ocurrido un error",
+    "welcomeTitle": "Bienvenido a\nFoodGram",
+    "memberNumber": "Miembro n.º {number} de FoodGram",
+    "body": "A partir de ahora, tus recuerdos gastronómicos\nse añadirán al mapa de FoodGram.",
+    "cta": "Guardar un recuerdo gastronómico →"
   },
   "foodCategory": {
     "localSpecialties": "Local",

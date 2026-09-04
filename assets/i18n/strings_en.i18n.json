@@ -299,7 +299,8 @@
     "rankingStats": "Ranking",
     "rankingPositionFormat": "#{rank}",
     "rankingHiddenPosition": "???",
-    "memberOnlyBadge": "Members only"
+    "memberOnlyBadge": "Members only",
+    "memberNumber": "FoodGram member #{number}"
   },
   "postDetailSheet": {
     "title": "About this post",
@@ -579,7 +580,11 @@
   },
   "accountRegistration": {
     "success": "Account registration completed",
-    "error": "An error occurred"
+    "error": "An error occurred",
+    "welcomeTitle": "Welcome to\nFoodGram",
+    "memberNumber": "FoodGram member #{number}",
+    "body": "Your food memories will now\nbe added to the FoodGram map.",
+    "cta": "Record a food memory →"
   },
   "foodCategory": {
     "localSpecialties": "Local",
