@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/admob_gate.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
@@ -212,10 +213,10 @@ class PostDetailScreen extends HookConsumerWidget {
                   const adInterval = 2;
                   final itemCount = posts.length + (posts.length ~/ adInterval);
                   return ListView.builder(
+                    scrollCacheExtent: const ScrollCacheExtent.pixels(2000),
                     controller: scrollController,
                     key: PageStorageKey('post_detail_list_${memoizedPosts.id}'),
                     restorationId: 'post_detail_list_${memoizedPosts.id}',
-                    cacheExtent: 2000,
                     itemCount: itemCount,
                     itemBuilder: (context, index) {
                       final isAdRow = (index + 1) % (adInterval + 1) == 0;

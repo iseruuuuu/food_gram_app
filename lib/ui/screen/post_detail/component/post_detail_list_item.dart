@@ -333,7 +333,7 @@ class PostDetailListItem extends HookConsumerWidget {
                       color: isHearted.value
                           ? Colors.red
                           : Theme.of(context).colorScheme.onSurface,
-                      size: 36,
+                      size: 38,
                     ),
                   ),
                   IconButton(
@@ -372,7 +372,7 @@ class PostDetailListItem extends HookConsumerWidget {
                           ? Icons.bookmark_add_rounded
                           : Icons.bookmark_add_outlined,
                     ),
-                    iconSize: 34,
+                    iconSize: 38,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                   const Gap(8),
@@ -390,7 +390,7 @@ class PostDetailListItem extends HookConsumerWidget {
                     },
                     child: Icon(
                       Icons.ios_share_outlined,
-                      size: 34,
+                      size: 36,
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
@@ -676,7 +676,7 @@ class _PostRankChip extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              fontSize: 11,
+              fontSize: 10,
               color: mutedColor,
             ),
             maxLines: 1,
