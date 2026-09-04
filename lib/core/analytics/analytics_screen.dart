@@ -30,6 +30,7 @@ abstract final class AnalyticsScreen {
   static const postDetail = 'PostDetail';
   static const authentication = 'Authentication';
   static const newAccount = 'NewAccount';
+  static const registrationWelcome = 'RegistrationWelcome';
   static const editProfile = 'EditProfile';
   static const license = 'License';
   static const imageEditor = 'ImageEditor';
@@ -65,6 +66,7 @@ abstract final class AnalyticsScreen {
     postDetail,
     authentication,
     newAccount,
+    registrationWelcome,
     editProfile,
     license,
     imageEditor,
@@ -82,6 +84,7 @@ abstract final class AnalyticsScreen {
     'introduction': introduction,
     'authentication': authentication,
     'new_account': newAccount,
+    'registration_welcome': registrationWelcome,
     'time_line': food,
     'map': map,
     'my_profile': profile,
