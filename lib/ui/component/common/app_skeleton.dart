@@ -240,31 +240,49 @@ class AppNearbyRestaurantsSkeleton extends StatelessWidget {
             top: top,
             bottom: bottom,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
             children: [
               Container(
-                width: 180,
-                height: 16,
+                width: 80,
+                height: 80,
                 decoration: BoxDecoration(
                   color: skeletonColor,
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(14),
                 ),
               ),
-              const Gap(8),
-              Row(
-                children: List.generate(3, (i) {
-                  return Expanded(
-                    child: Container(
-                      height: 90,
-                      margin: EdgeInsets.only(right: i == 2 ? 0 : 8),
+              const Gap(12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 160,
+                      height: 16,
                       decoration: BoxDecoration(
                         color: skeletonColor,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(6),
                       ),
                     ),
-                  );
-                }),
+                    const Gap(8),
+                    Container(
+                      width: 100,
+                      height: 12,
+                      decoration: BoxDecoration(
+                        color: skeletonColor,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                    const Gap(8),
+                    Container(
+                      width: 48,
+                      height: 12,
+                      decoration: BoxDecoration(
+                        color: skeletonColor,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
