@@ -44,7 +44,8 @@ GoRouter router(Ref ref) {
 
       if (location == '/${RouterPath.tutorial}' ||
           location == '/${RouterPath.authentication}' ||
-          location == '/${RouterPath.newAccount}') {
+          location == '/${RouterPath.newAccount}' ||
+          location == '/${RouterPath.registrationWelcome}') {
         return null;
       }
 
@@ -96,6 +97,17 @@ GoRouter router(Ref ref) {
             const NewAccountScreen(),
             key: state.pageKey,
             name: AnalyticsScreen.newAccount,
+          );
+        },
+      ),
+      GoRoute(
+        path: '/${RouterPath.registrationWelcome}',
+        name: RouterPath.registrationWelcome,
+        pageBuilder: (context, state) {
+          return blackOut(
+            const RegistrationWelcomeScreen(),
+            key: state.pageKey,
+            name: AnalyticsScreen.registrationWelcome,
           );
         },
       ),
@@ -202,6 +214,7 @@ final class RouterPath {
   static const String tutorial = 'introduction';
   static const String authentication = 'authentication';
   static const String newAccount = 'new_account';
+  static const String registrationWelcome = 'registration_welcome';
   static const String tab = 'tab';
   // /tab（main tabs & 共通）
   static const String imageEditor = 'image_editor';

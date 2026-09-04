@@ -88,8 +88,10 @@ class NewAccountScreen extends ConsumerWidget {
                             .read(newAccountViewModelProvider().notifier)
                             .setUsers()
                             .then((value) {
-                          if (value) {
-                            context.pushReplacementNamed(RouterPath.tab);
+                          if (value && context.mounted) {
+                            context.pushReplacementNamed(
+                              RouterPath.registrationWelcome,
+                            );
                           }
                         });
                       },

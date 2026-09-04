@@ -16,6 +16,7 @@ export 'package:food_gram_app/ui/screen/profile/my_profile/stored_post_screen.da
 export 'package:food_gram_app/ui/screen/profile/my_profile/want_to_go_list_screen.dart';
 export 'package:food_gram_app/ui/screen/profile/user_profile/user_profile_screen.dart';
 export 'package:food_gram_app/ui/screen/record/record_yearly_posts_screen.dart';
+export 'package:food_gram_app/ui/screen/registration_welcome/registration_welcome_screen.dart';
 export 'package:food_gram_app/ui/screen/restaurant/restaurant_map_screen.dart';
 export 'package:food_gram_app/ui/screen/restaurant/restaurant_screen.dart';
 export 'package:food_gram_app/ui/screen/restaurant_review/restaurant_review_screen.dart';
