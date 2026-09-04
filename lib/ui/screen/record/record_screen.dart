@@ -10,7 +10,7 @@ import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_detail_screen.dart';
-import 'package:food_gram_app/ui/screen/record/components/map/record_map.dart';
+import 'package:food_gram_app/ui/screen/record/components/japan/record_japan_screen.dart';
 import 'package:food_gram_app/ui/screen/record/components/world/record_world_screen.dart';
 import 'package:food_gram_app/ui/screen/record/record_view_model.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
@@ -25,7 +25,6 @@ class RecordScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(recordViewModelProvider);
-    final controller = ref.watch(recordViewModelProvider.notifier);
     final location = ref.watch(locationProvider);
     final mapService = ref.watch(myMapRepositoryProvider);
     final scrollController = useScrollController();
@@ -63,11 +62,9 @@ class RecordScreen extends HookConsumerWidget {
               if (state.viewType == MapViewType.world) {
                 return RecordWorldScreen(posts: value.$2);
               }
-              return RecordMap(
-                state: state,
-                controller: controller,
-                latitude: value.$1.latitude,
-                longitude: value.$1.longitude,
+              return RecordJapanScreen(
+                posts: value.$2,
+                scrollController: scrollController,
               );
             },
           ),
