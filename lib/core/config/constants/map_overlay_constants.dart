@@ -31,8 +31,11 @@ class MapOverlayConstants {
   /// 現在地ボタン
   static const double currentLocation = 15.2;
 
-  /// ピンタップ・近くの店舗一覧タップ
+  /// 地名検索など、明示的に寄るときのズーム
   static const double pinTap = 16.5;
+
+  /// ピンタップ時、下部カードに隠れないようカメラ中心を南へずらす量（px）
+  static const double pinTapFocusOffsetY = 130;
 
   /// 投稿詳細などから店舗マップへ
   static const double fromPostDetail = 17;
@@ -48,11 +51,12 @@ class MapOverlayConstants {
   static const double overviewCollapsedSize = 0.042;
 
   /// ボトムナビ上に常時見せる追加の高さ（px）
-  static const double overviewOpenPeekPx = 56;
+  /// フィルターチップ + 検索ボタン + 横並びカード先頭が見える高さ
+  static const double overviewOpenPeekPx = 168;
 
-  /// 近くの店舗一覧（Overview）タップで開いたとき（さらに引き伸ばしたとき）
-  static const double overviewExpandedSize = 0.36;
+  /// 近くの店舗一覧（Overview）の初期高さ上限・中間スナップ
+  static const double overviewExpandedSize = 0.52;
 
-  /// 店舗詳細（Detail）の初期高さ比率
-  static const double detailInitialChildSize = 0.44;
+  /// 店舗詳細（Detail）の初期高さ比率（横並びカードが見える高さ）
+  static const double detailInitialChildSize = 0.34;
 }
