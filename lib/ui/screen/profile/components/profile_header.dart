@@ -16,6 +16,7 @@ import 'package:food_gram_app/ui/screen/profile/components/profile_stat.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class AppProfileHeader extends ConsumerWidget {
   const AppProfileHeader({
@@ -107,6 +108,25 @@ class AppProfileHeader extends ConsumerWidget {
                           ],
                         ],
                       ),
+                      if (isOwnProfile) ...[
+                        const Gap(4),
+                        FittedBox(
+                          child: Text(
+                            t.profile.memberNumber.replaceAll(
+                              '{number}',
+                              NumberFormat.decimalPattern(
+                                Localizations.localeOf(context).toLanguageTag(),
+                              ).format(users.id),
+                            ),
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: textColor87,
+                              letterSpacing: 0.2,
+                            ),
+                          ),
+                        ),
+                      ],
                       const Gap(8),
                       _RankBadge(
                         rankLabel: _getRank(context, length),
