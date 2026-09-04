@@ -299,7 +299,8 @@
     "rankingStats": "ランキング",
     "rankingPositionFormat": "{rank}位",
     "rankingHiddenPosition": "???位",
-    "memberOnlyBadge": "メンバー限定"
+    "memberOnlyBadge": "メンバー限定",
+    "memberNumber": "FoodGram {number}人目のメンバー"
   },
   "postDetailSheet": {
     "title": "この投稿について",
@@ -578,7 +579,11 @@
   },
   "accountRegistration": {
     "success": "アカウントの登録が完了しました",
-    "error": "エラーが発生しました"
+    "error": "エラーが発生しました",
+    "welcomeTitle": "FoodGramへようこそ！",
+    "memberNumber": "FoodGram {number}人目のメンバー",
+    "body": "これからあなたの食の記録が\nFoodGramの地図に加わっていきます。",
+    "cta": "食の思い出を残してみる →"
   },
   "foodCategory": {
     "localSpecialties": "ご当地",

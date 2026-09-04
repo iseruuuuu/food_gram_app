@@ -300,7 +300,8 @@
     "rankingStats": "อันดับ",
     "rankingPositionFormat": "#{rank}",
     "rankingHiddenPosition": "???",
-    "memberOnlyBadge": "เฉพาะสมาชิก"
+    "memberOnlyBadge": "เฉพาะสมาชิก",
+    "memberNumber": "สมาชิกคนที่ {number} ของ FoodGram"
   },
   "postDetailSheet": {
     "title": "เกี่ยวกับโพสต์นี้",
@@ -579,7 +580,11 @@
   },
   "accountRegistration": {
     "success": "ลงทะเบียนบัญชีเสร็จสมบูรณ์",
-    "error": "เกิดข้อผิดพลาด"
+    "error": "เกิดข้อผิดพลาด",
+    "welcomeTitle": "ยินดีต้อนรับสู่ FoodGram!",
+    "memberNumber": "สมาชิกคนที่ {number} ของ FoodGram",
+    "body": "จากนี้ไปบันทึกอาหารของคุณจะ\nถูกเพิ่มลงในแผนที่ FoodGram",
+    "cta": "บันทึกความทรงจำอาหาร →"
   },
   "foodCategory": {
     "localSpecialties": "ท้องถิ่น",

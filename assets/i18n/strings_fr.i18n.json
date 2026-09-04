@@ -300,7 +300,8 @@
     "rankingStats": "Classement",
     "rankingPositionFormat": "#{rank}",
     "rankingHiddenPosition": "???",
-    "memberOnlyBadge": "Réservé aux membres"
+    "memberOnlyBadge": "Réservé aux membres",
+    "memberNumber": "Membre n° {number} de FoodGram"
   },
   "postDetailSheet": {
     "title": "À propos de cette publication",
@@ -579,7 +580,11 @@
   },
   "accountRegistration": {
     "success": "Inscription du compte terminée",
-    "error": "Une erreur s'est produite"
+    "error": "Une erreur s'est produite",
+    "welcomeTitle": "Bienvenue sur FoodGram !",
+    "memberNumber": "Membre n° {number} de FoodGram",
+    "body": "Désormais, vos souvenirs culinaires\nrejoindront la carte FoodGram.",
+    "cta": "Enregistrer un souvenir culinaire →"
   },
   "foodCategory": {
     "localSpecialties": "Local",
