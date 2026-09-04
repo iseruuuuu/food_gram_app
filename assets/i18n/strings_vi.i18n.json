@@ -355,7 +355,8 @@
     "areaPopularLabel": "Thể loại chính",
     "noPostsAtPlace": "Chưa có bài đăng tại đây. Bạn muốn là người đầu tiên?",
     "firstPostCta": "Bài đăng đầu tiên",
-    "firstPostHint": "Ghi lại kỷ niệm ngon miệng tại quán này"
+    "firstPostHint": "Ghi lại kỷ niệm ngon miệng tại quán này",
+    "priceRange": "$min – $max"
   },
   "app": {
     "shareTitle": "Chia sẻ",

@@ -126,9 +126,12 @@ class MapViewModel extends _$MapViewModel {
       if (handler != null) {
         result.whenOrNull(success: handler);
       }
-      await state.mapController?.animateCamera(
-        CameraUpdate.newLatLngZoom(latLng, MapOverlayConstants.pinTap),
-        duration: const Duration(seconds: 1),
+      // ズームは変えず、ピンが下部カードに隠れない位置へ平行移動する
+      await animateToLatLng(
+        lat: latLng.latitude,
+        lng: latLng.longitude,
+        keepZoom: true,
+        focusAboveSheet: true,
       );
       state = state.copyWith(hasError: false);
     } finally {
@@ -281,12 +284,81 @@ class MapViewModel extends _$MapViewModel {
     required double lat,
     required double lng,
     double zoom = MapOverlayConstants.pinTap,
+    bool keepZoom = false,
+    bool focusAboveSheet = false,
     Duration duration = const Duration(milliseconds: 500),
   }) async {
-    await state.mapController?.animateCamera(
-      CameraUpdate.newLatLngZoom(LatLng(lat, lng), zoom),
+    final ctrl = state.mapController;
+    if (ctrl == null) {
+      return;
+    }
+    final pos = ctrl.cameraPosition;
+    final targetZoom =
+        keepZoom ? (pos?.zoom ?? MapOverlayConstants.initial) : zoom;
+    var target = LatLng(lat, lng);
+    if (focusAboveSheet) {
+      target = await _offsetTargetAboveSheet(
+        target,
+        zoom: targetZoom,
+        bearing: pos?.bearing ?? 0,
+      );
+    }
+    await ctrl.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: target,
+          zoom: targetZoom,
+          bearing: pos?.bearing ?? 0,
+          tilt: pos?.tilt ?? 0,
+        ),
+      ),
       duration: duration,
     );
+  }
+
+  /// 下部シート分だけカメラ中心を画面下方向へずらす。
+  /// 変換は目的のズームと現在の bearing で行い、ピンがシートに隠れない位置へ置く。
+  Future<LatLng> _offsetTargetAboveSheet(
+    LatLng pin, {
+    required double zoom,
+    required double bearing,
+  }) async {
+    final ctrl = state.mapController;
+    if (ctrl == null) {
+      return pin;
+    }
+    final pos = ctrl.cameraPosition;
+    try {
+      final currentZoom = pos?.zoom ?? zoom;
+      final scale = math.pow(2, currentZoom - zoom).toDouble();
+      final offsetY = MapOverlayConstants.pinTapFocusOffsetY * scale;
+      final screen = await ctrl.toScreenLocation(pin);
+      return await ctrl.toLatLng(
+        math.Point<num>(screen.x, screen.y + offsetY),
+      );
+    } on Exception catch (_) {
+      try {
+        final currentZoom = pos?.zoom ?? zoom;
+        final metersPerPixel =
+            await ctrl.getMetersPerPixelAtLatitude(pin.latitude) *
+                math.pow(2, currentZoom - zoom);
+        final offsetMeters =
+            MapOverlayConstants.pinTapFocusOffsetY * metersPerPixel;
+        const metersPerDegreeLat = 111320.0;
+        final latRad = pin.latitude * math.pi / 180;
+        final metersPerDegreeLng =
+            metersPerDegreeLat * math.cos(latRad).clamp(0.01, 1);
+        final bearingRad = bearing * math.pi / 180;
+        final dNorth = -offsetMeters * math.cos(bearingRad);
+        final dEast = -offsetMeters * math.sin(bearingRad);
+        return LatLng(
+          pin.latitude + dNorth / metersPerDegreeLat,
+          pin.longitude + dEast / metersPerDegreeLng,
+        );
+      } on Exception catch (_) {
+        return pin;
+      }
+    }
   }
 
   Future<void> resetBearing() async {

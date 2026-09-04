@@ -10,6 +10,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
+import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
@@ -21,6 +22,9 @@ import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_overview_modal_sheet.dart';
+import 'package:food_gram_app/ui/screen/map/components/map_category_chip_bar.dart';
+import 'package:food_gram_app/ui/screen/map/components/map_selected_post_card.dart';
+import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -68,20 +72,11 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
         MapOverlayConstants.detailInitialChildSize < minChildSize
             ? minChildSize
             : MapOverlayConstants.detailInitialChildSize;
-    final snapSizes = <double>{
-      minChildSize,
-      initialChildSize,
-      0.95,
-    }.toList()
-      ..sort();
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: initialChildSize,
       minChildSize: minChildSize,
       maxChildSize: 0.95,
-      snap: true,
-      snapAnimationDuration: const Duration(milliseconds: 280),
-      snapSizes: snapSizes,
       builder: (context, scrollController) {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         final sheetBg = isDark ? Colors.black : Colors.white;
@@ -93,6 +88,50 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
           ),
         );
         final supabase = ref.watch(supabaseProvider);
+
+        Future<void> openPost(Posts postItem) async {
+          if (isOpeningPost.value) {
+            return;
+          }
+          isOpeningPost.value = true;
+          try {
+            ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+              name: AnalyticsEvent.mapPostOpen,
+              parameters: {
+                AnalyticsParam.postId: postItem.id,
+              },
+            );
+            final userResult = await ref
+                .read(userRepositoryProvider.notifier)
+                .getUserFromPost(postItem);
+            if (!context.mounted) {
+              return;
+            }
+            await userResult.whenOrNull(
+              success: (postUsers) async {
+                final model = Model(postUsers, postItem);
+                final value = await context.pushNamed(
+                  RouterPath.mapDetail,
+                  extra: model,
+                );
+                if (value != null) {
+                  _refreshRestaurantPosts(ref, selection);
+                }
+              },
+            );
+          } finally {
+            isOpeningPost.value = false;
+          }
+        }
+
+        Widget closeButton() {
+          return IconButton(
+            onPressed: () =>
+                ref.read(mapModalSelectionProvider.notifier).state = null,
+            icon: Icon(Icons.close, color: sheetFg),
+          );
+        }
+
         final slivers = <Widget>[
           SliverToBoxAdapter(
             child: Padding(
@@ -109,188 +148,176 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
               ),
             ),
           ),
-          // レストラン名 + 右上バツボタン
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 8, 8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        selection.name,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: sheetFg,
-                        ),
-                        maxLines: 1,
-                        softWrap: false,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () => ref
-                        .read(
-                          mapModalSelectionProvider.notifier,
-                        )
-                        .state = null,
-                    icon: Icon(
-                      Icons.close,
-                      color: sheetFg,
-                    ),
-                  ),
-                ],
-              ),
+            child: MapCategoryChipBar(
+              onCategoryChanged: () => ref
+                  .read(mapViewModelProvider.notifier)
+                  .refreshPinsForCategoryFilter(),
             ),
           ),
-          // 投稿一覧
           postsAsync.when(
             data: (postsByRestaurant) {
-              if (postsByRestaurant.isEmpty) {
-                final forNewPost = selection.placeSearchRestaurant;
+              final filter = ref.watch(mapCategoryFilterProvider);
+              final visiblePosts = postsByRestaurant
+                  .where((post) => postMatchesMapFilter(filter, post))
+                  .toList();
+              if (visiblePosts.isEmpty) {
+                final forNewPost = postsByRestaurant.isEmpty
+                    ? selection.placeSearchRestaurant
+                    : null;
+                final header = SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 8, 8),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              selection.name,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: sheetFg,
+                              ),
+                              maxLines: 1,
+                              softWrap: false,
+                            ),
+                          ),
+                        ),
+                        closeButton(),
+                      ],
+                    ),
+                  ),
+                );
                 if (forNewPost != null) {
                   final t = Translations.of(context);
                   final isInList = isWantToGoListed(ref, forNewPost);
                   const wantToGoAccent = Color(0xFFFF8A00);
-                  return SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-                      child: Column(
-                        children: [
-                          _MapEmptyPlaceActionCard(
-                            icon: Icons.edit_outlined,
-                            title: t.map.firstPostCta,
-                            subtitle: t.map.firstPostHint,
-                            accent: AppTheme.primaryBlue,
-                            isDark: isDark,
-                            onTap: () async {
-                              if (isOpeningPost.value) {
-                                return;
-                              }
-                              isOpeningPost.value = true;
-                              try {
-                                await context.pushNamed(
-                                  RouterPath.mapDetailPost,
-                                  extra: forNewPost,
-                                );
-                              } finally {
-                                isOpeningPost.value = false;
-                              }
-                            },
+                  return SliverMainAxisGroup(
+                    slivers: [
+                      header,
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                          child: Column(
+                            children: [
+                              _MapEmptyPlaceActionCard(
+                                icon: Icons.edit_outlined,
+                                title: t.map.firstPostCta,
+                                subtitle: t.map.firstPostHint,
+                                accent: AppTheme.primaryBlue,
+                                isDark: isDark,
+                                onTap: () async {
+                                  if (isOpeningPost.value) {
+                                    return;
+                                  }
+                                  isOpeningPost.value = true;
+                                  try {
+                                    await context.pushNamed(
+                                      RouterPath.mapDetailPost,
+                                      extra: forNewPost,
+                                    );
+                                  } finally {
+                                    isOpeningPost.value = false;
+                                  }
+                                },
+                              ),
+                              const SizedBox(height: 8),
+                              _MapEmptyPlaceActionCard(
+                                icon: isInList
+                                    ? Icons.bookmark
+                                    : Icons.bookmark_border,
+                                title: isInList
+                                    ? t.wantToGo.alreadyAdded
+                                    : t.wantToGo.addToList,
+                                subtitle: t.wantToGo.addToListHint,
+                                accent: wantToGoAccent,
+                                isDark: isDark,
+                                onTap: () => toggleWantToGoWithFeedback(
+                                  context: context,
+                                  ref: ref,
+                                  restaurant: forNewPost,
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 8),
-                          _MapEmptyPlaceActionCard(
-                            icon: isInList
-                                ? Icons.bookmark
-                                : Icons.bookmark_border,
-                            title: isInList
-                                ? t.wantToGo.alreadyAdded
-                                : t.wantToGo.addToList,
-                            subtitle: t.wantToGo.addToListHint,
-                            accent: wantToGoAccent,
-                            isDark: isDark,
-                            onTap: () => toggleWantToGoWithFeedback(
-                              context: context,
-                              ref: ref,
-                              restaurant: forNewPost,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   );
                 }
-                return const SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.all(24),
-                    child: MapEmpty(),
-                  ),
+                return SliverMainAxisGroup(
+                  slivers: [
+                    header,
+                    const SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.all(24),
+                        child: MapEmpty(),
+                      ),
+                    ),
+                  ],
                 );
               }
-              return SliverPadding(
-                padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
-                sliver: SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 4,
-                    crossAxisSpacing: 4,
+              return SliverMainAxisGroup(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: MapSelectedPostCard(
+                      posts: visiblePosts,
+                      restaurantName: selection.name,
+                      onClose: () => ref
+                          .read(mapModalSelectionProvider.notifier)
+                          .state = null,
+                    ),
                   ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final postItem = postsByRestaurant[index];
-                      final firstImage = postItem.firstFoodImage;
-                      final imageUrl = firstImage.isEmpty
-                          ? null
-                          : supabase.storage
-                              .from('food')
-                              .getPublicUrl(firstImage);
-                      return GestureDetector(
-                        onTap: () async {
-                          if (isOpeningPost.value) {
-                            return;
-                          }
-                          isOpeningPost.value = true;
-                          try {
-                            ref
-                                .read(firebaseAnalyticsServiceProvider)
-                                .logEventUnawaited(
-                              name: AnalyticsEvent.mapPostOpen,
-                              parameters: {
-                                AnalyticsParam.postId: postItem.id,
-                              },
-                            );
-                            final userResult = await ref
-                                .read(
-                                  userRepositoryProvider.notifier,
-                                )
-                                .getUserFromPost(postItem);
-                            await userResult.whenOrNull(
-                              success: (postUsers) async {
-                                final model = Model(postUsers, postItem);
-                                final value = await context.pushNamed(
-                                  RouterPath.mapDetail,
-                                  extra: model,
-                                );
-                                if (value != null) {
-                                  _refreshRestaurantPosts(
-                                    ref,
-                                    selection,
-                                  );
-                                }
-                              },
-                            );
-                          } finally {
-                            isOpeningPost.value = false;
-                          }
+                  SliverPadding(
+                    padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
+                    sliver: SliverGrid(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 4,
+                        crossAxisSpacing: 4,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final postItem = visiblePosts[index];
+                          final firstImage = postItem.firstFoodImage;
+                          final imageUrl = firstImage.isEmpty
+                              ? null
+                              : supabase.storage
+                                  .from('food')
+                                  .getPublicUrl(firstImage);
+                          return GestureDetector(
+                            onTap: () => openPost(postItem),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: imageUrl == null
+                                  ? Image.asset(
+                                      isDark
+                                          ? Assets.image.emptyDark.path
+                                          : Assets.image.empty.path,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : CachedNetworkImage(
+                                      imageUrl: imageUrl,
+                                      fit: BoxFit.cover,
+                                      errorWidget: (_, __, ___) => Image.asset(
+                                        isDark
+                                            ? Assets.image.emptyDark.path
+                                            : Assets.image.empty.path,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                            ),
+                          );
                         },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: imageUrl == null
-                              ? Image.asset(
-                                  isDark
-                                      ? Assets.image.emptyDark.path
-                                      : Assets.image.empty.path,
-                                  fit: BoxFit.cover,
-                                )
-                              : CachedNetworkImage(
-                                  imageUrl: imageUrl,
-                                  fit: BoxFit.cover,
-                                  errorWidget: (_, __, ___) => Image.asset(
-                                    isDark
-                                        ? Assets.image.emptyDark.path
-                                        : Assets.image.empty.path,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                        ),
-                      );
-                    },
-                    childCount: postsByRestaurant.length,
+                        childCount: visiblePosts.length,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               );
             },
             loading: () => const SliverToBoxAdapter(
@@ -319,14 +346,27 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
               topLeft: Radius.circular(24),
               topRight: Radius.circular(24),
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.12),
+                blurRadius: 20,
+                offset: const Offset(0, -2),
+              ),
+            ],
           ),
-          child: CustomScrollView(
-            controller: scrollController,
-            primary: false,
-            physics: const AlwaysScrollableScrollPhysics(
-              parent: ClampingScrollPhysics(),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(24),
+              topRight: Radius.circular(24),
             ),
-            slivers: slivers,
+            child: CustomScrollView(
+              controller: scrollController,
+              primary: false,
+              physics: const AlwaysScrollableScrollPhysics(
+                parent: ClampingScrollPhysics(),
+              ),
+              slivers: slivers,
+            ),
           ),
         );
       },

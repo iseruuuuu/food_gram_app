@@ -9,7 +9,7 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/food_tag_icon.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-/// マップ上部に常に見せたい大カテゴリ（All の次）
+/// マップ下部シートに常に見せたい大カテゴリ（All の次）
 const mapPrimaryCategoryNames = ['ご当地', '麺類', '肉料理', '軽食系'];
 
 /// マップカテゴリフィルターのアクセントカラー（アプリの青系）
@@ -30,104 +30,85 @@ class MapCategoryChipBar extends ConsumerWidget {
     final categories = _orderedMapCategories(allCategories);
     final filter = ref.watch(mapCategoryFilterProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final surfaceColor = isDark ? const Color(0xFF1E1E1E) : Colors.white;
     final subTags = filter.mainCategory != null
         ? foodCategory[filter.mainCategory] ?? const <String>[]
         : const <String>[];
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: surfaceColor,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.12),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
+      padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 36,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: categories.length,
+              separatorBuilder: (context, index) => const SizedBox(width: 8),
+              itemBuilder: (context, index) {
+                final category = categories[index];
+                final isAll = category.isAllCategory;
+                final categoryName = category.name;
+                final isSelected = isAll
+                    ? filter.mainCategory == null
+                    : filter.mainCategory == categoryName;
+                final label = isAll
+                    ? 'All'
+                    : getLocalizedCategoryName(categoryName, context);
+                return _PrimaryCategoryChip(
+                  label: label,
+                  icon: isAll ? null : category.displayIcon,
+                  isSelected: isSelected,
+                  isDark: isDark,
+                  onTap: () => _onPrimarySelected(
+                    ref: ref,
+                    isAll: isAll,
+                    categoryName: categoryName,
+                    isSelected: isSelected,
+                  ),
+                );
+              },
             ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: 40,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categories.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(width: 8),
-                  itemBuilder: (context, index) {
-                    final category = categories[index];
-                    final isAll = category.isAllCategory;
-                    final categoryName = category.name;
-                    final isSelected = isAll
-                        ? filter.mainCategory == null
-                        : filter.mainCategory == categoryName;
-                    final label = isAll
-                        ? 'All'
-                        : getLocalizedCategoryName(categoryName, context);
-                    return _PrimaryCategoryChip(
-                      label: label,
-                      icon: isAll ? null : category.displayIcon,
+          ),
+          if (filter.mainCategory != null && subTags.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 32,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: subTags.length + 1,
+                separatorBuilder: (context, index) => const SizedBox(width: 8),
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    final isSelected = filter.subTagId == null;
+                    return _SubCategoryChip(
+                      label: Translations.of(context).foodCategory.all,
                       isSelected: isSelected,
-                      isDark: isDark,
-                      onTap: () => _onPrimarySelected(
+                      onTap: () => _onSubSelected(
                         ref: ref,
-                        isAll: isAll,
-                        categoryName: categoryName,
+                        mainCategory: filter.mainCategory!,
+                        subTagId: null,
                         isSelected: isSelected,
                       ),
                     );
-                  },
-                ),
+                  }
+                  final tagId = subTags[index - 1];
+                  final isSelected = filter.subTagId == tagId;
+                  return _SubCategoryChip(
+                    label: getLocalizedFoodName(tagId, context),
+                    isSelected: isSelected,
+                    onTap: () => _onSubSelected(
+                      ref: ref,
+                      mainCategory: filter.mainCategory!,
+                      subTagId: tagId,
+                      isSelected: isSelected,
+                    ),
+                  );
+                },
               ),
-              if (filter.mainCategory != null && subTags.isNotEmpty) ...[
-                const SizedBox(height: 8),
-                SizedBox(
-                  height: 32,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: subTags.length + 1,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(width: 8),
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        final isSelected = filter.subTagId == null;
-                        return _SubCategoryChip(
-                          label: Translations.of(context).foodCategory.all,
-                          isSelected: isSelected,
-                          onTap: () => _onSubSelected(
-                            ref: ref,
-                            mainCategory: filter.mainCategory!,
-                            subTagId: null,
-                            isSelected: isSelected,
-                          ),
-                        );
-                      }
-                      final tagId = subTags[index - 1];
-                      final isSelected = filter.subTagId == tagId;
-                      return _SubCategoryChip(
-                        label: getLocalizedFoodName(tagId, context),
-                        isSelected: isSelected,
-                        onTap: () => _onSubSelected(
-                          ref: ref,
-                          mainCategory: filter.mainCategory!,
-                          subTagId: tagId,
-                          isSelected: isSelected,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ],
-          ),
-        ),
+            ),
+          ],
+        ],
       ),
     );
   }
@@ -203,9 +184,8 @@ class _PrimaryCategoryChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = isSelected
-        ? Colors.white
-        : Theme.of(context).colorScheme.onSurface;
+    final textColor =
+        isSelected ? Colors.white : Theme.of(context).colorScheme.onSurface;
     return Material(
       color: isSelected
           ? _mapCategoryBlue

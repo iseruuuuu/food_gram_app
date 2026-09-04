@@ -355,7 +355,8 @@
     "areaPopularLabel": "ประเภทหลัก",
     "noPostsAtPlace": "ยังไม่มีโพสต์ที่นี่ ลองโพสต์เป็นคนแรกไหม?",
     "firstPostCta": "โพสต์แรก",
-    "firstPostHint": "บันทึกความทรงจำอร่อยๆ ที่ร้านนี้"
+    "firstPostHint": "บันทึกความทรงจำอร่อยๆ ที่ร้านนี้",
+    "priceRange": "$min–$max"
   },
   "app": {
     "shareTitle": "แชร์",

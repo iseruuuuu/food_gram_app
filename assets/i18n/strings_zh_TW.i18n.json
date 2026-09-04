@@ -355,7 +355,8 @@
     "areaPopularLabel": "主要類型",
     "noPostsAtPlace": "這裡還沒有貼文，要不要當第一個發文？",
     "firstPostCta": "首次發文",
-    "firstPostHint": "留下這家店的美味回憶吧"
+    "firstPostHint": "留下這家店的美味回憶吧",
+    "priceRange": "$min～$max"
   },
   "app": {
     "shareTitle": "分享",

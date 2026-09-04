@@ -14,6 +14,18 @@ class RestaurantGroup {
   final double lat;
   final double lng;
   final List<Posts> posts;
+
+  /// 最新（リスト先頭）の投稿。カードの代表表示に使う
+  Posts get representativePost => posts.first;
+
+  /// star > 0 の投稿の平均。未評価のみなら null
+  double? get averageStar {
+    final stars = posts.map((e) => e.star).where((s) => s > 0);
+    if (stars.isEmpty) {
+      return null;
+    }
+    return stars.reduce((a, b) => a + b) / stars.length;
+  }
 }
 
 /// モーダル内の表示切替で使用する選択状態モデル

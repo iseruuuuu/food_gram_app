@@ -18,11 +18,12 @@ final filteredMapPostsProvider = Provider<AsyncValue<List<Posts>>>((ref) {
   return postsAsync.whenData(
     (posts) => filter.mainCategory == null
         ? posts
-        : posts.where((post) => _postMatchesFilter(filter, post)).toList(),
+        : posts.where((post) => postMatchesMapFilter(filter, post)).toList(),
   );
 });
 
-bool _postMatchesFilter(MapCategoryFilter filter, Posts post) {
+/// マップのカテゴリ / food_tag フィルターに投稿が合うか
+bool postMatchesMapFilter(MapCategoryFilter filter, Posts post) {
   if (filter.mainCategory == null) {
     return true;
   }

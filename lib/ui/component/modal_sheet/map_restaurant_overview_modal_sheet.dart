@@ -4,6 +4,7 @@ import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart'
     as map_repo;
 import 'package:food_gram_app/core/theme/app_theme.dart';
@@ -12,6 +13,7 @@ import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
+import 'package:food_gram_app/ui/screen/map/components/map_category_chip_bar.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -53,21 +55,14 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
         : ref.watch(map_repo.getNearByPostsProvider(cameraCenter));
 
     final sheetSize = openSheetSize(context);
-    final snapSizes = <double>{
-      sheetSize,
-      if (MapOverlayConstants.overviewExpandedSize > sheetSize + 0.01)
-        MapOverlayConstants.overviewExpandedSize,
-    }.toList()
-      ..sort();
+    final minChildSize = (TabScreen.bottomNavHeightFraction(context) + 0.04)
+        .clamp(0.08, sheetSize);
 
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: sheetSize,
-      minChildSize: sheetSize,
+      minChildSize: minChildSize,
       maxChildSize: 0.95,
-      snap: true,
-      snapAnimationDuration: const Duration(milliseconds: 280),
-      snapSizes: snapSizes,
       builder: (context, scrollController) {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         final sheetBg = isDark ? Colors.black : Colors.white;
@@ -91,6 +86,13 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                   ),
                 ],
               ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: MapCategoryChipBar(
+              onCategoryChanged: () => ref
+                  .read(mapViewModelProvider.notifier)
+                  .refreshPinsForCategoryFilter(),
             ),
           ),
           SliverToBoxAdapter(
@@ -141,7 +143,21 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                   );
                 }
                 final grouped = _groupByRestaurantName(posts);
-                if (grouped.isEmpty) {
+                final filter = ref.watch(mapCategoryFilterProvider);
+                final filteredGroups = grouped
+                    .map(
+                      (g) => RestaurantGroup(
+                        name: g.name,
+                        lat: g.lat,
+                        lng: g.lng,
+                        posts: g.posts
+                            .where((p) => postMatchesMapFilter(filter, p))
+                            .toList(),
+                      ),
+                    )
+                    .where((g) => g.posts.isNotEmpty)
+                    .toList();
+                if (filteredGroups.isEmpty) {
                   return const SliverToBoxAdapter(
                     child: Padding(
                       padding: EdgeInsets.all(24),
@@ -154,20 +170,22 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        final group = grouped[index];
+                        final group = filteredGroups[index];
                         final supabase = ref.watch(supabaseProvider);
                         final postsForRestaurant = group.posts;
-                        final thumbUrls = postsForRestaurant
-                            .expand((p) => p.foodImageList)
-                            .map(
-                              (path) => path.isEmpty
-                                  ? null
-                                  : supabase.storage
-                                      .from('food')
-                                      .getPublicUrl(path),
-                            )
-                            .toList();
-                        final hasMultiplePosts = postsForRestaurant.length > 1;
+                        final firstPath = postsForRestaurant.isEmpty
+                            ? ''
+                            : group.representativePost.firstFoodImage;
+                        final imageUrl = firstPath.isEmpty
+                            ? null
+                            : supabase.storage
+                                .from('food')
+                                .getPublicUrl(firstPath);
+                        final extraCount = postsForRestaurant.length > 1
+                            ? postsForRestaurant.length - 1
+                            : 0;
+                        final onSurface = isDark ? Colors.white : Colors.black;
+                        final muted = isDark ? Colors.white70 : Colors.black54;
                         return InkWell(
                           onTap: () async {
                             await ref
@@ -175,6 +193,8 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                                 .animateToLatLng(
                                   lat: group.lat,
                                   lng: group.lng,
+                                  keepZoom: true,
+                                  focusAboveSheet: true,
                                 );
                             ref.read(mapModalSelectionProvider.notifier).state =
                                 MapModalSelection(
@@ -184,129 +204,129 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                             );
                           },
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 4,
-                            ),
-                            child: Card(
-                              elevation: index == 0 ? 2 : 4,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              clipBehavior: Clip.antiAlias,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SizedBox(
-                                    height: index == 0 ? 56 : 88,
-                                    width: double.infinity,
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(14),
+                                  child: SizedBox(
+                                    width: 80,
+                                    height: 80,
                                     child: Stack(
+                                      fit: StackFit.expand,
                                       children: [
-                                        Positioned.fill(
-                                          child: _RestaurantThumbnail(
-                                            thumbUrls: thumbUrls,
-                                            isDark: isDark,
+                                        if (imageUrl == null)
+                                          Image.asset(
+                                            isDark
+                                                ? Assets.image.emptyDark.path
+                                                : Assets.image.empty.path,
+                                            fit: BoxFit.cover,
+                                          )
+                                        else
+                                          CachedNetworkImage(
+                                            imageUrl: imageUrl,
+                                            fit: BoxFit.cover,
+                                            errorWidget: (_, __, ___) =>
+                                                Image.asset(
+                                              isDark
+                                                  ? Assets.image.emptyDark.path
+                                                  : Assets.image.empty.path,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ),
-                                        if (hasMultiplePosts)
+                                        if (extraCount > 0)
                                           Positioned(
-                                            right: 8,
-                                            top: 6,
+                                            right: 6,
+                                            bottom: 6,
                                             child: Container(
-                                              padding: const EdgeInsets.all(4),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 6,
+                                                vertical: 2,
+                                              ),
                                               decoration: BoxDecoration(
                                                 color: Colors.black.withValues(
-                                                  alpha: 0.6,
+                                                  alpha: 0.62,
                                                 ),
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                    BorderRadius.circular(10),
                                               ),
-                                              child: const Icon(
-                                                Icons.collections,
-                                                color: Colors.white,
-                                                size: 16,
+                                              child: Text(
+                                                '+$extraCount',
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
                                               ),
                                             ),
                                           ),
                                       ],
                                     ),
                                   ),
-                                  // 店名 + 星
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(
-                                      12,
-                                      index == 0 ? 6 : 8,
-                                      12,
-                                      index == 0 ? 6 : 8,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        group.name,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: onSurface,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      if (group.posts.isNotEmpty &&
+                                          group.representativePost.foodName
+                                              .isNotEmpty) ...[
+                                        const SizedBox(height: 2),
                                         Text(
-                                          group.name,
+                                          group.representativePost.foodName,
                                           style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color:
-                                                Theme.of(context).brightness ==
-                                                        Brightness.dark
-                                                    ? Colors.white
-                                                    : Colors.black,
+                                            fontSize: 13,
+                                            color: muted,
                                           ),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
-                                        Builder(
-                                          builder: (context) {
-                                            final stars = postsForRestaurant
-                                                .map((e) => e.star)
-                                                .where((s) => s > 0)
-                                                .toList();
-                                            final avg = stars.isEmpty
-                                                ? null
-                                                : (stars.reduce(
-                                                      (a, b) => a + b,
-                                                    ) /
-                                                    stars.length);
-                                            if (avg == null) {
-                                              return const SizedBox.shrink();
-                                            }
-                                            return Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.star,
-                                                  color: Color(0xFFFFC107),
-                                                  size: 20,
-                                                ),
-                                                const SizedBox(width: 4),
-                                                Text(
-                                                  avg.toStringAsFixed(1),
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Theme.of(context)
-                                                                .brightness ==
-                                                            Brightness.dark
-                                                        ? Colors.white
-                                                        : Colors.black87,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          },
+                                      ],
+                                      if (group.averageStar != null) ...[
+                                        const SizedBox(height: 6),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.star_rounded,
+                                              color: Color(0xFFFFC107),
+                                              size: 18,
+                                            ),
+                                            const SizedBox(width: 2),
+                                            Text(
+                                              group.averageStar!
+                                                  .toStringAsFixed(1),
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: onSurface,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
-                                    ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         );
                       },
-                      childCount: grouped.length,
+                      childCount: filteredGroups.length,
                     ),
                   ),
                 );
@@ -341,15 +361,27 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
               topLeft: Radius.circular(24),
               topRight: Radius.circular(24),
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.12),
+                blurRadius: 20,
+                offset: const Offset(0, -2),
+              ),
+            ],
           ),
-          child: CustomScrollView(
-            controller: scrollController,
-            primary: false,
-            // 上スワイプでシートを広げられるようにする
-            physics: const AlwaysScrollableScrollPhysics(
-              parent: ClampingScrollPhysics(),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(24),
+              topRight: Radius.circular(24),
             ),
-            slivers: slivers,
+            child: CustomScrollView(
+              controller: scrollController,
+              primary: false,
+              physics: const AlwaysScrollableScrollPhysics(
+                parent: ClampingScrollPhysics(),
+              ),
+              slivers: slivers,
+            ),
           ),
         );
       },
@@ -358,10 +390,13 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
 }
 
 /// 「同じレストラン」とみなすために、店名と座標の近さでグループ化する。
+/// 代表投稿が最新になるよう、先に createdAt 降順へ揃えてからまとめる。
 List<RestaurantGroup> _groupByRestaurantName(List<Posts> posts) {
   const threshold = 0.0003; // 約 30m 前後を想定
+  final newestFirst = [...posts]
+    ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
   final groups = <RestaurantGroup>[];
-  for (final p in posts) {
+  for (final p in newestFirst) {
     final name = p.restaurant.trim();
     // 既存グループの中から「同じ店」とみなせるものを探す
     final existingIndex = groups.indexWhere(
@@ -392,76 +427,4 @@ List<RestaurantGroup> _groupByRestaurantName(List<Posts> posts) {
   }
 
   return groups;
-}
-
-class _RestaurantThumbnail extends StatelessWidget {
-  const _RestaurantThumbnail({
-    required this.thumbUrls,
-    required this.isDark,
-  });
-
-  final List<String?> thumbUrls;
-  final bool isDark;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget buildImageContent() {
-      if (thumbUrls.isEmpty) {
-        return Image.asset(
-          isDark ? Assets.image.emptyDark.path : Assets.image.empty.path,
-          fit: BoxFit.cover,
-        );
-      }
-
-      if (thumbUrls.length == 1) {
-        final url = thumbUrls.first;
-        if (url == null) {
-          return Image.asset(
-            isDark ? Assets.image.emptyDark.path : Assets.image.empty.path,
-            fit: BoxFit.cover,
-          );
-        }
-        return CachedNetworkImage(
-          imageUrl: url,
-          fit: BoxFit.cover,
-          errorWidget: (_, __, ___) => Image.asset(
-            isDark ? Assets.image.emptyDark.path : Assets.image.empty.path,
-            fit: BoxFit.cover,
-          ),
-        );
-      }
-
-      // 2枚以上 → PageView でスワイプ
-      return PageView.builder(
-        itemCount: thumbUrls.length,
-        itemBuilder: (context, pageIndex) {
-          final url = thumbUrls[pageIndex];
-          if (url == null) {
-            return Image.asset(
-              isDark ? Assets.image.emptyDark.path : Assets.image.empty.path,
-              fit: BoxFit.cover,
-            );
-          }
-          return CachedNetworkImage(
-            imageUrl: url,
-            fit: BoxFit.cover,
-            errorWidget: (_, __, ___) => Image.asset(
-              isDark ? Assets.image.emptyDark.path : Assets.image.empty.path,
-              fit: BoxFit.cover,
-            ),
-          );
-        },
-      );
-    }
-
-    return SizedBox(
-      height: 100,
-      width: double.infinity,
-      child: Stack(
-        children: [
-          Positioned.fill(child: buildImageContent()),
-        ],
-      ),
-    );
-  }
 }

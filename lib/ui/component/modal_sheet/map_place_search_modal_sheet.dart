@@ -56,6 +56,7 @@ Future<void> showMapPlaceSearchModalSheet({
           await mapController.animateToLatLng(
             lat: restaurant.lat,
             lng: restaurant.lng,
+            focusAboveSheet: true,
           );
           mapController.setNearbySearchCenterFromLatLng(
             lat: restaurant.lat,
@@ -168,9 +169,7 @@ class MapPlaceSearchModalSheet extends HookConsumerWidget {
                               ? t.wantToGo.removeFromList
                               : t.wantToGo.addToList,
                           icon: Icon(
-                            isInList
-                                ? Icons.bookmark
-                                : Icons.bookmark_border,
+                            isInList ? Icons.bookmark : Icons.bookmark_border,
                             color: isInList
                                 ? Theme.of(context).colorScheme.primary
                                 : null,

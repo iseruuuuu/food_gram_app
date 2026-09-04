@@ -355,7 +355,8 @@
     "areaPopularLabel": "主要类型",
     "noPostsAtPlace": "这里还没有动态，来做第一个发帖的人吧？",
     "firstPostCta": "首次发帖",
-    "firstPostHint": "留下这家店的美味回忆吧"
+    "firstPostHint": "留下这家店的美味回忆吧",
+    "priceRange": "$min～$max"
   },
   "app": {
     "shareTitle": "分享",
