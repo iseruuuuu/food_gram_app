@@ -284,7 +284,8 @@
     "hintsTitle": "Search Tips",
     "hintLocation": "Turn on location for more accurate search results",
     "hintCuisine": "You can search by cuisine like \"Ramen\" or \"Cafe\"",
-    "hintHistory": "Recently searched restaurants can be found in history"
+    "hintHistory": "Recently searched restaurants can be found in history",
+    "historyTitle": "Nhà hàng đã chọn gần đây"
   },
   "profile": {
     "postCount": "Bài đăng",

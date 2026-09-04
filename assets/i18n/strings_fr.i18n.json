@@ -284,7 +284,8 @@
     "hintsTitle": "Conseils de recherche",
     "hintLocation": "Activez l'emplacement pour des résultats de recherche plus précis",
     "hintCuisine": "Vous pouvez rechercher par cuisine comme \"Ramen\" ou \"Café\"",
-    "hintHistory": "Les restaurants récemment recherchés peuvent être trouvés dans l'historique"
+    "hintHistory": "Les restaurants récemment recherchés peuvent être trouvés dans l'historique",
+    "historyTitle": "Restaurants récents"
   },
   "profile": {
     "postCount": "Publications",

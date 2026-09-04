@@ -283,7 +283,8 @@
     "emptyMessage": "店名や料理名で検索して\nレストランを探しましょう",
     "hintsTitle": "検索のヒント",
     "hintLocation": "位置情報をオンにするとより正確に検索できます",
-    "hintCuisine": "「ラーメン」「カフェ」など料理名でも検索できます"
+    "hintCuisine": "「ラーメン」「カフェ」など料理名でも検索できます",
+    "historyTitle": "最近選択したレストラン"
   },
   "profile": {
     "postCount": "投稿",
