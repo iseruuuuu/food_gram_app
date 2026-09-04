@@ -23,7 +23,6 @@ import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_detail_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_overview_modal_sheet.dart';
-import 'package:food_gram_app/ui/screen/map/components/map_category_chip_bar.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -171,16 +170,14 @@ class MapScreen extends HookConsumerWidget {
                   styleString:
                       _localizedStyleAsset(context, isEarthStyle.value),
                 ),
-                // selection の状態に応じて Overview / Detail を内部で切り替える
                 const MapRestaurantDetailSheet(),
                 Positioned(
                   top: _calculateTopPosition(context),
                   left: 0,
                   right: 0,
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      // 1) 一番上：検索バー（横幅いっぱい）
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: AppMapPlaceSearchTextField(
@@ -188,66 +185,58 @@ class MapScreen extends HookConsumerWidget {
                         ),
                       ),
                       const Gap(8),
-                      MapCategoryChipBar(
-                        onCategoryChanged:
-                            controller.refreshPinsForCategoryFilter,
-                      ),
-                      const Gap(8),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              _MapSideFab(
-                                heroTag: 'style_toggle',
-                                fabBg: fabBg,
-                                fabFg: fabFg,
-                                fabBorder: fabBorder,
-                                icon: isEarthStyle.value
-                                    ? CupertinoIcons.globe
-                                    : CupertinoIcons.map,
-                                onPressed: () async {
-                                  if (!isSubscribed) {
-                                    try {
-                                      await ref
-                                          .read(
-                                            revenueCatServiceProvider.notifier,
-                                          )
-                                          .presentPaywallGuarded();
-                                    } on Exception catch (_) {
-                                      return;
-                                    }
-                                  } else {
-                                    isEarthStyle.value = !isEarthStyle.value;
-                                    controller.handleStyleChange();
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _MapSideFab(
+                              heroTag: 'style_toggle',
+                              fabBg: fabBg,
+                              fabFg: fabFg,
+                              fabBorder: fabBorder,
+                              icon: isEarthStyle.value
+                                  ? CupertinoIcons.globe
+                                  : CupertinoIcons.map,
+                              onPressed: () async {
+                                if (!isSubscribed) {
+                                  try {
+                                    await ref
+                                        .read(
+                                          revenueCatServiceProvider.notifier,
+                                        )
+                                        .presentPaywallGuarded();
+                                  } on Exception catch (_) {
+                                    return;
                                   }
-                                },
-                              ),
-                              if (isLocationEnabled) ...[
-                                const Gap(8),
-                                _MapSideFab(
-                                  heroTag: 'map_current_location',
-                                  fabBg: fabBg,
-                                  fabFg: fabFg,
-                                  fabBorder: fabBorder,
-                                  icon: CupertinoIcons.location,
-                                  onPressed: controller.moveToCurrentLocation,
-                                ),
-                              ],
+                                } else {
+                                  isEarthStyle.value = !isEarthStyle.value;
+                                  controller.handleStyleChange();
+                                }
+                              },
+                            ),
+                            if (isLocationEnabled) ...[
                               const Gap(8),
                               _MapSideFab(
-                                heroTag: 'compass',
+                                heroTag: 'map_current_location',
                                 fabBg: fabBg,
                                 fabFg: fabFg,
                                 fabBorder: fabBorder,
-                                icon: CupertinoIcons.compass,
-                                iconSize: 28,
-                                onPressed: controller.resetBearing,
+                                icon: CupertinoIcons.location,
+                                onPressed: controller.moveToCurrentLocation,
                               ),
                             ],
-                          ),
+                            const Gap(8),
+                            _MapSideFab(
+                              heroTag: 'compass',
+                              fabBg: fabBg,
+                              fabFg: fabFg,
+                              fabBorder: fabBorder,
+                              icon: CupertinoIcons.compass,
+                              iconSize: 26,
+                              onPressed: controller.resetBearing,
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -291,8 +280,8 @@ class _MapSideFab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 55,
-      height: 55,
+      width: 54,
+      height: 54,
       child: Theme(
         data: Theme.of(context).copyWith(highlightColor: fabBg),
         child: FloatingActionButton(

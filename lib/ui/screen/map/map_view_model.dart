@@ -126,9 +126,12 @@ class MapViewModel extends _$MapViewModel {
       if (handler != null) {
         result.whenOrNull(success: handler);
       }
-      await state.mapController?.animateCamera(
-        CameraUpdate.newLatLngZoom(latLng, MapOverlayConstants.pinTap),
-        duration: const Duration(seconds: 1),
+      // ズームは変えず、ピンが下部カードに隠れない位置へ平行移動する
+      await animateToLatLng(
+        lat: latLng.latitude,
+        lng: latLng.longitude,
+        keepZoom: true,
+        focusAboveSheet: true,
       );
       state = state.copyWith(hasError: false);
     } finally {
@@ -281,12 +284,51 @@ class MapViewModel extends _$MapViewModel {
     required double lat,
     required double lng,
     double zoom = MapOverlayConstants.pinTap,
+    bool keepZoom = false,
+    bool focusAboveSheet = false,
     Duration duration = const Duration(milliseconds: 500),
   }) async {
-    await state.mapController?.animateCamera(
-      CameraUpdate.newLatLngZoom(LatLng(lat, lng), zoom),
+    final ctrl = state.mapController;
+    if (ctrl == null) {
+      return;
+    }
+    final pos = ctrl.cameraPosition;
+    final targetZoom =
+        keepZoom ? (pos?.zoom ?? MapOverlayConstants.initial) : zoom;
+    var target = LatLng(lat, lng);
+    if (focusAboveSheet) {
+      target = await _offsetTargetAboveSheet(target);
+    }
+    await ctrl.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: target,
+          zoom: targetZoom,
+          bearing: pos?.bearing ?? 0,
+          tilt: pos?.tilt ?? 0,
+        ),
+      ),
       duration: duration,
     );
+  }
+
+  /// 下部カード分だけカメラ中心を南へずらし、ピンを画面の見やすい位置に置く
+  Future<LatLng> _offsetTargetAboveSheet(LatLng pin) async {
+    final ctrl = state.mapController;
+    if (ctrl == null) {
+      return pin;
+    }
+    try {
+      final metersPerPixel =
+          await ctrl.getMetersPerPixelAtLatitude(pin.latitude);
+      final offsetMeters =
+          MapOverlayConstants.pinTapFocusOffsetY * metersPerPixel;
+      const metersPerDegreeLat = 111320.0;
+      final latOffset = offsetMeters / metersPerDegreeLat;
+      return LatLng(pin.latitude - latOffset, pin.longitude);
+    } on Exception catch (_) {
+      return pin;
+    }
   }
 
   Future<void> resetBearing() async {
