@@ -143,6 +143,7 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
             }
           : const <Factory<OneSequenceGestureRecognizer>>{},
       onMapCreated: (controller) {
+        _layersReady = false;
         _controller = controller;
       },
       onStyleLoadedCallback: _renderOverlays,

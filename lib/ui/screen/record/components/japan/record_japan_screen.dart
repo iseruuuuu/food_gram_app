@@ -32,7 +32,7 @@ class RecordJapanScreen extends ConsumerWidget {
     final cardColor = isDark ? const Color(0xFF161616) : Colors.white;
     final visits = recordVisitedPrefectureStats(posts);
     final ranking = recordPrefectureRanking(posts);
-    final visitedCount = visits.length.clamp(0, japanPrefectureCap);
+    final visitedCount = visits.length.clamp(0, japanPrefectureCap).toInt();
     final selectorTop = recordMapOverlayTopForContext(context);
     const bottomPadding = 120.0;
     return Padding(
@@ -90,7 +90,7 @@ class _JapanAtlasCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final ratio = (visitedCount / japanPrefectureCap).clamp(0.0, 1.0);
+    final ratio = (visitedCount / japanPrefectureCap).clamp(0.0, 1.0).toDouble();
     final percentText = (ratio * 100).toStringAsFixed(1);
     return Container(
       width: double.infinity,
