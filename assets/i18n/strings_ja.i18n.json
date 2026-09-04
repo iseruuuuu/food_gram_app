@@ -580,7 +580,7 @@
   "accountRegistration": {
     "success": "アカウントの登録が完了しました",
     "error": "エラーが発生しました",
-    "welcomeTitle": "FoodGramへようこそ！",
+    "welcomeTitle": "FoodGramへ\nようこそ",
     "memberNumber": "FoodGram {number}人目のメンバー",
     "body": "これからあなたの食の記録が\nFoodGramの地図に加わっていきます。",
     "cta": "食の思い出を残してみる →"

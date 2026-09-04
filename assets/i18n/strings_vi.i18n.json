@@ -581,7 +581,7 @@
   "accountRegistration": {
     "success": "Đăng ký tài khoản hoàn tất",
     "error": "Đã xảy ra lỗi",
-    "welcomeTitle": "Chào mừng đến với FoodGram!",
+    "welcomeTitle": "Chào mừng đến với\nFoodGram",
     "memberNumber": "Thành viên thứ {number} của FoodGram",
     "body": "Từ giờ, kỷ niệm ẩm thực của bạn sẽ\nđược thêm vào bản đồ FoodGram.",
     "cta": "Lưu lại kỷ niệm ẩm thực →"

@@ -581,7 +581,7 @@
   "accountRegistration": {
     "success": "账户注册完成",
     "error": "发生错误",
-    "welcomeTitle": "欢迎来到 FoodGram！",
+    "welcomeTitle": "欢迎来到\nFoodGram",
     "memberNumber": "FoodGram 第 {number} 位成员",
     "body": "从现在起，你的美食记录将\n加入 FoodGram 地图。",
     "cta": "留下美食回忆 →"

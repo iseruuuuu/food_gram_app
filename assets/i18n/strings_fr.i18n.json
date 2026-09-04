@@ -581,7 +581,7 @@
   "accountRegistration": {
     "success": "Inscription du compte terminée",
     "error": "Une erreur s'est produite",
-    "welcomeTitle": "Bienvenue sur FoodGram !",
+    "welcomeTitle": "Bienvenue sur\nFoodGram",
     "memberNumber": "Membre n° {number} de FoodGram",
     "body": "Désormais, vos souvenirs culinaires\nrejoindront la carte FoodGram.",
     "cta": "Enregistrer un souvenir culinaire →"

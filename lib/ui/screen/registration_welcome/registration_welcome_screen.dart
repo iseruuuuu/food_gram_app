@@ -93,10 +93,10 @@ class RegistrationWelcomeScreen extends HookConsumerWidget {
                       t.accountRegistration.welcomeTitle,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 26,
+                        fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: textColor,
-                        height: 1.3,
+                        height: 1.25,
                       ),
                     ),
                     const Gap(28),

@@ -580,7 +580,7 @@
   "accountRegistration": {
     "success": "Account registration completed",
     "error": "An error occurred",
-    "welcomeTitle": "Welcome to FoodGram!",
+    "welcomeTitle": "Welcome to\nFoodGram",
     "memberNumber": "FoodGram member #{number}",
     "body": "Your food memories will now\nbe added to the FoodGram map.",
     "cta": "Record a food memory →"

@@ -581,7 +581,7 @@
   "accountRegistration": {
     "success": "Kontoregistrierung abgeschlossen",
     "error": "Ein Fehler ist aufgetreten",
-    "welcomeTitle": "Willkommen bei FoodGram!",
+    "welcomeTitle": "Willkommen bei\nFoodGram",
     "memberNumber": "FoodGram-Mitglied Nr. {number}",
     "body": "Ab jetzt werden deine Essenserinnerungen\nder FoodGram-Karte hinzugefügt.",
     "cta": "Eine Essenserinnerung festhalten →"
