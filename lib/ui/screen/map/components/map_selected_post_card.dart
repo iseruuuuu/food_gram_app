@@ -3,6 +3,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 
 /// 選択中店舗のヘッダー。レストラン名をタイトルにし、投稿画像はその下に置く。
@@ -20,6 +21,7 @@ class MapSelectedPostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
     final onSurface = Theme.of(context).colorScheme.onSurface;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final muted = isDark ? Colors.white70 : const Color(0xFF5F5F5F);
@@ -35,10 +37,10 @@ class MapSelectedPostCard extends StatelessWidget {
         ? ''
         : priceRange.min == priceRange.max
             ? priceRange.min
-            : Translations.of(context).map.priceRange(
-                  min: priceRange.min,
-                  max: priceRange.max,
-                );
+            : t.map.priceRange(
+                min: priceRange.min,
+                max: priceRange.max,
+              );
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 8, 4),
@@ -49,7 +51,7 @@ class MapSelectedPostCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  restaurantName,
+                  localizedRestaurantName(restaurantName, t),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(

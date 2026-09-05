@@ -10,6 +10,7 @@ import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/memory_album_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
@@ -310,7 +311,7 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
                               bottom: 4,
                               right: 4,
                               child: Text(
-                                post.displayTitle,
+                                post.localizedDisplayTitle(t),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(

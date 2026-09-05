@@ -7,7 +7,9 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -85,6 +87,7 @@ class _RecordMapPostTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final supabase = ref.watch(supabaseProvider);
     final storageKey = post.firstFoodImage;
@@ -166,7 +169,7 @@ class _RecordMapPostTile extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        post.displayTitle,
+                        post.localizedDisplayTitle(t),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -176,7 +179,7 @@ class _RecordMapPostTile extends ConsumerWidget {
                       if (post.hasFoodName && post.hasRestaurant) ...[
                         const SizedBox(height: 2),
                         Text(
-                          post.restaurant,
+                          post.localizedRestaurant(t),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style:

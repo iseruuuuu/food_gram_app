@@ -2,6 +2,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'restaurant.freezed.dart';
 
+/// DB・検索で使う「店舗不明」の番兵。表示時は翻訳せずローカライズ文言を使う。
+const unknownRestaurantName = '不明';
+
+bool isUnknownRestaurantName(String name) =>
+    name.trim() == unknownRestaurantName;
+
 @freezed
 class Restaurant with _$Restaurant {
   const factory Restaurant({

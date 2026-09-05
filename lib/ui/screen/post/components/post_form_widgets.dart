@@ -7,6 +7,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:food_gram_app/core/theme/style/post_style.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:gap/gap.dart';
@@ -466,7 +467,9 @@ class PostRestaurantField extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  isPlaceholder ? t.post.restaurantNamePlaceholder : restaurant,
+                  isPlaceholder
+                      ? t.post.restaurantNamePlaceholder
+                      : localizedRestaurantName(restaurant, t),
                   overflow: TextOverflow.ellipsis,
                   style: isPlaceholder
                       ? PostStyle.fieldHint(context)

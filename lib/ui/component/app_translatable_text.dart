@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
+import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/translation/translation_service.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 
 class AppTranslatableText extends ConsumerStatefulWidget {
@@ -51,6 +53,7 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
     super.didChangeDependencies();
     final locale = Localizations.localeOf(context);
     if (widget.autoTranslate &&
+        !isUnknownRestaurantName(widget.text) &&
         (_lastLocale != locale || _lastSourceText != widget.text)) {
       _invalidateTranslation(locale: locale, sourceText: widget.text);
       _scheduleAutoTranslate();
@@ -66,7 +69,7 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
         locale: _lastLocale ?? Localizations.localeOf(context),
         sourceText: widget.text,
       );
-      if (widget.autoTranslate) {
+      if (widget.autoTranslate && !isUnknownRestaurantName(widget.text)) {
         _scheduleAutoTranslate();
       }
     }
@@ -89,7 +92,9 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
       return;
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted || !widget.autoTranslate) {
+      if (!mounted ||
+          !widget.autoTranslate ||
+          isUnknownRestaurantName(widget.text)) {
         return;
       }
       _handleTranslate(silent: true);
@@ -98,8 +103,12 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
 
   @override
   Widget build(BuildContext context) {
-    final displayText =
-        (!_showOriginal && _translated != null) ? _translated! : widget.text;
+    final t = Translations.of(context);
+    final displayText = isUnknownRestaurantName(widget.text)
+        ? localizedRestaurantName(widget.text, t)
+        : ((!_showOriginal && _translated != null)
+            ? _translated!
+            : widget.text);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onLongPress: _onLongPress,
@@ -123,6 +132,7 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
     final showOriginalLabel = t.translatable.showOriginal;
     final copyLabel = t.translatable.copy;
     final showingTranslated = !_showOriginal && _translated != null;
+    final isUnknown = isUnknownRestaurantName(widget.text);
     // 長押しメニュー（翻訳/原文/コピー）
     final action = await showModalBottomSheet<String>(
       context: context,
@@ -131,7 +141,7 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (!showingTranslated)
+              if (!showingTranslated && !isUnknown)
                 ListTile(
                   leading: const Icon(Icons.translate),
                   title: Text(translateLabel),
@@ -178,6 +188,10 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
     }
 
     final svc = ref.read(translationServiceProvider);
+    if (isUnknownRestaurantName(widget.text)) {
+      return;
+    }
+
     final sourceText = widget.text;
     final locale = Localizations.localeOf(context);
     final requestGeneration = _generation;
@@ -263,13 +277,16 @@ class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
   }
 
   Future<void> _handleCopy() async {
-    final text =
-        (!_showOriginal && _translated != null) ? _translated! : widget.text;
+    final t = Translations.of(context);
+    final text = isUnknownRestaurantName(widget.text)
+        ? localizedRestaurantName(widget.text, t)
+        : ((!_showOriginal && _translated != null)
+            ? _translated!
+            : widget.text);
     await Clipboard.setData(ClipboardData(text: text));
     if (!mounted) {
       return;
     }
-    final t = Translations.of(context);
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(t.translatable.copied)));
   }

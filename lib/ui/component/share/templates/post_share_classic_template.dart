@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/share/post_share_branding.dart';
 import 'package:food_gram_app/ui/component/share/post_share_image.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -20,6 +22,7 @@ class PostShareClassicTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
     final supabase = ref.watch(supabaseProvider);
     final imageUrl =
         supabase.storage.from('food').getPublicUrl(posts.firstFoodImage);
@@ -72,7 +75,7 @@ class PostShareClassicTemplate extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          posts.displayTitle,
+                          posts.localizedDisplayTitle(t),
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -82,7 +85,7 @@ class PostShareClassicTemplate extends StatelessWidget {
                         if (posts.hasFoodName && posts.hasRestaurant)
                           FittedBox(
                             child: Text(
-                              'IN ${posts.restaurant}',
+                              'IN ${posts.localizedRestaurant(t)}',
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,

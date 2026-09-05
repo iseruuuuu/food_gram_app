@@ -15,7 +15,12 @@ void main() {
     lat: 34.702485,
     lng: 135.495951,
   );
-  const unknown = Restaurant(name: '不明', address: '', lat: 0, lng: 0);
+  const unknown = Restaurant(
+    name: unknownRestaurantName,
+    address: '',
+    lat: 0,
+    lng: 0,
+  );
 
   group('RestaurantSearchHistoryStore', () {
     test('add puts the latest restaurant first and drops duplicates', () {

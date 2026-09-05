@@ -8,6 +8,7 @@ import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/share/post_share_helpers.dart';
@@ -46,8 +47,8 @@ class PostSharePreviewView extends HookConsumerWidget {
     final template = postShareTemplateById(templateId);
     final shareWidget = template.builder(posts, ref, t);
     final shareHeadline = posts.hasFoodName && posts.hasRestaurant
-        ? '${posts.foodName} in ${posts.restaurant}'
-        : posts.displayTitle;
+        ? '${posts.foodName} in ${posts.localizedRestaurant(t)}'
+        : posts.localizedDisplayTitle(t);
     final shareText = '$shareHeadline\n\n'
         '${t.share.inviteMessage}\n'
         '#FoodGram';
