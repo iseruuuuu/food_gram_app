@@ -79,7 +79,7 @@ class PostShareClassicTemplate extends StatelessWidget {
                             color: Colors.white,
                           ),
                         ),
-                        if (posts.hasFoodName)
+                        if (posts.hasFoodName && posts.hasRestaurant)
                           FittedBox(
                             child: Text(
                               'IN ${posts.restaurant}',

@@ -79,7 +79,7 @@ class PostShareSpecialTemplate extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    if (posts.hasFoodName) ...[
+                    if (posts.hasFoodName && posts.hasRestaurant) ...[
                       const Gap(10),
                       Text(
                         'IN ${posts.restaurant}',

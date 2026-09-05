@@ -102,7 +102,7 @@ class PostShareStoryTemplate extends StatelessWidget {
                           height: 1.25,
                         ),
                       ),
-                    if (posts.hasFoodName) ...[
+                    if (posts.hasFoodName && posts.hasRestaurant) ...[
                       const Gap(8),
                       Text(
                         'IN ${posts.restaurant}',

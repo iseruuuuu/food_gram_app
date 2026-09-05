@@ -97,7 +97,7 @@ class PostShareCafeTemplate extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
-                    if (posts.hasFoodName) ...[
+                    if (posts.hasFoodName && posts.hasRestaurant) ...[
                       const Gap(8),
                       Text(
                         'IN ${posts.restaurant}',

@@ -79,7 +79,7 @@ class MemoryAlbumPostTile extends ConsumerWidget {
                           color: isDark ? Colors.white : Colors.black87,
                         ),
                       ),
-                      if (post.hasFoodName && post.restaurant.isNotEmpty) ...[
+                      if (post.hasFoodName && post.hasRestaurant) ...[
                         const Gap(3),
                         Text(
                           post.restaurant,

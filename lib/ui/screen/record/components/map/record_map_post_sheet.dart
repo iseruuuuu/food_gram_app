@@ -173,7 +173,7 @@ class _RecordMapPostTile extends ConsumerWidget {
                               fontWeight: FontWeight.w700,
                             ),
                       ),
-                      if (post.hasFoodName) ...[
+                      if (post.hasFoodName && post.hasRestaurant) ...[
                         const SizedBox(height: 2),
                         Text(
                           post.restaurant,

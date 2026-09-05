@@ -488,7 +488,7 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
                           ),
                           if (isExpanded &&
                               post.hasFoodName &&
-                              post.restaurant.isNotEmpty) ...[
+                              post.hasRestaurant) ...[
                             const Gap(4),
                             AppTranslatableText(
                               post.restaurant,
