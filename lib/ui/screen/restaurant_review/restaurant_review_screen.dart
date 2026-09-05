@@ -228,7 +228,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    data.first.posts.foodName,
+                                    data.first.posts.displayTitle,
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 18,
@@ -405,7 +405,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                       padding: const EdgeInsets.all(8),
                                       child: FittedBox(
                                         child: Text(
-                                          model.posts.foodName,
+                                          model.posts.displayTitle,
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
@@ -536,7 +536,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                   ),
                                   const Gap(8),
                                   Text(
-                                    model.posts.foodName,
+                                    model.posts.displayTitle,
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,

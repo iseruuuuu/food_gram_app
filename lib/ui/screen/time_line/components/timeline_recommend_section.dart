@@ -300,9 +300,8 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
               Positioned.fill(
                 child: Card(
                   elevation: 0,
-                  margin: isSubscribed
-                      ? const EdgeInsets.all(5)
-                      : EdgeInsets.zero,
+                  margin:
+                      isSubscribed ? const EdgeInsets.all(5) : EdgeInsets.zero,
                   clipBehavior: Clip.antiAlias,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
@@ -406,29 +405,29 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
                       await ref
                           .read(postDetailViewModelProvider().notifier)
                           .store(
-                        postId: post.id,
-                        openSnackBar: () {
-                          if (!context.mounted) {
-                            return;
-                          }
-                          SnackBarHelper().openSavedPostWithAlbumAction(
-                            context,
-                            title: t.stored.postSaved,
-                            subtitle: t.stored.postSavedMessage,
-                            addToAlbumLabel: t.stored.albumAddTo,
-                            onAddToAlbum: () {
+                            postId: post.id,
+                            openSnackBar: () {
                               if (!context.mounted) {
                                 return;
                               }
-                              showSaveAlbumPickerSheet(
-                                context: context,
-                                ref: ref,
-                                postId: post.id,
+                              SnackBarHelper().openSavedPostWithAlbumAction(
+                                context,
+                                title: t.stored.postSaved,
+                                subtitle: t.stored.postSavedMessage,
+                                addToAlbumLabel: t.stored.albumAddTo,
+                                onAddToAlbum: () {
+                                  if (!context.mounted) {
+                                    return;
+                                  }
+                                  showSaveAlbumPickerSheet(
+                                    context: context,
+                                    ref: ref,
+                                    postId: post.id,
+                                  );
+                                },
                               );
                             },
                           );
-                        },
-                      );
                       if (!context.mounted) {
                         return;
                       }
@@ -477,7 +476,7 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            post.foodName,
+                            post.displayTitle,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -487,7 +486,9 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
                               height: 1.2,
                             ),
                           ),
-                          if (isExpanded && post.restaurant.isNotEmpty) ...[
+                          if (isExpanded &&
+                              post.hasFoodName &&
+                              post.hasRestaurant) ...[
                             const Gap(4),
                             AppTranslatableText(
                               post.restaurant,

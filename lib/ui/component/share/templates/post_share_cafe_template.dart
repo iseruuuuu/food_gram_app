@@ -89,7 +89,7 @@ class PostShareCafeTemplate extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      posts.foodName,
+                      posts.displayTitle,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: postShareSerifTitleStyle(
@@ -97,17 +97,19 @@ class PostShareCafeTemplate extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
-                    const Gap(8),
-                    Text(
-                      'IN ${posts.restaurant}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white.withValues(alpha: 0.92),
-                        fontWeight: FontWeight.w500,
+                    if (posts.hasFoodName && posts.hasRestaurant) ...[
+                      const Gap(8),
+                      Text(
+                        'IN ${posts.restaurant}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white.withValues(alpha: 0.92),
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
+                    ],
                     const Gap(10),
                     PostShareRating(star: posts.star),
                   ],

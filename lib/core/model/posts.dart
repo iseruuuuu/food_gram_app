@@ -215,6 +215,21 @@ extension PostsExtension on Posts {
     return images.isNotEmpty ? images.first : '';
   }
 
+  /// 料理名が入力されているか
+  bool get hasFoodName => foodName.trim().isNotEmpty;
+
+  /// 店名が入力されているか
+  bool get hasRestaurant => restaurant.trim().isNotEmpty;
+
+  /// 一覧・シェア用タイトル。料理名が空なら店名。
+  String get displayTitle {
+    final name = foodName.trim();
+    if (name.isNotEmpty) {
+      return name;
+    }
+    return restaurant.trim();
+  }
+
   /// 参考価格の表示文字列。未設定なら空。
   String get formattedPriceDisplay {
     final amount = priceAmount;

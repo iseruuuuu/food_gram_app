@@ -65,7 +65,7 @@ class PostShareMinimalTemplate extends StatelessWidget {
               ),
               const Gap(14),
               Text(
-                posts.foodName,
+                posts.displayTitle,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: postShareSerifTitleStyle(
@@ -74,16 +74,18 @@ class PostShareMinimalTemplate extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const Gap(4),
-              Text(
-                'IN ${posts.restaurant}',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: _textColor.withValues(alpha: 0.75),
+              if (posts.hasFoodName && posts.hasRestaurant) ...[
+                const Gap(4),
+                Text(
+                  'IN ${posts.restaurant}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: _textColor.withValues(alpha: 0.75),
+                  ),
                 ),
-              ),
+              ],
               const Gap(8),
               PostShareRating(
                 star: posts.star,

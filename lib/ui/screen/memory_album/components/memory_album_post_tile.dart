@@ -33,9 +33,11 @@ class MemoryAlbumPostTile extends ConsumerWidget {
               color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: isDark ? Colors.white10 : Colors.black.withValues(
-                  alpha: 0.06,
-                ),
+                color: isDark
+                    ? Colors.white10
+                    : Colors.black.withValues(
+                        alpha: 0.06,
+                      ),
               ),
             ),
             padding: const EdgeInsets.all(10),
@@ -68,7 +70,7 @@ class MemoryAlbumPostTile extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        post.foodName,
+                        post.displayTitle,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -77,7 +79,7 @@ class MemoryAlbumPostTile extends ConsumerWidget {
                           color: isDark ? Colors.white : Colors.black87,
                         ),
                       ),
-                      if (post.restaurant.isNotEmpty) ...[
+                      if (post.hasFoodName && post.hasRestaurant) ...[
                         const Gap(3),
                         Text(
                           post.restaurant,

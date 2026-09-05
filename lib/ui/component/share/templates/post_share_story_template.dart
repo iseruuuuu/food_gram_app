@@ -24,7 +24,7 @@ class PostShareStoryTemplate extends StatelessWidget {
     final supabase = ref.watch(supabaseProvider);
     final imageUrl =
         supabase.storage.from('food').getPublicUrl(posts.firstFoodImage);
-    final foodNameLines = _splitFoodName(posts.foodName);
+    final foodNameLines = _splitFoodName(posts.displayTitle);
 
     return ProviderScope(
       child: SizedBox(
@@ -102,17 +102,19 @@ class PostShareStoryTemplate extends StatelessWidget {
                           height: 1.25,
                         ),
                       ),
-                    const Gap(8),
-                    Text(
-                      'IN ${posts.restaurant}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white.withValues(alpha: 0.92),
+                    if (posts.hasFoodName && posts.hasRestaurant) ...[
+                      const Gap(8),
+                      Text(
+                        'IN ${posts.restaurant}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white.withValues(alpha: 0.92),
+                        ),
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ),

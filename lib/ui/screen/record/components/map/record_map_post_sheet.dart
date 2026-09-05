@@ -166,23 +166,26 @@ class _RecordMapPostTile extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        post.foodName,
+                        post.displayTitle,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.w700,
                             ),
                       ),
-                      const SizedBox(height: 2),
-                      Text(
-                        post.restaurant,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: subtitleColor,
-                              fontWeight: FontWeight.w500,
-                            ),
-                      ),
+                      if (post.hasFoodName && post.hasRestaurant) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          post.restaurant,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: subtitleColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                        ),
+                      ],
                     ],
                   ),
                 ),

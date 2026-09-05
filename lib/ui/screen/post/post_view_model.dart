@@ -164,10 +164,6 @@ class PostViewModel extends _$PostViewModel {
       state = state.copyWith(status: PostStatus.missingPhoto.name);
       return true;
     }
-    if (foodController.text.isEmpty) {
-      state = state.copyWith(status: PostStatus.missingFoodName.name);
-      return true;
-    }
     if (state.restaurant == defaultRestaurantText) {
       state = state.copyWith(status: PostStatus.missingRestaurant.name);
       return true;
@@ -184,7 +180,7 @@ class PostViewModel extends _$PostViewModel {
     bool isActiveSubmit() => !_disposed && submitId == _activePostSubmitId;
 
     final result = await ref.read(postRepositoryProvider.notifier).createPost(
-          foodName: foodController.text,
+          foodName: foodController.text.trim(),
           comment: commentController.text,
           uploadImages: state.foodImages,
           imageBytesMap: _imageBytesMap,
