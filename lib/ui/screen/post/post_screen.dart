@@ -103,7 +103,8 @@ class PostScreen extends HookConsumerWidget {
                   applyRestaurant: restaurant == null,
                 );
             foodTags.value = List<String>.from(draft.foodTags);
-            final hasOptionalDraft = draft.foodTags.isNotEmpty ||
+            final hasOptionalDraft = draft.foodName.trim().isNotEmpty ||
+                draft.foodTags.isNotEmpty ||
                 draft.comment.trim().isNotEmpty ||
                 draft.priceInput.trim().isNotEmpty ||
                 draft.star > 0;
@@ -253,17 +254,6 @@ class PostScreen extends HookConsumerWidget {
                           ),
                           const Gap(12),
                           PostFieldLabel(
-                            icon: Icons.fastfood_outlined,
-                            label: t.post.foodNameRequired,
-                            accent: requiredAccent,
-                          ),
-                          const Gap(8),
-                          PostTextInputField(
-                            controller: viewModel.foodController,
-                            hint: t.post.foodNamePlaceholder,
-                          ),
-                          const Gap(12),
-                          PostFieldLabel(
                             icon: Icons.place_outlined,
                             label: t.post.restaurantNameRequired,
                             accent: requiredAccent,
@@ -288,6 +278,17 @@ class PostScreen extends HookConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          PostFieldLabel(
+                            icon: Icons.fastfood_outlined,
+                            label: t.post.foodNameRequired,
+                            accent: optionalAccent,
+                          ),
+                          const Gap(8),
+                          PostTextInputField(
+                            controller: viewModel.foodController,
+                            hint: t.post.foodNamePlaceholder,
+                          ),
+                          const Gap(16),
                           PostFoodTagField(
                             foodTags: foodTags.value,
                             foodTexts: foodTexts,

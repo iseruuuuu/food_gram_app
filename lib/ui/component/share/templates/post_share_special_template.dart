@@ -70,7 +70,7 @@ class PostShareSpecialTemplate extends StatelessWidget {
                     ),
                     const Gap(16),
                     Text(
-                      posts.foodName,
+                      posts.displayTitle,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: postShareSerifTitleStyle(
@@ -79,17 +79,19 @@ class PostShareSpecialTemplate extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Gap(10),
-                    Text(
-                      'IN ${posts.restaurant}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white.withValues(alpha: 0.9),
-                        fontWeight: FontWeight.w500,
+                    if (posts.hasFoodName) ...[
+                      const Gap(10),
+                      Text(
+                        'IN ${posts.restaurant}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white.withValues(alpha: 0.9),
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
+                    ],
                     const Gap(14),
                     Row(
                       children: [

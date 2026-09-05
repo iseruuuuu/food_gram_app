@@ -45,7 +45,10 @@ class PostSharePreviewView extends HookConsumerWidget {
 
     final template = postShareTemplateById(templateId);
     final shareWidget = template.builder(posts, ref, t);
-    final shareText = '${posts.foodName} in ${posts.restaurant}\n\n'
+    final shareHeadline = posts.hasFoodName
+        ? '${posts.foodName} in ${posts.restaurant}'
+        : posts.restaurant;
+    final shareText = '$shareHeadline\n\n'
         '${t.share.inviteMessage}\n'
         '#FoodGram';
     final colorScheme = Theme.of(context).colorScheme;

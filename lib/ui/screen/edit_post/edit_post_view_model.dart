@@ -92,11 +92,6 @@ class EditPostViewModel extends _$EditPostViewModel {
     primaryFocus?.unfocus();
     loading.state = true;
     state = state.copyWith(status: EditStatus.loading.name);
-    if (_foodController.text.isEmpty) {
-      loading.state = false;
-      state = state.copyWith(status: EditStatus.missingInfo.name);
-      return false;
-    }
     final currency = state.priceCurrency.isEmpty
         ? defaultPostPriceCurrencyForLocale()
         : state.priceCurrency;
@@ -127,7 +122,7 @@ class EditPostViewModel extends _$EditPostViewModel {
   ) async {
     final result = await ref.read(postServiceProvider.notifier).updatePost(
           posts: _posts,
-          foodName: _foodController.text,
+          foodName: _foodController.text.trim(),
           comment: _commentController.text,
           restaurant: state.restaurant,
           foodTag: foodTag,

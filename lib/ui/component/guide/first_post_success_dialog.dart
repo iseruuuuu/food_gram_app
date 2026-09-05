@@ -150,7 +150,7 @@ class _FirstPostCompleteDialog extends ConsumerWidget {
                           children: [
                             Text(
                               restaurant.isEmpty
-                                  ? post!.foodName
+                                  ? post!.displayTitle
                                   : restaurant,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -243,15 +243,15 @@ class _FirstPostNextActionDialog extends StatelessWidget {
               _ActionTile(
                 icon: CupertinoIcons.map,
                 label: t.firstPostGuide.viewMap,
-                onTap: () => Navigator.of(context)
-                    .pop(FirstPostSuccessAction.viewMap),
+                onTap: () =>
+                    Navigator.of(context).pop(FirstPostSuccessAction.viewMap),
               ),
               const Gap(10),
               _ActionTile(
                 icon: CupertinoIcons.book,
                 label: t.firstPostGuide.viewAlbum,
-                onTap: () => Navigator.of(context)
-                    .pop(FirstPostSuccessAction.viewAlbum),
+                onTap: () =>
+                    Navigator.of(context).pop(FirstPostSuccessAction.viewAlbum),
               ),
               const Gap(8),
               TextButton(

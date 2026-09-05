@@ -499,12 +499,14 @@ class PostDetailListItem extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Gap(12),
-                    AppTranslatableText(
-                      posts.foodName,
-                      style: DetailPostStyle.foodName(context),
-                      autoTranslate: true,
-                    ),
-                    const Gap(4),
+                    if (posts.hasFoodName) ...[
+                      AppTranslatableText(
+                        posts.foodName,
+                        style: DetailPostStyle.foodName(context),
+                        autoTranslate: true,
+                      ),
+                      const Gap(4),
+                    ],
                     Row(
                       children: [
                         Expanded(

@@ -72,24 +72,25 @@ class PostShareClassicTemplate extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          posts.foodName,
+                          posts.displayTitle,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
-                        FittedBox(
-                          child: Text(
-                            'IN ${posts.restaurant}',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
+                        if (posts.hasFoodName)
+                          FittedBox(
+                            child: Text(
+                              'IN ${posts.restaurant}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
                         const Row(
                           children: [
                             Spacer(),

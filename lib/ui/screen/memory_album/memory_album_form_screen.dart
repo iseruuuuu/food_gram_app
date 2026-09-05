@@ -310,7 +310,7 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
                               bottom: 4,
                               right: 4,
                               child: Text(
-                                post.foodName,
+                                post.displayTitle,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
