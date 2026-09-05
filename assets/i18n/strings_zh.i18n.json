@@ -161,6 +161,7 @@
     "restaurantNameInputField": "添加餐厅（必填）",
     "restaurantNameRequired": "哪家店？",
     "restaurantNamePlaceholder": "输入或搜索餐厅名称",
+    "unknownRestaurant": "未知",
     "comment": "输入评论（可选）",
     "commentInputField": "评论",
     "commentOptionalLabel": "评论",

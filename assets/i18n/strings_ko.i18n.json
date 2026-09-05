@@ -161,6 +161,7 @@
     "restaurantNameInputField": "레스토랑 추가(필수)",
     "restaurantNameRequired": "어디 가게?",
     "restaurantNamePlaceholder": "가게 이름을 입력하거나 검색",
+    "unknownRestaurant": "알 수 없음",
     "comment": "댓글 입력(선택사항)",
     "commentInputField": "댓글",
     "commentOptionalLabel": "댓글",

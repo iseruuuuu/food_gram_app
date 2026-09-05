@@ -161,6 +161,7 @@
     "restaurantNameInputField": "เพิ่มชื่อร้าน (จำเป็น)",
     "restaurantNameRequired": "ร้านไหน?",
     "restaurantNamePlaceholder": "กรอกหรือค้นหาชื่อร้าน",
+    "unknownRestaurant": "ไม่ทราบ",
     "comment": "ความคิดเห็น (ไม่บังคับ)",
     "commentInputField": "ความคิดเห็น",
     "commentOptionalLabel": "ความคิดเห็น",
