@@ -161,6 +161,7 @@
     "restaurantNameInputField": "Thêm tên nhà hàng (Bắt buộc)",
     "restaurantNameRequired": "Quán nào?",
     "restaurantNamePlaceholder": "Nhập hoặc tìm tên nhà hàng",
+    "unknownRestaurant": "Không rõ",
     "comment": "Bình luận (Tùy chọn)",
     "commentInputField": "Bình luận",
     "commentOptionalLabel": "Bình luận",

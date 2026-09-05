@@ -102,7 +102,12 @@ class RestaurantScreen extends HookConsumerWidget {
                 GestureDetector(
                   onTap: () {
                     const restaurant =
-                        Restaurant(name: '不明', address: '', lat: 0, lng: 0);
+                        Restaurant(
+                          name: unknownRestaurantName,
+                          address: '',
+                          lat: 0,
+                          lng: 0,
+                        );
                     primaryFocus?.unfocus();
                     context.pop(restaurant);
                   },

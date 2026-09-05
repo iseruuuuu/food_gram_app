@@ -8,6 +8,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/theme/style/restaurant_review_style.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
@@ -228,7 +229,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    data.first.posts.displayTitle,
+                                    data.first.posts.localizedDisplayTitle(t),
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 18,
@@ -405,7 +406,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                       padding: const EdgeInsets.all(8),
                                       child: FittedBox(
                                         child: Text(
-                                          model.posts.displayTitle,
+                                          model.posts.localizedDisplayTitle(t),
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
@@ -536,7 +537,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                   ),
                                   const Gap(8),
                                   Text(
-                                    model.posts.displayTitle,
+                                    model.posts.localizedDisplayTitle(t),
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,

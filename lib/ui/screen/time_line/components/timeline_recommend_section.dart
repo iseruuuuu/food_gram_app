@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/subscribed_users_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/location/prefecture_detector.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_translatable_text.dart';
@@ -476,7 +477,7 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            post.displayTitle,
+                            post.localizedDisplayTitle(t),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -491,7 +492,7 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
                               post.hasRestaurant) ...[
                             const Gap(4),
                             AppTranslatableText(
-                              post.restaurant,
+                              post.localizedRestaurant(t),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               enableCopy: false,

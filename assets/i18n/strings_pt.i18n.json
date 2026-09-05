@@ -161,6 +161,7 @@
     "restaurantNameInputField": "Restaurante (Obrigatório)",
     "restaurantNameRequired": "Qual restaurante?",
     "restaurantNamePlaceholder": "Digite ou pesquise o nome do restaurante",
+    "unknownRestaurant": "Desconhecido",
     "comment": "Digite comentário (Opcional)",
     "commentInputField": "Comentário",
     "commentOptionalLabel": "Comentário",

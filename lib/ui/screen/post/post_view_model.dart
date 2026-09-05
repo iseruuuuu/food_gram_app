@@ -216,7 +216,7 @@ class PostViewModel extends _$PostViewModel {
         }
         final hasComment = commentController.text.trim().isNotEmpty;
         final hasRestaurant = state.restaurant != defaultRestaurantText &&
-            state.restaurant != '不明';
+            state.restaurant != unknownRestaurantName;
         final analytics = ref.read(firebaseAnalyticsServiceProvider);
         unawaited(
           analytics.logPostSuccess(
@@ -433,7 +433,7 @@ class PostViewModel extends _$PostViewModel {
 
   void postWithoutRestaurant() {
     state = state.copyWith(
-      restaurant: '不明',
+      restaurant: unknownRestaurantName,
       lat: 0,
       lng: 0,
       nearbySuggestionDismissed: true,

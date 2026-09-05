@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/share/post_share_branding.dart';
 import 'package:food_gram_app/ui/component/share/post_share_helpers.dart';
@@ -70,7 +71,7 @@ class PostShareSpecialTemplate extends StatelessWidget {
                     ),
                     const Gap(16),
                     Text(
-                      posts.displayTitle,
+                      posts.localizedDisplayTitle(t),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: postShareSerifTitleStyle(
@@ -82,7 +83,7 @@ class PostShareSpecialTemplate extends StatelessWidget {
                     if (posts.hasFoodName && posts.hasRestaurant) ...[
                       const Gap(10),
                       Text(
-                        'IN ${posts.restaurant}',
+                        'IN ${posts.localizedRestaurant(t)}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

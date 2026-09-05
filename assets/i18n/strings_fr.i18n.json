@@ -161,6 +161,7 @@
     "restaurantNameInputField": "Ajouter un restaurant (Requis)",
     "restaurantNameRequired": "Quel restaurant ?",
     "restaurantNamePlaceholder": "Saisir ou rechercher le nom du restaurant",
+    "unknownRestaurant": "Inconnu",
     "comment": "Entrez un commentaire (Optionnel)",
     "commentInputField": "Commentaire",
     "commentOptionalLabel": "Commentaire",

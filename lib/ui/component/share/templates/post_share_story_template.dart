@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/share/post_share_branding.dart';
 import 'package:food_gram_app/ui/component/share/post_share_image.dart';
 import 'package:gap/gap.dart';
@@ -21,10 +23,11 @@ class PostShareStoryTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
     final supabase = ref.watch(supabaseProvider);
     final imageUrl =
         supabase.storage.from('food').getPublicUrl(posts.firstFoodImage);
-    final foodNameLines = _splitFoodName(posts.displayTitle);
+    final foodNameLines = _splitFoodName(posts.localizedDisplayTitle(t));
 
     return ProviderScope(
       child: SizedBox(
@@ -105,7 +108,7 @@ class PostShareStoryTemplate extends StatelessWidget {
                     if (posts.hasFoodName && posts.hasRestaurant) ...[
                       const Gap(8),
                       Text(
-                        'IN ${posts.restaurant}',
+                        'IN ${posts.localizedRestaurant(t)}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

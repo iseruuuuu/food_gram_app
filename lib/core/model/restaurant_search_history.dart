@@ -72,7 +72,7 @@ class RestaurantSearchHistoryStore {
 
   /// 検索画面の「不明」チップで渡す店舗。
   static bool isUnknownRestaurant(Restaurant restaurant) {
-    return restaurant.name == '不明' &&
+    return restaurant.name == unknownRestaurantName &&
         restaurant.address.isEmpty &&
         restaurant.lat == 0 &&
         restaurant.lng == 0;

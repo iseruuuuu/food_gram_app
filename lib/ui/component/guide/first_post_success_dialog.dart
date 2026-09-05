@@ -6,6 +6,7 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
@@ -69,7 +70,7 @@ class _FirstPostCompleteDialog extends ConsumerWidget {
           .getPublicUrl(storageKey);
     }
 
-    final restaurant = post?.restaurant.trim() ?? '';
+    final restaurant = post == null ? '' : post!.localizedRestaurant(t);
     final localeTag = Localizations.localeOf(context).toLanguageTag();
     final dateLabel = post != null
         ? DateFormat.yMd(localeTag).format(post!.createdAt.toLocal())
@@ -150,7 +151,7 @@ class _FirstPostCompleteDialog extends ConsumerWidget {
                           children: [
                             Text(
                               restaurant.isEmpty
-                                  ? post!.displayTitle
+                                  ? post!.localizedDisplayTitle(t)
                                   : restaurant,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,

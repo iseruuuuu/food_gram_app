@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/utils/memory_album_utils.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -17,6 +19,7 @@ class MemoryAlbumPostTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final imageUrl = postImageUrl(ref, post);
     final dateText = formatMemoryAlbumPostDate(post.createdAt);
@@ -70,7 +73,7 @@ class MemoryAlbumPostTile extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        post.displayTitle,
+                        post.localizedDisplayTitle(t),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -82,7 +85,7 @@ class MemoryAlbumPostTile extends ConsumerWidget {
                       if (post.hasFoodName && post.hasRestaurant) ...[
                         const Gap(3),
                         Text(
-                          post.restaurant,
+                          post.localizedRestaurant(t),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

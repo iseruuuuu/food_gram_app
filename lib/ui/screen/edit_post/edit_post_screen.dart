@@ -13,6 +13,7 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/theme/style/edit_post_style.dart';
 import 'package:food_gram_app/core/theme/style/post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -474,7 +475,10 @@ class EditPostScreen extends HookConsumerWidget {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              restaurantName,
+                                              localizedRestaurantName(
+                                                restaurantName,
+                                                t,
+                                              ),
                                               overflow: TextOverflow.ellipsis,
                                               style: EditPostStyle.restaurant(
                                                 context,

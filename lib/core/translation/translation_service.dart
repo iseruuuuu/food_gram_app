@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:google_mlkit_language_id/google_mlkit_language_id.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 
@@ -41,7 +42,7 @@ class TranslationService {
     required Locale targetLocale,
   }) async {
     final trimmed = text.trim();
-    if (trimmed.isEmpty) {
+    if (trimmed.isEmpty || isUnknownRestaurantName(trimmed)) {
       return text;
     }
 
@@ -95,7 +96,7 @@ class TranslationService {
     required Locale targetLocale,
   }) async {
     final trimmed = text.trim();
-    if (trimmed.isEmpty) {
+    if (trimmed.isEmpty || isUnknownRestaurantName(trimmed)) {
       return false;
     }
     final detected = await _safeIdentifyLanguage(trimmed);
