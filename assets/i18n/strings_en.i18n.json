@@ -571,7 +571,9 @@
     "userId": "User ID",
     "userIdInputField": "User ID (e.g., iseryuuu)",
     "importantTitle": "Important Note",
-    "important": "When creating an account, please do not include personal information such as your email address or phone number in your username or user ID. To ensure a safe online experience, choose a name that does not reveal your personal details."
+    "important": "When creating an account, please do not include personal information such as your email address or phone number in your username or user ID. To ensure a safe online experience, choose a name that does not reveal your personal details.",
+    "creating": "Setting up your account",
+    "retry": "Try again"
   },
   "accountRegistration": {
     "success": "Account registration completed",

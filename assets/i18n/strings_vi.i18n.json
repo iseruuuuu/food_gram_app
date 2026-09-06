@@ -572,7 +572,9 @@
     "userId": "ID người dùng",
     "userIdInputField": "ID người dùng (ví dụ: iseryuuu)",
     "importantTitle": "Lưu ý quan trọng",
-    "important": "Khi tạo tài khoản, vui lòng không bao gồm thông tin cá nhân như địa chỉ email hoặc số điện thoại trong tên người dùng hoặc ID người dùng của bạn. Để đảm bảo trải nghiệm trực tuyến an toàn, hãy chọn tên không tiết lộ thông tin chi tiết cá nhân của bạn."
+    "important": "Khi tạo tài khoản, vui lòng không bao gồm thông tin cá nhân như địa chỉ email hoặc số điện thoại trong tên người dùng hoặc ID người dùng của bạn. Để đảm bảo trải nghiệm trực tuyến an toàn, hãy chọn tên không tiết lộ thông tin chi tiết cá nhân của bạn.",
+    "creating": "Đang chuẩn bị tài khoản",
+    "retry": "Thử lại"
   },
   "accountRegistration": {
     "success": "Đăng ký tài khoản hoàn tất",
