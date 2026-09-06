@@ -108,10 +108,6 @@ class DetailPostService extends _$DetailPostService {
   }
 
   /// 指定した投稿IDの直後から、近い順に新しい投稿を取得する。
-  ///
-  /// PostgREST の [order] はデフォルトが新しい順なので、
-  /// ここは必ず [ascending] を true にする。
-  /// そうしないと「全体の最新 N 件」が返ってしまう。
   Future<Result<List<Map<String, dynamic>>, Exception>>
       getNewerSequentialPosts({
     required int currentPostId,
