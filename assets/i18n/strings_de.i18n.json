@@ -358,6 +358,7 @@
     "noPostsAtPlace": "Hier gibt es noch keine Beiträge. Möchtest du der Erste sein?",
     "firstPostCta": "Erster Beitrag",
     "firstPostHint": "Halte eine leckere Erinnerung an diesem Ort fest",
+    "myPostsOnly": "Meine Beiträge",
     "priceRange": "$min – $max"
   },
   "app": {

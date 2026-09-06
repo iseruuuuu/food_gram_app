@@ -144,6 +144,8 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                 }
                 final grouped = _groupByRestaurantName(posts);
                 final filter = ref.watch(mapCategoryFilterProvider);
+                final myPostsOnly = ref.watch(mapMyPostsOnlyProvider);
+                final currentUserId = ref.watch(currentUserProvider);
                 final filteredGroups = grouped
                     .map(
                       (g) => RestaurantGroup(
@@ -151,7 +153,14 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                         lat: g.lat,
                         lng: g.lng,
                         posts: g.posts
-                            .where((p) => postMatchesMapFilter(filter, p))
+                            .where(
+                              (p) => postVisibleOnMap(
+                                post: p,
+                                filter: filter,
+                                myPostsOnly: myPostsOnly,
+                                currentUserId: currentUserId,
+                              ),
+                            )
                             .toList(),
                       ),
                     )

@@ -158,8 +158,17 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
           postsAsync.when(
             data: (postsByRestaurant) {
               final filter = ref.watch(mapCategoryFilterProvider);
+              final myPostsOnly = ref.watch(mapMyPostsOnlyProvider);
+              final currentUserId = ref.watch(currentUserProvider);
               final visiblePosts = postsByRestaurant
-                  .where((post) => postMatchesMapFilter(filter, post))
+                  .where(
+                    (post) => postVisibleOnMap(
+                      post: post,
+                      filter: filter,
+                      myPostsOnly: myPostsOnly,
+                      currentUserId: currentUserId,
+                    ),
+                  )
                   .toList();
               if (visiblePosts.isEmpty) {
                 final forNewPost = postsByRestaurant.isEmpty
