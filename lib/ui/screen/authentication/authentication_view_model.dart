@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
+import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/auth/services/auth_service.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -73,6 +75,29 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
         );
       },
     );
+  }
+
+  /// SNSログイン後にプロフィールが無ければ仮名で作成する。
+  /// `true` は新規作成、`false` は既存、`null` は失敗。
+  Future<bool?> completeSignIn() async {
+    loading.state = true;
+    ref.read(currentUserProvider.notifier).update();
+    try {
+      for (var i = 0; i < 2; i++) {
+        final result =
+            await ref.read(accountServiceProvider).ensureUserRegistered();
+        final isNewUser = result.when(
+          success: (value) => value,
+          failure: (_) => null,
+        );
+        if (isNewUser != null) {
+          return isNewUser;
+        }
+      }
+      return null;
+    } finally {
+      loading.state = false;
+    }
   }
 
   Future<void> loginTwitter(BuildContext context) async {

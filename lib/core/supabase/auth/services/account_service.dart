@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/utils/default_username.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -54,6 +55,29 @@ class AccountService {
       final msg = error.reasonPhrase ?? error.details ?? error;
       logger.e('Failed to invoke user-create: $msg');
       return Failure(Exception(msg.toString()));
+    }
+  }
+
+  /// 未登録なら仮ユーザー名とデフォルトアイコンで作成する。
+  /// 成功時の bool は新規作成したかどうか。
+  Future<Result<bool, Exception>> ensureUserRegistered() async {
+    try {
+      if (await isUserRegistered()) {
+        return const Success(false);
+      }
+      final created = await createUsers(
+        name: generateDefaultUsername(),
+        image: defaultProfileIconNumber,
+      );
+      if (created is Success<void, Exception>) {
+        return const Success(true);
+      }
+      if (await isUserRegistered()) {
+        return const Success(false);
+      }
+      return Failure((created as Failure<void, Exception>).error);
+    } on Exception catch (error) {
+      return Failure(error);
     }
   }
 

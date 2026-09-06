@@ -12,7 +12,7 @@ import 'package:go_router/go_router.dart';
 
 enum _SplashDestination {
   tab,
-  newAccount,
+  registrationWelcome,
   authentication,
 }
 
@@ -89,13 +89,16 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
         return _SplashDestination.authentication;
       }
 
-      final isRegistered = await ref
+      final result = await ref
           .read(accountServiceProvider)
-          .isUserRegistered()
+          .ensureUserRegistered()
           .timeout(const Duration(seconds: 10));
-      return isRegistered
-          ? _SplashDestination.tab
-          : _SplashDestination.newAccount;
+      return result.when(
+        success: (isNewUser) => isNewUser
+            ? _SplashDestination.registrationWelcome
+            : _SplashDestination.tab,
+        failure: (_) => _SplashDestination.authentication,
+      );
     } on Exception catch (_) {
       return _SplashDestination.authentication;
     }
@@ -105,8 +108,8 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
     switch (destination) {
       case _SplashDestination.tab:
         context.pushReplacementNamed(RouterPath.tab);
-      case _SplashDestination.newAccount:
-        context.pushReplacementNamed(RouterPath.newAccount);
+      case _SplashDestination.registrationWelcome:
+        context.pushReplacementNamed(RouterPath.registrationWelcome);
       case _SplashDestination.authentication:
         context.pushReplacementNamed(RouterPath.authentication);
     }
