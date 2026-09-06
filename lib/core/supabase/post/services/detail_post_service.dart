@@ -51,9 +51,11 @@ class DetailPostService extends _$DetailPostService {
     String userId, {
     int limit = 30,
     int? beforeId,
+    int? afterId,
   }) async {
     return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'user_posts_paged_${userId}_${beforeId ?? 'null'}_$limit',
+      key: 'user_posts_paged_${userId}_${beforeId ?? 'null'}'
+          '_${afterId ?? 'null'}_$limit',
       fetcher: () async {
         var query = supabase
             .from('posts')
@@ -63,7 +65,12 @@ class DetailPostService extends _$DetailPostService {
         if (beforeId != null) {
           query = query.lt('id', beforeId);
         }
-        final posts = await query.order('id', ascending: false).limit(limit);
+        if (afterId != null) {
+          query = query.gt('id', afterId);
+        }
+        final posts = await query
+            .order('id', ascending: afterId != null)
+            .limit(limit);
         return posts
             .where((post) => !blockList.contains(post['user_id']))
             .toList();
@@ -100,23 +107,52 @@ class DetailPostService extends _$DetailPostService {
     }
   }
 
+  /// 指定した投稿IDの直後から、近い順に新しい投稿を取得する。
+  Future<Result<List<Map<String, dynamic>>, Exception>>
+      getNewerSequentialPosts({
+    required int currentPostId,
+    int limit = 5,
+  }) async {
+    try {
+      final nextPosts = await supabase
+          .from('posts')
+          .select()
+          .gt('id', currentPostId)
+          .order('id', ascending: true)
+          .limit(limit);
+      return Success(nextPosts);
+    } on PostgrestException catch (e) {
+      return Failure(e);
+    }
+  }
+
   /// 指定した投稿IDと同じレストランの投稿のリストを取得する
   Future<Result<List<Map<String, dynamic>>, Exception>> getRelatedPosts({
     required int currentPostId,
     required double lat,
     required double lng,
+    int limit = 10,
+    DateTime? beforeCreatedAt,
+    DateTime? afterCreatedAt,
   }) async {
     try {
-      final posts = await supabase
+      var query = supabase
           .from('posts')
           .select()
           .neq('id', currentPostId)
           .gte('lat', lat - 0.00001)
           .lte('lat', lat + 0.00001)
           .gte('lng', lng - 0.00001)
-          .lte('lng', lng + 0.00001)
-          .order('created_at', ascending: false)
-          .limit(10);
+          .lte('lng', lng + 0.00001);
+      if (beforeCreatedAt != null) {
+        query = query.lt('created_at', beforeCreatedAt.toIso8601String());
+      }
+      if (afterCreatedAt != null) {
+        query = query.gt('created_at', afterCreatedAt.toIso8601String());
+      }
+      final posts = await query
+          .order('created_at', ascending: afterCreatedAt != null)
+          .limit(limit);
       return Success(posts);
     } on PostgrestException catch (e) {
       return Failure(e);

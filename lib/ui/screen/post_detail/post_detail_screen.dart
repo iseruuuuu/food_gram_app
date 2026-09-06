@@ -9,6 +9,7 @@ import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/admob/services/admob_rectangle_banner.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/post_deail_list_mode.dart';
+import 'package:food_gram_app/core/model/post_detail_feed.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -70,25 +71,46 @@ class PostDetailScreen extends HookConsumerWidget {
     final loading = ref.watch(loadingProvider);
     final currentUser = ref.watch(currentUserProvider);
     final detailState = ref.watch(postDetailViewModelProvider());
-    final listState = ref.watch(
-      postDetailListProvider(
-        PostDetailListInput(
-          initialPost: memoizedPosts,
-          mode: switch (type) {
-            PostDetailScreenType.timeline => PostDetailListMode.timeline,
-            PostDetailScreenType.myprofile => PostDetailListMode.myprofile,
-            PostDetailScreenType.profile => PostDetailListMode.profile,
-            PostDetailScreenType.map => PostDetailListMode.nearby,
-            PostDetailScreenType.search => PostDetailListMode.search,
-            PostDetailScreenType.stored => PostDetailListMode.stored,
-          },
-          profileUserId:
-              type == PostDetailScreenType.profile ? users.userId : null,
-          restaurant:
-              type == PostDetailScreenType.search ? posts.restaurant : null,
-          categoryName: categoryName,
-        ),
+    final listInput = useMemoized(
+      () => PostDetailListInput(
+        initialPost: memoizedPosts,
+        mode: switch (type) {
+          PostDetailScreenType.timeline => PostDetailListMode.timeline,
+          PostDetailScreenType.myprofile => PostDetailListMode.myprofile,
+          PostDetailScreenType.profile => PostDetailListMode.profile,
+          PostDetailScreenType.map => PostDetailListMode.nearby,
+          PostDetailScreenType.search => PostDetailListMode.search,
+          PostDetailScreenType.stored => PostDetailListMode.stored,
+        },
+        profileUserId:
+            type == PostDetailScreenType.profile ? users.userId : null,
+        restaurant:
+            type == PostDetailScreenType.search ? posts.restaurant : null,
+        categoryName: categoryName,
       ),
+      [memoizedPosts.id, type, users.userId, posts.restaurant, categoryName],
+    );
+    final listState = ref.watch(postDetailListProvider(listInput));
+    useEffect(
+      () {
+        void onScroll() {
+          if (!scrollController.hasClients) {
+            return;
+          }
+          final position = scrollController.position;
+          final notifier = ref.read(postDetailListProvider(listInput).notifier);
+          if (position.pixels <= position.minScrollExtent + 240) {
+            unawaited(notifier.loadNewer());
+          }
+          if (position.pixels >= position.maxScrollExtent - 800) {
+            unawaited(notifier.loadOlder());
+          }
+        }
+
+        scrollController.addListener(onScroll);
+        return () => scrollController.removeListener(onScroll);
+      },
+      [listInput],
     );
     final isInitialLoading = listState.isLoading;
     final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
@@ -209,29 +231,13 @@ class PostDetailScreen extends HookConsumerWidget {
                 error: (error, stack) => const Center(
                   child: Text('エラーが発生しました'),
                 ),
-                data: (posts) {
-                  const adInterval = 2;
-                  final itemCount = posts.length + (posts.length ~/ adInterval);
-                  return ListView.builder(
-                    scrollCacheExtent: const ScrollCacheExtent.pixels(2000),
-                    controller: scrollController,
-                    key: PageStorageKey('post_detail_list_${memoizedPosts.id}'),
-                    restorationId: 'post_detail_list_${memoizedPosts.id}',
-                    itemCount: itemCount,
-                    itemBuilder: (context, index) {
-                      final isAdRow = (index + 1) % (adInterval + 1) == 0;
-                      if (isAdRow) {
-                        return RectangleBanner(id: 'detail_feed_$index');
-                      }
-                      final postIndex = index - (index ~/ (adInterval + 1));
-                      final listPost = posts[postIndex];
-                      final post = postOverrides.value[listPost.id] ?? listPost;
-                      return PostDetailListItem(
-                        key: ValueKey('post_${post.id}'),
-                        posts: post,
-                        menuLoading: menuLoading,
-                      );
-                    },
+                data: (feed) {
+                  return _PostDetailFeedView(
+                    feed: feed,
+                    initialPostId: memoizedPosts.id,
+                    scrollController: scrollController,
+                    postOverrides: postOverrides.value,
+                    menuLoading: menuLoading,
                   );
                 },
               ),
@@ -252,6 +258,108 @@ class PostDetailScreen extends HookConsumerWidget {
                 ),
               ),
       ),
+    );
+  }
+}
+
+class _PostDetailFeedView extends StatelessWidget {
+  const _PostDetailFeedView({
+    required this.feed,
+    required this.initialPostId,
+    required this.scrollController,
+    required this.postOverrides,
+    required this.menuLoading,
+  });
+
+  final PostDetailListResult feed;
+  final int initialPostId;
+  final ScrollController scrollController;
+  final Map<int, Posts> postOverrides;
+  final ValueNotifier<bool> menuLoading;
+
+  static const _adInterval = 2;
+
+  @override
+  Widget build(BuildContext context) {
+    final posts = feed.posts;
+    if (posts.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    final initialIndex = posts.indexWhere((post) => post.id == initialPostId);
+    final centerIndex = initialIndex >= 0 ? initialIndex : 0;
+    final centerKey = ValueKey<String>('post_detail_center_$initialPostId');
+    final newerCount = centerIndex;
+    final olderPosts = posts.sublist(centerIndex + 1);
+    final olderItemCount =
+        olderPosts.length + (olderPosts.length ~/ _adInterval);
+    return CustomScrollView(
+      controller: scrollController,
+      scrollCacheExtent: const ScrollCacheExtent.pixels(2000),
+      center: centerKey,
+      slivers: [
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              if (index == newerCount) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Center(
+                    child: SizedBox(
+                      width: 22,
+                      height: 22,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                );
+              }
+              final post = posts[centerIndex - 1 - index];
+              return _buildPostItem(post);
+            },
+            childCount: newerCount + (feed.isLoadingNewer ? 1 : 0),
+          ),
+        ),
+        SliverToBoxAdapter(
+          key: centerKey,
+          child: _buildPostItem(posts[centerIndex]),
+        ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              if (index >= olderItemCount) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Center(
+                    child: SizedBox(
+                      width: 22,
+                      height: 22,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                );
+              }
+              final isAdRow = (index + 1) % (_adInterval + 1) == 0;
+              if (isAdRow) {
+                return RectangleBanner(id: 'detail_feed_older_$index');
+              }
+              final postIndex = index - (index ~/ (_adInterval + 1));
+              if (postIndex >= olderPosts.length) {
+                return const SizedBox.shrink();
+              }
+              return _buildPostItem(olderPosts[postIndex]);
+            },
+            childCount: olderItemCount + (feed.isLoadingOlder ? 1 : 0),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPostItem(Posts listPost) {
+    final post = postOverrides[listPost.id] ?? listPost;
+    return PostDetailListItem(
+      key: ValueKey('post_${post.id}'),
+      posts: post,
+      menuLoading: menuLoading,
     );
   }
 }
