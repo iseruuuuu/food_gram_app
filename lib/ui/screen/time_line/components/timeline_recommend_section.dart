@@ -496,7 +496,6 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               enableCopy: false,
-                              autoTranslate: true,
                               style: TextStyle(
                                 color: Colors.white.withValues(alpha: 0.92),
                                 fontSize: 13,

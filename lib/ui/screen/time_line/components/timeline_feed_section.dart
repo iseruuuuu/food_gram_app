@@ -191,7 +191,7 @@ class _TimelineFeedCard extends ConsumerWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               enableCopy: false,
-              autoTranslate: true,
+              autoTranslate: post.restaurant.isEmpty,
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
