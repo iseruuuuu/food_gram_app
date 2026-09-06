@@ -1,79 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 
 typedef OnChanged = void Function(String tag);
-
-class AppPostCountryCategoryModalSheet extends ConsumerWidget {
-  const AppPostCountryCategoryModalSheet({
-    required this.onChanged,
-    required this.tagValue,
-    super.key,
-  });
-
-  final OnChanged onChanged;
-  final String tagValue;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final scheme = Theme.of(context).colorScheme;
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
-      width: double.infinity,
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: scheme.surface,
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(30),
-          topLeft: Radius.circular(30),
-        ),
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Gap(4),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: countryEmojis.map<Widget>((emoji) {
-                return GestureDetector(
-                  onTap: () {
-                    onChanged(emoji);
-                    context.pop();
-                  },
-                  child: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: tagValue == emoji
-                            ? AppTheme.primaryBlue
-                            : scheme.outlineVariant,
-                        width: tagValue == emoji ? 2 : 1,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        emoji,
-                        style: const TextStyle(fontSize: 36),
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-            const Gap(16),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class AppPostFoodCategoryModalSheet extends StatelessWidget {
   const AppPostFoodCategoryModalSheet({
