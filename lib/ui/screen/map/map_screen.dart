@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/admob_gate.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
@@ -13,10 +14,12 @@ import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_p
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
+import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/utils/location/locale_default_location.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
@@ -58,6 +61,8 @@ class MapScreen extends HookConsumerWidget {
     final fabBg = isDark ? Colors.black : Colors.white;
     const fabFg = AppTheme.primaryBlue;
     final fabBorder = AppTheme.fabBorderColor(context);
+    final myPostsOnly = ref.watch(mapMyPostsOnlyProvider);
+    final t = Translations.of(context);
     ref.listen<MapModalSelection?>(mapModalSelectionProvider, (_, next) {
       if (next == null || next.placeSearchRestaurant == null) {
         unawaited(controller.clearSearchResultPin());
@@ -191,6 +196,34 @@ class MapScreen extends HookConsumerWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             _MapSideFab(
+                              heroTag: 'my_posts',
+                              fabBg: myPostsOnly ? fabFg : fabBg,
+                              fabFg: myPostsOnly ? Colors.white : fabFg,
+                              fabBorder: myPostsOnly ? fabFg : fabBorder,
+                              icon: myPostsOnly
+                                  ? CupertinoIcons.person_fill
+                                  : CupertinoIcons.person,
+                              tooltip: t.map.myPostsOnly,
+                              onPressed: () async {
+                                HapticFeedbackHelper.selection();
+                                final next = !myPostsOnly;
+                                ref
+                                    .read(mapMyPostsOnlyProvider.notifier)
+                                    .state = next;
+                                ref
+                                    .read(firebaseAnalyticsServiceProvider)
+                                    .logEventUnawaited(
+                                  name: AnalyticsEvent.mapMyPostsToggle,
+                                  parameters: {
+                                    AnalyticsParam.enabled:
+                                        next ? 'true' : 'false',
+                                  },
+                                );
+                                await controller.refreshPinsForCategoryFilter();
+                              },
+                            ),
+                            const Gap(8),
+                            _MapSideFab(
                               heroTag: 'style_toggle',
                               fabBg: fabBg,
                               fabFg: fabFg,
@@ -267,6 +300,7 @@ class _MapSideFab extends StatelessWidget {
     required this.icon,
     required this.onPressed,
     this.iconSize = 24,
+    this.tooltip,
   });
 
   final String heroTag;
@@ -276,6 +310,7 @@ class _MapSideFab extends StatelessWidget {
   final IconData icon;
   final double iconSize;
   final VoidCallback onPressed;
+  final String? tooltip;
 
   @override
   Widget build(BuildContext context) {
@@ -286,6 +321,7 @@ class _MapSideFab extends StatelessWidget {
         data: Theme.of(context).copyWith(highlightColor: fabBg),
         child: FloatingActionButton(
           heroTag: heroTag,
+          tooltip: tooltip,
           shape: RoundedRectangleBorder(
             side: BorderSide(color: fabBorder),
             borderRadius: const BorderRadius.all(Radius.circular(10)),
