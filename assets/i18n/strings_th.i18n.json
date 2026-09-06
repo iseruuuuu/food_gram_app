@@ -358,6 +358,7 @@
     "noPostsAtPlace": "ยังไม่มีโพสต์ที่นี่ ลองโพสต์เป็นคนแรกไหม?",
     "firstPostCta": "โพสต์แรก",
     "firstPostHint": "บันทึกความทรงจำอร่อยๆ ที่ร้านนี้",
+    "myPostsOnly": "โพสต์ของฉัน",
     "priceRange": "$min–$max"
   },
   "app": {
