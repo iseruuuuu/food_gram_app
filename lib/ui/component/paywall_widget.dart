@@ -198,11 +198,6 @@ class PaywallContent extends StatelessWidget {
             description: t.paywall.trophyDesc,
           ),
           PaywallFeatureItem(
-            icon: Icons.label,
-            title: t.paywall.tagTitle,
-            description: t.paywall.tagDesc,
-          ),
-          PaywallFeatureItem(
             icon: Icons.account_circle,
             title: t.paywall.iconTitle,
             description: t.paywall.iconDesc,
