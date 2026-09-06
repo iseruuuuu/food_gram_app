@@ -8,6 +8,13 @@ class AppTheme {
   /// アプリの青系（primary）に使う色
   static const Color primaryBlue = Color(0xFF0168B7);
 
+  /// 成功・情報系 SnackBar の背景色（ブランド青）
+  static const SnackBarThemeData snackBarTheme = SnackBarThemeData(
+    backgroundColor: primaryBlue,
+    contentTextStyle: TextStyle(color: Colors.white),
+    actionTextColor: Colors.white,
+  );
+
   /// 地図上FABの枠線。ダーク=白、ライト=グレーで背景に依存せず視認性を確保する。
   static Color fabBorderColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
@@ -27,6 +34,7 @@ class AppTheme {
         primary: primaryBlue,
         onPrimary: Colors.white,
       ),
+      snackBarTheme: snackBarTheme,
       scaffoldBackgroundColor: Colors.white,
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -57,6 +65,7 @@ class AppTheme {
         primary: primaryBlue,
         onPrimary: Colors.white,
       ),
+      snackBarTheme: snackBarTheme,
       scaffoldBackgroundColor: const Color(0xFF1E1E1E),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
