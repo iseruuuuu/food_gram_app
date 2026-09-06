@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/local/repository/save_album_local_repository.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/post_deail_list_mode.dart';
+import 'package:food_gram_app/core/model/post_detail_feed.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/notification/firebase_messaging_service.dart';
@@ -353,16 +353,95 @@ class PostDetailListInput {
 }
 
 @riverpod
-Future<List<Posts>> postDetailList(
-  Ref ref,
-  PostDetailListInput listInput,
-) async {
-  final repository = ref.read(detailPostRepositoryProvider.notifier);
-  return repository.getPostDetailList(
-    initialPost: listInput.initialPost,
-    mode: listInput.mode,
-    profileUserId: listInput.profileUserId,
-    restaurant: listInput.restaurant,
-    categoryName: listInput.categoryName,
-  );
+class PostDetailList extends _$PostDetailList {
+  late PostDetailListInput _listInput;
+  final _logger = Logger();
+  bool _loadingNewer = false;
+  bool _loadingOlder = false;
+
+  @override
+  Future<PostDetailListResult> build(PostDetailListInput listInput) {
+    _listInput = listInput;
+    return ref.read(detailPostRepositoryProvider.notifier).getPostDetailList(
+          initialPost: listInput.initialPost,
+          mode: listInput.mode,
+          profileUserId: listInput.profileUserId,
+          restaurant: listInput.restaurant,
+          categoryName: listInput.categoryName,
+        );
+  }
+
+  Future<void> loadNewer() async {
+    final current = state.asData?.value;
+    if (current == null ||
+        _loadingNewer ||
+        !current.hasMoreNewer ||
+        current.posts.isEmpty) {
+      return;
+    }
+    _loadingNewer = true;
+    state = AsyncData(current.copyWith(isLoadingNewer: true));
+    try {
+      final extra = await ref
+          .read(detailPostRepositoryProvider.notifier)
+          .getPostDetailPage(
+            cursorPost: current.posts.first,
+            mode: _listInput.mode,
+            direction: PostDetailPageDirection.newer,
+            profileUserId: _listInput.profileUserId,
+            restaurant: _listInput.restaurant,
+            categoryName: _listInput.categoryName,
+          );
+      final merged = mergePostsNewestFirst(current.posts, extra);
+      state = AsyncData(
+        current.copyWith(
+          posts: merged,
+          hasMoreNewer: extra.length >= postDetailNewerPageSize,
+          isLoadingNewer: false,
+        ),
+      );
+    } on Exception catch (error) {
+      _logger.e('Failed to load newer posts: $error');
+      state = AsyncData(current.copyWith(isLoadingNewer: false));
+    } finally {
+      _loadingNewer = false;
+    }
+  }
+
+  Future<void> loadOlder() async {
+    final current = state.asData?.value;
+    if (current == null ||
+        _loadingOlder ||
+        !current.hasMoreOlder ||
+        current.posts.isEmpty) {
+      return;
+    }
+    _loadingOlder = true;
+    state = AsyncData(current.copyWith(isLoadingOlder: true));
+    try {
+      final extra = await ref
+          .read(detailPostRepositoryProvider.notifier)
+          .getPostDetailPage(
+            cursorPost: current.posts.last,
+            mode: _listInput.mode,
+            direction: PostDetailPageDirection.older,
+            profileUserId: _listInput.profileUserId,
+            restaurant: _listInput.restaurant,
+            categoryName: _listInput.categoryName,
+          );
+      final merged = mergePostsNewestFirst(current.posts, extra);
+      state = AsyncData(
+        current.copyWith(
+          posts: merged,
+          hasMoreOlder: extra.length >= postDetailOlderPageSize,
+          isLoadingOlder: false,
+        ),
+      );
+    } on Exception catch (error) {
+      _logger.e('Failed to load older posts: $error');
+      state = AsyncData(current.copyWith(isLoadingOlder: false));
+    } finally {
+      _loadingOlder = false;
+    }
+  }
 }
