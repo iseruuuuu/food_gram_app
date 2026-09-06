@@ -633,6 +633,7 @@
   },
   "tag": {
     "otherFood": "その他の食べ物",
+    "chineseCuisine": "中華料理",
     "localSpecialties": "ご当地",
     "noodles": "麺類",
     "meatDishes": "肉料理",
