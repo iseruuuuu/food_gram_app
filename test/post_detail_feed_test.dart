@@ -54,6 +54,18 @@ void main() {
       expect(result.hasMoreOlder, isFalse);
     });
 
+    test('空のリストでも初期投稿だけは返す', () {
+      final initial = _post(3);
+      final result = takePostsAround(
+        sortedNewestFirst: const [],
+        initial: initial,
+      );
+
+      expect(result.posts.map((post) => post.id), [3]);
+      expect(result.hasMoreNewer, isFalse);
+      expect(result.hasMoreOlder, isFalse);
+    });
+
     test('リストに無い初期投稿を挿入して前後を取る', () {
       final result = takePostsAround(
         sortedNewestFirst: [_post(5), _post(4), _post(2)],

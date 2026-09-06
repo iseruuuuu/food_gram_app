@@ -240,13 +240,6 @@ class DetailPostRepository extends _$DetailPostRepository {
       case PostDetailListMode.stored:
         {
           final ordered = await _storedPosts();
-          if (ordered.isEmpty) {
-            return const PostDetailListResult(
-              posts: [],
-              hasMoreNewer: false,
-              hasMoreOlder: false,
-            );
-          }
           return takePostsAround(
             sortedNewestFirst: ordered,
             initial: initialPost,
@@ -536,14 +529,19 @@ class DetailPostRepository extends _$DetailPostRepository {
     required bool newer,
     required int limit,
   }) async {
-    final service = ref.read(detailPostServiceProvider.notifier);
-    final rows = await service.getPostsFromUserPaged(
-      userId,
-      limit: limit,
-      beforeId: newer ? null : cursorId,
-      afterId: newer ? cursorId : null,
-    );
-    return rows.map(Posts.fromJson).toList();
+    try {
+      final service = ref.read(detailPostServiceProvider.notifier);
+      final rows = await service.getPostsFromUserPaged(
+        userId,
+        limit: limit,
+        beforeId: newer ? null : cursorId,
+        afterId: newer ? cursorId : null,
+      );
+      return rows.map(Posts.fromJson).toList();
+    } on PostgrestException catch (e) {
+      logger.e('Failed to fetch user posts: ${e.message}');
+      return const [];
+    }
   }
 
   Future<List<Posts>> _relatedPostItems({

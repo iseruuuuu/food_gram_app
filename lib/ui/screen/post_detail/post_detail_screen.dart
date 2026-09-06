@@ -99,8 +99,7 @@ class PostDetailScreen extends HookConsumerWidget {
           }
           final position = scrollController.position;
           final notifier = ref.read(postDetailListProvider(listInput).notifier);
-          if (position.pixels < -80 &&
-              position.pixels <= position.minScrollExtent + 240) {
+          if (position.pixels <= position.minScrollExtent + 240) {
             unawaited(notifier.loadNewer());
           }
           if (position.pixels >= position.maxScrollExtent - 800) {

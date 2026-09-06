@@ -392,9 +392,10 @@ class PostDetailList extends _$PostDetailList {
             restaurant: _listInput.restaurant,
             categoryName: _listInput.categoryName,
           );
-      final merged = mergePostsNewestFirst(current.posts, extra);
+      final latest = state.asData?.value ?? current;
+      final merged = mergePostsNewestFirst(latest.posts, extra);
       state = AsyncData(
-        current.copyWith(
+        latest.copyWith(
           posts: merged,
           hasMoreNewer: extra.length >= postDetailNewerPageSize,
           isLoadingNewer: false,
@@ -402,7 +403,8 @@ class PostDetailList extends _$PostDetailList {
       );
     } on Exception catch (error) {
       _logger.e('Failed to load newer posts: $error');
-      state = AsyncData(current.copyWith(isLoadingNewer: false));
+      final latest = state.asData?.value ?? current;
+      state = AsyncData(latest.copyWith(isLoadingNewer: false));
     } finally {
       _loadingNewer = false;
     }
@@ -429,9 +431,10 @@ class PostDetailList extends _$PostDetailList {
             restaurant: _listInput.restaurant,
             categoryName: _listInput.categoryName,
           );
-      final merged = mergePostsNewestFirst(current.posts, extra);
+      final latest = state.asData?.value ?? current;
+      final merged = mergePostsNewestFirst(latest.posts, extra);
       state = AsyncData(
-        current.copyWith(
+        latest.copyWith(
           posts: merged,
           hasMoreOlder: extra.length >= postDetailOlderPageSize,
           isLoadingOlder: false,
@@ -439,7 +442,8 @@ class PostDetailList extends _$PostDetailList {
       );
     } on Exception catch (error) {
       _logger.e('Failed to load older posts: $error');
-      state = AsyncData(current.copyWith(isLoadingOlder: false));
+      final latest = state.asData?.value ?? current;
+      state = AsyncData(latest.copyWith(isLoadingOlder: false));
     } finally {
       _loadingOlder = false;
     }
