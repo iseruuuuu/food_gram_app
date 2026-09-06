@@ -3,13 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
-import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/theme/style/edit_style.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_icon.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
-import 'package:food_gram_app/ui/component/app_tag.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
@@ -26,15 +24,6 @@ class EditScreen extends HookConsumerWidget {
     final controller = ref.watch(editViewModelProvider().notifier);
     final state = ref.watch(editViewModelProvider());
     final loading = ref.watch(loadingProvider);
-    final countryTag = ValueNotifier(state.favoriteTags);
-    final countryText = useMemoized(
-      () => ValueNotifier(
-        countryTag.value.isNotEmpty
-            ? getLocalizedCountryName(countryTag.value, context)
-            : '',
-      ),
-      [countryTag.value],
-    );
     final adInterstitial =
         useMemoized(() => ref.read(admobInterstitialNotifierProvider));
     useEffect(
@@ -201,44 +190,6 @@ class EditScreen extends HookConsumerWidget {
                       AppSelfIntroductionTextField(
                         controller: controller.selfIntroduceTextController,
                       ),
-                      if (state.isSubscribe)
-                        Column(
-                          children: [
-                            const Gap(16),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.tag,
-                                    size: 20,
-                                    color:
-                                        Theme.of(context).colorScheme.onSurface,
-                                  ),
-                                  Text(
-                                    Translations.of(context)
-                                        .edit
-                                        .favoriteTagTitle,
-                                    style: EditStyle.tag(context),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Gap(10),
-                            AppCountryTag(
-                              countryTag: countryTag.value,
-                              countryText: countryText,
-                              onTagSelected: (tag) {
-                                ref
-                                    .read(
-                                      editViewModelProvider().notifier,
-                                    )
-                                    .updateFavoriteTags(tag);
-                              },
-                            ),
-                          ],
-                        ),
                       const Gap(20),
                     ],
                   ),
