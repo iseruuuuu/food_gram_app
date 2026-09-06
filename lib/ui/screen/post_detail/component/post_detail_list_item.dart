@@ -529,7 +529,6 @@ class PostDetailListItem extends HookConsumerWidget {
                                     style: DetailPostStyle.restaurant(context),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    autoTranslate: true,
                                   ),
                                 ),
                               ],
