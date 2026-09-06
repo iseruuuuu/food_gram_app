@@ -33,6 +33,8 @@ class SnackBarHelper {
       description: message.isNotEmpty ? Text(message) : null,
       autoCloseDuration: const Duration(seconds: 3),
       alignment: Alignment.topRight,
+      primaryColor: AppTheme.primaryBlue,
+      foregroundColor: Colors.white,
     );
   }
 
@@ -54,6 +56,8 @@ class SnackBarHelper {
       title: Text(message),
       autoCloseDuration: duration ?? const Duration(seconds: 3),
       alignment: Alignment.topRight,
+      primaryColor: backgroundColor ?? AppTheme.primaryBlue,
+      foregroundColor: Colors.white,
     );
   }
 
@@ -146,12 +150,14 @@ class SnackBarHelper {
       if (titleText != null) {
         toastification.show(
           context: context,
-          type: ToastificationType.success,
+          type: ToastificationType.info,
           style: ToastificationStyle.fillColored,
           title: Text(titleText),
           description: descriptionText != null ? Text(descriptionText) : null,
           autoCloseDuration: duration ?? const Duration(seconds: 3),
           alignment: Alignment.topRight,
+          primaryColor: backgroundColor ?? AppTheme.primaryBlue,
+          foregroundColor: Colors.white,
         );
         return;
       }
