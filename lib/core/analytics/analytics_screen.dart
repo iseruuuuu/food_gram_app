@@ -29,7 +29,6 @@ abstract final class AnalyticsScreen {
   static const wantToGoList = 'WantToGoList';
   static const postDetail = 'PostDetail';
   static const authentication = 'Authentication';
-  static const newAccount = 'NewAccount';
   static const registrationWelcome = 'RegistrationWelcome';
   static const editProfile = 'EditProfile';
   static const license = 'License';
@@ -65,7 +64,6 @@ abstract final class AnalyticsScreen {
     wantToGoList,
     postDetail,
     authentication,
-    newAccount,
     registrationWelcome,
     editProfile,
     license,
@@ -83,7 +81,6 @@ abstract final class AnalyticsScreen {
     'splash': splash,
     'introduction': introduction,
     'authentication': authentication,
-    'new_account': newAccount,
     'registration_welcome': registrationWelcome,
     'time_line': food,
     'map': map,

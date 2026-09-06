@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:auth_button_kit/auth_button_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/theme/style/authentication_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
@@ -32,9 +31,13 @@ class AuthenticationScreen extends HookConsumerWidget {
         final session = data.session;
         if (session != null && !hasNavigatedRef.value) {
           hasNavigatedRef.value = true;
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (context.mounted) {
-              redirect(context, ref);
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            if (!context.mounted) {
+              return;
+            }
+            final didNavigate = await redirect(context, ref);
+            if (!didNavigate) {
+              hasNavigatedRef.value = false;
             }
           });
         }
@@ -173,21 +176,28 @@ class AuthenticationScreen extends HookConsumerWidget {
     );
   }
 
-  Future<void> redirect(BuildContext context, WidgetRef ref) async {
+  Future<bool> redirect(BuildContext context, WidgetRef ref) async {
     if (!context.mounted) {
-      return;
+      return false;
     }
     SnackBarHelper().hideSnackBar(context);
-    ref.read(currentUserProvider.notifier).update();
-    final isRegistered =
-        await ref.read(accountServiceProvider).isUserRegistered();
+    final isNewUser = await ref
+        .read(authenticationViewModelProvider().notifier)
+        .completeSignIn();
     if (!context.mounted) {
-      return;
+      return false;
     }
-    if (isRegistered) {
-      context.pushReplacementNamed(RouterPath.tab);
-    } else {
-      context.pushReplacementNamed(RouterPath.newAccount);
+    if (isNewUser == null) {
+      SnackBarHelper().openErrorSnackBar(
+        context,
+        '',
+        Translations.of(context).accountRegistration.error,
+      );
+      return false;
     }
+    context.pushReplacementNamed(
+      isNewUser ? RouterPath.registrationWelcome : RouterPath.tab,
+    );
+    return true;
   }
 }

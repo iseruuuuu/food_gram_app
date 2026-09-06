@@ -572,7 +572,9 @@
     "userId": "使用者ID",
     "userIdInputField": "使用者ID（例如：iseryuuu）",
     "importantTitle": "重要提示",
-    "important": "建立帳戶時，請不要在使用者名稱或使用者ID中包含電子郵件地址或電話號碼等個人資訊。為確保安全的線上體驗，請選擇不會洩露個人資訊的名稱。"
+    "important": "建立帳戶時，請不要在使用者名稱或使用者ID中包含電子郵件地址或電話號碼等個人資訊。為確保安全的線上體驗，請選擇不會洩露個人資訊的名稱。",
+    "creating": "正在準備帳戶",
+    "retry": "重試"
   },
   "accountRegistration": {
     "success": "帳戶註冊完成",

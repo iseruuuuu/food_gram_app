@@ -1,4 +1,5 @@
 export 'package:food_gram_app/ui/screen/authentication/authentication_screen.dart';
+export 'package:food_gram_app/ui/screen/authentication/registration_welcome_screen.dart';
 export 'package:food_gram_app/ui/screen/edit/edit_screen.dart';
 export 'package:food_gram_app/ui/screen/edit_post/edit_post_screen.dart';
 export 'package:food_gram_app/ui/screen/friend/friend_add_screen.dart';
@@ -7,8 +8,6 @@ export 'package:food_gram_app/ui/screen/map/map_screen.dart';
 export 'package:food_gram_app/ui/screen/memory_album/memory_album_detail_screen.dart';
 export 'package:food_gram_app/ui/screen/memory_album/memory_album_form_screen.dart';
 export 'package:food_gram_app/ui/screen/memory_album/memory_album_list_screen.dart';
-export 'package:food_gram_app/ui/screen/new_account/new_account_screen.dart';
-export 'package:food_gram_app/ui/screen/new_account/registration_welcome_screen.dart';
 export 'package:food_gram_app/ui/screen/notification/notifications_screen.dart';
 export 'package:food_gram_app/ui/screen/post/post_screen.dart';
 export 'package:food_gram_app/ui/screen/post_detail/post_detail_screen.dart';

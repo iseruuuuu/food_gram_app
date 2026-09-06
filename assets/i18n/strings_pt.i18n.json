@@ -572,7 +572,9 @@
     "userId": "ID do Usuário",
     "userIdInputField": "ID do usuário (ex: iseryuuu)",
     "importantTitle": "Nota Importante",
-    "important": "Ao criar uma conta, por favor não inclua informações pessoais como endereço de e-mail ou número de telefone em seu nome de usuário ou ID de usuário. Para garantir uma experiência online segura, escolha um nome que não revele seus detalhes pessoais."
+    "important": "Ao criar uma conta, por favor não inclua informações pessoais como endereço de e-mail ou número de telefone em seu nome de usuário ou ID de usuário. Para garantir uma experiência online segura, escolha um nome que não revele seus detalhes pessoais.",
+    "creating": "Preparando sua conta",
+    "retry": "Tentar novamente"
   },
   "accountRegistration": {
     "success": "Registro de conta concluído",

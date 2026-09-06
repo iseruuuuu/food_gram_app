@@ -572,7 +572,9 @@
     "userId": "用户ID",
     "userIdInputField": "用户ID（例如：iseryuuu）",
     "importantTitle": "重要提示",
-    "important": "创建账户时，请不要在用户名或用户ID中包含邮箱地址或电话号码等个人信息。为确保安全的在线体验，请选择不会泄露个人信息的名称。"
+    "important": "创建账户时，请不要在用户名或用户ID中包含邮箱地址或电话号码等个人信息。为确保安全的在线体验，请选择不会泄露个人信息的名称。",
+    "creating": "正在准备账户",
+    "retry": "重试"
   },
   "accountRegistration": {
     "success": "账户注册完成",

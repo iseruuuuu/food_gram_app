@@ -572,7 +572,9 @@
     "userId": "Benutzer-ID",
     "userIdInputField": "Benutzer-ID (z.B. iseryuuu)",
     "importantTitle": "Wichtiger Hinweis",
-    "important": "Beim Erstellen eines Kontos fügen Sie bitte keine persönlichen Informationen wie E-Mail-Adresse oder Telefonnummer in Ihren Benutzernamen oder Ihre Benutzer-ID ein. Für eine sichere Online-Erfahrung wählen Sie einen Namen, der Ihre persönlichen Details nicht preisgibt."
+    "important": "Beim Erstellen eines Kontos fügen Sie bitte keine persönlichen Informationen wie E-Mail-Adresse oder Telefonnummer in Ihren Benutzernamen oder Ihre Benutzer-ID ein. Für eine sichere Online-Erfahrung wählen Sie einen Namen, der Ihre persönlichen Details nicht preisgibt.",
+    "creating": "Konto wird vorbereitet",
+    "retry": "Erneut versuchen"
   },
   "accountRegistration": {
     "success": "Kontoregistrierung abgeschlossen",
