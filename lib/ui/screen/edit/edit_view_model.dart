@@ -66,7 +66,7 @@ class EditViewModel extends _$EditViewModel {
           image: state.number.toString(),
           uploadImage: uploadImage,
           imageBytes: imageBytes,
-          favoriteTags: state.favoriteTags,
+          favoriteTags: state.user?.tag ?? state.favoriteTags,
         );
     var success = false;
     await result.when(
@@ -89,10 +89,6 @@ class EditViewModel extends _$EditViewModel {
       uploadImage: '',
       isSelectedIcon: true,
     );
-  }
-
-  void updateFavoriteTags(String favoriteTags) {
-    state = state.copyWith(favoriteTags: favoriteTags);
   }
 
   Future<bool> camera() async {

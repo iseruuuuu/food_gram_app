@@ -21,12 +21,4 @@ class EditStyle {
       color: Theme.of(context).colorScheme.onSurface,
     );
   }
-
-  static TextStyle tag(BuildContext context) {
-    return TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.bold,
-      color: Theme.of(context).colorScheme.onSurface,
-    );
-  }
 }
