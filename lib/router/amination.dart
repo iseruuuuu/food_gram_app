@@ -57,9 +57,10 @@ CustomTransitionPage<Object?> whiteOut(
     child: screen,
     transitionDuration: const Duration(seconds: 1),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      final overlayColor = Theme.of(context).scaffoldBackgroundColor;
       final colorTween = ColorTween(
         begin: Colors.transparent,
-        end: Colors.white,
+        end: overlayColor,
       ).animate(
         CurvedAnimation(
           parent: animation,
