@@ -100,12 +100,13 @@ class _ProfileRankingUnlockedState
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final asyncRank = ref.watch(postCountRankProvider(widget.userId));
     return asyncRank.when(
       data: (rank) => ProfileStat(
         icon: Icons.emoji_events_outlined,
-        iconBg: const Color(0xFFE8EAF6),
-        iconColor: Colors.indigo.shade400,
+        iconBg: isDark ? const Color(0xFFFFE082) : const Color(0xFFFFF3CD),
+        iconColor: isDark ? const Color(0xFFF57F17) : Colors.amber.shade700,
         valueText: t.profile.rankingPositionFormat
             .replaceAll('{rank}', rank.toString()),
         label: widget.rankingLabel,
@@ -147,11 +148,18 @@ class _ProfileRankingUnlockedState
             Container(
               width: 44,
               height: 44,
-              decoration: const BoxDecoration(
-                color: Color(0xFFE8EAF6),
+              decoration: BoxDecoration(
+                color: isDark
+                    ? const Color(0xFFFFE082)
+                    : const Color(0xFFFFF3CD),
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.error_outline, color: Colors.grey.shade600),
+              child: Icon(
+                Icons.error_outline,
+                color: isDark
+                    ? const Color(0xFFF57F17)
+                    : Colors.grey.shade600,
+              ),
             ),
             const Gap(8),
             Text(

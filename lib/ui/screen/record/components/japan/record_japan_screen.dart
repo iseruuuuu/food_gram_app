@@ -179,7 +179,7 @@ class _JapanAtlasCard extends StatelessWidget {
                   fontSize: 36,
                   fontWeight: FontWeight.w900,
                   height: 1,
-                  color: Color(0xFF2F8F57),
+                  color: AppTheme.primaryBlue,
                 ),
               ),
               Padding(
@@ -296,7 +296,7 @@ class _JapanMapLegend extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _LegendRow(
-            color: isDark ? const Color(0xFF3D9B64) : const Color(0xFF2F8F57),
+            color: isDark ? const Color(0xFF3B8BEB) : AppTheme.primaryBlue,
             label: t.myMapRecord.legendHasPosts,
           ),
           const Gap(4),

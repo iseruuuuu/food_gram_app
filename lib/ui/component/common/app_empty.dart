@@ -386,7 +386,6 @@ class AppMemoryAlbumEmpty extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translations.of(context).memoryAlbum;
     final onSurface = Theme.of(context).colorScheme.onSurface;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 28),
@@ -434,8 +433,8 @@ class AppMemoryAlbumEmpty extends StatelessWidget {
                 onPressed: onCreateTap,
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  backgroundColor: isDark ? Colors.white : Colors.black,
-                  foregroundColor: isDark ? Colors.black : Colors.white,
+                  backgroundColor: AppTheme.primaryBlue,
+                  foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),

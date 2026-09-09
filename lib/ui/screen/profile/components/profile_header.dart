@@ -222,9 +222,12 @@ class AppProfileHeader extends ConsumerWidget {
                   Expanded(
                     child: ProfileStat(
                       icon: Icons.restaurant_rounded,
-                      iconBg: const Color(0xFFFFF3CD),
-                      iconColor:
-                          isDark ? Colors.grey.shade400 : Colors.grey.shade700,
+                      iconBg: isDark
+                          ? const Color(0xFF9FA8DA)
+                          : const Color(0xFFE8EAF6),
+                      iconColor: isDark
+                          ? const Color(0xFF303F9F)
+                          : Colors.indigo.shade400,
                       valueText: length.toString(),
                       label: t.profile.postCount,
                       textColor: textColor,

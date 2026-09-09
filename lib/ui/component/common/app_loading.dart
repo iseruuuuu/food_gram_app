@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -35,7 +36,7 @@ class AppProcessLoading extends StatelessWidget {
                     children: [
                       Center(
                         child: LoadingAnimationWidget.dotsTriangle(
-                          color: Colors.deepPurple,
+                          color: AppTheme.primaryBlue,
                           size: 50,
                         ),
                       ),
@@ -139,7 +140,7 @@ class AppContentLoading extends StatelessWidget {
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Color(0xFFDAA187),
+            color: AppTheme.primaryBlue,
           ),
         ),
       ],
