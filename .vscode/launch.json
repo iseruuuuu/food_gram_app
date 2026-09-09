@@ -6,7 +6,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
-            "deviceId": "ZT322Z66BZ",
+            "deviceId": "357779092880341",
             "args": [
                 "--dart-define-from-file=dart_defines/dev.env"
             ]
@@ -16,7 +16,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
-            "deviceId": "ZT322Z66BZ",
+            "deviceId": "357779092880341",
             "args": [
                 "--dart-define-from-file=dart_defines/prod.env"
             ]
@@ -25,7 +25,7 @@
             "name": "Attach dev (Android)",
             "request": "attach",
             "type": "dart",
-            "deviceId": "ZT322Z66BZ",
+            "deviceId": "357779092880341",
             "args": [
                 "--device-connection=attached"
             ]
