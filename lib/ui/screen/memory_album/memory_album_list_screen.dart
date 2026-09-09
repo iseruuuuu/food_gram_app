@@ -6,7 +6,7 @@ import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/memory_album.dart';
-import 'package:food_gram_app/core/theme/memory_album_theme.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -91,9 +91,6 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor: isDark
-          ? Theme.of(context).scaffoldBackgroundColor
-          : MemoryAlbumTheme.creamBackground,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -110,14 +107,14 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
           IconButton(
             icon: Container(
               padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: isDark ? Colors.white12 : Colors.black87,
+              decoration: const BoxDecoration(
+                color: AppTheme.primaryBlue,
                 shape: BoxShape.circle,
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.add,
                 size: 20,
-                color: isDark ? Colors.white : Colors.white,
+                color: Colors.white,
               ),
             ),
             tooltip: t.memoryAlbum.create,

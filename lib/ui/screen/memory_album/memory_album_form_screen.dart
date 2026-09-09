@@ -8,7 +8,6 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
-import 'package:food_gram_app/core/theme/memory_album_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -156,9 +155,6 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: isDark
-            ? Theme.of(context).scaffoldBackgroundColor
-            : MemoryAlbumTheme.creamBackground,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,

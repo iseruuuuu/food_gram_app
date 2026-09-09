@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/core/utils/location/country_display.dart';
 import 'package:food_gram_app/core/utils/map_stats_presentation.dart';
@@ -163,7 +164,7 @@ class _WorldProgressCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w900,
-                  color: Color(0xFF22C55E),
+                  color: AppTheme.primaryBlue,
                 ),
               ),
               const Gap(8),
@@ -175,7 +176,7 @@ class _WorldProgressCard extends StatelessWidget {
                     minHeight: 7,
                     backgroundColor:
                         isDark ? Colors.white12 : const Color(0xFFE5E7EB),
-                    color: const Color(0xFF22C55E),
+                    color: AppTheme.primaryBlue,
                   ),
                 ),
               ),
@@ -340,7 +341,7 @@ class _CountryVisitRow extends StatelessWidget {
                     minHeight: 3,
                     backgroundColor:
                         isDark ? Colors.white12 : const Color(0xFFE5E7EB),
-                    color: const Color(0xFF22C55E),
+                    color: AppTheme.primaryBlue,
                   ),
                 ),
               ],
@@ -357,7 +358,7 @@ class _CountryVisitRow extends StatelessWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.w900,
                   height: 1,
-                  color: Color(0xFF22C55E),
+                  color: AppTheme.primaryBlue,
                 ),
               ),
               Text(

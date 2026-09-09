@@ -5,7 +5,6 @@ import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
-import 'package:food_gram_app/core/theme/memory_album_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/memory_album_utils.dart';
@@ -44,11 +43,8 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
     final sort = useState(MemoryAlbumPostSort.newest);
 
     return albumAsync.when(
-      loading: () => Scaffold(
-        backgroundColor: isDark
-            ? Theme.of(context).scaffoldBackgroundColor
-            : MemoryAlbumTheme.creamBackground,
-        body: const Center(child: AppContentLoading()),
+      loading: () => const Scaffold(
+        body: Center(child: AppContentLoading()),
       ),
       error: (_, __) => Scaffold(
         appBar: AppBar(
@@ -100,9 +96,6 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
         }
 
         return Scaffold(
-          backgroundColor: isDark
-              ? Theme.of(context).scaffoldBackgroundColor
-              : MemoryAlbumTheme.creamBackground,
           bottomNavigationBar: const SafeArea(
             child: Padding(
               padding: EdgeInsets.only(bottom: 8, top: 4),
@@ -124,9 +117,7 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
                 slivers: [
                   SliverAppBar(
                     pinned: true,
-                    backgroundColor: isDark
-                        ? Theme.of(context).colorScheme.surface
-                        : MemoryAlbumTheme.creamBackground,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                     elevation: 0,
                     scrolledUnderElevation: 0,
                     leading: IconButton(

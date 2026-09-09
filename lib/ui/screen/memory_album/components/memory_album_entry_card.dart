@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/theme/memory_album_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -46,8 +47,8 @@ class MemoryAlbumEntryCard extends ConsumerWidget {
                             Icons.photo_album_outlined,
                             size: 20,
                             color: isDark
-                                ? Colors.amber.shade200
-                                : Colors.amber.shade800,
+                                ? Colors.white70
+                                : AppTheme.primaryBlue,
                           ),
                           const Gap(6),
                           Expanded(

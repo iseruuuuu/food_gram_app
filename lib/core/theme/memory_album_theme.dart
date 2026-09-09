@@ -21,12 +21,12 @@ class MemoryAlbumTheme {
       );
     }
     return BoxDecoration(
-      color: cardBackground,
+      color: Colors.white,
       borderRadius: BorderRadius.circular(20),
-      border: Border.all(color: const Color(0xFFFFE082).withValues(alpha: 0.5)),
+      border: Border.all(color: const Color(0xFFE5E5E5)),
       boxShadow: [
         BoxShadow(
-          color: Colors.amber.withValues(alpha: 0.08),
+          color: Colors.black.withValues(alpha: 0.06),
           blurRadius: 12,
           offset: const Offset(0, 4),
         ),

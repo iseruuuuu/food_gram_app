@@ -15,41 +15,33 @@ class AppTabLoading extends StatelessWidget {
 
   final TabLoadingType type;
 
-  static const _mapColor = Color(0xFF7DA453);
-  static const _foodColor = Color(0xFFE8945A);
-  static const _recordColor = Color(0xFF7DA453);
-  static const _myPageColor = Color(0xFFB8956A);
-
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final accent = Theme.of(context).colorScheme.onSurface;
     final config = switch (type) {
       TabLoadingType.map => (
           icon: CupertinoIcons.location_fill,
           label: t.tab.map,
           message: t.tab.loadingMap,
-          color: _mapColor,
           image: Assets.image.loadingMap,
         ),
       TabLoadingType.food => (
           icon: Icons.restaurant,
           label: t.tab.home,
           message: t.tab.loadingFood,
-          color: _foodColor,
           image: Assets.image.loadingFood,
         ),
       TabLoadingType.record => (
           icon: Icons.menu_book,
           label: t.tab.myMap,
           message: t.tab.loadingRecord,
-          color: _recordColor,
           image: Assets.image.loadingRecord,
         ),
       TabLoadingType.myPage => (
           icon: Icons.person,
           label: t.tab.myPage,
           message: t.tab.loadingMyPage,
-          color: _myPageColor,
           image: Assets.image.loadingMypage,
         ),
     };
@@ -65,14 +57,14 @@ class AppTabLoading extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(config.icon, color: config.color, size: 28),
+                  Icon(config.icon, color: accent, size: 28),
                   const Gap(6),
                   Text(
                     config.label,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: config.color,
+                      color: accent,
                     ),
                   ),
                 ],
@@ -89,7 +81,7 @@ class AppTabLoading extends StatelessWidget {
                 ),
               ),
               const Gap(20),
-              _TabLoadingDots(color: config.color),
+              _TabLoadingDots(color: accent),
             ],
           ),
         ),
