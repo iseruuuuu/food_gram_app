@@ -88,14 +88,15 @@ class SettingViewModel extends _$SettingViewModel {
     loading.state = true;
     await Future<void>.delayed(const Duration(seconds: 2));
     final result = await ref.read(authServiceProvider).signOut();
-    result.whenOrNull(
+    final isSuccess = result.when(
       success: (_) {
         ref.read(currentUserProvider.notifier).clear();
         return true;
       },
+      failure: (_) => false,
     );
     loading.state = false;
-    return false;
+    return isSuccess;
   }
 
   /// アカウント削除
