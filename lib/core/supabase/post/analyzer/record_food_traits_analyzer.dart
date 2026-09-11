@@ -301,6 +301,18 @@ RecordFoodTraitsSummary analyzeRecordFoodTraits(List<Posts> posts) {
 /// 記録タブのカード表示などで利用する公開ヘルパー。
 String? recordPostAreaLabel(Posts post) => _areaFor(post);
 
+/// 投稿の先頭フードタグ。未設定なら null。
+String? recordPostGenre(Posts post) => _genreFor(post);
+
+/// 店名が入っている投稿のユニーク店舗数。
+int recordUniqueRestaurantsCount(List<Posts> posts) {
+  return posts
+      .map((post) => post.restaurant.trim())
+      .where((name) => name.isNotEmpty)
+      .toSet()
+      .length;
+}
+
 String? _areaFor(Posts post) {
   if (post.lat == 0 || post.lng == 0) {
     return null;
