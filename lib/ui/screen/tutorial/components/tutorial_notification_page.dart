@@ -36,7 +36,6 @@ class TutorialNotificationPage extends HookWidget {
     final cards = [
       (title: samples.likeTitle, body: samples.likeBody),
       (title: samples.commentTitle, body: samples.commentBody),
-      (title: samples.newPostTitle, body: samples.newPostBody),
       (title: samples.reminderTitle, body: samples.reminderBody),
     ];
 
