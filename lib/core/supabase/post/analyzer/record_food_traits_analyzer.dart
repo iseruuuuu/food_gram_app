@@ -1,7 +1,6 @@
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/core/utils/location/prefecture_detector.dart';
-import 'package:food_gram_app/gen/strings.g.dart';
 
 enum RecordMealTimeSlot { morning, lunch, afternoon, evening, lateNight }
 
@@ -350,17 +349,4 @@ RecordMealTimeSlot _timeZoneFor(int hour) {
     return RecordMealTimeSlot.evening;
   }
   return RecordMealTimeSlot.lateNight;
-}
-
-int recordFoodTraitsRatio(int count, int total) =>
-    (count / total * 100).round();
-
-String recordFoodTraitsTimeSlotLabel(Translations t, RecordMealTimeSlot slot) {
-  return switch (slot) {
-    RecordMealTimeSlot.morning => t.myMapRecord.foodTraits.morningLabel,
-    RecordMealTimeSlot.lunch => t.myMapRecord.foodTraits.lunchLabel,
-    RecordMealTimeSlot.afternoon => t.myMapRecord.foodTraits.afternoonLabel,
-    RecordMealTimeSlot.evening => t.myMapRecord.foodTraits.eveningLabel,
-    RecordMealTimeSlot.lateNight => t.myMapRecord.foodTraits.lateNightLabel,
-  };
 }

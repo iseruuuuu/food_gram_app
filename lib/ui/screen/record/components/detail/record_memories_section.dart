@@ -160,12 +160,6 @@ Posts? recordLatestPost(List<Posts> posts) {
   return sorted.first;
 }
 
-/// 先頭カードに出す投稿（最近の1件）
-List<Posts> recordFeaturedMemoryPosts(List<Posts> posts) {
-  final latest = recordLatestPost(posts);
-  return latest == null ? const [] : [latest];
-}
-
 /// 最近の記録（過去の思い出）セクション
 class RecordRecentSection extends ConsumerWidget {
   const RecordRecentSection({
