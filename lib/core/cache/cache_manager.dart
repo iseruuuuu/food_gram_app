@@ -9,16 +9,34 @@ class CacheEntry<T> {
   bool get isExpired => DateTime.now().isAfter(expiryTime);
 }
 
+class _InflightRequest {
+  _InflightRequest({
+    required this.generation,
+    required this.future,
+  });
+
+  final int generation;
+  final Future<dynamic> future;
+}
+
 class CacheManager {
   factory CacheManager() => _instance;
   CacheManager._internal();
   static final CacheManager _instance = CacheManager._internal();
 
   final _cache = <String, CacheEntry<dynamic>>{};
-  final _inflight = <String, Future<dynamic>>{};
+  final _inflight = <String, _InflightRequest>{};
+  final _keyGeneration = <String, int>{};
+  int _epoch = 0;
 
   // デフォルトのキャッシュ期間
   static const defaultDuration = Duration(minutes: 5);
+
+  int _generationOf(String key) => _epoch + (_keyGeneration[key] ?? 0);
+
+  void _invalidateGeneration(String key) {
+    _keyGeneration[key] = (_keyGeneration[key] ?? 0) + 1;
+  }
 
   Future<T> get<T>({
     required String key,
@@ -33,26 +51,34 @@ class CacheManager {
       _cache.remove(key);
     }
 
+    final generation = _generationOf(key);
     final existing = _inflight[key];
-    if (existing != null) {
-      return await existing as T;
+    if (existing != null && existing.generation == generation) {
+      return await existing.future as T;
     }
 
     final future = fetcher().then((data) {
-      _cache[key] = CacheEntry<T>(
-        data: data,
-        expiryTime: DateTime.now().add(duration ?? defaultDuration),
-      );
+      if (_generationOf(key) == generation) {
+        _cache[key] = CacheEntry<T>(
+          data: data,
+          expiryTime: DateTime.now().add(duration ?? defaultDuration),
+        );
+      }
       return data;
     });
-    _inflight[key] = future;
+    _inflight[key] = _InflightRequest(
+      generation: generation,
+      future: future,
+    );
     try {
       return await future;
     } finally {
-      _inflight.removeWhere(
-        (inflightKey, inflightFuture) =>
-            inflightKey == key && identical(inflightFuture, future),
-      );
+      final current = _inflight[key];
+      if (current != null &&
+          current.generation == generation &&
+          identical(current.future, future)) {
+        _inflight.remove(key);
+      }
     }
   }
 
@@ -79,17 +105,20 @@ class CacheManager {
       data: data,
       expiryTime: DateTime.now().add(duration ?? defaultDuration),
     );
+    _invalidateGeneration(key);
   }
 
   // 特定のキーのキャッシュを削除
   void invalidate(String key) {
     _cache.remove(key);
+    _invalidateGeneration(key);
   }
 
   // キャッシュ全体をクリア
   void clearAll() {
     _cache.clear();
     _inflight.clear();
+    _epoch++;
   }
 
   // 期限切れのキャッシュをクリア

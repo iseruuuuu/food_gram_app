@@ -82,7 +82,12 @@ class TimeLineScreen extends HookConsumerWidget {
           recommendSeed.value = recommendSeed.value + 1;
           refreshProviders();
           try {
-            await ref.read(postsStreamProvider.future);
+            await Future.wait<void>([
+              ref.read(postsStreamProvider.future).then<void>((_) {}),
+              ref.read(blockListProvider.future).then<void>((_) {}),
+              if (isFriendsFeed)
+                ref.read(friendUserIdsProvider.future).then<void>((_) {}),
+            ]);
           } on Object {
             // 再取得失敗時もインジケータは閉じる
           }
