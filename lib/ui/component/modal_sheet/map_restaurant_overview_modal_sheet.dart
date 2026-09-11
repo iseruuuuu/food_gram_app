@@ -9,6 +9,7 @@ import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.
     as map_repo;
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/geo_distance.dart';
+import 'package:food_gram_app/core/utils/nearby_restaurant_posts.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
@@ -144,34 +145,24 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                     ),
                   );
                 }
-                final grouped = _groupByRestaurantName(
-                  posts,
-                  centerLat: center.latitude,
-                  centerLng: center.longitude,
-                );
                 final filter = ref.watch(mapCategoryFilterProvider);
                 final myPostsOnly = ref.watch(mapMyPostsOnlyProvider);
                 final currentUserId = ref.watch(currentUserProvider);
-                final filteredGroups = grouped
-                    .map(
-                      (g) => RestaurantGroup(
-                        name: g.name,
-                        lat: g.lat,
-                        lng: g.lng,
-                        posts: g.posts
-                            .where(
-                              (p) => postVisibleOnMap(
-                                post: p,
-                                filter: filter,
-                                myPostsOnly: myPostsOnly,
-                                currentUserId: currentUserId,
-                              ),
-                            )
-                            .toList(),
+                final visiblePosts = posts
+                    .where(
+                      (p) => postVisibleOnMap(
+                        post: p,
+                        filter: filter,
+                        myPostsOnly: myPostsOnly,
+                        currentUserId: currentUserId,
                       ),
                     )
-                    .where((g) => g.posts.isNotEmpty)
                     .toList();
+                final filteredGroups = _groupByRestaurantName(
+                  visiblePosts,
+                  centerLat: center.latitude,
+                  centerLng: center.longitude,
+                ).take(nearbyRestaurantLimit).toList();
                 if (filteredGroups.isEmpty) {
                   return const SliverToBoxAdapter(
                     child: Padding(
@@ -411,7 +402,6 @@ List<RestaurantGroup> _groupByRestaurantName(
   required double centerLat,
   required double centerLng,
 }) {
-  const threshold = 0.0003; // 約 30m 前後を想定
   final groups = <RestaurantGroup>[];
   for (final p in posts) {
     final name = p.restaurant.trim();
@@ -419,8 +409,8 @@ List<RestaurantGroup> _groupByRestaurantName(
     final existingIndex = groups.indexWhere(
       (g) =>
           g.name.trim() == name &&
-          (p.lat - g.lat).abs() <= threshold &&
-          (p.lng - g.lng).abs() <= threshold,
+          (p.lat - g.lat).abs() <= nearbyRestaurantCoordThreshold &&
+          (p.lng - g.lng).abs() <= nearbyRestaurantCoordThreshold,
     );
     if (existingIndex == -1) {
       groups.add(

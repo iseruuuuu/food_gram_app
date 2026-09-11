@@ -4,7 +4,6 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/services/map_post_service.dart';
-import 'package:food_gram_app/core/utils/geo_distance.dart';
 import 'package:maplibre_gl/maplibre_gl.dart' show LatLng;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -49,34 +48,16 @@ Future<List<Posts>> mapRepository(Ref ref) async {
   return response.map(Posts.fromJson).toList();
 }
 
-/// 指定座標（または現在地・日本中心）から近い店舗の投稿を取得するProvider
-/// [centerLatLng] null の場合は現在地で取得（fetch_post 等で使用）
+/// 近くの店舗一覧用の全候補投稿を取得するProvider。
+/// 近い順の絞り込みは overview 側で、可視性フィルタの後に行う。
+/// [centerLatLng] は呼び出し互換のため残している（取得内容には使わない）。
 @riverpod
 Future<List<Posts>> getNearByPosts(Ref ref, LatLng? centerLatLng) async {
   try {
     final data = await ref
         .read(mapPostServiceProvider.notifier)
         .getNearbyPosts(centerLatLng: centerLatLng);
-    final posts = data.map(Posts.fromJson).toList();
-    if (centerLatLng != null &&
-        (centerLatLng.latitude != 0 || centerLatLng.longitude != 0)) {
-      posts.sort((a, b) {
-        final da = geoKilometers(
-          lat1: centerLatLng.latitude,
-          lon1: centerLatLng.longitude,
-          lat2: a.lat,
-          lon2: a.lng,
-        );
-        final db = geoKilometers(
-          lat1: centerLatLng.latitude,
-          lon1: centerLatLng.longitude,
-          lat2: b.lat,
-          lon2: b.lng,
-        );
-        return da.compareTo(db);
-      });
-    }
-    return posts;
+    return data.map(Posts.fromJson).toList();
   } on PostgrestException catch (_) {
     return [];
   }

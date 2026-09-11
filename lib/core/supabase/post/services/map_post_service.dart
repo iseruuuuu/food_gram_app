@@ -2,9 +2,6 @@ import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
-import 'package:food_gram_app/core/utils/location/locale_default_location.dart';
-import 'package:food_gram_app/core/utils/nearby_restaurant_posts.dart';
-import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:logger/logger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart' as maplibre;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -88,47 +85,12 @@ class MapPostService extends _$MapPostService {
     );
   }
 
-  /// 指定座標（または現在地・端末Localeの都市中心）から近い店舗の投稿を取得
-  /// [centerLatLng] null の場合は現在地、現在地が (0,0) の場合はLocaleフォールバックを使用
+  /// 近くの店舗一覧用：全投稿（ブロック除外）を返す。
+  /// カテゴリ等の可視性フィルタと近い順の20件選定は overview 側で行う。
   Future<List<Map<String, dynamic>>> getNearbyPosts({
     maplibre.LatLng? centerLatLng,
   }) async {
-    double lat;
-    double lng;
-    if (centerLatLng != null &&
-        (centerLatLng.latitude != 0 || centerLatLng.longitude != 0)) {
-      lat = centerLatLng.latitude;
-      lng = centerLatLng.longitude;
-    } else {
-      final currentLocation = await ref.read(locationProvider.future);
-      if (currentLocation == const maplibre.LatLng(0, 0)) {
-        final fallback = defaultLocationFromDeviceLocale();
-        lat = fallback.latitude;
-        lng = fallback.longitude;
-      } else {
-        lat = currentLocation.latitude;
-        lng = currentLocation.longitude;
-      }
-    }
-
-    return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: CacheManager.nearbyPostsKey(lat, lng),
-      fetcher: () async {
-        final posts = await supabase
-            .from('posts')
-            .select()
-            .order('created_at', ascending: false);
-        final filteredPosts = posts
-            .where((post) => !blockList.contains(post['user_id']))
-            .toList();
-        return pickClosestRestaurantPosts(
-          posts: filteredPosts,
-          centerLat: lat,
-          centerLng: lng,
-        );
-      },
-      duration: const Duration(minutes: 5),
-    );
+    return getMapPosts();
   }
 
   /// レストラン名で投稿を取得（ブロック除外）
