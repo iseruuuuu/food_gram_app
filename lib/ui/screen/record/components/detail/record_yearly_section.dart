@@ -549,10 +549,9 @@ class _MonthBar extends StatelessWidget {
               final ratio = maxCount == 0 ? 0.0 : count / maxCount;
               final height = count == 0
                   ? 4.0
-                  : (constraints.maxHeight * ratio).clamp(
-                      8.0,
-                      constraints.maxHeight,
-                    );
+                  : (constraints.maxHeight * ratio)
+                      .clamp(8.0, constraints.maxHeight)
+                      .toDouble();
               return Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(

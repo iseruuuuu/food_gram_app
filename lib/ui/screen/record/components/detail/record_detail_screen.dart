@@ -69,34 +69,19 @@ class RecordDetailScreen extends HookConsumerWidget {
     final cardColor = isDark ? const Color(0xFF161616) : Colors.white;
     final recentPosts = [...posts]
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    final featuredIds =
-        recordFeaturedMemoryPosts(posts).map((post) => post.id).toSet();
-    final pastPosts =
-        recentPosts.where((post) => !featuredIds.contains(post.id)).toList()
-          ..sort((a, b) {
-            final heartCompare = b.heart.compareTo(a.heart);
-            if (heartCompare != 0) {
-              return heartCompare;
-            }
-            return b.createdAt.compareTo(a.createdAt);
-          });
     final years = recordSortedYears(posts);
     final recapYear = selectedYear.value ??
         (years.isNotEmpty ? years.first : DateTime.now().year);
-    final displayedPastPosts = selectedYear.value == null
-        ? pastPosts
-        : (recentPosts
-            .where(
-              (post) => post.createdAt.toLocal().year == selectedYear.value,
-            )
-            .toList()
-          ..sort((a, b) {
-            final heartCompare = b.heart.compareTo(a.heart);
-            if (heartCompare != 0) {
-              return heartCompare;
-            }
-            return b.createdAt.compareTo(a.createdAt);
-          }));
+    final displayedPastPosts = recentPosts
+        .where((post) => post.createdAt.toLocal().year == recapYear)
+        .toList()
+      ..sort((a, b) {
+        final heartCompare = b.heart.compareTo(a.heart);
+        if (heartCompare != 0) {
+          return heartCompare;
+        }
+        return b.createdAt.compareTo(a.createdAt);
+      });
     final uniqueShops = recordUniqueRestaurantsCount(posts);
     final selectorTop = recordMapOverlayTopForContext(context);
     const viewTypeTabHeight = 68.0;

@@ -180,7 +180,8 @@ RecordYearMonthCount? recordBusiestYearMonth(List<Posts> posts) {
   }
   final counts = <String, int>{};
   for (final post in posts) {
-    final key = '${post.createdAt.year}-${post.createdAt.month}';
+    final local = post.createdAt.toLocal();
+    final key = '${local.year}-${local.month}';
     counts[key] = (counts[key] ?? 0) + 1;
   }
   final top = counts.entries.toList()
@@ -251,16 +252,17 @@ Posts? recordOneYearAgoToday(
   if (posts.isEmpty) {
     return null;
   }
-  final today = now ?? DateTime.now();
+  final today = (now ?? DateTime.now()).toLocal();
   final target = DateTime(today.year - 1, today.month, today.day);
   Posts? exact;
   Posts? nearby;
   var nearbyDiff = 4;
   for (final post in posts) {
+    final local = post.createdAt.toLocal();
     final date = DateTime(
-      post.createdAt.year,
-      post.createdAt.month,
-      post.createdAt.day,
+      local.year,
+      local.month,
+      local.day,
     );
     if (date == target) {
       if (exact == null || post.createdAt.isAfter(exact.createdAt)) {
@@ -285,13 +287,13 @@ RecordYoyInsight? recordYoyInsight(
   if (posts.isEmpty) {
     return null;
   }
-  final today = now ?? DateTime.now();
+  final today = (now ?? DateTime.now()).toLocal();
   final thisYear = today.year;
   final lastYear = thisYear - 1;
   final thisYearPosts =
-      posts.where((post) => post.createdAt.year == thisYear).toList();
+      posts.where((post) => post.createdAt.toLocal().year == thisYear).toList();
   final lastYearPosts =
-      posts.where((post) => post.createdAt.year == lastYear).toList();
+      posts.where((post) => post.createdAt.toLocal().year == lastYear).toList();
   if (thisYearPosts.isEmpty || lastYearPosts.isEmpty) {
     return null;
   }
@@ -360,7 +362,7 @@ RecordFoodPersonaInsight? recordFoodPersona(List<Posts> posts) {
 /// 初めて訪れた都道府県・国を新しい順に返す。日本は県で見る。
 List<RecordFirstVisitPlace> recordRecentFirstVisits(
   List<Posts> posts, {
-  int limit = 8,
+  int? limit = 8,
 }) {
   final prefectures = <String, RecordFirstVisitPlace>{};
   final countries = <String, RecordFirstVisitPlace>{};
@@ -396,7 +398,7 @@ List<RecordFirstVisitPlace> recordRecentFirstVisits(
   }
   final visits = [...prefectures.values, ...countries.values]
     ..sort((a, b) => b.firstVisitedAt.compareTo(a.firstVisitedAt));
-  if (visits.length <= limit) {
+  if (limit == null || visits.length <= limit) {
     return visits;
   }
   return visits.sublist(0, limit);
@@ -429,8 +431,8 @@ RecordYearRecap? analyzeYearRecap(
   final monthlyCounts = recordMonthlyPostCounts(posts, year);
   final previousCount =
       posts.where((post) => post.createdAt.toLocal().year == year - 1).length;
-  final newPlaces = recordRecentFirstVisits(posts, limit: 100)
-      .where((place) => place.firstVisitedAt.year == year)
+  final newPlaces = recordRecentFirstVisits(posts, limit: null)
+      .where((place) => place.firstVisitedAt.toLocal().year == year)
       .toList();
   return RecordYearRecap(
     year: year,
@@ -484,7 +486,7 @@ String recordWeekdayLabel(Translations t, int weekday) {
   }
   final counts = <int, int>{};
   for (final post in posts) {
-    final weekday = post.createdAt.weekday;
+    final weekday = post.createdAt.toLocal().weekday;
     counts[weekday] = (counts[weekday] ?? 0) + 1;
   }
   final list = counts.entries.toList()
