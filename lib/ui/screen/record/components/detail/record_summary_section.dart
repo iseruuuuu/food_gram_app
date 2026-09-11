@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/screen/record/components/detail/record_premium_lock.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
-/// 記録タブ：あなたの食の軌跡カード（統計）
+/// 記録タブ：あなたの食の軌跡。累計の食べ歩き規模を振り返る。
 class RecordSummarySection extends StatelessWidget {
   const RecordSummarySection({
     required this.mealsCount,
     required this.shopsCount,
     required this.prefecturesCount,
     required this.countriesCount,
+    required this.isSubscribed,
+    required this.onTapPremiumCta,
     super.key,
   });
 
@@ -19,12 +23,13 @@ class RecordSummarySection extends StatelessWidget {
   final int shopsCount;
   final int prefecturesCount;
   final int countriesCount;
+  final bool isSubscribed;
+  final VoidCallback onTapPremiumCta;
 
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final cardColor = isDark ? const Color(0xFF161616) : Colors.white;
     final dividerColor = isDark ? Colors.white12 : const Color(0xFFE5E7EB);
     final localeFormat = NumberFormat.decimalPattern(
       Localizations.localeOf(context).toLanguageTag(),
@@ -32,17 +37,7 @@ class RecordSummarySection extends StatelessWidget {
     return Container(
       width: double.infinity,
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
+      decoration: recordSectionCardDecoration(isDark: isDark),
       child: Stack(
         children: [
           Positioned(
@@ -79,6 +74,7 @@ class RecordSummarySection extends StatelessWidget {
                         accent: const Color(0xFFEF4444),
                         value: localeFormat.format(mealsCount),
                         label: t.myMapRecord.recordedMealsLabel,
+                        locked: !isSubscribed,
                       ),
                       VerticalDivider(
                         width: 1,
@@ -90,6 +86,7 @@ class RecordSummarySection extends StatelessWidget {
                         accent: const Color(0xFF3B82F6),
                         value: localeFormat.format(shopsCount),
                         label: t.myMapRecord.visitedShopsLabel,
+                        locked: !isSubscribed,
                       ),
                       VerticalDivider(
                         width: 1,
@@ -101,6 +98,7 @@ class RecordSummarySection extends StatelessWidget {
                         accent: const Color(0xFF16A34A),
                         value: '$prefecturesCount',
                         label: t.myMapRecord.prefecturesUnit,
+                        locked: !isSubscribed,
                       ),
                       VerticalDivider(
                         width: 1,
@@ -112,10 +110,19 @@ class RecordSummarySection extends StatelessWidget {
                         accent: const Color(0xFFF59E0B),
                         value: '$countriesCount',
                         label: t.myMapRecord.countriesUnit,
+                        locked: !isSubscribed,
                       ),
                     ],
                   ),
                 ),
+                if (!isSubscribed) ...[
+                  const Gap(14),
+                  RecordPremiumLockBanner(
+                    message: t.myMapRecord.insight.footprintLockedHint,
+                    ctaLabel: t.myMapRecord.insight.lockedDiscoveriesCta,
+                    onTap: onTapPremiumCta,
+                  ),
+                ],
               ],
             ),
           ),
@@ -131,12 +138,14 @@ class _JourneyStatColumn extends StatelessWidget {
     required this.accent,
     required this.value,
     required this.label,
+    this.locked = false,
   });
 
   final IconData icon;
   final Color accent;
   final String value;
   final String label;
+  final bool locked;
 
   @override
   Widget build(BuildContext context) {
@@ -147,18 +156,21 @@ class _JourneyStatColumn extends StatelessWidget {
         child: Column(
           children: [
             Icon(
-              icon,
-              color: accent,
-              size: 32,
+              locked ? Icons.lock_outline_rounded : icon,
+              color:
+                  locked ? (isDark ? Colors.white38 : Colors.black38) : accent,
+              size: 28,
             ),
             const Gap(4),
             FittedBox(
               child: Text(
-                value,
+                locked ? '—' : value,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w900,
-                  color: accent,
+                  color: locked
+                      ? AppTheme.primaryBlue.withValues(alpha: 0.4)
+                      : accent,
                   height: 1,
                 ),
               ),
@@ -170,7 +182,7 @@ class _JourneyStatColumn extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: FontWeight.w700,
                 color: isDark ? Colors.white70 : Colors.black87,
               ),
