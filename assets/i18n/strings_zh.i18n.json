@@ -475,16 +475,20 @@
     "firstVisitedPrefecture": "第一次到访的县",
     "noPrefectureRanking": "还没有都道府县记录",
     "noFirstPrefecture": "还没有到访过的县",
-    "foodTraits": {
-      "noData": "暂无数据",
-      "morningLabel": "早晨 (5-10点)",
-      "lunchLabel": "中午 (11-14点)",
-      "afternoonLabel": "下午 (15-17点)",
-      "eveningLabel": "晚上 (18-21点)",
-      "lateNightLabel": "深夜 (22-4点)",
-      "lockedDescription": "开通 Premium\n解锁你的全部饮食洞察",
-      "premiumCta": "查看 Premium 方案",
-      "shareOfTotal": "占总数的{percent}%"
+    "insight": {
+      "topGenreTitle": "最常吃的品类",
+      "topAreaTitle": "最常去的地方",
+      "mealCountUnit": "{count}餐",
+      "favoriteDishTitle": "最喜欢的一道菜",
+      "lockedDiscoveriesCta": "更深入了解你的饮食特点",
+      "footprintLockedHint": "看看你的美食足迹走了多远",
+      "yearStoryTitle": "你的{year}年美食体验",
+      "yearStorySubtitle": "回顾这一年的饮食",
+      "yearNewPlacesTitle": "这一年首次到访的地方",
+      "yearCompareUp": "比前一年多 {count} 餐",
+      "yearCompareDown": "比前一年少 {count} 餐",
+      "yearCompareNew": "你开始使用 FoodGram 的年份",
+      "monthlyRecordsTitle": "每月记录"
     }
   },
   "myMapShare": {

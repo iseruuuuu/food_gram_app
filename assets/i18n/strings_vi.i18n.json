@@ -475,16 +475,20 @@
     "firstVisitedPrefecture": "Tỉnh đầu tiên đã đến",
     "noPrefectureRanking": "Chưa có bảng xếp hạng tỉnh",
     "noFirstPrefecture": "Chưa đến tỉnh nào",
-    "foodTraits": {
-      "noData": "Không có dữ liệu",
-      "morningLabel": "Sáng (5-10)",
-      "lunchLabel": "Trưa (11-14)",
-      "afternoonLabel": "Chiều (15-17)",
-      "eveningLabel": "Tối (18-21)",
-      "lateNightLabel": "Đêm khuya (22-4)",
-      "lockedDescription": "Mở khóa toàn bộ insight ẩm thực\ncủa bạn với Premium",
-      "premiumCta": "Xem gói Premium",
-      "shareOfTotal": "{percent}% tổng số"
+    "insight": {
+      "topGenreTitle": "Thể loại bạn ăn nhiều nhất",
+      "topAreaTitle": "Nơi bạn ghé nhiều nhất",
+      "mealCountUnit": "{count} bữa",
+      "favoriteDishTitle": "Món yêu thích của bạn",
+      "lockedDiscoveriesCta": "Xem rõ hơn đặc điểm ẩm thực của bạn",
+      "footprintLockedHint": "Xem hành trình ẩm thực của bạn đã đi xa đến đâu",
+      "yearStoryTitle": "Trải nghiệm ẩm thực năm {year} của bạn",
+      "yearStorySubtitle": "Nhìn lại một năm ăn uống",
+      "yearNewPlacesTitle": "Nơi đến lần đầu trong năm đó",
+      "yearCompareUp": "Nhiều hơn năm trước {count} bữa",
+      "yearCompareDown": "Ít hơn năm trước {count} bữa",
+      "yearCompareNew": "Năm bạn bắt đầu FoodGram",
+      "monthlyRecordsTitle": "Bữa ăn theo tháng"
     }
   },
   "myMapShare": {

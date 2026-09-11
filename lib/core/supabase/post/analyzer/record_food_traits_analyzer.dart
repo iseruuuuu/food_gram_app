@@ -1,7 +1,6 @@
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/core/utils/location/prefecture_detector.dart';
-import 'package:food_gram_app/gen/strings.g.dart';
 
 enum RecordMealTimeSlot { morning, lunch, afternoon, evening, lateNight }
 
@@ -301,6 +300,18 @@ RecordFoodTraitsSummary analyzeRecordFoodTraits(List<Posts> posts) {
 /// 記録タブのカード表示などで利用する公開ヘルパー。
 String? recordPostAreaLabel(Posts post) => _areaFor(post);
 
+/// 投稿の先頭フードタグ。未設定なら null。
+String? recordPostGenre(Posts post) => _genreFor(post);
+
+/// 店名が入っている投稿のユニーク店舗数。
+int recordUniqueRestaurantsCount(List<Posts> posts) {
+  return posts
+      .map((post) => post.restaurant.trim())
+      .where((name) => name.isNotEmpty)
+      .toSet()
+      .length;
+}
+
 String? _areaFor(Posts post) {
   if (post.lat == 0 || post.lng == 0) {
     return null;
@@ -338,17 +349,4 @@ RecordMealTimeSlot _timeZoneFor(int hour) {
     return RecordMealTimeSlot.evening;
   }
   return RecordMealTimeSlot.lateNight;
-}
-
-int recordFoodTraitsRatio(int count, int total) =>
-    (count / total * 100).round();
-
-String recordFoodTraitsTimeSlotLabel(Translations t, RecordMealTimeSlot slot) {
-  return switch (slot) {
-    RecordMealTimeSlot.morning => t.myMapRecord.foodTraits.morningLabel,
-    RecordMealTimeSlot.lunch => t.myMapRecord.foodTraits.lunchLabel,
-    RecordMealTimeSlot.afternoon => t.myMapRecord.foodTraits.afternoonLabel,
-    RecordMealTimeSlot.evening => t.myMapRecord.foodTraits.eveningLabel,
-    RecordMealTimeSlot.lateNight => t.myMapRecord.foodTraits.lateNightLabel,
-  };
 }

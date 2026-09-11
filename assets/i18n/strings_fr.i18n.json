@@ -475,16 +475,20 @@
     "firstVisitedPrefecture": "Première préfecture visitée",
     "noPrefectureRanking": "Aucun classement de préfecture pour le moment",
     "noFirstPrefecture": "Aucune préfecture visitée pour le moment",
-    "foodTraits": {
-      "noData": "Aucune donnée",
-      "morningLabel": "Matin (5-10)",
-      "lunchLabel": "Déjeuner (11-14)",
-      "afternoonLabel": "Après-midi (15-17)",
-      "eveningLabel": "Soir (18-21)",
-      "lateNightLabel": "Nuit (22-4)",
-      "lockedDescription": "Débloquez toutes vos analyses\nfood avec Premium",
-      "premiumCta": "Voir les offres Premium",
-      "shareOfTotal": "{percent}% du total"
+    "insight": {
+      "topGenreTitle": "Ton genre le plus fréquent",
+      "topAreaTitle": "Le lieu que tu visites le plus",
+      "mealCountUnit": "{count} repas",
+      "favoriteDishTitle": "Ton plat préféré",
+      "lockedDiscoveriesCta": "En savoir plus sur ta vie alimentaire",
+      "footprintLockedHint": "Découvre jusqu’où va ton voyage culinaire",
+      "yearStoryTitle": "Ton année {year} en cuisine",
+      "yearStorySubtitle": "Une année de repas à relire",
+      "yearNewPlacesTitle": "Lieux visités pour la première fois cette année",
+      "yearCompareUp": "+{count} repas par rapport à l’année précédente",
+      "yearCompareDown": "{count} repas de moins que l’année précédente",
+      "yearCompareNew": "L’année où tu as commencé FoodGram",
+      "monthlyRecordsTitle": "Repas par mois"
     }
   },
   "myMapShare": {

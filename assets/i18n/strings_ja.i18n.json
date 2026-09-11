@@ -474,16 +474,20 @@
     "firstVisitedPrefecture": "初めて訪れた県",
     "noPrefectureRanking": "まだ都道府県の記録がありません",
     "noFirstPrefecture": "まだ訪れた県がありません",
-    "foodTraits": {
-      "noData": "データなし",
-      "morningLabel": "朝 (5-10時)",
-      "lunchLabel": "昼 (11-14時)",
-      "afternoonLabel": "午後 (15-17時)",
-      "eveningLabel": "夜 (18-21時)",
-      "lateNightLabel": "深夜 (22-4時)",
-      "lockedDescription": "プレミアムであなたの食の特徴を\nすべて見ることができます",
-      "premiumCta": "プレミアムプランをみる",
-      "shareOfTotal": "全体の {percent}%"
+    "insight": {
+      "topGenreTitle": "一番よく食べたジャンル",
+      "topAreaTitle": "一番よく訪れた場所",
+      "mealCountUnit": "{count}食",
+      "favoriteDishTitle": "お気に入りの一皿",
+      "lockedDiscoveriesCta": "あなたの食の特徴をもっと詳しく見る",
+      "footprintLockedHint": "食べ歩いたお店や場所をもっと詳しく振り返る",
+      "yearStoryTitle": "あなたの{year}年の食体験",
+      "yearStorySubtitle": "一年の食を、ひと目で振り返る",
+      "yearNewPlacesTitle": "その年に初めて訪れた場所",
+      "yearCompareUp": "前年より +{count}食",
+      "yearCompareDown": "前年より {count}食",
+      "yearCompareNew": "FoodGramを始めた年",
+      "monthlyRecordsTitle": "月ごとの記録"
     }
   },
   "myMapShare": {

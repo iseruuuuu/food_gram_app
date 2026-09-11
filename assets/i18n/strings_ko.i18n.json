@@ -475,16 +475,20 @@
     "firstVisitedPrefecture": "처음 방문한 현",
     "noPrefectureRanking": "아직 도도부현 기록이 없습니다",
     "noFirstPrefecture": "아직 방문한 현이 없습니다",
-    "foodTraits": {
-      "noData": "데이터 없음",
-      "morningLabel": "아침 (5-10시)",
-      "lunchLabel": "점심 (11-14시)",
-      "afternoonLabel": "오후 (15-17시)",
-      "eveningLabel": "저녁 (18-21시)",
-      "lateNightLabel": "심야 (22-4시)",
-      "lockedDescription": "프리미엄으로 나의 식사 인사이트를\n모두 확인하세요",
-      "premiumCta": "프리미엄 플랜 보기",
-      "shareOfTotal": "전체의 {percent}%"
+    "insight": {
+      "topGenreTitle": "가장 많이 먹은 장르",
+      "topAreaTitle": "가장 자주 간 장소",
+      "mealCountUnit": "{count}끼",
+      "favoriteDishTitle": "가장 좋아하는 한 접시",
+      "lockedDiscoveriesCta": "나의 식생활을 더 자세히 보기",
+      "footprintLockedHint": "얼마나 멀리 먹어 왔는지 더 자세히 보기",
+      "yearStoryTitle": "나의 {year}년 식 경험",
+      "yearStorySubtitle": "한 해의 식사를 한눈에 돌아보기",
+      "yearNewPlacesTitle": "그해 처음 간 장소",
+      "yearCompareUp": "전년보다 +{count}끼",
+      "yearCompareDown": "전년보다 {count}끼 적음",
+      "yearCompareNew": "FoodGram을 시작한 해",
+      "monthlyRecordsTitle": "월별 기록"
     }
   },
   "myMapShare": {

@@ -475,16 +475,20 @@
     "firstVisitedPrefecture": "จังหวัดแรกที่ไป",
     "noPrefectureRanking": "ยังไม่มีสถิติจังหวัด",
     "noFirstPrefecture": "ยังไม่มีจังหวัดที่ไป",
-    "foodTraits": {
-      "noData": "ไม่มีข้อมูล",
-      "morningLabel": "เช้า (5-10 น.)",
-      "lunchLabel": "กลางวัน (11-14 น.)",
-      "afternoonLabel": "บ่าย (15-17 น.)",
-      "eveningLabel": "เย็น (18-21 น.)",
-      "lateNightLabel": "ดึก (22-4 น.)",
-      "lockedDescription": "ปลดล็อกข้อมูลเชิงลึกการกินทั้งหมดของคุณ\nด้วย Premium",
-      "premiumCta": "ดูแพลน Premium",
-      "shareOfTotal": "{percent}% ของทั้งหมด"
+    "insight": {
+      "topGenreTitle": "ประเภทที่กินบ่อยที่สุด",
+      "topAreaTitle": "สถานที่ที่ไปบ่อยที่สุด",
+      "mealCountUnit": "{count} มื้อ",
+      "favoriteDishTitle": "จานโปรดของคุณ",
+      "lockedDiscoveriesCta": "ดูลักษณะการกินของคุณให้ละเอียดขึ้น",
+      "footprintLockedHint": "ดูว่าการเดินทางด้านอาหารของคุณไปได้ไกลแค่ไหน",
+      "yearStoryTitle": "ประสบการณ์อาหารปี {year} ของคุณ",
+      "yearStorySubtitle": "ย้อนดูหนึ่งปีของการกิน",
+      "yearNewPlacesTitle": "สถานที่ไปครั้งแรกในปีนั้น",
+      "yearCompareUp": "มากกว่าปีก่อน {count} มื้อ",
+      "yearCompareDown": "น้อยกว่าปีก่อน {count} มื้อ",
+      "yearCompareNew": "ปีที่คุณเริ่มใช้ FoodGram",
+      "monthlyRecordsTitle": "บันทึกรายเดือน"
     }
   },
   "myMapShare": {

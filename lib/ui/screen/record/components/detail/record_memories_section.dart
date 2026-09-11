@@ -48,17 +48,12 @@ class RecordTodayMemoriesSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              const Gap(6),
-              Text(
-                t.myMapRecord.todayMemoriesTitle,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+          Text(
+            t.myMapRecord.todayMemoriesTitle,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const Gap(8),
           _LatestMemoryCard(post: latestPost),
@@ -165,35 +160,23 @@ Posts? recordLatestPost(List<Posts> posts) {
   return sorted.first;
 }
 
-/// 先頭カードに出す投稿（最近の1件）
-List<Posts> recordFeaturedMemoryPosts(List<Posts> posts) {
-  final latest = recordLatestPost(posts);
-  return latest == null ? const [] : [latest];
-}
-
 /// 最近の記録（過去の思い出）セクション
 class RecordRecentSection extends ConsumerWidget {
   const RecordRecentSection({
     required this.cardColor,
     required this.pastPosts,
-    required this.onSeeMore,
     super.key,
   });
 
   final Color cardColor;
   final List<Posts> pastPosts;
-  final VoidCallback onSeeMore;
-
-  static const _previewCount = 8;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     if (pastPosts.isEmpty) {
       return const SizedBox.shrink();
     }
-    final previewPosts = pastPosts.take(_previewCount).toList();
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
@@ -211,55 +194,29 @@ class RecordRecentSection extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  t.myMapRecord.pastMemoriesLabel,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: onSeeMore,
-                child: Row(
-                  children: [
-                    Text(
-                      t.seeMore,
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: isDark ? Colors.white60 : Colors.black45,
-                      ),
-                    ),
-                    Icon(
-                      Icons.chevron_right_rounded,
-                      size: 18,
-                      color: isDark ? Colors.white60 : Colors.black45,
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          Text(
+            t.myMapRecord.pastMemoriesLabel,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const Gap(12),
           SizedBox(
             height: 130,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              itemCount: previewPosts.length,
+              itemCount: pastPosts.length,
               separatorBuilder: (_, __) => const Gap(12),
               itemBuilder: (context, index) {
-                final post = previewPosts[index];
+                final post = pastPosts[index];
                 return _PastMemoryCard(
                   post: post,
                   onTap: () => _openRecordPost(
                     context: context,
                     ref: ref,
                     posts: pastPosts,
-                    index: pastPosts.indexWhere((item) => item.id == post.id),
+                    index: index,
                   ),
                 );
               },
@@ -420,127 +377,6 @@ class _PastMemoryCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-/// 記録タブ：過去の思い出1行（一覧画面用）
-class RecordRecentListTile extends StatelessWidget {
-  const RecordRecentListTile({
-    required this.post,
-    this.onTap,
-    super.key,
-  });
-
-  final Posts post;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final localeTag = Localizations.localeOf(context).toLanguageTag();
-    final dateText = DateFormat('yyyy/M/d', localeTag).format(post.createdAt);
-    final foodName = post.foodName.trim();
-    final restaurant = post.restaurant.trim();
-    final tags = parseFoodTagIds(post.foodTag).take(3).toList();
-    final price = post.formattedPriceDisplay;
-    final card = Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1D1D1D) : const Color(0xFFF8FAFC),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: isDark ? Colors.white10 : const Color(0xFFECECEC),
-        ),
-      ),
-      child: Row(
-        children: [
-          RecordPostImage(post: post, size: 72),
-          const Gap(12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  dateText,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.white54 : Colors.black45,
-                  ),
-                ),
-                if (foodName.isNotEmpty) ...[
-                  const Gap(3),
-                  Text(
-                    foodName,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 15,
-                    ),
-                  ),
-                ],
-                if (restaurant.isNotEmpty) ...[
-                  const Gap(3),
-                  Text(
-                    restaurant,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: isDark ? Colors.white70 : Colors.black54,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-                if (price.isNotEmpty || tags.isNotEmpty) ...[
-                  const Gap(4),
-                  Row(
-                    children: [
-                      if (price.isNotEmpty)
-                        Padding(
-                          padding: EdgeInsets.only(
-                            right: tags.isEmpty ? 0 : 6,
-                          ),
-                          child: Text(
-                            price,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                              color: isDark ? Colors.white70 : Colors.black54,
-                            ),
-                          ),
-                        ),
-                      for (final tag in tags) ...[
-                        FoodTagIcon(
-                          tagId: tag,
-                          size: 16,
-                          textStyle: const TextStyle(fontSize: 14),
-                        ),
-                        const Gap(4),
-                      ],
-                    ],
-                  ),
-                ],
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-    if (onTap == null) {
-      return card;
-    }
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(14),
-        child: card,
       ),
     );
   }
