@@ -138,16 +138,7 @@ class DetailPostRepository extends _$DetailPostRepository {
           final filtered = picked
               .where((m) => !blockList.contains(m['user_id'] as String? ?? ''))
               .toList(growable: false);
-          final futures = filtered.map((postData) async {
-            final userId = postData['user_id'] as String?;
-            if (userId == null) {
-              return null;
-            }
-            final userData = await service.getUserData(userId);
-            return Model(Users.fromJson(userData), Posts.fromJson(postData));
-          }).toList();
-          final models =
-              (await Future.wait<Model?>(futures)).whereType<Model>().toList();
+          final models = await _modelsFromPostRows(filtered);
           return Success<List<Model>, Exception>(models);
         },
         failure: (e) async => Failure<List<Model>, Exception>(e),
@@ -177,16 +168,7 @@ class DetailPostRepository extends _$DetailPostRepository {
           final filtered = data
               .where((m) => !blockList.contains(m['user_id'] as String? ?? ''))
               .toList(growable: false);
-          final futures = filtered.map((postData) async {
-            final userId = postData['user_id'] as String?;
-            if (userId == null) {
-              return null;
-            }
-            final userData = await service.getUserData(userId);
-            return Model(Users.fromJson(userData), Posts.fromJson(postData));
-          }).toList();
-          final models =
-              (await Future.wait<Model?>(futures)).whereType<Model>().toList();
+          final models = await _modelsFromPostRows(filtered);
           return Success<List<Model>, Exception>(models);
         },
         failure: (e) async => Failure<List<Model>, Exception>(e),
@@ -616,5 +598,26 @@ class DetailPostRepository extends _$DetailPostRepository {
       },
       failure: (_) => const [],
     );
+  }
+
+  Future<List<Model>> _modelsFromPostRows(
+    List<Map<String, dynamic>> rows,
+  ) async {
+    final userIds = rows
+        .map((row) => row['user_id'] as String?)
+        .whereType<String>();
+    final usersById = await ref
+        .read(detailPostServiceProvider.notifier)
+        .getUsersData(userIds);
+    final models = <Model>[];
+    for (final row in rows) {
+      final userId = row['user_id'] as String?;
+      final userData = userId == null ? null : usersById[userId];
+      if (userData == null) {
+        continue;
+      }
+      models.add(Model(Users.fromJson(userData), Posts.fromJson(row)));
+    }
+    return models;
   }
 }

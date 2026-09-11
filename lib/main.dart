@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -42,6 +43,21 @@ void main() async {
 }
 
 Future<void> _initializeAppDateFormatting() async {
+  final current = LocaleSettings.currentLocale;
+  final startupLocales = <String>{
+    current.languageCode,
+    if (current.countryCode != null && current.countryCode!.isNotEmpty)
+      '${current.languageCode}_${current.countryCode}',
+    current.flutterLocale.toString(),
+    'en',
+  };
+  await Future.wait(startupLocales.map(initializeDateFormatting));
+  unawaited(_initializeRemainingDateFormatting(startupLocales));
+}
+
+Future<void> _initializeRemainingDateFormatting(
+  Set<String> alreadyLoaded,
+) async {
   final locales = <String>{
     for (final locale in AppLocale.values) ...[
       locale.languageCode,
@@ -49,7 +65,10 @@ Future<void> _initializeAppDateFormatting() async {
         '${locale.languageCode}_${locale.countryCode}',
       locale.flutterLocale.toString(),
     ],
-  };
+  }..removeAll(alreadyLoaded);
+  if (locales.isEmpty) {
+    return;
+  }
   await Future.wait(locales.map(initializeDateFormatting));
 }
 

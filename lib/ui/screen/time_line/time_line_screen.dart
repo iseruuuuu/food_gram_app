@@ -7,9 +7,9 @@ import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
-import 'package:food_gram_app/core/supabase/user/providers/friend_user_ids_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/friend_user_ids_provider.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
@@ -80,8 +80,12 @@ class TimeLineScreen extends HookConsumerWidget {
               .read(firebaseAnalyticsServiceProvider)
               .logEventUnawaited(name: AnalyticsEvent.timelineRefresh);
           recommendSeed.value = recommendSeed.value + 1;
-          await Future<void>.delayed(const Duration(seconds: 1));
           refreshProviders();
+          try {
+            await ref.read(postsStreamProvider.future);
+          } on Object {
+            // 再取得失敗時もインジケータは閉じる
+          }
         },
         child: CustomScrollView(
           controller: scrollController,

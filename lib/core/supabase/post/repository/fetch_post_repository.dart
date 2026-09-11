@@ -22,7 +22,9 @@ class FetchPostRepository extends _$FetchPostRepository {
     required Posts initialPost,
   }) async {
     try {
-      final posts = await ref.read(getNearByPostsProvider(null).future);
+      final posts = List<Posts>.of(
+        await ref.read(mapRepositoryProvider.future),
+      );
       // 初期投稿と同一座標を起点に距離昇順
       posts.sort((a, b) {
         final da = geoKilometers(

@@ -106,15 +106,23 @@ class MyProfileScreen extends HookConsumerWidget {
                   color: Theme.of(context).colorScheme.primary,
                   backgroundColor: Theme.of(context).colorScheme.surface,
                   onRefresh: () async {
-                    await Future<void>.delayed(const Duration(seconds: 1));
                     ref.invalidate(myPostStreamProvider);
                     final uid = ref.read(currentUserProvider);
                     if (uid != null) {
                       ref.invalidate(postCountRankProvider(uid));
                     }
-                    await ref
-                        .read(myProfileViewModelProvider().notifier)
-                        .getData();
+                    try {
+                      await Future.wait<void>([
+                        ref
+                            .read(myPostStreamProvider.future)
+                            .then<void>((_) {}),
+                        ref
+                            .read(myProfileViewModelProvider().notifier)
+                            .getData(),
+                      ]);
+                    } on Object {
+                      // 再取得失敗時もインジケータは閉じる
+                    }
                   },
                   child: CustomScrollView(
                     controller: scrollController,

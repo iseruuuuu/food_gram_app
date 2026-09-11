@@ -25,7 +25,10 @@ class NotificationRepository {
     }
     final ids = keys.map((k) => k.postId).toSet().toList();
     try {
-      final rows = await _supabase.from('posts').select().inFilter('id', ids);
+      final rows = await _supabase
+          .from('posts')
+          .select(postsSelectColumns)
+          .inFilter('id', ids);
       final postsById = <int, Posts>{};
       for (final row in rows) {
         final map = Map<String, dynamic>.from(row as Map);

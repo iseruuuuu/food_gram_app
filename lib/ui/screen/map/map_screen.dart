@@ -55,7 +55,7 @@ class MapScreen extends HookConsumerWidget {
     final isLocationEnabled =
         loc != null && (loc.latitude != 0 || loc.longitude != 0);
     final postsFailed = mapService.hasError && mapService.valueOrNull == null;
-    final dataReady = location.hasValue && mapService.hasValue;
+    final dataReady = mapService.hasValue;
     final showMapLoading = !postsFailed && !dataReady;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final fabBg = isDark ? Colors.black : Colors.white;

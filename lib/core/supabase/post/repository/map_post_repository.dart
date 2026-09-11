@@ -6,7 +6,6 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/post/services/map_post_service.dart';
 import 'package:maplibre_gl/maplibre_gl.dart' show LatLng;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'map_post_repository.g.dart';
 
@@ -53,14 +52,7 @@ Future<List<Posts>> mapRepository(Ref ref) async {
 /// [centerLatLng] は呼び出し互換のため残している（取得内容には使わない）。
 @riverpod
 Future<List<Posts>> getNearByPosts(Ref ref, LatLng? centerLatLng) async {
-  try {
-    final data = await ref
-        .read(mapPostServiceProvider.notifier)
-        .getNearbyPosts(centerLatLng: centerLatLng);
-    return data.map(Posts.fromJson).toList();
-  } on PostgrestException catch (_) {
-    return [];
-  }
+  return ref.watch(mapRepositoryProvider.future);
 }
 
 /// 特定のレストランの投稿一覧を取得するProvider
@@ -76,18 +68,21 @@ Future<Result<List<Model>, Exception>> restaurantReviews(
   return result.when(
     success: (data) async {
       final service = ref.read(mapPostServiceProvider.notifier);
-      final futures = data.map((postData) async {
+      final userIds = data
+          .map((postData) => postData['user_id'] as String?)
+          .whereType<String>();
+      final usersById = await service.getUsersData(userIds);
+      final models = <Model>[];
+      for (final postData in data) {
         final userId = postData['user_id'] as String?;
-        if (userId == null) {
-          return null;
+        final userData = userId == null ? null : usersById[userId];
+        if (userData == null) {
+          continue;
         }
-        final userData = await service.getUserData(userId);
-        final user = Users.fromJson(userData);
-        final posts = Posts.fromJson(postData);
-        return Model(user, posts);
-      }).toList();
-      final models =
-          (await Future.wait<Model?>(futures)).whereType<Model>().toList();
+        models.add(
+          Model(Users.fromJson(userData), Posts.fromJson(postData)),
+        );
+      }
       return Success<List<Model>, Exception>(models);
     },
     failure: Failure<List<Model>, Exception>.new,

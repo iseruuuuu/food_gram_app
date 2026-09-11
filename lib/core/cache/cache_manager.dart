@@ -1,5 +1,3 @@
-import 'dart:async';
-
 class CacheEntry<T> {
   CacheEntry({
     required this.data,
@@ -17,6 +15,7 @@ class CacheManager {
   static final CacheManager _instance = CacheManager._internal();
 
   final _cache = <String, CacheEntry<dynamic>>{};
+  final _inflight = <String, Future<dynamic>>{};
 
   // デフォルトのキャッシュ期間
   static const defaultDuration = Duration(minutes: 5);
@@ -26,24 +25,60 @@ class CacheManager {
     required Future<T> Function() fetcher,
     Duration? duration,
   }) async {
-    // キャッシュが存在し、有効期限内の場合はキャッシュから返す
-    if (_cache.containsKey(key)) {
-      final entry = _cache[key]!;
+    final entry = _cache[key];
+    if (entry != null) {
       if (!entry.isExpired) {
         return entry.data as T;
       }
-      // 期限切れの場合はキャッシュを削除
       _cache.remove(key);
     }
 
-    // データを取得して新しくキャッシュに保存
-    final data = await fetcher();
+    final existing = _inflight[key];
+    if (existing != null) {
+      return await existing as T;
+    }
+
+    final future = fetcher().then((data) {
+      _cache[key] = CacheEntry<T>(
+        data: data,
+        expiryTime: DateTime.now().add(duration ?? defaultDuration),
+      );
+      return data;
+    });
+    _inflight[key] = future;
+    try {
+      return await future;
+    } finally {
+      _inflight.removeWhere(
+        (inflightKey, inflightFuture) =>
+            inflightKey == key && identical(inflightFuture, future),
+      );
+    }
+  }
+
+  /// 有効なキャッシュがあれば同期的に返す。期限切れ・未登録は null。
+  T? getIfPresent<T>(String key) {
+    final entry = _cache[key];
+    if (entry == null) {
+      return null;
+    }
+    if (entry.isExpired) {
+      _cache.remove(key);
+      return null;
+    }
+    return entry.data as T;
+  }
+
+  /// 取得済みデータをキャッシュに載せる（登録確認などで同じ行を再利用する）。
+  void put<T>({
+    required String key,
+    required T data,
+    Duration? duration,
+  }) {
     _cache[key] = CacheEntry<T>(
       data: data,
       expiryTime: DateTime.now().add(duration ?? defaultDuration),
     );
-
-    return data;
   }
 
   // 特定のキーのキャッシュを削除
@@ -54,6 +89,7 @@ class CacheManager {
   // キャッシュ全体をクリア
   void clearAll() {
     _cache.clear();
+    _inflight.clear();
   }
 
   // 期限切れのキャッシュをクリア
@@ -87,6 +123,7 @@ class CacheManager {
     invalidate('heart_amount_${userId}_excl_anon');
     invalidate('post_count_$userId');
     invalidate('post_count_rank_$userId');
+    invalidate('my_map_posts_$userId');
   }
 
   /// レストラン関連のキャッシュを無効化

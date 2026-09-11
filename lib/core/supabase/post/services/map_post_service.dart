@@ -1,7 +1,9 @@
 import 'package:food_gram_app/core/cache/cache_manager.dart';
+import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
+import 'package:food_gram_app/core/supabase/user/services/user_service.dart';
 import 'package:logger/logger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart' as maplibre;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -24,12 +26,14 @@ class MapPostService extends _$MapPostService {
 
   /// ユーザーIDからユーザーデータを取得（Map向けに提供）
   Future<Map<String, dynamic>> getUserData(String userId) async {
-    return _cacheManager.get<Map<String, dynamic>>(
-      key: 'user_data_$userId',
-      fetcher: () =>
-          supabase.from('users').select().eq('user_id', userId).single(),
-      duration: const Duration(minutes: 10),
-    );
+    return ref.read(userServiceProvider.notifier).getOtherUser(userId);
+  }
+
+  /// 複数ユーザーをまとめて取得する
+  Future<Map<String, Map<String, dynamic>>> getUsersData(
+    Iterable<String> userIds,
+  ) async {
+    return ref.read(userServiceProvider.notifier).getUsersByIds(userIds);
   }
 
   /// マップ表示用：座標付近の投稿一覧を取得
@@ -44,7 +48,7 @@ class MapPostService extends _$MapPostService {
           fetcher: () async {
             final posts = await supabase
                 .from('posts')
-                .select()
+                .select(postsSelectColumns)
                 .gte('lat', lat - 0.00001)
                 .lte('lat', lat + 0.00001)
                 .gte('lng', lng - 0.00001)
@@ -69,14 +73,11 @@ class MapPostService extends _$MapPostService {
     return _cacheManager.get<List<Map<String, dynamic>>>(
       key: 'map_posts',
       fetcher: () async {
-        final blockListState = ref.watch(blockListProvider);
-        List<String> currentBlockList;
-        if (blockListState is AsyncData<List<String>>) {
-          currentBlockList = blockListState.value;
-        } else {
-          currentBlockList = <String>[];
-        }
-        final posts = await supabase.from('posts').select().order('created_at');
+        final currentBlockList = await ref.read(blockListProvider.future);
+        final posts = await supabase
+            .from('posts')
+            .select(postsSelectColumns)
+            .order('created_at');
         return posts
             .where((post) => !currentBlockList.contains(post['user_id']))
             .toList();
@@ -102,7 +103,7 @@ class MapPostService extends _$MapPostService {
       fetcher: () async {
         final posts = await supabase
             .from('posts')
-            .select()
+            .select(postsSelectColumns)
             .eq('restaurant', restaurantName)
             .order('created_at', ascending: false);
         return posts
@@ -125,7 +126,7 @@ class MapPostService extends _$MapPostService {
       fetcher: () async {
         final posts = await supabase
             .from('posts')
-            .select()
+            .select(postsSelectColumns)
             .eq('user_id', user)
             .order('created_at');
         return posts;

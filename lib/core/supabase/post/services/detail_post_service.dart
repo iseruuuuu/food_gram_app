@@ -1,7 +1,9 @@
 import 'package:food_gram_app/core/cache/cache_manager.dart';
+import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
+import 'package:food_gram_app/core/supabase/user/services/user_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -26,8 +28,11 @@ class DetailPostService extends _$DetailPostService {
         await _cacheManager.get<Map<String, dynamic>>(
           key: 'post_data_$postId',
           fetcher: () async {
-            final postData =
-                await supabase.from('posts').select().eq('id', postId).single();
+            final postData = await supabase
+                .from('posts')
+                .select(postsSelectColumns)
+                .eq('id', postId)
+                .single();
             final userData = await supabase
                 .from('users')
                 .select()
@@ -59,7 +64,7 @@ class DetailPostService extends _$DetailPostService {
       fetcher: () async {
         var query = supabase
             .from('posts')
-            .select()
+            .select(postsSelectColumns)
             .eq('user_id', userId)
             .eq('is_anonymous', false);
         if (beforeId != null) {
@@ -81,12 +86,14 @@ class DetailPostService extends _$DetailPostService {
 
   /// ユーザーデータを取得
   Future<Map<String, dynamic>> getUserData(String userId) async {
-    return _cacheManager.get<Map<String, dynamic>>(
-      key: 'user_data_$userId',
-      fetcher: () =>
-          supabase.from('users').select().eq('user_id', userId).single(),
-      duration: const Duration(minutes: 10),
-    );
+    return ref.read(userServiceProvider.notifier).getOtherUser(userId);
+  }
+
+  /// 複数ユーザーをまとめて取得する
+  Future<Map<String, Map<String, dynamic>>> getUsersData(
+    Iterable<String> userIds,
+  ) async {
+    return ref.read(userServiceProvider.notifier).getUsersByIds(userIds);
   }
 
   /// 指定した投稿IDより古い投稿のリストを取得する（件数指定可能・カテゴリフィルタは呼び出し側で実施）
@@ -97,7 +104,7 @@ class DetailPostService extends _$DetailPostService {
     try {
       final prevPosts = await supabase
           .from('posts')
-          .select()
+          .select(postsSelectColumns)
           .lt('id', currentPostId)
           .order('id', ascending: false)
           .limit(limit);
@@ -116,7 +123,7 @@ class DetailPostService extends _$DetailPostService {
     try {
       final nextPosts = await supabase
           .from('posts')
-          .select()
+          .select(postsSelectColumns)
           .gt('id', currentPostId)
           .order('id', ascending: true)
           .limit(limit);
@@ -138,7 +145,7 @@ class DetailPostService extends _$DetailPostService {
     try {
       var query = supabase
           .from('posts')
-          .select()
+          .select(postsSelectColumns)
           .neq('id', currentPostId)
           .gte('lat', lat - 0.00001)
           .lte('lat', lat + 0.00001)

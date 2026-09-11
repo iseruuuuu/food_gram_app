@@ -1,4 +1,5 @@
 import 'package:food_gram_app/core/cache/cache_manager.dart';
+import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:logger/logger.dart';
@@ -26,7 +27,10 @@ Future<List<Map<String, dynamic>>> fetchStoredPostRowsForIds(
     key: 'saved_posts_${sortedIds.join('_')}',
     fetcher: () async {
       final rows =
-          await supabase.from('posts').select().inFilter('id', sortedIds);
+          await supabase
+              .from('posts')
+              .select(postsSelectColumns)
+              .inFilter('id', sortedIds);
       final out = <Map<String, dynamic>>[];
       for (final row in rows) {
         out.add(Map<String, dynamic>.from(row as Map));
@@ -54,8 +58,10 @@ class FetchPostService extends _$FetchPostService {
   Future<List<Map<String, dynamic>>> getPosts() async {
     return _cacheManager.get<List<Map<String, dynamic>>>(
       key: 'all_posts',
-      fetcher: () =>
-          supabase.from('posts').select().order('created_at', ascending: false),
+      fetcher: () => supabase
+          .from('posts')
+          .select(postsSelectColumns)
+          .order('created_at', ascending: false),
       duration: const Duration(minutes: 2),
     );
   }
@@ -66,7 +72,7 @@ class FetchPostService extends _$FetchPostService {
       key: 'user_posts_$userId',
       fetcher: () => supabase
           .from('posts')
-          .select()
+          .select(postsSelectColumns)
           .eq('user_id', userId)
           .eq('is_anonymous', false)
           .order('created_at', ascending: false),
@@ -90,7 +96,7 @@ class FetchPostService extends _$FetchPostService {
       fetcher: () async {
         final posts = await supabase
             .from('posts')
-            .select()
+            .select(postsSelectColumns)
             .eq('restaurant', restaurant)
             .order('created_at', ascending: false);
         return posts
