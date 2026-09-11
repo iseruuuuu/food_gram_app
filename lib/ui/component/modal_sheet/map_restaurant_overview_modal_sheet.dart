@@ -8,6 +8,8 @@ import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_p
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart'
     as map_repo;
 import 'package:food_gram_app/core/theme/app_theme.dart';
+import 'package:food_gram_app/core/utils/geo_distance.dart';
+import 'package:food_gram_app/core/utils/nearby_restaurant_posts.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
@@ -134,7 +136,8 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
           if (nearbyAsync != null)
             nearbyAsync.when(
               data: (posts) {
-                if (posts.isEmpty) {
+                final center = cameraCenter;
+                if (posts.isEmpty || center == null) {
                   return const SliverToBoxAdapter(
                     child: Padding(
                       padding: EdgeInsets.all(24),
@@ -142,30 +145,24 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                     ),
                   );
                 }
-                final grouped = _groupByRestaurantName(posts);
                 final filter = ref.watch(mapCategoryFilterProvider);
                 final myPostsOnly = ref.watch(mapMyPostsOnlyProvider);
                 final currentUserId = ref.watch(currentUserProvider);
-                final filteredGroups = grouped
-                    .map(
-                      (g) => RestaurantGroup(
-                        name: g.name,
-                        lat: g.lat,
-                        lng: g.lng,
-                        posts: g.posts
-                            .where(
-                              (p) => postVisibleOnMap(
-                                post: p,
-                                filter: filter,
-                                myPostsOnly: myPostsOnly,
-                                currentUserId: currentUserId,
-                              ),
-                            )
-                            .toList(),
+                final visiblePosts = posts
+                    .where(
+                      (p) => postVisibleOnMap(
+                        post: p,
+                        filter: filter,
+                        myPostsOnly: myPostsOnly,
+                        currentUserId: currentUserId,
                       ),
                     )
-                    .where((g) => g.posts.isNotEmpty)
                     .toList();
+                final filteredGroups = _groupByRestaurantName(
+                  visiblePosts,
+                  centerLat: center.latitude,
+                  centerLng: center.longitude,
+                ).take(nearbyRestaurantLimit).toList();
                 if (filteredGroups.isEmpty) {
                   return const SliverToBoxAdapter(
                     child: Padding(
@@ -399,20 +396,21 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
 }
 
 /// 「同じレストラン」とみなすために、店名と座標の近さでグループ化する。
-/// 代表投稿が最新になるよう、先に createdAt 降順へ揃えてからまとめる。
-List<RestaurantGroup> _groupByRestaurantName(List<Posts> posts) {
-  const threshold = 0.0003; // 約 30m 前後を想定
-  final newestFirst = [...posts]
-    ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+/// 代表投稿は最新のまま、一覧はカメラ中心から近い店順にする。
+List<RestaurantGroup> _groupByRestaurantName(
+  List<Posts> posts, {
+  required double centerLat,
+  required double centerLng,
+}) {
   final groups = <RestaurantGroup>[];
-  for (final p in newestFirst) {
+  for (final p in posts) {
     final name = p.restaurant.trim();
     // 既存グループの中から「同じ店」とみなせるものを探す
     final existingIndex = groups.indexWhere(
       (g) =>
           g.name.trim() == name &&
-          (p.lat - g.lat).abs() <= threshold &&
-          (p.lng - g.lng).abs() <= threshold,
+          (p.lat - g.lat).abs() <= nearbyRestaurantCoordThreshold &&
+          (p.lng - g.lng).abs() <= nearbyRestaurantCoordThreshold,
     );
     if (existingIndex == -1) {
       groups.add(
@@ -425,7 +423,8 @@ List<RestaurantGroup> _groupByRestaurantName(List<Posts> posts) {
       );
     } else {
       final existing = groups[existingIndex];
-      final updatedPosts = [...existing.posts, p];
+      final updatedPosts = [...existing.posts, p]
+        ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
       groups[existingIndex] = RestaurantGroup(
         name: existing.name,
         lat: existing.lat,
@@ -435,5 +434,30 @@ List<RestaurantGroup> _groupByRestaurantName(List<Posts> posts) {
     }
   }
 
+  groups.sort((a, b) {
+    final da = _closestDistanceKm(a, centerLat, centerLng);
+    final db = _closestDistanceKm(b, centerLat, centerLng);
+    return da.compareTo(db);
+  });
   return groups;
+}
+
+double _closestDistanceKm(
+  RestaurantGroup group,
+  double centerLat,
+  double centerLng,
+) {
+  var minDistance = double.infinity;
+  for (final post in group.posts) {
+    final distance = geoKilometers(
+      lat1: centerLat,
+      lon1: centerLng,
+      lat2: post.lat,
+      lon2: post.lng,
+    );
+    if (distance < minDistance) {
+      minDistance = distance;
+    }
+  }
+  return minDistance;
 }

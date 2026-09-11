@@ -2,9 +2,6 @@ import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
-import 'package:food_gram_app/core/utils/geo_distance.dart';
-import 'package:food_gram_app/core/utils/location/locale_default_location.dart';
-import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:logger/logger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart' as maplibre;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -88,75 +85,12 @@ class MapPostService extends _$MapPostService {
     );
   }
 
-  /// 指定座標（または現在地・端末Localeの都市中心）から近い投稿を20件取得
-  /// [centerLatLng] null の場合は現在地、現在地が (0,0) の場合はLocaleフォールバックを使用
+  /// 近くの店舗一覧用：全投稿（ブロック除外）を返す。
+  /// カテゴリ等の可視性フィルタと近い順の20件選定は overview 側で行う。
   Future<List<Map<String, dynamic>>> getNearbyPosts({
     maplibre.LatLng? centerLatLng,
   }) async {
-    double lat;
-    double lng;
-    if (centerLatLng != null &&
-        (centerLatLng.latitude != 0 || centerLatLng.longitude != 0)) {
-      lat = centerLatLng.latitude;
-      lng = centerLatLng.longitude;
-    } else {
-      final currentLocation = await ref.read(locationProvider.future);
-      if (currentLocation == const maplibre.LatLng(0, 0)) {
-        final fallback = defaultLocationFromDeviceLocale();
-        lat = fallback.latitude;
-        lng = fallback.longitude;
-      } else {
-        lat = currentLocation.latitude;
-        lng = currentLocation.longitude;
-      }
-    }
-
-    // キャッシュキーを小数点4桁に丸めてヒット率を上げる
-    final latRounded = (lat * 10000).round() / 10000;
-    final lngRounded = (lng * 10000).round() / 10000;
-    final cacheKey =
-        'nearby_posts_${latRounded.toStringAsFixed(4)}_'
-        '${lngRounded.toStringAsFixed(4)}';
-
-    return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: cacheKey,
-      fetcher: () async {
-        final posts = await supabase
-            .from('posts')
-            .select()
-            .order('created_at', ascending: false);
-        final filteredPosts = posts
-            .where((post) => !blockList.contains(post['user_id']))
-            .toList();
-        final uniqueLocationPosts = <String, Map<String, dynamic>>{};
-        for (final post in filteredPosts) {
-          final locationKey = '${post['lat']}_${post['lng']}';
-          if (!uniqueLocationPosts.containsKey(locationKey)) {
-            uniqueLocationPosts[locationKey] = post;
-          }
-        }
-
-        final postsWithDistance = uniqueLocationPosts.values.map((post) {
-          final distance = geoKilometers(
-            lat1: lat,
-            lon1: lng,
-            lat2: double.parse(post['lat'].toString()),
-            lon2: double.parse(post['lng'].toString()),
-          );
-          return {...post, 'distance': distance};
-        }).toList()
-          ..sort(
-            (a, b) =>
-                (a['distance'] as double).compareTo(b['distance'] as double),
-          );
-
-        return postsWithDistance.take(20).map((post) {
-          final result = Map<String, dynamic>.from(post)..remove('distance');
-          return result;
-        }).toList();
-      },
-      duration: const Duration(minutes: 5),
-    );
+    return getMapPosts();
   }
 
   /// レストラン名で投稿を取得（ブロック除外）
