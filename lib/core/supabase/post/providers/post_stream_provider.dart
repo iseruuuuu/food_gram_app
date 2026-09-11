@@ -137,8 +137,9 @@ Stream<List<Posts>> postsStream(Ref ref) async* {
   });
 }
 
-/// 自分の投稿の取得のためのStreamProvider
-@riverpod
+/// 自分の投稿の取得のためのStreamProvider。
+/// スプラッシュ先読み後も購読を維持するため keepAlive。
+@Riverpod(keepAlive: true)
 Stream<List<Posts>> myPostStream(Ref ref) {
   final supabase = ref.read(supabaseProvider);
   final user = ref.watch(currentUserProvider);

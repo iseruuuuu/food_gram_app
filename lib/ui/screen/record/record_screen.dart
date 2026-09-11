@@ -5,7 +5,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/utils/location/country_detector.dart';
-import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
@@ -25,7 +24,6 @@ class RecordScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(recordViewModelProvider);
-    final location = ref.watch(locationProvider);
     final mapService = ref.watch(myMapRepositoryProvider);
     final scrollController = useScrollController();
     useEffect(
@@ -44,26 +42,24 @@ class RecordScreen extends HookConsumerWidget {
       body: Stack(
         children: [
           AsyncValueSwitcher(
-            asyncValue: AsyncValueGroup.group2(location, mapService),
+            asyncValue: mapService,
             onLoading: const AppTabLoading.record(),
             errorType: TabLoadingType.record,
             onErrorTap: () {
-              ref
-                ..invalidate(locationProvider)
-                ..invalidate(myMapRepositoryProvider);
+              ref.invalidate(myMapRepositoryProvider);
             },
-            onData: (value) {
+            onData: (posts) {
               if (state.viewType == MapViewType.detail) {
                 return RecordDetailScreen(
-                  posts: value.$2,
+                  posts: posts,
                   scrollController: scrollController,
                 );
               }
               if (state.viewType == MapViewType.world) {
-                return RecordWorldScreen(posts: value.$2);
+                return RecordWorldScreen(posts: posts);
               }
               return RecordJapanScreen(
-                posts: value.$2,
+                posts: posts,
                 scrollController: scrollController,
               );
             },

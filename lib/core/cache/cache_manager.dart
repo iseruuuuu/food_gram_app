@@ -1,5 +1,3 @@
-import 'dart:async';
-
 class CacheEntry<T> {
   CacheEntry({
     required this.data,
@@ -11,49 +9,116 @@ class CacheEntry<T> {
   bool get isExpired => DateTime.now().isAfter(expiryTime);
 }
 
+class _InflightRequest {
+  _InflightRequest({
+    required this.generation,
+    required this.future,
+  });
+
+  final int generation;
+  final Future<dynamic> future;
+}
+
 class CacheManager {
   factory CacheManager() => _instance;
   CacheManager._internal();
   static final CacheManager _instance = CacheManager._internal();
 
   final _cache = <String, CacheEntry<dynamic>>{};
+  final _inflight = <String, _InflightRequest>{};
+  final _keyGeneration = <String, int>{};
+  int _epoch = 0;
 
   // デフォルトのキャッシュ期間
   static const defaultDuration = Duration(minutes: 5);
+
+  int _generationOf(String key) => _epoch + (_keyGeneration[key] ?? 0);
+
+  void _invalidateGeneration(String key) {
+    _keyGeneration[key] = (_keyGeneration[key] ?? 0) + 1;
+  }
 
   Future<T> get<T>({
     required String key,
     required Future<T> Function() fetcher,
     Duration? duration,
   }) async {
-    // キャッシュが存在し、有効期限内の場合はキャッシュから返す
-    if (_cache.containsKey(key)) {
-      final entry = _cache[key]!;
+    final entry = _cache[key];
+    if (entry != null) {
       if (!entry.isExpired) {
         return entry.data as T;
       }
-      // 期限切れの場合はキャッシュを削除
       _cache.remove(key);
     }
 
-    // データを取得して新しくキャッシュに保存
-    final data = await fetcher();
+    final generation = _generationOf(key);
+    final existing = _inflight[key];
+    if (existing != null && existing.generation == generation) {
+      return await existing.future as T;
+    }
+
+    final future = fetcher().then((data) {
+      if (_generationOf(key) == generation) {
+        _cache[key] = CacheEntry<T>(
+          data: data,
+          expiryTime: DateTime.now().add(duration ?? defaultDuration),
+        );
+      }
+      return data;
+    });
+    _inflight[key] = _InflightRequest(
+      generation: generation,
+      future: future,
+    );
+    try {
+      return await future;
+    } finally {
+      final current = _inflight[key];
+      if (current != null &&
+          current.generation == generation &&
+          identical(current.future, future)) {
+        _inflight.remove(key);
+      }
+    }
+  }
+
+  /// 有効なキャッシュがあれば同期的に返す。期限切れ・未登録は null。
+  T? getIfPresent<T>(String key) {
+    final entry = _cache[key];
+    if (entry == null) {
+      return null;
+    }
+    if (entry.isExpired) {
+      _cache.remove(key);
+      return null;
+    }
+    return entry.data as T;
+  }
+
+  /// 取得済みデータをキャッシュに載せる（登録確認などで同じ行を再利用する）。
+  void put<T>({
+    required String key,
+    required T data,
+    Duration? duration,
+  }) {
     _cache[key] = CacheEntry<T>(
       data: data,
       expiryTime: DateTime.now().add(duration ?? defaultDuration),
     );
-
-    return data;
+    _invalidateGeneration(key);
   }
 
   // 特定のキーのキャッシュを削除
   void invalidate(String key) {
     _cache.remove(key);
+    _invalidateGeneration(key);
   }
 
   // キャッシュ全体をクリア
   void clearAll() {
     _cache.clear();
+    _inflight.clear();
+    _epoch++;
   }
 
   // 期限切れのキャッシュをクリア
@@ -87,6 +152,7 @@ class CacheManager {
     invalidate('heart_amount_${userId}_excl_anon');
     invalidate('post_count_$userId');
     invalidate('post_count_rank_$userId');
+    invalidate('my_map_posts_$userId');
   }
 
   /// レストラン関連のキャッシュを無効化

@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/utils/default_username.dart';
@@ -292,11 +293,18 @@ class AccountService {
     if (_currentUserId == null) {
       return false;
     }
-    final response = await supabase
+    final row = await supabase
         .from('users')
         .select()
         .eq('user_id', _currentUserId!)
-        .count();
-    return response.data.isNotEmpty;
+        .maybeSingle();
+    if (row != null) {
+      CacheManager().put(
+        key: 'user_$_currentUserId',
+        data: Map<String, dynamic>.from(row),
+        duration: const Duration(minutes: 10),
+      );
+    }
+    return row != null;
   }
 }

@@ -35,7 +35,7 @@ class MapOverlayConstants {
   static const double pinTap = 16.5;
 
   /// ピンタップ時、下部カードに隠れないようカメラ中心を南へずらす量（px）
-  static const double pinTapFocusOffsetY = 130;
+  static const double pinTapFocusOffsetY = 170;
 
   /// 投稿詳細などから店舗マップへ
   static const double fromPostDetail = 17;
@@ -58,5 +58,5 @@ class MapOverlayConstants {
   static const double overviewExpandedSize = 0.52;
 
   /// 店舗詳細（Detail）の初期高さ比率（横並びカードが見える高さ）
-  static const double detailInitialChildSize = 0.34;
+  static const double detailInitialChildSize = 0.44;
 }

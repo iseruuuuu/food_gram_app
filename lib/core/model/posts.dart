@@ -4,6 +4,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'posts.freezed.dart';
 part 'posts.g.dart';
 
+/// `Posts.fromJson` に必要な posts テーブルのカラム。
+/// `select()` 全列より転送量を抑える。
+const postsSelectColumns =
+    'id, food_image, food_name, restaurant, comment, created_at, '
+    'lat, lng, user_id, heart, star, food_tag, is_anonymous, '
+    'price_amount, price_currency';
+
 @freezed
 abstract class Posts with _$Posts {
   const factory Posts({

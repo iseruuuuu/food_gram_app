@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -23,16 +25,12 @@ class UserService extends _$UserService {
   @override
   Future<void> build() async {}
 
+  static const _userCacheDuration = Duration(minutes: 10);
+  static const _userIdChunkSize = 50;
+
   /// 自分のユーザー情報を取得
   Future<Map<String, dynamic>> getCurrentUser() async {
-    return _cacheManager.get<Map<String, dynamic>>(
-      key: 'user_$_currentUserId',
-      fetcher: () => supabase
-          .from('users')
-          .select()
-          .eq('user_id', _currentUserId)
-          .single(),
-    );
+    return getOtherUser(_currentUserId);
   }
 
   /// 特定のユーザー情報を取得
@@ -41,7 +39,48 @@ class UserService extends _$UserService {
       key: 'user_$userId',
       fetcher: () =>
           supabase.from('users').select().eq('user_id', userId).single(),
+      duration: _userCacheDuration,
     );
+  }
+
+  /// 複数ユーザーをまとめて取得し、キャッシュと合流する。
+  Future<Map<String, Map<String, dynamic>>> getUsersByIds(
+    Iterable<String> userIds,
+  ) async {
+    final uniqueIds = userIds.where((id) => id.isNotEmpty).toSet();
+    final result = <String, Map<String, dynamic>>{};
+    final missing = <String>[];
+    for (final id in uniqueIds) {
+      final cached =
+          _cacheManager.getIfPresent<Map<String, dynamic>>('user_$id');
+      if (cached != null) {
+        result[id] = cached;
+      } else {
+        missing.add(id);
+      }
+    }
+    for (var i = 0; i < missing.length; i += _userIdChunkSize) {
+      final end = math.min(i + _userIdChunkSize, missing.length);
+      final chunk = missing.sublist(i, end);
+      final rows = await supabase.from('users').select().inFilter(
+            'user_id',
+            chunk,
+          );
+      for (final row in rows) {
+        final id = row['user_id'] as String?;
+        if (id == null || id.isEmpty) {
+          continue;
+        }
+        final mapped = Map<String, dynamic>.from(row);
+        _cacheManager.put(
+          key: 'user_$id',
+          data: mapped,
+          duration: _userCacheDuration,
+        );
+        result[id] = mapped;
+      }
+    }
+    return result;
   }
 
   /// ユーザーの統計情報を取得(Edge Function 経由)
@@ -97,7 +136,7 @@ class UserService extends _$UserService {
 
   /// 投稿から指定したユーザー情報を取得
   Future<Map<String, dynamic>> getUserFromPost(Posts post) async {
-    return supabase.from('users').select().eq('user_id', post.userId).single();
+    return getOtherUser(post.userId);
   }
 
   /// 全ユーザーの投稿数に基づく順位（1始まり）。RPC `get_post_count_rank` が必要。

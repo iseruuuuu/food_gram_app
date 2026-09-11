@@ -211,12 +211,14 @@ class TabScreen extends HookConsumerWidget {
       switch (selectedIndex) {
         case TabIndex.map:
           ref.invalidate(mapPostRepositoryProvider);
+          ref.invalidate(mapRepositoryProvider);
         case TabIndex.home:
           ref
             ..invalidate(postsStreamProvider)
             ..invalidate(blockListProvider);
         case TabIndex.myMap:
           ref.invalidate(myMapRepositoryProvider);
+          ref.invalidate(mapRepositoryProvider);
           final uid = ref.read(currentUserProvider);
           if (uid != null) {
             ref.read(userServiceProvider.notifier).invalidateUserCache(uid);

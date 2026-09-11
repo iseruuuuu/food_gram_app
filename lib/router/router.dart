@@ -20,6 +20,19 @@ part 'routes/time_line_routes.dart';
 part 'routes/my_profile_routes.dart';
 part 'routes/map_routes.dart';
 
+bool? _finishedTutorialCache;
+
+Future<bool> _isFinishedTutorial() async {
+  if (_finishedTutorialCache ?? false) {
+    return true;
+  }
+  final value = await Preference().getBool(PreferenceKey.isFinishedTutorial);
+  if (value) {
+    _finishedTutorialCache = true;
+  }
+  return value;
+}
+
 @riverpod
 GoRouter router(Ref ref) {
   final authState = ref.watch(authStateProvider);
@@ -30,9 +43,7 @@ GoRouter router(Ref ref) {
     observers: [analyticsObserver],
     redirect: (context, state) async {
       final location = state.matchedLocation;
-      final preference = Preference();
-      final isFinishedTutorial =
-          await preference.getBool(PreferenceKey.isFinishedTutorial);
+      final isFinishedTutorial = await _isFinishedTutorial();
 
       // スプラッシュは認証状態に関わらず表示し、遷移は SplashScreen 側で行う
       if (location == '/${RouterPath.splash}') {

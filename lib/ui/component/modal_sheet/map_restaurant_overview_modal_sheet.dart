@@ -49,12 +49,9 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
     if (selection != null) {
       return const SizedBox.shrink();
     }
-    // カメラに関わる処理（カメラの位置に応じて近隣のレストランを取得）
+    // カメラ中心は距離ソートにだけ使い、投稿取得はマップと共有する
     final cameraCenter = ref.watch(mapViewModelProvider).cameraCenterLatLng;
-    // カメラの位置に応じて近隣のレストランを取得
-    final nearbyAsync = cameraCenter == null
-        ? null
-        : ref.watch(map_repo.getNearByPostsProvider(cameraCenter));
+    final nearbyAsync = ref.watch(map_repo.mapRepositoryProvider);
 
     final sheetSize = openSheetSize(context);
     final minChildSize = (TabScreen.bottomNavHeightFraction(context) + 0.04)
@@ -126,18 +123,17 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
               ),
             ),
           ),
-          if (nearbyAsync == null)
+          if (cameraCenter == null)
             const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(24),
-                child: Center(child: CircularProgressIndicator()),
+              child: SizedBox(
+                height: 400,
+                child: AppNearbyRestaurantsSkeleton(),
               ),
-            ),
-          if (nearbyAsync != null)
+            )
+          else
             nearbyAsync.when(
               data: (posts) {
-                final center = cameraCenter;
-                if (posts.isEmpty || center == null) {
+                if (posts.isEmpty) {
                   return const SliverToBoxAdapter(
                     child: Padding(
                       padding: EdgeInsets.all(24),
@@ -160,8 +156,8 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                     .toList();
                 final filteredGroups = _groupByRestaurantName(
                   visiblePosts,
-                  centerLat: center.latitude,
-                  centerLng: center.longitude,
+                  centerLat: cameraCenter.latitude,
+                  centerLng: cameraCenter.longitude,
                 ).take(nearbyRestaurantLimit).toList();
                 if (filteredGroups.isEmpty) {
                   return const SliverToBoxAdapter(
@@ -348,12 +344,8 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                   padding: const EdgeInsets.all(24),
                   child: AppTabError.map(
                     compact: true,
-                    onRetry: () async {
-                      if (cameraCenter != null) {
-                        final _ = ref.refresh(
-                          map_repo.getNearByPostsProvider(cameraCenter),
-                        );
-                      }
+                    onRetry: () {
+                      ref.invalidate(map_repo.mapRepositoryProvider);
                     },
                   ),
                 ),
