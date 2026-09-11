@@ -16,6 +16,7 @@ import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
+import 'package:food_gram_app/ui/screen/tutorial/components/tutorial_notification_page.dart';
 import 'package:gap/gap.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
@@ -202,11 +203,8 @@ class TutorialScreen extends HookConsumerWidget {
                 subtitle: t.tutorial.locationSubTitle,
               ),
               // 6ページ目（通知の許可）
-              _TutorialContentPage(
-                lottie: Assets.lottie.notification,
-                lottieWidth: 400,
-                title: t.tutorial.notificationTitle,
-                subtitle: t.tutorial.notificationSubTitle,
+              TutorialNotificationPage(
+                isActive: currentPage == notificationPageIndex,
               ),
               // 7ページ目 アプリ開始（モチベーション）
               _TutorialContentPage(

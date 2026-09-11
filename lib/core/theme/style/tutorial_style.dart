@@ -11,11 +11,29 @@ class TutorialStyle {
     );
   }
 
+  static TextStyle notificationTitle(BuildContext context) {
+    return TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+      height: 1.4,
+      color: Theme.of(context).colorScheme.onSurface,
+    );
+  }
+
   static TextStyle subTitle(BuildContext context) {
     return TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.normal,
       color: Theme.of(context).colorScheme.onSurface,
+    );
+  }
+
+  static TextStyle notificationSubTitle(BuildContext context) {
+    return TextStyle(
+      fontSize: 15,
+      height: 1.55,
+      fontWeight: FontWeight.normal,
+      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.72),
     );
   }
 

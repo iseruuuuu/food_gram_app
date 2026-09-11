@@ -548,9 +548,19 @@
     "locationTitle": "Find food nearby",
     "locationSubTitle": "Discover popular spots and posts\nnear you in no time.",
     "locationButton": "Allow Location Access",
-    "notificationTitle": "Get likes and comments",
-    "notificationSubTitle": "We'll send you reactions\nand new discoveries.",
+    "notificationTitle": "Happy news\nfor your food journey.",
+    "notificationSubTitle": "Likes, comments, new posts, and more —\nFoodGram delivers them to you.",
     "notificationButton": "Turn on Notifications",
+    "notificationAppName": "FoodGram",
+    "notificationNow": "now",
+    "notificationSamples": {
+      "likeTitle": "Looks delicious! 😋",
+      "likeBody": "Sakura thinks it looks delicious.",
+      "commentTitle": "New comment 💬",
+      "commentBody": "Mio commented “I want to go again!”",
+      "reminderTitle": "#Did you post today's meal? 🍜",
+      "reminderBody": "Why not record today's lunch while you still remember it?"
+    },
     "nextButton": "Next",
     "agreeToTheTermsOfUse": "Please agree to the Terms of Use"
   },

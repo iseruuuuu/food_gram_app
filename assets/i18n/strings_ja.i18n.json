@@ -548,9 +548,19 @@
     "locationTitle": "近くの料理を見つけよう",
     "locationSubTitle": "近くで人気のお店や投稿を\nすぐに見つけられます。",
     "locationButton": "位置情報を許可",
-    "notificationTitle": "いいねやコメントを受け取ろう",
-    "notificationSubTitle": "リアクションや\n新しい発見をお届けします。",
+    "notificationTitle": "あなたの食体験に、\nうれしいお知らせを。",
+    "notificationSubTitle": "いいねやコメント、新しい投稿など、\nFoodGramからあなたにお届けします。",
     "notificationButton": "通知をオンにする",
+    "notificationAppName": "FoodGram",
+    "notificationNow": "今",
+    "notificationSamples": {
+      "likeTitle": "おいしそう！😋",
+      "likeBody": "さくらがおいしそう！と思っています。",
+      "commentTitle": "新しいコメント 💬",
+      "commentBody": "みおが「また行きたい！」とコメントしました。",
+      "reminderTitle": "#今日のごはん、もう投稿した？🍜",
+      "reminderBody": "今日のランチ、思い出せるうちに記録しませんか？"
+    },
     "nextButton": "次へ",
     "agreeToTheTermsOfUse": "利用規約に同意してください"
   },
