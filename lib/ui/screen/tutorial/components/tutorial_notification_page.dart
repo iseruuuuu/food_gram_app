@@ -67,7 +67,7 @@ class TutorialNotificationPage extends HookWidget {
                 ...List.generate(cards.length, (index) {
                   final sample = cards[index];
                   final start = index * 0.12;
-                  final end = (0.55 + index * 0.12).clamp(0.0, 1.0);
+                  final end = 0.55 + index * 0.12;
                   final curved = CurvedAnimation(
                     parent: animation,
                     curve: Interval(
