@@ -44,7 +44,6 @@ class EditViewModel extends _$EditViewModel {
     state = state.copyWith(
       number: int.parse(extractNumber(user.image)),
       initialImage: user.image,
-      favoriteTags: user.tag,
       isSubscribe: user.isSubscribe,
       user: user,
     );
@@ -66,7 +65,6 @@ class EditViewModel extends _$EditViewModel {
           image: state.number.toString(),
           uploadImage: uploadImage,
           imageBytes: imageBytes,
-          favoriteTags: state.user?.tag ?? state.favoriteTags,
         );
     var success = false;
     await result.when(
