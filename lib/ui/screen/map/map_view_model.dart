@@ -63,6 +63,9 @@ class MapViewModel extends _$MapViewModel {
       Duration(milliseconds: 350);
   Timer? _cameraIdleDebounceTimer;
 
+  /// onCameraMove で更新する最新のカメラ中心。cameraPosition が古い場合のフォールバック
+  LatLng? _latestCameraTarget;
+
   Future<void> applyInitialCameraZoom(LatLng center) async {
     await state.mapController?.moveCamera(
       CameraUpdate.newLatLngZoom(center, MapOverlayConstants.initial),
@@ -261,13 +264,25 @@ class MapViewModel extends _$MapViewModel {
         );
   }
 
-  void setNearbySearchCenterFromCamera() {
+  Future<void> setNearbySearchCenterFromCamera() async {
     final ctrl = state.mapController;
     if (ctrl == null) {
       return;
     }
-    final target = ctrl.cameraPosition?.target;
+
+    LatLng? target = ctrl.cameraPosition?.target ?? _latestCameraTarget;
+    try {
+      final bounds = await ctrl.getVisibleRegion();
+      target = LatLng(
+        (bounds.southwest.latitude + bounds.northeast.latitude) / 2,
+        (bounds.southwest.longitude + bounds.northeast.longitude) / 2,
+      );
+    } on Exception catch (_) {}
+
     if (target == null) {
+      return;
+    }
+    if (target.latitude == 0 && target.longitude == 0) {
       return;
     }
     state = state.copyWith(cameraCenterLatLng: target);
@@ -469,6 +484,7 @@ class MapViewModel extends _$MapViewModel {
 
   /// ジェスチャ中のズーム変化で、閾値を跨いだら即時切替する。
   void onCameraMove(CameraPosition position) {
+    _latestCameraTarget = position.target;
     unawaited(_syncPinModeForZoom(position.zoom));
   }
 

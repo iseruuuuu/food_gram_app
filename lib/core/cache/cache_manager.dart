@@ -96,9 +96,17 @@ class CacheManager {
     invalidate('story_posts_${lat}_$lng');
   }
 
+  /// 近くの投稿キャッシュキー（小数点4桁に丸めてヒット率を上げる）
+  static String nearbyPostsKey(double lat, double lng) {
+    final latRounded = (lat * 10000).round() / 10000;
+    final lngRounded = (lng * 10000).round() / 10000;
+    return 'nearby_posts_${latRounded.toStringAsFixed(4)}_'
+        '${lngRounded.toStringAsFixed(4)}';
+  }
+
   /// 近くの投稿キャッシュを無効化
   void invalidateNearbyCache(double lat, double lng) {
-    invalidate('nearby_posts_${lat}_$lng');
+    invalidate(nearbyPostsKey(lat, lng));
   }
 
   /// 現在のユーザーのハート数キャッシュを無効化
