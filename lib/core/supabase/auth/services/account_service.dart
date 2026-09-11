@@ -85,7 +85,6 @@ class AccountService {
     required String name,
     required String selfIntroduce,
     required String image,
-    required String favoriteTags,
     Uint8List? imageBytes,
     String? uploadImage,
   }) async {
@@ -99,7 +98,6 @@ class AccountService {
       final updates = _createBaseUpdates(
         name: name,
         selfIntroduce: selfIntroduce,
-        favoriteTags: favoriteTags,
       );
       uploadedAvatarPath = await _handleImageUpdateIfNeeded(
         updates: updates,
@@ -112,7 +110,6 @@ class AccountService {
         'user_id': _currentUserId,
         'name': updates['name'],
         'self_introduce': updates['self_introduce'],
-        'tag': updates['tag'],
       };
       if (updates.containsKey('image')) {
         payload['image'] = updates['image'];
@@ -159,13 +156,11 @@ class AccountService {
   Map<String, dynamic> _createBaseUpdates({
     required String name,
     required String selfIntroduce,
-    required String favoriteTags,
   }) {
     return {
       'name': name,
       'self_introduce': selfIntroduce,
       'updated_at': DateTime.now().toIso8601String(),
-      'tag': favoriteTags,
     };
   }
 

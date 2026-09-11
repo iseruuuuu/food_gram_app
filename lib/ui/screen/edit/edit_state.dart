@@ -11,7 +11,6 @@ class EditState with _$EditState {
     @Default('') String uploadImage,
     @Default('') String initialImage,
     @Default(false) bool isSelectedIcon,
-    @Default('') String favoriteTags,
     @Default(false) bool isSubscribe,
     Users? user,
   }) = _EditState;
