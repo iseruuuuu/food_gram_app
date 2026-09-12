@@ -346,6 +346,7 @@
     "loadingError": "發生錯誤",
     "loadingRestaurant": "正在取得餐廳資訊...",
     "visibleAreaMeals": "📍 此區域有{count}筆餐點",
+    "areaPostCount": "{count} 篇貼文",
     "visibleAreaLoading": "載入中...",
     "areaPopularLabel": "主要類型",
     "noPostsAtPlace": "這裡還沒有貼文，要不要當第一個發文？",

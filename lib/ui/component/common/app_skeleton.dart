@@ -222,7 +222,7 @@ class AppSearchListViewSkeleton extends StatelessWidget {
   }
 }
 
-/// 近隣レストランモーダル用のスケルトン
+/// 近隣レストランモーダル用のスケルトン（横スクロールカード）
 class AppNearbyRestaurantsSkeleton extends StatelessWidget {
   const AppNearbyRestaurantsSkeleton({super.key});
 
@@ -230,51 +230,52 @@ class AppNearbyRestaurantsSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final skeletonColor = isDark ? Colors.grey.shade800 : Colors.grey.shade200;
-    return ListView.builder(
-      itemCount: 6,
-      itemBuilder: (context, index) {
-        final top = index == 0 ? 0.0 : 12.0;
-        const bottom = 12.0;
-        return Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16).copyWith(
-            top: top,
-            bottom: bottom,
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: skeletonColor,
-                  borderRadius: BorderRadius.circular(14),
-                ),
-              ),
-              const Gap(12),
-              Expanded(
-                child: Column(
+    return Skeletonizer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 200,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              primary: false,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: 6,
+              separatorBuilder: (_, __) => const SizedBox(width: 12),
+              itemBuilder: (context, index) {
+                return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: 160,
-                      height: 16,
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: skeletonColor,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    const Gap(8),
+                    Container(
+                      width: 96,
+                      height: 14,
                       decoration: BoxDecoration(
                         color: skeletonColor,
                         borderRadius: BorderRadius.circular(6),
                       ),
                     ),
-                    const Gap(8),
+                    const Gap(6),
                     Container(
-                      width: 100,
+                      width: 72,
                       height: 12,
                       decoration: BoxDecoration(
                         color: skeletonColor,
                         borderRadius: BorderRadius.circular(6),
                       ),
                     ),
-                    const Gap(8),
+                    const Gap(6),
                     Container(
-                      width: 48,
+                      width: 56,
                       height: 12,
                       decoration: BoxDecoration(
                         color: skeletonColor,
@@ -282,12 +283,12 @@ class AppNearbyRestaurantsSkeleton extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-              ),
-            ],
+                );
+              },
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }

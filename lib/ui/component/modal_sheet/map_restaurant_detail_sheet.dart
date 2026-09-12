@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
@@ -15,17 +14,13 @@ import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
-import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_overview_modal_sheet.dart';
-import 'package:food_gram_app/ui/screen/map/components/map_category_chip_bar.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_selected_post_card.dart';
-import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
-import 'package:food_gram_app/ui/screen/tab/tab_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -66,8 +61,11 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
     if (selection == null) {
       return const MapRestaurantOverviewModalSheet();
     }
-    final minChildSize = (TabScreen.bottomNavHeightFraction(context) + 0.04)
-        .clamp(0.12, MapOverlayConstants.detailInitialChildSize);
+    final minChildSize =
+        MapRestaurantOverviewModalSheet.collapsedSheetSize(context).clamp(
+      0.08,
+      MapOverlayConstants.detailInitialChildSize,
+    );
     final initialChildSize =
         MapOverlayConstants.detailInitialChildSize < minChildSize
             ? minChildSize
@@ -81,14 +79,11 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         final sheetBg = isDark ? Colors.black : Colors.white;
         final sheetFg = isDark ? Colors.white : Colors.black;
-        final handleColor = isDark ? Colors.white54 : Colors.grey[300];
         final postsAsync = ref.watch(
           MapRestaurantDetailSheet.restaurantPostsProvider(
             (selection.name, selection.lat, selection.lng),
           ),
         );
-        final supabase = ref.watch(supabaseProvider);
-
         Future<void> openPost(Posts postItem) async {
           if (isOpeningPost.value) {
             return;
@@ -133,28 +128,6 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
         }
 
         final slivers = <Widget>[
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 6, bottom: 4),
-              child: Center(
-                child: Container(
-                  width: 36,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: handleColor,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: MapCategoryChipBar(
-              onCategoryChanged: () => ref
-                  .read(mapViewModelProvider.notifier)
-                  .refreshPinsForCategoryFilter(),
-            ),
-          ),
           postsAsync.when(
             data: (postsByRestaurant) {
               final filter = ref.watch(mapCategoryFilterProvider);
@@ -269,71 +242,22 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                   ],
                 );
               }
-              return SliverMainAxisGroup(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: MapSelectedPostCard(
-                      posts: visiblePosts,
-                      restaurantName: selection.name,
-                      onClose: () => ref
-                          .read(mapModalSelectionProvider.notifier)
-                          .state = null,
-                    ),
-                  ),
-                  SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
-                    sliver: SliverGrid(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        mainAxisSpacing: 4,
-                        crossAxisSpacing: 4,
-                      ),
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final postItem = visiblePosts[index];
-                          final firstImage = postItem.firstFoodImage;
-                          final imageUrl = firstImage.isEmpty
-                              ? null
-                              : supabase.storage
-                                  .from('food')
-                                  .getPublicUrl(firstImage);
-                          return GestureDetector(
-                            onTap: () => openPost(postItem),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: imageUrl == null
-                                  ? Image.asset(
-                                      isDark
-                                          ? Assets.image.emptyDark.path
-                                          : Assets.image.empty.path,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : CachedNetworkImage(
-                                      imageUrl: imageUrl,
-                                      fit: BoxFit.cover,
-                                      errorWidget: (_, __, ___) => Image.asset(
-                                        isDark
-                                            ? Assets.image.emptyDark.path
-                                            : Assets.image.empty.path,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                            ),
-                          );
-                        },
-                        childCount: visiblePosts.length,
-                      ),
-                    ),
-                  ),
-                ],
+              return SliverToBoxAdapter(
+                child: MapSelectedPostCard(
+                  posts: visiblePosts,
+                  restaurantName: selection.name,
+                  lat: selection.lat,
+                  lng: selection.lng,
+                  address: selection.placeSearchRestaurant?.address ?? '',
+                  onClose: () =>
+                      ref.read(mapModalSelectionProvider.notifier).state =
+                          null,
+                  onOpenPost: openPost,
+                ),
               );
             },
             loading: () => const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 400,
-                child: AppNearbyRestaurantsSkeleton(),
-              ),
+              child: AppNearbyRestaurantsSkeleton(),
             ),
             error: (_, __) => SliverToBoxAdapter(
               child: Padding(

@@ -14,7 +14,6 @@ const mapPrimaryCategoryNames = ['ご当地', '麺類', '肉料理', '軽食系'
 
 /// マップカテゴリフィルターのアクセントカラー（アプリの青系）
 const _mapCategoryBlue = AppTheme.primaryBlue;
-final _mapSubChipBackground = AppTheme.primaryBlue.withValues(alpha: 0.12);
 
 class MapCategoryChipBar extends ConsumerWidget {
   const MapCategoryChipBar({
@@ -35,7 +34,7 @@ class MapCategoryChipBar extends ConsumerWidget {
         : const <String>[];
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -84,6 +83,7 @@ class MapCategoryChipBar extends ConsumerWidget {
                     return _SubCategoryChip(
                       label: Translations.of(context).foodCategory.all,
                       isSelected: isSelected,
+                      isDark: isDark,
                       onTap: () => _onSubSelected(
                         ref: ref,
                         mainCategory: filter.mainCategory!,
@@ -97,6 +97,7 @@ class MapCategoryChipBar extends ConsumerWidget {
                   return _SubCategoryChip(
                     label: getLocalizedFoodName(tagId, context),
                     isSelected: isSelected,
+                    isDark: isDark,
                     onTap: () => _onSubSelected(
                       ref: ref,
                       mainCategory: filter.mainCategory!,
@@ -238,19 +239,30 @@ class _SubCategoryChip extends StatelessWidget {
   const _SubCategoryChip({
     required this.label,
     required this.isSelected,
+    required this.isDark,
     required this.onTap,
   });
 
   final String label;
   final bool isSelected;
+  final bool isDark;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    final textColor =
+        isSelected ? Colors.white : Theme.of(context).colorScheme.onSurface;
     return Material(
-      color: isSelected ? _mapCategoryBlue : _mapSubChipBackground,
+      color: isSelected
+          ? _mapCategoryBlue
+          : (isDark ? Colors.black87 : Colors.white),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
+        side: BorderSide(
+          color: isSelected
+              ? _mapCategoryBlue
+              : (isDark ? Colors.white38 : Colors.grey.shade300),
+        ),
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -262,7 +274,7 @@ class _SubCategoryChip extends StatelessWidget {
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 13,
-              color: isSelected ? Colors.white : _mapCategoryBlue,
+              color: textColor,
             ),
           ),
         ),
