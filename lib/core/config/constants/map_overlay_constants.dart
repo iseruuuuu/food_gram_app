@@ -50,6 +50,9 @@ class MapOverlayConstants {
   /// 近くの店舗一覧（Overview）折りたたみ時（ハンドルのみ）※互換用
   static const double overviewCollapsedSize = 0.042;
 
+  /// 折りたたみ時、ボトムナビ上にちょこっと見せる高さ（px）
+  static const double collapsedPeekPx = 52;
+
   /// ボトムナビ上に常時見せる追加の高さ（px）
   /// ハンドル + 検索ボタン + 横カード全体
   static const double overviewOpenPeekPx = 292;

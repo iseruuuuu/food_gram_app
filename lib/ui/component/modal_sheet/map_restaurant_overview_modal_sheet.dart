@@ -41,6 +41,21 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
     );
   }
 
+  /// しまったときにハンドルがナビ上へ少し出る高さ（画面比）
+  static double collapsedSheetSize(BuildContext context) {
+    final screenHeight = MediaQuery.sizeOf(context).height;
+    if (screenHeight <= 0) {
+      return MapOverlayConstants.overviewCollapsedSize;
+    }
+    final size = (TabScreen.bottomNavOccupiedHeight(context) +
+            MapOverlayConstants.collapsedPeekPx) /
+        screenHeight;
+    return size.clamp(
+      MapOverlayConstants.overviewCollapsedSize,
+      MapOverlayConstants.overviewExpandedSize,
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selection = ref.watch(mapModalSelectionProvider);
@@ -52,8 +67,7 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
     final nearbyAsync = ref.watch(map_repo.mapRepositoryProvider);
 
     final sheetSize = openSheetSize(context);
-    final minChildSize = (TabScreen.bottomNavHeightFraction(context) + 0.04)
-        .clamp(0.08, sheetSize);
+    final minChildSize = collapsedSheetSize(context).clamp(0.08, sheetSize);
 
     return DraggableScrollableSheet(
       expand: false,
