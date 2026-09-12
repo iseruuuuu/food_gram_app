@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
@@ -10,12 +9,11 @@ import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/geo_distance.dart';
 import 'package:food_gram_app/core/utils/nearby_restaurant_posts.dart';
-import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
-import 'package:food_gram_app/ui/screen/map/components/map_category_chip_bar.dart';
+import 'package:food_gram_app/ui/screen/map/components/map_area_restaurant_card.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -61,7 +59,7 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
       expand: false,
       initialChildSize: sheetSize,
       minChildSize: minChildSize,
-      maxChildSize: 0.95,
+      maxChildSize: 0.72,
       builder: (context, scrollController) {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         final sheetBg = isDark ? Colors.black : Colors.white;
@@ -71,12 +69,12 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
           SliverToBoxAdapter(
             child: SizedBox(
               width: double.infinity,
-              height: 36,
+              height: 24,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: 36,
+                    width: 48,
                     height: 4,
                     decoration: BoxDecoration(
                       color: handleColor,
@@ -85,13 +83,6 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                   ),
                 ],
               ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: MapCategoryChipBar(
-              onCategoryChanged: () => ref
-                  .read(mapViewModelProvider.notifier)
-                  .refreshPinsForCategoryFilter(),
             ),
           ),
           SliverToBoxAdapter(
@@ -114,7 +105,7 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryBlue,
                     foregroundColor: Colors.white,
-                    minimumSize: const Size.fromHeight(40),
+                    minimumSize: const Size.fromHeight(44),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -125,10 +116,7 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
           ),
           if (cameraCenter == null)
             const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 400,
-                child: AppNearbyRestaurantsSkeleton(),
-              ),
+              child: AppNearbyRestaurantsSkeleton(),
             )
           else
             nearbyAsync.when(
@@ -167,177 +155,63 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                     ),
                   );
                 }
-                return SliverPadding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final group = filteredGroups[index];
-                        final supabase = ref.watch(supabaseProvider);
-                        final postsForRestaurant = group.posts;
-                        final firstPath = postsForRestaurant.isEmpty
-                            ? ''
-                            : group.representativePost.firstFoodImage;
-                        final imageUrl = firstPath.isEmpty
-                            ? null
-                            : supabase.storage
-                                .from('food')
-                                .getPublicUrl(firstPath);
-                        final extraCount = postsForRestaurant.length > 1
-                            ? postsForRestaurant.length - 1
-                            : 0;
-                        final onSurface = isDark ? Colors.white : Colors.black;
-                        final muted = isDark ? Colors.white70 : Colors.black54;
-                        return InkWell(
-                          onTap: () async {
-                            await ref
-                                .read(mapViewModelProvider.notifier)
-                                .animateToLatLng(
+                final supabase = ref.watch(supabaseProvider);
+                return SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        height: MapAreaRestaurantCard.height,
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          primary: false,
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          itemCount: filteredGroups.length,
+                          separatorBuilder: (_, __) {
+                            return const SizedBox(width: 12);
+                          },
+                          itemBuilder: (context, index) {
+                            final group = filteredGroups[index];
+                            final firstPath = group.posts.isEmpty
+                                ? ''
+                                : group.representativePost.firstFoodImage;
+                            final imageUrl = firstPath.isEmpty
+                                ? null
+                                : supabase.storage
+                                    .from('food')
+                                    .getPublicUrl(firstPath);
+                            return MapAreaRestaurantCard(
+                              group: group,
+                              imageUrl: imageUrl,
+                              onTap: () async {
+                                await ref
+                                    .read(mapViewModelProvider.notifier)
+                                    .animateToLatLng(
+                                      lat: group.lat,
+                                      lng: group.lng,
+                                      keepZoom: true,
+                                      focusAboveSheet: true,
+                                    );
+                                ref
+                                    .read(mapModalSelectionProvider.notifier)
+                                    .state = MapModalSelection(
+                                  name: group.name,
                                   lat: group.lat,
                                   lng: group.lng,
-                                  keepZoom: true,
-                                  focusAboveSheet: true,
                                 );
-                            ref.read(mapModalSelectionProvider.notifier).state =
-                                MapModalSelection(
-                              name: group.name,
-                              lat: group.lat,
-                              lng: group.lng,
+                              },
                             );
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                            child: Row(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(14),
-                                  child: SizedBox(
-                                    width: 80,
-                                    height: 80,
-                                    child: Stack(
-                                      fit: StackFit.expand,
-                                      children: [
-                                        if (imageUrl == null)
-                                          Image.asset(
-                                            isDark
-                                                ? Assets.image.emptyDark.path
-                                                : Assets.image.empty.path,
-                                            fit: BoxFit.cover,
-                                          )
-                                        else
-                                          CachedNetworkImage(
-                                            imageUrl: imageUrl,
-                                            fit: BoxFit.cover,
-                                            errorWidget: (_, __, ___) =>
-                                                Image.asset(
-                                              isDark
-                                                  ? Assets.image.emptyDark.path
-                                                  : Assets.image.empty.path,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        if (extraCount > 0)
-                                          Positioned(
-                                            right: 6,
-                                            bottom: 6,
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 6,
-                                                vertical: 2,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: Colors.black.withValues(
-                                                  alpha: 0.62,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                              child: Text(
-                                                '+$extraCount',
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        group.name,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: onSurface,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      if (group.posts.isNotEmpty &&
-                                          group.representativePost.foodName
-                                              .isNotEmpty) ...[
-                                        const SizedBox(height: 2),
-                                        Text(
-                                          group.representativePost.foodName,
-                                          style: TextStyle(
-                                            fontSize: 13,
-                                            color: muted,
-                                          ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ],
-                                      if (group.averageStar != null) ...[
-                                        const SizedBox(height: 6),
-                                        Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.star_rounded,
-                                              color: Color(0xFFFFC107),
-                                              size: 18,
-                                            ),
-                                            const SizedBox(width: 2),
-                                            Text(
-                                              group.averageStar!
-                                                  .toStringAsFixed(1),
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: onSurface,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                      childCount: filteredGroups.length,
-                    ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                   ),
                 );
               },
               loading: () => const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 400,
-                  child: AppNearbyRestaurantsSkeleton(),
-                ),
+                child: AppNearbyRestaurantsSkeleton(),
               ),
               error: (_, __) => SliverToBoxAdapter(
                 child: Padding(

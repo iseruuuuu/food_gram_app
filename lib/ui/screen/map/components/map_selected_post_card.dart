@@ -1,53 +1,114 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/local/want_to_go_actions.dart';
 import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/core/model/tag.dart';
+import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
-import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
+import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// 選択中店舗のヘッダー。レストラン名をタイトルにし、投稿画像はその下に置く。
-class MapSelectedPostCard extends StatelessWidget {
+/// ピンタップ時の店舗カード。代表写真と店情報、他投稿のサムネを出す。
+class MapSelectedPostCard extends HookConsumerWidget {
   const MapSelectedPostCard({
     required this.posts,
     required this.restaurantName,
+    required this.lat,
+    required this.lng,
+    required this.onOpenPost,
+    this.address = '',
     this.onClose,
     super.key,
   });
 
   final List<Posts> posts;
   final String restaurantName;
+  final double lat;
+  final double lng;
+  final String address;
   final VoidCallback? onClose;
+  final ValueChanged<Posts> onOpenPost;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
-    final onSurface = Theme.of(context).colorScheme.onSurface;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final muted = isDark ? Colors.white70 : const Color(0xFF5F5F5F);
-    final representative = posts.isEmpty ? null : posts.first;
-    final avgStar = _averageStar(posts);
-    final tagIds = representative == null
-        ? const <String>[]
-        : parseFoodTagIds(representative.foodTag);
-    final tagLabel =
-        tagIds.isEmpty ? null : getLocalizedFoodName(tagIds.first, context);
-    final priceRange = _priceRangeDisplay(posts);
-    final price = priceRange == null
-        ? ''
-        : priceRange.min == priceRange.max
-            ? priceRange.min
-            : t.map.priceRange(
-                min: priceRange.min,
-                max: priceRange.max,
-              );
+    final onSurface = isDark ? Colors.white : Colors.black;
+    final muted = isDark ? Colors.white70 : const Color(0xFF6B6B6B);
+    final supabase = ref.watch(supabaseProvider);
+    final selectedIndex = useState(0);
+    final postIds = posts.map((p) => p.id).join(',');
+    useEffect(
+      () {
+        selectedIndex.value = 0;
+        return null;
+      },
+      [postIds],
+    );
+    if (posts.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    final index = selectedIndex.value.clamp(0, posts.length - 1);
+    final post = posts[index];
+    final imageUrl = _imageUrl(supabase, post);
+    final foodName = post.foodName.trim();
+    final comment = post.comment.trim();
+    final price = post.formattedPriceDisplay;
+    final star = post.star > 0 ? post.star : _averageStar(posts);
+    final restaurant = Restaurant(
+      name: restaurantName,
+      address: address,
+      lat: lat,
+      lng: lng,
+    );
+    final isInList = isWantToGoListed(ref, restaurant);
+    const wantToGoAccent = Color(0xFFFF8A00);
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 8, 4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AspectRatio(
+          aspectRatio: 16 / 10,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              GestureDetector(
+                onTap: () => onOpenPost(post),
+                child: _FoodImage(imageUrl: imageUrl, isDark: isDark),
+              ),
+              if (onClose != null)
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Material(
+                    color: Colors.white,
+                    shape: const CircleBorder(),
+                    elevation: 2,
+                    child: InkWell(
+                      customBorder: const CircleBorder(),
+                      onTap: onClose,
+                      child: const SizedBox(
+                        width: 32,
+                        height: 32,
+                        child: Icon(
+                          Icons.close,
+                          size: 18,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 12, 12, 0),
+          child: Row(
             children: [
               Expanded(
                 child: Text(
@@ -55,61 +116,224 @@ class MapSelectedPostCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: onSurface,
                     height: 1.2,
                   ),
                 ),
               ),
-              if (avgStar != null) ...[
-                const SizedBox(width: 8),
+              IconButton(
+                onPressed: () => toggleWantToGoWithFeedback(
+                  context: context,
+                  ref: ref,
+                  restaurant: restaurant,
+                ),
+                visualDensity: VisualDensity.compact,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(
+                  minWidth: 36,
+                  minHeight: 36,
+                ),
+                icon: Icon(
+                  isInList ? Icons.bookmark : Icons.bookmark_border,
+                  color: isInList ? wantToGoAccent : onSurface,
+                  size: 24,
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (foodName.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 2, 16, 0),
+            child: Text(
+              foodName,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 15,
+                color: muted,
+                height: 1.3,
+              ),
+            ),
+          ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+          child: Row(
+            children: [
+              if (star != null) ...[
                 const Icon(
                   Icons.star_rounded,
                   color: Color(0xFFFFC107),
-                  size: 20,
+                  size: 18,
                 ),
                 const SizedBox(width: 2),
                 Text(
-                  avgStar.toStringAsFixed(1),
+                  '${star.toStringAsFixed(1)} (${posts.length})',
                   style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
                     color: onSurface,
                   ),
                 ),
               ],
-              if (onClose != null)
-                IconButton(
-                  onPressed: onClose,
-                  visualDensity: VisualDensity.compact,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(
-                    minWidth: 32,
-                    minHeight: 32,
+              if (price.isNotEmpty) ...[
+                if (star != null)
+                  Text(
+                    '  ·  ',
+                    style: TextStyle(fontSize: 13, color: muted),
                   ),
-                  icon: Icon(Icons.close, color: onSurface, size: 22),
+                Text(
+                  price,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: onSurface,
+                  ),
                 ),
-            ],
-          ),
-          if (tagLabel != null || price.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: Text(
-                [
-                  if (tagLabel != null) tagLabel,
-                  if (price.isNotEmpty) price,
-                ].join('  ·  '),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              ],
+              const Spacer(),
+              Icon(
+                Icons.favorite_border,
+                size: 18,
+                color: muted,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                '${post.heart}',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: tagLabel != null ? AppTheme.primaryBlue : muted,
+                  color: muted,
                 ),
               ),
+            ],
+          ),
+        ),
+        if (address.trim().isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.location_on_outlined,
+                  size: 16,
+                  color: muted,
+                ),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    address.trim(),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: muted,
+                      height: 1.3,
+                    ),
+                  ),
+                ),
+              ],
             ),
-        ],
+          ),
+        if (comment.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+            child: Text(
+              comment,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 14,
+                color: onSurface,
+                height: 1.45,
+              ),
+            ),
+          ),
+        if (posts.length > 1)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
+            child: SizedBox(
+              height: 72,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                primary: false,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: posts.length,
+                separatorBuilder: (_, __) => const SizedBox(width: 8),
+                itemBuilder: (context, i) {
+                  final item = posts[i];
+                  final thumbUrl = _imageUrl(supabase, item);
+                  final selected = i == index;
+                  return GestureDetector(
+                    onTap: () => selectedIndex.value = i,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 160),
+                      width: 72,
+                      height: 72,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: selected
+                              ? AppTheme.primaryBlue
+                              : Colors.transparent,
+                          width: 2,
+                        ),
+                      ),
+                      padding: const EdgeInsets.all(2),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: _FoodImage(
+                          imageUrl: thumbUrl,
+                          isDark: isDark,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          )
+        else
+          const SizedBox(height: 12),
+      ],
+    );
+  }
+}
+
+String? _imageUrl(SupabaseClient supabase, Posts post) {
+  final path = post.firstFoodImage;
+  if (path.isEmpty) {
+    return null;
+  }
+  return supabase.storage.from('food').getPublicUrl(path);
+}
+
+class _FoodImage extends StatelessWidget {
+  const _FoodImage({
+    required this.imageUrl,
+    required this.isDark,
+  });
+
+  final String? imageUrl;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    if (imageUrl == null) {
+      return Image.asset(
+        isDark ? Assets.image.emptyDark.path : Assets.image.empty.path,
+        fit: BoxFit.cover,
+      );
+    }
+    return CachedNetworkImage(
+      imageUrl: imageUrl!,
+      fit: BoxFit.cover,
+      errorWidget: (_, __, ___) => Image.asset(
+        isDark ? Assets.image.emptyDark.path : Assets.image.empty.path,
+        fit: BoxFit.cover,
       ),
     );
   }
@@ -121,35 +345,4 @@ double? _averageStar(List<Posts> posts) {
     return null;
   }
   return stars.reduce((a, b) => a + b) / stars.length;
-}
-
-/// 値段が付いている投稿の最安〜最高。通貨が混在する場合は最多通貨のみ使う。
-({String min, String max})? _priceRangeDisplay(List<Posts> posts) {
-  final priced = <({double amount, String currency})>[];
-  for (final post in posts) {
-    final amount = post.priceAmount;
-    final currency = post.priceCurrency?.trim();
-    if (amount == null || currency == null || currency.isEmpty) {
-      continue;
-    }
-    priced.add((amount: amount, currency: currency.toUpperCase()));
-  }
-  if (priced.isEmpty) {
-    return null;
-  }
-  final counts = <String, int>{};
-  for (final item in priced) {
-    counts[item.currency] = (counts[item.currency] ?? 0) + 1;
-  }
-  final currency =
-      counts.entries.reduce((a, b) => a.value >= b.value ? a : b).key;
-  final amounts = priced
-      .where((item) => item.currency == currency)
-      .map((item) => item.amount);
-  final minAmount = amounts.reduce((a, b) => a < b ? a : b);
-  final maxAmount = amounts.reduce((a, b) => a > b ? a : b);
-  return (
-    min: formatPostPriceDisplay(amount: minAmount, currencyCode: currency),
-    max: formatPostPriceDisplay(amount: maxAmount, currencyCode: currency),
-  );
 }

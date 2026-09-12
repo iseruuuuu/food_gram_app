@@ -26,6 +26,7 @@ import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_detail_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_overview_modal_sheet.dart';
+import 'package:food_gram_app/ui/screen/map/components/map_category_chip_bar.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -181,7 +182,7 @@ class MapScreen extends HookConsumerWidget {
                   left: 0,
                   right: 0,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -190,9 +191,15 @@ class MapScreen extends HookConsumerWidget {
                         ),
                       ),
                       const Gap(8),
+                      MapCategoryChipBar(
+                        onCategoryChanged: () =>
+                            controller.refreshPinsForCategoryFilter(),
+                      ),
+                      const Gap(8),
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             _MapSideFab(
@@ -266,7 +273,7 @@ class MapScreen extends HookConsumerWidget {
                               fabFg: fabFg,
                               fabBorder: fabBorder,
                               icon: CupertinoIcons.compass,
-                              iconSize: 26,
+                              iconSize: 24,
                               onPressed: controller.resetBearing,
                             ),
                           ],
@@ -299,9 +306,11 @@ class _MapSideFab extends StatelessWidget {
     required this.fabBorder,
     required this.icon,
     required this.onPressed,
-    this.iconSize = 24,
+    this.iconSize = 22,
     this.tooltip,
   });
+
+  static const double _size = 54 / 1.2;
 
   final String heroTag;
   final Color fabBg;
@@ -315,13 +324,22 @@ class _MapSideFab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 54,
-      height: 54,
+      width: _size,
+      height: _size,
       child: Theme(
-        data: Theme.of(context).copyWith(highlightColor: fabBg),
+        data: Theme.of(context).copyWith(
+          highlightColor: fabBg,
+          floatingActionButtonTheme: const FloatingActionButtonThemeData(
+            sizeConstraints: BoxConstraints.tightFor(
+              width: _size,
+              height: _size,
+            ),
+          ),
+        ),
         child: FloatingActionButton(
           heroTag: heroTag,
           tooltip: tooltip,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           shape: RoundedRectangleBorder(
             side: BorderSide(color: fabBorder),
             borderRadius: const BorderRadius.all(Radius.circular(10)),

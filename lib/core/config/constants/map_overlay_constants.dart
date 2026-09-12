@@ -35,7 +35,7 @@ class MapOverlayConstants {
   static const double pinTap = 16.5;
 
   /// ピンタップ時、下部カードに隠れないようカメラ中心を南へずらす量（px）
-  static const double pinTapFocusOffsetY = 170;
+  static const double pinTapFocusOffsetY = 220;
 
   /// 投稿詳細などから店舗マップへ
   static const double fromPostDetail = 17;
@@ -51,12 +51,13 @@ class MapOverlayConstants {
   static const double overviewCollapsedSize = 0.042;
 
   /// ボトムナビ上に常時見せる追加の高さ（px）
-  /// フィルターチップ + 検索ボタン + 横並びカード先頭が見える高さ
-  static const double overviewOpenPeekPx = 168;
+  /// ハンドル + 検索ボタン + 横カード全体
+  static const double overviewOpenPeekPx = 292;
 
   /// 近くの店舗一覧（Overview）の初期高さ上限・中間スナップ
-  static const double overviewExpandedSize = 0.52;
+  static const double overviewExpandedSize = 0.68;
 
-  /// 店舗詳細（Detail）の初期高さ比率（横並びカードが見える高さ）
-  static const double detailInitialChildSize = 0.44;
+  /// 店舗詳細（Detail）の初期高さ比率（ヒーロー画像＋情報が見える高さ）
+  /// 画面の高さに対する割合。大きくするとシートが高くなる
+  static const double detailInitialChildSize = 0.50;
 }
