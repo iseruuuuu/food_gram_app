@@ -113,18 +113,19 @@ class MapAreaRestaurantCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                   ],
-                  Icon(
-                    Icons.person_outline,
-                    size: 14,
-                    color: muted,
-                  ),
-                  const SizedBox(width: 2),
-                  Text(
-                    '${group.posts.length}',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: muted,
+                  Flexible(
+                    child: Text(
+                      t.map.areaPostCount.replaceAll(
+                        '{count}',
+                        '${group.posts.length}',
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: muted,
+                      ),
                     ),
                   ),
                 ],

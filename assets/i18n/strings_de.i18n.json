@@ -346,6 +346,7 @@
     "loadingError": "Ein Fehler ist aufgetreten",
     "loadingRestaurant": "Restaurant-Informationen werden abgerufen...",
     "visibleAreaMeals": "📍 In diesem Bereich gibt es {count} Gerichte",
+    "areaPostCount": "{count} Beiträge",
     "visibleAreaLoading": "Wird geladen...",
     "areaPopularLabel": "Hauptgenres",
     "noPostsAtPlace": "Hier gibt es noch keine Beiträge. Möchtest du der Erste sein?",
