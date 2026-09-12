@@ -34,7 +34,7 @@ class MapCategoryChipBar extends ConsumerWidget {
         : const <String>[];
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -250,9 +250,8 @@ class _SubCategoryChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = isSelected
-        ? Colors.white
-        : Theme.of(context).colorScheme.onSurface;
+    final textColor =
+        isSelected ? Colors.white : Theme.of(context).colorScheme.onSurface;
     return Material(
       color: isSelected
           ? _mapCategoryBlue
