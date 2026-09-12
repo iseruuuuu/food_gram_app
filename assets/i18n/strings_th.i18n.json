@@ -346,7 +346,6 @@
     "loadingError": "เกิดข้อผิดพลาด",
     "loadingRestaurant": "กำลังดึงข้อมูลร้านอาหาร...",
     "visibleAreaMeals": "📍 บริเวณนี้มี {count} เมนู",
-    "areaPostCount": "โพสต์ใกล้เคียง",
     "visibleAreaLoading": "กำลังโหลด...",
     "areaPopularLabel": "ประเภทหลัก",
     "noPostsAtPlace": "ยังไม่มีโพสต์ที่นี่ ลองโพสต์เป็นคนแรกไหม?",

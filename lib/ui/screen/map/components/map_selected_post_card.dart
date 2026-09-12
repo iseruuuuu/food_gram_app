@@ -58,7 +58,7 @@ class MapSelectedPostCard extends HookConsumerWidget {
     final foodName = post.foodName.trim();
     final comment = post.comment.trim();
     final price = post.formattedPriceDisplay;
-    final star = post.star > 0 ? post.star : _averageStar(posts);
+    final star = post.star > 0 ? post.star : null;
     final restaurant = Restaurant(
       name: restaurantName,
       address: address,
@@ -82,22 +82,31 @@ class MapSelectedPostCard extends HookConsumerWidget {
               ),
               if (onClose != null)
                 Positioned(
-                  top: 10,
-                  right: 10,
-                  child: Material(
-                    color: Colors.white,
-                    shape: const CircleBorder(),
-                    elevation: 2,
-                    child: InkWell(
-                      customBorder: const CircleBorder(),
-                      onTap: onClose,
-                      child: const SizedBox(
-                        width: 32,
-                        height: 32,
-                        child: Icon(
-                          Icons.close,
-                          size: 18,
-                          color: Colors.black87,
+                  top: 4,
+                  right: 4,
+                  child: SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        customBorder: const CircleBorder(),
+                        onTap: onClose,
+                        child: Center(
+                          child: Material(
+                            color: Colors.white,
+                            shape: const CircleBorder(),
+                            elevation: 2,
+                            child: const SizedBox(
+                              width: 32,
+                              height: 32,
+                              child: Icon(
+                                Icons.close,
+                                size: 18,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -129,11 +138,11 @@ class MapSelectedPostCard extends HookConsumerWidget {
                   ref: ref,
                   restaurant: restaurant,
                 ),
-                visualDensity: VisualDensity.compact,
+                visualDensity: VisualDensity.standard,
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(
-                  minWidth: 36,
-                  minHeight: 36,
+                  minWidth: 48,
+                  minHeight: 48,
                 ),
                 icon: Icon(
                   isInList ? Icons.bookmark : Icons.bookmark_border,
@@ -170,7 +179,7 @@ class MapSelectedPostCard extends HookConsumerWidget {
                 ),
                 const SizedBox(width: 2),
                 Text(
-                  '${star.toStringAsFixed(1)} (${posts.length})',
+                  star.toStringAsFixed(1),
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
@@ -337,12 +346,4 @@ class _FoodImage extends StatelessWidget {
       ),
     );
   }
-}
-
-double? _averageStar(List<Posts> posts) {
-  final stars = posts.map((e) => e.star).where((s) => s > 0);
-  if (stars.isEmpty) {
-    return null;
-  }
-  return stars.reduce((a, b) => a + b) / stars.length;
 }

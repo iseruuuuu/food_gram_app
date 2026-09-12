@@ -230,63 +230,65 @@ class AppNearbyRestaurantsSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final skeletonColor = isDark ? Colors.grey.shade800 : Colors.grey.shade200;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 12),
-        SizedBox(
-          height: 200,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            primary: false,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            itemCount: 6,
-            separatorBuilder: (_, __) => const SizedBox(width: 12),
-            itemBuilder: (context, index) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: skeletonColor,
-                      borderRadius: BorderRadius.circular(16),
+    return Skeletonizer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 200,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              primary: false,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: 6,
+              separatorBuilder: (_, __) => const SizedBox(width: 12),
+              itemBuilder: (context, index) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: skeletonColor,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                     ),
-                  ),
-                  const Gap(8),
-                  Container(
-                    width: 96,
-                    height: 14,
-                    decoration: BoxDecoration(
-                      color: skeletonColor,
-                      borderRadius: BorderRadius.circular(6),
+                    const Gap(8),
+                    Container(
+                      width: 96,
+                      height: 14,
+                      decoration: BoxDecoration(
+                        color: skeletonColor,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
                     ),
-                  ),
-                  const Gap(6),
-                  Container(
-                    width: 72,
-                    height: 12,
-                    decoration: BoxDecoration(
-                      color: skeletonColor,
-                      borderRadius: BorderRadius.circular(6),
+                    const Gap(6),
+                    Container(
+                      width: 72,
+                      height: 12,
+                      decoration: BoxDecoration(
+                        color: skeletonColor,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
                     ),
-                  ),
-                  const Gap(6),
-                  Container(
-                    width: 56,
-                    height: 12,
-                    decoration: BoxDecoration(
-                      color: skeletonColor,
-                      borderRadius: BorderRadius.circular(6),
+                    const Gap(6),
+                    Container(
+                      width: 56,
+                      height: 12,
+                      decoration: BoxDecoration(
+                        color: skeletonColor,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
                     ),
-                  ),
-                ],
-              );
-            },
+                  ],
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
