@@ -345,6 +345,7 @@
     "loadingError": "An error occurred",
     "loadingRestaurant": "Getting restaurant information...",
     "visibleAreaMeals": "📍 This area has {count} meals",
+    "areaPostCount": "Nearby posts",
     "visibleAreaLoading": "Loading...",
     "areaPopularLabel": "Main genres",
     "noPostsAtPlace": "No posts yet here. Be the first to post?",

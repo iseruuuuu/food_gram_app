@@ -346,6 +346,7 @@
     "loadingError": "Une erreur s'est produite",
     "loadingRestaurant": "Obtention des informations du restaurant...",
     "visibleAreaMeals": "📍 Cette zone compte {count} plats",
+    "areaPostCount": "Publications à proximité",
     "visibleAreaLoading": "Chargement...",
     "areaPopularLabel": "Genres principaux",
     "noPostsAtPlace": "Pas encore de publication ici. Publier en premier ?",
