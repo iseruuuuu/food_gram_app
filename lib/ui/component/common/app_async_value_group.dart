@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
-import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
+import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
+import 'package:food_gram_app/ui/component/loading/app_tab_loading.dart';
 
 class AsyncValueSwitcher<T> extends StatelessWidget {
   const AsyncValueSwitcher({
@@ -52,7 +52,7 @@ class AsyncValueSwitcher<T> extends StatelessWidget {
         ),
         loading: () => KeyedSubtree(
           key: const ValueKey('onLoading'),
-          child: onLoading ?? const Center(child: AppContentLoading()),
+          child: onLoading ?? const AppListSkeleton(),
         ),
       ),
     );

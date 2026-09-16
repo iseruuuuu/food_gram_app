@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -313,9 +314,9 @@ class SaveAlbumPickerSheet extends HookConsumerWidget {
                       ),
                     );
                   },
-                  loading: () => const Padding(
-                    padding: EdgeInsets.all(24),
-                    child: Center(child: CircularProgressIndicator()),
+                  loading: () => const AppListSkeleton(
+                    itemCount: 4,
+                    shrinkWrap: true,
                   ),
                   error: (_, __) => Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),

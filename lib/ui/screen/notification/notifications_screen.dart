@@ -10,6 +10,7 @@ import 'package:food_gram_app/core/supabase/post/repository/detail_post_reposito
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
+import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -55,7 +56,7 @@ class NotificationsScreen extends HookConsumerWidget {
         ),
       ),
       body: async.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const AppListSkeleton(),
         error: (e, __) => Center(
           child: Text(
             Translations.of(context).notification.loadFailed,

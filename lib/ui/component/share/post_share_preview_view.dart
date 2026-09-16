@@ -10,7 +10,7 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
-import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/loading/app_overlay_loading.dart';
 import 'package:food_gram_app/ui/component/share/post_share_helpers.dart';
 import 'package:food_gram_app/ui/component/share/post_share_template.dart';
 import 'package:gap/gap.dart';

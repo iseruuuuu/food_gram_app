@@ -5,9 +5,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/utils/location/country_detector.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
-import 'package:food_gram_app/ui/component/common/app_loading.dart';
-import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
+import 'package:food_gram_app/ui/component/loading/app_overlay_loading.dart';
+import 'package:food_gram_app/ui/component/loading/app_tab_loading.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_detail_screen.dart';
 import 'package:food_gram_app/ui/screen/record/components/japan/record_japan_screen.dart';
 import 'package:food_gram_app/ui/screen/record/components/world/record_world_screen.dart';
@@ -64,7 +65,12 @@ class RecordScreen extends HookConsumerWidget {
               );
             },
           ),
-          AppMapLoading(loading: state.isLoading, hasError: state.hasError),
+          AppProcessLoading(
+            loading: state.isLoading,
+            status: state.hasError
+                ? Translations.of(context).map.loadingError
+                : Translations.of(context).map.loadingRestaurant,
+          ),
         ],
       ),
     );

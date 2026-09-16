@@ -14,8 +14,8 @@ import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
-import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
+import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/stored_post_screen.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/stored_post_view_model.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
@@ -118,7 +118,7 @@ class WantToGoListScreen extends HookConsumerWidget {
               index: selectedTab.value == _WantToGoHubTab.saved ? 1 : 0,
               children: [
                 listAsync.when(
-                  loading: () => const Center(child: AppContentLoading()),
+                  loading: () => const AppListSkeleton(),
                   error: (_, __) => AppTabError.myPage(
                     onRetry: () => ref.invalidate(wantToGoNotifierProvider),
                   ),

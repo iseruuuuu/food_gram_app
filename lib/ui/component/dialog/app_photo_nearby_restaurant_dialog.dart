@@ -6,8 +6,8 @@ import 'package:food_gram_app/core/api/restaurant/repository/photo_nearby_restau
 import 'package:food_gram_app/core/model/photo_restaurant_candidate.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:food_gram_app/ui/screen/post/post_view_model.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -51,19 +51,9 @@ Future<void> showPhotoNearbyRestaurantDialog({
           content: SizedBox(
             width: double.maxFinite,
             child: candidatesAsync.when(
-              loading: () => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const CircularProgressIndicator(),
-                    const Gap(16),
-                    Text(
-                      t.map.loadingRestaurant,
-                      style: TextStyle(color: scheme.onSurfaceVariant),
-                    ),
-                  ],
-                ),
+              loading: () => const AppListSkeleton(
+                itemCount: 3,
+                shrinkWrap: true,
               ),
               error: (_, __) {
                 ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(

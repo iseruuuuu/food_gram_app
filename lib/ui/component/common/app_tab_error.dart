@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
-import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
+import 'package:food_gram_app/ui/component/loading/app_tab_loading.dart';
 import 'package:gap/gap.dart';
 
 class AppTabError extends StatelessWidget {

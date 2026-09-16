@@ -3,6 +3,7 @@ import 'package:food_gram_app/core/model/memory_album.dart';
 import 'package:food_gram_app/core/theme/memory_album_theme.dart';
 import 'package:food_gram_app/core/utils/memory_album_utils.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_cover_collage.dart';
 import 'package:food_gram_app/ui/screen/memory_album/memory_album_view_model.dart';
 import 'package:gap/gap.dart';
@@ -41,20 +42,10 @@ class MemoryAlbumCard extends ConsumerWidget {
               children: [
                 postsAsync.when(
                   data: (posts) => MemoryAlbumCoverCollage(posts: posts),
-                  loading: () => SizedBox(
+                  loading: () => const AppSkeletonBox(
                     width: 88,
                     height: 88,
-                    child: ColoredBox(
-                      color:
-                          isDark ? Colors.grey.shade800 : Colors.grey.shade200,
-                      child: const Center(
-                        child: SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
-                      ),
-                    ),
+                    radius: 8,
                   ),
                   error: (_, __) => const SizedBox(
                     width: 88,
