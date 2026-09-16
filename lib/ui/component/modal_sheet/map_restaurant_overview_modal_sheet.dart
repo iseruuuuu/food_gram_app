@@ -73,7 +73,7 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
       expand: false,
       initialChildSize: sheetSize,
       minChildSize: minChildSize,
-      maxChildSize: 0.72,
+      maxChildSize: sheetSize,
       builder: (context, scrollController) {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         final sheetBg = isDark ? Colors.black : Colors.white;
