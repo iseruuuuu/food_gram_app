@@ -65,19 +65,15 @@ class MapAreaRestaurantCard extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Expanded(
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    localizedRestaurantName(group.name, t),
-                    maxLines: 1,
-                    softWrap: false,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: onSurface,
-                      height: 1.15,
-                    ),
+                child: Text(
+                  localizedRestaurantName(group.name, t),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: onSurface,
+                    height: 1.15,
                   ),
                 ),
               ),
