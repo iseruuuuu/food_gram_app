@@ -124,7 +124,6 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                       horizontal: 16,
                       vertical: 8,
                     ),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
