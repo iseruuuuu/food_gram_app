@@ -29,7 +29,7 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class SplashScreenState extends ConsumerState<SplashScreen> {
-  static const _splashBackgroundColor = Color(0xFFF28C28);
+  static const _splashBackgroundColor = Color(0xFFE88932);
   static const _displayDuration = Duration(milliseconds: 1200);
   static const _fadeOutDuration = Duration(milliseconds: 350);
 
