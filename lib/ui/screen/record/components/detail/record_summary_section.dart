@@ -169,7 +169,7 @@ class _JourneyStatColumn extends StatelessWidget {
                   fontSize: 20,
                   fontWeight: FontWeight.w900,
                   color: locked
-                      ? AppTheme.primaryBlue.withValues(alpha: 0.4)
+                      ? AppTheme.primaryOrange.withValues(alpha: 0.4)
                       : accent,
                   height: 1,
                 ),

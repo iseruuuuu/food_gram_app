@@ -286,7 +286,7 @@ class MapSelectedPostCard extends HookConsumerWidget {
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: selected
-                              ? AppTheme.primaryBlue
+                              ? AppTheme.primaryOrange
                               : Colors.transparent,
                           width: 2,
                         ),

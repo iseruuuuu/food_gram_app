@@ -48,7 +48,7 @@ class RecordTab extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.primaryBlue : Colors.transparent,
+                  color: isSelected ? AppTheme.primaryOrange : Colors.transparent,
                   borderRadius: BorderRadius.horizontal(
                     left: type == MapViewType.detail
                         ? const Radius.circular(12)

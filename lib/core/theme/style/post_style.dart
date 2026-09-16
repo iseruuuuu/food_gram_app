@@ -6,9 +6,9 @@ class PostStyle {
   static const requiredAccent = Color(0xFFE8437A);
   static const requiredSectionBg = Color(0xFFFFF5F7);
   static const requiredSectionBorder = Color(0xFFFFC2D4);
-  static const optionalAccent = Color(0xFF3B8BEB);
-  static const optionalSectionBg = Color(0xFFF0F7FF);
-  static const optionalSectionBorder = Color(0xFFB8D9F8);
+  static const optionalAccent = Color(0xFFF28C28);
+  static const optionalSectionBg = Color(0xFFFFF6EC);
+  static const optionalSectionBorder = Color(0xFFF8D0A8);
   static const fieldBorder = Color(0xFFE0E0E0);
   static const hintColor = Color(0xFF9E9E9E);
 

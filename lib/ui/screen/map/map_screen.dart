@@ -60,7 +60,7 @@ class MapScreen extends HookConsumerWidget {
     final showMapLoading = !postsFailed && !dataReady;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final fabBg = isDark ? Colors.black : Colors.white;
-    const fabFg = AppTheme.primaryBlue;
+    const fabFg = AppTheme.primaryOrange;
     final fabBorder = AppTheme.fabBorderColor(context);
     final myPostsOnly = ref.watch(mapMyPostsOnlyProvider);
     final t = Translations.of(context);

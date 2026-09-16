@@ -214,7 +214,7 @@ class FirstPostGuideOverlay extends HookWidget {
                 customBorder: const CircleBorder(),
                 child: Ink(
                   decoration: const BoxDecoration(
-                    color: AppTheme.primaryBlue,
+                    color: AppTheme.primaryOrange,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -310,12 +310,12 @@ class _PromptBubble extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryBlue.withValues(alpha: 0.12),
+                  color: AppTheme.primaryOrange.withValues(alpha: 0.12),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   Icons.camera_alt_rounded,
-                  color: AppTheme.primaryBlue,
+                  color: AppTheme.primaryOrange,
                   size: 26,
                 ),
               ),

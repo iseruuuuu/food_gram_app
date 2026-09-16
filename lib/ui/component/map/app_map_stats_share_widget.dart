@@ -63,7 +63,7 @@ class AppMapStatsShareWidget extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 44,
                     fontWeight: FontWeight.bold,
-                    color: AppTheme.primaryBlue,
+                    color: AppTheme.primaryOrange,
                     height: 1.1,
                   ),
                 ),

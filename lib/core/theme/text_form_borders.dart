@@ -10,7 +10,7 @@ class TextFormBorders {
   static const textFormFocusedBorder = OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
     borderSide: BorderSide(
-      color: AppTheme.primaryBlue,
+      color: AppTheme.primaryOrange,
       width: _borderWidth,
     ),
   );
@@ -34,7 +34,7 @@ class TextFormBorders {
   static const textFormFocusedBorderDark = OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
     borderSide: BorderSide(
-      color: AppTheme.primaryBlue,
+      color: AppTheme.primaryOrange,
       width: _borderWidth,
     ),
   );

@@ -22,7 +22,7 @@ class RecordMapButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final fabBg = isDark ? Colors.black : Colors.white;
-    const fabFg = AppTheme.primaryBlue;
+    const fabFg = AppTheme.primaryOrange;
     final fabBorder = AppTheme.fabBorderColor(context);
     return Padding(
       padding: const EdgeInsets.only(right: 10),

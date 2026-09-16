@@ -129,7 +129,7 @@ class AppFoodTag extends HookWidget {
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                               color:
-                                  isDark ? Colors.white : AppTheme.primaryBlue,
+                                  isDark ? Colors.white : AppTheme.primaryOrange,
                             ),
                           ),
                         ),
@@ -256,13 +256,13 @@ class AppFoodTag extends HookWidget {
                                             ),
                                             decoration: BoxDecoration(
                                               color: isSelected
-                                                  ? AppTheme.primaryBlue
+                                                  ? AppTheme.primaryOrange
                                                   : chipBg,
                                               borderRadius:
                                                   BorderRadius.circular(20),
                                               border: Border.all(
                                                 color: isSelected
-                                                    ? AppTheme.primaryBlue
+                                                    ? AppTheme.primaryOrange
                                                     : chipBorder,
                                               ),
                                             ),
@@ -346,11 +346,11 @@ class AppFoodTag extends HookWidget {
                                       vertical: 4,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: AppTheme.primaryBlue
+                                      color: AppTheme.primaryOrange
                                           .withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
-                                        color: AppTheme.primaryBlue
+                                        color: AppTheme.primaryOrange
                                             .withValues(alpha: 0.3),
                                       ),
                                     ),
@@ -372,7 +372,7 @@ class AppFoodTag extends HookWidget {
                                             fontWeight: FontWeight.bold,
                                             color: isDark
                                                 ? Colors.white
-                                                : AppTheme.primaryBlue,
+                                                : AppTheme.primaryOrange,
                                           ),
                                         ),
                                       ],
@@ -387,11 +387,11 @@ class AppFoodTag extends HookWidget {
                                         vertical: 4,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: AppTheme.primaryBlue
+                                        color: AppTheme.primaryOrange
                                             .withValues(alpha: 0.1),
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
-                                          color: AppTheme.primaryBlue
+                                          color: AppTheme.primaryOrange
                                               .withValues(alpha: 0.3),
                                         ),
                                       ),
@@ -413,7 +413,7 @@ class AppFoodTag extends HookWidget {
                                               fontWeight: FontWeight.bold,
                                               color: isDark
                                                   ? Colors.white
-                                                  : AppTheme.primaryBlue,
+                                                  : AppTheme.primaryOrange,
                                             ),
                                           ),
                                         ],
@@ -430,7 +430,7 @@ class AppFoodTag extends HookWidget {
                                         fontWeight: FontWeight.bold,
                                         color: isDark
                                             ? Colors.white
-                                            : AppTheme.primaryBlue,
+                                            : AppTheme.primaryOrange,
                                       ),
                                     ),
                                   ),

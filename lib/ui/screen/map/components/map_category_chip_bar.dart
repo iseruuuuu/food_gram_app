@@ -12,8 +12,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 /// マップ下部シートに常に見せたい大カテゴリ（All の次）
 const mapPrimaryCategoryNames = ['ご当地', '麺類', '肉料理', '軽食系'];
 
-/// マップカテゴリフィルターのアクセントカラー（アプリの青系）
-const _mapCategoryBlue = AppTheme.primaryBlue;
+/// マップカテゴリフィルターのアクセントカラー（アプリのオレンジ）
+const _mapCategoryOrange = AppTheme.primaryOrange;
 
 class MapCategoryChipBar extends ConsumerWidget {
   const MapCategoryChipBar({
@@ -189,13 +189,13 @@ class _PrimaryCategoryChip extends StatelessWidget {
         isSelected ? Colors.white : Theme.of(context).colorScheme.onSurface;
     return Material(
       color: isSelected
-          ? _mapCategoryBlue
+          ? _mapCategoryOrange
           : (isDark ? Colors.black87 : Colors.white),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: BorderSide(
           color: isSelected
-              ? _mapCategoryBlue
+              ? _mapCategoryOrange
               : (isDark ? Colors.white38 : Colors.grey.shade300),
         ),
       ),
@@ -254,13 +254,13 @@ class _SubCategoryChip extends StatelessWidget {
         isSelected ? Colors.white : Theme.of(context).colorScheme.onSurface;
     return Material(
       color: isSelected
-          ? _mapCategoryBlue
+          ? _mapCategoryOrange
           : (isDark ? Colors.black87 : Colors.white),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
           color: isSelected
-              ? _mapCategoryBlue
+              ? _mapCategoryOrange
               : (isDark ? Colors.white38 : Colors.grey.shade300),
         ),
       ),

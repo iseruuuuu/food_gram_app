@@ -191,7 +191,7 @@ class FriendAddScreen extends HookConsumerWidget {
                         }
                       },
                       title: t.friend.addButton,
-                      backgroundColor: AppTheme.primaryBlue,
+                      backgroundColor: AppTheme.primaryOrange,
                       horizontalInset: 40,
                     ),
                   ),

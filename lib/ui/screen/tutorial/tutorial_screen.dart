@@ -248,7 +248,7 @@ class TutorialScreen extends HookConsumerWidget {
                       AppElevatedButton(
                         onPressed: handleNextPressed,
                         title: t.tutorial.nextButton,
-                        backgroundColor: AppTheme.primaryBlue,
+                        backgroundColor: AppTheme.primaryOrange,
                         horizontalInset: 48,
                       )
                     else if (showWelcomeButton)
@@ -257,7 +257,7 @@ class TutorialScreen extends HookConsumerWidget {
                         child: AppElevatedButton(
                           onPressed: handleWelcomeStart,
                           title: t.tutorial.welcomePageButton,
-                          backgroundColor: AppTheme.primaryBlue,
+                          backgroundColor: AppTheme.primaryOrange,
                           horizontalInset: 48,
                         ),
                       )
@@ -265,14 +265,14 @@ class TutorialScreen extends HookConsumerWidget {
                       AppElevatedButton(
                         onPressed: handleLocationPermission,
                         title: t.tutorial.locationButton,
-                        backgroundColor: AppTheme.primaryBlue,
+                        backgroundColor: AppTheme.primaryOrange,
                         horizontalInset: 48,
                       )
                     else if (currentPage == notificationPageIndex)
                       AppElevatedButton(
                         onPressed: handleNotificationPermission,
                         title: t.tutorial.notificationButton,
-                        backgroundColor: AppTheme.primaryBlue,
+                        backgroundColor: AppTheme.primaryOrange,
                         horizontalInset: 48,
                       ),
                     if (showStandardNextButton ||
@@ -598,9 +598,9 @@ class _TutorialAgreementRow extends StatelessWidget {
           Checkbox(
             value: value,
             onChanged: onChanged,
-            activeColor: AppTheme.primaryBlue,
+            activeColor: AppTheme.primaryOrange,
             checkColor: Colors.white,
-            side: const BorderSide(color: AppTheme.primaryBlue, width: 1.5),
+            side: const BorderSide(color: AppTheme.primaryOrange, width: 1.5),
           ),
           Expanded(
             child: InkWell(
@@ -612,7 +612,7 @@ class _TutorialAgreementRow extends StatelessWidget {
                   label,
                   style: const TextStyle(
                     fontSize: 15,
-                    color: AppTheme.primaryBlue,
+                    color: AppTheme.primaryOrange,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -623,7 +623,7 @@ class _TutorialAgreementRow extends StatelessWidget {
             onPressed: onOpen,
             icon: const Icon(
               Icons.chevron_right,
-              color: AppTheme.primaryBlue,
+              color: AppTheme.primaryOrange,
               size: 22,
             ),
             tooltip: label,

@@ -90,7 +90,7 @@ class _TabItem extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: isSelected ? AppTheme.primaryBlue : Colors.transparent,
+            color: isSelected ? AppTheme.primaryOrange : Colors.transparent,
             borderRadius: BorderRadius.horizontal(
               left: isFirst ? const Radius.circular(12) : Radius.zero,
               right: isLast ? const Radius.circular(12) : Radius.zero,

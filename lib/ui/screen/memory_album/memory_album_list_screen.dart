@@ -108,7 +108,7 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
             icon: Container(
               padding: const EdgeInsets.all(6),
               decoration: const BoxDecoration(
-                color: AppTheme.primaryBlue,
+                color: AppTheme.primaryOrange,
                 shape: BoxShape.circle,
               ),
               child: const Icon(

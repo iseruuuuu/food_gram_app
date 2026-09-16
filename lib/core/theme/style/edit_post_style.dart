@@ -16,7 +16,7 @@ class EditPostStyle {
     return const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
-      color: AppTheme.primaryBlue,
+      color: AppTheme.primaryOrange,
     );
   }
 
