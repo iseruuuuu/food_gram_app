@@ -6,7 +6,7 @@ class AppTheme {
   AppTheme._();
 
   /// アプリのブランドオレンジ（primary）
-  static const Color primaryOrange = Color(0xFFF28C28);
+  static const Color primaryOrange = Color(0xFFE88932);
 
   /// 成功・情報系 SnackBar の背景色（ブランドオレンジ）
   static const SnackBarThemeData snackBarTheme = SnackBarThemeData(
