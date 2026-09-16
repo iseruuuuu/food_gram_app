@@ -5,10 +5,10 @@ import 'package:food_gram_app/core/theme/text_form_borders.dart';
 class AppTheme {
   AppTheme._();
 
-  /// アプリの青系（primary）に使う色
-  static const Color primaryBlue = Color(0xFF0168B7);
+  /// アプリのブランド色（primary）
+  static const Color primaryBlue = Color(0xFFF28C28);
 
-  /// 成功・情報系 SnackBar の背景色（ブランド青）
+  /// 成功・情報系 SnackBar の背景色（ブランドオレンジ）
   static const SnackBarThemeData snackBarTheme = SnackBarThemeData(
     backgroundColor: primaryBlue,
     contentTextStyle: TextStyle(color: Colors.white),

@@ -111,7 +111,7 @@ class RecordMapStatsCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               decoration: BoxDecoration(
                 color:
-                    isDark ? const Color(0xFF0F2E4D) : const Color(0xFFE9F2FF),
+                    isDark ? const Color(0xFF3D2A14) : const Color(0xFFFFF4E8),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -122,8 +122,8 @@ class RecordMapStatsCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14,
                         color: isDark
-                            ? const Color(0xFF9CCBFF)
-                            : const Color(0xFF2B6CB0),
+                            ? const Color(0xFFFFC078)
+                            : const Color(0xFFB35C12),
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -138,7 +138,7 @@ class RecordMapStatsCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               decoration: BoxDecoration(
                 color:
-                    isDark ? const Color(0xFF0F2E4D) : const Color(0xFFE9F2FF),
+                    isDark ? const Color(0xFF3D2A14) : const Color(0xFFFFF4E8),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -149,8 +149,8 @@ class RecordMapStatsCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14,
                         color: isDark
-                            ? const Color(0xFF9CCBFF)
-                            : const Color(0xFF2B6CB0),
+                            ? const Color(0xFFFFC078)
+                            : const Color(0xFFB35C12),
                         fontWeight: FontWeight.w700,
                       ),
                     ),

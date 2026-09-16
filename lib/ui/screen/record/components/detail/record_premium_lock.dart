@@ -66,7 +66,7 @@ class RecordPremiumLockBanner extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w800,
-                        color: isDark ? Colors.white : const Color(0xFF0B3A66),
+                        color: isDark ? Colors.white : const Color(0xFF7A3E0B),
                       ),
                     ),
                   ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
@@ -62,19 +63,19 @@ class AppTabError extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final config = switch (type) {
       TabLoadingType.map => (
-          color: const Color(0xFF0168B7),
+          color: AppTheme.primaryBlue,
           image: Assets.image.errorMap,
         ),
       TabLoadingType.food => (
-          color: const Color(0xFF0168B7),
+          color: AppTheme.primaryBlue,
           image: Assets.image.errorFood,
         ),
       TabLoadingType.record => (
-          color: const Color(0xFF0168B7),
+          color: AppTheme.primaryBlue,
           image: Assets.image.errorRecord,
         ),
       TabLoadingType.myPage => (
-          color: const Color(0xFF0168B7),
+          color: AppTheme.primaryBlue,
           image: Assets.image.errorMypage,
         ),
     };

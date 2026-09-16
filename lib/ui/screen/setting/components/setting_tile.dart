@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:gap/gap.dart';
 
 class SettingTile extends StatelessWidget {
@@ -29,7 +30,7 @@ class SettingTile extends StatelessWidget {
               child: Icon(
                 icon,
                 size: 32,
-                color: const Color(0xFF0168B7),
+                color: AppTheme.primaryBlue,
               ),
             ),
             const Gap(5),

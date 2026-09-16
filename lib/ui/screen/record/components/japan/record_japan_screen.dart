@@ -296,7 +296,7 @@ class _JapanMapLegend extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _LegendRow(
-            color: isDark ? const Color(0xFF3B8BEB) : AppTheme.primaryBlue,
+            color: isDark ? const Color(0xFFFFA347) : AppTheme.primaryBlue,
             label: t.myMapRecord.legendHasPosts,
           ),
           const Gap(4),

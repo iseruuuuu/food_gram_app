@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/cache/food_gram_image_cache.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/theme/style/setting_style.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
@@ -206,7 +207,7 @@ class SettingScreen extends HookConsumerWidget {
                               width: 4,
                               height: 28,
                               decoration: BoxDecoration(
-                                color: const Color(0xFF0168B7),
+                                color: AppTheme.primaryBlue,
                                 borderRadius: BorderRadius.circular(2),
                               ),
                             ),
