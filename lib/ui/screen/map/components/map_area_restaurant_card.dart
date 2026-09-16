@@ -5,7 +5,7 @@ import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 
-/// マップ下部シートのエリア投稿カード（画像上・テキスト下の縦積み）
+/// マップ下部シートのエリア投稿カード（画像上・店名下の縦積み）
 class MapAreaRestaurantCard extends StatelessWidget {
   const MapAreaRestaurantCard({
     required this.group,
@@ -14,9 +14,9 @@ class MapAreaRestaurantCard extends StatelessWidget {
     super.key,
   });
 
-  static const double imageSize = 120;
-  static const double width = 120;
-  static const double height = 200;
+  static const double imageSize = 96;
+  static const double width = 96;
+  static const double height = 120;
 
   final RestaurantGroup group;
   final String? imageUrl;
@@ -26,12 +26,7 @@ class MapAreaRestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final onSurface = isDark ? Colors.white : Colors.black;
-    final muted = isDark ? Colors.white70 : const Color(0xFF6B6B6B);
     final t = Translations.of(context);
-    final foodName = group.posts.isEmpty
-        ? ''
-        : group.representativePost.foodName.trim();
-    final avgStar = group.averageStar;
 
     return SizedBox(
       width: width,
@@ -42,7 +37,7 @@ class MapAreaRestaurantCard extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
@@ -68,67 +63,19 @@ class MapAreaRestaurantCard extends StatelessWidget {
                         ),
                 ),
               ),
-              const SizedBox(height: 8),
-              Text(
-                localizedRestaurantName(group.name, t),
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: onSurface,
-                  height: 1.2,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              if (foodName.isNotEmpty) ...[
-                const SizedBox(height: 2),
-                Text(
-                  foodName,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: muted,
-                    height: 1.2,
-                  ),
+              const SizedBox(height: 6),
+              Expanded(
+                child: Text(
+                  localizedRestaurantName(group.name, t),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                ),
-              ],
-              const SizedBox(height: 4),
-              Row(
-                children: [
-                  if (avgStar != null) ...[
-                    const Icon(
-                      Icons.star_rounded,
-                      color: Color(0xFFFFC107),
-                      size: 16,
-                    ),
-                    const SizedBox(width: 2),
-                    Text(
-                      avgStar.toStringAsFixed(1),
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: onSurface,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                  ],
-                  Flexible(
-                    child: Text(
-                      t.map.areaPostCount.replaceAll(
-                        '{count}',
-                        '${group.posts.length}',
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: muted,
-                      ),
-                    ),
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: onSurface,
+                    height: 1.15,
                   ),
-                ],
+                ),
               ),
             ],
           ),

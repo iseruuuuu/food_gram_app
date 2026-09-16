@@ -55,7 +55,7 @@ class MapOverlayConstants {
 
   /// ボトムナビ上に常時見せる追加の高さ（px）
   /// ハンドル + 検索ボタン + 横カード全体
-  static const double overviewOpenPeekPx = 292;
+  static const double overviewOpenPeekPx = 232;
 
   /// 近くの店舗一覧（Overview）の初期高さ上限・中間スナップ
   static const double overviewExpandedSize = 0.68;

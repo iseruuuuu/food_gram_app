@@ -73,7 +73,7 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
       expand: false,
       initialChildSize: sheetSize,
       minChildSize: minChildSize,
-      maxChildSize: 0.72,
+      maxChildSize: sheetSize,
       builder: (context, scrollController) {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         final sheetBg = isDark ? Colors.black : Colors.white;
@@ -119,9 +119,13 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryBlue,
                     foregroundColor: Colors.white,
-                    minimumSize: const Size.fromHeight(44),
+                    minimumSize: const Size.fromHeight(40),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                 ),
@@ -174,7 +178,7 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 8),
                       SizedBox(
                         height: MapAreaRestaurantCard.height,
                         child: ListView.separated(
@@ -219,7 +223,7 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                           },
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
                     ],
                   ),
                 );
