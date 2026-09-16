@@ -6,7 +6,7 @@ import 'package:gap/gap.dart';
 
 enum TabLoadingType { map, food, record, myPage }
 
-class AppTabLoading extends StatelessWidget {
+class AppTabLoading extends StatefulWidget {
   const AppTabLoading({required this.type, super.key});
   const AppTabLoading.map({super.key}) : type = TabLoadingType.map;
   const AppTabLoading.food({super.key}) : type = TabLoadingType.food;
@@ -16,10 +16,33 @@ class AppTabLoading extends StatelessWidget {
   final TabLoadingType type;
 
   @override
+  State<AppTabLoading> createState() => _AppTabLoadingState();
+}
+
+class _AppTabLoadingState extends State<AppTabLoading>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
     final accent = Theme.of(context).colorScheme.onSurface;
-    final config = switch (type) {
+    final config = switch (widget.type) {
       TabLoadingType.map => (
           icon: CupertinoIcons.location_fill,
           label: t.tab.map,
@@ -81,68 +104,36 @@ class AppTabLoading extends StatelessWidget {
                 ),
               ),
               const Gap(20),
-              _TabLoadingDots(color: accent),
+              AnimatedBuilder(
+                animation: _controller,
+                builder: (context, _) {
+                  final activeIndex = (_controller.value * 3).floor() % 3;
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: List.generate(3, (index) {
+                      final isActive = index == activeIndex;
+                      return Padding(
+                        padding: EdgeInsets.only(left: index == 0 ? 0 : 10),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            color: accent.withValues(
+                              alpha: isActive ? 1.0 : 0.25,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      );
+                    }),
+                  );
+                },
+              ),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class _TabLoadingDots extends StatefulWidget {
-  const _TabLoadingDots({required this.color});
-
-  final Color color;
-
-  @override
-  State<_TabLoadingDots> createState() => _TabLoadingDotsState();
-}
-
-class _TabLoadingDotsState extends State<_TabLoadingDots>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 900),
-    )..repeat();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, _) {
-        final activeIndex = (_controller.value * 3).floor() % 3;
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: List.generate(3, (index) {
-            final isActive = index == activeIndex;
-            return Padding(
-              padding: EdgeInsets.only(left: index == 0 ? 0 : 10),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                width: 10,
-                height: 10,
-                decoration: BoxDecoration(
-                  color: widget.color.withValues(alpha: isActive ? 1.0 : 0.25),
-                  shape: BoxShape.circle,
-                ),
-              ),
-            );
-          }),
-        );
-      },
     );
   }
 }
