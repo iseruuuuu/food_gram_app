@@ -4,5 +4,5 @@ flutter_launcher_icons:
   remove_alpha_ios: true
   image_path: "assets/launcher_icon/icon-dev.png"
   image_path_ios_dark_transparent: "assets/launcher_icon/icon-dev-dark.png"
-  adaptive_icon_background: "#F28C28"
+  adaptive_icon_background: "#E88932"
   adaptive_icon_foreground: "assets/launcher_icon/icon_adaptive_foreground_dev.png"
