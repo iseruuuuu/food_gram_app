@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
+import 'package:food_gram_app/ui/screen/map/components/map_area_restaurant_card.dart';
 import 'package:gap/gap.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -234,9 +235,9 @@ class AppNearbyRestaurantsSkeleton extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           SizedBox(
-            height: 200,
+            height: MapAreaRestaurantCard.height,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               primary: false,
@@ -248,35 +249,17 @@ class AppNearbyRestaurantsSkeleton extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: 120,
-                      height: 120,
+                      width: MapAreaRestaurantCard.imageSize,
+                      height: MapAreaRestaurantCard.imageSize,
                       decoration: BoxDecoration(
                         color: skeletonColor,
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                    const Gap(8),
+                    const Gap(6),
                     Container(
-                      width: 96,
+                      width: 88,
                       height: 14,
-                      decoration: BoxDecoration(
-                        color: skeletonColor,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                    ),
-                    const Gap(6),
-                    Container(
-                      width: 72,
-                      height: 12,
-                      decoration: BoxDecoration(
-                        color: skeletonColor,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                    ),
-                    const Gap(6),
-                    Container(
-                      width: 56,
-                      height: 12,
                       decoration: BoxDecoration(
                         color: skeletonColor,
                         borderRadius: BorderRadius.circular(6),
