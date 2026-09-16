@@ -5,12 +5,12 @@ import 'package:food_gram_app/core/theme/text_form_borders.dart';
 class AppTheme {
   AppTheme._();
 
-  /// アプリのブランド色（primary）
-  static const Color primaryBlue = Color(0xFFF28C28);
+  /// アプリのブランドオレンジ（primary）
+  static const Color primaryOrange = Color(0xFFF28C28);
 
   /// 成功・情報系 SnackBar の背景色（ブランドオレンジ）
   static const SnackBarThemeData snackBarTheme = SnackBarThemeData(
-    backgroundColor: primaryBlue,
+    backgroundColor: primaryOrange,
     contentTextStyle: TextStyle(color: Colors.white),
     actionTextColor: Colors.white,
   );
@@ -24,14 +24,14 @@ class AppTheme {
 
   static ThemeData get light {
     final baseScheme = ColorScheme.fromSeed(
-      seedColor: primaryBlue,
+      seedColor: primaryOrange,
       surface: Colors.white,
     );
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: baseScheme.copyWith(
-        primary: primaryBlue,
+        primary: primaryOrange,
         onPrimary: Colors.white,
       ),
       snackBarTheme: snackBarTheme,
@@ -54,7 +54,7 @@ class AppTheme {
 
   static ThemeData get dark {
     final baseScheme = ColorScheme.fromSeed(
-      seedColor: primaryBlue,
+      seedColor: primaryOrange,
       brightness: Brightness.dark,
       surface: const Color(0xFF1E1E1E),
     );
@@ -62,7 +62,7 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: baseScheme.copyWith(
-        primary: primaryBlue,
+        primary: primaryOrange,
         onPrimary: Colors.white,
       ),
       snackBarTheme: snackBarTheme,

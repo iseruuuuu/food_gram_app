@@ -30,7 +30,7 @@ class SettingTile extends StatelessWidget {
               child: Icon(
                 icon,
                 size: 32,
-                color: AppTheme.primaryBlue,
+                color: AppTheme.primaryOrange,
               ),
             ),
             const Gap(5),

@@ -56,7 +56,7 @@ class AppFriendEmpty extends StatelessWidget {
             children: [
               const Icon(
                 Icons.chat_bubble_outline,
-                color: AppTheme.primaryBlue,
+                color: AppTheme.primaryOrange,
                 size: 28,
               ),
               const Gap(14),
@@ -92,7 +92,7 @@ class AppFriendEmpty extends StatelessWidget {
             children: [
               const Icon(
                 Icons.wine_bar_outlined,
-                color: AppTheme.primaryBlue,
+                color: AppTheme.primaryOrange,
                 size: 28,
               ),
               const Gap(14),
@@ -130,7 +130,7 @@ class AppFriendEmpty extends StatelessWidget {
               onPressed: onAddTap,
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                backgroundColor: AppTheme.primaryBlue,
+                backgroundColor: AppTheme.primaryOrange,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -332,7 +332,7 @@ class AppNotificationEmpty extends StatelessWidget {
                 onPressed: onPostTap,
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  backgroundColor: AppTheme.primaryBlue,
+                  backgroundColor: AppTheme.primaryOrange,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
@@ -360,7 +360,7 @@ class AppNotificationEmpty extends StatelessWidget {
               child: Text(
                 t.ctaBack,
                 style: const TextStyle(
-                  color: AppTheme.primaryBlue,
+                  color: AppTheme.primaryOrange,
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
                 ),
@@ -433,7 +433,7 @@ class AppMemoryAlbumEmpty extends StatelessWidget {
                 onPressed: onCreateTap,
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  backgroundColor: AppTheme.primaryBlue,
+                  backgroundColor: AppTheme.primaryOrange,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
@@ -524,7 +524,7 @@ class AppWantToGoEmpty extends StatelessWidget {
                 onPressed: onAddTap,
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  backgroundColor: AppTheme.primaryBlue,
+                  backgroundColor: AppTheme.primaryOrange,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
@@ -558,7 +558,7 @@ class AppWantToGoEmpty extends StatelessWidget {
                 ),
               ),
               style: TextButton.styleFrom(
-                foregroundColor: AppTheme.primaryBlue,
+                foregroundColor: AppTheme.primaryOrange,
               ),
             ),
             const Gap(12),
@@ -767,7 +767,7 @@ class AppFavoritePostEmpty extends StatelessWidget {
                 onPressed: onBrowseTap,
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  backgroundColor: AppTheme.primaryBlue,
+                  backgroundColor: AppTheme.primaryOrange,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),

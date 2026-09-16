@@ -44,10 +44,10 @@ class RecordMapStatsCard extends StatelessWidget {
     );
     final sublineColor = isDark ? Colors.white70 : Colors.black;
     final statLabelColor = isDark ? Colors.white70 : Colors.grey[600];
-    const valueBlue = AppTheme.primaryBlue;
+    const valueOrange = AppTheme.primaryOrange;
     const valueRed = Color(0xFFEA4335);
     const valueGreen = Color(0xFF34A853);
-    final statValueColors = [valueBlue, valueRed, valueGreen];
+    final statValueColors = [valueOrange, valueRed, valueGreen];
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),

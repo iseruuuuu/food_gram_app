@@ -46,7 +46,7 @@ class RecordPremiumLockBanner extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: isDark
-                  ? AppTheme.primaryBlue.withValues(alpha: 0.35)
+                  ? AppTheme.primaryOrange.withValues(alpha: 0.35)
                   : const Color(0xFFBFD9F5),
             ),
           ),
@@ -57,7 +57,7 @@ class RecordPremiumLockBanner extends StatelessWidget {
                   Icon(
                     Icons.lock_outline_rounded,
                     size: 18,
-                    color: isDark ? Colors.white70 : AppTheme.primaryBlue,
+                    color: isDark ? Colors.white70 : AppTheme.primaryOrange,
                   ),
                   const Gap(8),
                   Expanded(
@@ -80,7 +80,7 @@ class RecordPremiumLockBanner extends StatelessWidget {
                   onPressed: onTap,
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    backgroundColor: AppTheme.primaryBlue,
+                    backgroundColor: AppTheme.primaryOrange,
                     foregroundColor: Colors.white,
                     shape: const StadiumBorder(),
                   ),

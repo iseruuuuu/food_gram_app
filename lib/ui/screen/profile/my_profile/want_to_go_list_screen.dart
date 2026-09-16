@@ -176,7 +176,7 @@ class WantToGoListScreen extends HookConsumerWidget {
                                       width: 32,
                                       height: 32,
                                       decoration: const BoxDecoration(
-                                        color: AppTheme.primaryBlue,
+                                        color: AppTheme.primaryOrange,
                                         shape: BoxShape.circle,
                                       ),
                                       child: const Icon(

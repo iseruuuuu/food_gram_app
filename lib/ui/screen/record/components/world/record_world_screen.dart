@@ -164,7 +164,7 @@ class _WorldProgressCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w900,
-                  color: AppTheme.primaryBlue,
+                  color: AppTheme.primaryOrange,
                 ),
               ),
               const Gap(8),
@@ -176,7 +176,7 @@ class _WorldProgressCard extends StatelessWidget {
                     minHeight: 7,
                     backgroundColor:
                         isDark ? Colors.white12 : const Color(0xFFE5E7EB),
-                    color: AppTheme.primaryBlue,
+                    color: AppTheme.primaryOrange,
                   ),
                 ),
               ),
@@ -341,7 +341,7 @@ class _CountryVisitRow extends StatelessWidget {
                     minHeight: 3,
                     backgroundColor:
                         isDark ? Colors.white12 : const Color(0xFFE5E7EB),
-                    color: AppTheme.primaryBlue,
+                    color: AppTheme.primaryOrange,
                   ),
                 ),
               ],
@@ -358,7 +358,7 @@ class _CountryVisitRow extends StatelessWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.w900,
                   height: 1,
-                  color: AppTheme.primaryBlue,
+                  color: AppTheme.primaryOrange,
                 ),
               ),
               Text(

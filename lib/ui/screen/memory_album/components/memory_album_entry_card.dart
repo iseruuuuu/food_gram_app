@@ -48,7 +48,7 @@ class MemoryAlbumEntryCard extends ConsumerWidget {
                             size: 20,
                             color: isDark
                                 ? Colors.white70
-                                : AppTheme.primaryBlue,
+                                : AppTheme.primaryOrange,
                           ),
                           const Gap(6),
                           Expanded(

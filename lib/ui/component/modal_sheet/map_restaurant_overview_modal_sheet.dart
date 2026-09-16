@@ -117,7 +117,7 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primaryBlue,
+                    backgroundColor: AppTheme.primaryOrange,
                     foregroundColor: Colors.white,
                     minimumSize: const Size.fromHeight(40),
                     padding: const EdgeInsets.symmetric(

@@ -42,7 +42,7 @@ class AppPostImageModalSheet extends StatelessWidget {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
-                      color: AppTheme.primaryBlue,
+                      color: AppTheme.primaryOrange,
                     ),
                   ),
                 ),
@@ -61,7 +61,7 @@ class AppPostImageModalSheet extends StatelessWidget {
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
-                    color: AppTheme.primaryBlue,
+                    color: AppTheme.primaryOrange,
                   ),
                 ),
               ),

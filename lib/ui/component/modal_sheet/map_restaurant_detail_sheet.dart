@@ -189,7 +189,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                                 icon: Icons.edit_outlined,
                                 title: t.map.firstPostCta,
                                 subtitle: t.map.firstPostHint,
-                                accent: AppTheme.primaryBlue,
+                                accent: AppTheme.primaryOrange,
                                 isDark: isDark,
                                 onTap: () async {
                                   if (isOpeningPost.value) {

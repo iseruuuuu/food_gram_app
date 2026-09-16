@@ -163,7 +163,7 @@ class _JapanAtlasCard extends StatelessWidget {
                 },
                 icon: const Icon(
                   Icons.ios_share,
-                  color: AppTheme.primaryBlue,
+                  color: AppTheme.primaryOrange,
                   size: 22,
                 ),
               ),
@@ -179,7 +179,7 @@ class _JapanAtlasCard extends StatelessWidget {
                   fontSize: 36,
                   fontWeight: FontWeight.w900,
                   height: 1,
-                  color: AppTheme.primaryBlue,
+                  color: AppTheme.primaryOrange,
                 ),
               ),
               Padding(
@@ -224,7 +224,7 @@ class _JapanAtlasCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w900,
-                  color: AppTheme.primaryBlue,
+                  color: AppTheme.primaryOrange,
                 ),
               ),
               const Gap(8),
@@ -236,7 +236,7 @@ class _JapanAtlasCard extends StatelessWidget {
                     minHeight: 7,
                     backgroundColor:
                         isDark ? Colors.white12 : const Color(0xFFE5E7EB),
-                    color: AppTheme.primaryBlue,
+                    color: AppTheme.primaryOrange,
                   ),
                 ),
               ),
@@ -296,7 +296,7 @@ class _JapanMapLegend extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _LegendRow(
-            color: isDark ? const Color(0xFFFFA347) : AppTheme.primaryBlue,
+            color: isDark ? const Color(0xFFFFA347) : AppTheme.primaryOrange,
             label: t.myMapRecord.legendHasPosts,
           ),
           const Gap(4),
@@ -457,7 +457,7 @@ class _PrefectureRankCard extends StatelessWidget {
                 fontSize: 18,
                 fontWeight: FontWeight.w900,
                 height: 1,
-                color: AppTheme.primaryBlue,
+                color: AppTheme.primaryOrange,
               ),
             ),
           const Gap(6),

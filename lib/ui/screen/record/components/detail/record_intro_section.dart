@@ -57,7 +57,7 @@ class RecordEmptySection extends StatelessWidget {
               onPressed: onRecordTap,
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                backgroundColor: AppTheme.primaryBlue,
+                backgroundColor: AppTheme.primaryOrange,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),

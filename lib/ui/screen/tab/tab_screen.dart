@@ -426,7 +426,7 @@ class TabScreen extends HookConsumerWidget {
                               width: _postButtonSize,
                               height: _postButtonSize,
                               decoration: const BoxDecoration(
-                                color: AppTheme.primaryBlue,
+                                color: AppTheme.primaryOrange,
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(

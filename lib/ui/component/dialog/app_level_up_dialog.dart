@@ -23,7 +23,7 @@ Future<void> showLevelUpDialog({
           children: [
             const Icon(
               Icons.celebration,
-              color: AppTheme.primaryBlue,
+              color: AppTheme.primaryOrange,
               size: 28,
             ),
             const SizedBox(width: 8),
@@ -50,14 +50,14 @@ Future<void> showLevelUpDialog({
             child: TextButton(
               onPressed: () => Navigator.of(context).pop(),
               style: TextButton.styleFrom(
-                foregroundColor: AppTheme.primaryBlue,
+                foregroundColor: AppTheme.primaryOrange,
               ),
               child: Text(
                 t.close,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.primaryBlue,
+                  color: AppTheme.primaryOrange,
                 ),
               ),
             ),

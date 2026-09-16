@@ -64,7 +64,7 @@ class AppPostFoodCategoryModalSheet extends StatelessWidget {
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: tagValue == food
-                                  ? AppTheme.primaryBlue
+                                  ? AppTheme.primaryOrange
                                   : scheme.outlineVariant,
                               width: tagValue == food ? 2 : 1,
                             ),

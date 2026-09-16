@@ -36,7 +36,7 @@ class AppProcessLoading extends StatelessWidget {
                     children: [
                       Center(
                         child: LoadingAnimationWidget.dotsTriangle(
-                          color: AppTheme.primaryBlue,
+                          color: AppTheme.primaryOrange,
                           size: 50,
                         ),
                       ),
@@ -140,7 +140,7 @@ class AppContentLoading extends StatelessWidget {
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: AppTheme.primaryBlue,
+            color: AppTheme.primaryOrange,
           ),
         ),
       ],

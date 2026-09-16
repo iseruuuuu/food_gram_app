@@ -207,7 +207,7 @@ class SettingScreen extends HookConsumerWidget {
                               width: 4,
                               height: 28,
                               decoration: BoxDecoration(
-                                color: AppTheme.primaryBlue,
+                                color: AppTheme.primaryOrange,
                                 borderRadius: BorderRadius.circular(2),
                               ),
                             ),

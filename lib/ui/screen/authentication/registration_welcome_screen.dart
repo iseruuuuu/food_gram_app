@@ -108,7 +108,7 @@ class RegistrationWelcomeScreen extends HookConsumerWidget {
                               height: 88,
                               child: Center(
                                 child: CircularProgressIndicator(
-                                  color: AppTheme.primaryBlue,
+                                  color: AppTheme.primaryOrange,
                                   strokeWidth: 2.5,
                                 ),
                               ),
@@ -131,7 +131,7 @@ class RegistrationWelcomeScreen extends HookConsumerWidget {
                                             .toLanguageTag(),
                                       ).format(displayedNumber),
                                       textColor: textColor,
-                                      numberColor: AppTheme.primaryBlue,
+                                      numberColor: AppTheme.primaryOrange,
                                     ),
                                   ),
                                 )
@@ -157,7 +157,7 @@ class RegistrationWelcomeScreen extends HookConsumerWidget {
                         _goToTab(context);
                       },
                       title: t.accountRegistration.cta,
-                      backgroundColor: AppTheme.primaryBlue,
+                      backgroundColor: AppTheme.primaryOrange,
                       horizontalInset: 24,
                     ),
                     const Gap(28),

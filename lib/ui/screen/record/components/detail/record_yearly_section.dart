@@ -149,7 +149,7 @@ class _YearRecapBody extends StatelessWidget {
             style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w800,
-              color: AppTheme.primaryBlue,
+              color: AppTheme.primaryOrange,
             ),
           ),
         ],
@@ -259,7 +259,7 @@ class _YearStat extends StatelessWidget {
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w900,
-              color: AppTheme.primaryBlue,
+              color: AppTheme.primaryOrange,
             ),
           ),
           Text(
@@ -415,7 +415,7 @@ class RecordYearCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: isSelected
-                  ? AppTheme.primaryBlue
+                  ? AppTheme.primaryOrange
                   : (isDark ? Colors.white10 : const Color(0xFFECECEC)),
               width: isSelected ? 2 : 1,
             ),
@@ -536,7 +536,7 @@ class _MonthBar extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
-                      color: AppTheme.primaryBlue,
+                      color: AppTheme.primaryOrange,
                     ),
                   ),
                 )
@@ -558,7 +558,7 @@ class _MonthBar extends StatelessWidget {
                   width: double.infinity,
                   height: height,
                   decoration: BoxDecoration(
-                    color: count == 0 ? emptyColor : AppTheme.primaryBlue,
+                    color: count == 0 ? emptyColor : AppTheme.primaryOrange,
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),

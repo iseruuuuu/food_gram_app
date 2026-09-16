@@ -63,19 +63,19 @@ class AppTabError extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final config = switch (type) {
       TabLoadingType.map => (
-          color: AppTheme.primaryBlue,
+          color: AppTheme.primaryOrange,
           image: Assets.image.errorMap,
         ),
       TabLoadingType.food => (
-          color: AppTheme.primaryBlue,
+          color: AppTheme.primaryOrange,
           image: Assets.image.errorFood,
         ),
       TabLoadingType.record => (
-          color: AppTheme.primaryBlue,
+          color: AppTheme.primaryOrange,
           image: Assets.image.errorRecord,
         ),
       TabLoadingType.myPage => (
-          color: AppTheme.primaryBlue,
+          color: AppTheme.primaryOrange,
           image: Assets.image.errorMypage,
         ),
     };

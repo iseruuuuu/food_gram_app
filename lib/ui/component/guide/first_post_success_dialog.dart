@@ -183,7 +183,7 @@ class _FirstPostCompleteDialog extends ConsumerWidget {
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
                 style: TextButton.styleFrom(
-                  foregroundColor: AppTheme.primaryBlue,
+                  foregroundColor: AppTheme.primaryOrange,
                 ),
                 child: Text(
                   t.close,
@@ -302,7 +302,7 @@ class _ActionTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           child: Row(
             children: [
-              Icon(icon, color: AppTheme.primaryBlue, size: 22),
+              Icon(icon, color: AppTheme.primaryOrange, size: 22),
               const Gap(12),
               Expanded(
                 child: Text(

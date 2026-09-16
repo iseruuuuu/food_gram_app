@@ -33,7 +33,7 @@ class SnackBarHelper {
       description: message.isNotEmpty ? Text(message) : null,
       autoCloseDuration: const Duration(seconds: 3),
       alignment: Alignment.topRight,
-      primaryColor: AppTheme.primaryBlue,
+      primaryColor: AppTheme.primaryOrange,
       foregroundColor: Colors.white,
     );
   }
@@ -56,7 +56,7 @@ class SnackBarHelper {
       title: Text(message),
       autoCloseDuration: duration ?? const Duration(seconds: 3),
       alignment: Alignment.topRight,
-      primaryColor: backgroundColor ?? AppTheme.primaryBlue,
+      primaryColor: backgroundColor ?? AppTheme.primaryOrange,
       foregroundColor: Colors.white,
     );
   }
@@ -77,7 +77,7 @@ class SnackBarHelper {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: Material(
-            color: AppTheme.primaryBlue,
+            color: AppTheme.primaryOrange,
             borderRadius: BorderRadius.circular(12),
             elevation: 4,
             child: Padding(
@@ -156,7 +156,7 @@ class SnackBarHelper {
           description: descriptionText != null ? Text(descriptionText) : null,
           autoCloseDuration: duration ?? const Duration(seconds: 3),
           alignment: Alignment.topRight,
-          primaryColor: backgroundColor ?? AppTheme.primaryBlue,
+          primaryColor: backgroundColor ?? AppTheme.primaryOrange,
           foregroundColor: Colors.white,
         );
         return;
@@ -173,7 +173,7 @@ class SnackBarHelper {
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: backgroundColor ?? AppTheme.primaryBlue,
+            color: backgroundColor ?? AppTheme.primaryOrange,
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
