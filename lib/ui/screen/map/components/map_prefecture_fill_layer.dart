@@ -87,7 +87,7 @@ class MapPrefectureFillLayer {
   }) {
     if (palette == MapPrefectureFillPalette.atlas) {
       final unexplored = isDark ? '#3A3632' : '#E8E2D8';
-      final hasPosts = isDark ? '#FFA347' : '#F28C28';
+      final hasPosts = isDark ? '#FFA347' : '#E88932';
       return FillLayerProperties(
         fillColor: [
           'case',

@@ -65,7 +65,7 @@ class MapCountryFillLayer {
             5,
             '#F5A85A',
             20,
-            '#F28C28',
+            '#E88932',
             50,
             '#D4741A',
             100,
