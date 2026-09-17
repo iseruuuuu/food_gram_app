@@ -12,6 +12,7 @@ import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
+import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_overview_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/map_view_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -196,13 +197,7 @@ class MapPlaceSearchModalSheet extends HookConsumerWidget {
                     },
                   );
                 },
-                loading: () => const Center(
-                  child: SizedBox(
-                    width: 30,
-                    height: 30,
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
+                loading: () => const AppListSkeleton(),
                 error: (error, stackTrace) => SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(24),

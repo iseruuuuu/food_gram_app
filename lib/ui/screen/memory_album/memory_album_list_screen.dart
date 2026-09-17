@@ -12,9 +12,9 @@ import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
-import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/dialog/memory_album_dialog.dart';
+import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_card.dart';
 import 'package:food_gram_app/ui/screen/memory_album/memory_album_view_model.dart';
 import 'package:gap/gap.dart';
@@ -124,7 +124,7 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
         ],
       ),
       body: albumsAsync.when(
-        loading: () => const Center(child: AppContentLoading()),
+        loading: () => const AppListSkeleton(),
         error: (_, __) => AppTabError.myPage(onRetry: reload),
         data: (albums) {
           if (albums.isEmpty) {

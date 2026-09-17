@@ -13,7 +13,7 @@ import 'package:food_gram_app/core/supabase/user/providers/friend_user_ids_provi
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
-import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
+import 'package:food_gram_app/ui/component/loading/app_tab_loading.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
 import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dart';
 import 'package:food_gram_app/ui/screen/time_line/components/timeline_category_tab_bar.dart';

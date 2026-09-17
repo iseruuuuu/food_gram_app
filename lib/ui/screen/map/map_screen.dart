@@ -21,9 +21,9 @@ import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
-import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
-import 'package:food_gram_app/ui/component/common/app_tab_loading.dart';
+import 'package:food_gram_app/ui/component/loading/app_overlay_loading.dart';
+import 'package:food_gram_app/ui/component/loading/app_tab_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_detail_sheet.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_overview_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_category_chip_bar.dart';
@@ -284,9 +284,11 @@ class MapScreen extends HookConsumerWidget {
                 ),
               ],
             ),
-          AppMapLoading(
+          AppProcessLoading(
             loading: state.isLoading,
-            hasError: state.hasError,
+            status: state.hasError
+                ? t.map.loadingError
+                : t.map.loadingRestaurant,
           ),
           AppProcessLoading(
             loading: loading,

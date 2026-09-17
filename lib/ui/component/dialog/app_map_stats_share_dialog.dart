@@ -5,7 +5,7 @@ import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
-import 'package:food_gram_app/ui/component/common/app_loading.dart';
+import 'package:food_gram_app/ui/component/loading/app_overlay_loading.dart';
 import 'package:food_gram_app/ui/component/map/app_map_stats_share_composition.dart';
 import 'package:food_gram_app/ui/component/map/app_map_stats_share_widget.dart';
 import 'package:gap/gap.dart';

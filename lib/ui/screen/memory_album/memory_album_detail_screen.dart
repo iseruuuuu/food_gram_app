@@ -10,9 +10,9 @@ import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/memory_album_utils.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/component/common/app_loading.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/dialog/memory_album_dialog.dart';
+import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_detail_header.dart';
 import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_post_tile.dart';
 import 'package:food_gram_app/ui/screen/memory_album/memory_album_view_model.dart';
@@ -30,9 +30,9 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
     useEffect(
       () {
         ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
-              name: AnalyticsEvent.albumDetailOpen,
-              parameters: {AnalyticsParam.albumId: albumId},
-            );
+          name: AnalyticsEvent.albumDetailOpen,
+          parameters: {AnalyticsParam.albumId: albumId},
+        );
         return null;
       },
       [albumId],
@@ -44,7 +44,7 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
 
     return albumAsync.when(
       loading: () => const Scaffold(
-        body: Center(child: AppContentLoading()),
+        body: AppListSkeleton(),
       ),
       error: (_, __) => Scaffold(
         appBar: AppBar(
@@ -103,7 +103,7 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
             ),
           ),
           body: postsAsync.when(
-            loading: () => const Center(child: AppContentLoading()),
+            loading: () => const AppListSkeleton(),
             error: (_, __) => AppTabError.myPage(
               onRetry: () =>
                   ref.invalidate(memoryAlbumPostsProvider(album.postIdsKey)),
