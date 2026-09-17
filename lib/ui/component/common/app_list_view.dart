@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/model/timeline_detail_extra.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/subscribed_users_provider.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_translatable_text.dart';
@@ -137,17 +138,23 @@ class AppListView extends HookConsumerWidget {
                   child: SizedBox(
                     width: screenWidth,
                     height: screenWidth,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: Card(
-                              elevation: isSubscribed ? 0 : 10,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                  isSubscribed ? 0 : 10,
-                                ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(3),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: isSubscribed
+                                ? AppTheme.primaryOrange
+                                : AppTheme.dividerOf(context),
+                            width: isSubscribed ? 1.5 : 0.8,
+                          ),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(9),
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
                                 child: storageKey.isEmpty
                                     ? ColoredBox(
                                         color: isDark
@@ -160,8 +167,8 @@ class AppListView extends HookConsumerWidget {
                                         width: screenWidth,
                                         height: screenWidth,
                                         placeholder: (context, url) =>
-                                            Container(
-                                          color: Colors.white,
+                                            ColoredBox(
+                                          color: AppTheme.cardOf(context),
                                         ),
                                         errorWidget: (context, url, error) =>
                                             Image.asset(
@@ -174,63 +181,55 @@ class AppListView extends HookConsumerWidget {
                                         ),
                                       ),
                               ),
-                            ),
-                          ),
-                          if (isSubscribed)
-                            Positioned.fill(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.asset(
-                                  Assets.image.frame.path,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                            ),
-                          if (post.restaurant.isNotEmpty)
-                            Positioned(
-                              left: 0,
-                              right: 0,
-                              bottom: 0,
-                              child: Container(
-                                color: Colors.black.withValues(alpha: 0.55),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 3,
-                                ),
-                                child: AppTranslatableText(
-                                  post.restaurant,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.center,
-                                  enableCopy: false,
-                                  autoTranslate: true,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.bold,
+                              if (post.restaurant.isNotEmpty)
+                                Positioned(
+                                  left: 0,
+                                  right: 0,
+                                  bottom: 0,
+                                  child: Container(
+                                    color: Colors.black.withValues(alpha: 0.55),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 3,
+                                    ),
+                                    child: AppTranslatableText(
+                                      post.restaurant,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                      enableCopy: false,
+                                      autoTranslate: true,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 9,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          // 複数画像がある場合のアイコン
-                          if (hasMultipleImages)
-                            Positioned(
-                              top: 4,
-                              right: 4,
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withValues(alpha: 0.6),
-                                  shape: BoxShape.circle,
+                              // 複数画像がある場合のアイコン
+                              if (hasMultipleImages)
+                                Positioned(
+                                  top: 4,
+                                  right: 4,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withValues(
+                                        alpha: 0.6,
+                                      ),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.collections,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ),
+                                  ),
                                 ),
-                                child: const Icon(
-                                  Icons.collections,
-                                  color: Colors.white,
-                                  size: 16,
-                                ),
-                              ),
-                            ),
-                        ],
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),

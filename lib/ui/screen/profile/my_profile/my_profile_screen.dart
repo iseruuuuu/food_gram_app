@@ -4,6 +4,8 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
+import 'package:food_gram_app/core/theme/style/profile_style.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -50,42 +52,34 @@ class MyProfileScreen extends HookConsumerWidget {
           length: 2,
           child: Scaffold(
             appBar: AppBar(
-              backgroundColor: Theme.of(context).brightness == Brightness.light
-                  ? Colors.white
-                  : Theme.of(context).colorScheme.surface,
-              surfaceTintColor: Theme.of(context).brightness == Brightness.light
-                  ? Colors.white
-                  : Theme.of(context).colorScheme.surface,
+              backgroundColor: AppTheme.backgroundOf(context),
+              surfaceTintColor: AppTheme.backgroundOf(context),
               elevation: 0,
               centerTitle: true,
               leading: IconButton(
                 onPressed: () => context.pushNamed(RouterPath.notifications),
                 icon: const Icon(
                   Icons.favorite_border,
-                  color: Colors.red,
+                  color: AppTheme.primaryOrange,
                 ),
               ),
               title: Text(
                 Translations.of(context).tab.myPage,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
+                style: ProfileStyle.screenTitle(context),
               ),
               actions: [
                 IconButton(
                   onPressed: () => context.pushNamed(RouterPath.wantToGoList),
                   icon: Icon(
                     Icons.bookmark_added_sharp,
-                    color: Theme.of(context).colorScheme.onSurface,
+                    color: AppTheme.textPrimaryOf(context),
                   ),
                 ),
                 IconButton(
                   onPressed: () => context.pushNamed(RouterPath.setting),
                   icon: Icon(
                     Icons.settings_outlined,
-                    color: Theme.of(context).colorScheme.onSurface,
+                    color: AppTheme.textPrimaryOf(context),
                   ),
                 ),
               ],

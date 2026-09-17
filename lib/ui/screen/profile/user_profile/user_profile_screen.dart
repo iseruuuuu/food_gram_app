@@ -38,7 +38,7 @@ class UserProfileScreen extends HookConsumerWidget {
           surfaceTintColor: Colors.transparent,
           elevation: 0,
           centerTitle: false,
-          title: Text(users.name, style: ProfileStyle.userName()),
+          title: Text(users.name, style: ProfileStyle.displayName(context)),
           leading: GestureDetector(
             onTap: context.pop,
             child: Icon(

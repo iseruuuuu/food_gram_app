@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
+import 'package:food_gram_app/core/theme/style/profile_style.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -13,8 +15,6 @@ class ProfileStat extends StatelessWidget {
     required this.iconColor,
     required this.valueText,
     required this.label,
-    required this.textColor,
-    required this.mutedColor,
     super.key,
   });
 
@@ -23,8 +23,6 @@ class ProfileStat extends StatelessWidget {
   final Color iconColor;
   final String valueText;
   final String label;
-  final Color textColor;
-  final Color mutedColor;
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +40,12 @@ class ProfileStat extends StatelessWidget {
         const Gap(8),
         Text(
           valueText,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: textColor,
-          ),
+          style: ProfileStyle.statValue(context),
         ),
         Text(
           label,
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 13,
-            color: mutedColor,
-          ),
+          style: ProfileStyle.statLabel(context),
         ),
       ],
     );
@@ -64,15 +55,11 @@ class ProfileStat extends StatelessWidget {
 class ProfileRankingUnlocked extends ConsumerStatefulWidget {
   const ProfileRankingUnlocked({
     required this.userId,
-    required this.textColor,
-    required this.mutedColor,
     required this.rankingLabel,
     super.key,
   });
 
   final String userId;
-  final Color textColor;
-  final Color mutedColor;
   final String rankingLabel;
 
   @override
@@ -100,18 +87,17 @@ class _ProfileRankingUnlockedState
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final iconBg = AppTheme.orangeBackgroundOf(context);
+    const iconColor = AppTheme.primaryOrange;
     final asyncRank = ref.watch(postCountRankProvider(widget.userId));
     return asyncRank.when(
       data: (rank) => ProfileStat(
         icon: Icons.emoji_events_outlined,
-        iconBg: isDark ? const Color(0xFFFFE082) : const Color(0xFFFFF3CD),
-        iconColor: isDark ? const Color(0xFFF57F17) : Colors.amber.shade700,
+        iconBg: iconBg,
+        iconColor: iconColor,
         valueText: t.profile.rankingPositionFormat
             .replaceAll('{rank}', rank.toString()),
         label: widget.rankingLabel,
-        textColor: widget.textColor,
-        mutedColor: widget.mutedColor,
       ),
       loading: () => Column(
         children: [
@@ -124,7 +110,7 @@ class _ProfileRankingUnlockedState
                 height: 22,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: widget.mutedColor,
+                  color: AppTheme.textSecondaryOf(context),
                 ),
               ),
             ),
@@ -132,12 +118,12 @@ class _ProfileRankingUnlockedState
           const Gap(8),
           Text(
             t.profile.rankingHiddenPosition,
-            style: TextStyle(fontSize: 20, color: widget.textColor),
+            style: ProfileStyle.statValue(context),
           ),
           const Gap(4),
           Text(
             widget.rankingLabel,
-            style: TextStyle(fontSize: 13, color: widget.mutedColor),
+            style: ProfileStyle.statLabel(context),
           ),
         ],
       ),
@@ -149,27 +135,23 @@ class _ProfileRankingUnlockedState
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: isDark
-                    ? const Color(0xFFFFE082)
-                    : const Color(0xFFFFF3CD),
+                color: iconBg,
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.error_outline,
-                color: isDark
-                    ? const Color(0xFFF57F17)
-                    : Colors.grey.shade600,
+                color: AppTheme.textSecondaryOf(context),
               ),
             ),
             const Gap(8),
             Text(
               t.profile.rankingHiddenPosition,
-              style: TextStyle(fontSize: 20, color: widget.textColor),
+              style: ProfileStyle.statValue(context),
             ),
             const Gap(4),
             Text(
               widget.rankingLabel,
-              style: TextStyle(fontSize: 13, color: widget.mutedColor),
+              style: ProfileStyle.statLabel(context),
             ),
           ],
         ),

@@ -4,6 +4,8 @@ import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
+import 'package:food_gram_app/core/theme/style/profile_style.dart';
 import 'package:food_gram_app/core/utils/user_level.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -35,16 +37,15 @@ class AppProfileHeader extends ConsumerWidget {
     final currentUser = ref.watch(currentUserProvider);
     final isViewerSubscribed =
         ref.watch(isSubscribeProvider).valueOrNull ?? false;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final headerBg = Theme.of(context).colorScheme.surface;
-    final textColor = isDark ? Colors.white : Colors.black;
-    final textColor87 = isDark ? Colors.white70 : Colors.black87;
     const avatarRadius = 60.0;
     final level = UserLevel.levelFromPostCount(length);
     final isOwnProfile = currentUser == users.userId;
+    final iconBg = AppTheme.orangeBackgroundOf(context);
+    const iconColor = AppTheme.primaryOrange;
+    final dividerColor = AppTheme.dividerOf(context);
 
     return ColoredBox(
-      color: headerBg,
+      color: AppTheme.backgroundOf(context),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
         child: Column(
@@ -89,20 +90,19 @@ class AppProfileHeader extends ConsumerWidget {
                           Flexible(
                             child: Text(
                               users.name,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: textColor,
-                              ),
+                              style: ProfileStyle.displayName(context),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           if (users.isSubscribe) ...[
                             const Gap(6),
-                            Assets.image.profileIcon.image(
-                              width: 26,
-                              height: 26,
+                            Opacity(
+                              opacity: 0.78,
+                              child: Assets.image.profileIcon.image(
+                                width: 20,
+                                height: 20,
+                              ),
                             ),
                           ],
                         ],
@@ -117,12 +117,7 @@ class AppProfileHeader extends ConsumerWidget {
                                 Localizations.localeOf(context).toLanguageTag(),
                               ).format(users.id),
                             ),
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: textColor87,
-                              letterSpacing: 0.2,
-                            ),
+                            style: ProfileStyle.memberNumber(context),
                           ),
                         ),
                       ],
@@ -130,7 +125,6 @@ class AppProfileHeader extends ConsumerWidget {
                       _RankBadge(
                         rankLabel: _getRank(context, length),
                         trophyAsset: _getTrophyAsset(length),
-                        isDark: isDark,
                         rankSuffix: t.rank.label,
                         levelLabel: level >= UserLevel.maxLevel
                             ? t.profile.levelMax
@@ -149,11 +143,7 @@ class AppProfileHeader extends ConsumerWidget {
               Text(
                 users.selfIntroduce,
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: textColor,
-                  height: 1.4,
-                ),
+                style: ProfileStyle.bio(context),
               ),
             ],
             if (isOwnProfile && level < UserLevel.maxLevel) ...[
@@ -162,37 +152,24 @@ class AppProfileHeader extends ConsumerWidget {
                 builder: (context) {
                   final parts = t.profile.nextLevelBanner.split('{count}');
                   final count = UserLevel.postsNeededForNextLevel(length) ?? 0;
-                  final nextLevelColor =
-                      isDark ? Colors.white70 : Colors.black54;
+                  final nextLevelStyle = ProfileStyle.nextLevel(context);
                   if (parts.length != 2) {
                     return Text(
                       t.profile.nextLevelBanner.replaceAll(
                         '{count}',
                         count.toString(),
                       ),
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: nextLevelColor,
-                      ),
+                      style: nextLevelStyle,
                     );
                   }
                   return RichText(
                     text: TextSpan(
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: nextLevelColor,
-                      ),
+                      style: nextLevelStyle.copyWith(fontSize: 15),
                       children: [
                         TextSpan(text: parts[0]),
                         TextSpan(
                           text: count.toString(),
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: isDark
-                                ? Colors.orange.shade200
-                                : Colors.orange.shade800,
-                          ),
+                          style: ProfileStyle.nextLevelCount(context),
                         ),
                         TextSpan(text: parts[1]),
                       ],
@@ -206,10 +183,9 @@ class AppProfileHeader extends ConsumerWidget {
                 child: LinearProgressIndicator(
                   value: UserLevel.progressToNextLevel(length),
                   minHeight: 6,
-                  backgroundColor:
-                      isDark ? Colors.white12 : Colors.grey.shade200,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    isDark ? Colors.grey.shade500 : Colors.grey.shade700,
+                  backgroundColor: iconBg,
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                    AppTheme.primaryOrange,
                   ),
                 ),
               ),
@@ -222,16 +198,10 @@ class AppProfileHeader extends ConsumerWidget {
                   Expanded(
                     child: ProfileStat(
                       icon: Icons.restaurant_rounded,
-                      iconBg: isDark
-                          ? const Color(0xFF9FA8DA)
-                          : const Color(0xFFE8EAF6),
-                      iconColor: isDark
-                          ? const Color(0xFF303F9F)
-                          : Colors.indigo.shade400,
+                      iconBg: iconBg,
+                      iconColor: iconColor,
                       valueText: length.toString(),
                       label: t.profile.postCount,
-                      textColor: textColor,
-                      mutedColor: isDark ? Colors.white70 : Colors.black54,
                     ),
                   ),
                   VerticalDivider(
@@ -239,17 +209,15 @@ class AppProfileHeader extends ConsumerWidget {
                     thickness: 1,
                     indent: 6,
                     endIndent: 6,
-                    color: isDark ? Colors.white24 : Colors.grey.shade300,
+                    color: dividerColor,
                   ),
                   Expanded(
                     child: ProfileStat(
                       icon: Icons.favorite_rounded,
-                      iconBg: const Color(0xFFFFE4EC),
-                      iconColor: Colors.red.shade400,
+                      iconBg: iconBg,
+                      iconColor: iconColor,
                       valueText: heartAmount.toString(),
                       label: t.likeButton,
-                      textColor: textColor,
-                      mutedColor: isDark ? Colors.white70 : Colors.black54,
                     ),
                   ),
                   VerticalDivider(
@@ -257,13 +225,11 @@ class AppProfileHeader extends ConsumerWidget {
                     thickness: 1,
                     indent: 6,
                     endIndent: 6,
-                    color: isDark ? Colors.white24 : Colors.grey.shade300,
+                    color: dividerColor,
                   ),
                   Expanded(
                     child: ProfileRankingUnlocked(
                       userId: users.userId,
-                      textColor: textColor,
-                      mutedColor: isDark ? Colors.white70 : Colors.black54,
                       rankingLabel: t.profile.rankingStats,
                     ),
                   ),
@@ -285,9 +251,7 @@ class AppProfileHeader extends ConsumerWidget {
                     });
                   },
                   style: OutlinedButton.styleFrom(
-                    side: BorderSide(
-                      color: isDark ? Colors.white54 : Colors.grey,
-                    ),
+                    side: BorderSide(color: dividerColor),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
@@ -295,11 +259,7 @@ class AppProfileHeader extends ConsumerWidget {
                   ),
                   child: Text(
                     t.profile.editButton,
-                    style: TextStyle(
-                      color: textColor87,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: ProfileStyle.editButton(context),
                   ),
                 ),
               ),
@@ -351,48 +311,43 @@ class _RankBadge extends StatelessWidget {
   const _RankBadge({
     required this.rankLabel,
     required this.trophyAsset,
-    required this.isDark,
     required this.rankSuffix,
     required this.levelLabel,
   });
 
   final String rankLabel;
   final String trophyAsset;
-  final bool isDark;
   final String rankSuffix;
   final String levelLabel;
 
   @override
   Widget build(BuildContext context) {
-    final badgeBg = isDark ? const Color(0xFF3A2E1A) : Colors.amber.shade50;
-    final badgeBorder =
-        isDark ? const Color(0xFF8B7355) : Colors.amber.shade300;
-    final badgeText = isDark ? const Color(0xFFE8C87A) : Colors.black;
-
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5.5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: badgeBg,
+        color: ProfileStyle.rankBadgeBackground(context),
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: badgeBorder),
+        border: Border.all(color: ProfileStyle.rankBadgeBorder(context)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(
-            trophyAsset,
-            width: 18,
-            height: 18,
+          ColorFiltered(
+            colorFilter: const ColorFilter.mode(
+              AppTheme.primaryOrange,
+              BlendMode.srcIn,
+            ),
+            child: Image.asset(
+              trophyAsset,
+              width: 16,
+              height: 16,
+            ),
           ),
-          const Gap(7),
+          const Gap(6),
           Flexible(
             child: Text(
               '$levelLabel $rankLabel $rankSuffix',
-              style: TextStyle(
-                fontSize: 13.5,
-                fontWeight: FontWeight.bold,
-                color: badgeText,
-              ),
+              style: ProfileStyle.rankBadge(context),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

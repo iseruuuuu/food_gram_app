@@ -34,7 +34,7 @@ class MemoryAlbumEntryCard extends ConsumerWidget {
           borderRadius: BorderRadius.circular(20),
           child: Ink(
             decoration: MemoryAlbumTheme.cardDecoration(isDark: isDark),
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.fromLTRB(16, 10, 8, 10),
             child: Row(
               children: [
                 Expanded(
@@ -43,12 +43,10 @@ class MemoryAlbumEntryCard extends ConsumerWidget {
                     children: [
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.photo_album_outlined,
                             size: 20,
-                            color: isDark
-                                ? Colors.white70
-                                : AppTheme.primaryOrange,
+                            color: AppTheme.primaryOrange,
                           ),
                           const Gap(6),
                           Expanded(
@@ -57,7 +55,7 @@ class MemoryAlbumEntryCard extends ConsumerWidget {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w800,
-                                color: isDark ? Colors.white : Colors.black87,
+                                color: AppTheme.textPrimaryOf(context),
                               ),
                             ),
                           ),
@@ -70,7 +68,7 @@ class MemoryAlbumEntryCard extends ConsumerWidget {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 12,
-                          color: isDark ? Colors.white60 : Colors.black54,
+                          color: AppTheme.textSecondaryOf(context),
                         ),
                       ),
                     ],
@@ -88,18 +86,18 @@ class MemoryAlbumEntryCard extends ConsumerWidget {
                         loading: () => const SizedBox.shrink(),
                         error: (_, __) => Icon(
                           Icons.photo_library_outlined,
-                          color: isDark ? Colors.white38 : Colors.black26,
+                          color: AppTheme.textSecondaryOf(context),
                         ),
                       ) ??
                       Icon(
                         Icons.add_photo_alternate_outlined,
                         size: 36,
-                        color: isDark ? Colors.white38 : Colors.black26,
+                        color: AppTheme.textSecondaryOf(context),
                       ),
                 ),
                 Icon(
                   Icons.chevron_right,
-                  color: isDark ? Colors.white38 : Colors.black26,
+                  color: AppTheme.textSecondaryOf(context),
                 ),
               ],
             ),
