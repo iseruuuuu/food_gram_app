@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 
 class TabStyle {
   TabStyle._();
 
   /// タブ（アイコン・文言）の色。
-  /// ライト: 選択時は黒 / 未選択は灰色。ダーク: 選択時は白 / 未選択は灰色。
+  /// 選択時はブランドオレンジ / 未選択はグレー。
   static Color tabColor(BuildContext context, {required bool selected}) {
     if (!selected) {
-      return Colors.grey;
+      return AppTheme.textSecondaryOf(context);
     }
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return isDark ? Colors.white : Colors.black;
+    return AppTheme.primaryOrange;
   }
 
   static TextStyle tab(BuildContext context, {required bool value}) {

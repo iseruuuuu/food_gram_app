@@ -346,10 +346,7 @@ class TabScreen extends HookConsumerWidget {
                           color: Theme.of(context).colorScheme.surface,
                           borderRadius: BorderRadius.circular(_barHeight / 2),
                           border: Border.all(
-                            color:
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.white24
-                                    : Colors.grey.shade300,
+                            color: AppTheme.dividerOf(context),
                           ),
                           boxShadow: [
                             BoxShadow(
