@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,13 @@ class MapScreen extends HookConsumerWidget {
     final fabBorder = AppTheme.fabBorderColor(context);
     final myPostsOnly = ref.watch(mapMyPostsOnlyProvider);
     final t = Translations.of(context);
+    final isMapRotated = useState(false);
+    void syncCompassVisibility(double? bearing) {
+      final rotated = _isMapRotated(bearing);
+      if (isMapRotated.value != rotated) {
+        isMapRotated.value = rotated;
+      }
+    }
     ref.listen<MapModalSelection?>(mapModalSelectionProvider, (_, next) {
       if (next == null || next.placeSearchRestaurant == null) {
         unawaited(controller.clearSearchResultPin());
@@ -160,8 +168,20 @@ class MapScreen extends HookConsumerWidget {
                   },
                   onStyleLoadedCallback: controller.onStyleLoaded,
                   onMapClick: (_, __) => primaryFocus?.unfocus(),
-                  onCameraIdle: controller.scheduleUpdateAfterCameraIdle,
-                  onCameraMove: controller.onCameraMove,
+                  onCameraIdle: () {
+                    controller.scheduleUpdateAfterCameraIdle();
+                    syncCompassVisibility(
+                      ref
+                          .read(mapViewModelProvider)
+                          .mapController
+                          ?.cameraPosition
+                          ?.bearing,
+                    );
+                  },
+                  onCameraMove: (position) {
+                    controller.onCameraMove(position);
+                    syncCompassVisibility(position.bearing);
+                  },
                   annotationOrder: const [AnnotationType.symbol],
                   key: const ValueKey('mapWidget'),
                   myLocationEnabled: isLocationEnabled,
@@ -266,15 +286,20 @@ class MapScreen extends HookConsumerWidget {
                                 onPressed: controller.moveToCurrentLocation,
                               ),
                             ],
-                            const Gap(8),
-                            _MapSideFab(
-                              heroTag: 'compass',
-                              fabBg: fabBg,
-                              fabFg: fabFg,
-                              fabBorder: fabBorder,
-                              icon: CupertinoIcons.compass,
-                              iconSize: 24,
-                              onPressed: controller.resetBearing,
+                            _MapSideFabReveal(
+                              visible: isMapRotated.value,
+                              child: _MapSideFab(
+                                heroTag: 'compass',
+                                fabBg: fabBg,
+                                fabFg: fabFg,
+                                fabBorder: fabBorder,
+                                icon: CupertinoIcons.compass,
+                                iconSize: 24,
+                                onPressed: () {
+                                  isMapRotated.value = false;
+                                  unawaited(controller.resetBearing());
+                                },
+                              ),
                             ),
                           ],
                         ),
@@ -295,6 +320,54 @@ class MapScreen extends HookConsumerWidget {
             status: 'Loading...',
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// 北（0°）からこの角度以上傾いたらコンパス FAB を出す
+const _compassVisibleBearingThreshold = 2.0;
+
+bool _isMapRotated(double? bearing) {
+  if (bearing == null) {
+    return false;
+  }
+  var normalized = bearing % 360;
+  if (normalized < 0) {
+    normalized += 360;
+  }
+  final fromNorth = math.min(normalized, 360 - normalized);
+  return fromNorth > _compassVisibleBearingThreshold;
+}
+
+class _MapSideFabReveal extends StatelessWidget {
+  const _MapSideFabReveal({
+    required this.visible,
+    required this.child,
+  });
+
+  final bool visible;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: AnimatedOpacity(
+        opacity: visible ? 1 : 0,
+        duration: const Duration(milliseconds: 220),
+        curve: Curves.easeOutCubic,
+        child: AnimatedSize(
+          duration: const Duration(milliseconds: 220),
+          curve: Curves.easeOutCubic,
+          alignment: Alignment.topRight,
+          child: visible
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: child,
+                )
+              : const SizedBox.shrink(),
+        ),
       ),
     );
   }
