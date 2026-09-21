@@ -85,11 +85,6 @@ class SettingScreen extends HookConsumerWidget {
                       Wrap(
                         children: [
                           SettingTile(
-                            icon: FontAwesomeIcons.twitter.data,
-                            title: t.setting.developer,
-                            onTap: () => LaunchUrlHelper().openSNSUrl(URL.sns),
-                          ),
-                          SettingTile(
                             icon: FontAwesomeIcons.github.data,
                             title: t.setting.github,
                             onTap: () =>
@@ -107,7 +102,7 @@ class SettingScreen extends HookConsumerWidget {
                               final url = Platform.isIOS
                                   ? URL.appleStore
                                   : URL.googleStore;
-                              ShareHelpers().shareNormal(url);
+                              ShareHelpers().shareNormal(url, context: context);
                             },
                           ),
                           SettingTile(
