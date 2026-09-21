@@ -62,6 +62,7 @@ class MapStatsShare extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final emoji = _isJapan ? '🗾' : '🌍';
     return SizedBox(
       width: compositionWidth,
       height: compositionHeight,
@@ -86,122 +87,97 @@ class MapStatsShare extends StatelessWidget {
               child: SizedBox(
                 width: cardWidth,
                 height: cardHeight,
-                child: _MapStatsShareCard(
-                  viewType: viewType,
-                  challengeTitle: _challengeTitle(t),
-                  count: count,
-                  total: total,
-                  label: _label(t),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  color: Colors.white,
+                  elevation: 4,
+                  shadowColor: Colors.black26,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Gap(24),
+                          Center(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  emoji,
+                                  style: const TextStyle(fontSize: 24),
+                                ),
+                                const Gap(8),
+                                Text(
+                                  _challengeTitle(t),
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF222222),
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Spacer(),
+                          Center(
+                            child: Text(
+                              '$count / $total',
+                              style: const TextStyle(
+                                fontSize: 44,
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.primaryOrange,
+                                height: 1.1,
+                              ),
+                            ),
+                          ),
+                          const Gap(8),
+                          Center(
+                            child: Text(
+                              _label(t),
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[600],
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          const Spacer(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const Text(
+                                '#FoodGram',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF444444),
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const Gap(6),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(6),
+                                child: Assets.image.appIcon.image(
+                                  width: 28,
+                                  height: 28,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Gap(8),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _MapStatsShareCard extends StatelessWidget {
-  const _MapStatsShareCard({
-    required this.viewType,
-    required this.challengeTitle,
-    required this.count,
-    required this.total,
-    required this.label,
-  });
-
-  final MapViewType viewType;
-  final String challengeTitle;
-  final int count;
-  final int total;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    final emoji = viewType == MapViewType.japan ? '🗾' : '🌍';
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      color: Colors.white,
-      elevation: 4,
-      shadowColor: Colors.black26,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Gap(24),
-              Center(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(emoji, style: const TextStyle(fontSize: 24)),
-                    const Gap(8),
-                    Text(
-                      challengeTitle,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF222222),
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-              const Spacer(),
-              Center(
-                child: Text(
-                  '$count / $total',
-                  style: const TextStyle(
-                    fontSize: 44,
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.primaryOrange,
-                    height: 1.1,
-                  ),
-                ),
-              ),
-              const Gap(8),
-              Center(
-                child: Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const Text(
-                    '#FoodGram',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF444444),
-                      fontSize: 14,
-                    ),
-                  ),
-                  const Gap(6),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: Assets.image.appIcon.image(
-                      width: 28,
-                      height: 28,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ],
-              ),
-              const Gap(8),
-            ],
-          ),
         ),
       ),
     );
