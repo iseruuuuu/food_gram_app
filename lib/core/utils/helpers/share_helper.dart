@@ -10,17 +10,32 @@ import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ShareHelpers {
-  void shareNormal(String url) {
-    Share.share(url);
+  Future<void> shareNormal(String url, {required BuildContext context}) async {
+    await Share.share(
+      url,
+      sharePositionOrigin: _sharePositionOrigin(context),
+    );
   }
 
+  /// iOS 26 以降は iPhone でも popover の原点が必須。
+  /// ゼロ矩形だと PlatformException になるため、描画領域か画面内の非ゼロ矩形を返す。
   Rect _sharePositionOrigin(BuildContext context) {
+    final renderObject = context.findRenderObject();
+    if (renderObject is RenderBox && renderObject.hasSize) {
+      final size = renderObject.size;
+      if (size.width >= 1 && size.height >= 1) {
+        return renderObject.localToGlobal(Offset.zero) & size;
+      }
+    }
     final size = MediaQuery.sizeOf(context);
-    return Rect.fromCenter(
-      center: Offset(size.width / 2, size.height / 2),
-      width: 1,
-      height: 1,
-    );
+    if (size.width >= 1 && size.height >= 1) {
+      return Rect.fromCenter(
+        center: Offset(size.width / 2, size.height / 2),
+        width: size.width / 2,
+        height: size.height / 2,
+      );
+    }
+    return const Rect.fromLTWH(0, 0, 1, 1);
   }
 
   Future<void> sharePosts(
@@ -155,6 +170,9 @@ class ShareHelpers {
       final file = File(filePath);
       await file.writeAsBytes(screenshotBytes);
 
+      if (!context.mounted) {
+        return false;
+      }
       if (hasText) {
         await sharePosts(
           [XFile(file.path)],
