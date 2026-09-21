@@ -4,13 +4,13 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
-import 'package:food_gram_app/ui/component/share/post_share_branding.dart';
-import 'package:food_gram_app/ui/component/share/post_share_image.dart';
+import 'package:food_gram_app/ui/component/share/component/post_share_branding.dart';
+import 'package:food_gram_app/ui/component/share/component/post_share_image.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class PostShareStoryTemplate extends StatelessWidget {
-  const PostShareStoryTemplate({
+class PostShareStory extends StatelessWidget {
+  const PostShareStory({
     required this.posts,
     required this.ref,
     super.key,
@@ -28,7 +28,6 @@ class PostShareStoryTemplate extends StatelessWidget {
     final imageUrl =
         supabase.storage.from('food').getPublicUrl(posts.firstFoodImage);
     final foodNameLines = _splitFoodName(posts.localizedDisplayTitle(t));
-
     return ProviderScope(
       child: SizedBox(
         width: size.width,
@@ -75,16 +74,37 @@ class PostShareStoryTemplate extends StatelessWidget {
                   ),
                 ),
               ),
-              const Positioned(
+              Positioned(
                 top: 18,
                 right: 18,
                 child: Row(
                   children: [
-                    _StorySegment(isActive: true),
-                    Gap(4),
-                    _StorySegment(isActive: false),
-                    Gap(4),
-                    _StorySegment(isActive: false),
+                    Container(
+                      width: 52,
+                      height: 3,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    const Gap(4),
+                    Container(
+                      width: 52,
+                      height: 3,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.35),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    const Gap(4),
+                    Container(
+                      width: 52,
+                      height: 3,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.35),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -158,23 +178,5 @@ class PostShareStoryTemplate extends StatelessWidget {
       parts.sublist(0, midpoint).join(' '),
       parts.sublist(midpoint).join(' '),
     ];
-  }
-}
-
-class _StorySegment extends StatelessWidget {
-  const _StorySegment({required this.isActive});
-
-  final bool isActive;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 52,
-      height: 3,
-      decoration: BoxDecoration(
-        color: isActive ? Colors.white : Colors.white.withValues(alpha: 0.35),
-        borderRadius: BorderRadius.circular(2),
-      ),
-    );
   }
 }
