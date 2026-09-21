@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/core/utils/location/prefecture_display.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_prefecture_fill_layer.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -89,10 +90,7 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
   }
 
   bool _isInJapan(Posts post) {
-    return post.lat >= 20 &&
-        post.lat <= 46.5 &&
-        post.lng >= 122 &&
-        post.lng <= 154;
+    return CountryDetector.getCountryCode(post.lat, post.lng) == 'JP';
   }
 
   String _styleString(bool isDark) {
@@ -124,6 +122,7 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
       return;
     }
     try {
+      await CountryDetector.ensureLoaded();
       final isDark = Theme.of(context).brightness == Brightness.dark;
       await MapPrefectureFillLayer.render(
         controller,

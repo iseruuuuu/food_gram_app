@@ -34,7 +34,26 @@ class RecordJapanScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedPosts = useState<List<Posts>>(const []);
+    final selectedPostIds = useState<List<int>>(const []);
+    final postsById = {for (final post in posts) post.id: post};
+    final selectedPosts = [
+      for (final id in selectedPostIds.value)
+        if (postsById[id] != null) postsById[id]!,
+    ];
+    useEffect(
+      () {
+        final currentIds = postsById.keys.toSet();
+        final retained = [
+          for (final id in selectedPostIds.value)
+            if (currentIds.contains(id)) id,
+        ];
+        if (retained.length != selectedPostIds.value.length) {
+          selectedPostIds.value = retained;
+        }
+        return null;
+      },
+      [posts],
+    );
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = isDark ? const Color(0xFF161616) : Colors.white;
     final visits = recordVisitedPrefectureStats(posts);
@@ -57,13 +76,15 @@ class RecordJapanScreen extends HookConsumerWidget {
                 cardColor: cardColor,
                 posts: posts,
                 visitedCount: visitedCount,
-                selectedPosts: selectedPosts.value,
+                selectedPosts: selectedPosts,
                 onPinTap: (tapped) {
                   HapticFeedbackHelper.selection();
-                  selectedPosts.value = tapped;
+                  selectedPostIds.value = [
+                    for (final post in tapped) post.id,
+                  ];
                 },
                 onMapTap: (lat, lng) {
-                  selectedPosts.value = const [];
+                  selectedPostIds.value = const [];
                   ref
                       .read(recordViewModelProvider.notifier)
                       .logRegionMapTap(lat, lng);
