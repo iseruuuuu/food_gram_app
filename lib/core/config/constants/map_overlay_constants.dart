@@ -34,8 +34,20 @@ class MapOverlayConstants {
   /// 地名検索など、明示的に寄るときのズーム
   static const double pinTap = 16.5;
 
-  /// ピンタップ時、下部カードに隠れないようカメラ中心を南へずらす量（px）
-  static const double pinTapFocusOffsetY = 220;
+  /// ピンタップ時、詳細シート上端からピンを上げる余白（マップ高さ比）
+  static const double pinTapFocusGapFraction = 0.08;
+
+  /// マップ高さが取れないときのフォールバック（px）
+  static const double pinTapFocusOffsetYFallback = 220;
+
+  /// 詳細シート上端の少し上にピンが来るよう、カメラを南へずらす量（px）
+  static double pinTapFocusOffsetY({required double mapHeight}) {
+    if (mapHeight <= 0) {
+      return pinTapFocusOffsetYFallback;
+    }
+    return mapHeight *
+        (detailInitialChildSize - 0.5 + pinTapFocusGapFraction);
+  }
 
   /// 投稿詳細などから店舗マップへ
   static const double fromPostDetail = 17;

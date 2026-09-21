@@ -331,7 +331,7 @@ class MapViewModel extends _$MapViewModel {
     );
   }
 
-  /// 下部シート分だけカメラ中心を画面下方向へずらす。
+  /// 詳細シート上端の少し上にピンが来るよう、カメラ中心を画面下方向へずらす。
   /// 変換は目的のズームと現在の bearing で行い、ピンがシートに隠れない位置へ置く。
   Future<LatLng> _offsetTargetAboveSheet(
     LatLng pin, {
@@ -346,7 +346,9 @@ class MapViewModel extends _$MapViewModel {
     try {
       final currentZoom = pos?.zoom ?? zoom;
       final scale = math.pow(2, currentZoom - zoom).toDouble();
-      final offsetY = MapOverlayConstants.pinTapFocusOffsetY * scale;
+      final mapHeight = await _mapViewHeightPx(ctrl, pos?.target ?? pin);
+      final offsetY =
+          MapOverlayConstants.pinTapFocusOffsetY(mapHeight: mapHeight) * scale;
       final screen = await ctrl.toScreenLocation(pin);
       return await ctrl.toLatLng(
         math.Point<num>(screen.x, screen.y + offsetY),
@@ -357,8 +359,10 @@ class MapViewModel extends _$MapViewModel {
         final metersPerPixel =
             await ctrl.getMetersPerPixelAtLatitude(pin.latitude) *
                 math.pow(2, currentZoom - zoom);
+        final mapHeight = await _mapViewHeightPx(ctrl, pos?.target ?? pin);
         final offsetMeters =
-            MapOverlayConstants.pinTapFocusOffsetY * metersPerPixel;
+            MapOverlayConstants.pinTapFocusOffsetY(mapHeight: mapHeight) *
+                metersPerPixel;
         const metersPerDegreeLat = 111320.0;
         final latRad = pin.latitude * math.pi / 180;
         final metersPerDegreeLng =
@@ -374,6 +378,21 @@ class MapViewModel extends _$MapViewModel {
         return pin;
       }
     }
+  }
+
+  /// カメラ中心のスクリーン座標からマップビューの高さを推定する
+  Future<double> _mapViewHeightPx(
+    MapLibreMapController ctrl,
+    LatLng cameraTarget,
+  ) async {
+    try {
+      final center = await ctrl.toScreenLocation(cameraTarget);
+      final height = center.y * 2;
+      if (height > 0) {
+        return height.toDouble();
+      }
+    } on Exception catch (_) {}
+    return 0;
   }
 
   Future<void> resetBearing() async {

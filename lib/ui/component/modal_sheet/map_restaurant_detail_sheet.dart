@@ -250,8 +250,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
                   lng: selection.lng,
                   address: selection.placeSearchRestaurant?.address ?? '',
                   onClose: () =>
-                      ref.read(mapModalSelectionProvider.notifier).state =
-                          null,
+                      ref.read(mapModalSelectionProvider.notifier).state = null,
                   onOpenPost: openPost,
                 ),
               );
