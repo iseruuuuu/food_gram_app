@@ -174,6 +174,17 @@ class $AssetsImageGen {
       ];
 }
 
+class $AssetsLauncherIconGen {
+  const $AssetsLauncherIconGen();
+
+  /// File path: assets/launcher_icon/icon-prod.png
+  AssetGenImage get iconProd =>
+      const AssetGenImage('assets/launcher_icon/icon-prod.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [iconProd];
+}
+
 class $AssetsLottieGen {
   const $AssetsLottieGen();
 
@@ -452,6 +463,7 @@ class Assets {
 
   static const $AssetsIconGen icon = $AssetsIconGen();
   static const $AssetsImageGen image = $AssetsImageGen();
+  static const $AssetsLauncherIconGen launcherIcon = $AssetsLauncherIconGen();
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
   static const $AssetsMapGen map = $AssetsMapGen();
   static const $AssetsSplashGen splash = $AssetsSplashGen();
