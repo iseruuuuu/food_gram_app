@@ -29,9 +29,13 @@ class PostShareBranding extends StatelessWidget {
         ),
         if (showIcon) ...[
           const Gap(4),
-          Assets.icon.icon3.image(
-            width: lightBackground ? 24 : 30,
-            height: lightBackground ? 24 : 30,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(lightBackground ? 5 : 6),
+            child: Assets.image.appIcon.image(
+              width: lightBackground ? 24 : 30,
+              height: lightBackground ? 24 : 30,
+              fit: BoxFit.cover,
+            ),
           ),
         ],
       ],
