@@ -198,7 +198,6 @@ class AppListView extends HookConsumerWidget {
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.center,
                                       enableCopy: false,
-                                      autoTranslate: true,
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 9,
