@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/core/utils/location/prefecture_display.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_prefecture_fill_layer.dart';
@@ -243,6 +244,7 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
     if (tapped.isEmpty) {
       return;
     }
+    HapticFeedbackHelper.light();
     widget.onPinTap?.call(tapped);
   }
 

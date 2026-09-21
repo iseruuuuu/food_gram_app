@@ -7,7 +7,6 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/analyzer/record_food_traits_analyzer.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
-import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/utils/location/prefecture_display.dart';
 import 'package:food_gram_app/core/utils/map_stats_presentation.dart';
 import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
@@ -78,7 +77,6 @@ class RecordJapanScreen extends HookConsumerWidget {
                 visitedCount: visitedCount,
                 selectedPosts: selectedPosts,
                 onPinTap: (tapped) {
-                  HapticFeedbackHelper.selection();
                   selectedPostIds.value = [
                     for (final post in tapped) post.id,
                   ];
