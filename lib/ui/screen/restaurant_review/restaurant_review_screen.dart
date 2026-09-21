@@ -76,7 +76,6 @@ class RestaurantReviewScreen extends HookConsumerWidget {
           child: AppTranslatableText(
             posts.restaurant,
             style: RestaurantReviewStyle.restaurant(colorScheme.onSurface),
-            autoTranslate: true,
           ),
         ),
       ),

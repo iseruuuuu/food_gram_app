@@ -109,7 +109,6 @@ class AppCardListItem extends ConsumerWidget {
                 maxLines: 2,
                 softWrap: false,
                 enableCopy: false,
-                autoTranslate: true,
               ),
             ),
           ),
