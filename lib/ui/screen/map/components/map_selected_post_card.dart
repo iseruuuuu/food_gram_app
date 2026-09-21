@@ -72,7 +72,7 @@ class MapSelectedPostCard extends HookConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AspectRatio(
-          aspectRatio: 16 / 10,
+          aspectRatio: 16 / 9,
           child: Stack(
             fit: StackFit.expand,
             children: [
