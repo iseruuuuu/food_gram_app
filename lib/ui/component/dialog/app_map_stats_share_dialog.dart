@@ -6,8 +6,7 @@ import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/loading/app_overlay_loading.dart';
-import 'package:food_gram_app/ui/component/map/app_map_stats_share_composition.dart';
-import 'package:food_gram_app/ui/component/map/app_map_stats_share_widget.dart';
+import 'package:food_gram_app/ui/component/share/map/map_stats_share.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -35,45 +34,12 @@ class AppMapStatsShareDialog extends HookConsumerWidget {
     final overlayFg = isDark ? colorScheme.onSurface : Colors.white;
     final overlayBtnBg = colorScheme.surface;
     final overlayBtnFg = colorScheme.onSurface;
-    String shareMessageFor(MapViewType viewType) {
-      final isJapan = viewType == MapViewType.japan;
-      final count = isJapan ? visitedPrefecturesCount : visitedCountriesCount;
-      final total = isJapan ? 47 : 195;
-      final challengeInProgress = isJapan
-          ? t.myMapShare.japanChallengeInProgress
-          : t.myMapShare.worldChallengeInProgress;
-      final currentProgress = t.myMapShare.currentProgress
-          .replaceAll('{count}', count.toString())
-          .replaceAll('{total}', total.toString());
-      return '$challengeInProgress\n'
-          '$currentProgress\n\n'
-          '${t.myMapShare.yourTurn}\n\n'
-          '#FoodGram';
-    }
 
-    String challengeTitleFor(MapViewType viewType) {
-      return viewType == MapViewType.japan
-          ? t.myMapShare.japanChallengeTitle
-          : t.myMapShare.worldChallengeTitle;
-    }
-
-    String questionFor(MapViewType viewType) {
-      return viewType == MapViewType.japan
-          ? t.myMapShare.japanQuestion
-          : t.myMapShare.worldQuestion;
-    }
-
-    Widget buildShareWidget(MapViewType viewType) {
-      final isJapan = viewType == MapViewType.japan;
-      return AppMapStatsShareComposition(
-        questionText: questionFor(viewType),
-        child: AppMapStatsShareWidget(
-          viewType: viewType,
-          challengeTitle: challengeTitleFor(viewType),
-          count: isJapan ? visitedPrefecturesCount : visitedCountriesCount,
-          total: isJapan ? 47 : 195,
-          label: isJapan ? t.mapStats.prefectures : t.mapStats.visitedCountries,
-        ),
+    MapStatsShare buildShareWidget(MapViewType viewType) {
+      return MapStatsShare(
+        viewType: viewType,
+        visitedPrefecturesCount: visitedPrefecturesCount,
+        visitedCountriesCount: visitedCountriesCount,
       );
     }
 
@@ -171,17 +137,13 @@ class AppMapStatsShareDialog extends HookConsumerWidget {
                               parameters: {AnalyticsParam.source: vt.name},
                             );
                             final widget = buildShareWidget(vt);
-                            final shareText = shareMessageFor(vt);
                             await ShareHelpers().captureAndShare(
                               context: context,
                               widget: widget,
-                              shareText: shareText,
+                              shareText: widget.shareMessage(t),
                               loading: loading,
                               hasText: true,
-                              targetSize: const Size(
-                                AppMapStatsShareComposition.compositionWidth,
-                                AppMapStatsShareComposition.compositionHeight,
-                              ),
+                              targetSize: MapStatsShare.size,
                               errorMessage: t.error.message,
                             );
                           },
@@ -238,10 +200,7 @@ class AppMapStatsShareDialog extends HookConsumerWidget {
                               widget: widget,
                               loading: loading,
                               hasText: false,
-                              targetSize: const Size(
-                                AppMapStatsShareComposition.compositionWidth,
-                                AppMapStatsShareComposition.compositionHeight,
-                              ),
+                              targetSize: MapStatsShare.size,
                               errorMessage: t.error.message,
                             );
                           },
