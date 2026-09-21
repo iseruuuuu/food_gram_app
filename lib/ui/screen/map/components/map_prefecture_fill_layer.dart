@@ -9,7 +9,7 @@ enum MapPrefectureFillPalette {
   /// 投稿数に応じた赤のヒートマップ（従来の日本マップ）
   heat,
 
-  /// 投稿あり / 未開拓 の2段階（記録タブ日本ビュー）
+  /// 投稿数に応じたオレンジの濃淡（記録タブ日本ビュー）
   atlas,
 }
 
@@ -87,7 +87,31 @@ class MapPrefectureFillLayer {
   }) {
     if (palette == MapPrefectureFillPalette.atlas) {
       final unexplored = isDark ? '#3A3632' : '#E8E2D8';
-      final hasPosts = isDark ? '#FFA347' : '#E88932';
+      final orangeScale = isDark
+          ? const [
+              1,
+              '#5A4533',
+              3,
+              '#8A6238',
+              5,
+              '#C4843C',
+              10,
+              '#E89A48',
+              20,
+              '#FFA347',
+            ]
+          : const [
+              1,
+              '#F7E6CF',
+              3,
+              '#F3D4A8',
+              5,
+              '#EEBE7A',
+              10,
+              '#EAA050',
+              20,
+              '#E88932',
+            ];
       return FillLayerProperties(
         fillColor: [
           'case',
@@ -96,7 +120,12 @@ class MapPrefectureFillLayer {
             ['get', 'visited'],
             true,
           ],
-          hasPosts,
+          [
+            'interpolate',
+            ['linear'],
+            ['get', 'postCount'],
+            ...orangeScale,
+          ],
           unexplored,
         ],
         fillOpacity: 1.0,

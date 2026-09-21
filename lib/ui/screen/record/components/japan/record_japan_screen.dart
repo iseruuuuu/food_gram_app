@@ -1,11 +1,18 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/analyzer/record_food_traits_analyzer.dart';
+import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
+import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/utils/location/prefecture_display.dart';
 import 'package:food_gram_app/core/utils/map_stats_presentation.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/dialog/app_map_stats_share_dialog.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_detail_screen.dart';
 import 'package:food_gram_app/ui/screen/record/components/japan/record_japan_fill_map.dart';
@@ -13,25 +20,24 @@ import 'package:food_gram_app/ui/screen/record/components/record_post_image.dart
 import 'package:food_gram_app/ui/screen/record/components/record_tab.dart';
 import 'package:food_gram_app/ui/screen/record/record_view_model.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-/// 記録タブ：日本ビュー（統計・列島マップ・投稿数ランキング）
-class RecordJapanScreen extends ConsumerWidget {
+/// 記録タブ：日本ビュー（統計・列島マップ）
+class RecordJapanScreen extends HookConsumerWidget {
   const RecordJapanScreen({
     required this.posts,
-    this.scrollController,
     super.key,
   });
 
   final List<Posts> posts;
-  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final selectedPosts = useState<List<Posts>>(const []);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = isDark ? const Color(0xFF161616) : Colors.white;
     final visits = recordVisitedPrefectureStats(posts);
-    final ranking = recordPrefectureRanking(posts);
     final visitedCount = visits.length.clamp(0, japanPrefectureCap).toInt();
     final selectorTop = recordMapOverlayTopForContext(context);
     const bottomPadding = 120.0;
@@ -45,26 +51,24 @@ class RecordJapanScreen extends ConsumerWidget {
                 ref.read(recordViewModelProvider.notifier).changeViewType,
           ),
           Expanded(
-            child: ListView(
-              controller: scrollController,
+            child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, bottomPadding),
-              children: [
-                _JapanAtlasCard(
-                  cardColor: cardColor,
-                  posts: posts,
-                  visitedCount: visitedCount,
-                  onMapTap: (lat, lng) {
-                    ref
-                        .read(recordViewModelProvider.notifier)
-                        .logRegionMapTap(lat, lng);
-                  },
-                ),
-                const Gap(16),
-                _JapanTop3Section(
-                  cardColor: cardColor,
-                  ranking: ranking,
-                ),
-              ],
+              child: _JapanAtlasCard(
+                cardColor: cardColor,
+                posts: posts,
+                visitedCount: visitedCount,
+                selectedPosts: selectedPosts.value,
+                onPinTap: (tapped) {
+                  HapticFeedbackHelper.selection();
+                  selectedPosts.value = tapped;
+                },
+                onMapTap: (lat, lng) {
+                  selectedPosts.value = const [];
+                  ref
+                      .read(recordViewModelProvider.notifier)
+                      .logRegionMapTap(lat, lng);
+                },
+              ),
             ),
           ),
         ],
@@ -78,22 +82,28 @@ class _JapanAtlasCard extends StatelessWidget {
     required this.cardColor,
     required this.posts,
     required this.visitedCount,
+    required this.selectedPosts,
+    required this.onPinTap,
     required this.onMapTap,
   });
 
   final Color cardColor;
   final List<Posts> posts;
   final int visitedCount;
+  final List<Posts> selectedPosts;
+  final void Function(List<Posts> posts) onPinTap;
   final void Function(double lat, double lng) onMapTap;
 
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final ratio = (visitedCount / japanPrefectureCap).clamp(0.0, 1.0).toDouble();
+    final ratio =
+        (visitedCount / japanPrefectureCap).clamp(0.0, 1.0).toDouble();
     final percentText = (ratio * 100).toStringAsFixed(1);
     return Container(
       width: double.infinity,
+      height: double.infinity,
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
       decoration: BoxDecoration(
         color: cardColor,
@@ -109,67 +119,15 @@ class _JapanAtlasCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      t.myMapRecord.japanAtlasTitle,
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 1.1,
-                        color: isDark ? Colors.white54 : Colors.black45,
-                      ),
-                    ),
-                    const Gap(2),
-                    Text(
-                      t.myMapRecord.japanAtlasHeadline,
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w900,
-                        height: 1.05,
-                      ),
-                    ),
-                    const Gap(2),
-                    Text(
-                      t.myMapRecord.japanEatingTitle,
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: isDark ? Colors.white70 : Colors.black54,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              IconButton(
-                tooltip: t.myMapShare.shareButton,
-                onPressed: () {
-                  showGeneralDialog<void>(
-                    context: context,
-                    pageBuilder: (_, __, ___) {
-                      return AppMapStatsShareDialog(
-                        postsCount: posts.length,
-                        visitedPrefecturesCount: visitedCount,
-                        visitedCountriesCount:
-                            recordVisitedCountriesCount(posts),
-                      );
-                    },
-                  );
-                },
-                icon: const Icon(
-                  Icons.ios_share,
-                  color: AppTheme.primaryOrange,
-                  size: 22,
-                ),
-              ),
-            ],
+          Text(
+            t.myMapRecord.japanAtlasHeadline,
+            style: const TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w900,
+              height: 1.05,
+            ),
           ),
-          const Gap(14),
+          const Gap(10),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -203,6 +161,34 @@ class _JapanAtlasCard extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                     color: isDark ? Colors.white70 : Colors.black54,
                   ),
+                ),
+              ),
+              const Spacer(),
+              IconButton(
+                tooltip: t.myMapShare.shareButton,
+                visualDensity: VisualDensity.compact,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(
+                  minWidth: 36,
+                  minHeight: 36,
+                ),
+                onPressed: () {
+                  showGeneralDialog<void>(
+                    context: context,
+                    pageBuilder: (_, __, ___) {
+                      return AppMapStatsShareDialog(
+                        postsCount: posts.length,
+                        visitedPrefecturesCount: visitedCount,
+                        visitedCountriesCount:
+                            recordVisitedCountriesCount(posts),
+                      );
+                    },
+                  );
+                },
+                icon: const Icon(
+                  Icons.ios_share,
+                  color: AppTheme.primaryOrange,
+                  size: 22,
                 ),
               ),
             ],
@@ -243,19 +229,25 @@ class _JapanAtlasCard extends StatelessWidget {
             ],
           ),
           const Gap(14),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: SizedBox(
-              height: 300,
-              width: double.infinity,
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
               child: Stack(
                 children: [
                   Positioned.fill(
                     child: RecordJapanFillMap(
                       posts: posts,
                       onMapTap: onMapTap,
+                      onPinTap: onPinTap,
                     ),
                   ),
+                  if (selectedPosts.isNotEmpty)
+                    Positioned(
+                      top: 8,
+                      left: 8,
+                      right: 8,
+                      child: _JapanPinPostList(posts: selectedPosts),
+                    ),
                   const Positioned(
                     right: 8,
                     bottom: 8,
@@ -267,6 +259,134 @@ class _JapanAtlasCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _JapanPinPostList extends ConsumerWidget {
+  const _JapanPinPostList({required this.posts});
+
+  final List<Posts> posts;
+
+  static const _tileHeight = 64.0;
+  static const _visibleCount = 2;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final visibleCount = math.min(posts.length, _visibleCount);
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1D1D1D) : Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: isDark ? Colors.white10 : const Color(0xFFECECEC),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.12),
+            blurRadius: 12,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(14),
+        child: SizedBox(
+          height: _tileHeight * visibleCount,
+          child: ListView.separated(
+            padding: EdgeInsets.zero,
+            physics: posts.length > _visibleCount
+                ? const AlwaysScrollableScrollPhysics()
+                : const NeverScrollableScrollPhysics(),
+            itemCount: posts.length,
+            separatorBuilder: (_, __) => Divider(
+              height: 1,
+              color: isDark ? Colors.white12 : Colors.black12,
+            ),
+            itemBuilder: (context, index) {
+              return _JapanPinPostTile(
+                posts: posts,
+                index: index,
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _JapanPinPostTile extends ConsumerWidget {
+  const _JapanPinPostTile({
+    required this.posts,
+    required this.index,
+  });
+
+  final List<Posts> posts;
+  final int index;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = Translations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final post = posts[index];
+    final subtitle = post.hasFoodName && post.hasRestaurant
+        ? post.localizedRestaurant(t)
+        : null;
+    return ListTile(
+      dense: true,
+      visualDensity: VisualDensity.compact,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+      leading: RecordPostImage(
+        post: post,
+        size: 44,
+        borderRadius: 8,
+      ),
+      title: Text(
+        post.localizedDisplayTitle(t),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+      subtitle: subtitle == null
+          ? null
+          : Text(
+              subtitle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: isDark ? Colors.white54 : Colors.black45,
+              ),
+            ),
+      trailing: Icon(
+        Icons.chevron_right,
+        size: 20,
+        color: isDark ? Colors.white38 : Colors.black26,
+      ),
+      onTap: () => _openPost(context, ref),
+    );
+  }
+
+  Future<void> _openPost(BuildContext context, WidgetRef ref) async {
+    final result = await ref
+        .read(detailPostRepositoryProvider.notifier)
+        .getPostData(posts, index);
+    await result.whenOrNull(
+      success: (model) async {
+        if (!context.mounted) {
+          return;
+        }
+        await context.pushNamed(
+          RouterPath.myProfileDetail,
+          extra: model,
+        );
+      },
     );
   }
 }
@@ -298,6 +418,11 @@ class _JapanMapLegend extends StatelessWidget {
           _LegendRow(
             color: isDark ? const Color(0xFFFFA347) : AppTheme.primaryOrange,
             label: t.myMapRecord.legendHasPosts,
+            gradient: LinearGradient(
+              colors: isDark
+                  ? const [Color(0xFF5A4533), Color(0xFFFFA347)]
+                  : const [Color(0xFFF7E6CF), Color(0xFFE88932)],
+            ),
           ),
           const Gap(4),
           _LegendRow(
@@ -314,10 +439,12 @@ class _LegendRow extends StatelessWidget {
   const _LegendRow({
     required this.color,
     required this.label,
+    this.gradient,
   });
 
   final Color color;
   final String label;
+  final Gradient? gradient;
 
   @override
   Widget build(BuildContext context) {
@@ -325,11 +452,12 @@ class _LegendRow extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 8,
+          width: gradient == null ? 8 : 16,
           height: 8,
           decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
+            color: gradient == null ? color : null,
+            gradient: gradient,
+            borderRadius: BorderRadius.circular(999),
           ),
         ),
         const Gap(6),
@@ -342,156 +470,6 @@ class _LegendRow extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _JapanTop3Section extends StatelessWidget {
-  const _JapanTop3Section({
-    required this.cardColor,
-    required this.ranking,
-  });
-
-  final Color cardColor;
-  final List<RecordPrefectureVisit> ranking;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = Translations.of(context);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            t.myMapRecord.japanTop3Title,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 0.4,
-            ),
-          ),
-          const Gap(12),
-          if (ranking.isEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Center(
-                child: Text(
-                  t.myMapRecord.noPrefectureRanking,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.white54 : Colors.black45,
-                  ),
-                ),
-              ),
-            )
-          else
-            Row(
-              children: [
-                for (var i = 0; i < ranking.length; i++) ...[
-                  if (i > 0) const Gap(8),
-                  Expanded(
-                    child: _PrefectureRankCard(
-                      rank: i + 1,
-                      visit: ranking[i],
-                    ),
-                  ),
-                ],
-              ],
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PrefectureRankCard extends StatelessWidget {
-  const _PrefectureRankCard({
-    required this.rank,
-    required this.visit,
-  });
-
-  final int rank;
-  final RecordPrefectureVisit visit;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = Translations.of(context);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final languageCode = Localizations.localeOf(context).languageCode;
-    final name = localizedPrefectureName(
-      name: visit.name,
-      languageCode: languageCode,
-    );
-    return Container(
-      padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1D1D1D) : const Color(0xFFF8FAFC),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isDark ? Colors.white10 : const Color(0xFFECECEC),
-        ),
-      ),
-      child: Column(
-        children: [
-          if (rank == 1)
-            const Text('👑', style: TextStyle(fontSize: 18, height: 1))
-          else
-            Text(
-              '$rank',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w900,
-                height: 1,
-                color: AppTheme.primaryOrange,
-              ),
-            ),
-          const Gap(6),
-          Text(
-            name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w800,
-              height: 1.15,
-            ),
-          ),
-          const Gap(2),
-          Text(
-            t.myMapRecord.prefectureMealUnit
-                .replaceAll('{count}', '${visit.postCount}'),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.w700,
-              color: isDark ? Colors.white54 : Colors.black45,
-            ),
-          ),
-          const Gap(8),
-          RecordPostImage(
-            post: visit.latestPost,
-            size: 56,
-            borderRadius: 28,
-          ),
-        ],
-      ),
     );
   }
 }
