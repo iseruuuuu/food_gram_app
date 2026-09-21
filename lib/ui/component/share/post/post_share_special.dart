@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
-import 'package:food_gram_app/ui/component/share/post_share_branding.dart';
-import 'package:food_gram_app/ui/component/share/post_share_helpers.dart';
-import 'package:food_gram_app/ui/component/share/post_share_image.dart';
+import 'package:food_gram_app/ui/component/share/component/post_share_branding.dart';
+import 'package:food_gram_app/ui/component/share/component/post_share_image.dart';
+import 'package:food_gram_app/ui/component/share/component/post_share_rating.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -13,20 +14,20 @@ class PostShareSpecialTemplate extends StatelessWidget {
   const PostShareSpecialTemplate({
     required this.posts,
     required this.ref,
-    required this.t,
     super.key,
   });
 
   final Posts posts;
   final WidgetRef ref;
-  final Translations t;
 
   static const Size size = Size(360, 640);
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = postShareImageUrl(ref, posts);
-
+    final t = Translations.of(context);
+    final supabase = ref.watch(supabaseProvider);
+    final imageUrl =
+        supabase.storage.from('food').getPublicUrl(posts.firstFoodImage);
     return ProviderScope(
       child: SizedBox(
         width: size.width,
@@ -74,10 +75,12 @@ class PostShareSpecialTemplate extends StatelessWidget {
                       posts.localizedDisplayTitle(t),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: postShareSerifTitleStyle(
+                      style: const TextStyle(
+                        fontFamily: 'Times New Roman',
                         fontSize: 34,
-                        color: Colors.white,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        height: 1.15,
                       ),
                     ),
                     if (posts.hasFoodName && posts.hasRestaurant) ...[
