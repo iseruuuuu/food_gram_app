@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
+import 'package:food_gram_app/ui/component/common/keep_alive_page_view.dart';
 import 'package:food_gram_app/ui/component/loading/app_overlay_loading.dart';
 import 'package:food_gram_app/ui/component/loading/app_tab_loading.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_detail_screen.dart';
@@ -50,18 +50,16 @@ class RecordScreen extends HookConsumerWidget {
               ref.invalidate(myMapRepositoryProvider);
             },
             onData: (posts) {
-              if (state.viewType == MapViewType.detail) {
-                return RecordDetailScreen(
-                  posts: posts,
-                  scrollController: scrollController,
-                );
-              }
-              if (state.viewType == MapViewType.world) {
-                return RecordWorldScreen(posts: posts);
-              }
-              return RecordJapanScreen(
-                posts: posts,
-                scrollController: scrollController,
+              return KeepAlivePageView(
+                index: state.viewType.index,
+                children: [
+                  RecordDetailScreen(
+                    posts: posts,
+                    scrollController: scrollController,
+                  ),
+                  RecordJapanScreen(posts: posts),
+                  RecordWorldScreen(posts: posts),
+                ],
               );
             },
           ),

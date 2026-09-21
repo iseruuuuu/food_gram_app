@@ -24,7 +24,11 @@ class RecordWorldFillMap extends StatefulWidget {
 }
 
 class _RecordWorldFillMapState extends State<RecordWorldFillMap> {
-  static const _worldCamera = CameraPosition(target: LatLng(20, 10));
+  /// 日本が画面中央に来る初期カメラ。
+  /// 経度0付近だとヨーロッパが中央になり、未記録に見えやすい。
+  static const _worldCamera = CameraPosition(
+    target: LatLng(36.2, 138),
+  );
 
   MapLibreMapController? _controller;
   bool _layersReady = false;

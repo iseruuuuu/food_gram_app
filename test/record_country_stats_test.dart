@@ -51,6 +51,12 @@ void main() {
     test('海岸線簡略化でポリゴン外に落ちたニューヨークもアメリカとして集計する', () {
       expect(CountryDetector.getCountryCode(40.71, -74.01), 'US');
     });
+
+    test('韓国の座標は日本の矩形範囲に入っても韓国として判定する', () {
+      expect(CountryDetector.getCountryCode(37, 127), 'KR');
+      expect(CountryDetector.getCountryCode(37, 127), isNot('JP'));
+      expect(CountryDetector.getCountryCode(35.68, 139.76), 'JP');
+    });
   });
 
   group('recordVisitedCountryStats', () {
