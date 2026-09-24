@@ -30,9 +30,10 @@ class TabViewModel extends _$TabViewModel {
   TabState build({
     TabState initState = const TabState(),
   }) {
-    if (canRequestAds(ref.watch(isSubscribeProvider))) {
-      ref.read(admobOpenNotifierProvider).loadAd();
-    }
+    ref.listen(isSubscribeProvider, (previous, next) {
+      _preloadOpenAd(next);
+    });
+    _preloadOpenAd(ref.read(isSubscribeProvider));
     // 初回表示タブの ScreenView（Observer では取れない）
     Future.microtask(_logInitialTabIfNeeded);
     return initState;
@@ -44,6 +45,12 @@ class TabViewModel extends _$TabViewModel {
     const RecordScreen(),
     const MyProfileScreen(),
   ];
+
+  void _preloadOpenAd(AsyncValue<bool> subscription) {
+    if (canRequestAds(subscription)) {
+      ref.read(admobOpenNotifierProvider).loadAd();
+    }
+  }
 
   void _logInitialTabIfNeeded() {
     if (_didLogInitialTab) {
