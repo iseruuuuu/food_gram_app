@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:food_gram_app/core/utils/map/geojson_ring_simplifier.dart';
+import 'package:food_gram_app/core/utils/map/map_geojson_support.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
 /// 都道府県ポリゴンの塗りつぶし見た目
@@ -23,6 +25,7 @@ class MapPrefectureFillLayer {
   static const String _geoJsonAssetPath =
       'assets/map/japan_prefectures.geojson';
   static List<Map<String, dynamic>>? _baseFeatures;
+  static List<Map<String, dynamic>>? _simplifiedFeatures;
 
   static Future<void> render(
     MapLibreMapController controller, {
@@ -31,7 +34,9 @@ class MapPrefectureFillLayer {
     bool isDark = false,
   }) async {
     try {
-      final features = await _loadFeatures();
+      final features = MapGeoJsonSupport.allowsRuntimeGeoJson
+          ? await _loadFeatures()
+          : await _loadSimplifiedFeatures();
 
       final updatedFeatures = features.map((feature) {
         final featureMap = Map<String, dynamic>.from(feature);
@@ -189,5 +194,16 @@ class MapPrefectureFillLayer {
     _baseFeatures =
         (decoded['features'] as List<dynamic>).cast<Map<String, dynamic>>();
     return _baseFeatures!;
+  }
+
+  /// Android 9 以下へ 12MB の境界を渡すと MapLibre が落ちる。
+  /// 頂点を間引いた形だけ渡して、列島の塗りは残す。
+  static Future<List<Map<String, dynamic>>> _loadSimplifiedFeatures() async {
+    if (_simplifiedFeatures != null) {
+      return _simplifiedFeatures!;
+    }
+    final features = await _loadFeatures();
+    _simplifiedFeatures = simplifyGeoJsonFeatures(features);
+    return _simplifiedFeatures!;
   }
 }

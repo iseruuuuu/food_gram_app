@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:food_gram_app/core/utils/map/geojson_ring_simplifier.dart';
+import 'package:food_gram_app/core/utils/map/map_geojson_support.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
 /// 訪れた国ポリゴンの塗りつぶしレイヤーを管理する。
@@ -13,13 +15,16 @@ class MapCountryFillLayer {
   static const String _lineLayerId = 'fg_country_border_layer';
   static const String _geoJsonAssetPath = 'assets/map/world_countries.geojson';
   static List<Map<String, dynamic>>? _baseFeatures;
+  static List<Map<String, dynamic>>? _simplifiedFeatures;
 
   static Future<void> render(
     MapLibreMapController controller, {
     required Map<String, int> countryPostCounts,
   }) async {
     try {
-      final features = await _loadFeatures();
+      final features = MapGeoJsonSupport.allowsRuntimeGeoJson
+          ? await _loadFeatures()
+          : await _loadSimplifiedFeatures();
 
       final updatedFeatures = features.map((feature) {
         final featureMap = Map<String, dynamic>.from(feature);
@@ -130,5 +135,14 @@ class MapCountryFillLayer {
     _baseFeatures =
         (decoded['features'] as List<dynamic>).cast<Map<String, dynamic>>();
     return _baseFeatures!;
+  }
+
+  static Future<List<Map<String, dynamic>>> _loadSimplifiedFeatures() async {
+    if (_simplifiedFeatures != null) {
+      return _simplifiedFeatures!;
+    }
+    final features = await _loadFeatures();
+    _simplifiedFeatures = simplifyGeoJsonFeatures(features);
+    return _simplifiedFeatures!;
   }
 }

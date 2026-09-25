@@ -1,5 +1,6 @@
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/utils/map/map_geojson_support.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
 /// ヒートマップレイヤーの追加・削除
@@ -11,6 +12,9 @@ class MapHeatmapLayer {
     MapLibreMapController controller,
     List<Posts> posts,
   ) async {
+    if (!MapGeoJsonSupport.allowsRuntimeGeoJson) {
+      return false;
+    }
     try {
       final features = posts.map((post) {
         return {
