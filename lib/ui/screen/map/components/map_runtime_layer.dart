@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/utils/map/map_geojson_support.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -45,6 +46,9 @@ class MapRuntimeLayer {
     MapLibreMapController controller,
     List<Posts> posts,
   ) async {
+    if (!MapGeoJsonSupport.allowsRuntimeGeoJson) {
+      return const MapRuntimeSetupResult(dotsReady: false);
+    }
     try {
       final features = posts
           .map(
@@ -61,32 +65,25 @@ class MapRuntimeLayer {
             },
           )
           .toList();
+      final data = <String, dynamic>{
+        'type': 'FeatureCollection',
+        'features': features,
+      };
 
-      for (final id in [
-        '${MapOverlayConstants.runtimeLayerId}_selected',
-        MapOverlayConstants.runtimeLayerId,
-        MapOverlayConstants.runtimeDotsLayerId,
-      ]) {
-        try {
-          await controller.removeLayer(id);
-        } on Exception catch (_) {}
-      }
       try {
-        await controller.removeSource(MapOverlayConstants.runtimeSourceId);
-      } on Exception catch (_) {}
-
-      await controller.addSource(
-        MapOverlayConstants.runtimeSourceId,
-        GeojsonSourceProperties(
-          data: {
-            'type': 'FeatureCollection',
-            'features': features,
-          },
-        ),
-      );
-
-      final ok = await _addDotsLayer(controller);
-      return MapRuntimeSetupResult(dotsReady: ok);
+        await controller.setGeoJsonSource(
+          MapOverlayConstants.runtimeSourceId,
+          data,
+        );
+        return const MapRuntimeSetupResult(dotsReady: true);
+      } on PlatformException {
+        await controller.addSource(
+          MapOverlayConstants.runtimeSourceId,
+          GeojsonSourceProperties(data: data),
+        );
+        final ok = await _addDotsLayer(controller);
+        return MapRuntimeSetupResult(dotsReady: ok);
+      }
     } on Exception catch (_) {
       return const MapRuntimeSetupResult(dotsReady: false);
     }

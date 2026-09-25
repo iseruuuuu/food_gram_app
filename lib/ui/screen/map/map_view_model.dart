@@ -44,6 +44,9 @@ class MapViewModel extends _$MapViewModel {
   bool _dotsLayerReady = false;
   bool _tapHandlerRegistered = false;
   bool _isHandlingPinTap = false;
+  bool _styleReady = false;
+  int _styleEpoch = 0;
+  Future<void> _mapMutation = Future<void>.value();
   void Function(List<Posts> posts)? _onPinTapHandler;
 
   /// 地名検索で選んだ地点（スプライト marker_11）
@@ -143,7 +146,26 @@ class MapViewModel extends _$MapViewModel {
     }
   }
 
-  Future<void> setPin() async {
+  Future<void> setPin() => _mutateMap(_applyPins);
+
+  /// スタイル読込前の GeoJSON 更新と、連続したソース作り直しを重ねない。
+  Future<void> _mutateMap(Future<void> Function() action) {
+    final epoch = _styleEpoch;
+    final run = _mapMutation.catchError((Object _) {}).then((_) async {
+      if (epoch != _styleEpoch) {
+        return;
+      }
+      await action();
+    });
+    _mapMutation = run;
+    return run;
+  }
+
+  Future<void> _applyPins() async {
+    if (!_styleReady || state.mapController == null) {
+      return;
+    }
+    final epoch = _styleEpoch;
     try {
       final posts =
           ref.read(filteredMapPostsProvider).whenOrNull(data: (v) => v) ??
@@ -164,6 +186,11 @@ class MapViewModel extends _$MapViewModel {
         imageTypes,
         unique,
       );
+      if (epoch != _styleEpoch ||
+          !_styleReady ||
+          state.mapController == null) {
+        return;
+      }
       await _installPins(state.mapController!, unique, _cachedImageKeys!);
     } on PlatformException catch (_) {
       state = state.copyWith(isLoading: false, hasError: true);
@@ -413,6 +440,8 @@ class MapViewModel extends _$MapViewModel {
   }
 
   void handleStyleChange() {
+    _styleEpoch++;
+    _styleReady = false;
     state.mapController?.clearSymbols();
     _pinLoader.clearRegisteredKeys();
     _tapHandlerRegistered = false;
@@ -465,13 +494,18 @@ class MapViewModel extends _$MapViewModel {
   }
 
   void onStyleLoaded() {
+    _styleReady = true;
     if (state.mapController == null) {
       return;
     }
-    unawaited(_handleStyleLoaded());
+    unawaited(_mutateMap(_handleStyleLoaded));
   }
 
   Future<void> _handleStyleLoaded() async {
+    if (!_styleReady || state.mapController == null) {
+      return;
+    }
+    final epoch = _styleEpoch;
     _pinLoader.clearRegisteredKeys();
     _heatmapLayerAdded = false;
     _dotsLayerReady = false;
@@ -491,13 +525,16 @@ class MapViewModel extends _$MapViewModel {
           );
         }
       }
+      if (epoch != _styleEpoch || state.mapController == null) {
+        return;
+      }
       await _installPins(
         state.mapController!,
         _cachedPosts!,
         _cachedImageKeys!,
       );
     } else {
-      await setPin();
+      await _applyPins();
     }
   }
 
@@ -599,15 +636,17 @@ class MapViewModel extends _$MapViewModel {
     }
   }
 
-  Future<void> refreshPinsForCategoryFilter() async {
-    if (state.mapController == null) {
-      return;
-    }
-    _pinLoader.clearRegisteredKeys();
-    _heatmapLayerAdded = false;
-    _dotsLayerReady = false;
-    _isDotMode = null;
-    await setPin();
+  Future<void> refreshPinsForCategoryFilter() {
+    return _mutateMap(() async {
+      if (state.mapController == null) {
+        return;
+      }
+      _pinLoader.clearRegisteredKeys();
+      _heatmapLayerAdded = false;
+      _dotsLayerReady = false;
+      _isDotMode = null;
+      await _applyPins();
+    });
   }
 
   Future<void> _addNormalPinSymbols(
