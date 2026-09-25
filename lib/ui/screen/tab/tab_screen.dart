@@ -57,11 +57,9 @@ class TabScreen extends HookConsumerWidget {
         _bottomSafeInset(context);
   }
 
-  /// ボトムナビに加算するセーフエリア（iOS のみ。Android は Scaffold 側で処理）
+  /// ボトムナビに加算するセーフエリア。
+  /// 3ボタンナビやホームインジケータにタブが隠れないようにする。
   static double _bottomSafeInset(BuildContext context) {
-    if (!Platform.isIOS) {
-      return 0;
-    }
     return MediaQuery.viewPaddingOf(context).bottom;
   }
 
