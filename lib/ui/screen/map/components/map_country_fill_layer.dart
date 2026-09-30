@@ -141,8 +141,8 @@ class MapCountryFillLayer {
     if (_simplifiedFeatures != null) {
       return _simplifiedFeatures!;
     }
-    final features = await _loadFeatures();
-    _simplifiedFeatures = simplifyGeoJsonFeatures(features);
+    final geoJson = await rootBundle.loadString(_geoJsonAssetPath);
+    _simplifiedFeatures = await compute(decodeAndSimplifyGeoJson, geoJson);
     return _simplifiedFeatures!;
   }
 }

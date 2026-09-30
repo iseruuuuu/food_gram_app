@@ -46,6 +46,7 @@ class MapViewModel extends _$MapViewModel {
   bool _isHandlingPinTap = false;
   bool _styleReady = false;
   int _styleEpoch = 0;
+  bool _pendingPinRefresh = false;
   Future<void> _mapMutation = Future<void>.value();
   void Function(List<Posts> posts)? _onPinTapHandler;
 
@@ -146,7 +147,10 @@ class MapViewModel extends _$MapViewModel {
     }
   }
 
-  Future<void> setPin() => _mutateMap(_applyPins);
+  Future<void> setPin() {
+    _pendingPinRefresh = true;
+    return _mutateMap(_applyPins);
+  }
 
   /// スタイル読込前の GeoJSON 更新と、連続したソース作り直しを重ねない。
   Future<void> _mutateMap(Future<void> Function() action) {
@@ -161,10 +165,17 @@ class MapViewModel extends _$MapViewModel {
     return run;
   }
 
+  bool _isLiveStyle(int epoch) =>
+      epoch == _styleEpoch && _styleReady && state.mapController != null;
+
+  void _abandonStalePinWork() => _pendingPinRefresh = true;
+
   Future<void> _applyPins() async {
     if (!_styleReady || state.mapController == null) {
+      _pendingPinRefresh = true;
       return;
     }
+    _pendingPinRefresh = false;
     final epoch = _styleEpoch;
     try {
       final posts =
@@ -175,6 +186,10 @@ class MapViewModel extends _$MapViewModel {
         _cachedImageKeys = const <String, String>{};
         _dotsLayerReady = false;
         _isDotMode = null;
+        if (!_isLiveStyle(epoch)) {
+          _abandonStalePinWork();
+          return;
+        }
         await _refreshSearchHighlightOnly();
         return;
       }
@@ -186,9 +201,8 @@ class MapViewModel extends _$MapViewModel {
         imageTypes,
         unique,
       );
-      if (epoch != _styleEpoch ||
-          !_styleReady ||
-          state.mapController == null) {
+      if (!_isLiveStyle(epoch)) {
+        _abandonStalePinWork();
         return;
       }
       await _installPins(state.mapController!, unique, _cachedImageKeys!);
@@ -203,7 +217,16 @@ class MapViewModel extends _$MapViewModel {
     List<Posts> posts,
     Map<String, String> imageKeys,
   ) async {
+    final epoch = _styleEpoch;
+    if (!_isLiveStyle(epoch)) {
+      _abandonStalePinWork();
+      return;
+    }
     final result = await MapRuntimeLayer.setupDots(controller, posts);
+    if (!_isLiveStyle(epoch)) {
+      _abandonStalePinWork();
+      return;
+    }
     _dotsLayerReady = result.dotsReady;
 
     final zoom =
@@ -225,10 +248,18 @@ class MapViewModel extends _$MapViewModel {
     required List<Posts> posts,
     required Map<String, String> imageKeys,
   }) async {
-    _isDotMode = wantDots;
+    final epoch = _styleEpoch;
+    if (!_isLiveStyle(epoch)) {
+      _abandonStalePinWork();
+      return;
+    }
 
     if (_dotsLayerReady) {
       await MapRuntimeLayer.setDotsVisible(controller, visible: wantDots);
+      if (!_isLiveStyle(epoch)) {
+        _abandonStalePinWork();
+        return;
+      }
     }
 
     if (wantDots) {
@@ -240,11 +271,21 @@ class MapViewModel extends _$MapViewModel {
         // Circle がダメなら Annotation の赤点で代用
         await _addSmallRedDotSymbols(controller, posts);
       }
+      if (!_isLiveStyle(epoch)) {
+        _abandonStalePinWork();
+        return;
+      }
+      _isDotMode = true;
     } else {
       // 近景: カスタムピン（Annotation）を出す
       await _addNormalPinSymbols(controller, posts, imageKeys);
+      if (!_isLiveStyle(epoch)) {
+        _abandonStalePinWork();
+        return;
+      }
       _lastPinIconZoom =
           controller.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
+      _isDotMode = false;
     }
   }
 
@@ -252,9 +293,18 @@ class MapViewModel extends _$MapViewModel {
     MapLibreMapController controller,
     List<Posts> posts,
   ) async {
+    final epoch = _styleEpoch;
+    if (!_isLiveStyle(epoch)) {
+      _abandonStalePinWork();
+      return;
+    }
     const key = 'small_red_dot';
     if (!_pinLoader.cache.containsKey(key)) {
       await _pinLoader.preload();
+      if (!_isLiveStyle(epoch)) {
+        _abandonStalePinWork();
+        return;
+      }
     }
     final bytes = _pinLoader.cache[key];
     if (bytes == null) {
@@ -266,6 +316,10 @@ class MapViewModel extends _$MapViewModel {
     }
     if (!_pinLoader.registeredKeys.contains(key)) {
       await _pinLoader.registerImage(controller, key, bytes);
+      if (!_isLiveStyle(epoch)) {
+        _abandonStalePinWork();
+        return;
+      }
     }
     final zoom =
         controller.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
@@ -277,6 +331,9 @@ class MapViewModel extends _$MapViewModel {
         symbols,
         appendSymbol: append,
       );
+      if (!_isLiveStyle(epoch)) {
+        _abandonStalePinWork();
+      }
     }
   }
 
@@ -478,18 +535,28 @@ class MapViewModel extends _$MapViewModel {
 
   Future<void> _refreshSearchHighlightOnly() async {
     final ctrl = state.mapController;
-    if (ctrl == null) {
+    if (ctrl == null || !_styleReady) {
       return;
     }
+    final epoch = _styleEpoch;
     final zoom =
         ctrl.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
     final opt = _searchHighlightSymbolOptions(zoom);
     await ctrl.clearSymbols();
+    if (!_isLiveStyle(epoch)) {
+      return;
+    }
     if (opt == null) {
       return;
     }
     await ctrl.addSymbol(opt);
+    if (!_isLiveStyle(epoch)) {
+      return;
+    }
     await ctrl.setSymbolIconIgnorePlacement(true);
+    if (!_isLiveStyle(epoch)) {
+      return;
+    }
     await ctrl.setSymbolIconAllowOverlap(true);
   }
 
@@ -512,6 +579,11 @@ class MapViewModel extends _$MapViewModel {
     _isDotMode = null;
     _registerTapHandlers(state.mapController!);
 
+    if (_pendingPinRefresh) {
+      await _applyPins();
+      return;
+    }
+
     if (_cachedPosts != null &&
         _cachedPosts!.isNotEmpty &&
         _cachedImageKeys != null) {
@@ -523,9 +595,14 @@ class MapViewModel extends _$MapViewModel {
             entry.value,
             bytes,
           );
+          if (!_isLiveStyle(epoch)) {
+            _abandonStalePinWork();
+            return;
+          }
         }
       }
-      if (epoch != _styleEpoch || state.mapController == null) {
+      if (!_isLiveStyle(epoch)) {
+        _abandonStalePinWork();
         return;
       }
       await _installPins(
@@ -564,9 +641,10 @@ class MapViewModel extends _$MapViewModel {
     bool refreshPinSize = false,
   }) async {
     final ctrl = state.mapController;
-    if (ctrl == null) {
+    if (ctrl == null || !_styleReady) {
       return;
     }
+    final epoch = _styleEpoch;
     final wantDots = zoom < MapOverlayConstants.smallDotZoomThreshold;
     final modeChanged = _isDotMode != wantDots;
 
@@ -580,6 +658,9 @@ class MapViewModel extends _$MapViewModel {
         final last = _lastPinIconZoom;
         if (last == null || (zoom - last).abs() >= _pinSizeRefreshZoomDelta) {
           await _addNormalPinSymbols(ctrl, _cachedPosts!, _cachedImageKeys!);
+          if (!_isLiveStyle(epoch)) {
+            return;
+          }
           _lastPinIconZoom = zoom;
         }
       }
@@ -606,7 +687,10 @@ class MapViewModel extends _$MapViewModel {
 
   Future<void> _updateHeatmapIfNeeded() async {
     final ctrl = state.mapController;
-    if (ctrl == null || _cachedPosts == null || _cachedPosts!.isEmpty) {
+    if (ctrl == null ||
+        !_styleReady ||
+        _cachedPosts == null ||
+        _cachedPosts!.isEmpty) {
       return;
     }
     final zoom =
@@ -637,6 +721,7 @@ class MapViewModel extends _$MapViewModel {
   }
 
   Future<void> refreshPinsForCategoryFilter() {
+    _pendingPinRefresh = true;
     return _mutateMap(() async {
       if (state.mapController == null) {
         return;
@@ -654,6 +739,11 @@ class MapViewModel extends _$MapViewModel {
     List<Posts> posts,
     Map<String, String> imageKeys,
   ) async {
+    final epoch = _styleEpoch;
+    if (!_isLiveStyle(epoch)) {
+      _abandonStalePinWork();
+      return;
+    }
     final zoom =
         controller.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
     final symbols = MapPinStyle.normalPinSymbols(posts, imageKeys, zoom);
@@ -664,6 +754,9 @@ class MapViewModel extends _$MapViewModel {
         symbols,
         appendSymbol: append,
       );
+      if (!_isLiveStyle(epoch)) {
+        _abandonStalePinWork();
+      }
     }
   }
 }

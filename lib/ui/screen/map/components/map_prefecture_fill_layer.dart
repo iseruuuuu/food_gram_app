@@ -198,12 +198,13 @@ class MapPrefectureFillLayer {
 
   /// Android 9 以下へ 12MB の境界を渡すと MapLibre が落ちる。
   /// 頂点を間引いた形だけ渡して、列島の塗りは残す。
+  /// デコードと間引きは isolate で行い、フル解像度はキャッシュしない。
   static Future<List<Map<String, dynamic>>> _loadSimplifiedFeatures() async {
     if (_simplifiedFeatures != null) {
       return _simplifiedFeatures!;
     }
-    final features = await _loadFeatures();
-    _simplifiedFeatures = simplifyGeoJsonFeatures(features);
+    final geoJson = await rootBundle.loadString(_geoJsonAssetPath);
+    _simplifiedFeatures = await compute(decodeAndSimplifyGeoJson, geoJson);
     return _simplifiedFeatures!;
   }
 }

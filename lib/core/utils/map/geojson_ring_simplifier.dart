@@ -1,3 +1,13 @@
+import 'dart:convert';
+
+/// Isolate 向け。GeoJSON 文字列をデコードして輪郭を間引く。
+List<Map<String, dynamic>> decodeAndSimplifyGeoJson(String geoJson) {
+  final decoded = jsonDecode(geoJson) as Map<String, dynamic>;
+  final features =
+      (decoded['features'] as List<dynamic>).cast<Map<String, dynamic>>();
+  return simplifyGeoJsonFeatures(features);
+}
+
 /// 頂点を間引いた GeoJSON。短い輪郭は残し、潰れた輪郭は捨てる。
 /// 壊れた輪郭を MapLibre に渡すと、塗りの内側と外側が入れ替わる。
 List<Map<String, dynamic>> simplifyGeoJsonFeatures(

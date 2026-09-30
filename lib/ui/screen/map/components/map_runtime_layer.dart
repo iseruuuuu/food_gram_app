@@ -70,22 +70,73 @@ class MapRuntimeLayer {
         'features': features,
       };
 
-      try {
-        await controller.setGeoJsonSource(
-          MapOverlayConstants.runtimeSourceId,
-          data,
-        );
-        return const MapRuntimeSetupResult(dotsReady: true);
-      } on PlatformException {
-        await controller.addSource(
-          MapOverlayConstants.runtimeSourceId,
-          GeojsonSourceProperties(data: data),
-        );
+      await _upsertGeoJsonSource(
+        controller,
+        MapOverlayConstants.runtimeSourceId,
+        data,
+      );
+      if (!await _hasLayer(
+        controller,
+        MapOverlayConstants.runtimeDotsLayerId,
+      )) {
         final ok = await _addDotsLayer(controller);
         return MapRuntimeSetupResult(dotsReady: ok);
       }
-    } on Exception catch (_) {
+      return const MapRuntimeSetupResult(dotsReady: true);
+    } on Object catch (_) {
       return const MapRuntimeSetupResult(dotsReady: false);
+    }
+  }
+
+  /// setGeoJsonSource はソース欠落時の戻りがプラットフォームで違う。
+  /// Android は null 参照、iOS は sourceNotFound、web は TypeError。
+  static Future<void> _upsertGeoJsonSource(
+    MapLibreMapController controller,
+    String sourceId,
+    Map<String, dynamic> data,
+  ) async {
+    final exists = await _sourceExists(controller, sourceId);
+    switch (exists) {
+      case true:
+        await controller.setGeoJsonSource(sourceId, data);
+      case false:
+        await controller.addSource(
+          sourceId,
+          GeojsonSourceProperties(data: data),
+        );
+      case null:
+        try {
+          await controller.setGeoJsonSource(sourceId, data);
+        } on Object {
+          await controller.addSource(
+            sourceId,
+            GeojsonSourceProperties(data: data),
+          );
+        }
+    }
+  }
+
+  static Future<bool?> _sourceExists(
+    MapLibreMapController controller,
+    String sourceId,
+  ) async {
+    try {
+      final ids = await controller.getSourceIds();
+      return ids.contains(sourceId);
+    } on Object {
+      return null;
+    }
+  }
+
+  static Future<bool> _hasLayer(
+    MapLibreMapController controller,
+    String layerId,
+  ) async {
+    try {
+      final ids = await controller.getLayerIds();
+      return ids.map((id) => id.toString()).contains(layerId);
+    } on Object {
+      return false;
     }
   }
 
