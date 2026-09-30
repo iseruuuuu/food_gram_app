@@ -1,12 +1,15 @@
 import 'dart:math' show Point;
+import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/core/utils/location/prefecture_display.dart';
+import 'package:food_gram_app/core/utils/map/map_geojson_support.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_prefecture_fill_layer.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -32,6 +35,7 @@ class RecordJapanFillMap extends StatefulWidget {
 class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
   static const _pinSourceId = 'fg_japan_atlas_pins';
   static const _pinLayerId = 'fg_japan_atlas_pins_layer';
+  static const _pinImageId = 'fg_japan_atlas_pin';
 
   /// 北海道〜沖縄が収まる初期カメラ
   static const _japanCamera = CameraPosition(
@@ -54,6 +58,8 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
   MapLibreMapController? _controller;
   bool _layersReady = false;
   bool _didFitJapan = false;
+  bool _androidPinsReady = false;
+  Uint8List? _pinPng;
   DateTime? _lastPinTapAt;
 
   @override
@@ -100,12 +106,7 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
 {
   "version": 8,
   "name": "Japan Atlas",
-  "sources": {
-    "dummy": {
-      "type": "geojson",
-      "data": { "type": "FeatureCollection", "features": [] }
-    }
-  },
+  "sources": {},
   "layers": [
     {
       "id": "background",
@@ -143,7 +144,31 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
     }
   }
 
+  Map<String, dynamic> _pinFeatureCollection() {
+    return {
+      'type': 'FeatureCollection',
+      'features': [
+        for (final post in _pinPosts)
+          {
+            'type': 'Feature',
+            'id': post.id,
+            'geometry': {
+              'type': 'Point',
+              'coordinates': [post.lng, post.lat],
+            },
+            'properties': {
+              'postId': post.id,
+            },
+          },
+      ],
+    };
+  }
+
   Future<void> _renderPins(MapLibreMapController controller) async {
+    if (!MapGeoJsonSupport.allowsRuntimeGeoJson) {
+      await _renderAndroidPins(controller);
+      return;
+    }
     try {
       try {
         await controller.removeLayer(_pinLayerId);
@@ -152,30 +177,9 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
         await controller.removeSource(_pinSourceId);
       } on Exception catch (_) {}
 
-      final features = _pinPosts
-          .map(
-            (post) => {
-              'type': 'Feature',
-              'id': post.id,
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [post.lng, post.lat],
-              },
-              'properties': {
-                'postId': post.id,
-              },
-            },
-          )
-          .toList();
-
       await controller.addSource(
         _pinSourceId,
-        GeojsonSourceProperties(
-          data: {
-            'type': 'FeatureCollection',
-            'features': features,
-          },
-        ),
+        GeojsonSourceProperties(data: _pinFeatureCollection()),
       );
       await controller.addCircleLayer(
         _pinSourceId,
@@ -192,6 +196,76 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
       debugPrint('RecordJapanFillMap pins failed: $e');
       debugPrintStack(stackTrace: st);
     }
+  }
+
+  /// Android 9 の Annotation 円は circleBlur が空のまま data-driven になり、
+  /// 写真のように都道府県を覆う赤い滲みになる。円シェーダを使わず、
+  /// マップタブと同じ小さな赤ドット画像を塗りつぶしの上に載せる。
+  Future<void> _renderAndroidPins(MapLibreMapController controller) async {
+    final data = _pinFeatureCollection();
+    try {
+      if (_androidPinsReady) {
+        await controller.setGeoJsonSource(_pinSourceId, data);
+        return;
+      }
+      final png = await _redDotPng(MediaQuery.devicePixelRatioOf(context));
+      if (!mounted || _controller != controller) {
+        return;
+      }
+      await controller.addImage(_pinImageId, png);
+      await controller.addSource(
+        _pinSourceId,
+        GeojsonSourceProperties(data: data),
+      );
+      await controller.addSymbolLayer(
+        _pinSourceId,
+        _pinLayerId,
+        const SymbolLayerProperties(
+          iconImage: _pinImageId,
+          iconSize: MapOverlayConstants.smallRedDotIconSize,
+          iconAllowOverlap: true,
+          iconIgnorePlacement: true,
+          iconOpacity: 0.92,
+        ),
+      );
+      _androidPinsReady = true;
+    } on Exception catch (e, st) {
+      debugPrint('RecordJapanFillMap pins failed: $e');
+      debugPrintStack(stackTrace: st);
+    }
+  }
+
+  /// 外寸 21・内側 16.8 の赤ドット。マップタブの small red dot と同じ比率。
+  Future<Uint8List> _redDotPng(double devicePixelRatio) async {
+    final cached = _pinPng;
+    if (cached != null) {
+      return cached;
+    }
+    const logical = 21.0;
+    final px = (logical * devicePixelRatio).round().clamp(16, 128);
+    final recorder = ui.PictureRecorder();
+    final canvas = ui.Canvas(recorder);
+    final center = ui.Offset(px / 2, px / 2);
+    final outer = px / 2 - 0.5;
+    canvas.drawCircle(
+      center,
+      outer,
+      ui.Paint()..color = const ui.Color(0xFFFFFFFF),
+    );
+    canvas.drawCircle(
+      center,
+      outer * (16.8 / 21.0),
+      ui.Paint()..color = const ui.Color(0xFFF44336),
+    );
+    final image = await recorder.endRecording().toImage(px, px);
+    final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+    image.dispose();
+    final png = bytes!.buffer.asUint8List(
+      bytes.offsetInBytes,
+      bytes.lengthInBytes,
+    );
+    _pinPng = png;
+    return png;
   }
 
   Future<void> _fitJapan(MapLibreMapController controller) async {
@@ -221,6 +295,16 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
         .toList()
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
     return hits;
+  }
+
+  void _handleCircleTap(LatLng latLng) {
+    _lastPinTapAt = DateTime.now();
+    final tapped = _postsNear(latLng.latitude, latLng.longitude);
+    if (tapped.isEmpty) {
+      return;
+    }
+    HapticFeedbackHelper.light();
+    widget.onPinTap?.call(tapped);
   }
 
   void _handleFeatureTap(
@@ -279,8 +363,16 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
       onMapCreated: (controller) {
         _layersReady = false;
         _didFitJapan = false;
+        _androidPinsReady = false;
         _controller = controller;
         controller.onFeatureTapped.add(_handleFeatureTap);
+        controller.onCircleTapped.add((circle) {
+          final geometry = circle.options.geometry;
+          if (geometry == null) {
+            return;
+          }
+          _handleCircleTap(geometry);
+        });
       },
       onStyleLoadedCallback: _renderOverlays,
       onMapClick: (_, latLng) {

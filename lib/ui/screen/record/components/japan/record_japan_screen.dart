@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -58,7 +59,8 @@ class RecordJapanScreen extends HookConsumerWidget {
     final visits = recordVisitedPrefectureStats(posts);
     final visitedCount = visits.length.clamp(0, japanPrefectureCap).toInt();
     final selectorTop = recordMapOverlayTopForContext(context);
-    const bottomPadding = 120.0;
+    // iOS はタブ分の 120。Android は SafeArea がタブを避けるので、地図を高くする。
+    final bottomPadding = Platform.isIOS ? 120.0 : 16.0;
     return Padding(
       padding: EdgeInsets.only(top: selectorTop),
       child: Column(
@@ -70,7 +72,7 @@ class RecordJapanScreen extends HookConsumerWidget {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, bottomPadding),
+              padding: EdgeInsets.fromLTRB(16, 0, 16, bottomPadding),
               child: _JapanAtlasCard(
                 cardColor: cardColor,
                 posts: posts,
