@@ -59,6 +59,8 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
   bool _layersReady = false;
   bool _didFitJapan = false;
   bool _androidPinsReady = false;
+  Future<void>? _androidPinsInit;
+  Future<void> _androidPinMutation = Future<void>.value();
   Uint8List? _pinPng;
   DateTime? _lastPinTapAt;
 
@@ -118,6 +120,9 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
 ''';
   }
 
+  bool _isCurrentController(MapLibreMapController controller) =>
+      mounted && _controller == controller;
+
   Future<void> _renderOverlays() async {
     final controller = _controller;
     if (controller == null || _layersReady || !mounted) {
@@ -125,6 +130,9 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
     }
     try {
       await CountryDetector.ensureLoaded();
+      if (!_isCurrentController(controller)) {
+        return;
+      }
       final isDark = Theme.of(context).brightness == Brightness.dark;
       await MapPrefectureFillLayer.render(
         controller,
@@ -132,13 +140,22 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
         palette: MapPrefectureFillPalette.atlas,
         isDark: isDark,
       );
+      if (!_isCurrentController(controller)) {
+        return;
+      }
       await _renderPins(controller);
+      if (!_isCurrentController(controller)) {
+        return;
+      }
       if (!_didFitJapan) {
         await _fitJapan(controller);
+        if (!_isCurrentController(controller)) {
+          return;
+        }
         _didFitJapan = true;
       }
       _layersReady = true;
-    } on Exception catch (e, st) {
+    } on Object catch (e, st) {
       debugPrint('RecordJapanFillMap overlay failed: $e');
       debugPrintStack(stackTrace: st);
     }
@@ -201,38 +218,81 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
   /// Android 9 の Annotation 円は circleBlur が空のまま data-driven になり、
   /// 写真のように都道府県を覆う赤い滲みになる。円シェーダを使わず、
   /// マップタブと同じ小さな赤ドット画像を塗りつぶしの上に載せる。
-  Future<void> _renderAndroidPins(MapLibreMapController controller) async {
-    final data = _pinFeatureCollection();
+  Future<void> _renderAndroidPins(MapLibreMapController controller) {
+    final run = _androidPinMutation.catchError((Object _) {}).then((_) {
+      return _applyAndroidPins(controller);
+    });
+    _androidPinMutation = run;
+    return run;
+  }
+
+  Future<void> _applyAndroidPins(MapLibreMapController controller) async {
+    if (!_isCurrentController(controller)) {
+      return;
+    }
     try {
-      if (_androidPinsReady) {
-        await controller.setGeoJsonSource(_pinSourceId, data);
+      final init = _androidPinsInit ??= _initializeAndroidPins(controller);
+      try {
+        await init;
+      } on Object {
+        if (identical(_androidPinsInit, init)) {
+          _androidPinsInit = null;
+        }
+        rethrow;
+      }
+      if (!_isCurrentController(controller) || !_androidPinsReady) {
         return;
       }
-      final png = await _redDotPng(MediaQuery.devicePixelRatioOf(context));
-      if (!mounted || _controller != controller) {
-        return;
-      }
-      await controller.addImage(_pinImageId, png);
-      await controller.addSource(
+      await controller.setGeoJsonSource(
         _pinSourceId,
-        GeojsonSourceProperties(data: data),
+        _pinFeatureCollection(),
       );
-      await controller.addSymbolLayer(
-        _pinSourceId,
-        _pinLayerId,
-        const SymbolLayerProperties(
-          iconImage: _pinImageId,
-          iconSize: MapOverlayConstants.smallRedDotIconSize,
-          iconAllowOverlap: true,
-          iconIgnorePlacement: true,
-          iconOpacity: 0.92,
-        ),
-      );
-      _androidPinsReady = true;
-    } on Exception catch (e, st) {
+    } on Object catch (e, st) {
       debugPrint('RecordJapanFillMap pins failed: $e');
       debugPrintStack(stackTrace: st);
     }
+  }
+
+  Future<void> _initializeAndroidPins(MapLibreMapController controller) async {
+    if (!_isCurrentController(controller)) {
+      return;
+    }
+    final png =
+        _pinPng ?? await _redDotPng(MediaQuery.devicePixelRatioOf(context));
+    if (!_isCurrentController(controller)) {
+      return;
+    }
+    await controller.addImage(_pinImageId, png);
+    if (!_isCurrentController(controller)) {
+      return;
+    }
+    await controller.addSource(
+      _pinSourceId,
+      GeojsonSourceProperties(
+        data: {
+          'type': 'FeatureCollection',
+          'features': <Map<String, dynamic>>[],
+        },
+      ),
+    );
+    if (!_isCurrentController(controller)) {
+      return;
+    }
+    await controller.addSymbolLayer(
+      _pinSourceId,
+      _pinLayerId,
+      const SymbolLayerProperties(
+        iconImage: _pinImageId,
+        iconSize: MapOverlayConstants.smallRedDotIconSize,
+        iconAllowOverlap: true,
+        iconIgnorePlacement: true,
+        iconOpacity: 0.92,
+      ),
+    );
+    if (!_isCurrentController(controller)) {
+      return;
+    }
+    _androidPinsReady = true;
   }
 
   /// 外寸 21・内側 16.8 の赤ドット。マップタブの small red dot と同じ比率。
@@ -270,7 +330,7 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
 
   Future<void> _fitJapan(MapLibreMapController controller) async {
     await Future<void>.delayed(Duration.zero);
-    if (!mounted || _controller != controller) {
+    if (!_isCurrentController(controller)) {
       return;
     }
     await controller.moveCamera(
@@ -361,10 +421,12 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
             }
           : const <Factory<OneSequenceGestureRecognizer>>{},
       onMapCreated: (controller) {
+        _controller = controller;
         _layersReady = false;
         _didFitJapan = false;
         _androidPinsReady = false;
-        _controller = controller;
+        _androidPinsInit = null;
+        _androidPinMutation = Future<void>.value();
         controller.onFeatureTapped.add(_handleFeatureTap);
         controller.onCircleTapped.add((circle) {
           final geometry = circle.options.geometry;
