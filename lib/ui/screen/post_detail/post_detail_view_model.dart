@@ -11,11 +11,14 @@ import 'package:food_gram_app/core/model/post_detail_feed.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/notification/firebase_messaging_service.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/post_visibility.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/delete_repository.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/repository/heart_repository.dart';
+import 'package:food_gram_app/core/supabase/user/providers/friend_user_ids_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_map_select_modal_sheet.dart';
@@ -292,8 +295,19 @@ class PostsViewModel extends _$PostsViewModel {
     try {
       final result =
           await ref.read(detailPostRepositoryProvider.notifier).getPost(postId);
+      final friendIds = await ref.read(friendUserIdsProvider.future);
       result.when(
         success: (posts) {
+          final viewerId = ref.read(currentUserProvider);
+          if (!isPostVisibleToViewer(
+            isPrivate: posts.isAnonymous,
+            authorId: posts.userId,
+            viewerId: viewerId,
+            friendUserIds: friendIds,
+          )) {
+            state = const PostState.error();
+            return;
+          }
           state = PostState.data(posts: posts);
         },
         failure: (error) {
