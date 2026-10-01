@@ -623,11 +623,12 @@
     "mapTitle": "Buscar con mapa",
     "mapDesc": "Encuentra restaurantes más fácil y rápido"
   },
-  "anonymous": {
-    "post": "Publicar Anónimamente",
-    "postDescription": "El nombre de usuario estará oculto",
-    "share": "Compartir Anónimamente",
-    "update": "Actualizar Anónimamente",
+  "private": {
+    "post": "Publicación privada",
+    "postDescription": "Solo tú y tus amigos podéis verla",
+    "share": "Publicar en privado",
+    "update": "Actualizar en privado",
+    "badge": "Privado",
     "poster": "Publicador Anónimo",
     "username": "foodgramer"
   },

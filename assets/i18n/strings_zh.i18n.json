@@ -623,11 +623,12 @@
     "mapTitle": "地图查找",
     "mapDesc": "更快更容易找到餐厅"
   },
-  "anonymous": {
-    "post": "匿名发布",
-    "postDescription": "用户名将被隐藏",
-    "share": "匿名分享",
-    "update": "匿名更新",
+  "private": {
+    "post": "私密发布",
+    "postDescription": "仅自己和好友可见",
+    "share": "私密发布",
+    "update": "私密更新",
+    "badge": "私密",
     "poster": "匿名发布者",
     "username": "foodgramer"
   },

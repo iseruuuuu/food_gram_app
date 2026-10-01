@@ -623,11 +623,12 @@
     "mapTitle": "지도로 찾기",
     "mapDesc": "식당을 더 빠르고 쉽게 찾기"
   },
-  "anonymous": {
-    "post": "익명으로 게시",
-    "postDescription": "사용자명이 숨겨집니다",
-    "share": "익명으로 공유",
-    "update": "익명으로 업데이트",
+  "private": {
+    "post": "비공개 게시",
+    "postDescription": "나와 친구만 볼 수 있습니다",
+    "share": "비공개로 게시",
+    "update": "비공개로 수정",
+    "badge": "비공개",
     "poster": "익명 게시자",
     "username": "foodgramer"
   },
