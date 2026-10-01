@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/utils/map/map_geojson_support.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -45,6 +46,9 @@ class MapRuntimeLayer {
     MapLibreMapController controller,
     List<Posts> posts,
   ) async {
+    if (!MapGeoJsonSupport.allowsRuntimeGeoJson) {
+      return const MapRuntimeSetupResult(dotsReady: false);
+    }
     try {
       final features = posts
           .map(
@@ -61,34 +65,78 @@ class MapRuntimeLayer {
             },
           )
           .toList();
+      final data = <String, dynamic>{
+        'type': 'FeatureCollection',
+        'features': features,
+      };
 
-      for (final id in [
-        '${MapOverlayConstants.runtimeLayerId}_selected',
-        MapOverlayConstants.runtimeLayerId,
-        MapOverlayConstants.runtimeDotsLayerId,
-      ]) {
-        try {
-          await controller.removeLayer(id);
-        } on Exception catch (_) {}
-      }
-      try {
-        await controller.removeSource(MapOverlayConstants.runtimeSourceId);
-      } on Exception catch (_) {}
-
-      await controller.addSource(
+      await _upsertGeoJsonSource(
+        controller,
         MapOverlayConstants.runtimeSourceId,
-        GeojsonSourceProperties(
-          data: {
-            'type': 'FeatureCollection',
-            'features': features,
-          },
-        ),
+        data,
       );
-
-      final ok = await _addDotsLayer(controller);
-      return MapRuntimeSetupResult(dotsReady: ok);
-    } on Exception catch (_) {
+      if (!await _hasLayer(
+        controller,
+        MapOverlayConstants.runtimeDotsLayerId,
+      )) {
+        final ok = await _addDotsLayer(controller);
+        return MapRuntimeSetupResult(dotsReady: ok);
+      }
+      return const MapRuntimeSetupResult(dotsReady: true);
+    } on Object catch (_) {
       return const MapRuntimeSetupResult(dotsReady: false);
+    }
+  }
+
+  /// setGeoJsonSource はソース欠落時の戻りがプラットフォームで違う。
+  /// Android は null 参照、iOS は sourceNotFound、web は TypeError。
+  static Future<void> _upsertGeoJsonSource(
+    MapLibreMapController controller,
+    String sourceId,
+    Map<String, dynamic> data,
+  ) async {
+    final exists = await _sourceExists(controller, sourceId);
+    switch (exists) {
+      case true:
+        await controller.setGeoJsonSource(sourceId, data);
+      case false:
+        await controller.addSource(
+          sourceId,
+          GeojsonSourceProperties(data: data),
+        );
+      case null:
+        try {
+          await controller.setGeoJsonSource(sourceId, data);
+        } on Object {
+          await controller.addSource(
+            sourceId,
+            GeojsonSourceProperties(data: data),
+          );
+        }
+    }
+  }
+
+  static Future<bool?> _sourceExists(
+    MapLibreMapController controller,
+    String sourceId,
+  ) async {
+    try {
+      final ids = await controller.getSourceIds();
+      return ids.contains(sourceId);
+    } on Object {
+      return null;
+    }
+  }
+
+  static Future<bool> _hasLayer(
+    MapLibreMapController controller,
+    String layerId,
+  ) async {
+    try {
+      final ids = await controller.getLayerIds();
+      return ids.map((id) => id.toString()).contains(layerId);
+    } on Object {
+      return false;
     }
   }
 

@@ -13,6 +13,7 @@ import 'package:food_gram_app/core/cache/food_gram_image_cache.dart';
 import 'package:food_gram_app/core/home_widget/map_stats_home_widget_sync.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/core/review/in_app_review_service.dart';
+import 'package:food_gram_app/core/utils/map/map_geojson_support.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -34,6 +35,7 @@ void main() async {
   ]);
   // 画像ディスクキャッシュを適用する。起動時は消さず、件数・期限の上限で自動整理する。
   FoodGramImageCache.installAsDefault();
+  await MapGeoJsonSupport.load();
   // TranslationProviderでラップ
   runApp(TranslationProvider(child: const ProviderScope(child: MyApp())));
   // アプリ起動後、表示が落ち着いてから7日経過時レビューをチェック
@@ -75,7 +77,11 @@ Future<void> _initializeRemainingDateFormatting(
 Future<void> initializeSystemSettings() async {
   await SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.manual,
-    overlays: [SystemUiOverlay.top],
+    overlays: [
+      SystemUiOverlay.top,
+      // Android の戻る・ホームボタンを隠すと、ボタンがタブの上に重なる。
+      if (Platform.isAndroid) SystemUiOverlay.bottom,
+    ],
   );
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }

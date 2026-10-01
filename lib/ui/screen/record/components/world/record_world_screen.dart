@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -35,7 +36,8 @@ class RecordWorldScreen extends HookConsumerWidget {
         ? recordVisitedCountryStats(posts)
         : const <RecordCountryVisit>[];
     final selectorTop = recordMapOverlayTopForContext(context);
-    const bottomPadding = 120.0;
+    // iOS はタブ分の 120。Android は SafeArea がタブを避けるので、地図を高くする。
+    final bottomPadding = Platform.isIOS ? 120.0 : 16.0;
     return Padding(
       padding: EdgeInsets.only(top: selectorTop),
       child: Column(
@@ -65,7 +67,7 @@ class RecordWorldScreen extends HookConsumerWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, bottomPadding),
+            padding: EdgeInsets.fromLTRB(16, 8, 16, bottomPadding),
             child: _VisitedCountriesCard(
               cardColor: cardColor,
               countries: countries,
