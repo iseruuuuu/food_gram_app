@@ -325,9 +325,22 @@ class $AssetsSplashGen {
 class $AssetsTagGen {
   const $AssetsTagGen();
 
+  /// File path: assets/tag/chahan.png
+  AssetGenImage get chahan => const AssetGenImage('assets/tag/chahan.png');
+
+  /// File path: assets/tag/chikinnanban.png
+  AssetGenImage get chikinnanban =>
+      const AssetGenImage('assets/tag/chikinnanban.png');
+
+  /// File path: assets/tag/churro.png
+  AssetGenImage get churro => const AssetGenImage('assets/tag/churro.png');
+
   /// File path: assets/tag/frenchtoast.png
   AssetGenImage get frenchtoast =>
       const AssetGenImage('assets/tag/frenchtoast.png');
+
+  /// File path: assets/tag/gyutan.png
+  AssetGenImage get gyutan => const AssetGenImage('assets/tag/gyutan.png');
 
   /// File path: assets/tag/hamburg.png
   AssetGenImage get hamburg => const AssetGenImage('assets/tag/hamburg.png');
@@ -338,6 +351,9 @@ class $AssetsTagGen {
 
   /// File path: assets/tag/katsudon.png
   AssetGenImage get katsudon => const AssetGenImage('assets/tag/katsudon.png');
+
+  /// File path: assets/tag/mapo.png
+  AssetGenImage get mapo => const AssetGenImage('assets/tag/mapo.png');
 
   /// File path: assets/tag/meibutsu.png
   AssetGenImage get meibutsu => const AssetGenImage('assets/tag/meibutsu.png');
@@ -352,8 +368,15 @@ class $AssetsTagGen {
   AssetGenImage get montblanc =>
       const AssetGenImage('assets/tag/montblanc.png');
 
+  /// File path: assets/tag/okonomiyaki.png
+  AssetGenImage get okonomiyaki =>
+      const AssetGenImage('assets/tag/okonomiyaki.png');
+
   /// File path: assets/tag/omurice.png
   AssetGenImage get omurice => const AssetGenImage('assets/tag/omurice.png');
+
+  /// File path: assets/tag/shu.png
+  AssetGenImage get shu => const AssetGenImage('assets/tag/shu.png');
 
   /// File path: assets/tag/soba.png
   AssetGenImage get soba => const AssetGenImage('assets/tag/soba.png');
@@ -387,6 +410,10 @@ class $AssetsTagGen {
   /// File path: assets/tag/udon.png
   AssetGenImage get udon => const AssetGenImage('assets/tag/udon.png');
 
+  /// File path: assets/tag/xiaolongbao.png
+  AssetGenImage get xiaolongbao =>
+      const AssetGenImage('assets/tag/xiaolongbao.png');
+
   /// File path: assets/tag/yakiniku.png
   AssetGenImage get yakiniku => const AssetGenImage('assets/tag/yakiniku.png');
 
@@ -395,15 +422,22 @@ class $AssetsTagGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+        chahan,
+        chikinnanban,
+        churro,
         frenchtoast,
+        gyutan,
         hamburg,
         kaisendon,
         katsudon,
+        mapo,
         meibutsu,
         melonpan,
         mochi,
         montblanc,
+        okonomiyaki,
         omurice,
+        shu,
         soba,
         souvenir,
         stew,
@@ -414,6 +448,7 @@ class $AssetsTagGen {
         tonkatsu,
         tsukune,
         udon,
+        xiaolongbao,
         yakiniku,
         yakisoba
       ];
