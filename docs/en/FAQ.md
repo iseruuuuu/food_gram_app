@@ -44,7 +44,7 @@ The following information is required for posting:
 
 ### Private Posting
 
-- You can choose to post privately when creating a post. On the timeline, people who are not your friends see the post without your name. You and your friends see your name. On profiles and the map, only you and your friends can see them.
+- You can choose to post privately when creating a post. Only the author and friends can see private posts.
 
 ## How to Edit Posts
 
