@@ -99,6 +99,38 @@ const Map<String, CustomFoodTag> customFoodTags = {
     id: 'tag:melonpan',
     assetPath: 'assets/tag/melonpan.png',
   ),
+  'tag:chahan': CustomFoodTag(
+    id: 'tag:chahan',
+    assetPath: 'assets/tag/chahan.png',
+  ),
+  'tag:okonomiyaki': CustomFoodTag(
+    id: 'tag:okonomiyaki',
+    assetPath: 'assets/tag/okonomiyaki.png',
+  ),
+  'tag:mapo': CustomFoodTag(
+    id: 'tag:mapo',
+    assetPath: 'assets/tag/mapo.png',
+  ),
+  'tag:gyutan': CustomFoodTag(
+    id: 'tag:gyutan',
+    assetPath: 'assets/tag/gyutan.png',
+  ),
+  'tag:xiaolongbao': CustomFoodTag(
+    id: 'tag:xiaolongbao',
+    assetPath: 'assets/tag/xiaolongbao.png',
+  ),
+  'tag:chikinnanban': CustomFoodTag(
+    id: 'tag:chikinnanban',
+    assetPath: 'assets/tag/chikinnanban.png',
+  ),
+  'tag:churro': CustomFoodTag(
+    id: 'tag:churro',
+    assetPath: 'assets/tag/churro.png',
+  ),
+  'tag:shu': CustomFoodTag(
+    id: 'tag:shu',
+    assetPath: 'assets/tag/shu.png',
+  ),
 };
 
 bool isCustomFoodTag(String tagId) {
@@ -154,6 +186,22 @@ String? customFoodTagAssetGenPath(String tagId) {
       return Assets.tag.mochi.path;
     case 'tag:melonpan':
       return Assets.tag.melonpan.path;
+    case 'tag:chahan':
+      return Assets.tag.chahan.path;
+    case 'tag:okonomiyaki':
+      return Assets.tag.okonomiyaki.path;
+    case 'tag:mapo':
+      return Assets.tag.mapo.path;
+    case 'tag:gyutan':
+      return Assets.tag.gyutan.path;
+    case 'tag:xiaolongbao':
+      return Assets.tag.xiaolongbao.path;
+    case 'tag:chikinnanban':
+      return Assets.tag.chikinnanban.path;
+    case 'tag:churro':
+      return Assets.tag.churro.path;
+    case 'tag:shu':
+      return Assets.tag.shu.path;
     default:
       return null;
   }
