@@ -350,7 +350,7 @@ class PostScreen extends HookConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  t.anonymous.post,
+                                  t.private.post,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
@@ -359,7 +359,7 @@ class PostScreen extends HookConsumerWidget {
                                   ),
                                 ),
                                 Text(
-                                  t.anonymous.postDescription,
+                                  t.private.postDescription,
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Theme.of(context)
@@ -587,7 +587,7 @@ class PostScreen extends HookConsumerWidget {
                         ),
                         child: Text(
                           postState.isAnonymous
-                              ? t.anonymous.share
+                              ? t.private.share
                               : t.share.shareButton,
                           style: TextStyle(
                             color:
