@@ -26,6 +26,8 @@ abstract class Posts with _$Posts {
     required int heart,
     @JsonKey(defaultValue: 0.0) required double star,
     required String foodTag,
+
+    /// 非公開投稿。列名は既存の `is_anonymous`。本人とフレンドだけが見られる。
     required bool isAnonymous,
     @JsonKey(fromJson: nullableDoubleFromJson) double? priceAmount,
     String? priceCurrency,
