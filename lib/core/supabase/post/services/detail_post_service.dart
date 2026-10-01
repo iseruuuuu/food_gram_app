@@ -3,11 +3,26 @@ import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/friend_user_ids_provider.dart';
 import 'package:food_gram_app/core/supabase/user/services/user_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'detail_post_service.g.dart';
+
+/// 同じ `created_at` の行を残すためのカーソル。
+/// PostgREST の `or` では時刻を引用する。
+String _createdAtIdCursor({
+  required DateTime createdAt,
+  required int id,
+  required bool newer,
+}) {
+  final timestamp = '"${createdAt.toUtc().toIso8601String()}"';
+  if (newer) {
+    return 'created_at.gt.$timestamp,and(created_at.eq.$timestamp,id.gt.$id)';
+  }
+  return 'created_at.lt.$timestamp,and(created_at.eq.$timestamp,id.lt.$id)';
+}
 
 @riverpod
 class DetailPostService extends _$DetailPostService {
@@ -52,30 +67,35 @@ class DetailPostService extends _$DetailPostService {
   }
 
   /// 特定ユーザーの投稿を取得（ページング対応・新しい順）
+  /// 自分とフレンドの投稿では非公開も含める。
   Future<List<Map<String, dynamic>>> getPostsFromUserPaged(
     String userId, {
     int limit = 30,
     int? beforeId,
     int? afterId,
   }) async {
+    final friendIds = await ref.read(friendUserIdsProvider.future);
+    final includePrivate =
+        ref.read(currentUserProvider) == userId || friendIds.contains(userId);
     return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'user_posts_paged_${userId}_${beforeId ?? 'null'}'
-          '_${afterId ?? 'null'}_$limit',
+      key: 'user_posts_paged_${userId}_${includePrivate}_'
+          '${beforeId ?? 'null'}_${afterId ?? 'null'}_$limit',
       fetcher: () async {
         var query = supabase
             .from('posts')
             .select(postsSelectColumns)
-            .eq('user_id', userId)
-            .eq('is_anonymous', false);
+            .eq('user_id', userId);
+        if (!includePrivate) {
+          query = query.eq('is_anonymous', false);
+        }
         if (beforeId != null) {
           query = query.lt('id', beforeId);
         }
         if (afterId != null) {
           query = query.gt('id', afterId);
         }
-        final posts = await query
-            .order('id', ascending: afterId != null)
-            .limit(limit);
+        final posts =
+            await query.order('id', ascending: afterId != null).limit(limit);
         return posts
             .where((post) => !blockList.contains(post['user_id']))
             .toList();
@@ -133,7 +153,10 @@ class DetailPostService extends _$DetailPostService {
     }
   }
 
-  /// 指定した投稿IDと同じレストランの投稿のリストを取得する
+  /// 指定した投稿IDと同じレストランの投稿を、生のバッチとして取得する。
+  ///
+  /// [limit] は見える件数ではない。同じ時刻の行を取りこぼさないよう、
+  /// 続きは [beforeId] または [afterId] と時刻を組にして渡す。
   Future<Result<List<Map<String, dynamic>>, Exception>> getRelatedPosts({
     required int currentPostId,
     required double lat,
@@ -141,6 +164,8 @@ class DetailPostService extends _$DetailPostService {
     int limit = 10,
     DateTime? beforeCreatedAt,
     DateTime? afterCreatedAt,
+    int? beforeId,
+    int? afterId,
   }) async {
     try {
       var query = supabase
@@ -152,13 +177,31 @@ class DetailPostService extends _$DetailPostService {
           .gte('lng', lng - 0.00001)
           .lte('lng', lng + 0.00001);
       if (beforeCreatedAt != null) {
-        query = query.lt('created_at', beforeCreatedAt.toIso8601String());
+        query = beforeId == null
+            ? query.lt('created_at', beforeCreatedAt.toIso8601String())
+            : query.or(
+                _createdAtIdCursor(
+                  createdAt: beforeCreatedAt,
+                  id: beforeId,
+                  newer: false,
+                ),
+              );
       }
       if (afterCreatedAt != null) {
-        query = query.gt('created_at', afterCreatedAt.toIso8601String());
+        query = afterId == null
+            ? query.gt('created_at', afterCreatedAt.toIso8601String())
+            : query.or(
+                _createdAtIdCursor(
+                  createdAt: afterCreatedAt,
+                  id: afterId,
+                  newer: true,
+                ),
+              );
       }
+      final ascending = afterCreatedAt != null;
       final posts = await query
-          .order('created_at', ascending: afterCreatedAt != null)
+          .order('created_at', ascending: ascending)
+          .order('id', ascending: ascending)
           .limit(limit);
       return Success(posts);
     } on PostgrestException catch (e) {

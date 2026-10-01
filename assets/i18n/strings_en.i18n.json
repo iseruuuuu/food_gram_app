@@ -622,11 +622,12 @@
     "mapTitle": "Find with map",
     "mapDesc": "Find restaurants faster and easier"
   },
-  "anonymous": {
-    "post": "Post Anonymously",
-    "postDescription": "Username will be hidden",
-    "share": "Share Anonymously",
-    "update": "Update Anonymously",
+  "private": {
+    "post": "Private post",
+    "postDescription": "Only you and your friends can see this",
+    "share": "Post privately",
+    "update": "Update as private",
+    "badge": "Private",
     "poster": "Anonymous Poster",
     "username": "foodgramer"
   },

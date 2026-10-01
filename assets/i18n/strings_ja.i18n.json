@@ -622,11 +622,12 @@
     "mapTitle": "衛生地図でレストランを探せる",
     "mapDesc": "より快適に楽しく見つけることができる"
   },
-  "anonymous": {
-    "post": "匿名で投稿",
-    "postDescription": "ユーザー名が非表示になります",
-    "share": "匿名でシェア",
-    "update": "匿名で更新",
+  "private": {
+    "post": "プライベート投稿",
+    "postDescription": "自分とフレンドだけが見られます",
+    "share": "非公開で投稿",
+    "update": "非公開で更新",
+    "badge": "プライベート",
     "poster": "とある投稿者",
     "username": "foodgramer"
   },

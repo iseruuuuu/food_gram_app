@@ -104,7 +104,7 @@ class UserService extends _$UserService {
     return data;
   }
 
-  /// 自分の全投稿に対するいいね数の合計を取得（匿名投稿含む）
+  /// 自分の全投稿に対するいいね数の合計を取得（非公開投稿含む）
   Future<int> getCurrentUserHeartAmount() async {
     return _cacheManager.get<int>(
       key: 'heart_amount_${_currentUserId}_incl_anon',
@@ -119,7 +119,7 @@ class UserService extends _$UserService {
     );
   }
 
-  /// 特定ユーザーの投稿のいいねの合計数を取得（匿名投稿除く）
+  /// 特定ユーザーの投稿のいいねの合計数を取得（非公開投稿除く）
   Future<int> getOtherUserHeartAmount(String userId) async {
     return _cacheManager.get<int>(
       key: 'heart_amount_${userId}_excl_anon',

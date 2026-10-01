@@ -9,7 +9,9 @@ import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/post_visibility.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/friend_user_ids_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
 import 'package:food_gram_app/core/theme/style/detail_post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
@@ -98,6 +100,14 @@ class PostDetailListItem extends HookConsumerWidget {
       return Center(child: Text('Error: ${snapshot.error}'));
     }
     final users = snapshot.data!;
+    final friendIds =
+        ref.watch(friendUserIdsProvider).valueOrNull ?? const <String>[];
+    final showIdentity = isPostVisibleToViewer(
+      isPrivate: posts.isAnonymous,
+      authorId: users.userId,
+      viewerId: currentUser,
+      friendUserIds: friendIds,
+    );
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final asyncRank = ref.watch(postCountRankProvider(users.userId));
     final rankWidget = asyncRank.when(
@@ -135,7 +145,7 @@ class PostDetailListItem extends HookConsumerWidget {
         children: [
           GestureDetector(
             onTap: () async {
-              if (users.userId != currentUser && !posts.isAnonymous) {
+              if (users.userId != currentUser && showIdentity) {
                 await context.pushNamed(
                   RouterPath.mapProfile,
                   extra: users,
@@ -147,9 +157,8 @@ class PostDetailListItem extends HookConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: AppProfileImage(
-                    imagePath: posts.isAnonymous
-                        ? 'assets/icon/icon1.png'
-                        : users.image,
+                    imagePath:
+                        showIdentity ? users.image : 'assets/icon/icon1.png',
                     radius: 24,
                   ),
                 ),
@@ -158,19 +167,24 @@ class PostDetailListItem extends HookConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        posts.isAnonymous ? t.anonymous.poster : users.name,
+                        showIdentity ? users.name : t.private.poster,
                         style: DetailPostStyle.name(context),
                         overflow: TextOverflow.ellipsis,
                       ),
-                      if (posts.isAnonymous)
+                      if (showIdentity && posts.isAnonymous)
                         Text(
-                          '@${t.anonymous.username}',
+                          t.private.badge,
+                          style: DetailPostStyle.userName(context),
+                        ),
+                      if (!showIdentity)
+                        Text(
+                          '@${t.private.username}',
                           style: DetailPostStyle.userName(context),
                         ),
                     ],
                   ),
                 ),
-                if (!posts.isAnonymous)
+                if (showIdentity)
                   Padding(
                     padding: const EdgeInsets.only(left: 8, right: 10),
                     child: rankWidget,

@@ -623,11 +623,12 @@
     "mapTitle": "Tìm bằng bản đồ",
     "mapDesc": "Tìm nhà hàng nhanh hơn và dễ dàng hơn"
   },
-  "anonymous": {
-    "post": "Đăng ẩn danh",
-    "postDescription": "Tên người dùng sẽ bị ẩn",
-    "share": "Chia sẻ ẩn danh",
-    "update": "Cập nhật ẩn danh",
+  "private": {
+    "post": "Bài đăng riêng tư",
+    "postDescription": "Chỉ bạn và bạn bè xem được",
+    "share": "Đăng ở chế độ riêng tư",
+    "update": "Cập nhật ở chế độ riêng tư",
+    "badge": "Riêng tư",
     "poster": "Người đăng ẩn danh",
     "username": "foodgramer"
   },

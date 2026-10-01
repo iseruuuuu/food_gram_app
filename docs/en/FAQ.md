@@ -10,7 +10,7 @@ Main features:
 - Browse and like other users' posts
 - Follow users to customize your timeline
 - Save posts to view later
-- Post anonymously
+- Post privately
 - Multi-language support (Japanese, English, Korean, Chinese, Thai, Vietnamese, etc.)
 
 ## About Posting
@@ -42,9 +42,9 @@ The following information is required for posting:
 - Please write your honest thoughts about what you ate.
 - Currently, we do not have any agreements with restaurants.
 
-### Anonymous Posting
+### Private Posting
 
-- You can choose to post anonymously when creating a post. If you post anonymously, your username will not be displayed.
+- You can choose to post privately when creating a post. Only the author and friends can see private posts.
 
 ## How to Edit Posts
 
@@ -55,7 +55,7 @@ The following information is required for posting:
   - Comment
   - Restaurant location
   - Add or remove images
-  - Anonymous posting setting
+  - Private posting setting
 
 ## How to Delete Posts
 

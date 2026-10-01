@@ -596,7 +596,7 @@ class EditPostScreen extends HookConsumerWidget {
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                       title: Text(
-                        t.anonymous.post,
+                        t.private.post,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -604,7 +604,7 @@ class EditPostScreen extends HookConsumerWidget {
                         ),
                       ),
                       subtitle: Text(
-                        t.anonymous.postDescription,
+                        t.private.postDescription,
                         style: TextStyle(
                           fontSize: 12,
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -694,7 +694,7 @@ class EditPostScreen extends HookConsumerWidget {
                       ),
                     ),
                     child: Text(
-                      isAnonymous ? t.anonymous.update : t.edit.updateButton,
+                      isAnonymous ? t.private.update : t.edit.updateButton,
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),

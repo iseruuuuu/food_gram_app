@@ -7,14 +7,34 @@ import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/post_visibility.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/fetch_post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
+import 'package:food_gram_app/core/supabase/post/visible_page.dart';
+import 'package:food_gram_app/core/supabase/user/providers/friend_user_ids_provider.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'detail_post_repository.g.dart';
+
+DateTime? _relatedCreatedAt(Object? value) {
+  if (value is DateTime) {
+    return value.toUtc();
+  }
+  if (value is String) {
+    return DateTime.tryParse(value)?.toUtc();
+  }
+  return null;
+}
+
+bool _sameRelatedInstant(DateTime? a, DateTime? b) {
+  if (a == null || b == null) {
+    return false;
+  }
+  return a.toUtc().microsecondsSinceEpoch == b.toUtc().microsecondsSinceEpoch;
+}
 
 @riverpod
 class DetailPostRepository extends _$DetailPostRepository {
@@ -155,24 +175,14 @@ class DetailPostRepository extends _$DetailPostRepository {
     required double lng,
   }) async {
     try {
-      final service = ref.read(detailPostServiceProvider.notifier);
-      final result = await service.getRelatedPosts(
+      final rows = await _visibleRelatedRows(
         currentPostId: currentPostId,
         lat: lat,
         lng: lng,
+        limit: 10,
       );
-      return await result.when(
-        success: (data) async {
-          final blockList =
-              ref.read(blockListProvider).asData?.value ?? const <String>[];
-          final filtered = data
-              .where((m) => !blockList.contains(m['user_id'] as String? ?? ''))
-              .toList(growable: false);
-          final models = await _modelsFromPostRows(filtered);
-          return Success<List<Model>, Exception>(models);
-        },
-        failure: (e) async => Failure<List<Model>, Exception>(e),
-      );
+      final models = await _modelsFromPostRows(rows);
+      return Success<List<Model>, Exception>(models);
     } on PostgrestException catch (e) {
       return Failure<List<Model>, Exception>(e);
     }
@@ -534,8 +544,7 @@ class DetailPostRepository extends _$DetailPostRepository {
     required int limit,
     required DateTime createdAt,
   }) async {
-    final service = ref.read(detailPostServiceProvider.notifier);
-    final result = await service.getRelatedPosts(
+    final rows = await _visibleRelatedRows(
       currentPostId: currentPostId,
       lat: lat,
       lng: lng,
@@ -543,18 +552,104 @@ class DetailPostRepository extends _$DetailPostRepository {
       beforeCreatedAt: newer ? null : createdAt,
       afterCreatedAt: newer ? createdAt : null,
     );
-    return result.when(
-      success: (data) {
-        final blockList =
-            ref.read(blockListProvider).asData?.value ?? const <String>[];
-        return data
-            .where(
-              (row) => !blockList.contains(row['user_id'] as String? ?? ''),
-            )
-            .map(Posts.fromJson)
-            .toList();
-      },
-      failure: (_) => const [],
+    return rows.map(Posts.fromJson).toList();
+  }
+
+  /// ブロックと非公開を除いたあとで [limit] 件になるまで取得する。
+  /// 取得元が尽きたときだけ、見える件数が足りなくても終える。
+  Future<List<Map<String, dynamic>>> _visibleRelatedRows({
+    required int currentPostId,
+    required double lat,
+    required double lng,
+    required int limit,
+    DateTime? beforeCreatedAt,
+    DateTime? afterCreatedAt,
+  }) async {
+    final service = ref.read(detailPostServiceProvider.notifier);
+    final blockList =
+        ref.read(blockListProvider).asData?.value ?? const <String>[];
+    final viewerId = ref.read(currentUserProvider);
+    final friendIds = await ref.read(friendUserIdsProvider.future);
+    final page = VisiblePage<Map<String, dynamic>>(limit: limit);
+    final seen = <int>{};
+    final newer = afterCreatedAt != null;
+    final batchSize = limit < 20 ? 20 : limit;
+    var before = beforeCreatedAt;
+    var after = afterCreatedAt;
+    int? beforeId;
+    int? afterId;
+
+    while (!page.isComplete) {
+      final result = await service.getRelatedPosts(
+        currentPostId: currentPostId,
+        lat: lat,
+        lng: lng,
+        limit: batchSize,
+        beforeCreatedAt: before,
+        afterCreatedAt: after,
+        beforeId: beforeId,
+        afterId: afterId,
+      );
+      final rows = result.when(
+        success: (data) => data,
+        failure: (_) => const <Map<String, dynamic>>[],
+      );
+      page.addBatch(
+        rows,
+        batchSize: batchSize,
+        isVisible: (row) {
+          final id = (row['id'] as num).toInt();
+          if (!seen.add(id)) {
+            return false;
+          }
+          return _isRelatedRowVisible(
+            row,
+            blockList: blockList,
+            viewerId: viewerId,
+            friendIds: friendIds,
+          );
+        },
+      );
+      if (page.isComplete || rows.isEmpty) {
+        break;
+      }
+      final last = rows.last;
+      final lastId = (last['id'] as num).toInt();
+      final lastCreated = _relatedCreatedAt(last['created_at']);
+      final cursorStuck = _sameRelatedInstant(
+            newer ? after : before,
+            lastCreated,
+          ) &&
+          (newer ? afterId : beforeId) == lastId;
+      if (lastCreated == null || cursorStuck) {
+        break;
+      }
+      if (newer) {
+        after = lastCreated;
+        afterId = lastId;
+      } else {
+        before = lastCreated;
+        beforeId = lastId;
+      }
+    }
+    return page.items;
+  }
+
+  bool _isRelatedRowVisible(
+    Map<String, dynamic> row, {
+    required List<String> blockList,
+    required String? viewerId,
+    required List<String> friendIds,
+  }) {
+    final authorId = row['user_id'] as String? ?? '';
+    if (blockList.contains(authorId)) {
+      return false;
+    }
+    return isPostVisibleToViewer(
+      isPrivate: row['is_anonymous'] == true,
+      authorId: authorId,
+      viewerId: viewerId,
+      friendUserIds: friendIds,
     );
   }
 
@@ -603,9 +698,8 @@ class DetailPostRepository extends _$DetailPostRepository {
   Future<List<Model>> _modelsFromPostRows(
     List<Map<String, dynamic>> rows,
   ) async {
-    final userIds = rows
-        .map((row) => row['user_id'] as String?)
-        .whereType<String>();
+    final userIds =
+        rows.map((row) => row['user_id'] as String?).whereType<String>();
     final usersById = await ref
         .read(detailPostServiceProvider.notifier)
         .getUsersData(userIds);

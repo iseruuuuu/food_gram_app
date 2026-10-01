@@ -5,7 +5,9 @@ import 'package:food_gram_app/core/local/repository/save_album_local_repository.
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/post_visibility.dart';
 import 'package:food_gram_app/core/supabase/post/services/fetch_post_service.dart';
+import 'package:food_gram_app/core/supabase/user/providers/friend_user_ids_provider.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -55,7 +57,18 @@ Future<List<Posts>> storedPostList(
         logger.w('stored posts: skip row parse error: $e\n$st');
       }
     }
-    final byId = {for (final p in parsed) p.id: p};
+    final viewerId = ref.read(currentUserProvider);
+    final friendIds = await ref.read(friendUserIdsProvider.future);
+    final byId = {
+      for (final p in parsed)
+        if (isPostVisibleToViewer(
+          isPrivate: p.isAnonymous,
+          authorId: p.userId,
+          viewerId: viewerId,
+          friendUserIds: friendIds,
+        ))
+          p.id: p,
+    };
     final ordered = <Posts>[];
     for (final idStr in storedPostIds) {
       final id = int.tryParse(idStr);

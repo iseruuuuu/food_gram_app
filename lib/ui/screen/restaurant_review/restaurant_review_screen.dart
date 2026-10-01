@@ -506,15 +506,10 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                           ),
                                         ),
                                         child: ClipOval(
-                                          child: model.posts.isAnonymous
-                                              ? Image.asset(
-                                                  'assets/icon/icon1.png',
-                                                  fit: BoxFit.cover,
-                                                )
-                                              : AppProfileImage(
-                                                  imagePath: model.users.image,
-                                                  radius: 28,
-                                                ),
+                                          child: AppProfileImage(
+                                            imagePath: model.users.image,
+                                            radius: 28,
+                                          ),
                                         ),
                                       ),
                                       const Gap(8),
@@ -523,15 +518,22 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            model.posts.isAnonymous
-                                                ? t.anonymous.poster
-                                                : model.users.name,
+                                            model.users.name,
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18,
                                               color: colorScheme.onSurface,
                                             ),
                                           ),
+                                          if (model.posts.isAnonymous)
+                                            Text(
+                                              t.private.badge,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: colorScheme
+                                                    .onSurfaceVariant,
+                                              ),
+                                            ),
                                         ],
                                       ),
                                     ],
