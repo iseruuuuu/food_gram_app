@@ -1,8 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/post_visibility.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/fetch_post_service.dart';
+import 'package:food_gram_app/core/supabase/user/providers/friend_user_ids_provider.dart';
 import 'package:food_gram_app/core/utils/geo_distance.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -76,7 +79,17 @@ class FetchPostRepository extends _$FetchPostRepository {
       final data = await ref
           .read(fetchPostServiceProvider.notifier)
           .getStoredPosts(postIds);
-      return Success(data.map(Posts.fromJson).toList());
+      final viewerId = ref.read(currentUserProvider);
+      final friendIds = await ref.read(friendUserIdsProvider.future);
+      final visible = data.map(Posts.fromJson).where(
+            (post) => isPostVisibleToViewer(
+              isPrivate: post.isAnonymous,
+              authorId: post.userId,
+              viewerId: viewerId,
+              friendUserIds: friendIds,
+            ),
+          );
+      return Success(visible.toList());
     } on PostgrestException catch (e) {
       logger.e('Database error: ${e.message}');
       return Failure(e);

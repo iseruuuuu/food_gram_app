@@ -2,7 +2,9 @@ import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/post_visibility.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/friend_user_ids_provider.dart';
 import 'package:food_gram_app/core/supabase/user/services/user_service.dart';
 import 'package:logger/logger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart' as maplibre;
@@ -41,10 +43,13 @@ class MapPostService extends _$MapPostService {
     required double lat,
     required double lng,
   }) async {
+    final viewerId = ref.read(currentUserProvider);
+    final friendIds = await ref.read(friendUserIdsProvider.future);
     try {
       return Success(
         await _cacheManager.get<List<Map<String, dynamic>>>(
-          key: 'restaurant_posts_${lat}_$lng',
+          key: 'restaurant_posts_${lat}_${lng}_${viewerId}_'
+              '${friendIdsCacheToken(friendIds)}',
           fetcher: () async {
             final posts = await supabase
                 .from('posts')
@@ -54,10 +59,11 @@ class MapPostService extends _$MapPostService {
                 .gte('lng', lng - 0.00001)
                 .lte('lng', lng + 0.00001)
                 .order('created_at');
-            final filteredPosts = posts
-                .where((post) => !blockList.contains(post['user_id']))
-                .toList();
-            return filteredPosts;
+            return _rowsVisibleToViewer(
+              posts,
+              blockedUserIds: blockList,
+              friendUserIds: friendIds,
+            );
           },
           duration: const Duration(minutes: 5),
         ),
@@ -68,19 +74,23 @@ class MapPostService extends _$MapPostService {
     }
   }
 
-  /// マップ表示用：全投稿（ブロック除外）を取得
+  /// マップ表示用：全投稿（ブロックと見えない非公開を除外）を取得
   Future<List<Map<String, dynamic>>> getMapPosts() async {
+    final viewerId = ref.read(currentUserProvider);
+    final friendIds = await ref.read(friendUserIdsProvider.future);
     return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'map_posts',
+      key: 'map_posts_${viewerId}_${friendIdsCacheToken(friendIds)}',
       fetcher: () async {
         final currentBlockList = await ref.read(blockListProvider.future);
         final posts = await supabase
             .from('posts')
             .select(postsSelectColumns)
             .order('created_at');
-        return posts
-            .where((post) => !currentBlockList.contains(post['user_id']))
-            .toList();
+        return _rowsVisibleToViewer(
+          posts,
+          blockedUserIds: currentBlockList,
+          friendUserIds: friendIds,
+        );
       },
       duration: const Duration(minutes: 5),
     );
@@ -94,24 +104,56 @@ class MapPostService extends _$MapPostService {
     return getMapPosts();
   }
 
-  /// レストラン名で投稿を取得（ブロック除外）
+  /// レストラン名で投稿を取得（ブロックと他人の非公開を除外）
   Future<List<Map<String, dynamic>>> getPostsByRestaurantName(
     String restaurantName,
   ) async {
+    final viewerId = ref.read(currentUserProvider);
+    final friendIds = await ref.read(friendUserIdsProvider.future);
     return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'restaurant_name_$restaurantName',
+      key: 'restaurant_name_${restaurantName}_${viewerId}_'
+          '${friendIdsCacheToken(friendIds)}',
       fetcher: () async {
         final posts = await supabase
             .from('posts')
             .select(postsSelectColumns)
             .eq('restaurant', restaurantName)
             .order('created_at', ascending: false);
-        return posts
-            .where((post) => !blockList.contains(post['user_id']))
-            .toList();
+        return _rowsVisibleToViewer(
+          posts,
+          blockedUserIds: blockList,
+          friendUserIds: friendIds,
+        );
       },
       duration: const Duration(minutes: 5),
     );
+  }
+
+  /// ブロックユーザーと、本人・フレンド以外の非公開投稿を除く。
+  List<Map<String, dynamic>> _rowsVisibleToViewer(
+    List<dynamic> rows, {
+    required List<String> blockedUserIds,
+    required List<String> friendUserIds,
+  }) {
+    final viewerId = ref.read(currentUserProvider);
+    final visible = <Map<String, dynamic>>[];
+    for (final row in rows) {
+      final map = Map<String, dynamic>.from(row as Map);
+      final authorId = map['user_id'] as String? ?? '';
+      if (blockedUserIds.contains(authorId)) {
+        continue;
+      }
+      if (!isPostVisibleToViewer(
+        isPrivate: map['is_anonymous'] == true,
+        authorId: authorId,
+        viewerId: viewerId,
+        friendUserIds: friendUserIds,
+      )) {
+        continue;
+      }
+      visible.add(map);
+    }
+    return visible;
   }
 
   /// 自分の投稿のみを取得（マップ表示用）

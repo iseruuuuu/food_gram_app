@@ -7,9 +7,11 @@ import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/post_visibility.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/fetch_post_repository.dart';
 import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
+import 'package:food_gram_app/core/supabase/user/providers/friend_user_ids_provider.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -165,9 +167,20 @@ class DetailPostRepository extends _$DetailPostRepository {
         success: (data) async {
           final blockList =
               ref.read(blockListProvider).asData?.value ?? const <String>[];
-          final filtered = data
-              .where((m) => !blockList.contains(m['user_id'] as String? ?? ''))
-              .toList(growable: false);
+          final viewerId = ref.read(currentUserProvider);
+          final friendIds = await ref.read(friendUserIdsProvider.future);
+          final filtered = data.where((m) {
+            final authorId = m['user_id'] as String? ?? '';
+            if (blockList.contains(authorId)) {
+              return false;
+            }
+            return isPostVisibleToViewer(
+              isPrivate: m['is_anonymous'] == true,
+              authorId: authorId,
+              viewerId: viewerId,
+              friendUserIds: friendIds,
+            );
+          }).toList(growable: false);
           final models = await _modelsFromPostRows(filtered);
           return Success<List<Model>, Exception>(models);
         },
@@ -543,14 +556,25 @@ class DetailPostRepository extends _$DetailPostRepository {
       beforeCreatedAt: newer ? null : createdAt,
       afterCreatedAt: newer ? createdAt : null,
     );
+    final friendIds = await ref.read(friendUserIdsProvider.future);
     return result.when(
       success: (data) {
         final blockList =
             ref.read(blockListProvider).asData?.value ?? const <String>[];
+        final viewerId = ref.read(currentUserProvider);
         return data
-            .where(
-              (row) => !blockList.contains(row['user_id'] as String? ?? ''),
-            )
+            .where((row) {
+              final authorId = row['user_id'] as String? ?? '';
+              if (blockList.contains(authorId)) {
+                return false;
+              }
+              return isPostVisibleToViewer(
+                isPrivate: row['is_anonymous'] == true,
+                authorId: authorId,
+                viewerId: viewerId,
+                friendUserIds: friendIds,
+              );
+            })
             .map(Posts.fromJson)
             .toList();
       },
@@ -603,9 +627,8 @@ class DetailPostRepository extends _$DetailPostRepository {
   Future<List<Model>> _modelsFromPostRows(
     List<Map<String, dynamic>> rows,
   ) async {
-    final userIds = rows
-        .map((row) => row['user_id'] as String?)
-        .whereType<String>();
+    final userIds =
+        rows.map((row) => row['user_id'] as String?).whereType<String>();
     final usersById = await ref
         .read(detailPostServiceProvider.notifier)
         .getUsersData(userIds);
