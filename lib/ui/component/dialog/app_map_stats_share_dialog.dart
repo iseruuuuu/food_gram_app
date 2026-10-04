@@ -1,15 +1,32 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
+import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/utils/helpers/share_helper.dart';
+import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/loading/app_overlay_loading.dart';
 import 'package:food_gram_app/ui/component/share/map/map_stats_share.dart';
+import 'package:food_gram_app/ui/component/share/map/share_outline_map.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+Future<void> _warmShareMap() async {
+  try {
+    await Future.wait([
+      ShareOutlineLibrary.ensureLoaded(),
+      CountryDetector.ensureLoaded(),
+    ]);
+  } on Object {
+    // 輪郭や国判定が読めなくても、進捗のカード自体はシェアできる。
+  }
+}
 
 /// マイマップの達成率・投稿数を世界 or 日本で選んでシェアするダイアログ
 class AppMapStatsShareDialog extends HookConsumerWidget {
@@ -17,18 +34,45 @@ class AppMapStatsShareDialog extends HookConsumerWidget {
     required this.postsCount,
     required this.visitedPrefecturesCount,
     required this.visitedCountriesCount,
+    this.posts,
+    this.initialViewType = MapViewType.japan,
     super.key,
   });
 
   final int postsCount;
   final int visitedPrefecturesCount;
   final int visitedCountriesCount;
+  final List<Posts>? posts;
+  final MapViewType initialViewType;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
     final loading = useState(false);
-    final selectedType = useState<MapViewType>(MapViewType.japan);
+    final selectedType = useState<MapViewType>(
+      initialViewType == MapViewType.world
+          ? MapViewType.world
+          : MapViewType.japan,
+    );
+    final outlines = useState(ShareOutlineLibrary.current);
+    final repositoryPosts = ref.watch(myMapRepositoryProvider).asData?.value;
+    final sharePosts = posts ?? repositoryPosts ?? const <Posts>[];
+    useEffect(
+      () {
+        var alive = true;
+        unawaited(
+          _warmShareMap().then((_) {
+            if (alive) {
+              outlines.value = ShareOutlineLibrary.current;
+            }
+          }),
+        );
+        return () {
+          alive = false;
+        };
+      },
+      const [],
+    );
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final overlayFg = isDark ? colorScheme.onSurface : Colors.white;
@@ -40,6 +84,8 @@ class AppMapStatsShareDialog extends HookConsumerWidget {
         viewType: viewType,
         visitedPrefecturesCount: visitedPrefecturesCount,
         visitedCountriesCount: visitedCountriesCount,
+        posts: sharePosts,
+        outlines: outlines.value,
       );
     }
 
@@ -62,13 +108,7 @@ class AppMapStatsShareDialog extends HookConsumerWidget {
                       size: 30,
                     ),
                   ),
-                  title: Text(
-                    t.myMapShare.title,
-                    style: TextStyle(
-                      color: overlayFg,
-                      fontSize: 20,
-                    ),
-                  ),
+                  title: const SizedBox.shrink(),
                 ),
                 Center(
                   child: FittedBox(
@@ -136,14 +176,23 @@ class AppMapStatsShareDialog extends HookConsumerWidget {
                               name: AnalyticsEvent.mapShare,
                               parameters: {AnalyticsParam.source: vt.name},
                             );
-                            final widget = buildShareWidget(vt);
+                            await _warmShareMap();
+                            if (!context.mounted) {
+                              return;
+                            }
+                            outlines.value = ShareOutlineLibrary.current;
+                            final shareWidget = buildShareWidget(vt);
                             await ShareHelpers().captureAndShare(
                               context: context,
-                              widget: widget,
-                              shareText: widget.shareMessage(t),
+                              widget: shareWidget,
+                              shareText: shareWidget.shareMessage(
+                                t,
+                                languageCode: Localizations.localeOf(context)
+                                    .languageCode,
+                              ),
                               loading: loading,
                               hasText: true,
-                              targetSize: MapStatsShare.size,
+                              targetSize: MapStatsShare.sizeFor(vt),
                               errorMessage: t.error.message,
                             );
                           },
@@ -194,13 +243,18 @@ class AppMapStatsShareDialog extends HookConsumerWidget {
                               name: AnalyticsEvent.mapShare,
                               parameters: {AnalyticsParam.source: vt.name},
                             );
-                            final widget = buildShareWidget(vt);
+                            await _warmShareMap();
+                            if (!context.mounted) {
+                              return;
+                            }
+                            outlines.value = ShareOutlineLibrary.current;
+                            final shareWidget = buildShareWidget(vt);
                             await ShareHelpers().captureAndShare(
                               context: context,
-                              widget: widget,
+                              widget: shareWidget,
                               loading: loading,
                               hasText: false,
-                              targetSize: MapStatsShare.size,
+                              targetSize: MapStatsShare.sizeFor(vt),
                               errorMessage: t.error.message,
                             );
                           },
