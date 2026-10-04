@@ -514,10 +514,9 @@ class PostDetailListItem extends HookConsumerWidget {
                   children: [
                     const Gap(12),
                     if (posts.hasFoodName) ...[
-                      AppTranslatableText(
+                      Text(
                         posts.foodName,
                         style: DetailPostStyle.foodName(context),
-                        autoTranslate: true,
                       ),
                       const Gap(4),
                     ],

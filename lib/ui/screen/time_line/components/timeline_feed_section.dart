@@ -175,6 +175,11 @@ class _TimelineFeedCard extends ConsumerWidget {
             ),
           );
 
+    final labelStyle = TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: onSurface.withValues(alpha: 0.85),
+    );
     final textRow = Padding(
       padding: const EdgeInsets.fromLTRB(10, 10, 8, 12),
       child: Row(
@@ -186,18 +191,20 @@ class _TimelineFeedCard extends ConsumerWidget {
           ),
           const Gap(4),
           Expanded(
-            child: AppTranslatableText(
-              post.restaurant.isNotEmpty ? post.restaurant : post.foodName,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              enableCopy: false,
-              autoTranslate: post.restaurant.isEmpty,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: onSurface.withValues(alpha: 0.85),
-              ),
-            ),
+            child: post.restaurant.isNotEmpty
+                ? AppTranslatableText(
+                    post.restaurant,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    enableCopy: false,
+                    style: labelStyle,
+                  )
+                : Text(
+                    post.foodName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: labelStyle,
+                  ),
           ),
           Icon(
             Icons.chevron_right,
