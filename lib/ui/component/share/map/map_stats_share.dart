@@ -65,7 +65,6 @@ class MapStatsShare extends StatelessWidget {
         for (final visit in recordVisitedPrefectureStats(posts))
           MapSharePlace(
             id: visit.name,
-            name: visit.name,
             visitedAt: visit.lastVisitedAt,
           ),
       ]);
@@ -78,7 +77,6 @@ class MapStatsShare extends StatelessWidget {
         for (final visit in recordVisitedCountryStats(posts))
           MapSharePlace(
             id: visit.code,
-            name: visit.name,
             visitedAt: visit.lastVisitedAt,
             countryCode: visit.code,
           ),

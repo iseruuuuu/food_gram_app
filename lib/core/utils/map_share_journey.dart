@@ -19,13 +19,11 @@ enum MapShareStoryKind {
 class MapSharePlace {
   const MapSharePlace({
     required this.id,
-    required this.name,
     required this.visitedAt,
     this.countryCode,
   });
 
   final String id;
-  final String name;
   final DateTime visitedAt;
   final String? countryCode;
 }
@@ -35,17 +33,13 @@ class MapShareJourney {
   const MapShareJourney({
     required this.kind,
     required this.count,
-    required this.total,
     required this.spreadCount,
-    required this.stamps,
     this.focusKey,
     this.nextPlaceName,
-    this.milestoneTarget,
   });
 
   final MapShareStoryKind kind;
   final int count;
-  final int total;
 
   /// 到達した地方、または大陸の数。
   final int spreadCount;
@@ -55,20 +49,6 @@ class MapShareJourney {
 
   /// まだ白い都道府県名。
   final String? nextPlaceName;
-  final int? milestoneTarget;
-  final List<MapSharePlace> stamps;
-
-  int? get milestoneRemaining {
-    final target = milestoneTarget;
-    if (target == null) {
-      return null;
-    }
-    final remaining = target - count;
-    if (remaining <= 0) {
-      return null;
-    }
-    return remaining;
-  }
 }
 
 const japanRegionCap = 8;
@@ -77,23 +57,18 @@ const worldContinentCap = 6;
 MapShareJourney buildJapanShareJourney(List<MapSharePlace> places) {
   final unique = _latestById(places);
   final count = unique.length.clamp(0, japanPrefectureCap);
-  final stamps = unique.take(3).toList();
   if (count == 0) {
-    return MapShareJourney(
+    return const MapShareJourney(
       kind: MapShareStoryKind.empty,
       count: 0,
-      total: japanPrefectureCap,
       spreadCount: 0,
-      stamps: stamps,
     );
   }
   if (count >= japanPrefectureCap) {
     return MapShareJourney(
       kind: MapShareStoryKind.japanComplete,
       count: count,
-      total: japanPrefectureCap,
       spreadCount: japanRegionCap,
-      stamps: stamps,
     );
   }
 
@@ -110,12 +85,9 @@ MapShareJourney buildJapanShareJourney(List<MapSharePlace> places) {
   return MapShareJourney(
     kind: kind,
     count: count,
-    total: japanPrefectureCap,
     spreadCount: spread,
     focusKey: focus,
     nextPlaceName: next?.name,
-    milestoneTarget: nextJapanPrefectureMilestone(count),
-    stamps: stamps,
   );
 }
 
@@ -125,23 +97,18 @@ MapShareJourney buildWorldShareJourney(
 }) {
   final unique = _latestById(places);
   final count = unique.length.clamp(0, worldCountryCap);
-  final stamps = unique.take(3).toList();
   if (count == 0) {
-    return MapShareJourney(
+    return const MapShareJourney(
       kind: MapShareStoryKind.empty,
       count: 0,
-      total: worldCountryCap,
       spreadCount: 0,
-      stamps: stamps,
     );
   }
   if (count >= worldCountryCap) {
     return MapShareJourney(
       kind: MapShareStoryKind.worldComplete,
       count: count,
-      total: worldCountryCap,
       spreadCount: worldContinentCap,
-      stamps: stamps,
     );
   }
 
@@ -159,11 +126,8 @@ MapShareJourney buildWorldShareJourney(
   return MapShareJourney(
     kind: kind,
     count: count,
-    total: worldCountryCap,
     spreadCount: continents.length,
     focusKey: focus,
-    milestoneTarget: _nextWorldMilestone(count),
-    stamps: stamps,
   );
 }
 
@@ -246,15 +210,6 @@ MapShareStoryKind _worldKind(int continents) {
     return MapShareStoryKind.worldAllContinents;
   }
   return MapShareStoryKind.worldSpread;
-}
-
-int? _nextWorldMilestone(int visited) {
-  for (final milestone in worldCountryMilestones) {
-    if (visited < milestone) {
-      return milestone;
-    }
-  }
-  return null;
 }
 
 class _NextBlank {
