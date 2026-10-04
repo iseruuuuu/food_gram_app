@@ -1,33 +1,27 @@
-import 'package:food_gram_app/gen/strings.g.dart';
-
 /// Google Places Nearby Search で拾う飲食系の type 一覧。
+///
+/// `restaurant` は寿司店など細かい料理種別も含む。
+/// バーやカフェのように `restaurant` が付かない種別だけ足している。
 const photoNearbyFoodPlaceTypes = [
   'restaurant',
   'fast_food_restaurant',
   'japanese_restaurant',
   'cafe',
+  'coffee_shop',
   'bakery',
+  'bar',
+  'pub',
+  'wine_bar',
   'meal_takeaway',
   'meal_delivery',
   'food_court',
+  'cafeteria',
   'ramen_restaurant',
   'hamburger_restaurant',
+  'ice_cream_shop',
+  'sandwich_shop',
+  'dessert_shop',
+  'donut_shop',
+  'juice_shop',
+  'tea_house',
 ];
-
-/// Text Search フォールバック用クエリ（端末ロケール向け）。
-List<String> photoNearbyTextSearchQueries([AppLocale? locale]) {
-  final current = locale ?? LocaleSettings.currentLocale;
-  return switch (current) {
-    AppLocale.ja => const ['飲食店', 'レストラン', 'ファストフード'],
-    AppLocale.ko => const ['음식점', '레스토랑', '패스트푸드'],
-    AppLocale.zh => const ['餐厅', '饭店', '快餐'],
-    AppLocale.zhTw => const ['餐廳', '餐館', '速食'],
-    AppLocale.th => const ['ร้านอาหาร', 'ร้านกาแฟ', 'ฟาสต์ฟู้ด'],
-    AppLocale.vi => const ['nhà hàng', 'quán ăn', 'đồ ăn nhanh'],
-    AppLocale.de => const ['Restaurant', 'Café', 'Fast Food'],
-    AppLocale.es => const ['restaurante', 'café', 'comida rápida'],
-    AppLocale.fr => const ['restaurant', 'café', 'fast-food'],
-    AppLocale.pt => const ['restaurante', 'café', 'fast food'],
-    AppLocale.en => const ['restaurant', 'cafe', 'fast food'],
-  };
-}
