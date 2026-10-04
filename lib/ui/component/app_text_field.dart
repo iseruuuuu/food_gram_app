@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:flutter/gestures.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
@@ -45,90 +45,210 @@ class AppSearchTextField extends HookWidget {
       child: Row(
         children: [
           Expanded(
-            // 未確定の長押しは、押下位置が入る前に selectWord して落ちる。
-            // テキスト側（500ms）より先に受け取って、その選択を走らせない。
-            child: RawGestureDetector(
-              behavior: HitTestBehavior.translucent,
-              gestures: <Type, GestureRecognizerFactory>{
-                LongPressGestureRecognizer:
-                    GestureRecognizerFactoryWithHandlers<
-                        LongPressGestureRecognizer>(
-                  () => LongPressGestureRecognizer(
-                    duration: const Duration(milliseconds: 400),
+            child: Material(
+              elevation: 10,
+              shadowColor: Colors.black38,
+              color: Colors.transparent,
+              borderRadius: const BorderRadius.all(Radius.circular(18)),
+              child: _SearchTextField(
+                controller: controller,
+                style: TextStyle(color: textColor),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: bgColor,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 11,
+                    horizontal: 10,
                   ),
-                  (LongPressGestureRecognizer instance) {
-                    instance.onLongPress = () {};
-                  },
-                ),
-              },
-              child: Material(
-                elevation: 10,
-                shadowColor: Colors.black38,
-                color: Colors.transparent,
-                borderRadius: const BorderRadius.all(Radius.circular(18)),
-                child: TextField(
-                  contextMenuBuilder: (context, state) {
-                    if (SystemContextMenu.isSupported(context)) {
-                      return SystemContextMenu.editableText(
-                        editableTextState: state,
-                      );
-                    }
-                    return AdaptiveTextSelectionToolbar.editableText(
-                      editableTextState: state,
-                    );
-                  },
-                  selectionHeightStyle: BoxHeightStyle.strut,
-                  textAlignVertical: TextAlignVertical.center,
-                  style: TextStyle(color: textColor),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: bgColor,
-                    isDense: true,
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 11,
-                      horizontal: 10,
-                    ),
-                    prefixIcon: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 3),
-                      child: Icon(Icons.search, color: textColor, size: 24),
-                    ),
-                    hintStyle: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(color: hintColor),
-                    label: Text(
-                      Translations.of(context).restaurant.searchPlaceholder,
-                    ),
-                    labelStyle: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(color: textColor),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(18)),
-                      borderSide: BorderSide(color: borderColor),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(18)),
-                      borderSide: BorderSide(color: borderColor),
-                    ),
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3),
+                    child: Icon(Icons.search, color: textColor, size: 24),
                   ),
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.search,
-                  autocorrect: true,
-                  textCapitalization: TextCapitalization.words,
-                  controller: controller,
-                  onTapOutside: (_) => primaryFocus?.unfocus(),
-                  onSubmitted: (_) {
-                    onSubmitted?.call(controller.text);
-                  },
-                  onChanged: (text) {
-                    searchText.value = text;
-                  },
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(color: hintColor),
+                  label: Text(
+                    Translations.of(context).restaurant.searchPlaceholder,
+                  ),
+                  labelStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(color: textColor),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(18)),
+                    borderSide: BorderSide(color: borderColor),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(18)),
+                    borderSide: BorderSide(color: borderColor),
+                  ),
                 ),
+                onSubmitted: () => onSubmitted?.call(controller.text),
+                onChanged: (text) => searchText.value = text,
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// 長押しの単語選択は TextField の認識器のまま行う。
+/// 押下位置が未設定のときだけ、ジェスチャの座標を記録してから通常の選択に進む。
+class _SearchSelectionGestureDetectorBuilder
+    extends TextSelectionGestureDetectorBuilder {
+  _SearchSelectionGestureDetectorBuilder({
+    required _SearchTextFieldState delegate,
+  }) : super(delegate: delegate);
+
+  @override
+  void onSingleLongTapStart(LongPressStartDetails details) {
+    if (!delegate.selectionEnabled) {
+      return;
+    }
+    renderEditable.handleTapDown(
+      TapDownDetails(globalPosition: details.globalPosition),
+    );
+    super.onSingleLongTapStart(details);
+  }
+}
+
+class _SearchTextField extends StatefulWidget {
+  const _SearchTextField({
+    required this.controller,
+    required this.style,
+    required this.decoration,
+    required this.onSubmitted,
+    required this.onChanged,
+  });
+
+  final TextEditingController controller;
+  final TextStyle style;
+  final InputDecoration decoration;
+  final VoidCallback onSubmitted;
+  final ValueChanged<String> onChanged;
+
+  @override
+  State<_SearchTextField> createState() => _SearchTextFieldState();
+}
+
+class _SearchTextFieldState extends State<_SearchTextField>
+    implements TextSelectionGestureDetectorBuilderDelegate {
+  late final _SearchSelectionGestureDetectorBuilder _gestures;
+  final FocusNode _focusNode = FocusNode();
+  bool _showSelectionHandles = false;
+
+  @override
+  final GlobalKey<EditableTextState> editableTextKey =
+      GlobalKey<EditableTextState>();
+
+  @override
+  bool get forcePressEnabled =>
+      Theme.of(context).platform == TargetPlatform.iOS;
+
+  @override
+  bool get selectionEnabled => true;
+
+  @override
+  void initState() {
+    super.initState();
+    _gestures = _SearchSelectionGestureDetectorBuilder(delegate: this);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _handleSelectionChanged(
+    TextSelection selection,
+    SelectionChangedCause? cause,
+  ) {
+    final showHandles = _gestures.shouldShowSelectionToolbar &&
+        _gestures.shouldShowSelectionHandles &&
+        cause != SelectionChangedCause.keyboard &&
+        (cause == SelectionChangedCause.longPress ||
+            widget.controller.text.isNotEmpty);
+    if (showHandles != _showSelectionHandles) {
+      setState(() => _showSelectionHandles = showHandles);
+    }
+    if (cause == SelectionChangedCause.longPress) {
+      editableTextKey.currentState?.bringIntoView(selection.extent);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isApple = theme.platform == TargetPlatform.iOS ||
+        theme.platform == TargetPlatform.macOS;
+    final selectionStyle = TextSelectionTheme.of(context);
+    final cursorColor = selectionStyle.cursorColor ??
+        (isApple
+            ? CupertinoTheme.of(context).primaryColor
+            : theme.colorScheme.primary);
+    final selectionColor =
+        selectionStyle.selectionColor ?? cursorColor.withValues(alpha: 0.4);
+
+    return TextFieldTapRegion(
+      child: _gestures.buildGestureDetector(
+        behavior: HitTestBehavior.translucent,
+        child: ListenableBuilder(
+          listenable: Listenable.merge(
+            <Listenable>[_focusNode, widget.controller],
+          ),
+          builder: (context, _) {
+            return InputDecorator(
+              decoration: widget.decoration,
+              baseStyle: widget.style,
+              textAlignVertical: TextAlignVertical.center,
+              isFocused: _focusNode.hasFocus,
+              isEmpty: widget.controller.text.isEmpty,
+              child: EditableText(
+                key: editableTextKey,
+                controller: widget.controller,
+                focusNode: _focusNode,
+                style: widget.style,
+                cursorColor: cursorColor,
+                backgroundCursorColor: CupertinoColors.inactiveGray,
+                selectionColor: _focusNode.hasFocus ? selectionColor : null,
+                selectionControls: isApple
+                    ? cupertinoTextSelectionHandleControls
+                    : materialTextSelectionHandleControls,
+                showSelectionHandles: _showSelectionHandles,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.search,
+                textCapitalization: TextCapitalization.words,
+            autocorrect: true,
+            selectionHeightStyle: BoxHeightStyle.strut,
+                rendererIgnoresPointer: true,
+                paintCursorAboveText: isApple,
+                cursorRadius: isApple ? const Radius.circular(2) : null,
+                cursorOpacityAnimates: isApple,
+                magnifierConfiguration:
+                    TextMagnifier.adaptiveMagnifierConfiguration,
+                contextMenuBuilder: (context, state) {
+                  if (SystemContextMenu.isSupported(context)) {
+                    return SystemContextMenu.editableText(
+                      editableTextState: state,
+                    );
+                  }
+                  return AdaptiveTextSelectionToolbar.editableText(
+                    editableTextState: state,
+                  );
+                },
+                onTapOutside: (_) => primaryFocus?.unfocus(),
+                onSubmitted: (_) => widget.onSubmitted(),
+                onChanged: widget.onChanged,
+                onSelectionChanged: _handleSelectionChanged,
+              ),
+            );
+          },
+        ),
       ),
     );
   }
