@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
@@ -44,69 +45,86 @@ class AppSearchTextField extends HookWidget {
       child: Row(
         children: [
           Expanded(
-            child: Material(
-              elevation: 10,
-              shadowColor: Colors.black38,
-              color: Colors.transparent,
-              borderRadius: const BorderRadius.all(Radius.circular(18)),
-              child: TextField(
-                contextMenuBuilder: (context, state) {
-                  if (SystemContextMenu.isSupported(context)) {
-                    return SystemContextMenu.editableText(
+            // 未確定の長押しは、押下位置が入る前に selectWord して落ちる。
+            // テキスト側（500ms）より先に受け取って、その選択を走らせない。
+            child: RawGestureDetector(
+              behavior: HitTestBehavior.translucent,
+              gestures: <Type, GestureRecognizerFactory>{
+                LongPressGestureRecognizer:
+                    GestureRecognizerFactoryWithHandlers<
+                        LongPressGestureRecognizer>(
+                  () => LongPressGestureRecognizer(
+                    duration: const Duration(milliseconds: 400),
+                  ),
+                  (LongPressGestureRecognizer instance) {
+                    instance.onLongPress = () {};
+                  },
+                ),
+              },
+              child: Material(
+                elevation: 10,
+                shadowColor: Colors.black38,
+                color: Colors.transparent,
+                borderRadius: const BorderRadius.all(Radius.circular(18)),
+                child: TextField(
+                  contextMenuBuilder: (context, state) {
+                    if (SystemContextMenu.isSupported(context)) {
+                      return SystemContextMenu.editableText(
+                        editableTextState: state,
+                      );
+                    }
+                    return AdaptiveTextSelectionToolbar.editableText(
                       editableTextState: state,
                     );
-                  }
-                  return AdaptiveTextSelectionToolbar.editableText(
-                    editableTextState: state,
-                  );
-                },
-                selectionHeightStyle: BoxHeightStyle.strut,
-                textAlignVertical: TextAlignVertical.center,
-                style: TextStyle(color: textColor),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: bgColor,
-                  isDense: true,
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 11,
-                    horizontal: 10,
+                  },
+                  selectionHeightStyle: BoxHeightStyle.strut,
+                  textAlignVertical: TextAlignVertical.center,
+                  style: TextStyle(color: textColor),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: bgColor,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 11,
+                      horizontal: 10,
+                    ),
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 3),
+                      child: Icon(Icons.search, color: textColor, size: 24),
+                    ),
+                    hintStyle: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(color: hintColor),
+                    label: Text(
+                      Translations.of(context).restaurant.searchPlaceholder,
+                    ),
+                    labelStyle: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(color: textColor),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(Radius.circular(18)),
+                      borderSide: BorderSide(color: borderColor),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(Radius.circular(18)),
+                      borderSide: BorderSide(color: borderColor),
+                    ),
                   ),
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3),
-                    child: Icon(Icons.search, color: textColor, size: 24),
-                  ),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: hintColor),
-                  label: Text(
-                    Translations.of(context).restaurant.searchPlaceholder,
-                  ),
-                  labelStyle: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: textColor),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(18)),
-                    borderSide: BorderSide(color: borderColor),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(18)),
-                    borderSide: BorderSide(color: borderColor),
-                  ),
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.search,
+                  autocorrect: true,
+                  textCapitalization: TextCapitalization.words,
+                  controller: controller,
+                  onTapOutside: (_) => primaryFocus?.unfocus(),
+                  onSubmitted: (_) {
+                    onSubmitted?.call(controller.text);
+                  },
+                  onChanged: (text) {
+                    searchText.value = text;
+                  },
                 ),
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.search,
-                autocorrect: true,
-                textCapitalization: TextCapitalization.words,
-                controller: controller,
-                onTapOutside: (_) => primaryFocus?.unfocus(),
-                onSubmitted: (_) {
-                  onSubmitted?.call(controller.text);
-                },
-                onChanged: (text) {
-                  searchText.value = text;
-                },
               ),
             ),
           ),
