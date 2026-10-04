@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/ui/component/dialog/app_map_stats_share_dialog.dart';
 
@@ -10,6 +11,7 @@ class RecordMapButton extends StatelessWidget {
     required this.postsCount,
     required this.visitedPrefecturesCount,
     required this.visitedCountriesCount,
+    required this.viewType,
     super.key,
   });
 
@@ -17,6 +19,7 @@ class RecordMapButton extends StatelessWidget {
   final int postsCount;
   final int visitedPrefecturesCount;
   final int visitedCountriesCount;
+  final MapViewType viewType;
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +95,7 @@ class RecordMapButton extends StatelessWidget {
                           postsCount: postsCount,
                           visitedPrefecturesCount: visitedPrefecturesCount,
                           visitedCountriesCount: visitedCountriesCount,
+                          initialViewType: viewType,
                         );
                       },
                     );

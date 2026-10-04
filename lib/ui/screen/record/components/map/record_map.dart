@@ -60,9 +60,7 @@ class RecordMap extends HookConsumerWidget {
             target: isLocationEnabled
                 ? LatLng(latitude, longitude)
                 : fallbackLocation,
-            zoom: isLocationEnabled
-                ? 7
-                : MapOverlayConstants.localeFallback,
+            zoom: isLocationEnabled ? 7 : MapOverlayConstants.localeFallback,
           ),
           trackCameraPosition: true,
           tiltGesturesEnabled: false,
@@ -100,6 +98,7 @@ class RecordMap extends HookConsumerWidget {
                 postsCount: state.postsCount,
                 visitedPrefecturesCount: state.visitedPrefecturesCount,
                 visitedCountriesCount: state.visitedCountriesCount,
+                viewType: state.viewType,
               ),
             ],
           ),
