@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
+import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
@@ -154,7 +155,10 @@ class ShareHelpers {
       }
       final screenshotController = ScreenshotController();
       final screenshotBytes = await screenshotController.captureFromWidget(
-        widget,
+        InheritedLocaleData<AppLocale, Translations>(
+          translations: LocaleSettings.instance.currentTranslations,
+          child: widget,
+        ),
         context: context,
         targetSize: targetSize,
         pixelRatio: pixelRatio,

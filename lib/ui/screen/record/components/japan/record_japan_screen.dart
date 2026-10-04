@@ -119,8 +119,7 @@ class _JapanAtlasCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final ratio =
-        (visitedCount / japanPrefectureCap).clamp(0.0, 1.0).toDouble();
+    final ratio = (visitedCount / japanPrefectureCap).clamp(0.0, 1.0);
     final percentText = (ratio * 100).toStringAsFixed(1);
     return Container(
       width: double.infinity,
@@ -198,6 +197,7 @@ class _JapanAtlasCard extends StatelessWidget {
                     context: context,
                     pageBuilder: (_, __, ___) {
                       return AppMapStatsShareDialog(
+                        posts: posts,
                         postsCount: posts.length,
                         visitedPrefecturesCount: visitedCount,
                         visitedCountriesCount:
