@@ -294,6 +294,12 @@ class $AssetsMapGen {
   String get overlayPostsSelectedLayer =>
       'assets/map/overlay_posts_selected_layer.json';
 
+  /// File path: assets/map/share_japan_outline.json
+  String get shareJapanOutline => 'assets/map/share_japan_outline.json';
+
+  /// File path: assets/map/share_world_outline.json
+  String get shareWorldOutline => 'assets/map/share_world_outline.json';
+
   /// File path: assets/map/world_countries.geojson
   String get worldCountries => 'assets/map/world_countries.geojson';
 
@@ -308,6 +314,8 @@ class $AssetsMapGen {
         overlayPostsDotsLayer,
         overlayPostsLayer,
         overlayPostsSelectedLayer,
+        shareJapanOutline,
+        shareWorldOutline,
         worldCountries
       ];
 }
