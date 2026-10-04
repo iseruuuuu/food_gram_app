@@ -55,7 +55,7 @@ class AppMapStatsShareDialog extends HookConsumerWidget {
           : MapViewType.japan,
     );
     final outlines = useState(ShareOutlineLibrary.current);
-    final repositoryPosts = ref.watch(myMapRepositoryProvider).asData?.value;
+    final repositoryPosts = ref.watch(myMapRepositoryProvider).valueOrNull;
     final sharePosts = posts ?? repositoryPosts ?? const <Posts>[];
     useEffect(
       () {

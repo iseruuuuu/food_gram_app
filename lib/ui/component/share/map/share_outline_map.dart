@@ -83,8 +83,8 @@ class ShareOutlineLibrary {
       current = set;
       return set;
     } on Object {
-      current = ShareOutlineSet.empty;
-      return ShareOutlineSet.empty;
+      _loading = null;
+      rethrow;
     }
   }
 }

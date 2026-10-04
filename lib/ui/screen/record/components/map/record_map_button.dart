@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
+import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/ui/component/dialog/app_map_stats_share_dialog.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// 記録タブ地図上：方位リセット・統計シェアの FAB 列
-class RecordMapButton extends StatelessWidget {
+class RecordMapButton extends ConsumerWidget {
   const RecordMapButton({
     required this.onResetBearing,
     required this.postsCount,
@@ -22,7 +24,7 @@ class RecordMapButton extends StatelessWidget {
   final MapViewType viewType;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final fabBg = isDark ? Colors.black : Colors.white;
     const fabFg = AppTheme.primaryOrange;
@@ -88,10 +90,13 @@ class RecordMapButton extends StatelessWidget {
                   hoverColor: fabBg,
                   elevation: 10,
                   onPressed: () {
+                    final renderedPosts =
+                        ref.read(myMapRepositoryProvider).valueOrNull;
                     showGeneralDialog<void>(
                       context: context,
                       pageBuilder: (_, __, ___) {
                         return AppMapStatsShareDialog(
+                          posts: renderedPosts,
                           postsCount: postsCount,
                           visitedPrefecturesCount: visitedPrefecturesCount,
                           visitedCountriesCount: visitedCountriesCount,
