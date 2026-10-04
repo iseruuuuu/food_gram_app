@@ -124,9 +124,15 @@ class MapStatsShare extends StatelessWidget {
         '#FoodGram';
   }
 
+  Translations _translations(BuildContext context) {
+    final data = context.dependOnInheritedWidgetOfExactType<
+        InheritedLocaleData<AppLocale, Translations>>();
+    return data?.translations ?? LocaleSettings.instance.currentTranslations;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final t = Translations.of(context);
+    final t = _translations(context);
     final journey = _journey();
     final count = _count(journey);
     final ratio = _total == 0 ? 0.0 : count / _total;
