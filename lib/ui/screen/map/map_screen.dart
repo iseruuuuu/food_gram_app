@@ -10,7 +10,6 @@ import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
-import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
@@ -90,6 +89,13 @@ class MapScreen extends HookConsumerWidget {
       }
       didApplyGpsCamera.value = true;
       unawaited(controller.applyInitialCameraZoom(gps));
+    });
+    ref.listen(isSubscribeProvider, (previous, next) {
+      if ((next.valueOrNull ?? false) || !isEarthStyle.value) {
+        return;
+      }
+      isEarthStyle.value = false;
+      controller.handleStyleChange();
     });
     ref.listen(filteredMapPostsProvider, (previous, next) {
       if (!next.hasValue || previous?.valueOrNull == next.valueOrNull) {
@@ -249,32 +255,22 @@ class MapScreen extends HookConsumerWidget {
                                 await controller.refreshPinsForCategoryFilter();
                               },
                             ),
-                            const Gap(8),
-                            _MapSideFab(
-                              heroTag: 'style_toggle',
-                              fabBg: fabBg,
-                              fabFg: fabFg,
-                              fabBorder: fabBorder,
-                              icon: isEarthStyle.value
-                                  ? CupertinoIcons.globe
-                                  : CupertinoIcons.map,
-                              onPressed: () async {
-                                if (!isSubscribed) {
-                                  try {
-                                    await ref
-                                        .read(
-                                          revenueCatServiceProvider.notifier,
-                                        )
-                                        .presentPaywallGuarded();
-                                  } on Exception catch (_) {
-                                    return;
-                                  }
-                                } else {
+                            if (isSubscribed) ...[
+                              const Gap(8),
+                              _MapSideFab(
+                                heroTag: 'style_toggle',
+                                fabBg: fabBg,
+                                fabFg: fabFg,
+                                fabBorder: fabBorder,
+                                icon: isEarthStyle.value
+                                    ? CupertinoIcons.globe
+                                    : CupertinoIcons.map,
+                                onPressed: () {
                                   isEarthStyle.value = !isEarthStyle.value;
                                   controller.handleStyleChange();
-                                }
-                              },
-                            ),
+                                },
+                              ),
+                            ],
                             if (isLocationEnabled) ...[
                               const Gap(8),
                               _MapSideFab(
@@ -286,21 +282,22 @@ class MapScreen extends HookConsumerWidget {
                                 onPressed: controller.moveToCurrentLocation,
                               ),
                             ],
-                            _MapSideFabReveal(
-                              visible: isMapRotated.value,
-                              child: _MapSideFab(
-                                heroTag: 'compass',
-                                fabBg: fabBg,
-                                fabFg: fabFg,
-                                fabBorder: fabBorder,
-                                icon: CupertinoIcons.compass,
-                                iconSize: 24,
-                                onPressed: () {
-                                  isMapRotated.value = false;
-                                  unawaited(controller.resetBearing());
-                                },
+                            if (isSubscribed)
+                              _MapSideFabReveal(
+                                visible: isMapRotated.value,
+                                child: _MapSideFab(
+                                  heroTag: 'compass',
+                                  fabBg: fabBg,
+                                  fabFg: fabFg,
+                                  fabBorder: fabBorder,
+                                  icon: CupertinoIcons.compass,
+                                  iconSize: 24,
+                                  onPressed: () {
+                                    isMapRotated.value = false;
+                                    unawaited(controller.resetBearing());
+                                  },
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ),
