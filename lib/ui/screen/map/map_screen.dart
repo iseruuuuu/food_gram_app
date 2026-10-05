@@ -71,6 +71,7 @@ class MapScreen extends HookConsumerWidget {
         isMapRotated.value = rotated;
       }
     }
+
     ref.listen<MapModalSelection?>(mapModalSelectionProvider, (_, next) {
       if (next == null || next.placeSearchRestaurant == null) {
         unawaited(controller.clearSearchResultPin());
@@ -117,216 +118,211 @@ class MapScreen extends HookConsumerWidget {
           else if (showMapLoading)
             const AppTabLoading.map()
           else
-            Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                MapLibreMap(
-                  onMapCreated: (mapLibre) async {
-                    await controller.setMapController(
-                      mapLibre,
-                      onPinTap: (posts) async {
-                        primaryFocus?.unfocus();
-                        if (posts.isEmpty || isHandlingPinTap.value) {
-                          return;
-                        }
-                        isHandlingPinTap.value = true;
-                        try {
-                          await ref
-                              .read(firebaseAnalyticsServiceProvider)
-                              .logMapPinTap(source: 'map');
-                          final first = posts.first;
-                          void openStoreSheet() {
-                            ref.read(mapModalSelectionProvider.notifier).state =
-                                MapModalSelection(
-                              name: first.restaurant,
-                              lat: first.lat,
-                              lng: first.lng,
-                            );
-                          }
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final fabBottom = constraints.maxHeight *
+                        MapRestaurantOverviewModalSheet.openSheetSize(
+                          context,
+                        ) +
+                    12;
+                return Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    MapLibreMap(
+                      onMapCreated: (mapLibre) async {
+                        await controller.setMapController(
+                          mapLibre,
+                          onPinTap: (posts) async {
+                            primaryFocus?.unfocus();
+                            if (posts.isEmpty || isHandlingPinTap.value) {
+                              return;
+                            }
+                            isHandlingPinTap.value = true;
+                            try {
+                              await ref
+                                  .read(firebaseAnalyticsServiceProvider)
+                                  .logMapPinTap(source: 'map');
+                              final first = posts.first;
+                              void openStoreSheet() {
+                                ref
+                                    .read(mapModalSelectionProvider.notifier)
+                                    .state = MapModalSelection(
+                                  name: first.restaurant,
+                                  lat: first.lat,
+                                  lng: first.lng,
+                                );
+                              }
 
-                          if (!canRequestAds(ref.read(isSubscribeProvider))) {
-                            openStoreSheet();
-                            return;
-                          }
-                          adInterstitial.createAd();
-                          pinTapCount.value++;
-                          if (pinTapCount.value >= mapPinTapAdInterval) {
-                            pinTapCount.value = 0;
-                            await adInterstitial.showAd(
-                              onAdClosed: openStoreSheet,
-                            );
-                          } else {
-                            openStoreSheet();
-                          }
-                        } finally {
-                          isHandlingPinTap.value = false;
+                              if (!canRequestAds(
+                                ref.read(isSubscribeProvider),
+                              )) {
+                                openStoreSheet();
+                                return;
+                              }
+                              adInterstitial.createAd();
+                              pinTapCount.value++;
+                              if (pinTapCount.value >= mapPinTapAdInterval) {
+                                pinTapCount.value = 0;
+                                await adInterstitial.showAd(
+                                  onAdClosed: openStoreSheet,
+                                );
+                              } else {
+                                openStoreSheet();
+                              }
+                            } finally {
+                              isHandlingPinTap.value = false;
+                            }
+                          },
+                          iconSize: _calculateIconSize(context),
+                          initialCenter:
+                              isLocationEnabled ? loc : fallbackLocation,
+                        );
+                        final gps = ref.read(locationProvider).valueOrNull;
+                        if (gps != null &&
+                            (gps.latitude != 0 || gps.longitude != 0)) {
+                          didApplyGpsCamera.value = true;
+                          await controller.applyInitialCameraZoom(gps);
                         }
                       },
-                      iconSize: _calculateIconSize(context),
-                      initialCenter: isLocationEnabled ? loc : fallbackLocation,
-                    );
-                    final gps = ref.read(locationProvider).valueOrNull;
-                    if (gps != null &&
-                        (gps.latitude != 0 || gps.longitude != 0)) {
-                      didApplyGpsCamera.value = true;
-                      await controller.applyInitialCameraZoom(gps);
-                    }
-                  },
-                  onStyleLoadedCallback: controller.onStyleLoaded,
-                  onMapClick: (_, __) => primaryFocus?.unfocus(),
-                  onCameraIdle: () {
-                    controller.scheduleUpdateAfterCameraIdle();
-                    syncCompassVisibility(
-                      ref
-                          .read(mapViewModelProvider)
-                          .mapController
-                          ?.cameraPosition
-                          ?.bearing,
-                    );
-                  },
-                  onCameraMove: (position) {
-                    controller.onCameraMove(position);
-                    syncCompassVisibility(position.bearing);
-                  },
-                  annotationOrder: const [AnnotationType.symbol],
-                  key: const ValueKey('mapWidget'),
-                  myLocationEnabled: isLocationEnabled,
-                  initialCameraPosition: CameraPosition(
-                    target: isLocationEnabled ? loc : fallbackLocation,
-                    zoom: isLocationEnabled
-                        ? MapOverlayConstants.initial
-                        : MapOverlayConstants.localeFallback,
-                  ),
-                  trackCameraPosition: true,
-                  tiltGesturesEnabled: false,
-                  styleString:
-                      _localizedStyleAsset(context, isEarthStyle.value),
-                ),
-                Positioned.fill(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      final sheetHeight = constraints.maxHeight *
-                          MapRestaurantOverviewModalSheet.openSheetSize(
-                            context,
-                          );
-                      return Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            right: 10,
-                            bottom: sheetHeight + 12,
+                      onStyleLoadedCallback: controller.onStyleLoaded,
+                      onMapClick: (_, __) => primaryFocus?.unfocus(),
+                      onCameraIdle: () {
+                        controller.scheduleUpdateAfterCameraIdle();
+                        syncCompassVisibility(
+                          ref
+                              .read(mapViewModelProvider)
+                              .mapController
+                              ?.cameraPosition
+                              ?.bearing,
+                        );
+                      },
+                      onCameraMove: (position) {
+                        controller.onCameraMove(position);
+                        syncCompassVisibility(position.bearing);
+                      },
+                      annotationOrder: const [AnnotationType.symbol],
+                      key: const ValueKey('mapWidget'),
+                      myLocationEnabled: isLocationEnabled,
+                      initialCameraPosition: CameraPosition(
+                        target: isLocationEnabled ? loc : fallbackLocation,
+                        zoom: isLocationEnabled
+                            ? MapOverlayConstants.initial
+                            : MapOverlayConstants.localeFallback,
+                      ),
+                      trackCameraPosition: true,
+                      tiltGesturesEnabled: false,
+                      styleString:
+                          _localizedStyleAsset(context, isEarthStyle.value),
+                    ),
+                    Positioned(
+                      right: 10,
+                      bottom: fabBottom,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _MapSideFab(
+                            heroTag: 'my_posts',
+                            fabBg: myPostsOnly ? fabFg : fabBg,
+                            fabFg: myPostsOnly ? Colors.white : fabFg,
+                            fabBorder: myPostsOnly ? fabFg : fabBorder,
+                            icon: myPostsOnly
+                                ? CupertinoIcons.person_fill
+                                : CupertinoIcons.person,
+                            tooltip: t.map.myPostsOnly,
+                            onPressed: () async {
+                              HapticFeedbackHelper.selection();
+                              final next = !myPostsOnly;
+                              ref.read(mapMyPostsOnlyProvider.notifier).state =
+                                  next;
+                              ref
+                                  .read(firebaseAnalyticsServiceProvider)
+                                  .logEventUnawaited(
+                                name: AnalyticsEvent.mapMyPostsToggle,
+                                parameters: {
+                                  AnalyticsParam.enabled:
+                                      next ? 'true' : 'false',
+                                },
+                              );
+                              await controller.refreshPinsForCategoryFilter();
+                            },
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              _MapSideFab(
-                                heroTag: 'my_posts',
-                                fabBg: myPostsOnly ? fabFg : fabBg,
-                                fabFg: myPostsOnly ? Colors.white : fabFg,
-                                fabBorder: myPostsOnly ? fabFg : fabBorder,
-                                icon: myPostsOnly
-                                    ? CupertinoIcons.person_fill
-                                    : CupertinoIcons.person,
-                                tooltip: t.map.myPostsOnly,
-                                onPressed: () async {
-                                  HapticFeedbackHelper.selection();
-                                  final next = !myPostsOnly;
-                                  ref
-                                      .read(mapMyPostsOnlyProvider.notifier)
-                                      .state = next;
-                                  ref
-                                      .read(firebaseAnalyticsServiceProvider)
-                                      .logEventUnawaited(
-                                    name: AnalyticsEvent.mapMyPostsToggle,
-                                    parameters: {
-                                      AnalyticsParam.enabled:
-                                          next ? 'true' : 'false',
-                                    },
-                                  );
-                                  await controller
-                                      .refreshPinsForCategoryFilter();
+                          if (isSubscribed) ...[
+                            const Gap(8),
+                            _MapSideFab(
+                              heroTag: 'style_toggle',
+                              fabBg: fabBg,
+                              fabFg: fabFg,
+                              fabBorder: fabBorder,
+                              icon: isEarthStyle.value
+                                  ? CupertinoIcons.globe
+                                  : CupertinoIcons.map,
+                              onPressed: () {
+                                isEarthStyle.value = !isEarthStyle.value;
+                                controller.handleStyleChange();
+                              },
+                            ),
+                          ],
+                          if (isLocationEnabled) ...[
+                            const Gap(8),
+                            _MapSideFab(
+                              heroTag: 'map_current_location',
+                              fabBg: fabBg,
+                              fabFg: fabFg,
+                              fabBorder: fabBorder,
+                              icon: CupertinoIcons.location,
+                              onPressed: controller.moveToCurrentLocation,
+                            ),
+                          ],
+                          if (isSubscribed)
+                            _MapSideFabReveal(
+                              visible: isMapRotated.value,
+                              child: _MapSideFab(
+                                heroTag: 'compass',
+                                fabBg: fabBg,
+                                fabFg: fabFg,
+                                fabBorder: fabBorder,
+                                icon: CupertinoIcons.compass,
+                                iconSize: 24,
+                                onPressed: () {
+                                  isMapRotated.value = false;
+                                  unawaited(controller.resetBearing());
                                 },
                               ),
-                              if (isSubscribed) ...[
-                                const Gap(8),
-                                _MapSideFab(
-                                  heroTag: 'style_toggle',
-                                  fabBg: fabBg,
-                                  fabFg: fabFg,
-                                  fabBorder: fabBorder,
-                                  icon: isEarthStyle.value
-                                      ? CupertinoIcons.globe
-                                      : CupertinoIcons.map,
-                                  onPressed: () {
-                                    isEarthStyle.value = !isEarthStyle.value;
-                                    controller.handleStyleChange();
-                                  },
-                                ),
-                              ],
-                              if (isLocationEnabled) ...[
-                                const Gap(8),
-                                _MapSideFab(
-                                  heroTag: 'map_current_location',
-                                  fabBg: fabBg,
-                                  fabFg: fabFg,
-                                  fabBorder: fabBorder,
-                                  icon: CupertinoIcons.location,
-                                  onPressed: controller.moveToCurrentLocation,
-                                ),
-                              ],
-                              if (isSubscribed)
-                                _MapSideFabReveal(
-                                  visible: isMapRotated.value,
-                                  child: _MapSideFab(
-                                    heroTag: 'compass',
-                                    fabBg: fabBg,
-                                    fabFg: fabFg,
-                                    fabBorder: fabBorder,
-                                    icon: CupertinoIcons.compass,
-                                    iconSize: 24,
-                                    onPressed: () {
-                                      isMapRotated.value = false;
-                                      unawaited(controller.resetBearing());
-                                    },
-                                  ),
-                                ),
-                            ],
+                            ),
+                        ],
+                      ),
+                    ),
+                    const MapRestaurantDetailSheet(),
+                    Positioned(
+                      top: _calculateTopPosition(context),
+                      left: 0,
+                      right: 0,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: AppMapPlaceSearchTextField(
+                              mapController: controller,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                const MapRestaurantDetailSheet(),
-                Positioned(
-                  top: _calculateTopPosition(context),
-                  left: 0,
-                  right: 0,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: AppMapPlaceSearchTextField(
-                          mapController: controller,
-                        ),
+                          const Gap(8),
+                          MapCategoryChipBar(
+                            onCategoryChanged: () =>
+                                controller.refreshPinsForCategoryFilter(),
+                          ),
+                        ],
                       ),
-                      const Gap(8),
-                      MapCategoryChipBar(
-                        onCategoryChanged: () =>
-                            controller.refreshPinsForCategoryFilter(),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                    ),
+                  ],
+                );
+              },
             ),
           AppProcessLoading(
             loading: state.isLoading,
-            status: state.hasError
-                ? t.map.loadingError
-                : t.map.loadingRestaurant,
+            status:
+                state.hasError ? t.map.loadingError : t.map.loadingRestaurant,
           ),
           AppProcessLoading(
             loading: loading,
