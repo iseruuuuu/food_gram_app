@@ -6,6 +6,7 @@ import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
+import 'package:food_gram_app/core/utils/geo_distance.dart';
 import 'package:food_gram_app/core/utils/provider/location.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_heatmap_layer.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_pin_data.dart';
@@ -132,19 +133,30 @@ class MapViewModel extends _$MapViewModel {
     _isHandlingPinTap = true;
     state = state.copyWith(isLoading: true);
     try {
+      // タップ座標はピン画像の端になり、投稿座標と1m以上ずれる。
+      // 画面上で一番近いピンの座標で店舗を開く。
+      final snapped = _postUnderTap(latLng);
+      final targetLat = snapped?.lat ?? latLng.latitude;
+      final targetLng = snapped?.lng ?? latLng.longitude;
       final result =
           await ref.read(mapPostRepositoryProvider.notifier).getRestaurantPosts(
-                lat: latLng.latitude,
-                lng: latLng.longitude,
+                lat: targetLat,
+                lng: targetLng,
               );
       final handler = _onPinTapHandler;
       if (handler != null) {
-        result.whenOrNull(success: handler);
+        final fetched = result.whenOrNull(success: (posts) => posts);
+        final posts = (fetched != null && fetched.isNotEmpty)
+            ? fetched
+            : _postsAt(snapped);
+        if (posts.isNotEmpty) {
+          handler(posts);
+        }
       }
       // ズームは変えず、ピンが下部カードに隠れない位置へ平行移動する
       await animateToLatLng(
-        lat: latLng.latitude,
-        lng: latLng.longitude,
+        lat: targetLat,
+        lng: targetLng,
         keepZoom: true,
         focusAboveSheet: true,
       );
@@ -153,6 +165,56 @@ class MapViewModel extends _$MapViewModel {
       _isHandlingPinTap = false;
       state = state.copyWith(isLoading: false);
     }
+  }
+
+  /// タップ地点から、ピン画像の範囲内で一番近い投稿
+  Posts? _postUnderTap(LatLng tap) {
+    final posts = _cachedPosts;
+    if (posts == null || posts.isEmpty) {
+      return null;
+    }
+    final zoom = state.mapController?.cameraPosition?.zoom ??
+        MapOverlayConstants.initial;
+    final metersPerPixel = 156543.03392 *
+        math.cos(tap.latitude * math.pi / 180) /
+        math.pow(2, zoom);
+    const hitRadiusPx = 56.0;
+    final maxMeters = metersPerPixel * hitRadiusPx;
+    Posts? nearest;
+    var nearestMeters = maxMeters;
+    for (final post in posts) {
+      final meters = geoMeters(
+        lat1: tap.latitude,
+        lon1: tap.longitude,
+        lat2: post.lat,
+        lon2: post.lng,
+      );
+      if (meters <= nearestMeters) {
+        nearestMeters = meters;
+        nearest = post;
+      }
+    }
+    return nearest;
+  }
+
+  List<Posts> _postsAt(Posts? anchor) {
+    if (anchor == null) {
+      return const [];
+    }
+    final all =
+        ref.read(filteredMapPostsProvider).valueOrNull ?? const <Posts>[];
+    final others = all.where(
+      (post) =>
+          post.id != anchor.id &&
+          geoMeters(
+                lat1: anchor.lat,
+                lon1: anchor.lng,
+                lat2: post.lat,
+                lon2: post.lng,
+              ) <
+              2,
+    );
+    return [anchor, ...others];
   }
 
   Future<void> setPin() {

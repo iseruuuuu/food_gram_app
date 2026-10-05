@@ -26,7 +26,7 @@ class MapOverlayConstants {
 
   // カメラズーム
   /// 初期表示（現在地あり）
-  static const double initial = 14.8;
+  static const double initial = 13.5;
 
   /// 現在地ボタン
   static const double currentLocation = 15.2;

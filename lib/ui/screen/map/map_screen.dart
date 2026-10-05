@@ -10,7 +10,6 @@ import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
-import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
@@ -72,6 +71,7 @@ class MapScreen extends HookConsumerWidget {
         isMapRotated.value = rotated;
       }
     }
+
     ref.listen<MapModalSelection?>(mapModalSelectionProvider, (_, next) {
       if (next == null || next.placeSearchRestaurant == null) {
         unawaited(controller.clearSearchResultPin());
@@ -90,6 +90,13 @@ class MapScreen extends HookConsumerWidget {
       }
       didApplyGpsCamera.value = true;
       unawaited(controller.applyInitialCameraZoom(gps));
+    });
+    ref.listen(isSubscribeProvider, (previous, next) {
+      if ((next.valueOrNull ?? false) || !isEarthStyle.value) {
+        return;
+      }
+      isEarthStyle.value = false;
+      controller.handleStyleChange();
     });
     ref.listen(filteredMapPostsProvider, (previous, next) {
       if (!next.hasValue || previous?.valueOrNull == next.valueOrNull) {
@@ -111,144 +118,137 @@ class MapScreen extends HookConsumerWidget {
           else if (showMapLoading)
             const AppTabLoading.map()
           else
-            Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                MapLibreMap(
-                  onMapCreated: (mapLibre) async {
-                    await controller.setMapController(
-                      mapLibre,
-                      onPinTap: (posts) async {
-                        primaryFocus?.unfocus();
-                        if (posts.isEmpty || isHandlingPinTap.value) {
-                          return;
-                        }
-                        isHandlingPinTap.value = true;
-                        try {
-                          await ref
-                              .read(firebaseAnalyticsServiceProvider)
-                              .logMapPinTap(source: 'map');
-                          final first = posts.first;
-                          void openStoreSheet() {
-                            ref.read(mapModalSelectionProvider.notifier).state =
-                                MapModalSelection(
-                              name: first.restaurant,
-                              lat: first.lat,
-                              lng: first.lng,
-                            );
-                          }
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final fabBottom = constraints.maxHeight *
+                        MapRestaurantOverviewModalSheet.openSheetSize(
+                          context,
+                        ) +
+                    12;
+                return Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    MapLibreMap(
+                      onMapCreated: (mapLibre) async {
+                        await controller.setMapController(
+                          mapLibre,
+                          onPinTap: (posts) async {
+                            primaryFocus?.unfocus();
+                            if (posts.isEmpty || isHandlingPinTap.value) {
+                              return;
+                            }
+                            isHandlingPinTap.value = true;
+                            try {
+                              await ref
+                                  .read(firebaseAnalyticsServiceProvider)
+                                  .logMapPinTap(source: 'map');
+                              final first = posts.first;
+                              void openStoreSheet() {
+                                ref
+                                    .read(mapModalSelectionProvider.notifier)
+                                    .state = MapModalSelection(
+                                  name: first.restaurant,
+                                  lat: first.lat,
+                                  lng: first.lng,
+                                );
+                              }
 
-                          if (!canRequestAds(ref.read(isSubscribeProvider))) {
-                            openStoreSheet();
-                            return;
-                          }
-                          adInterstitial.createAd();
-                          pinTapCount.value++;
-                          if (pinTapCount.value >= mapPinTapAdInterval) {
-                            pinTapCount.value = 0;
-                            await adInterstitial.showAd(
-                              onAdClosed: openStoreSheet,
-                            );
-                          } else {
-                            openStoreSheet();
-                          }
-                        } finally {
-                          isHandlingPinTap.value = false;
+                              if (!canRequestAds(
+                                ref.read(isSubscribeProvider),
+                              )) {
+                                openStoreSheet();
+                                return;
+                              }
+                              adInterstitial.createAd();
+                              pinTapCount.value++;
+                              if (pinTapCount.value >= mapPinTapAdInterval) {
+                                pinTapCount.value = 0;
+                                await adInterstitial.showAd(
+                                  onAdClosed: openStoreSheet,
+                                );
+                              } else {
+                                openStoreSheet();
+                              }
+                            } finally {
+                              isHandlingPinTap.value = false;
+                            }
+                          },
+                          iconSize: _calculateIconSize(context),
+                          initialCenter:
+                              isLocationEnabled ? loc : fallbackLocation,
+                        );
+                        final gps = ref.read(locationProvider).valueOrNull;
+                        if (gps != null &&
+                            (gps.latitude != 0 || gps.longitude != 0)) {
+                          didApplyGpsCamera.value = true;
+                          await controller.applyInitialCameraZoom(gps);
                         }
                       },
-                      iconSize: _calculateIconSize(context),
-                      initialCenter: isLocationEnabled ? loc : fallbackLocation,
-                    );
-                    final gps = ref.read(locationProvider).valueOrNull;
-                    if (gps != null &&
-                        (gps.latitude != 0 || gps.longitude != 0)) {
-                      didApplyGpsCamera.value = true;
-                      await controller.applyInitialCameraZoom(gps);
-                    }
-                  },
-                  onStyleLoadedCallback: controller.onStyleLoaded,
-                  onMapClick: (_, __) => primaryFocus?.unfocus(),
-                  onCameraIdle: () {
-                    controller.scheduleUpdateAfterCameraIdle();
-                    syncCompassVisibility(
-                      ref
-                          .read(mapViewModelProvider)
-                          .mapController
-                          ?.cameraPosition
-                          ?.bearing,
-                    );
-                  },
-                  onCameraMove: (position) {
-                    controller.onCameraMove(position);
-                    syncCompassVisibility(position.bearing);
-                  },
-                  annotationOrder: const [AnnotationType.symbol],
-                  key: const ValueKey('mapWidget'),
-                  myLocationEnabled: isLocationEnabled,
-                  initialCameraPosition: CameraPosition(
-                    target: isLocationEnabled ? loc : fallbackLocation,
-                    zoom: isLocationEnabled
-                        ? MapOverlayConstants.initial
-                        : MapOverlayConstants.localeFallback,
-                  ),
-                  trackCameraPosition: true,
-                  tiltGesturesEnabled: false,
-                  styleString:
-                      _localizedStyleAsset(context, isEarthStyle.value),
-                ),
-                const MapRestaurantDetailSheet(),
-                Positioned(
-                  top: _calculateTopPosition(context),
-                  left: 0,
-                  right: 0,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: AppMapPlaceSearchTextField(
-                          mapController: controller,
-                        ),
+                      onStyleLoadedCallback: controller.onStyleLoaded,
+                      onMapClick: (_, __) => primaryFocus?.unfocus(),
+                      onCameraIdle: () {
+                        controller.scheduleUpdateAfterCameraIdle();
+                        syncCompassVisibility(
+                          ref
+                              .read(mapViewModelProvider)
+                              .mapController
+                              ?.cameraPosition
+                              ?.bearing,
+                        );
+                      },
+                      onCameraMove: (position) {
+                        controller.onCameraMove(position);
+                        syncCompassVisibility(position.bearing);
+                      },
+                      annotationOrder: const [AnnotationType.symbol],
+                      key: const ValueKey('mapWidget'),
+                      myLocationEnabled: isLocationEnabled,
+                      initialCameraPosition: CameraPosition(
+                        target: isLocationEnabled ? loc : fallbackLocation,
+                        zoom: isLocationEnabled
+                            ? MapOverlayConstants.initial
+                            : MapOverlayConstants.localeFallback,
                       ),
-                      const Gap(8),
-                      MapCategoryChipBar(
-                        onCategoryChanged: () =>
-                            controller.refreshPinsForCategoryFilter(),
-                      ),
-                      const Gap(8),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            _MapSideFab(
-                              heroTag: 'my_posts',
-                              fabBg: myPostsOnly ? fabFg : fabBg,
-                              fabFg: myPostsOnly ? Colors.white : fabFg,
-                              fabBorder: myPostsOnly ? fabFg : fabBorder,
-                              icon: myPostsOnly
-                                  ? CupertinoIcons.person_fill
-                                  : CupertinoIcons.person,
-                              tooltip: t.map.myPostsOnly,
-                              onPressed: () async {
-                                HapticFeedbackHelper.selection();
-                                final next = !myPostsOnly;
-                                ref
-                                    .read(mapMyPostsOnlyProvider.notifier)
-                                    .state = next;
-                                ref
-                                    .read(firebaseAnalyticsServiceProvider)
-                                    .logEventUnawaited(
-                                  name: AnalyticsEvent.mapMyPostsToggle,
-                                  parameters: {
-                                    AnalyticsParam.enabled:
-                                        next ? 'true' : 'false',
-                                  },
-                                );
-                                await controller.refreshPinsForCategoryFilter();
-                              },
-                            ),
+                      trackCameraPosition: true,
+                      tiltGesturesEnabled: false,
+                      styleString:
+                          _localizedStyleAsset(context, isEarthStyle.value),
+                    ),
+                    const MapRestaurantDetailSheet(),
+                    Positioned(
+                      right: 10,
+                      bottom: fabBottom,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _MapSideFab(
+                            heroTag: 'my_posts',
+                            fabBg: myPostsOnly ? fabFg : fabBg,
+                            fabFg: myPostsOnly ? Colors.white : fabFg,
+                            fabBorder: myPostsOnly ? fabFg : fabBorder,
+                            icon: myPostsOnly
+                                ? CupertinoIcons.person_fill
+                                : CupertinoIcons.person,
+                            tooltip: t.map.myPostsOnly,
+                            onPressed: () async {
+                              HapticFeedbackHelper.selection();
+                              final next = !myPostsOnly;
+                              ref.read(mapMyPostsOnlyProvider.notifier).state =
+                                  next;
+                              ref
+                                  .read(firebaseAnalyticsServiceProvider)
+                                  .logEventUnawaited(
+                                name: AnalyticsEvent.mapMyPostsToggle,
+                                parameters: {
+                                  AnalyticsParam.enabled:
+                                      next ? 'true' : 'false',
+                                },
+                              );
+                              await controller.refreshPinsForCategoryFilter();
+                            },
+                          ),
+                          if (isSubscribed) ...[
                             const Gap(8),
                             _MapSideFab(
                               heroTag: 'style_toggle',
@@ -258,34 +258,24 @@ class MapScreen extends HookConsumerWidget {
                               icon: isEarthStyle.value
                                   ? CupertinoIcons.globe
                                   : CupertinoIcons.map,
-                              onPressed: () async {
-                                if (!isSubscribed) {
-                                  try {
-                                    await ref
-                                        .read(
-                                          revenueCatServiceProvider.notifier,
-                                        )
-                                        .presentPaywallGuarded();
-                                  } on Exception catch (_) {
-                                    return;
-                                  }
-                                } else {
-                                  isEarthStyle.value = !isEarthStyle.value;
-                                  controller.handleStyleChange();
-                                }
+                              onPressed: () {
+                                isEarthStyle.value = !isEarthStyle.value;
+                                controller.handleStyleChange();
                               },
                             ),
-                            if (isLocationEnabled) ...[
-                              const Gap(8),
-                              _MapSideFab(
-                                heroTag: 'map_current_location',
-                                fabBg: fabBg,
-                                fabFg: fabFg,
-                                fabBorder: fabBorder,
-                                icon: CupertinoIcons.location,
-                                onPressed: controller.moveToCurrentLocation,
-                              ),
-                            ],
+                          ],
+                          if (isLocationEnabled) ...[
+                            const Gap(8),
+                            _MapSideFab(
+                              heroTag: 'map_current_location',
+                              fabBg: fabBg,
+                              fabFg: fabFg,
+                              fabBorder: fabBorder,
+                              icon: CupertinoIcons.location,
+                              onPressed: controller.moveToCurrentLocation,
+                            ),
+                          ],
+                          if (isSubscribed)
                             _MapSideFabReveal(
                               visible: isMapRotated.value,
                               child: _MapSideFab(
@@ -301,19 +291,38 @@ class MapScreen extends HookConsumerWidget {
                                 },
                               ),
                             ),
-                          ],
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-              ],
+                    ),
+                    Positioned(
+                      top: _calculateTopPosition(context),
+                      left: 0,
+                      right: 0,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: AppMapPlaceSearchTextField(
+                              mapController: controller,
+                            ),
+                          ),
+                          const Gap(8),
+                          MapCategoryChipBar(
+                            onCategoryChanged: () =>
+                                controller.refreshPinsForCategoryFilter(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           AppProcessLoading(
             loading: state.isLoading,
-            status: state.hasError
-                ? t.map.loadingError
-                : t.map.loadingRestaurant,
+            status:
+                state.hasError ? t.map.loadingError : t.map.loadingRestaurant,
           ),
           AppProcessLoading(
             loading: loading,
