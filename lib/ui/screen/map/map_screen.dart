@@ -202,6 +202,102 @@ class MapScreen extends HookConsumerWidget {
                   styleString:
                       _localizedStyleAsset(context, isEarthStyle.value),
                 ),
+                Positioned.fill(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final sheetHeight = constraints.maxHeight *
+                          MapRestaurantOverviewModalSheet.openSheetSize(
+                            context,
+                          );
+                      return Align(
+                        alignment: Alignment.bottomRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            right: 10,
+                            bottom: sheetHeight + 12,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              _MapSideFab(
+                                heroTag: 'my_posts',
+                                fabBg: myPostsOnly ? fabFg : fabBg,
+                                fabFg: myPostsOnly ? Colors.white : fabFg,
+                                fabBorder: myPostsOnly ? fabFg : fabBorder,
+                                icon: myPostsOnly
+                                    ? CupertinoIcons.person_fill
+                                    : CupertinoIcons.person,
+                                tooltip: t.map.myPostsOnly,
+                                onPressed: () async {
+                                  HapticFeedbackHelper.selection();
+                                  final next = !myPostsOnly;
+                                  ref
+                                      .read(mapMyPostsOnlyProvider.notifier)
+                                      .state = next;
+                                  ref
+                                      .read(firebaseAnalyticsServiceProvider)
+                                      .logEventUnawaited(
+                                    name: AnalyticsEvent.mapMyPostsToggle,
+                                    parameters: {
+                                      AnalyticsParam.enabled:
+                                          next ? 'true' : 'false',
+                                    },
+                                  );
+                                  await controller
+                                      .refreshPinsForCategoryFilter();
+                                },
+                              ),
+                              if (isSubscribed) ...[
+                                const Gap(8),
+                                _MapSideFab(
+                                  heroTag: 'style_toggle',
+                                  fabBg: fabBg,
+                                  fabFg: fabFg,
+                                  fabBorder: fabBorder,
+                                  icon: isEarthStyle.value
+                                      ? CupertinoIcons.globe
+                                      : CupertinoIcons.map,
+                                  onPressed: () {
+                                    isEarthStyle.value = !isEarthStyle.value;
+                                    controller.handleStyleChange();
+                                  },
+                                ),
+                              ],
+                              if (isLocationEnabled) ...[
+                                const Gap(8),
+                                _MapSideFab(
+                                  heroTag: 'map_current_location',
+                                  fabBg: fabBg,
+                                  fabFg: fabFg,
+                                  fabBorder: fabBorder,
+                                  icon: CupertinoIcons.location,
+                                  onPressed: controller.moveToCurrentLocation,
+                                ),
+                              ],
+                              if (isSubscribed)
+                                _MapSideFabReveal(
+                                  visible: isMapRotated.value,
+                                  child: _MapSideFab(
+                                    heroTag: 'compass',
+                                    fabBg: fabBg,
+                                    fabFg: fabFg,
+                                    fabBorder: fabBorder,
+                                    icon: CupertinoIcons.compass,
+                                    iconSize: 24,
+                                    onPressed: () {
+                                      isMapRotated.value = false;
+                                      unawaited(controller.resetBearing());
+                                    },
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
                 const MapRestaurantDetailSheet(),
                 Positioned(
                   top: _calculateTopPosition(context),
@@ -220,86 +316,6 @@ class MapScreen extends HookConsumerWidget {
                       MapCategoryChipBar(
                         onCategoryChanged: () =>
                             controller.refreshPinsForCategoryFilter(),
-                      ),
-                      const Gap(8),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            _MapSideFab(
-                              heroTag: 'my_posts',
-                              fabBg: myPostsOnly ? fabFg : fabBg,
-                              fabFg: myPostsOnly ? Colors.white : fabFg,
-                              fabBorder: myPostsOnly ? fabFg : fabBorder,
-                              icon: myPostsOnly
-                                  ? CupertinoIcons.person_fill
-                                  : CupertinoIcons.person,
-                              tooltip: t.map.myPostsOnly,
-                              onPressed: () async {
-                                HapticFeedbackHelper.selection();
-                                final next = !myPostsOnly;
-                                ref
-                                    .read(mapMyPostsOnlyProvider.notifier)
-                                    .state = next;
-                                ref
-                                    .read(firebaseAnalyticsServiceProvider)
-                                    .logEventUnawaited(
-                                  name: AnalyticsEvent.mapMyPostsToggle,
-                                  parameters: {
-                                    AnalyticsParam.enabled:
-                                        next ? 'true' : 'false',
-                                  },
-                                );
-                                await controller.refreshPinsForCategoryFilter();
-                              },
-                            ),
-                            if (isSubscribed) ...[
-                              const Gap(8),
-                              _MapSideFab(
-                                heroTag: 'style_toggle',
-                                fabBg: fabBg,
-                                fabFg: fabFg,
-                                fabBorder: fabBorder,
-                                icon: isEarthStyle.value
-                                    ? CupertinoIcons.globe
-                                    : CupertinoIcons.map,
-                                onPressed: () {
-                                  isEarthStyle.value = !isEarthStyle.value;
-                                  controller.handleStyleChange();
-                                },
-                              ),
-                            ],
-                            if (isLocationEnabled) ...[
-                              const Gap(8),
-                              _MapSideFab(
-                                heroTag: 'map_current_location',
-                                fabBg: fabBg,
-                                fabFg: fabFg,
-                                fabBorder: fabBorder,
-                                icon: CupertinoIcons.location,
-                                onPressed: controller.moveToCurrentLocation,
-                              ),
-                            ],
-                            if (isSubscribed)
-                              _MapSideFabReveal(
-                                visible: isMapRotated.value,
-                                child: _MapSideFab(
-                                  heroTag: 'compass',
-                                  fabBg: fabBg,
-                                  fabFg: fabFg,
-                                  fabBorder: fabBorder,
-                                  icon: CupertinoIcons.compass,
-                                  iconSize: 24,
-                                  onPressed: () {
-                                    isMapRotated.value = false;
-                                    unawaited(controller.resetBearing());
-                                  },
-                                ),
-                              ),
-                          ],
-                        ),
                       ),
                     ],
                   ),
