@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/local/repository/save_album_local_repository.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -15,19 +14,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 part 'stored_post_view_model.g.dart';
 
 @riverpod
-Future<List<Posts>> storedPostList(
-  Ref ref,
-  String? albumId,
-) async {
+Future<List<Posts>> storedPostList(Ref ref) async {
   final logger = Logger();
   final preference = Preference();
-  final List<String> storedPostIds;
-  if (albumId != null && albumId.isNotEmpty) {
-    storedPostIds =
-        await SaveAlbumLocalRepository().getAlbumPostIdsOrdered(albumId);
-  } else {
-    storedPostIds = await preference.getStringList(PreferenceKey.storeList);
-  }
+  final storedPostIds =
+      await preference.getStringList(PreferenceKey.storeList);
   if (storedPostIds.isEmpty) {
     logger.d('no local ids food_gram.stored_posts');
     return [];

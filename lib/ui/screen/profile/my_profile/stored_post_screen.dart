@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
-import 'package:food_gram_app/core/local/providers/save_album_notifier.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
-import 'package:food_gram_app/ui/component/modal_sheet/save_album_picker_sheet.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/stored_post_view_model.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -47,7 +44,7 @@ class StoredPostScreen extends StatelessWidget {
   }
 }
 
-/// アルバムチップ + グリッド。IndexedStack でも状態を保てるよう同一ファイル内で共有する。
+/// 保存した投稿の一覧。IndexedStack でも状態を保てるよう同一ファイル内で共有する。
 class _StoredPostContent extends HookConsumerWidget {
   const _StoredPostContent({
     this.logOpenEvent = false,
@@ -57,14 +54,11 @@ class _StoredPostContent extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedAlbumId = useState<String?>(null);
-    final albumsAsync = ref.watch(saveAlbumNotifierProvider);
-    final listAsync = ref.watch(storedPostListProvider(selectedAlbumId.value));
+    final listAsync = ref.watch(storedPostListProvider);
     void reloadPosts() {
-      ref.invalidate(storedPostListProvider(selectedAlbumId.value));
+      ref.invalidate(storedPostListProvider);
     }
 
-    final t = Translations.of(context);
     final scrollController = useScrollController();
     useEffect(
       () {
@@ -78,95 +72,33 @@ class _StoredPostContent extends HookConsumerWidget {
       const [],
     );
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        SizedBox(
-          height: 48,
-          child: albumsAsync.when(
-            data: (albums) {
-              return ListView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 6, top: 8),
-                    child: FilterChip(
-                      label: Text(t.stored.albumAll),
-                      selected: selectedAlbumId.value == null,
-                      onSelected: (_) {
-                        selectedAlbumId.value = null;
-                      },
-                    ),
-                  ),
-                  for (final a in albums)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 6, top: 8),
-                      child: FilterChip(
-                        label: Text(
-                          a.name,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        selected: selectedAlbumId.value == a.id,
-                        onSelected: (_) {
-                          selectedAlbumId.value = a.id;
-                        },
-                      ),
-                    ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4, top: 4),
-                    child: IconButton(
-                      tooltip: t.stored.albumNew,
-                      onPressed: () async {
-                        await showCreateAlbumDialog(context: context);
-                      },
-                      icon: const Icon(Icons.add_circle_outline),
-                    ),
-                  ),
-                ],
-              );
-            },
-            loading: () => const SizedBox.shrink(),
-            error: (_, __) => const SizedBox.shrink(),
-          ),
-        ),
-        const Gap(12),
-        Expanded(
-          child: listAsync.when(
-            loading: () => const AppListViewSkeleton(),
-            data: (posts) {
-              if (posts.isEmpty) {
-                return AppFavoritePostEmpty(
-                  onBrowseTap: () {
-                    ref
-                        .read(tabViewModelProvider().notifier)
-                        .onTap(TabIndex.home);
-                    if (context.mounted) {
-                      context.pop();
-                    }
-                  },
-                );
+    return listAsync.when(
+      loading: () => const AppListViewSkeleton(),
+      data: (posts) {
+        if (posts.isEmpty) {
+          return AppFavoritePostEmpty(
+            onBrowseTap: () {
+              ref.read(tabViewModelProvider().notifier).onTap(TabIndex.home);
+              if (context.mounted) {
+                context.pop();
               }
-              return CustomScrollView(
-                key: ValueKey<String>(
-                  'stored_grid_${selectedAlbumId.value ?? 'all'}',
-                ),
-                controller: scrollController,
-                slivers: [
-                  AppListView(
-                    posts: posts,
-                    routerPath: RouterPath.storedPostDetail,
-                    type: AppListViewType.stored,
-                    controller: scrollController,
-                    refresh: reloadPosts,
-                  ),
-                ],
-              );
             },
-            error: (_, __) => AppTabError.myPage(onRetry: reloadPosts),
-          ),
-        ),
-      ],
+          );
+        }
+        return CustomScrollView(
+          controller: scrollController,
+          slivers: [
+            AppListView(
+              posts: posts,
+              routerPath: RouterPath.storedPostDetail,
+              type: AppListViewType.stored,
+              controller: scrollController,
+              refresh: reloadPosts,
+            ),
+          ],
+        );
+      },
+      error: (_, __) => AppTabError.myPage(onRetry: reloadPosts),
     );
   }
 }

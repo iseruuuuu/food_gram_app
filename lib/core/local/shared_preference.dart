@@ -12,7 +12,6 @@ enum PreferenceKey {
   isAccept,
   heartList,
   storeList,
-  saveAlbumIds,
   lastReviewRequestDate,
   firstLaunchDate,
   postDraft,

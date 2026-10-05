@@ -4,14 +4,29 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/memory_album.dart';
+import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
-import 'package:food_gram_app/ui/component/modal_sheet/save_album_picker_sheet.dart';
 import 'package:food_gram_app/ui/screen/memory_album/memory_album_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+Future<void> _openPremiumPaywall(BuildContext context) async {
+  if (!context.mounted) {
+    return;
+  }
+  final container = ProviderScope.containerOf(context);
+  try {
+    await container.read(revenueCatServiceProvider.future);
+    await container
+        .read(revenueCatServiceProvider.notifier)
+        .presentPaywallGuarded();
+  } on Object catch (e, st) {
+    debugPrint('openPremiumPaywall: $e\n$st');
+  }
+}
 
 Future<void> showMemoryAlbumLimitDialog(
   BuildContext context, {
@@ -37,7 +52,7 @@ Future<void> showMemoryAlbumLimitDialog(
               Navigator.of(ctx).pop();
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 if (context.mounted) {
-                  unawaited(openSaveAlbumPaywall(context));
+                  unawaited(_openPremiumPaywall(context));
                 }
               });
             },
