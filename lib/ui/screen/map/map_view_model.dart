@@ -203,19 +203,18 @@ class MapViewModel extends _$MapViewModel {
     }
     final all =
         ref.read(filteredMapPostsProvider).valueOrNull ?? const <Posts>[];
-    final near = all
-        .where(
-          (post) =>
-              geoMeters(
+    final others = all.where(
+      (post) =>
+          post.id != anchor.id &&
+          geoMeters(
                 lat1: anchor.lat,
                 lon1: anchor.lng,
                 lat2: post.lat,
                 lon2: post.lng,
               ) <
               2,
-        )
-        .toList();
-    return near.isEmpty ? [anchor] : near;
+    );
+    return [anchor, ...others];
   }
 
   Future<void> setPin() {

@@ -214,6 +214,7 @@ class MapScreen extends HookConsumerWidget {
                       styleString:
                           _localizedStyleAsset(context, isEarthStyle.value),
                     ),
+                    const MapRestaurantDetailSheet(),
                     Positioned(
                       right: 10,
                       bottom: fabBottom,
@@ -293,7 +294,6 @@ class MapScreen extends HookConsumerWidget {
                         ],
                       ),
                     ),
-                    const MapRestaurantDetailSheet(),
                     Positioned(
                       top: _calculateTopPosition(context),
                       left: 0,
