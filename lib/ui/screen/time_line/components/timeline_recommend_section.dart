@@ -15,7 +15,6 @@ import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_translatable_text.dart';
-import 'package:food_gram_app/ui/component/modal_sheet/save_album_picker_sheet.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
 import 'package:food_gram_app/ui/screen/time_line/components/timeline_post_navigation.dart';
 import 'package:gap/gap.dart';
@@ -411,21 +410,10 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
                               if (!context.mounted) {
                                 return;
                               }
-                              SnackBarHelper().openSavedPostWithAlbumAction(
+                              SnackBarHelper().openSuccessSnackBar(
                                 context,
-                                title: t.stored.postSaved,
-                                subtitle: t.stored.postSavedMessage,
-                                addToAlbumLabel: t.stored.albumAddTo,
-                                onAddToAlbum: () {
-                                  if (!context.mounted) {
-                                    return;
-                                  }
-                                  showSaveAlbumPickerSheet(
-                                    context: context,
-                                    ref: ref,
-                                    postId: post.id,
-                                  );
-                                },
+                                t.stored.postSaved,
+                                t.stored.postSavedMessage,
                               );
                             },
                           );

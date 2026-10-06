@@ -37,7 +37,7 @@ class WantToGoListScreen extends HookConsumerWidget {
     final selectedTab = useState(_WantToGoHubTab.places);
     final hasLoggedSavedOpen = useRef(false);
     final listAsync = ref.watch(wantToGoNotifierProvider);
-    final savedAsync = ref.watch(storedPostListProvider(null));
+    final savedAsync = ref.watch(storedPostListProvider);
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final sheetBg =
@@ -373,7 +373,7 @@ class _RelatedSavedPostStrip extends ConsumerWidget {
                       if (!context.mounted) {
                         return;
                       }
-                      ref.invalidate(storedPostListProvider(null));
+                      ref.invalidate(storedPostListProvider);
                     },
                   );
                 },

@@ -25,7 +25,6 @@ import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/app_translatable_text.dart';
 import 'package:food_gram_app/ui/component/dialog/app_share_dialog.dart';
 import 'package:food_gram_app/ui/component/food_tag_icon.dart';
-import 'package:food_gram_app/ui/component/modal_sheet/save_album_picker_sheet.dart';
 import 'package:food_gram_app/ui/screen/post_detail/post_detail_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -360,21 +359,10 @@ class PostDetailListItem extends HookConsumerWidget {
                                 return;
                               }
                               final t = Translations.of(context);
-                              SnackBarHelper().openSavedPostWithAlbumAction(
+                              SnackBarHelper().openSuccessSnackBar(
                                 context,
-                                title: t.stored.postSaved,
-                                subtitle: t.stored.postSavedMessage,
-                                addToAlbumLabel: t.stored.albumAddTo,
-                                onAddToAlbum: () {
-                                  if (!context.mounted) {
-                                    return;
-                                  }
-                                  showSaveAlbumPickerSheet(
-                                    context: context,
-                                    ref: ref,
-                                    postId: posts.id,
-                                  );
-                                },
+                                t.stored.postSaved,
+                                t.stored.postSavedMessage,
                               );
                             },
                           );

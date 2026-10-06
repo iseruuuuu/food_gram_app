@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
-import 'package:food_gram_app/core/local/repository/save_album_local_repository.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/post_deail_list_mode.dart';
 import 'package:food_gram_app/core/model/post_detail_feed.dart';
@@ -179,14 +178,7 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     if (isCurrentlyStored) {
       storeList.remove(parsePostId);
       await preference.setStringList(PreferenceKey.storeList, storeList);
-      await SaveAlbumLocalRepository().removePostFromAllAlbums(postId);
       state = state.copyWith(isStore: false);
-      unawaited(
-        ref.read(firebaseAnalyticsServiceProvider).logEvent(
-          name: AnalyticsEvent.albumRemovePost,
-          parameters: {AnalyticsParam.postId: postId},
-        ),
-      );
     } else {
       storeList.add(parsePostId);
       await preference.setStringList(PreferenceKey.storeList, storeList);
