@@ -171,17 +171,14 @@ class FirebaseMessagingService {
   /// FCMトークンを取得
   Future<String?> getFCMToken() async {
     try {
-      // iOSの場合、許可済みのときだけAPNs登録を待ってトークンを取る。
+      // 未許可のときはトークンを更新も保存もしない。
       // requestPermission はシステムの許可ダイアログを出すため、ここでは呼ばない。
+      final hasPermission = await checkNotificationPermission();
+      if (!hasPermission) {
+        _logger.i('通知未許可のためFCMトークン取得をスキップしました');
+        return null;
+      }
       if (Platform.isIOS) {
-        final settings = await _firebaseMessaging.getNotificationSettings();
-        final isAuthorized =
-            settings.authorizationStatus == AuthorizationStatus.authorized ||
-                settings.authorizationStatus == AuthorizationStatus.provisional;
-        if (!isAuthorized) {
-          _logger.i('通知未許可のためFCMトークン取得をスキップしました');
-          return null;
-        }
         await Future<void>.delayed(const Duration(milliseconds: 500));
       }
 
