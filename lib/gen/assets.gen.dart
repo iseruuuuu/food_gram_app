@@ -134,14 +134,6 @@ class $AssetsImageGen {
   /// File path: assets/image/record.png
   AssetGenImage get record => const AssetGenImage('assets/image/record.png');
 
-  /// File path: assets/image/tutorial1.png
-  AssetGenImage get tutorial1 =>
-      const AssetGenImage('assets/image/tutorial1.png');
-
-  /// File path: assets/image/tutorial2.png
-  AssetGenImage get tutorial2 =>
-      const AssetGenImage('assets/image/tutorial2.png');
-
   /// List of all assets
   List<AssetGenImage> get values => [
         appIcon,
@@ -168,9 +160,7 @@ class $AssetsImageGen {
         present,
         profileHeader,
         profileIcon,
-        record,
-        tutorial1,
-        tutorial2
+        record
       ];
 }
 
@@ -225,15 +215,6 @@ class $AssetsLottieGen {
   /// File path: assets/lottie/tutorial1.json
   String get tutorial1 => 'assets/lottie/tutorial1.json';
 
-  /// File path: assets/lottie/tutorial2.json
-  String get tutorial2 => 'assets/lottie/tutorial2.json';
-
-  /// File path: assets/lottie/tutorial3.json
-  String get tutorial3 => 'assets/lottie/tutorial3.json';
-
-  /// File path: assets/lottie/tutorial4.json
-  String get tutorial4 => 'assets/lottie/tutorial4.json';
-
   /// File path: assets/lottie/welcome.json
   String get welcome => 'assets/lottie/welcome.json';
 
@@ -255,9 +236,6 @@ class $AssetsLottieGen {
         restaurantSearch,
         sammaryDog,
         tutorial1,
-        tutorial2,
-        tutorial3,
-        tutorial4,
         welcome
       ];
 }
