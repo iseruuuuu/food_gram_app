@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -28,6 +30,7 @@ Future<void> initializeNotifications() async {
   try {
     final hasPermission = await notificationService.checkPermissions();
     if (hasPermission) {
+      await firebaseMessagingService.getFCMToken();
       await notificationService.scheduleLunchReminder();
       await notificationService.scheduleDinnerReminder();
     }
@@ -46,8 +49,10 @@ Future<bool> requestUserNotificationPermission() async {
     final notificationService = NotificationService();
     final firebaseMessagingService = FirebaseMessagingService();
     final localGranted = await notificationService.requestPermissions();
-    final pushGranted =
-        await firebaseMessagingService.requestNotificationPermission();
+    // Android は同じ権限を二度要求しない。最初の結果をそのまま使う。
+    final pushGranted = Platform.isAndroid
+        ? localGranted
+        : await firebaseMessagingService.requestNotificationPermission();
     final granted = localGranted || pushGranted;
     if (!granted) {
       return false;

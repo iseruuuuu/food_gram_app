@@ -60,10 +60,15 @@ class FirebaseMessagingService {
       }
 
       // トークン更新のリスナーを設定
+      // 自動初期化により、未許可の起動時にも onTokenRefresh が来ることがある。
       _firebaseMessaging.onTokenRefresh.listen((newToken) async {
+        final hasPermission = await checkNotificationPermission();
+        if (!hasPermission) {
+          _logger.i('通知未許可のためFCMトークンの更新をスキップしました');
+          return;
+        }
         _fcmToken = newToken;
         _logger.i('FCMトークンが更新されました');
-        // Supabaseにトークンを保存
         await _saveFCMTokenToSupabase(newToken);
       });
 
@@ -127,25 +132,11 @@ class FirebaseMessagingService {
 
         return isAuthorized;
       } else if (Platform.isAndroid) {
-        // Android 13以降の場合、通知権限をリクエスト
-        final androidPlugin = _flutterLocalNotificationsPlugin
-            .resolvePlatformSpecificImplementation<
-                AndroidFlutterLocalNotificationsPlugin>();
-
-        if (androidPlugin != null) {
-          final result = await androidPlugin.requestNotificationsPermission();
-          final hasPermission = await androidPlugin.areNotificationsEnabled();
-
-          _logger.i(
-            'Android通知権限リクエスト結果: $result, '
-            '権限確認: $hasPermission',
-          );
-
-          return hasPermission ?? false;
-        }
-
-        // Android 12以前の場合は常にtrue
-        return true;
+        // ダイアログは NotificationService.requestPermissions の1回だけ。
+        // 拒否後にここでも要求すると、続けて2回目が出て再表示できなくなる。
+        final hasPermission = await checkNotificationPermission();
+        _logger.i('Android通知権限確認: $hasPermission');
+        return hasPermission;
       }
 
       return false;
@@ -214,6 +205,11 @@ class FirebaseMessagingService {
   /// FCMトークンをSupabaseに保存 （Edge Function経由でサーバー側に登録）
   Future<void> _saveFCMTokenToSupabase(String token) async {
     try {
+      final hasPermission = await checkNotificationPermission();
+      if (!hasPermission) {
+        _logger.i('通知未許可のためFCMトークンを保存しません');
+        return;
+      }
       final supabase = Supabase.instance.client;
       final currentUser = supabase.auth.currentUser;
 
