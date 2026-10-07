@@ -203,7 +203,7 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
         _pinLayerId,
         const CircleLayerProperties(
           circleRadius: 6,
-          circleColor: '#F44336',
+          circleColor: '#E88932',
           circleStrokeWidth: 1.5,
           circleStrokeColor: '#FFFFFF',
           circleOpacity: 0.92,
@@ -295,7 +295,7 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
     _androidPinsReady = true;
   }
 
-  /// 外寸 21・内側 16.8 の赤ドット。マップタブの small red dot と同じ比率。
+  /// 外寸 21・内側 16.8 のオレンジドット。自分の投稿ピンと同じ色。
   Future<Uint8List> _redDotPng(double devicePixelRatio) async {
     final cached = _pinPng;
     if (cached != null) {
@@ -315,7 +315,7 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
     canvas.drawCircle(
       center,
       outer * (16.8 / 21.0),
-      ui.Paint()..color = const ui.Color(0xFFF44336),
+      ui.Paint()..color = const ui.Color(0xFFE88932),
     );
     final image = await recorder.endRecording().toImage(px, px);
     final bytes = await image.toByteData(format: ui.ImageByteFormat.png);

@@ -1,17 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/ui/component/food_tag_icon.dart';
+
+/// ピン円の色。自分の投稿はブランドオレンジ、それ以外は赤。
+enum _PinPalette {
+  shared(
+    gradient: [
+      Color(0xFFFF6B6B),
+      Color(0xFFE54033),
+    ],
+    shadow: Color(0xFFFF6B6B),
+  ),
+  own(
+    gradient: [
+      Color(0xFFFFB067),
+      AppTheme.primaryOrange,
+    ],
+    shadow: AppTheme.primaryOrange,
+  );
+
+  const _PinPalette({
+    required this.gradient,
+    required this.shadow,
+  });
+
+  final List<Color> gradient;
+  final Color shadow;
+
+  static _PinPalette of({required bool isOwn}) => isOwn ? own : shared;
+}
 
 class AppPinWidget extends StatelessWidget {
   const AppPinWidget({
     required this.image,
+    this.isOwn = false,
     super.key,
   });
 
   final String image;
+  final bool isOwn;
 
   @override
   Widget build(BuildContext context) {
+    final palette = _PinPalette.of(isOwn: isOwn);
     return Container(
       width: 40,
       height: 54,
@@ -24,13 +56,10 @@ class AppPinWidget extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xFFFF6B6B),
-                    Color(0xFFE54033),
-                  ],
+                  colors: palette.gradient,
                 ),
                 shape: BoxShape.circle,
                 border: Border.all(
@@ -39,7 +68,7 @@ class AppPinWidget extends StatelessWidget {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFFF6B6B).withValues(alpha: 0.3),
+                    color: palette.shadow.withValues(alpha: 0.3),
                     blurRadius: 8,
                     spreadRadius: 2,
                   ),
@@ -75,7 +104,7 @@ class AppPinWidget extends StatelessWidget {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFFFF6B6B).withValues(alpha: 0.2),
+                      color: palette.shadow.withValues(alpha: 0.2),
                       blurRadius: 4,
                       spreadRadius: 1,
                     ),
@@ -93,16 +122,25 @@ class AppPinWidget extends StatelessWidget {
 class AppFoodTagPinWidget extends StatelessWidget {
   const AppFoodTagPinWidget({
     required this.foodTag,
+    this.isOwn = false,
     super.key,
   });
 
   final String foodTag;
 
+  /// 自分の投稿。円をブランドオレンジにする。
+  final bool isOwn;
+
   @override
   Widget build(BuildContext context) {
+    final palette = _PinPalette.of(isOwn: isOwn);
+
     /// foodTagが空の場合はデフォルトのピンアイコンを表示
     if (foodTag.isEmpty) {
-      return AppPinWidget(image: Assets.image.pinIcon.path);
+      return AppPinWidget(
+        image: Assets.image.pinIcon.path,
+        isOwn: isOwn,
+      );
     }
     // foodTagから最初のタグIDを取得（カンマ区切りの場合）
     final firstTag = foodTag.split(',').first.trim();
@@ -130,13 +168,10 @@ class AppFoodTagPinWidget extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xFFFF6B6B),
-                    Color(0xFFE54033),
-                  ],
+                  colors: palette.gradient,
                 ),
                 shape: BoxShape.circle,
                 border: Border.all(
@@ -229,7 +264,12 @@ class AppFoodTagPinWidget extends StatelessWidget {
 /// 小さな赤ドットのピンウィジェット（ズーム13以下用）
 /// 丸い赤の外に白色の円
 class AppSmallRedDotWidget extends StatelessWidget {
-  const AppSmallRedDotWidget({super.key});
+  const AppSmallRedDotWidget({
+    this.color = Colors.red,
+    super.key,
+  });
+
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -259,8 +299,8 @@ class AppSmallRedDotWidget extends StatelessWidget {
           Container(
             width: innerSize,
             height: innerSize,
-            decoration: const BoxDecoration(
-              color: Colors.red,
+            decoration: BoxDecoration(
+              color: color,
               shape: BoxShape.circle,
             ),
           ),
