@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -25,6 +27,7 @@ Future<void> initializeNotifications() async {
   try {
     final hasPermission = await notificationService.requestPermissions();
     if (hasPermission) {
+      await firebaseMessagingService.getFCMToken();
       await notificationService.scheduleLunchReminder();
       await notificationService.scheduleDinnerReminder();
     }
@@ -41,7 +44,9 @@ Future<void> requestTutorialNotificationPermission() async {
   final notificationService = NotificationService();
   await notificationService.initialize();
   await notificationService.requestPermissions();
-  await FirebaseMessagingService().requestNotificationPermission();
+  if (!Platform.isAndroid) {
+    await FirebaseMessagingService().requestNotificationPermission();
+  }
 }
 
 /// バックグラウンドメッセージハンドラー
