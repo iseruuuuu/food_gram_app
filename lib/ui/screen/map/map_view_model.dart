@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/utils/geo_distance.dart';
@@ -22,8 +23,8 @@ part 'map_view_model.g.dart';
 
 /// マップ投稿ピンの表示方針:
 /// - 全地点を1つの GeoJSON にまとめる
-/// - ズーム < 8 → 赤点（CircleLayer）
-/// - ズーム >= 8 → カテゴリピン（SymbolLayer、サイズはスタイルが追う）
+/// - ズーム < 8 → 点（他人は赤、自分の投稿はオレンジ）
+/// - ズーム >= 8 → カテゴリピン（自分の投稿はオレンジ）
 /// - GeoJSON が使えない端末だけ Annotation に落とす
 @riverpod
 class MapViewModel extends _$MapViewModel {
@@ -42,6 +43,7 @@ class MapViewModel extends _$MapViewModel {
 
   List<Posts>? _cachedPosts;
   Map<String, String>? _cachedImageKeys;
+  Set<String> _cachedOwnLatLngKeys = const {};
   bool _heatmapLayerAdded = false;
   bool _dotsLayerReady = false;
   bool _symbolLayerReady = false;
@@ -249,6 +251,7 @@ class MapViewModel extends _$MapViewModel {
       if (posts.isEmpty) {
         _cachedPosts = const <Posts>[];
         _cachedImageKeys = const <String, String>{};
+        _cachedOwnLatLngKeys = const {};
         _dotsLayerReady = false;
         _symbolLayerReady = false;
         _isDotMode = null;
@@ -259,13 +262,22 @@ class MapViewModel extends _$MapViewModel {
         await _refreshSearchHighlightOnly();
         return;
       }
+      final currentUserId = ref.read(currentUserProvider);
+      final ownLatLngKeys = MapPinData.ownLatLngKeys(posts, currentUserId);
       final unique = MapPinData.dedupeByLatLng(posts);
       _cachedPosts = unique;
+      _cachedOwnLatLngKeys = ownLatLngKeys;
       final imageTypes = MapPinData.collectImageTypes(unique);
+      final ownImageTypes = MapPinData.collectImageTypes(
+        unique
+            .where((post) => MapPinData.isOwnLocation(post, ownLatLngKeys))
+            .toList(),
+      );
       _cachedImageKeys = await _pinLoader.generatePinImages(
         state.mapController!,
         imageTypes,
         unique,
+        ownImageTypes: ownImageTypes,
       );
       if (!_isLiveStyle(epoch)) {
         return;
@@ -291,6 +303,7 @@ class MapViewModel extends _$MapViewModel {
       controller,
       posts,
       imageKeys,
+      ownLatLngKeys: _cachedOwnLatLngKeys,
     );
     if (!_isLiveStyle(epoch)) {
       return;
@@ -366,30 +379,42 @@ class MapViewModel extends _$MapViewModel {
     if (!_isLiveStyle(epoch)) {
       return;
     }
-    const key = MapPinImageLoader.smallRedDotKey;
-    if (!_pinLoader.cache.containsKey(key)) {
+    const redKey = MapPinImageLoader.smallRedDotKey;
+    const orangeKey = MapPinImageLoader.smallOrangeDotKey;
+    if (!_pinLoader.cache.containsKey(redKey) ||
+        !_pinLoader.cache.containsKey(orangeKey)) {
       await _pinLoader.preload();
       if (!_isLiveStyle(epoch)) {
         return;
       }
     }
-    final bytes = _pinLoader.cache[key];
-    if (bytes == null) {
-      // 赤点が作れないときだけ通常ピン（何も出さないよりマシ）
+    final redBytes = _pinLoader.cache[redKey];
+    if (redBytes == null) {
+      // 点が作れないときだけ通常ピン（何も出さないよりマシ）
       if (_cachedImageKeys != null) {
         await _addNormalPinSymbols(controller, posts, _cachedImageKeys!);
       }
       return;
     }
-    if (!_pinLoader.registeredKeys.contains(key)) {
-      await _pinLoader.registerImage(controller, key, bytes);
+    if (!_pinLoader.registeredKeys.contains(redKey)) {
+      await _pinLoader.registerImage(controller, redKey, redBytes);
+      if (!_isLiveStyle(epoch)) {
+        return;
+      }
+    }
+    final orangeBytes = _pinLoader.cache[orangeKey];
+    if (orangeBytes != null && !_pinLoader.registeredKeys.contains(orangeKey)) {
+      await _pinLoader.registerImage(controller, orangeKey, orangeBytes);
       if (!_isLiveStyle(epoch)) {
         return;
       }
     }
     final zoom =
         controller.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
-    final symbols = MapPinStyle.smallRedDotSymbols(posts);
+    final symbols = MapPinStyle.smallDotSymbols(
+      posts,
+      ownLatLngKeys: orangeBytes == null ? const {} : _cachedOwnLatLngKeys,
+    );
     final append = _searchHighlightSymbolOptions(zoom);
     if (symbols.isNotEmpty || append != null) {
       await MapPinStyle.addSymbolsToMap(
@@ -788,7 +813,12 @@ class MapViewModel extends _$MapViewModel {
     }
     final zoom =
         controller.cameraPosition?.zoom ?? MapOverlayConstants.localeFallback;
-    final symbols = MapPinStyle.normalPinSymbols(posts, imageKeys, zoom);
+    final symbols = MapPinStyle.normalPinSymbols(
+      posts,
+      imageKeys,
+      zoom,
+      ownLatLngKeys: _cachedOwnLatLngKeys,
+    );
     final append = _searchHighlightSymbolOptions(zoom);
     if (symbols.isNotEmpty || append != null) {
       await MapPinStyle.addSymbolsToMap(

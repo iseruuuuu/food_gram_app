@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/ui/component/app_pin_widget.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_pin_data.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -19,6 +20,7 @@ class MapPinImageLoader {
   Set<String> get registeredKeys => _registeredKeys;
 
   static const String smallRedDotKey = 'small_red_dot';
+  static const String smallOrangeDotKey = 'small_orange_dot';
 
   /// デフォルト・赤ドットを事前生成
   Future<void> preload() {
@@ -54,38 +56,80 @@ class MapPinImageLoader {
       );
       _cache[smallRedDotKey] = bytes.buffer.asUint8List();
     }
+    if (!_cache.containsKey(smallOrangeDotKey)) {
+      final bytes = await _screenshotController.captureFromWidget(
+        const AppSmallRedDotWidget(color: AppTheme.primaryOrange),
+      );
+      _cache[smallOrangeDotKey] = bytes.buffer.asUint8List();
+    }
   }
 
   /// imageTypes に応じて画像を並列生成し、コントローラーに登録する。
   Future<Map<String, String>> generatePinImages(
     MapLibreMapController controller,
     Set<String> imageTypes,
-    List<Posts> posts,
-  ) async {
+    List<Posts> posts, {
+    Set<String> ownImageTypes = const {},
+  }) async {
     final imageKeys = <String, String>{};
     final tasks = <Future<void>>[];
 
     for (final imageType in imageTypes) {
-      final imageKey = 'pin_$imageType';
-      imageKeys[imageType] = imageKey;
-      if (_cache.containsKey(imageType)) {
-        if (!_registeredKeys.contains(imageKey)) {
-          tasks.add(registerImage(controller, imageKey, _cache[imageType]!));
-        }
-        continue;
-      }
-      final sample = _samplePost(imageType, posts);
-      tasks.add(() async {
-        final bytes = await _screenshotController.captureFromWidget(
-          AppFoodTagPinWidget(foodTag: sample?.foodTag ?? ''),
-        );
-        _cache[imageType] = bytes.buffer.asUint8List();
-        await registerImage(controller, imageKey, _cache[imageType]!);
-      }());
+      _enqueuePin(
+        tasks,
+        imageKeys,
+        controller,
+        posts,
+        cacheKey: imageType,
+        imageKey: 'pin_$imageType',
+        sampleType: imageType,
+      );
+    }
+    for (final imageType in ownImageTypes) {
+      _enqueuePin(
+        tasks,
+        imageKeys,
+        controller,
+        posts,
+        cacheKey: MapPinData.ownImageType(imageType),
+        imageKey: 'pin_own_$imageType',
+        sampleType: imageType,
+        isOwn: true,
+      );
     }
 
     await Future.wait(tasks);
     return imageKeys;
+  }
+
+  void _enqueuePin(
+    List<Future<void>> tasks,
+    Map<String, String> imageKeys,
+    MapLibreMapController controller,
+    List<Posts> posts, {
+    required String cacheKey,
+    required String imageKey,
+    required String sampleType,
+    bool isOwn = false,
+  }) {
+    imageKeys[cacheKey] = imageKey;
+    if (_cache.containsKey(cacheKey)) {
+      if (!_registeredKeys.contains(imageKey)) {
+        tasks.add(registerImage(controller, imageKey, _cache[cacheKey]!));
+      }
+      return;
+    }
+    final sample = _samplePost(sampleType, posts);
+    tasks.add(() async {
+      final bytes = await _screenshotController.captureFromWidget(
+        AppFoodTagPinWidget(
+          foodTag: sample?.foodTag ?? '',
+          isOwn: isOwn,
+        ),
+      );
+      _cache[cacheKey] = bytes.buffer.asUint8List();
+      await registerImage(controller, imageKey, _cache[cacheKey]!);
+    }());
   }
 
   Posts? _samplePost(String imageType, List<Posts> posts) {

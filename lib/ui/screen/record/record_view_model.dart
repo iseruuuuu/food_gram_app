@@ -45,7 +45,7 @@ class RecordViewModel extends _$RecordViewModel {
   Future<void> _preloadDefaultImages() async {
     if (!_imageCache.containsKey('default')) {
       final screenshotBytes = await screenshotController.captureFromWidget(
-        const AppFoodTagPinWidget(foodTag: ''),
+        const AppFoodTagPinWidget(foodTag: '', isOwn: true),
       );
       _imageCache['default'] = screenshotBytes.buffer.asUint8List();
     }
@@ -202,7 +202,7 @@ class RecordViewModel extends _$RecordViewModel {
         );
         imageTasks.add(() async {
           final screenshotBytes = await screenshotController.captureFromWidget(
-            AppFoodTagPinWidget(foodTag: samplePost.foodTag),
+            AppFoodTagPinWidget(foodTag: samplePost.foodTag, isOwn: true),
           );
           _imageCache[imageType] = screenshotBytes.buffer.asUint8List();
           if (!_registeredImageKeys.contains(imageKey)) {

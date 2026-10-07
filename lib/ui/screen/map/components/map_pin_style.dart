@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/ui/screen/map/components/map_pin_data.dart';
+import 'package:food_gram_app/ui/screen/map/components/map_pin_image_loader.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
 /// ピンの見た目（アイコンサイズ補間・シンボルリスト生成）
@@ -37,31 +38,35 @@ class MapPinStyle {
     return anchors.values.last;
   }
 
-  /// 小さな赤ドット用のシンボルリスト
-  static List<SymbolOptions> smallRedDotSymbols(List<Posts> posts) {
-    const redDotKey = 'small_red_dot';
+  /// 小さなドット用のシンボルリスト。自分の投稿はオレンジ。
+  static List<SymbolOptions> smallDotSymbols(
+    List<Posts> posts, {
+    Set<String> ownLatLngKeys = const {},
+  }) {
     return posts
         .map(
           (post) => SymbolOptions(
             geometry: LatLng(post.lat, post.lng),
-            iconImage: redDotKey,
+            iconImage: MapPinData.isOwnLocation(post, ownLatLngKeys)
+                ? MapPinImageLoader.smallOrangeDotKey
+                : MapPinImageLoader.smallRedDotKey,
             iconSize: MapOverlayConstants.smallRedDotIconSize,
           ),
         )
         .toList();
   }
 
-  /// 通常ピン用のシンボルリスト
+  /// 通常ピン用のシンボルリスト。自分の投稿はオレンジ。
   static List<SymbolOptions> normalPinSymbols(
     List<Posts> posts,
     Map<String, String> imageKeys,
-    double zoom,
-  ) {
+    double zoom, {
+    Set<String> ownLatLngKeys = const {},
+  }) {
     return posts.map((post) {
-      final imageType = MapPinData.imageTypeFor(post);
       return SymbolOptions(
         geometry: LatLng(post.lat, post.lng),
-        iconImage: imageKeys[imageType],
+        iconImage: MapPinData.iconImageFor(post, imageKeys, ownLatLngKeys),
         iconSize: interpolatedIconSize(zoom),
       );
     }).toList();

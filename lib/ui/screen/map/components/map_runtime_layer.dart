@@ -80,13 +80,14 @@ class MapRuntimeLayer {
   static Future<MapRuntimeSetupResult> setupPosts(
     MapLibreMapController controller,
     List<Posts> posts,
-    Map<String, String> imageKeys,
-  ) async {
+    Map<String, String> imageKeys, {
+    Set<String> ownLatLngKeys = const {},
+  }) async {
     if (!MapGeoJsonSupport.allowsRuntimeGeoJson) {
       return const MapRuntimeSetupResult(dotsReady: false, pinsReady: false);
     }
     try {
-      final data = _featureCollection(posts, imageKeys);
+      final data = _featureCollection(posts, imageKeys, ownLatLngKeys);
       await _upsertGeoJsonSource(
         controller,
         MapOverlayConstants.runtimeSourceId,
@@ -111,9 +112,10 @@ class MapRuntimeLayer {
   static Map<String, dynamic> _featureCollection(
     List<Posts> posts,
     Map<String, String> imageKeys,
+    Set<String> ownLatLngKeys,
   ) {
     final features = posts.map((post) {
-      final imageType = MapPinData.imageTypeFor(post);
+      final isOwn = MapPinData.isOwnLocation(post, ownLatLngKeys);
       return {
         'type': 'Feature',
         'geometry': {
@@ -123,7 +125,8 @@ class MapRuntimeLayer {
         'properties': {
           'lat': post.lat,
           'lng': post.lng,
-          'icon': imageKeys[imageType],
+          'icon': MapPinData.iconImageFor(post, imageKeys, ownLatLngKeys),
+          'own': isOwn,
         },
       };
     }).toList();
@@ -187,11 +190,21 @@ class MapRuntimeLayer {
 
   static Future<bool> _addDotsLayer(MapLibreMapController controller) async {
     final paint = await _loadDotsPaint();
+    final others = paint['circle-color'] is String
+        ? paint['circle-color'] as String
+        : '#E53935';
     final props = CircleLayerProperties(
       circleRadius: _asDouble(paint['circle-radius'], 4),
-      circleColor: paint['circle-color'] is String
-          ? paint['circle-color'] as String
-          : '#E53935',
+      circleColor: [
+        'case',
+        [
+          '==',
+          ['get', 'own'],
+          true,
+        ],
+        '#E88932',
+        others,
+      ],
       circleStrokeWidth: _asDouble(paint['circle-stroke-width'], 1.2),
       circleStrokeColor: paint['circle-stroke-color'] is String
           ? paint['circle-stroke-color'] as String
