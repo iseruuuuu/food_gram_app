@@ -252,32 +252,34 @@ class TabScreen extends HookConsumerWidget {
         final shouldShow = await shouldShowFirstPostSuccessGuide(
           previousPostCount: 0,
         );
-        if (!shouldShow || !context.mounted) {
-          return;
-        }
-        // 最新投稿を取得してプレビューに使う
-        ref.invalidate(myPostStreamProvider);
-        Posts? latestPost;
-        try {
-          final posts = await ref.read(myPostStreamProvider.future);
-          latestPost = posts.isEmpty ? null : posts.last;
-        } on Object {
-          // プレビューなしでもガイドは出す
-        }
-        if (!context.mounted) {
-          return;
-        }
-        ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
-              name: AnalyticsEvent.firstPostSuccessGuideShow,
+        FirstPostSuccessAction? action;
+        if (shouldShow && context.mounted) {
+          // 最新投稿を取得してプレビューに使う
+          ref.invalidate(myPostStreamProvider);
+          Posts? latestPost;
+          try {
+            final posts = await ref.read(myPostStreamProvider.future);
+            latestPost = posts.isEmpty ? null : posts.last;
+          } on Object {
+            // プレビューなしでもガイドは出す
+          }
+          if (context.mounted) {
+            ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                  name: AnalyticsEvent.firstPostSuccessGuideShow,
+                );
+            action = await showFirstPostSuccessGuide(
+              context: context,
+              post: latestPost,
             );
-        final action = await showFirstPostSuccessGuide(
-          context: context,
-          post: latestPost,
-        );
-        try {
-          await markFirstPostSuccessGuideShown();
-        } on Object {
-          // 既読保存失敗でも地図/アルバム導線は続行する
+            if (context.mounted) {
+              await requestUserNotificationPermission();
+            }
+            try {
+              await markFirstPostSuccessGuideShown();
+            } on Object {
+              // 既読保存失敗でも地図/アルバム導線は続行する
+            }
+          }
         }
         if (!context.mounted || action == null) {
           return;

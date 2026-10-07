@@ -53,11 +53,11 @@ class FirebaseMessagingService {
         await _createNotificationChannel();
       }
 
-      // 通知権限をリクエスト
-      await requestNotificationPermission();
-
-      // FCMトークンを取得
-      await getFCMToken();
+      // 許可済みのときだけトークンを取る。未許可でのリクエストは初回投稿後に行う。
+      final hasPermission = await checkNotificationPermission();
+      if (hasPermission) {
+        await getFCMToken();
+      }
 
       // トークン更新のリスナーを設定
       _firebaseMessaging.onTokenRefresh.listen((newToken) async {
@@ -180,12 +180,17 @@ class FirebaseMessagingService {
   /// FCMトークンを取得
   Future<String?> getFCMToken() async {
     try {
-      // iOSの場合、APNsトークンの登録を確実にする
+      // iOSの場合、許可済みのときだけAPNs登録を待ってトークンを取る。
+      // requestPermission はシステムの許可ダイアログを出すため、ここでは呼ばない。
       if (Platform.isIOS) {
-        // APNsトークンを取得（これによりFCMトークンも確実に取得できる）
-        await _firebaseMessaging.requestPermission();
-
-        // APNsトークンの登録を待つ
+        final settings = await _firebaseMessaging.getNotificationSettings();
+        final isAuthorized =
+            settings.authorizationStatus == AuthorizationStatus.authorized ||
+                settings.authorizationStatus == AuthorizationStatus.provisional;
+        if (!isAuthorized) {
+          _logger.i('通知未許可のためFCMトークン取得をスキップしました');
+          return null;
+        }
         await Future<void>.delayed(const Duration(milliseconds: 500));
       }
 
