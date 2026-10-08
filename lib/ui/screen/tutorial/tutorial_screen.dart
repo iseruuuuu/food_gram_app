@@ -7,16 +7,13 @@ import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
-import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
-import 'package:food_gram_app/core/theme/style/tutorial_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_elevated_button.dart';
-import 'package:food_gram_app/ui/screen/tutorial/components/tutorial_notification_page.dart';
 import 'package:gap/gap.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
@@ -32,7 +29,6 @@ class TutorialScreen extends HookConsumerWidget {
     final isAcceptTerms = useState(false);
     final isAcceptPrivacy = useState(false);
     final isFinishedTutorial = useState(false);
-    final notifier = useValueNotifier<double>(0);
     final pageController = usePageController();
     final currentPageIndex = useState(0);
     useListenable(currentPageIndex);
@@ -74,12 +70,11 @@ class TutorialScreen extends HookConsumerWidget {
       [pageController],
     );
 
-    const totalPages = 7;
-    const locationPageIndex = 4;
-    const notificationPageIndex = 5;
-    const welcomePageIndex = 6;
+    const totalPages = 3;
+    const locationPageIndex = 1;
+    const welcomePageIndex = 2;
     final currentPage = currentPageIndex.value;
-    final showStandardNextButton = currentPage <= 3;
+    final showStandardNextButton = currentPage == 0;
     final showWelcomeButton = currentPage == welcomePageIndex;
     final canStartWelcome = isAcceptTerms.value && isAcceptPrivacy.value;
 
@@ -102,29 +97,6 @@ class TutorialScreen extends HookConsumerWidget {
       } on Exception catch (_) {
         // 許可に失敗してもチュートリアルは続行する
       }
-      if (!context.mounted) {
-        return;
-      }
-      await goToNextPage();
-    }
-
-    Future<void> handleNotificationPermission() async {
-      try {
-        await requestTutorialNotificationPermission().timeout(
-          const Duration(seconds: 30),
-        );
-      } on Exception catch (_) {
-        // 許可に失敗してもチュートリアルは続行する
-      }
-      unawaited(() async {
-        try {
-          await initializeNotifications().timeout(
-            const Duration(seconds: 15),
-          );
-        } on Exception catch (_) {
-          // バックグラウンド初期化失敗はチュートリアル進行を止めない
-        }
-      }());
       if (!context.mounted) {
         return;
       }
@@ -167,8 +139,6 @@ class TutorialScreen extends HookConsumerWidget {
         children: [
           SlidingTutorial(
             controller: pageController,
-            notifier: notifier,
-            pageCount: totalPages,
             pages: [
               // 1ページ目 コンセプト
               _TutorialContentPage(
@@ -176,37 +146,14 @@ class TutorialScreen extends HookConsumerWidget {
                 title: t.tutorial.firstPageTitle,
                 subtitle: t.tutorial.firstPageSubTitle1,
               ),
-              // 2ページ目 探索
-              _TutorialContentPage(
-                lottie: Assets.lottie.tutorial2,
-                title: t.tutorial.discoverTitle,
-                subtitle: t.tutorial.discoverSubTitle1,
-              ),
-              // 3ページ目 世界マップ
-              _TutorialContentPage(
-                lottie: Assets.lottie.tutorial3,
-                lottieWidth: 400,
-                title: t.tutorial.secondPageTitle,
-                subtitle: t.tutorial.secondPageSubTitle1,
-              ),
-              // 4ページ目 投稿しよう
-              _TutorialContentPage(
-                lottie: Assets.lottie.tutorial4,
-                title: t.tutorial.postPageTitle,
-                subtitle: t.tutorial.postPageMain,
-              ),
-              // 5ページ目(位置情報の許可)
+              // 2ページ目(位置情報の許可)
               _TutorialContentPage(
                 lottie: Assets.lottie.location,
                 lottieWidth: 400,
                 title: t.tutorial.locationTitle,
                 subtitle: t.tutorial.locationSubTitle,
               ),
-              // 6ページ目（通知の許可）
-              TutorialNotificationPage(
-                isActive: currentPage == notificationPageIndex,
-              ),
-              // 7ページ目 アプリ開始（モチベーション）
+              // 3ページ目 アプリ開始（モチベーション）
               _TutorialContentPage(
                 lottie: Assets.lottie.welcome,
                 lottieWidth: 400,
@@ -267,18 +214,10 @@ class TutorialScreen extends HookConsumerWidget {
                         title: t.tutorial.locationButton,
                         backgroundColor: AppTheme.primaryOrange,
                         horizontalInset: 48,
-                      )
-                    else if (currentPage == notificationPageIndex)
-                      AppElevatedButton(
-                        onPressed: handleNotificationPermission,
-                        title: t.tutorial.notificationButton,
-                        backgroundColor: AppTheme.primaryOrange,
-                        horizontalInset: 48,
                       ),
                     if (showStandardNextButton ||
                         showWelcomeButton ||
-                        currentPage == locationPageIndex ||
-                        currentPage == notificationPageIndex)
+                        currentPage == locationPageIndex)
                       const Gap(16),
                     _TutorialPageIndicator(
                       count: totalPages,
@@ -298,15 +237,11 @@ class TutorialScreen extends HookConsumerWidget {
 class SlidingTutorial extends StatelessWidget {
   const SlidingTutorial({
     required this.controller,
-    required this.notifier,
-    required this.pageCount,
     required this.pages,
     super.key,
   });
 
   final PageController controller;
-  final ValueNotifier<double> notifier;
-  final int pageCount;
   final List<Widget> pages;
 
   @override
@@ -484,7 +419,11 @@ class _TutorialContentPage extends StatelessWidget {
                         child: FittedBox(
                           child: Text(
                             title,
-                            style: TutorialStyle.title(context),
+                            style: TextStyle(
+                              fontSize: 23,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -495,7 +434,10 @@ class _TutorialContentPage extends StatelessWidget {
                         child: FittedBox(
                           child: Text(
                             subtitle,
-                            style: TutorialStyle.subTitle(context),
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                         ),

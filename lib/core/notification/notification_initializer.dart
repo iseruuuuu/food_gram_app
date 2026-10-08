@@ -12,8 +12,11 @@ import 'package:timezone/data/latest.dart' as tz;
 
 /// 通知の初期化処理。
 ///
+/// 権限ダイアログは出さない。許可済みのときだけリマインダーとトークンを整える。
+/// 未許可のリクエストは初回投稿後の [requestUserNotificationPermission] で行う。
+///
 /// プラットフォーム／プラグイン初期化の失敗は呼び出し元へ伝播する。
-/// 権限拒否やリマインダー設定の失敗は非致命として握りつぶす。
+/// リマインダー設定の失敗は非致命として握りつぶす。
 Future<void> initializeNotifications() async {
   final logger = Logger();
   tz.initializeTimeZones();
@@ -25,7 +28,7 @@ Future<void> initializeNotifications() async {
   await firebaseMessagingService.initialize();
 
   try {
-    final hasPermission = await notificationService.requestPermissions();
+    final hasPermission = await notificationService.checkPermissions();
     if (hasPermission) {
       await firebaseMessagingService.getFCMToken();
       await notificationService.scheduleLunchReminder();
@@ -33,19 +36,37 @@ Future<void> initializeNotifications() async {
     }
   } on Exception catch (e, stackTrace) {
     logger.w(
-      '通知権限またはリマインダー設定をスキップしました: $e',
+      '通知リマインダー設定をスキップしました: $e',
       stackTrace: stackTrace,
     );
   }
 }
 
-/// チュートリアル用: 権限ダイアログのみ表示（FCMトークン取得はしない）
-Future<void> requestTutorialNotificationPermission() async {
-  final notificationService = NotificationService();
-  await notificationService.initialize();
-  await notificationService.requestPermissions();
-  if (!Platform.isAndroid) {
-    await FirebaseMessagingService().requestNotificationPermission();
+/// 初投稿の直後に、OSの通知許可ダイアログを出す。
+Future<bool> requestUserNotificationPermission() async {
+  final logger = Logger();
+  try {
+    final notificationService = NotificationService();
+    final firebaseMessagingService = FirebaseMessagingService();
+    final localGranted = await notificationService.requestPermissions();
+    // Android は同じ権限を二度要求しない。最初の結果をそのまま使う。
+    final pushGranted = Platform.isAndroid
+        ? localGranted
+        : await firebaseMessagingService.requestNotificationPermission();
+    final granted = localGranted || pushGranted;
+    if (!granted) {
+      return false;
+    }
+    await notificationService.scheduleLunchReminder();
+    await notificationService.scheduleDinnerReminder();
+    await firebaseMessagingService.getFCMToken();
+    return true;
+  } on Exception catch (e, stackTrace) {
+    logger.w(
+      '通知権限のリクエストをスキップしました: $e',
+      stackTrace: stackTrace,
+    );
+    return false;
   }
 }
 
@@ -72,7 +93,11 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // Android設定
   const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
   // iOS設定
-  const iosSettings = DarwinInitializationSettings();
+  const iosSettings = DarwinInitializationSettings(
+    requestAlertPermission: false,
+    requestBadgePermission: false,
+    requestSoundPermission: false,
+  );
   // 初期化設定
   const initSettings = InitializationSettings(
     android: androidSettings,
