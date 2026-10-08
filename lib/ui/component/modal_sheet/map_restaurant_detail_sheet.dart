@@ -7,7 +7,6 @@ import 'package:food_gram_app/core/local/want_to_go_actions.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
-import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
@@ -131,17 +130,8 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
           postsAsync.when(
             data: (postsByRestaurant) {
               final filter = ref.watch(mapCategoryFilterProvider);
-              final myPostsOnly = ref.watch(mapMyPostsOnlyProvider);
-              final currentUserId = ref.watch(currentUserProvider);
               final visiblePosts = postsByRestaurant
-                  .where(
-                    (post) => postVisibleOnMap(
-                      post: post,
-                      filter: filter,
-                      myPostsOnly: myPostsOnly,
-                      currentUserId: currentUserId,
-                    ),
-                  )
+                  .where((post) => postMatchesMapFilter(filter, post))
                   .toList();
               if (visiblePosts.isEmpty) {
                 final forNewPost = postsByRestaurant.isEmpty
