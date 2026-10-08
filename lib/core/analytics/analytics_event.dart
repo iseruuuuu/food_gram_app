@@ -89,7 +89,6 @@ abstract final class AnalyticsEvent {
   static const String mapClusterTap = 'map_cluster_tap';
   static const String mapFilterOpen = 'map_filter_open';
   static const String mapFilterApply = 'map_filter_apply';
-  static const String mapMyPostsToggle = 'map_my_posts_toggle';
   static const String mapShare = 'map_share';
   static const String mapStatsShare = 'map_stats_share';
 
@@ -212,5 +211,4 @@ abstract final class AnalyticsParam {
   static const String rating = 'rating';
   static const String hasComment = 'has_comment';
   static const String streakWeeks = 'streak_weeks';
-  static const String enabled = 'enabled';
 }
