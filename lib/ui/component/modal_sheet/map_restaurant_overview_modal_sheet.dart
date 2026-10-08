@@ -148,17 +148,8 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                   );
                 }
                 final filter = ref.watch(mapCategoryFilterProvider);
-                final myPostsOnly = ref.watch(mapMyPostsOnlyProvider);
-                final currentUserId = ref.watch(currentUserProvider);
                 final visiblePosts = posts
-                    .where(
-                      (p) => postVisibleOnMap(
-                        post: p,
-                        filter: filter,
-                        myPostsOnly: myPostsOnly,
-                        currentUserId: currentUserId,
-                      ),
-                    )
+                    .where((p) => postMatchesMapFilter(filter, p))
                     .toList();
                 final filteredGroups = _groupByRestaurantName(
                   visiblePosts,
