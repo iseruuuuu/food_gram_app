@@ -128,8 +128,9 @@ class AppFoodTag extends HookWidget {
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color:
-                                  isDark ? Colors.white : AppTheme.primaryOrange,
+                              color: isDark
+                                  ? Colors.white
+                                  : AppTheme.primaryOrange,
                             ),
                           ),
                         ),

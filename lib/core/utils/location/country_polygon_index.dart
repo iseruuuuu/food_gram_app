@@ -4,9 +4,6 @@ import 'dart:math' as math;
 /// GeoJSON の国ポリゴンから、点の所属国を求める。
 class CountryPolygonIndex {
   CountryPolygonIndex(this._parts);
-
-  final List<_CountryPolygonPart> _parts;
-
   factory CountryPolygonIndex.parse(String geoJson) {
     final decoded = jsonDecode(geoJson) as Map<String, dynamic>;
     final features =
@@ -25,10 +22,13 @@ class CountryPolygonIndex {
         continue;
       }
       parts.addAll(
-          _partsFromGeometry(code: code, nameEn: nameEn, geometry: geometry));
+        _partsFromGeometry(code: code, nameEn: nameEn, geometry: geometry),
+      );
     }
     return CountryPolygonIndex(parts);
   }
+
+  final List<_CountryPolygonPart> _parts;
 
   /// ポリゴン内、または海岸線にごく近い点なら ISO コードと英語名。
   ({String code, String nameEn})? find(double lat, double lng) {

@@ -39,7 +39,7 @@ final class FoodGramImageCache {
 
   /// 画像用ディスクキャッシュと Flutter のメモリ画像キャッシュを空にする。
   ///
-  /// このアプリでは [DefaultCacheManager] を画像（CachedNetworkImage）以外に
+  /// このアプリでは [fcm.DefaultCacheManager] を画像（CachedNetworkImage）以外に
   /// 使っていないため、移行前に溜まった旧画像キャッシュも合わせて消す。
   static Future<void> clear() {
     final inFlight = _clearInFlight;

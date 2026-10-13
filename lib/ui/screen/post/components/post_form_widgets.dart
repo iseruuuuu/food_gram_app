@@ -977,7 +977,6 @@ class PostCommentField extends HookWidget {
                 maxLines: 4,
                 maxLength: maxLength,
                 autocorrect: true,
-                enableSuggestions: true,
                 textCapitalization: TextCapitalization.sentences,
                 buildCounter: (
                   context, {

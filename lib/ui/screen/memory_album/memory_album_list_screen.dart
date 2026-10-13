@@ -154,14 +154,10 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
                   child: ReorderableListView.builder(
                     padding: const EdgeInsets.only(top: 4, bottom: 8),
                     itemCount: albums.length,
-                    onReorder: (oldIndex, newIndex) async {
+                    onReorderItem: (oldIndex, newIndex) async {
                       final list = List<MemoryAlbum>.from(albums);
-                      var targetIndex = newIndex;
-                      if (targetIndex > oldIndex) {
-                        targetIndex -= 1;
-                      }
                       final item = list.removeAt(oldIndex);
-                      list.insert(targetIndex, item);
+                      list.insert(newIndex, item);
                       await ref
                           .read(memoryAlbumListViewModelProvider.notifier)
                           .reorder(list);

@@ -426,7 +426,7 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
                         return;
                       }
                       isStored.value = list.contains(post.id.toString());
-                    } catch (_) {
+                    } on Exception catch (_) {
                       if (context.mounted) {
                         isStored.value = previous;
                       }

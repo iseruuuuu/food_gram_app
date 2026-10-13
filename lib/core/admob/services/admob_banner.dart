@@ -14,13 +14,17 @@ final bannerAdProvider =
 /// バナー広告の状態を管理するNotifier
 class BannerAdNotifier extends StateNotifier<BannerAd?> {
   BannerAdNotifier(this.ref, this.id) : super(null) {
-    ref.listen<AsyncValue<bool>>(isSubscribeProvider, (_, next) {
-      if (!canRequestAds(next)) {
-        disposeAd();
-        return;
-      }
-      _loadAd();
-    }, fireImmediately: true);
+    ref.listen<AsyncValue<bool>>(
+      isSubscribeProvider,
+      (_, next) {
+        if (!canRequestAds(next)) {
+          disposeAd();
+          return;
+        }
+        _loadAd();
+      },
+      fireImmediately: true,
+    );
   }
 
   final Ref ref;

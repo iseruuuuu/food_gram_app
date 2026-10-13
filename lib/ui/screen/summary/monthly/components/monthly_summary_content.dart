@@ -371,7 +371,7 @@ class _CompactDetails extends StatelessWidget {
   final MonthlySummary summary;
   final _MonthlyStrings strings;
 
-  /// 画面左右パディング（[MonthlySummaryScreen] の 16 * 2）を除いた幅の閾値。
+  /// 画面左右パディング（MonthlySummaryScreen の 16 * 2）を除いた幅の閾値。
   static const _sideBySideMinWidth = 330.0;
   static const _horizontalInset = 32.0;
 

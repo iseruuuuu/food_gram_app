@@ -268,7 +268,7 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
     }
     await controller.addSource(
       _pinSourceId,
-      GeojsonSourceProperties(
+      const GeojsonSourceProperties(
         data: {
           'type': 'FeatureCollection',
           'features': <Map<String, dynamic>>[],

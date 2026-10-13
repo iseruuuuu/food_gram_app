@@ -14,13 +14,17 @@ final rectangleBannerProvider =
 /// レクタングル広告の状態を管理するNotifier
 class RectangleBannerNotifier extends StateNotifier<BannerAd?> {
   RectangleBannerNotifier(this.ref, this.id) : super(null) {
-    ref.listen<AsyncValue<bool>>(isSubscribeProvider, (_, next) {
-      if (!canRequestAds(next)) {
-        disposeAd();
-        return;
-      }
-      _loadAd();
-    }, fireImmediately: true);
+    ref.listen<AsyncValue<bool>>(
+      isSubscribeProvider,
+      (_, next) {
+        if (!canRequestAds(next)) {
+          disposeAd();
+          return;
+        }
+        _loadAd();
+      },
+      fireImmediately: true,
+    );
   }
 
   final Ref ref;

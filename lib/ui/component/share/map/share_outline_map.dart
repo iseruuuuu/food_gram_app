@@ -361,7 +361,8 @@ class _ShareFillMapPainter extends CustomPainter {
 
   /// 切れ目をまたぐ輪郭は、地図を横断する線にならないよう分ける。
   Iterable<List<List<double>>> _drawRings(
-      List<List<List<double>>> rings) sync* {
+    List<List<List<double>>> rings,
+  ) sync* {
     for (final ring in rings) {
       if (japan || ring.length < 2) {
         yield ring;

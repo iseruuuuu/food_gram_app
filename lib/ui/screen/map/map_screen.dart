@@ -278,8 +278,8 @@ class MapScreen extends HookConsumerWidget {
                           ),
                           const Gap(8),
                           MapCategoryChipBar(
-                            onCategoryChanged: () =>
-                                controller.refreshPinsForCategoryFilter(),
+                            onCategoryChanged:
+                                controller.refreshPinsForCategoryFilter,
                           ),
                         ],
                       ),
