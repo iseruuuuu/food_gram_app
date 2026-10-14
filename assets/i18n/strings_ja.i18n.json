@@ -278,6 +278,11 @@
     "memberOnlyBadge": "メンバー限定",
     "memberNumber": "FoodGram {number}人目のメンバー"
   },
+  "tagDex": {
+    "title": "タグ図鑑",
+    "hint": "投稿したタグがオンになります",
+    "retry": "再試行"
+  },
   "postDetailSheet": {
     "title": "この投稿について",
     "shareButton": "この投稿をシェアする",

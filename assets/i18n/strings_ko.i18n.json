@@ -279,6 +279,11 @@
     "memberOnlyBadge": "멤버 전용",
     "memberNumber": "FoodGram {number}번째 멤버"
   },
+  "tagDex": {
+    "title": "태그 도감",
+    "hint": "게시한 태그가 켜집니다",
+    "retry": "다시 시도"
+  },
   "postDetailSheet": {
     "title": "이 게시물에 대해",
     "shareButton": "이 게시물 공유",

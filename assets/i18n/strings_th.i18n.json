@@ -279,6 +279,11 @@
     "memberOnlyBadge": "เฉพาะสมาชิก",
     "memberNumber": "สมาชิกคนที่ {number} ของ FoodGram"
   },
+  "tagDex": {
+    "title": "สมุดแท็ก",
+    "hint": "แท็กที่โพสต์ไว้จะเปิดอยู่",
+    "retry": "ลองอีกครั้ง"
+  },
   "postDetailSheet": {
     "title": "เกี่ยวกับโพสต์นี้",
     "shareButton": "แชร์โพสต์นี้",

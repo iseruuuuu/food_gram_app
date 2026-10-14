@@ -279,6 +279,11 @@
     "memberOnlyBadge": "会员专属",
     "memberNumber": "FoodGram 第 {number} 位成员"
   },
+  "tagDex": {
+    "title": "标签图鉴",
+    "hint": "发过的标签会亮起",
+    "retry": "重试"
+  },
   "postDetailSheet": {
     "title": "关于此帖子",
     "shareButton": "分享此帖子",

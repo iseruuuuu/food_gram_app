@@ -279,6 +279,11 @@
     "memberOnlyBadge": "Chỉ thành viên",
     "memberNumber": "Thành viên thứ {number} của FoodGram"
   },
+  "tagDex": {
+    "title": "Bộ sưu tập thẻ",
+    "hint": "Thẻ bạn đã đăng sẽ được bật",
+    "retry": "Thử lại"
+  },
   "postDetailSheet": {
     "title": "Về bài đăng này",
     "shareButton": "Chia sẻ bài đăng này",
