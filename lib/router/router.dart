@@ -125,6 +125,7 @@ GoRouter router(Ref ref) {
           monthlySummaryRoute,
           weeklySummaryRoute,
           friendAddRoute,
+          postRankingRoute,
           timeLineRouter,
           mapRouter,
           myProfileRouter,
@@ -179,6 +180,18 @@ final friendAddRoute = GoRoute(
       const FriendAddScreen(),
       key: state.pageKey,
       name: AnalyticsScreen.friendAdd,
+    );
+  },
+);
+
+final postRankingRoute = GoRoute(
+  path: RouterPath.postRanking,
+  name: RouterPath.postRanking,
+  pageBuilder: (context, state) {
+    return MaterialPage(
+      key: state.pageKey,
+      name: AnalyticsScreen.ranking,
+      child: const PostRankingScreen(),
     );
   },
 );
@@ -241,4 +254,5 @@ final class RouterPath {
   static const String weeklySummary = 'weekly_summary';
   static const String monthlySummary = 'monthly_summary';
   static const String friendAdd = 'friend_add';
+  static const String postRanking = 'post_ranking';
 }
