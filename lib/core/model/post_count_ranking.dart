@@ -1,4 +1,4 @@
-/// 公開投稿数の集計。順位はまだ付けない。
+/// 投稿の合計数。非公開も含む。順位はまだ付けない。
 class PublicPostCount {
   const PublicPostCount({
     required this.userId,
@@ -13,7 +13,7 @@ class PublicPostCount {
   final int postCount;
 }
 
-/// 公開投稿数の全体順位。
+/// 投稿の合計数での全体順位。
 class PostCountRankingEntry {
   const PostCountRankingEntry({
     required this.userId,
