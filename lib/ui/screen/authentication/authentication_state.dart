@@ -5,7 +5,7 @@ part 'authentication_state.freezed.dart';
 @freezed
 class AuthenticationState with _$AuthenticationState {
   const factory AuthenticationState({
-    @Default(false) isLogin,
-    @Default('') loginStatus,
+    @Default(false) bool isLogin,
+    @Default('') String loginStatus,
   }) = _AuthenticationState;
 }

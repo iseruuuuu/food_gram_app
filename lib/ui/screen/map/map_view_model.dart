@@ -442,7 +442,7 @@ class MapViewModel extends _$MapViewModel {
       return;
     }
 
-    LatLng? target = ctrl.cameraPosition?.target ?? _latestCameraTarget;
+    var target = ctrl.cameraPosition?.target ?? _latestCameraTarget;
     try {
       final bounds = await ctrl.getVisibleRegion();
       target = LatLng(

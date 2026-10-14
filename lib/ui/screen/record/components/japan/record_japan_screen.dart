@@ -57,7 +57,7 @@ class RecordJapanScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = isDark ? const Color(0xFF161616) : Colors.white;
     final visits = recordVisitedPrefectureStats(posts);
-    final visitedCount = visits.length.clamp(0, japanPrefectureCap).toInt();
+    final visitedCount = visits.length.clamp(0, japanPrefectureCap);
     final selectorTop = recordMapOverlayTopForContext(context);
     // iOS はタブ分の 120。Android は SafeArea がタブを避けるので、地図を高くする。
     final bottomPadding = Platform.isIOS ? 120.0 : 16.0;

@@ -13,8 +13,8 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/theme/style/edit_post_style.dart';
 import 'package:food_gram_app/core/theme/style/post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
-import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
+import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_tag.dart';
@@ -108,7 +108,9 @@ class EditPostScreen extends HookConsumerWidget {
         posts.foodImage.isNotEmpty ? posts.foodImage.split(',').first : '';
     final foodImageUrl = firstImagePath.isNotEmpty
         ? supabase.storage.from('food').getPublicUrl(
-              firstImagePath.startsWith('/') ? firstImagePath.substring(1) : firstImagePath,
+              firstImagePath.startsWith('/')
+                  ? firstImagePath.substring(1)
+                  : firstImagePath,
             )
         : '';
     return GestureDetector(
@@ -209,7 +211,8 @@ class EditPostScreen extends HookConsumerWidget {
                                               : CachedNetworkImage(
                                                   imageUrl: existingImageUrl,
                                                   fit: BoxFit.cover,
-                                                  memCacheWidth: previewCacheWidth,
+                                                  memCacheWidth:
+                                                      previewCacheWidth,
                                                 ),
                                         ),
                                       ),
@@ -371,58 +374,58 @@ class EditPostScreen extends HookConsumerWidget {
                               return Center(
                                 child: GestureDetector(
                                   onTap: () async {
-                                  primaryFocus?.unfocus();
-                                  await showModalBottomSheet<void>(
-                                    context: navigatorContext,
-                                    builder: (_) {
-                                      return AppPostImageModalSheet(
-                                        camera: () async {
-                                          await ref
-                                              .read(
-                                                editPostViewModelProvider()
-                                                    .notifier,
-                                              )
-                                              .camera(navigatorContext);
-                                        },
-                                        album: () async {
-                                          await ref
-                                              .read(
-                                                editPostViewModelProvider()
-                                                    .notifier,
-                                              )
-                                              .album(navigatorContext);
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: placeholderBg,
-                                    borderRadius: BorderRadius.circular(8),
-                                    border:
-                                        Border.all(color: placeholderBorder),
-                                  ),
-                                  width: previewSize,
-                                  height: previewSize,
-                                  child: foodImageUrl.isNotEmpty
-                                      ? ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: CachedNetworkImage(
-                                            imageUrl: foodImageUrl,
-                                            fit: BoxFit.cover,
-                                            memCacheWidth: previewCacheWidth,
+                                    primaryFocus?.unfocus();
+                                    await showModalBottomSheet<void>(
+                                      context: navigatorContext,
+                                      builder: (_) {
+                                        return AppPostImageModalSheet(
+                                          camera: () async {
+                                            await ref
+                                                .read(
+                                                  editPostViewModelProvider()
+                                                      .notifier,
+                                                )
+                                                .camera(navigatorContext);
+                                          },
+                                          album: () async {
+                                            await ref
+                                                .read(
+                                                  editPostViewModelProvider()
+                                                      .notifier,
+                                                )
+                                                .album(navigatorContext);
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: placeholderBg,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border:
+                                          Border.all(color: placeholderBorder),
+                                    ),
+                                    width: previewSize,
+                                    height: previewSize,
+                                    child: foodImageUrl.isNotEmpty
+                                        ? ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            child: CachedNetworkImage(
+                                              imageUrl: foodImageUrl,
+                                              fit: BoxFit.cover,
+                                              memCacheWidth: previewCacheWidth,
+                                            ),
+                                          )
+                                        : Icon(
+                                            Icons.add,
+                                            size: 40,
+                                            color: plusIconColor,
                                           ),
-                                        )
-                                      : Icon(
-                                          Icons.add,
-                                          size: 40,
-                                          color: plusIconColor,
-                                        ),
+                                  ),
                                 ),
-                              ),
-                            );
+                              );
                             },
                           ),
                       ],
@@ -658,11 +661,11 @@ class EditPostScreen extends HookConsumerWidget {
                         ref
                             .read(firebaseAnalyticsServiceProvider)
                             .logEventUnawaited(
-                              name: AnalyticsEvent.postEditComplete,
-                              parameters: {
-                                AnalyticsParam.postId: posts.id,
-                              },
-                            );
+                          name: AnalyticsEvent.postEditComplete,
+                          parameters: {
+                            AnalyticsParam.postId: posts.id,
+                          },
+                        );
                         while (loading) {
                           await Future<void>.delayed(
                             const Duration(milliseconds: 100),

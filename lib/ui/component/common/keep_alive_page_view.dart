@@ -87,8 +87,9 @@ class _KeepAlivePageViewState extends State<KeepAlivePageView>
             for (var i = 0; i < widget.children.length; i++)
               TickerMode(
                 enabled: i == widget.index,
-                child:
-                    _activated[i] ? widget.children[i] : const SizedBox.shrink(),
+                child: _activated[i]
+                    ? widget.children[i]
+                    : const SizedBox.shrink(),
               ),
           ],
         ),

@@ -92,12 +92,12 @@ class MapSelectedPostCard extends HookConsumerWidget {
                       child: InkWell(
                         customBorder: const CircleBorder(),
                         onTap: onClose,
-                        child: Center(
+                        child: const Center(
                           child: Material(
                             color: Colors.white,
-                            shape: const CircleBorder(),
+                            shape: CircleBorder(),
                             elevation: 2,
-                            child: const SizedBox(
+                            child: SizedBox(
                               width: 32,
                               height: 32,
                               child: Icon(
