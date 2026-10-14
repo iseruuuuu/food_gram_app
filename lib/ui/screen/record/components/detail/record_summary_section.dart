@@ -3,6 +3,7 @@ import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_premium_lock.dart';
+import 'package:food_gram_app/ui/screen/record/components/detail/record_rank_section.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -115,6 +116,7 @@ class RecordSummarySection extends StatelessWidget {
                     ],
                   ),
                 ),
+                const RecordRankSection(),
                 if (!isSubscribed) ...[
                   const Gap(14),
                   RecordPremiumLockBanner(
