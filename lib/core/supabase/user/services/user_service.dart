@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:food_gram_app/core/cache/cache_manager.dart';
+import 'package:food_gram_app/core/model/post_count_ranking.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -158,6 +159,65 @@ class UserService extends _$UserService {
       },
       duration: const Duration(minutes: 5),
     );
+  }
+
+  /// 投稿の合計数。非公開も件数に含める。中身は返さない。
+  Future<List<PublicPostCount>> getPublicPostCounts() {
+    return _cacheManager.get<List<PublicPostCount>>(
+      key: 'all_post_counts',
+      fetcher: _fetchPublicPostCounts,
+      duration: const Duration(minutes: 5),
+    );
+  }
+
+  Future<List<PublicPostCount>> _fetchPublicPostCounts() async {
+    const pageSize = 1000;
+    const maxPages = 100;
+    final counts = <String, int>{};
+    var from = 0;
+    for (var page = 0; page < maxPages; page++) {
+      final rows = await supabase
+          .from('posts')
+          .select('user_id')
+          .order('id')
+          .range(from, from + pageSize - 1);
+      if (rows.isEmpty) {
+        break;
+      }
+      for (final row in rows) {
+        final userId = row['user_id'];
+        if (userId is! String || userId.isEmpty) {
+          continue;
+        }
+        counts[userId] = (counts[userId] ?? 0) + 1;
+      }
+      if (rows.length < pageSize) {
+        break;
+      }
+      from += pageSize;
+    }
+    if (counts.isEmpty) {
+      return [];
+    }
+    final users = await getUsersByIds(counts.keys);
+    return [
+      for (final entry in counts.entries)
+        PublicPostCount(
+          userId: entry.key,
+          name: _text(users[entry.key], 'name'),
+          image: _text(users[entry.key], 'image'),
+          postCount: entry.value,
+        ),
+    ];
+  }
+
+  String _text(Map<String, dynamic>? row, String key) {
+    final value = row?[key];
+    return value is String ? value : '';
+  }
+
+  void invalidatePublicPostCounts() {
+    _cacheManager.invalidate('all_post_counts');
   }
 
   /// キャッシュを無効化するメソッド
