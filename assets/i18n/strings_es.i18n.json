@@ -279,6 +279,11 @@
     "memberOnlyBadge": "Solo miembros",
     "memberNumber": "Miembro n.º {number} de FoodGram"
   },
+  "tagDex": {
+    "title": "Colección de etiquetas",
+    "hint": "Las etiquetas que publicaste están activadas",
+    "retry": "Reintentar"
+  },
   "postDetailSheet": {
     "title": "Acerca de esta publicación",
     "shareButton": "Compartir esta publicación",

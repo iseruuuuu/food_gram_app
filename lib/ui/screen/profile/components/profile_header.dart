@@ -263,7 +263,7 @@ class AppProfileHeader extends ConsumerWidget {
                   ),
                 ),
               ),
-              const Gap(12),
+              const Gap(8),
               const MemoryAlbumEntryCard(),
             ] else
               const Gap(8),

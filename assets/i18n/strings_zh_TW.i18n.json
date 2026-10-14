@@ -279,6 +279,11 @@
     "memberOnlyBadge": "會員專屬",
     "memberNumber": "FoodGram 第 {number} 位成員"
   },
+  "tagDex": {
+    "title": "標籤圖鑑",
+    "hint": "發過的標籤會亮起",
+    "retry": "重試"
+  },
   "postDetailSheet": {
     "title": "關於此貼文",
     "shareButton": "分享此貼文",

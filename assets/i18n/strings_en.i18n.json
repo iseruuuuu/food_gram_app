@@ -278,6 +278,11 @@
     "memberOnlyBadge": "Members only",
     "memberNumber": "FoodGram member #{number}"
   },
+  "tagDex": {
+    "title": "Tag Collection",
+    "hint": "Tags you've posted are switched on",
+    "retry": "Retry"
+  },
   "postDetailSheet": {
     "title": "About this post",
     "shareButton": "Share this post",

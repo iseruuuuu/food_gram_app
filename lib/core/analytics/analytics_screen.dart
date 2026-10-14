@@ -27,6 +27,7 @@ abstract final class AnalyticsScreen {
   static const draft = 'Draft';
   static const savedPosts = 'SavedPosts';
   static const wantToGoList = 'WantToGoList';
+  static const tagDex = 'TagDex';
   static const postDetail = 'PostDetail';
   static const authentication = 'Authentication';
   static const registrationWelcome = 'RegistrationWelcome';
@@ -61,6 +62,7 @@ abstract final class AnalyticsScreen {
     draft,
     savedPosts,
     wantToGoList,
+    tagDex,
     postDetail,
     authentication,
     registrationWelcome,
@@ -89,6 +91,7 @@ abstract final class AnalyticsScreen {
     'notifications': notification,
     'stored_post': savedPosts,
     'want_to_go_list': wantToGoList,
+    'tag_dex': tagDex,
     'stored_post_detail': postDetail,
     'memory_album_list': album,
     'memory_album_create': albumForm,

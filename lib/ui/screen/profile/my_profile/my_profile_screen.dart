@@ -56,12 +56,26 @@ class MyProfileScreen extends HookConsumerWidget {
               surfaceTintColor: AppTheme.backgroundOf(context),
               elevation: 0,
               centerTitle: true,
-              leading: IconButton(
-                onPressed: () => context.pushNamed(RouterPath.notifications),
-                icon: const Icon(
-                  Icons.favorite_border,
-                  color: AppTheme.primaryOrange,
-                ),
+              leadingWidth: 96,
+              leading: Row(
+                children: [
+                  IconButton(
+                    onPressed: () =>
+                        context.pushNamed(RouterPath.notifications),
+                    icon: const Icon(
+                      Icons.favorite_border,
+                      color: AppTheme.primaryOrange,
+                    ),
+                  ),
+                  IconButton(
+                    tooltip: Translations.of(context).tagDex.title,
+                    onPressed: () => context.pushNamed(RouterPath.tagDex),
+                    icon: Icon(
+                      Icons.menu_book_outlined,
+                      color: AppTheme.textPrimaryOf(context),
+                    ),
+                  ),
+                ],
               ),
               title: Text(
                 Translations.of(context).tab.myPage,

@@ -41,6 +41,17 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
+      path: RouterPath.tagDex,
+      name: RouterPath.tagDex,
+      pageBuilder: (context, state) {
+        return whiteOut(
+          const TagDexScreen(),
+          key: state.pageKey,
+          name: AnalyticsScreen.tagDex,
+        );
+      },
+    ),
+    GoRoute(
       path: RouterPath.storedPost,
       name: RouterPath.storedPost,
       pageBuilder: (context, state) {
