@@ -65,6 +65,7 @@ class _TagDexBody extends StatelessWidget {
       (sum, entry) => sum + _collectedCount(entry.value, posted),
     );
     final bottom = MediaQuery.paddingOf(context).bottom + 24;
+    final columns = tagDexCrossAxisCount(MediaQuery.sizeOf(context).width);
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -84,8 +85,8 @@ class _TagDexBody extends StatelessWidget {
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: SliverGrid.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: columns,
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
                 childAspectRatio: 0.72,
@@ -293,6 +294,18 @@ class _StatusLamp extends StatelessWidget {
       ),
     );
   }
+}
+
+/// 狭い画面では 3 列にする。
+///
+/// 幅 320px では左右 padding を除いて 288px。4 列だとタイル幅が約 66px になり、
+/// 「その他のご飯」のような名前が 2 行でも切れる。高さを伸ばすだけでは幅が足りない。
+@visibleForTesting
+int tagDexCrossAxisCount(double viewportWidth) {
+  if (viewportWidth < 360) {
+    return 3;
+  }
+  return 4;
 }
 
 Set<String> _postedTagIds(List<Posts> posts) {
