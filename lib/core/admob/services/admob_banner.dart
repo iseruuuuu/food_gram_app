@@ -21,7 +21,10 @@ class BannerAdNotifier extends StateNotifier<BannerAd?> {
           disposeAd();
           return;
         }
-        _loadAd();
+        final width = _width;
+        if (width != null) {
+          loadForWidth(width, force: true);
+        }
       },
       fireImmediately: true,
     );
@@ -29,48 +32,89 @@ class BannerAdNotifier extends StateNotifier<BannerAd?> {
 
   final Ref ref;
   final String id;
+  int? _width;
+  int _loadGeneration = 0;
+  bool _isLoading = false;
+  bool _disposed = false;
 
   /// 広告を破棄する（サブスクリプション時に使用）
   void disposeAd() {
+    _loadGeneration++;
+    _isLoading = false;
     state?.dispose();
     state = null;
   }
 
-  void _loadAd() {
-    if (!canRequestAdsFrom(ref) || state != null) {
+  /// 表示幅いっぱいに合わせたアンカーバナーを読み込む。高さは50前後。
+  Future<void> loadForWidth(int width, {bool force = false}) async {
+    if (_disposed || width <= 0 || !canRequestAdsFrom(ref)) {
+      return;
+    }
+    if (!force && _width == width && (state != null || _isLoading)) {
+      return;
+    }
+    _width = width;
+    final generation = ++_loadGeneration;
+    _isLoading = true;
+    state?.dispose();
+    state = null;
+
+    final size = await _anchoredSize(width);
+    if (_disposed || generation != _loadGeneration || !canRequestAdsFrom(ref)) {
       return;
     }
 
     BannerAd(
       adUnitId: bannerAdUnitId,
-      size: AdSize.banner,
+      size: size,
       request: const AdRequest(),
       listener: BannerAdListener(
         onAdFailedToLoad: (ad, error) {
           ad.dispose();
+          if (generation != _loadGeneration) {
+            return;
+          }
+          _isLoading = false;
           state = null;
         },
         onAdLoaded: (ad) {
-          if (!canRequestAdsFrom(ref)) {
+          if (_disposed ||
+              generation != _loadGeneration ||
+              !canRequestAdsFrom(ref)) {
             ad.dispose();
-            state = null;
             return;
           }
+          _isLoading = false;
           state = ad as BannerAd;
         },
       ),
     ).load();
   }
 
+  Future<AdSize> _anchoredSize(int width) async {
+    try {
+      final adaptive = await AdSize
+          .getCurrentOrientationAnchoredAdaptiveBannerAdSize(width);
+      if (adaptive != null) {
+        return adaptive;
+      }
+    } on Object {
+      // 幅が取れない環境では従来の320×50に戻す。
+    }
+    return AdSize.banner;
+  }
+
   @override
   void dispose() {
+    _disposed = true;
+    _loadGeneration++;
     state?.dispose();
     super.dispose();
   }
 }
 
 /// バナー広告を表示するウィジェット
-class AdmobBanner extends ConsumerWidget {
+class AdmobBanner extends ConsumerStatefulWidget {
   const AdmobBanner({
     required this.id,
     super.key,
@@ -79,22 +123,49 @@ class AdmobBanner extends ConsumerWidget {
   final String id;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AdmobBanner> createState() => _AdmobBannerState();
+}
+
+class _AdmobBannerState extends ConsumerState<AdmobBanner> {
+  int? _scheduledWidth;
+
+  void _scheduleLoad(int width) {
+    if (width <= 0 || _scheduledWidth == width) {
+      return;
+    }
+    _scheduledWidth = width;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      ref.read(bannerAdProvider(widget.id).notifier).loadForWidth(width);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final allowAds = canRequestAds(ref.watch(isSubscribeProvider));
     if (!allowAds) {
       return const SizedBox.shrink();
     }
 
-    final bannerAd = ref.watch(bannerAdProvider(id));
-    if (bannerAd == null) {
-      return const SizedBox(width: double.infinity, height: 0);
-    }
-
-    return Container(
-      width: double.infinity,
-      alignment: Alignment.center,
-      height: bannerAd.size.height.toDouble(),
-      child: AdWidget(ad: bannerAd),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final rawWidth = constraints.maxWidth.isFinite
+            ? constraints.maxWidth
+            : MediaQuery.sizeOf(context).width;
+        _scheduleLoad(rawWidth.truncate());
+        final bannerAd = ref.watch(bannerAdProvider(widget.id));
+        if (bannerAd == null) {
+          return const SizedBox(width: double.infinity, height: 0);
+        }
+        return Container(
+          width: double.infinity,
+          alignment: Alignment.center,
+          height: bannerAd.size.height.toDouble(),
+          child: AdWidget(ad: bannerAd),
+        );
+      },
     );
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/admob/app_open_policy.dart';
+import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/notification/firebase_messaging_service.dart';
@@ -9,6 +11,7 @@ import 'package:food_gram_app/core/supabase/auth/providers/auth_state_provider.d
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
 import 'package:toastification/toastification.dart';
 
 class MyApp extends ConsumerStatefulWidget {
@@ -39,15 +42,42 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.resumed:
         analytics.logEventUnawaited(name: AnalyticsEvent.appForeground);
+        _showAppOpenIfReturning();
       case AppLifecycleState.paused:
       case AppLifecycleState.inactive:
+        if (state == AppLifecycleState.paused) {
+          ref.read(admobOpenNotifierProvider).noteEnteredBackground();
+        }
         analytics.logEventUnawaited(name: AnalyticsEvent.appBackground);
       case AppLifecycleState.detached:
       case AppLifecycleState.hidden:
+        if (state == AppLifecycleState.hidden) {
+          ref.read(admobOpenNotifierProvider).noteEnteredBackground();
+        }
         // 画像キャッシュはバックグラウンドでは消さない。
         // 完全終了後の次回起動時 / 設定の「キャッシュ削除」でクリアする。
         break;
     }
+  }
+
+  void _showAppOpenIfReturning() {
+    final location = ref
+        .read(routerProvider)
+        .routerDelegate
+        .currentConfiguration
+        .uri
+        .path;
+    // タブ画面以外で読むと、起動前にタブ状態を作ってしまう。
+    final onTabShell = location == '/tab' || location == '/tab/';
+    final selectedTab = onTabShell
+        ? ref.read(tabViewModelProvider()).selectedIndex
+        : null;
+    ref.read(admobOpenNotifierProvider).onAppResumed(
+          screenBlocksAd: appOpenBlockedByScreen(
+            location: location,
+            selectedTab: selectedTab,
+          ),
+        );
   }
 
   @override
