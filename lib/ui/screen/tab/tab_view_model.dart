@@ -1,13 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_gram_app/core/admob/admob_gate.dart';
 import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/analytics_screen.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
-import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/ui/screen/map/map_screen.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_screen.dart';
@@ -30,10 +26,8 @@ class TabViewModel extends _$TabViewModel {
   TabState build({
     TabState initState = const TabState(),
   }) {
-    ref.listen(isSubscribeProvider, (previous, next) {
-      _preloadOpenAd(next);
-    });
-    _preloadOpenAd(ref.read(isSubscribeProvider));
+    // タブ表示中にアプリオープンを先読みする。表示は前面復帰側で行う。
+    ref.read(admobOpenNotifierProvider);
     // 初回表示タブの ScreenView（Observer では取れない）
     Future.microtask(_logInitialTabIfNeeded);
     return initState;
@@ -45,12 +39,6 @@ class TabViewModel extends _$TabViewModel {
     const RecordScreen(),
     const MyProfileScreen(),
   ];
-
-  void _preloadOpenAd(AsyncValue<bool> subscription) {
-    if (canRequestAds(subscription)) {
-      ref.read(admobOpenNotifierProvider).loadAd();
-    }
-  }
 
   void _logInitialTabIfNeeded() {
     if (_didLogInitialTab) {
@@ -79,20 +67,6 @@ class TabViewModel extends _$TabViewModel {
       }
 
       _switchToTab(index);
-
-      if (!canRequestAds(ref.read(isSubscribeProvider))) {
-        return;
-      }
-
-      final appOpen = ref.read(admobOpenNotifierProvider);
-      if (appOpen.registerTabSwitchAndShouldShow()) {
-        unawaited(() async {
-          await appOpen.ensureAdReady(resetAttempts: true);
-          await appOpen.showAdIfAvailable();
-        }());
-      } else {
-        appOpen.loadAd();
-      }
     } finally {
       _isHandlingTap = false;
     }

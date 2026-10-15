@@ -32,12 +32,16 @@ abstract class Env {
   static final String iOSInterstitial = _Env.iOSInterstitial;
   @EnviedField(varName: 'IOS_OPEN', obfuscate: true)
   static final String iOSOpen = _Env.iOSOpen;
+  @EnviedField(varName: 'IOS_RECTANGLE', obfuscate: true)
+  static final String iOSRectangle = _Env.iOSRectangle;
   @EnviedField(varName: 'ANDROID_BANNER', obfuscate: true)
   static final String androidBanner = _Env.androidBanner;
   @EnviedField(varName: 'ANDROID_INTERSTITIAL', obfuscate: true)
   static final String androidInterstitial = _Env.androidInterstitial;
   @EnviedField(varName: 'ANDROID_OPEN', obfuscate: true)
   static final String androidOpen = _Env.androidOpen;
+  @EnviedField(varName: 'ANDROID_RECTANGLE', obfuscate: true)
+  static final String androidRectangle = _Env.androidRectangle;
   @EnviedField(varName: 'POINT', obfuscate: true)
   static final String point = _Env.point;
   @EnviedField(varName: 'POST_LENGTH_POINT', obfuscate: true)

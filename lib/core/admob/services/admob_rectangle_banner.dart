@@ -42,7 +42,7 @@ class RectangleBannerNotifier extends StateNotifier<BannerAd?> {
     }
 
     BannerAd(
-      adUnitId: bannerAdUnitId,
+      adUnitId: rectangleAdUnitId,
       size: AdSize.mediumRectangle,
       request: const AdRequest(),
       listener: BannerAdListener(

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:food_gram_app/core/admob/admob_gate.dart';
+import 'package:food_gram_app/core/admob/app_open_policy.dart';
 import 'package:food_gram_app/core/admob/config/admob_config.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -22,7 +23,8 @@ class AdmobOpen {
   int _loadAttempts = 0;
   DateTime? _lastAdShowTime;
   DateTime? _appOpenLoadTime;
-  int _tabSwitchCount = 0;
+  DateTime? _backgroundedAt;
+  bool _ignoreBackground = false;
   final logger = Logger();
   final bool Function() _isAdsBlocked;
 
@@ -60,15 +62,33 @@ class AdmobOpen {
     );
   }
 
-  /// タブ切り替え回数を記録し、表示タイミングかどうかを返す
-  bool registerTabSwitchAndShouldShow() {
-    _tabSwitchCount++;
-    final shouldShow = _tabSwitchCount % tabOpenAdInterval == 0;
-    logger.d(
-      'Tab switch count: $_tabSwitchCount / interval: $tabOpenAdInterval, '
-      'shouldShow: $shouldShow',
-    );
-    return shouldShow;
+  /// バックグラウンドへ入った時刻を記録する。広告表示中は無視する。
+  void noteEnteredBackground() {
+    if (_isAdShowing || _ignoreBackground) {
+      return;
+    }
+    _backgroundedAt ??= DateTime.now();
+  }
+
+  /// 前面に戻ったとき、条件を満たしていれば読み込み済みの広告を出す。
+  ///
+  /// 未読み込みなら待たずに次回復帰用へ読み込む。起動を止めない。
+  void onAppResumed({required bool screenBlocksAd}) {
+    final backgroundedAt = _backgroundedAt;
+    _backgroundedAt = null;
+    if (_isAdShowing || _ignoreBackground) {
+      return;
+    }
+    if (!shouldShowAppOpenOnResume(
+      backgroundedAt: backgroundedAt,
+      now: DateTime.now(),
+      lastShownAt: _lastAdShowTime,
+      screenBlocksAd: screenBlocksAd,
+    )) {
+      loadAd();
+      return;
+    }
+    unawaited(showAdIfAvailable());
   }
 
   /// 表示可能になるまで広告の読み込みを待つ
@@ -109,6 +129,7 @@ class AdmobOpen {
     }
 
     if (!_canShowAd()) {
+      loadAd();
       onAdClosed?.call();
       return;
     }
@@ -123,11 +144,13 @@ class AdmobOpen {
     }
 
     _setupFullScreenCallback(complete);
+    _ignoreBackground = true;
     try {
       await _appOpenAd!.show();
       logger.d('App open ad show() called');
     } on Object catch (e) {
       _isAdShowing = false;
+      _ignoreBackground = false;
       logger.e('Error showing app open ad: $e');
       _disposeAd();
       loadAd();
@@ -195,6 +218,8 @@ class AdmobOpen {
       },
       onAdDismissedFullScreenContent: (ad) {
         _isAdShowing = false;
+        _ignoreBackground = false;
+        _backgroundedAt = null;
         logger.i('App open ad dismissed');
         _disposeAd();
         loadAd();
@@ -202,6 +227,8 @@ class AdmobOpen {
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
         _isAdShowing = false;
+        _ignoreBackground = false;
+        _backgroundedAt = null;
         logger.e('App open ad failed to show: $error');
         _disposeAd();
         loadAd();
@@ -237,7 +264,8 @@ class AdmobOpen {
     _disposeAd();
     _isAdShowing = false;
     _isAdLoading = false;
-    _tabSwitchCount = 0;
+    _ignoreBackground = false;
+    _backgroundedAt = null;
   }
 }
 
@@ -250,8 +278,7 @@ class AdmobOpenNotifier extends _$AdmobOpenNotifier {
       isAdsBlocked: () => !canRequestAdsFrom(ref),
     );
     // watch にすると購読状態が変わるたび build が再実行され、
-    // 前回ビルド分の onDispose で読み込み済み広告とタブ切り替え回数が
-    // リセットされてしまう。
+    // 前回ビルド分の onDispose で読み込み済み広告が破棄されてしまう。
     ref.listen(
       isSubscribeProvider,
       (_, next) {

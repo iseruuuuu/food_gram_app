@@ -27,6 +27,14 @@ String get bannerAdUnitId {
   return Platform.isAndroid ? Env.androidBanner : Env.iOSBanner;
 }
 
+// レクタングル広告（300×250）。デバッグはバナー用の公式テストIDを使う。
+String get rectangleAdUnitId {
+  if (_isTest) {
+    return Platform.isAndroid ? _testIds.android.banner : _testIds.ios.banner;
+  }
+  return Platform.isAndroid ? Env.androidRectangle : Env.iOSRectangle;
+}
+
 // インタースティシャル広告
 String get interstitialAdUnitId {
   if (_isTest) {
@@ -47,10 +55,12 @@ String get appOpenAdUnitId {
 
 // 広告の表示間隔
 const Duration minInterstitialDuration = Duration(minutes: 5);
-const Duration minAppOpenDuration = Duration(minutes: 5);
 
-// タブ切り替えN回ごとのアプリオープン広告（控えめに収益を残す）
-const tabOpenAdInterval = 40;
+/// アプリオープンを再表示するまでの最短間隔。
+const Duration minAppOpenDuration = Duration(hours: 4);
+
+/// この時間以上バックグラウンドにいた復帰でのみアプリオープンを出す。
+const Duration minBackgroundForAppOpen = Duration(minutes: 10);
 
 // 投稿詳細を閉じるN回ごとのインタースティシャル広告
 const postDetailCloseAdInterval = 7;
