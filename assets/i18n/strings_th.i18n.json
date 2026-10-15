@@ -277,7 +277,12 @@
     "rankingPositionFormat": "#{rank}",
     "rankingHiddenPosition": "???",
     "memberOnlyBadge": "เฉพาะสมาชิก",
-    "memberNumber": "สมาชิกคนที่ {number} ของ FoodGram"
+    "memberNumber": "สมาชิกคนที่ {number} ของ FoodGram",
+    "sortNewest": "ใหม่สุด",
+    "sortOldest": "เก่าสุด",
+    "sortHighestRating": "คะแนนสูงสุด",
+    "sortLowestRating": "คะแนนต่ำสุด",
+    "sortMostLiked": "ถูกใจมากสุด"
   },
   "tagDex": {
     "title": "สมุดแท็ก",

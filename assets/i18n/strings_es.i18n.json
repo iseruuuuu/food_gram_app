@@ -277,7 +277,12 @@
     "rankingPositionFormat": "#{rank}",
     "rankingHiddenPosition": "???",
     "memberOnlyBadge": "Solo miembros",
-    "memberNumber": "Miembro n.º {number} de FoodGram"
+    "memberNumber": "Miembro n.º {number} de FoodGram",
+    "sortNewest": "Más recientes",
+    "sortOldest": "Más antiguos",
+    "sortHighestRating": "Mejor valorados",
+    "sortLowestRating": "Peor valorados",
+    "sortMostLiked": "Más gustados"
   },
   "tagDex": {
     "title": "Colección de etiquetas",

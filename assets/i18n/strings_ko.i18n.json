@@ -277,7 +277,12 @@
     "rankingPositionFormat": "#{rank}",
     "rankingHiddenPosition": "???",
     "memberOnlyBadge": "멤버 전용",
-    "memberNumber": "FoodGram {number}번째 멤버"
+    "memberNumber": "FoodGram {number}번째 멤버",
+    "sortNewest": "최신순",
+    "sortOldest": "오래된순",
+    "sortHighestRating": "높은 평점순",
+    "sortLowestRating": "낮은 평점순",
+    "sortMostLiked": "좋아요순"
   },
   "tagDex": {
     "title": "태그 도감",
