@@ -46,4 +46,19 @@ void main() {
       expect(ranked, isEmpty);
     });
   });
+
+  group('addPublicPostCountRows', () {
+    test('counts only public posts', () {
+      final counts = <String, int>{};
+      addPublicPostCountRows(counts, [
+        {'user_id': 'a', 'is_anonymous': false},
+        {'user_id': 'a', 'is_anonymous': true},
+        {'user_id': 'a'},
+        {'user_id': 'b', 'is_anonymous': true},
+        {'user_id': '', 'is_anonymous': false},
+      ]);
+
+      expect(counts, {'a': 2});
+    });
+  });
 }

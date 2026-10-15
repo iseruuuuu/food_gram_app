@@ -161,10 +161,10 @@ class UserService extends _$UserService {
     );
   }
 
-  /// 投稿の合計数。非公開も件数に含める。中身は返さない。
+  /// 公開投稿の合計数。非公開（`is_anonymous = true`）は含めない。
   Future<List<PublicPostCount>> getPublicPostCounts() {
     return _cacheManager.get<List<PublicPostCount>>(
-      key: 'all_post_counts',
+      key: 'public_post_counts',
       fetcher: _fetchPublicPostCounts,
       duration: const Duration(minutes: 5),
     );
@@ -172,25 +172,19 @@ class UserService extends _$UserService {
 
   Future<List<PublicPostCount>> _fetchPublicPostCounts() async {
     const pageSize = 1000;
-    const maxPages = 100;
     final counts = <String, int>{};
     var from = 0;
-    for (var page = 0; page < maxPages; page++) {
+    while (true) {
       final rows = await supabase
           .from('posts')
-          .select('user_id')
+          .select('user_id, is_anonymous')
+          .eq('is_anonymous', false)
           .order('id')
           .range(from, from + pageSize - 1);
       if (rows.isEmpty) {
         break;
       }
-      for (final row in rows) {
-        final userId = row['user_id'];
-        if (userId is! String || userId.isEmpty) {
-          continue;
-        }
-        counts[userId] = (counts[userId] ?? 0) + 1;
-      }
+      addPublicPostCountRows(counts, rows);
       if (rows.length < pageSize) {
         break;
       }
@@ -217,7 +211,7 @@ class UserService extends _$UserService {
   }
 
   void invalidatePublicPostCounts() {
-    _cacheManager.invalidate('all_post_counts');
+    _cacheManager.invalidate('public_post_counts');
   }
 
   /// キャッシュを無効化するメソッド

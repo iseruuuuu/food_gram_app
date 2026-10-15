@@ -1,4 +1,4 @@
-/// 投稿の合計数。非公開も含む。順位はまだ付けない。
+/// 公開投稿の合計数。非公開（`is_anonymous = true`）は含めない。順位はまだ付けない。
 class PublicPostCount {
   const PublicPostCount({
     required this.userId,
@@ -11,6 +11,23 @@ class PublicPostCount {
   final String name;
   final String image;
   final int postCount;
+}
+
+/// `posts` の行から公開投稿だけを `user_id` ごとに数える。
+void addPublicPostCountRows(
+  Map<String, int> counts,
+  Iterable<Map<String, dynamic>> rows,
+) {
+  for (final row in rows) {
+    if (row['is_anonymous'] == true) {
+      continue;
+    }
+    final userId = row['user_id'];
+    if (userId is! String || userId.isEmpty) {
+      continue;
+    }
+    counts[userId] = (counts[userId] ?? 0) + 1;
+  }
 }
 
 /// 投稿の合計数での全体順位。

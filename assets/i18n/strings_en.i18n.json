@@ -424,7 +424,7 @@
     "rankDeltaDown": "-{count}",
     "rankDeltaFlat": "±0",
     "rankDeltaUnknown": "—",
-    "rankComparePending": "Since last visit appears the next time you open this",
+    "rankComparePending": "Your rank change since last visit will appear the next time you open this screen.",
     "rankListEmpty": "No posts yet",
     "rankListCount": "{count}",
     "visitedShopsLabel": "Shops",
