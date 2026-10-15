@@ -1,4 +1,5 @@
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:food_gram_app/core/local/post_rank_history.dart';
 import 'package:food_gram_app/core/model/post_draft.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/restaurant_search_history.dart';
@@ -31,6 +32,7 @@ enum PreferenceKey {
   hasSeenFirstPostGuide,
   hasSeenFirstPostSuccessGuide,
   restaurantSearchHistory,
+  postRankHistory,
 }
 
 class Preference {
@@ -133,6 +135,29 @@ class Preference {
     return pref.getString(_getKey(key)) ?? '';
   }
 
+  /// 今日の投稿数順位をユーザーごとに保存し、保存済みの順位との差を返す。
+  Future<PostRankComparison> recordPostRank({
+    required String userId,
+    required int rank,
+    DateTime? now,
+  }) {
+    final today = now ?? DateTime.now();
+    final storageKey = _getUserKey(PreferenceKey.postRankHistory, userId);
+    return _withSerializedStringListWrite(storageKey, () async {
+      final pref = await _prefs;
+      final current = PostRankHistory.decode(pref.getString(storageKey) ?? '');
+      final comparison = current.compare(
+        currentRank: rank,
+        today: today,
+      );
+      if (rank >= 1) {
+        final updated = current.record(today: today, rank: rank);
+        await pref.setString(storageKey, updated.encode());
+      }
+      return comparison;
+    });
+  }
+
   Future<PostDraft?> getPostDraft() async {
     final raw = await getString(PreferenceKey.postDraft);
     return PostDraft.fromJsonString(raw);
@@ -185,8 +210,7 @@ class Preference {
     return RestaurantSearchHistoryStore.fromJsonString(raw).items;
   }
 
-  Future<void> saveRestaurantSearchHistory(List<Restaurant> items) =>
-      setString(
+  Future<void> saveRestaurantSearchHistory(List<Restaurant> items) => setString(
         PreferenceKey.restaurantSearchHistory,
         RestaurantSearchHistoryStore(items).toJsonString(),
       );

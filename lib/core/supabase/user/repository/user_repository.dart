@@ -1,3 +1,4 @@
+import 'package:food_gram_app/core/model/post_count_ranking.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
@@ -55,6 +56,13 @@ class UserRepository extends _$UserRepository {
       final data =
           await ref.read(userServiceProvider.notifier).getUserFromPost(post);
       return Users.fromJson(data);
+    });
+  }
+
+  /// 投稿の合計数。非公開も含む。順位付けは呼び出し側で行う。
+  Future<Result<List<PublicPostCount>, Exception>> getPublicPostCounts() {
+    return _handleDatabaseOperation(() {
+      return ref.read(userServiceProvider.notifier).getPublicPostCounts();
     });
   }
 

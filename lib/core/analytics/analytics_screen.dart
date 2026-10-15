@@ -127,6 +127,7 @@ abstract final class AnalyticsScreen {
     'monthly_summary': monthlySummary,
     'image_editor': imageEditor,
     'friend_add': friendAdd,
+    'post_ranking': ranking,
   };
 
   /// Tab index → screen_name
