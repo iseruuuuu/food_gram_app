@@ -6,6 +6,7 @@ import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider
 import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/theme/style/profile_style.dart';
+import 'package:food_gram_app/core/utils/my_profile_post_sort.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
@@ -17,6 +18,7 @@ import 'package:food_gram_app/ui/component/loading/app_overlay_loading.dart';
 import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/loading/app_tab_loading.dart';
 import 'package:food_gram_app/ui/screen/profile/components/profile_header.dart';
+import 'package:food_gram_app/ui/screen/profile/components/profile_sort_chip_bar.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_screen.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
@@ -34,6 +36,7 @@ class MyProfileScreen extends HookConsumerWidget {
     final postList = ref.watch(myPostStreamProvider);
     final postCount = postList.valueOrNull?.length ?? 0;
     final users = ref.watch(myProfileViewModelProvider());
+    final sortOrder = useState(MyProfilePostSortOrder.newest);
     final scrollController = useScrollController();
     final hasData = postList.valueOrNull != null;
     useScrollToTopOnTabTrigger(
@@ -110,6 +113,7 @@ class MyProfileScreen extends HookConsumerWidget {
                 ref.read(myProfileViewModelProvider().notifier).getData();
               },
               onData: (value) {
+                final sortedPosts = sortMyProfilePosts(value, sortOrder.value);
                 return RefreshIndicator(
                   color: Theme.of(context).colorScheme.primary,
                   backgroundColor: Theme.of(context).colorScheme.surface,
@@ -161,18 +165,27 @@ class MyProfileScreen extends HookConsumerWidget {
                           error: SizedBox.shrink,
                         ),
                       ),
-                      if (value.isNotEmpty)
+                      if (sortedPosts.isNotEmpty) ...[
+                        SliverToBoxAdapter(
+                          child: ProfileSortChipBar(
+                            selectedSort: sortOrder.value,
+                            onSortChanged: (order) {
+                              sortOrder.value = order;
+                            },
+                          ),
+                        ),
                         SliverPadding(
-                          padding: EdgeInsets.only(top: 8, bottom: bottomInset),
+                          padding: EdgeInsets.only(top: 4, bottom: bottomInset),
                           sliver: AppListView(
-                            posts: value,
+                            posts: sortedPosts,
                             routerPath: RouterPath.myProfileDetail,
                             type: AppListViewType.myprofile,
                             controller: scrollController,
+                            sortOrder: sortOrder.value,
                             refresh: () => ref.refresh(myPostStreamProvider),
                           ),
-                        )
-                      else
+                        ),
+                      ] else
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.only(bottom: bottomInset),
