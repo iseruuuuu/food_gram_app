@@ -277,7 +277,12 @@
     "rankingPositionFormat": "#{rank}",
     "rankingHiddenPosition": "???",
     "memberOnlyBadge": "會員專屬",
-    "memberNumber": "FoodGram 第 {number} 位成員"
+    "memberNumber": "FoodGram 第 {number} 位成員",
+    "sortNewest": "最新",
+    "sortOldest": "最早",
+    "sortHighestRating": "高分優先",
+    "sortLowestRating": "低分優先",
+    "sortMostLiked": "最多按讚"
   },
   "tagDex": {
     "title": "標籤圖鑑",

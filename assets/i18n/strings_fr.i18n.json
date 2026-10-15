@@ -277,7 +277,12 @@
     "rankingPositionFormat": "#{rank}",
     "rankingHiddenPosition": "???",
     "memberOnlyBadge": "Réservé aux membres",
-    "memberNumber": "Membre n° {number} de FoodGram"
+    "memberNumber": "Membre n° {number} de FoodGram",
+    "sortNewest": "Plus récents",
+    "sortOldest": "Plus anciens",
+    "sortHighestRating": "Mieux notés",
+    "sortLowestRating": "Moins bien notés",
+    "sortMostLiked": "Plus aimés"
   },
   "tagDex": {
     "title": "Collection de tags",

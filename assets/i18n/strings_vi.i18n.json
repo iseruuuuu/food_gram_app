@@ -277,7 +277,12 @@
     "rankingPositionFormat": "#{rank}",
     "rankingHiddenPosition": "???",
     "memberOnlyBadge": "Chỉ thành viên",
-    "memberNumber": "Thành viên thứ {number} của FoodGram"
+    "memberNumber": "Thành viên thứ {number} của FoodGram",
+    "sortNewest": "Mới nhất",
+    "sortOldest": "Cũ nhất",
+    "sortHighestRating": "Đánh giá cao nhất",
+    "sortLowestRating": "Đánh giá thấp nhất",
+    "sortMostLiked": "Nhiều lượt thích nhất"
   },
   "tagDex": {
     "title": "Bộ sưu tập thẻ",

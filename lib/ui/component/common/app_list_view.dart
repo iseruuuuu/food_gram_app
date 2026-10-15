@@ -1,4 +1,3 @@
-import 'package:auto_animated/auto_animated.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +11,7 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/subscribed_users_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
+import 'package:food_gram_app/core/utils/my_profile_post_sort.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_translatable_text.dart';
@@ -27,6 +27,7 @@ class AppListView extends HookConsumerWidget {
     required this.type,
     required this.controller,
     this.categoryName,
+    this.sortOrder,
     super.key,
   });
 
@@ -36,6 +37,7 @@ class AppListView extends HookConsumerWidget {
   final AppListViewType type;
   final ScrollController controller;
   final String? categoryName;
+  final MyProfilePostSortOrder? sortOrder;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -49,29 +51,21 @@ class AppListView extends HookConsumerWidget {
     final rowCount = (posts.length / 3).ceil();
     const adEvery = 30;
     final adRowInterval = (adEvery / 3).floor();
-    const options = LiveOptions(
-      showItemInterval: Duration(milliseconds: 150),
-      showItemDuration: Duration(milliseconds: 240),
-      visibleFraction: 0.01,
-    );
-    return LiveSliverList.options(
-      options: options,
-      controller: controller,
-      itemCount: rowCount + (rowCount ~/ adRowInterval),
-      itemBuilder: (context, index, animation) {
-        final isAdRow = (index + 1) % (adRowInterval + 1) == 0;
-        Widget rowWidget;
-        if (isAdRow) {
-          rowWidget = SizedBox(
-            width: double.infinity,
-            child: Center(
-              child: RectangleBanner(id: 'row_$index'),
-            ),
-          );
-        } else {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          final isAdRow = (index + 1) % (adRowInterval + 1) == 0;
+          if (isAdRow) {
+            return SizedBox(
+              width: double.infinity,
+              child: Center(
+                child: RectangleBanner(id: 'row_$index'),
+              ),
+            );
+          }
           final actualRowIndex = index - (index ~/ (adRowInterval + 1));
           final startIndex = actualRowIndex * 3;
-          rowWidget = Row(
+          return Row(
             children: List.generate(3, (gridIndex) {
               final itemIndex = startIndex + gridIndex;
               if (itemIndex >= posts.length) {
@@ -94,7 +88,15 @@ class AppListView extends HookConsumerWidget {
               final postUserId = post.userId as String?;
               final isSubscribed = ref.watch(isSubscribedProvider(postUserId));
               final hasMultipleImages = post.foodImageList.length > 1;
+              final showStarBadge =
+                  (sortOrder == MyProfilePostSortOrder.starHigh ||
+                          sortOrder == MyProfilePostSortOrder.starLow) &&
+                      post.star > 0;
+              final showHeartBadge =
+                  sortOrder == MyProfilePostSortOrder.likesHigh &&
+                      post.heart > 0;
               return Expanded(
+                key: ValueKey(postId),
                 child: GestureDetector(
                   onTap: () {
                     EasyDebounce.debounce(
@@ -226,6 +228,46 @@ class AppListView extends HookConsumerWidget {
                                     ),
                                   ),
                                 ),
+                              if (showStarBadge || showHeartBadge)
+                                Positioned(
+                                  top: 4,
+                                  left: 4,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 2,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withValues(
+                                        alpha: 0.65,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          showStarBadge
+                                              ? Icons.star_rounded
+                                              : Icons.favorite_rounded,
+                                          color: AppTheme.primaryOrange,
+                                          size: 12,
+                                        ),
+                                        const SizedBox(width: 2),
+                                        Text(
+                                          showStarBadge
+                                              ? post.star.toStringAsFixed(1)
+                                              : '${post.heart}',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                         ),
@@ -236,21 +278,9 @@ class AppListView extends HookConsumerWidget {
               );
             }),
           );
-        }
-        return FadeTransition(
-          opacity: Tween<double>(
-            begin: 0,
-            end: 1,
-          ).animate(animation),
-          child: SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, 0.1),
-              end: Offset.zero,
-            ).animate(animation),
-            child: rowWidget,
-          ),
-        );
-      },
+        },
+        childCount: rowCount + (rowCount ~/ adRowInterval),
+      ),
     );
   }
 }
