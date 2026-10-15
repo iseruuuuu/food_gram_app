@@ -152,7 +152,7 @@ Stream<List<Posts>> myPostStream(Ref ref) {
         .from('posts')
         .stream(primaryKey: ['id'])
         .eq('user_id', user)
-        .order('created_at', ascending: true)
+        .order('created_at')
         .map((events) {
           final mapped = <Posts>[];
           for (final e in events) {
@@ -166,13 +166,6 @@ Stream<List<Posts>> myPostStream(Ref ref) {
               );
             }
           }
-          mapped.sort((a, b) {
-            final created = b.createdAt.compareTo(a.createdAt);
-            if (created != 0) {
-              return created;
-            }
-            return b.id.compareTo(a.id);
-          });
           return mapped;
         });
   }
