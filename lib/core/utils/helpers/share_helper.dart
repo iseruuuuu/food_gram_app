@@ -70,17 +70,25 @@ class ShareHelpers {
     required String errorMessage,
     String? shareText,
     String? precacheImageUrl,
+    List<String>? precacheImageUrls,
     double pixelRatio = 3,
   }) async {
     ui.Image? image;
     try {
       loading.value = true;
-      if (precacheImageUrl != null && context.mounted) {
+      final urlsToPrecache = <String>[
+        if (precacheImageUrl != null && precacheImageUrl.isNotEmpty)
+          precacheImageUrl,
+        if (precacheImageUrls != null)
+          for (final u in precacheImageUrls)
+            if (u.isNotEmpty) u,
+      ];
+      if (urlsToPrecache.isNotEmpty && context.mounted) {
         try {
-          await precacheImage(
-            CachedNetworkImageProvider(precacheImageUrl),
-            context,
-          );
+          await Future.wait([
+            for (final url in urlsToPrecache)
+              precacheImage(CachedNetworkImageProvider(url), context),
+          ]);
         } on Object {
           // プリロード失敗時もキャプチャは続行する
         }
@@ -140,15 +148,23 @@ class ShareHelpers {
     Size? targetSize,
     double? pixelRatio,
     String? precacheImageUrl,
+    List<String>? precacheImageUrls,
   }) async {
     try {
       loading.value = true;
-      if (precacheImageUrl != null && context.mounted) {
+      final urlsToPrecache = <String>[
+        if (precacheImageUrl != null && precacheImageUrl.isNotEmpty)
+          precacheImageUrl,
+        if (precacheImageUrls != null)
+          for (final u in precacheImageUrls)
+            if (u.isNotEmpty) u,
+      ];
+      if (urlsToPrecache.isNotEmpty && context.mounted) {
         try {
-          await precacheImage(
-            CachedNetworkImageProvider(precacheImageUrl),
-            context,
-          );
+          await Future.wait([
+            for (final url in urlsToPrecache)
+              precacheImage(CachedNetworkImageProvider(url), context),
+          ]);
         } on Object {
           // プリロード失敗時もキャプチャは続行する
         }
