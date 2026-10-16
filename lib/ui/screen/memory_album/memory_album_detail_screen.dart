@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/utils/memory_album_utils.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
+import 'package:food_gram_app/ui/component/dialog/app_memory_album_share_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/memory_album_dialog.dart';
 import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_detail_header.dart';
@@ -134,6 +135,22 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
                       ),
                     ),
                     actions: [
+                      if (postsWithImages(posts, max: 1).isNotEmpty)
+                        IconButton(
+                          tooltip: t.share.shareButton,
+                          icon: const Icon(Icons.ios_share, size: 21),
+                          onPressed: () {
+                            showGeneralDialog<void>(
+                              context: context,
+                              pageBuilder: (_, __, ___) {
+                                return AppMemoryAlbumShareDialog(
+                                  album: album,
+                                  posts: sorted,
+                                );
+                              },
+                            );
+                          },
+                        ),
                       IconButton(
                         icon: const Icon(Icons.edit_outlined, size: 22),
                         onPressed: () async {

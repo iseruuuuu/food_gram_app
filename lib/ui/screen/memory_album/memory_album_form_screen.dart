@@ -5,14 +5,19 @@ import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/memory_album.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/analyzer/record_food_traits_analyzer.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
+import 'package:food_gram_app/core/utils/memory_album_utils.dart';
 import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
+import 'package:food_gram_app/ui/component/dialog/app_memory_album_share_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/memory_album_dialog.dart';
 import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:food_gram_app/ui/screen/memory_album/memory_album_view_model.dart';
@@ -35,6 +40,7 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
     final selectedIds = useState<List<int>>(<int>[]);
     final isSaving = useState(false);
     final didPrefill = useRef(false);
+    final lastPresetTitle = useRef<String?>(null);
 
     if (isEdit) {
       final albumAsync =
@@ -55,6 +61,36 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
     }
 
     final myPosts = ref.watch(myPostStreamProvider);
+
+    void openQuickSharePreview(List<Posts> chosen) {
+      if (postsWithImages(chosen, max: 1).isEmpty) {
+        return;
+      }
+      FocusScope.of(context).unfocus();
+      final isJa = Localizations.localeOf(context).languageCode == 'ja';
+      final fallbackTitle =
+          isJa ? '今月の食の思い出' : 'My Food Memories';
+      final now = DateTime.now();
+      final tempAlbum = MemoryAlbum(
+        id: albumId ?? 'quick_share_preview',
+        title: titleCtrl.text.trim().isEmpty
+            ? fallbackTitle
+            : titleCtrl.text.trim(),
+        description: descCtrl.text.trim(),
+        postIds: selectedIds.value,
+        createdAt: now,
+        updatedAt: now,
+      );
+      showGeneralDialog<void>(
+        context: context,
+        pageBuilder: (_, __, ___) {
+          return AppMemoryAlbumShareDialog(
+            album: tempAlbum,
+            posts: chosen,
+          );
+        },
+      );
+    }
 
     Future<void> save() async {
       if (isSaving.value) {
@@ -152,6 +188,15 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
       selectedIds.value = list;
     }
 
+    final postsValue = myPosts.valueOrNull ?? const <Posts>[];
+    final postsById = {for (final p in postsValue) p.id: p};
+    final selectedPosts = <Posts>[
+      for (final id in selectedIds.value)
+        if (postsById[id] != null) postsById[id]!,
+    ];
+    final hasSelectedPostWithImage =
+        postsWithImages(selectedPosts, max: 1).isNotEmpty;
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -168,6 +213,16 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
             onPressed: () => context.pop(),
           ),
           actions: [
+            if (hasSelectedPostWithImage)
+              IconButton(
+                tooltip: t.share.shareButton,
+                icon: const Icon(
+                  Icons.ios_share,
+                  color: AppTheme.primaryOrange,
+                  size: 21,
+                ),
+                onPressed: () => openQuickSharePreview(selectedPosts),
+              ),
             TextButton(
               onPressed:
                   isSaving.value || selectedIds.value.isEmpty ? null : save,
@@ -192,8 +247,21 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (postsValue.isNotEmpty)
+              _QuickPresetChipsBar(
+                posts: postsValue,
+                onApplyPreset: (presetTitle, ids) {
+                  final currentTitle = titleCtrl.text.trim();
+                  if (currentTitle.isEmpty ||
+                      currentTitle == lastPresetTitle.value) {
+                    titleCtrl.text = presetTitle;
+                    lastPresetTitle.value = presetTitle;
+                  }
+                  selectedIds.value = ids;
+                },
+              ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
               child: TextField(
                 controller: titleCtrl,
                 decoration: InputDecoration(
@@ -204,19 +272,19 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
               child: TextField(
                 controller: descCtrl,
                 decoration: InputDecoration(
                   labelText: t.memoryAlbum.descriptionHint,
                   border: const OutlineInputBorder(),
                 ),
-                maxLines: 3,
+                maxLines: 2,
                 textInputAction: TextInputAction.done,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
               child: Row(
                 children: [
                   Text(
@@ -330,6 +398,140 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// 自分の投稿から「今月のまとめ」「★高評価ベスト」「一番食べたジャンル」をワンタップで自動選択するチップバー
+class _QuickPresetChipsBar extends StatelessWidget {
+  const _QuickPresetChipsBar({
+    required this.posts,
+    required this.onApplyPreset,
+  });
+
+  final List<Posts> posts;
+  final void Function(String title, List<int> postIds) onApplyPreset;
+
+  @override
+  Widget build(BuildContext context) {
+    final isJa = Localizations.localeOf(context).languageCode == 'ja';
+    final now = DateTime.now();
+    final imagePosts = postsWithImages(posts, max: posts.length);
+    final sorted = [...imagePosts]
+      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+    final thisMonthPosts = sorted
+        .where(
+          (p) =>
+              p.createdAt.toLocal().year == now.year &&
+              p.createdAt.toLocal().month == now.month,
+        )
+        .take(9)
+        .toList();
+
+    final recentTop9 = sorted.take(9).toList();
+
+    final highRated = [...imagePosts]
+      ..sort((a, b) {
+        final starCmp = b.star.compareTo(a.star);
+        if (starCmp != 0) {
+          return starCmp;
+        }
+        return b.heart.compareTo(a.heart);
+      });
+    final bestPosts = highRated.take(9).toList();
+
+    final traits = analyzeRecordFoodTraits(posts);
+    final topGenre = traits.topGenre;
+    final topGenreName = topGenre != null
+        ? getLocalizedFoodName(topGenre, context)
+        : null;
+    final genrePosts = topGenre == null
+        ? const <Posts>[]
+        : sorted
+            .where((p) => parseFoodTagIds(p.foodTag).contains(topGenre))
+            .take(9)
+            .toList();
+
+    final chips = <({
+      IconData icon,
+      String label,
+      String title,
+      List<int> ids,
+    })>[
+      if (thisMonthPosts.isNotEmpty)
+        (
+          icon: Icons.calendar_month_outlined,
+          label: isJa
+              ? '今月の思い出 (${thisMonthPosts.length})'
+              : 'This Month (${thisMonthPosts.length})',
+          title: isJa
+              ? '${now.month}月の食の思い出'
+              : 'My Food Memories',
+          ids: [for (final p in thisMonthPosts) p.id],
+        )
+      else if (recentTop9.isNotEmpty)
+        (
+          icon: Icons.auto_awesome_outlined,
+          label: isJa
+              ? '最近の9選 (${recentTop9.length})'
+              : 'Recent Top (${recentTop9.length})',
+          title: isJa ? '今月の食の思い出' : 'My Food Memories',
+          ids: [for (final p in recentTop9) p.id],
+        ),
+      if (bestPosts.isNotEmpty)
+        (
+          icon: Icons.star_rounded,
+          label: isJa
+              ? '★高評価ベスト (${bestPosts.length})'
+              : '★ Best Picks (${bestPosts.length})',
+          title: isJa ? 'お気に入りベスト' : 'My Favorite Dishes',
+          ids: [for (final p in bestPosts) p.id],
+        ),
+      if (topGenreName != null && genrePosts.length >= 2)
+        (
+          icon: Icons.restaurant_menu_rounded,
+          label: '$topGenreName (${genrePosts.length})',
+          title: isJa ? '$topGenreNameまとめ' : '$topGenreName Collection',
+          ids: [for (final p in genrePosts) p.id],
+        ),
+    ];
+
+    if (chips.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return SizedBox(
+      height: 44,
+      child: ListView.separated(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+        scrollDirection: Axis.horizontal,
+        itemCount: chips.length,
+        separatorBuilder: (_, __) => const Gap(8),
+        itemBuilder: (context, index) {
+          final chip = chips[index];
+          return ActionChip(
+            avatar: Icon(
+              chip.icon,
+              size: 16,
+              color: AppTheme.primaryOrange,
+            ),
+            label: Text(
+              chip.label,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            backgroundColor: AppTheme.orangeBackgroundOf(context),
+            side: BorderSide(
+              color: AppTheme.primaryOrange.withValues(alpha: 0.4),
+            ),
+            shape: const StadiumBorder(),
+            onPressed: () => onApplyPreset(chip.title, chip.ids),
+          );
+        },
       ),
     );
   }
