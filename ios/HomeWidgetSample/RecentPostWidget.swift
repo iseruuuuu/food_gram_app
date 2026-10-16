@@ -236,11 +236,15 @@ struct RecentPostWidgetEntryView: View {
     }
 
     private func firstEmoji(from foodTag: String) -> String {
-        let first = foodTag
+        let tags = foodTag
             .split(separator: ",")
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .first { !$0.isEmpty }
-        return first ?? ""
+            .filter { !$0.isEmpty }
+        // カスタムタグ（tag:xxx）以外の通常絵文字があれば優先して返す
+        if let emoji = tags.first(where: { !$0.hasPrefix("tag:") }) {
+            return emoji
+        }
+        return ""
     }
 }
 

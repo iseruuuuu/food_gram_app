@@ -11,5 +11,6 @@ struct HomeWidgetSampleBundle: WidgetBundle {
     var body: some Widget {
         HomeWidgetSample()
         RecentPostWidget()
+        PostCalendarWidget()
     }
 }
