@@ -69,31 +69,12 @@ struct RecentPostWidgetEntryView: View {
         }
     }
 
-    // MARK: - Small Widget (全面写真 + 下部にシンプルに店名のみ)
+    // MARK: - Small Widget (全面写真のみ)
 
     private var smallView: some View {
-        ZStack(alignment: .bottomLeading) {
-            if let payload = entry.payload {
+        ZStack {
+            if entry.payload != nil {
                 photoOrPlaceholderBackground
-
-                LinearGradient(
-                    colors: [
-                        Color.black.opacity(0.0),
-                        Color.black.opacity(0.22),
-                        Color.black.opacity(0.76),
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-
-                Text(displayRestaurant(payload))
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundStyle(.white)
-                    .lineLimit(2)
-                    .minimumScaleFactor(0.8)
-                    .padding(.horizontal, 11)
-                    .padding(.vertical, 10)
-                    .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 emptyStateView(isSmall: true)
             }

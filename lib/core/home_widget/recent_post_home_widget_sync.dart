@@ -24,6 +24,8 @@ class RecentPostHomeWidgetSync {
   static const appGroupId = MapStatsHomeWidgetSync.appGroupId;
   static const iosWidgetKind = 'RecentPostWidget';
   static const payloadKey = 'recent_post_payload';
+  static const _cachedStorageKeyPref = 'recent_post_cached_storage_key';
+  static const _imageBase64Pref = 'recent_post_image_base64';
 
   static const _syncDebounceDuration = Duration(milliseconds: 500);
   static const _maxThumbnailDimension = 600;
