@@ -212,4 +212,85 @@ class ShareHelpers {
       loading.value = false;
     }
   }
+
+  /// 複数の [RepaintBoundary] を高解像度PNGとして順番に書き出し、一括シェアする
+  Future<bool> captureMultipleBoundariesAndShare({
+    required BuildContext context,
+    required List<GlobalKey> boundaryKeys,
+    required ValueNotifier<bool> loading,
+    required bool hasText,
+    required String errorMessage,
+    String? shareText,
+    List<String>? precacheImageUrls,
+    double pixelRatio = 4,
+  }) async {
+    try {
+      loading.value = true;
+      final urlsToPrecache = <String>[
+        if (precacheImageUrls != null)
+          for (final u in precacheImageUrls)
+            if (u.isNotEmpty) u,
+      ];
+      if (urlsToPrecache.isNotEmpty && context.mounted) {
+        try {
+          await Future.wait([
+            for (final url in urlsToPrecache)
+              precacheImage(CachedNetworkImageProvider(url), context),
+          ]);
+        } on Object {
+          // プリロード失敗時もキャプチャは続行する
+        }
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 60));
+      if (!context.mounted) {
+        return false;
+      }
+
+      final tempDir = await getTemporaryDirectory();
+      final files = <XFile>[];
+      final ts = DateTime.now().millisecondsSinceEpoch;
+
+      for (var i = 0; i < boundaryKeys.length; i++) {
+        final boundary = boundaryKeys[i].currentContext?.findRenderObject()
+            as RenderRepaintBoundary?;
+        if (boundary == null) {
+          continue;
+        }
+        final image = await boundary.toImage(pixelRatio: pixelRatio);
+        try {
+          final byteData =
+              await image.toByteData(format: ui.ImageByteFormat.png);
+          if (byteData == null || byteData.lengthInBytes == 0) {
+            continue;
+          }
+          final filePath = '${tempDir.path}/foodgram_share_${ts}_$i.png';
+          final file = File(filePath);
+          await file.writeAsBytes(byteData.buffer.asUint8List());
+          files.add(XFile(file.path));
+        } finally {
+          image.dispose();
+        }
+      }
+
+      if (files.isEmpty) {
+        throw StateError('No images captured from boundaries');
+      }
+      if (!context.mounted) {
+        return false;
+      }
+      if (hasText && shareText != null) {
+        await sharePosts(files, shareText, context: context);
+      } else {
+        await shareOnlyPost(files, context: context);
+      }
+      return true;
+    } on Exception {
+      if (context.mounted) {
+        SnackBarHelper().openErrorSnackBar(context, errorMessage, '');
+      }
+      return false;
+    } finally {
+      loading.value = false;
+    }
+  }
 }

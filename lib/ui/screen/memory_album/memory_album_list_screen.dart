@@ -6,13 +6,17 @@ import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/memory_album.dart';
+import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
+import 'package:food_gram_app/core/utils/memory_album_utils.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
+import 'package:food_gram_app/ui/component/dialog/app_memory_album_share_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/memory_album_dialog.dart';
 import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_card.dart';
@@ -28,9 +32,47 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
     final albumsAsync = ref.watch(memoryAlbumListViewModelProvider);
+    final myPostsAsync = ref.watch(myPostStreamProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
     final isOpeningAlbum = useRef(false);
+
+    void openInstantMonthlyShare(List<Posts> allPosts) {
+      final now = DateTime.now();
+      final sorted = [...allPosts]
+        ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      final monthPosts = sorted
+          .where(
+            (p) =>
+                p.createdAt.toLocal().year == now.year &&
+                p.createdAt.toLocal().month == now.month,
+          )
+          .take(9)
+          .toList();
+      final targetPosts =
+          monthPosts.isNotEmpty ? monthPosts : sorted.take(9).toList();
+      if (targetPosts.isEmpty) {
+        return;
+      }
+      final isJa = Localizations.localeOf(context).languageCode == 'ja';
+      final tempAlbum = MemoryAlbum(
+        id: 'instant_monthly_share',
+        title: isJa ? '今月の食の思い出' : 'My Food Memories',
+        description: '',
+        postIds: [for (final p in targetPosts) p.id],
+        createdAt: now,
+        updatedAt: now,
+      );
+      showGeneralDialog<void>(
+        context: context,
+        pageBuilder: (_, __, ___) {
+          return AppMemoryAlbumShareDialog(
+            album: tempAlbum,
+            posts: targetPosts,
+          );
+        },
+      );
+    }
 
     useEffect(
       () {
@@ -104,6 +146,21 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
           onPressed: () => context.pop(),
         ),
         actions: [
+          if (postsWithImages(
+            myPostsAsync.valueOrNull ?? const <Posts>[],
+            max: 1,
+          ).isNotEmpty)
+            IconButton(
+              icon: const Icon(
+                Icons.ios_share,
+                color: AppTheme.primaryOrange,
+                size: 21,
+              ),
+              tooltip: t.share.shareButton,
+              onPressed: () => openInstantMonthlyShare(
+                myPostsAsync.valueOrNull ?? const <Posts>[],
+              ),
+            ),
           IconButton(
             icon: Container(
               padding: const EdgeInsets.all(6),

@@ -104,9 +104,8 @@ class _SortChip extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: BorderSide(
-          color: isSelected
-              ? AppTheme.primaryOrange
-              : AppTheme.dividerOf(context),
+          color:
+              isSelected ? AppTheme.primaryOrange : AppTheme.dividerOf(context),
         ),
       ),
       clipBehavior: Clip.antiAlias,

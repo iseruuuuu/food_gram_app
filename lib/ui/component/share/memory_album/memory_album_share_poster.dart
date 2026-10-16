@@ -949,3 +949,170 @@ class _StatCounter extends StatelessWidget {
     );
   }
 }
+
+/// 複数枚シェア（カルーセル投稿）の2枚目以降に使う、表紙と統一されたエディトリアル写真カード（9:16）。
+///
+/// 投稿のテキスト詳細（料理名・店名・評価・コメント等）は入れず、
+/// 最大2枚の料理写真をスクラップブック風に美しく見せる。
+class MemoryAlbumShareSlideCard extends StatelessWidget {
+  const MemoryAlbumShareSlideCard({
+    required this.albumTitle,
+    required this.imageUrls,
+    required this.slideIndex,
+    required this.totalSlides,
+    super.key,
+  });
+
+  final String albumTitle;
+
+  /// このスライドに配置する写真URL（1〜2枚）
+  final List<String> imageUrls;
+
+  /// 1始まりのスライド番号（例: 1 / 3）
+  final int slideIndex;
+  final int totalSlides;
+
+  static const Size size = MemoryAlbumSharePoster.size;
+
+  @override
+  Widget build(BuildContext context) {
+    final urls = imageUrls.where((u) => u.trim().isNotEmpty).take(2).toList();
+    final indexLabel =
+        '${slideIndex.toString().padLeft(2, '0')} / ${totalSlides.toString().padLeft(2, '0')}';
+
+    return SizedBox(
+      width: size.width,
+      height: size.height,
+      child: DecoratedBox(
+        decoration: const BoxDecoration(
+          color: MemoryAlbumSharePoster._bgCream,
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              height: 120,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      AppTheme.orangeLight.withValues(alpha: 0.48),
+                      MemoryAlbumSharePoster._bgCream.withValues(alpha: 0),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned.fill(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: MemoryAlbumSharePoster._borderLine,
+                      width: 0.8,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 22, 24, 18),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        indexLabel,
+                        style: TextStyle(
+                          fontFamily: MemoryAlbumSharePoster._serifFamily,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.8,
+                          color: AppTheme.orangeDark,
+                        ),
+                      ),
+                      const Gap(10),
+                      Expanded(
+                        child: Text(
+                          albumTitle.trim().isEmpty
+                              ? 'MY FOOD MEMORIES'
+                              : albumTitle.trim(),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.right,
+                          style: const TextStyle(
+                            fontSize: 10.5,
+                            fontWeight: FontWeight.w600,
+                            color: MemoryAlbumSharePoster._inkSecondary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Gap(14),
+                  Expanded(
+                    child: urls.length >= 2
+                        ? _Layout2Scrapbook(imageUrls: urls)
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 28,
+                            ),
+                            child: _FramedPhoto(
+                              imageUrl: urls.isNotEmpty ? urls.first : '',
+                              borderWidth: 5,
+                              radius: 6,
+                            ),
+                          ),
+                  ),
+                  const Gap(14),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: Assets.image.appIcon.image(
+                          width: 15,
+                          height: 15,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      const Gap(5),
+                      Text(
+                        'FoodGram',
+                        style: TextStyle(
+                          fontFamily: MemoryAlbumSharePoster._serifFamily,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.3,
+                          color: MemoryAlbumSharePoster._inkPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Gap(2),
+                  Text(
+                    'Every meal becomes a memory.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: MemoryAlbumSharePoster._serifFamily,
+                      fontSize: 8.5,
+                      letterSpacing: 0.5,
+                      color: MemoryAlbumSharePoster._inkSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
