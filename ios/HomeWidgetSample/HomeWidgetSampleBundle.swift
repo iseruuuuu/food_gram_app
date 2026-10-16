@@ -10,5 +10,6 @@ import SwiftUI
 struct HomeWidgetSampleBundle: WidgetBundle {
     var body: some Widget {
         HomeWidgetSample()
+        RecentPostWidget()
     }
 }

@@ -11,3 +11,8 @@
 "widget.intent.title" = "Map statistics";
 "widget.intent.description" = "Choose record, Japan prefectures, or world countries.";
 "widget.intent.type" = "Type";
+"recentWidget.config.displayName" = "Latest Post";
+"recentWidget.config.description" = "Shows your most recent food photo and restaurant name.";
+"recentWidget.badge" = "Latest Record";
+"recentWidget.empty.title" = "Latest Post";
+"recentWidget.empty.subtitle" = "Open FoodGram or add a post to show your latest meal here.";
