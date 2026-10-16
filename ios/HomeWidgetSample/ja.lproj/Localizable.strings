@@ -11,3 +11,8 @@
 "widget.intent.title" = "マイマップ統計";
 "widget.intent.description" = "記録、日本、世界の統計タイプを選択します。";
 "widget.intent.type" = "タイプ";
+"recentWidget.config.displayName" = "最近の投稿";
+"recentWidget.config.description" = "直近に記録した料理写真とお店の名前をホーム画面に表示します。";
+"recentWidget.badge" = "最新の記録";
+"recentWidget.empty.title" = "最新の投稿";
+"recentWidget.empty.subtitle" = "アプリを開いて食事を記録すると、ここに写真と店名が表示されます。";
