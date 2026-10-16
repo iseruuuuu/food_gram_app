@@ -37,13 +37,13 @@ struct RecentPostTimelineProvider: TimelineProvider {
 
     func getSnapshot(in context: Context, completion: @escaping (RecentPostEntry) -> Void) {
         let payload = loadRecentPostPayload()
-        let image = loadRecentPostThumbnailImage()
+        let image = loadRecentPostThumbnailImage(for: payload)
         completion(RecentPostEntry(date: Date(), payload: payload, image: image))
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<RecentPostEntry>) -> Void) {
         let payload = loadRecentPostPayload()
-        let image = loadRecentPostThumbnailImage()
+        let image = loadRecentPostThumbnailImage(for: payload)
         let entry = RecentPostEntry(date: Date(), payload: payload, image: image)
         let refresh = Calendar.current.date(byAdding: .hour, value: 1, to: Date()) ?? Date().addingTimeInterval(3600)
         completion(Timeline(entries: [entry], policy: .after(refresh)))

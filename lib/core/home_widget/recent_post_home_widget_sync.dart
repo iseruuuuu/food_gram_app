@@ -64,6 +64,7 @@ class RecentPostHomeWidgetSync {
     try {
       final latest = _pickLatestPostWithImage(posts);
       if (latest == null) {
+        await _clearCachedThumbnailInAppGroup();
         await HomeWidget.saveWidgetData<String?>(payloadKey, null);
         await HomeWidget.updateWidget(
           name: iosWidgetKind,
@@ -73,9 +74,11 @@ class RecentPostHomeWidgetSync {
       }
 
       final storageKey = latest.firstFoodImage;
-      final publicUrl = Supabase.instance.client.storage
-          .from('food')
-          .getPublicUrl(storageKey);
+      final publicUrl = storageKey.isEmpty
+          ? ''
+          : Supabase.instance.client.storage
+              .from('food')
+              .getPublicUrl(storageKey);
 
       final imageFileName = await _ensureThumbnailInAppGroup(
         postId: latest.id,
@@ -143,15 +146,16 @@ class RecentPostHomeWidgetSync {
     required String storageKey,
     required String imageUrl,
   }) async {
-    if (imageUrl.isEmpty) {
+    if (storageKey.isEmpty || imageUrl.isEmpty) {
+      await _clearCachedThumbnailInAppGroup();
       return null;
     }
     try {
       final cachedKey = await HomeWidget.getWidgetData<String>(
-        'recent_post_cached_storage_key',
+        _cachedStorageKeyPref,
       );
       final cachedBase64 = await HomeWidget.getWidgetData<String>(
-        'recent_post_image_base64',
+        _imageBase64Pref,
       );
       if (cachedKey == storageKey &&
           cachedBase64 != null &&
@@ -166,20 +170,22 @@ class RecentPostHomeWidgetSync {
         final response =
             await request.close().timeout(const Duration(seconds: 15));
         if (response.statusCode != 200) {
+          await _clearCachedThumbnailInAppGroup();
           return null;
         }
         final bytes = await _consolidateBytes(response);
         if (bytes.isEmpty) {
+          await _clearCachedThumbnailInAppGroup();
           return null;
         }
         final resizedBytes = _resizeForWidget(bytes);
         final base64Image = base64Encode(resizedBytes);
         await HomeWidget.saveWidgetData<String>(
-          'recent_post_image_base64',
+          _imageBase64Pref,
           base64Image,
         );
         await HomeWidget.saveWidgetData<String>(
-          'recent_post_cached_storage_key',
+          _cachedStorageKeyPref,
           storageKey,
         );
         return 'cached_$postId.jpg';
@@ -192,7 +198,21 @@ class RecentPostHomeWidgetSync {
         error: e,
         stackTrace: st,
       );
+      await _clearCachedThumbnailInAppGroup();
       return null;
+    }
+  }
+
+  static Future<void> _clearCachedThumbnailInAppGroup() async {
+    try {
+      await HomeWidget.saveWidgetData<String?>(_imageBase64Pref, null);
+      await HomeWidget.saveWidgetData<String?>(_cachedStorageKeyPref, null);
+    } on Object catch (e, st) {
+      _log.w(
+        'RecentPostHomeWidgetSync clear cached thumbnail failed',
+        error: e,
+        stackTrace: st,
+      );
     }
   }
 

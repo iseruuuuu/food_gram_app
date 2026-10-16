@@ -26,7 +26,10 @@ func loadRecentPostPayload() -> RecentPostPayloadDTO? {
     return try? JSONDecoder().decode(RecentPostPayloadDTO.self, from: data)
 }
 
-func loadRecentPostThumbnailImage() -> UIImage? {
+func loadRecentPostThumbnailImage(for payload: RecentPostPayloadDTO?) -> UIImage? {
+    guard let fileName = payload?.imageFileName, !fileName.isEmpty else {
+        return nil
+    }
     let suite = UserDefaults(suiteName: MapStatsAppGroup.id)
     guard let base64 = suite?.string(forKey: "recent_post_image_base64"),
           !base64.isEmpty,
