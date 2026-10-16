@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/home_widget/calendar_home_widget_sync.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
@@ -94,5 +95,7 @@ Future<Result<List<Model>, Exception>> restaurantReviews(
 Future<List<Posts>> myMapRepository(Ref ref) async {
   final response =
       await ref.read(mapPostServiceProvider.notifier).getMyMapPosts();
-  return response.map(Posts.fromJson).toList();
+  final posts = response.map(Posts.fromJson).toList();
+  CalendarHomeWidgetSync.scheduleSyncFromPosts(posts);
+  return posts;
 }

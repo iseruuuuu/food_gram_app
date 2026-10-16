@@ -16,3 +16,5 @@
 "recentWidget.badge" = "Latest Record";
 "recentWidget.empty.title" = "Latest Post";
 "recentWidget.empty.subtitle" = "Open FoodGram or add a post to show your latest meal here.";
+"calendarWidget.config.displayName" = "Post Calendar";
+"calendarWidget.config.description" = "Marks the days you posted meals this month on a calendar.";

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/home_widget/calendar_home_widget_sync.dart';
 import 'package:food_gram_app/core/home_widget/recent_post_home_widget_sync.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/tag.dart';
@@ -176,6 +177,7 @@ Stream<List<Posts>> myPostStream(Ref ref) {
     createStream: createMappedStream,
   ).map((posts) {
     RecentPostHomeWidgetSync.scheduleSyncFromPosts(posts);
+    CalendarHomeWidgetSync.scheduleSyncFromPosts(posts);
     return posts;
   });
 }
