@@ -41,7 +41,8 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
       final now = DateTime.now();
       final sorted = [...allPosts]
         ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-      final monthPosts = sorted
+      final imageSorted = postsWithImages(sorted, max: sorted.length);
+      final monthPosts = imageSorted
           .where(
             (p) =>
                 p.createdAt.toLocal().year == now.year &&
@@ -50,7 +51,7 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
           .take(9)
           .toList();
       final targetPosts =
-          monthPosts.isNotEmpty ? monthPosts : sorted.take(9).toList();
+          monthPosts.isNotEmpty ? monthPosts : imageSorted.take(9).toList();
       if (targetPosts.isEmpty) {
         return;
       }

@@ -12,6 +12,7 @@ import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
+import 'package:food_gram_app/core/utils/memory_album_utils.dart';
 import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
@@ -39,6 +40,7 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
     final selectedIds = useState<List<int>>(<int>[]);
     final isSaving = useState(false);
     final didPrefill = useRef(false);
+    final lastPresetTitle = useRef<String?>(null);
 
     if (isEdit) {
       final albumAsync =
@@ -60,19 +62,11 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
 
     final myPosts = ref.watch(myPostStreamProvider);
 
-    void openQuickSharePreview(List<Posts> allPosts) {
-      if (selectedIds.value.isEmpty) {
+    void openQuickSharePreview(List<Posts> chosen) {
+      if (postsWithImages(chosen, max: 1).isEmpty) {
         return;
       }
       FocusScope.of(context).unfocus();
-      final byId = {for (final p in allPosts) p.id: p};
-      final chosen = <Posts>[
-        for (final id in selectedIds.value)
-          if (byId[id] != null) byId[id]!,
-      ];
-      if (chosen.isEmpty) {
-        return;
-      }
       final isJa = Localizations.localeOf(context).languageCode == 'ja';
       final fallbackTitle =
           isJa ? '今月の食の思い出' : 'My Food Memories';
@@ -195,6 +189,13 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
     }
 
     final postsValue = myPosts.valueOrNull ?? const <Posts>[];
+    final postsById = {for (final p in postsValue) p.id: p};
+    final selectedPosts = <Posts>[
+      for (final id in selectedIds.value)
+        if (postsById[id] != null) postsById[id]!,
+    ];
+    final hasSelectedPostWithImage =
+        postsWithImages(selectedPosts, max: 1).isNotEmpty;
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -212,7 +213,7 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
             onPressed: () => context.pop(),
           ),
           actions: [
-            if (selectedIds.value.isNotEmpty && postsValue.isNotEmpty)
+            if (hasSelectedPostWithImage)
               IconButton(
                 tooltip: t.share.shareButton,
                 icon: const Icon(
@@ -220,7 +221,7 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
                   color: AppTheme.primaryOrange,
                   size: 21,
                 ),
-                onPressed: () => openQuickSharePreview(postsValue),
+                onPressed: () => openQuickSharePreview(selectedPosts),
               ),
             TextButton(
               onPressed:
@@ -250,8 +251,11 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
               _QuickPresetChipsBar(
                 posts: postsValue,
                 onApplyPreset: (presetTitle, ids) {
-                  if (titleCtrl.text.trim().isEmpty || !isEdit) {
+                  final currentTitle = titleCtrl.text.trim();
+                  if (currentTitle.isEmpty ||
+                      currentTitle == lastPresetTitle.value) {
                     titleCtrl.text = presetTitle;
+                    lastPresetTitle.value = presetTitle;
                   }
                   selectedIds.value = ids;
                 },
@@ -413,7 +417,8 @@ class _QuickPresetChipsBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final isJa = Localizations.localeOf(context).languageCode == 'ja';
     final now = DateTime.now();
-    final sorted = [...posts]
+    final imagePosts = postsWithImages(posts, max: posts.length);
+    final sorted = [...imagePosts]
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
     final thisMonthPosts = sorted
@@ -427,7 +432,7 @@ class _QuickPresetChipsBar extends StatelessWidget {
 
     final recentTop9 = sorted.take(9).toList();
 
-    final highRated = [...posts]
+    final highRated = [...imagePosts]
       ..sort((a, b) {
         final starCmp = b.star.compareTo(a.star);
         if (starCmp != 0) {

@@ -254,14 +254,14 @@ class ShareHelpers {
         final boundary = boundaryKeys[i].currentContext?.findRenderObject()
             as RenderRepaintBoundary?;
         if (boundary == null) {
-          continue;
+          throw Exception('Share boundary $i is not ready');
         }
         final image = await boundary.toImage(pixelRatio: pixelRatio);
         try {
           final byteData =
               await image.toByteData(format: ui.ImageByteFormat.png);
           if (byteData == null || byteData.lengthInBytes == 0) {
-            continue;
+            throw Exception('Screenshot capture returned empty bytes for $i');
           }
           final filePath = '${tempDir.path}/foodgram_share_${ts}_$i.png';
           final file = File(filePath);
@@ -272,8 +272,8 @@ class ShareHelpers {
         }
       }
 
-      if (files.isEmpty) {
-        throw StateError('No images captured from boundaries');
+      if (files.isEmpty || files.length != boundaryKeys.length) {
+        throw Exception('No images captured from boundaries');
       }
       if (!context.mounted) {
         return false;
