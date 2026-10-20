@@ -96,14 +96,16 @@ class RestaurantReviewScreen extends HookConsumerWidget {
           child: reviews.when(
             success: (data) {
               if (data.isEmpty) {
-                return CustomScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  slivers: const [
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: AppEmpty(),
+                return LayoutBuilder(
+                  builder: (context, constraints) => SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
+                      child: const AppEmpty(),
                     ),
-                  ],
+                  ),
                 );
               }
               final sorted = [...data]..sort(
@@ -181,10 +183,20 @@ class RestaurantReviewScreen extends HookConsumerWidget {
               );
             },
             failure: (_) {
-              return Center(
-                child: Text(
-                  t.restaurantReview.error,
-                  style: TextStyle(color: colorScheme.onSurface),
+              return LayoutBuilder(
+                builder: (context, constraints) => SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: Center(
+                      child: Text(
+                        t.restaurantReview.error,
+                        style: TextStyle(color: colorScheme.onSurface),
+                      ),
+                    ),
+                  ),
                 ),
               );
             },
