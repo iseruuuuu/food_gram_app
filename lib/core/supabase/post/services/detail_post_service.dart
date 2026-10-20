@@ -35,7 +35,9 @@ class DetailPostService extends _$DetailPostService {
       ref.read(blockListProvider).asData?.value ?? [];
 
   @override
-  Future<void> build() async {}
+  Future<void> build() async {
+    ref.watch(blockListProvider);
+  }
 
   /// 特定の投稿を取得
   Future<Result<Map<String, dynamic>, Exception>> getPost(int postId) async {

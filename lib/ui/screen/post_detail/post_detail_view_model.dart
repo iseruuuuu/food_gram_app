@@ -368,6 +368,7 @@ class PostDetailList extends _$PostDetailList {
   @override
   Future<PostDetailListResult> build(PostDetailListInput listInput) {
     _listInput = listInput;
+    ref.watch(blockListProvider);
     return ref.read(detailPostRepositoryProvider.notifier).getPostDetailList(
           initialPost: listInput.initialPost,
           mode: listInput.mode,

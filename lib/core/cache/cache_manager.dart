@@ -114,6 +114,31 @@ class CacheManager {
     _invalidateGeneration(key);
   }
 
+  /// 指定プレフィックスで始まるキーのキャッシュをすべて削除
+  void invalidatePrefix(String prefix) {
+    final matchingKeys =
+        _cache.keys.where((k) => k.startsWith(prefix)).toList();
+    for (final key in matchingKeys) {
+      _cache.remove(key);
+      _invalidateGeneration(key);
+    }
+    final inflightKeys =
+        _inflight.keys.where((k) => k.startsWith(prefix)).toList();
+    for (final key in inflightKeys) {
+      _invalidateGeneration(key);
+    }
+  }
+
+  /// ブロックリスト更新時に関連する投稿キャッシュを無効化
+  void invalidateBlockRelatedCaches() {
+    invalidatePrefix('user_posts_');
+    invalidatePrefix('user_posts_paged_');
+    invalidatePrefix('restaurant_posts_');
+    invalidatePrefix('restaurant_name_');
+    invalidatePrefix('map_posts_');
+    invalidatePrefix('all_posts_');
+  }
+
   // キャッシュ全体をクリア
   void clearAll() {
     _cache.clear();
@@ -133,8 +158,8 @@ class CacheManager {
 
   /// 全投稿のキャッシュを無効化
   void invalidatePostsCache() {
-    invalidate('all_posts');
-    invalidate('map_posts');
+    invalidatePrefix('all_posts');
+    invalidatePrefix('map_posts');
     invalidate('ramen_posts');
   }
 
@@ -146,7 +171,8 @@ class CacheManager {
   /// ユーザー関連のキャッシュを無効化
   void invalidateUserCache(String userId) {
     invalidate('user_$userId');
-    invalidate('user_posts_$userId');
+    invalidatePrefix('user_posts_$userId');
+    invalidatePrefix('user_posts_paged_${userId}_');
     invalidate('user_data_$userId');
     invalidate('heart_amount_${userId}_incl_anon');
     invalidate('heart_amount_${userId}_excl_anon');
@@ -157,9 +183,9 @@ class CacheManager {
 
   /// レストラン関連のキャッシュを無効化
   void invalidateRestaurantCache(double lat, double lng) {
-    invalidate('restaurant_posts_${lat}_$lng');
-    invalidate('restaurant_reviews_${lat}_$lng');
-    invalidate('story_posts_${lat}_$lng');
+    invalidatePrefix('restaurant_posts_${lat}_$lng');
+    invalidatePrefix('restaurant_reviews_${lat}_$lng');
+    invalidatePrefix('story_posts_${lat}_$lng');
   }
 
   /// 近くの投稿キャッシュキー（小数点4桁に丸めてヒット率を上げる）

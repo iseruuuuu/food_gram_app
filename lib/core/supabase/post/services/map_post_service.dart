@@ -24,7 +24,9 @@ class MapPostService extends _$MapPostService {
       ref.read(blockListProvider).asData?.value ?? <String>[];
 
   @override
-  Future<void> build() async {}
+  Future<void> build() async {
+    ref.watch(blockListProvider);
+  }
 
   /// ユーザーIDからユーザーデータを取得（Map向けに提供）
   Future<Map<String, dynamic>> getUserData(String userId) async {
