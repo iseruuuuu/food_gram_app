@@ -1,9 +1,9 @@
-import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
+import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
@@ -19,6 +19,7 @@ import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:photo_viewer/photo_viewer.dart';
 
 class RestaurantReviewScreen extends HookConsumerWidget {
@@ -48,15 +49,6 @@ class RestaurantReviewScreen extends HookConsumerWidget {
     );
     final t = Translations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
-    final animationController =
-        useAnimationController(duration: const Duration(seconds: 2));
-    useEffect(
-      () {
-        animationController.repeat();
-        return null;
-      },
-      [animationController],
-    );
     final deviceWidth = MediaQuery.of(context).size.width;
     String getImageUrl(String imagePath) {
       return ref
@@ -101,336 +93,37 @@ class RestaurantReviewScreen extends HookConsumerWidget {
               if (data.isEmpty) {
                 return const AppEmpty();
               }
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.all(16),
-                      height: 400,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: colorScheme.surfaceContainerHighest,
-                      ),
-                      child: Stack(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              showPhotoViewer(
-                                context: context,
-                                heroTagBuilder: (context) =>
-                                    'image-${data.first.posts.id}',
-                                builder: (context) => Container(
-                                  width: deviceWidth,
-                                  height: deviceWidth,
-                                  color: colorScheme.surface,
-                                  child: CachedNetworkImage(
-                                    imageUrl: getImageUrl(
-                                      data.first.posts.firstFoodImage,
-                                    ),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: CachedNetworkImage(
-                                imageUrl: getImageUrl(
-                                  data.first.posts.firstFoodImage,
-                                ),
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: double.infinity,
-                                placeholder: (context, url) => ColoredBox(
-                                  color: colorScheme.surfaceContainerHighest,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          // 複数画像がある場合のアイコン
-                          if (data.first.posts.foodImageList.length > 1)
-                            Positioned(
-                              top: 12,
-                              right: 12,
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withValues(alpha: 0.6),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.collections,
-                                  color: Colors.white,
-                                  size: 16,
-                                ),
-                              ),
-                            ),
-                          Positioned(
-                            top: 12,
-                            left: 12,
-                            child: AnimatedBuilder(
-                              animation: animationController,
-                              builder: (context, child) {
-                                final scale = 0.9 +
-                                    0.1 *
-                                        sin(animationController.value * 2 * pi);
-                                return Transform.scale(
-                                  scale: scale,
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 18,
-                                      vertical: 8,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(12),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: colorScheme.shadow
-                                              .withValues(alpha: 0.3),
-                                          blurRadius: 8,
-                                          offset: const Offset(0, 2),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Text(
-                                      t.restaurantReview.newLabel,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Colors.transparent,
-                                    Colors.black.withValues(alpha: 0.7),
-                                  ],
-                                ),
-                                borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(16),
-                                  bottomRight: Radius.circular(16),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    data.first.posts.localizedDisplayTitle(t),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const Gap(8),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    height: 40,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        context.pushNamed(
-                                          RouterPath.searchDetailPost,
-                                          extra: data.first,
-                                        );
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.black,
-                                        foregroundColor: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        elevation: 4,
-                                        shadowColor: colorScheme.shadow
-                                            .withValues(alpha: 0.3),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            t.restaurantReview.viewDetails,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (data.length > 1) ...[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 4,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                color: colorScheme.primary,
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                            ),
-                            const Gap(8),
-                            Text(
-                              t.restaurantReview.otherPosts,
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: colorScheme.onSurface,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Gap(12),
-                      SizedBox(
-                        height: 240,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: data.length > 1 ? data.length - 1 : 0,
-                          itemBuilder: (context, index) {
-                            final model = data[index + 1];
-                            return GestureDetector(
-                              onTap: () {
-                                context.pushNamed(
-                                  RouterPath.searchDetailPost,
-                                  extra: model,
-                                );
-                              },
-                              child: Container(
-                                width: 240,
-                                margin: const EdgeInsets.only(right: 12),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: colorScheme.surface,
-                                  border: Border.all(
-                                    color: colorScheme.outlineVariant,
-                                    width: 2,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: colorScheme.shadow
-                                          .withValues(alpha: 0.1),
-                                      blurRadius: 10,
-                                      offset: const Offset(0, 4),
-                                    ),
-                                    BoxShadow(
-                                      color: colorScheme.shadow
-                                          .withValues(alpha: 0.05),
-                                      blurRadius: 10,
-                                      offset: const Offset(0, -4),
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      flex: 3,
-                                      child: Stack(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                              topLeft: Radius.circular(12),
-                                              topRight: Radius.circular(12),
-                                            ),
-                                            child: CachedNetworkImage(
-                                              imageUrl: getImageUrl(
-                                                model.posts.firstFoodImage,
-                                              ),
-                                              fit: BoxFit.cover,
-                                              width: double.infinity,
-                                              placeholder: (context, url) =>
-                                                  ColoredBox(
-                                                color: colorScheme
-                                                    .surfaceContainerHighest,
-                                                child: const Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    strokeWidth: 1,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          // 複数画像がある場合のアイコン
-                                          if (model.posts.foodImageList.length >
-                                              1)
-                                            Positioned(
-                                              top: 4,
-                                              right: 4,
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(4),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.black
-                                                      .withValues(alpha: 0.6),
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: const Icon(
-                                                  Icons.collections,
-                                                  color: Colors.white,
-                                                  size: 16,
-                                                ),
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: FittedBox(
-                                        child: Text(
-                                          model.posts.localizedDisplayTitle(t),
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                            color: colorScheme.onSurface,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                    const Gap(12),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+              final sorted = [...data]..sort(
+                  (a, b) => b.posts.createdAt.compareTo(a.posts.createdAt),
+                );
+              void openPostDetail(Model model) {
+                ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+                  name: AnalyticsEvent.restaurantReviewPostOpen,
+                  parameters: {
+                    AnalyticsParam.postId: model.posts.id,
+                  },
+                );
+                context.pushNamed(
+                  RouterPath.searchDetailPost,
+                  extra: model,
+                );
+              }
+
+              return ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.only(bottom: 32),
+                itemCount: sorted.length + 2,
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return _RestaurantHeroHeader(
+                      model: sorted.first,
+                      getImageUrl: getImageUrl,
+                      onTapDetail: () => openPostDetail(sorted.first),
+                    );
+                  }
+                  if (index == 1) {
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 20, 16, 14),
                       child: Row(
                         children: [
                           Container(
@@ -445,138 +138,26 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                           Text(
                             t.restaurantReview.reviewList,
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: colorScheme.onSurface,
                             ),
                           ),
                         ],
                       ),
+                    );
+                  }
+                  final model = sorted[index - 2];
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+                    child: _RestaurantSpeechBubbleItem(
+                      model: model,
+                      deviceWidth: deviceWidth,
+                      getImageUrl: getImageUrl,
+                      onTapDetail: () => openPostDetail(model),
                     ),
-                    const Gap(8),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: min<int>(data.length, 50),
-                      itemBuilder: (context, index) {
-                        final model = data[index];
-                        return Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: colorScheme.outlineVariant,
-                              width: 2,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color:
-                                    colorScheme.shadow.withValues(alpha: 0.1),
-                                blurRadius: 10,
-                                offset: const Offset(0, 4),
-                              ),
-                              BoxShadow(
-                                color:
-                                    colorScheme.shadow.withValues(alpha: 0.05),
-                                blurRadius: 10,
-                                offset: const Offset(0, -4),
-                              ),
-                            ],
-                          ),
-                          child: Card(
-                            elevation: 0,
-                            color: colorScheme.surface,
-                            margin: EdgeInsets.zero,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 48,
-                                        height: 48,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: colorScheme
-                                              .surfaceContainerHighest,
-                                          border: Border.all(
-                                            color: colorScheme.surface,
-                                            width: 2,
-                                          ),
-                                        ),
-                                        child: ClipOval(
-                                          child: AppProfileImage(
-                                            imagePath: model.users.image,
-                                            radius: 28,
-                                          ),
-                                        ),
-                                      ),
-                                      const Gap(8),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            model.users.name,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                              color: colorScheme.onSurface,
-                                            ),
-                                          ),
-                                          if (model.posts.isAnonymous)
-                                            Text(
-                                              t.private.badge,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: colorScheme
-                                                    .onSurfaceVariant,
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  const Gap(8),
-                                  Text(
-                                    model.posts.localizedDisplayTitle(t),
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: colorScheme.onSurface,
-                                    ),
-                                  ),
-                                  if (model.posts.comment.isNotEmpty) ...[
-                                    const Gap(4),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 4,
-                                      ),
-                                      child: Text(
-                                        model.posts.comment,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.normal,
-                                          color: colorScheme.onSurface,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                  const Gap(4),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                  );
+                },
               );
             },
             failure: (_) {
@@ -591,5 +172,444 @@ class RestaurantReviewScreen extends HookConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+class _RestaurantHeroHeader extends StatelessWidget {
+  const _RestaurantHeroHeader({
+    required this.model,
+    required this.getImageUrl,
+    required this.onTapDetail,
+  });
+
+  final Model model;
+  final String Function(String imagePath) getImageUrl;
+  final VoidCallback onTapDetail;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final firstImage = model.posts.firstFoodImage;
+
+    return GestureDetector(
+      onTap: onTapDetail,
+      child: AspectRatio(
+        aspectRatio: 16 / 9,
+        child: firstImage.isNotEmpty
+            ? CachedNetworkImage(
+                imageUrl: getImageUrl(firstImage),
+                fit: BoxFit.cover,
+                placeholder: (context, url) => ColoredBox(
+                  color: colorScheme.surfaceContainerHighest,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              )
+            : ColoredBox(color: colorScheme.surfaceContainerHighest),
+      ),
+    );
+  }
+}
+
+class _RestaurantSpeechBubbleItem extends StatelessWidget {
+  const _RestaurantSpeechBubbleItem({
+    required this.model,
+    required this.deviceWidth,
+    required this.getImageUrl,
+    required this.onTapDetail,
+  });
+
+  final Model model;
+  final double deviceWidth;
+  final String Function(String imagePath) getImageUrl;
+  final VoidCallback onTapDetail;
+
+  static const double _avatarSize = 38;
+  static const double _avatarGap = 10;
+  static const double _bubbleIndent = _avatarSize + _avatarGap;
+  static const double _tailHeight = 7;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translations.of(context);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
+    final post = model.posts;
+    final user = model.users;
+
+    final bubbleBg = isDark ? const Color(0xFF1E1E1E) : Colors.white;
+    final bubbleBorder =
+        isDark ? colorScheme.outlineVariant : const Color(0xFFE0DDD6);
+    final mutedColor = isDark ? Colors.white60 : const Color(0xFF8C867E);
+    final linkColor =
+        isDark ? const Color(0xFF64B5F6) : const Color(0xFF1565C0);
+
+    final price = post.formattedPriceDisplay;
+    final titleText = post.localizedDisplayTitle(t);
+    final comment = post.comment.trim();
+    final firstImage = post.firstFoodImage;
+    final visitDate = DateFormat('yyyy/MM').format(post.createdAt);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            AppProfileImage(
+              imagePath: user.image,
+              radius: _avatarSize / 2,
+            ),
+            const Gap(_avatarGap),
+            Expanded(
+              child: Text(
+                user.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: colorScheme.onSurface,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const Gap(4),
+        Padding(
+          padding: const EdgeInsets.only(left: _bubbleIndent),
+          child: GestureDetector(
+            onTap: onTapDetail,
+            behavior: HitTestBehavior.opaque,
+            child: CustomPaint(
+              painter: _SpeechBubblePainter(
+                fillColor: bubbleBg,
+                borderColor: bubbleBorder,
+                tailHeight: _tailHeight,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  14,
+                  _tailHeight + 12,
+                  14,
+                  12,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomPaint(
+                      painter: _DottedUnderlinePainter(
+                        color:
+                            isDark ? Colors.white38 : const Color(0xFF9E9990),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 3),
+                        child: Text(
+                          titleText,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w800,
+                            color: colorScheme.onSurface,
+                            height: 1.3,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Gap(10),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (comment.isNotEmpty) ...[
+                                Text(
+                                  comment,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    height: 1.5,
+                                    color: colorScheme.onSurface.withValues(
+                                      alpha: 0.88,
+                                    ),
+                                  ),
+                                ),
+                                const Gap(4),
+                              ],
+                              Text(
+                                t.restaurantReview.viewDetails,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: linkColor,
+                                ),
+                              ),
+                              if (price.isNotEmpty) ...[
+                                const Gap(6),
+                                Text(
+                                  price,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700,
+                                    color: colorScheme.onSurface,
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                        if (firstImage.isNotEmpty) ...[
+                          const Gap(12),
+                          GestureDetector(
+                            onTap: () {
+                              showPhotoViewer(
+                                context: context,
+                                heroTagBuilder: (context) =>
+                                    'review-image-${post.id}',
+                                builder: (context) => Container(
+                                  width: deviceWidth,
+                                  height: deviceWidth,
+                                  color: colorScheme.surface,
+                                  child: CachedNetworkImage(
+                                    imageUrl: getImageUrl(firstImage),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: SizedBox(
+                              width: 68,
+                              height: 68,
+                              child: Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    child: CachedNetworkImage(
+                                      imageUrl: getImageUrl(firstImage),
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) => ColoredBox(
+                                        color:
+                                            colorScheme.surfaceContainerHighest,
+                                      ),
+                                    ),
+                                  ),
+                                  if (post.foodImageList.length > 1)
+                                    Positioned(
+                                      top: 4,
+                                      right: 4,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(3),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withValues(
+                                            alpha: 0.6,
+                                          ),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: const Icon(
+                                          Icons.collections,
+                                          color: Colors.white,
+                                          size: 12,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                    const Gap(12),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 6,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.favorite_rounded,
+                              size: 16,
+                              color: Colors.pinkAccent,
+                            ),
+                            const Gap(4),
+                            Text(
+                              '${post.heart}',
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: mutedColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (post.star > 0)
+                          _StarRow(
+                            star: post.star,
+                            isDark: isDark,
+                          ),
+                        Text(
+                          visitDate,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: mutedColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _StarRow extends StatelessWidget {
+  const _StarRow({
+    required this.star,
+    required this.isDark,
+  });
+
+  final double star;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    const activeColor = Color(0xFFF59E0B);
+    final inactiveColor = isDark ? Colors.white24 : const Color(0xFFD9D6CE);
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(5, (index) {
+        final starNumber = index + 1;
+        final IconData icon;
+        final Color color;
+        if (star >= starNumber) {
+          icon = Icons.star_rounded;
+          color = activeColor;
+        } else if (star >= starNumber - 0.5) {
+          icon = Icons.star_half_rounded;
+          color = activeColor;
+        } else {
+          icon = Icons.star_rounded;
+          color = inactiveColor;
+        }
+        return Icon(
+          icon,
+          size: 16,
+          color: color,
+        );
+      }),
+    );
+  }
+}
+
+class _SpeechBubblePainter extends CustomPainter {
+  const _SpeechBubblePainter({
+    required this.fillColor,
+    required this.borderColor,
+    required this.tailHeight,
+  });
+
+  final Color fillColor;
+  final Color borderColor;
+  final double tailHeight;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    const radius = 8.0;
+    const tailLeft = 18.0;
+    const tailWidth = 12.0;
+    final top = tailHeight;
+
+    final path = Path()
+      ..moveTo(radius, top)
+      ..lineTo(tailLeft, top)
+      ..lineTo(tailLeft + tailWidth / 2, 0)
+      ..lineTo(tailLeft + tailWidth, top)
+      ..lineTo(size.width - radius, top)
+      ..arcToPoint(
+        Offset(size.width, top + radius),
+        radius: const Radius.circular(radius),
+      )
+      ..lineTo(size.width, size.height - radius)
+      ..arcToPoint(
+        Offset(size.width - radius, size.height),
+        radius: const Radius.circular(radius),
+      )
+      ..lineTo(radius, size.height)
+      ..arcToPoint(
+        Offset(0, size.height - radius),
+        radius: const Radius.circular(radius),
+      )
+      ..lineTo(0, top + radius)
+      ..arcToPoint(
+        Offset(radius, top),
+        radius: const Radius.circular(radius),
+      )
+      ..close();
+
+    final fillPaint = Paint()
+      ..color = fillColor
+      ..style = PaintingStyle.fill;
+
+    final borderPaint = Paint()
+      ..color = borderColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+
+    canvas
+      ..drawPath(path, fillPaint)
+      ..drawPath(path, borderPaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant _SpeechBubblePainter oldDelegate) {
+    return oldDelegate.fillColor != fillColor ||
+        oldDelegate.borderColor != borderColor ||
+        oldDelegate.tailHeight != tailHeight;
+  }
+}
+
+class _DottedUnderlinePainter extends CustomPainter {
+  const _DottedUnderlinePainter({required this.color});
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 1.2
+      ..style = PaintingStyle.stroke;
+
+    const dashWidth = 2.0;
+    const dashSpace = 2.5;
+    var startX = 0.0;
+    final y = size.height;
+    while (startX < size.width) {
+      canvas.drawLine(
+        Offset(startX, y),
+        Offset((startX + dashWidth).clamp(0.0, size.width), y),
+        paint,
+      );
+      startX += dashWidth + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _DottedUnderlinePainter oldDelegate) {
+    return oldDelegate.color != color;
   }
 }
