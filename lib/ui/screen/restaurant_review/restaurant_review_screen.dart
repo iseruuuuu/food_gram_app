@@ -6,7 +6,9 @@ import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/post_visibility.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
+import 'package:food_gram_app/core/supabase/user/providers/friend_user_ids_provider.dart';
 import 'package:food_gram_app/core/theme/style/restaurant_review_style.dart';
 import 'package:food_gram_app/core/utils/restaurant/restaurant_display_name.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -50,6 +52,9 @@ class RestaurantReviewScreen extends HookConsumerWidget {
     final t = Translations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
     final deviceWidth = MediaQuery.of(context).size.width;
+    final currentUser = ref.watch(currentUserProvider);
+    final friendIds =
+        ref.watch(friendUserIdsProvider).valueOrNull ?? const <String>[];
     String getImageUrl(String imagePath) {
       return ref
           .watch(supabaseProvider)
@@ -156,10 +161,17 @@ class RestaurantReviewScreen extends HookConsumerWidget {
                     );
                   }
                   final model = sorted[index - 2];
+                  final showIdentity = isPostVisibleToViewer(
+                    isPrivate: model.posts.isAnonymous,
+                    authorId: model.users.userId,
+                    viewerId: currentUser,
+                    friendUserIds: friendIds,
+                  );
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
                     child: _RestaurantSpeechBubbleItem(
                       model: model,
+                      showIdentity: showIdentity,
                       deviceWidth: deviceWidth,
                       getImageUrl: getImageUrl,
                       onTapDetail: () => openPostDetail(model),
@@ -223,12 +235,14 @@ class _RestaurantHeroHeader extends StatelessWidget {
 class _RestaurantSpeechBubbleItem extends StatelessWidget {
   const _RestaurantSpeechBubbleItem({
     required this.model,
+    required this.showIdentity,
     required this.deviceWidth,
     required this.getImageUrl,
     required this.onTapDetail,
   });
 
   final Model model;
+  final bool showIdentity;
   final double deviceWidth;
   final String Function(String imagePath) getImageUrl;
   final VoidCallback onTapDetail;
@@ -266,13 +280,13 @@ class _RestaurantSpeechBubbleItem extends StatelessWidget {
         Row(
           children: [
             AppProfileImage(
-              imagePath: user.image,
+              imagePath: showIdentity ? user.image : 'assets/icon/icon1.png',
               radius: _avatarSize / 2,
             ),
             const Gap(_avatarGap),
             Expanded(
               child: Text(
-                user.name,
+                showIdentity ? user.name : t.private.poster,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(

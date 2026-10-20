@@ -43,14 +43,11 @@ class MapPostService extends _$MapPostService {
     required double lat,
     required double lng,
   }) async {
-    final viewerId = ref.read(currentUserProvider);
-    final friendIds = await ref.read(friendUserIdsProvider.future);
     final blockedIds = await ref.read(blockListProvider.future);
     try {
       return Success(
         await _cacheManager.get<List<Map<String, dynamic>>>(
-          key: 'restaurant_posts_${lat}_${lng}_${viewerId}_'
-              '${friendIdsCacheToken(friendIds)}_'
+          key: 'restaurant_posts_${lat}_${lng}_'
               '${blockListCacheToken(blockedIds)}',
           fetcher: () async {
             final posts = await supabase
@@ -61,10 +58,9 @@ class MapPostService extends _$MapPostService {
                 .gte('lng', lng - 0.00001)
                 .lte('lng', lng + 0.00001)
                 .order('created_at');
-            return _rowsVisibleToViewer(
+            return _rowsWithoutBlocked(
               posts,
               blockedUserIds: blockedIds,
-              friendUserIds: friendIds,
             );
           },
           duration: const Duration(minutes: 5),
@@ -132,6 +128,23 @@ class MapPostService extends _$MapPostService {
       },
       duration: const Duration(minutes: 5),
     );
+  }
+
+  /// ブロックユーザーを除く（匿名投稿は残し、UI側で匿名表記にする）。
+  List<Map<String, dynamic>> _rowsWithoutBlocked(
+    List<dynamic> rows, {
+    required List<String> blockedUserIds,
+  }) {
+    final visible = <Map<String, dynamic>>[];
+    for (final row in rows) {
+      final map = Map<String, dynamic>.from(row as Map);
+      final authorId = map['user_id'] as String? ?? '';
+      if (blockedUserIds.contains(authorId)) {
+        continue;
+      }
+      visible.add(map);
+    }
+    return visible;
   }
 
   /// ブロックユーザーと、本人・フレンド以外の非公開投稿を除く。
