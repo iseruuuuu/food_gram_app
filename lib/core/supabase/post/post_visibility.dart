@@ -25,3 +25,9 @@ String friendIdsCacheToken(Iterable<String> friendUserIds) {
   final ids = friendUserIds.toList()..sort();
   return ids.join(',');
 }
+
+/// キャッシュキー用。ブロック一覧の並びが違っても同じキーになる。
+String blockListCacheToken(Iterable<String> blockedUserIds) {
+  final ids = blockedUserIds.toSet().toList()..sort();
+  return ids.join(',');
+}

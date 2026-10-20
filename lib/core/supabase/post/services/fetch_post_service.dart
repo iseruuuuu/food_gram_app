@@ -116,9 +116,11 @@ class FetchPostService extends _$FetchPostService {
   ) async {
     final viewerId = ref.read(currentUserProvider);
     final friendIds = await ref.read(friendUserIdsProvider.future);
+    final blockedIds = await ref.read(blockListProvider.future);
     return _cacheManager.get<List<Map<String, dynamic>>>(
       key: 'restaurant_name_posts_${restaurant}_${viewerId}_'
-          '${friendIdsCacheToken(friendIds)}',
+          '${friendIdsCacheToken(friendIds)}_'
+          '${blockListCacheToken(blockedIds)}',
       fetcher: () async {
         final posts = await supabase
             .from('posts')
@@ -128,7 +130,7 @@ class FetchPostService extends _$FetchPostService {
         final visible = <Map<String, dynamic>>[];
         for (final post in posts) {
           final authorId = post['user_id'] as String? ?? '';
-          if (blockList.contains(authorId)) {
+          if (blockedIds.contains(authorId)) {
             continue;
           }
           if (!isPostVisibleToViewer(

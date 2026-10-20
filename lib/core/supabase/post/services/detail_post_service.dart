@@ -2,6 +2,7 @@ import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/post_visibility.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/friend_user_ids_provider.dart';
 import 'package:food_gram_app/core/supabase/user/services/user_service.dart';
@@ -75,11 +76,13 @@ class DetailPostService extends _$DetailPostService {
     int? afterId,
   }) async {
     final friendIds = await ref.read(friendUserIdsProvider.future);
+    final blockedIds = await ref.read(blockListProvider.future);
     final includePrivate =
         ref.read(currentUserProvider) == userId || friendIds.contains(userId);
     return _cacheManager.get<List<Map<String, dynamic>>>(
       key: 'user_posts_paged_${userId}_${includePrivate}_'
-          '${beforeId ?? 'null'}_${afterId ?? 'null'}_$limit',
+          '${beforeId ?? 'null'}_${afterId ?? 'null'}_${limit}_'
+          '${blockListCacheToken(blockedIds)}',
       fetcher: () async {
         var query = supabase
             .from('posts')
@@ -97,7 +100,7 @@ class DetailPostService extends _$DetailPostService {
         final posts =
             await query.order('id', ascending: afterId != null).limit(limit);
         return posts
-            .where((post) => !blockList.contains(post['user_id']))
+            .where((post) => !blockedIds.contains(post['user_id']))
             .toList();
       },
       duration: const Duration(minutes: 2),

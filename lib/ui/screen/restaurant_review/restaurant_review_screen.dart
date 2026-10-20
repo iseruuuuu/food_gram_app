@@ -91,7 +91,15 @@ class RestaurantReviewScreen extends HookConsumerWidget {
           child: reviews.when(
             success: (data) {
               if (data.isEmpty) {
-                return const AppEmpty();
+                return CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: const [
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: AppEmpty(),
+                    ),
+                  ],
+                );
               }
               final sorted = [...data]..sort(
                   (a, b) => b.posts.createdAt.compareTo(a.posts.createdAt),

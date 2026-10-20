@@ -45,11 +45,13 @@ class MapPostService extends _$MapPostService {
   }) async {
     final viewerId = ref.read(currentUserProvider);
     final friendIds = await ref.read(friendUserIdsProvider.future);
+    final blockedIds = await ref.read(blockListProvider.future);
     try {
       return Success(
         await _cacheManager.get<List<Map<String, dynamic>>>(
           key: 'restaurant_posts_${lat}_${lng}_${viewerId}_'
-              '${friendIdsCacheToken(friendIds)}',
+              '${friendIdsCacheToken(friendIds)}_'
+              '${blockListCacheToken(blockedIds)}',
           fetcher: () async {
             final posts = await supabase
                 .from('posts')
@@ -61,7 +63,7 @@ class MapPostService extends _$MapPostService {
                 .order('created_at');
             return _rowsVisibleToViewer(
               posts,
-              blockedUserIds: blockList,
+              blockedUserIds: blockedIds,
               friendUserIds: friendIds,
             );
           },
@@ -78,10 +80,11 @@ class MapPostService extends _$MapPostService {
   Future<List<Map<String, dynamic>>> getMapPosts() async {
     final viewerId = ref.read(currentUserProvider);
     final friendIds = await ref.read(friendUserIdsProvider.future);
+    final currentBlockList = await ref.read(blockListProvider.future);
     return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'map_posts_${viewerId}_${friendIdsCacheToken(friendIds)}',
+      key: 'map_posts_${viewerId}_${friendIdsCacheToken(friendIds)}_'
+          '${blockListCacheToken(currentBlockList)}',
       fetcher: () async {
-        final currentBlockList = await ref.read(blockListProvider.future);
         final posts = await supabase
             .from('posts')
             .select(postsSelectColumns)
@@ -110,9 +113,11 @@ class MapPostService extends _$MapPostService {
   ) async {
     final viewerId = ref.read(currentUserProvider);
     final friendIds = await ref.read(friendUserIdsProvider.future);
+    final blockedIds = await ref.read(blockListProvider.future);
     return _cacheManager.get<List<Map<String, dynamic>>>(
       key: 'restaurant_name_${restaurantName}_${viewerId}_'
-          '${friendIdsCacheToken(friendIds)}',
+          '${friendIdsCacheToken(friendIds)}_'
+          '${blockListCacheToken(blockedIds)}',
       fetcher: () async {
         final posts = await supabase
             .from('posts')
@@ -121,7 +126,7 @@ class MapPostService extends _$MapPostService {
             .order('created_at', ascending: false);
         return _rowsVisibleToViewer(
           posts,
-          blockedUserIds: blockList,
+          blockedUserIds: blockedIds,
           friendUserIds: friendIds,
         );
       },
