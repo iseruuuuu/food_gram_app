@@ -53,7 +53,7 @@ class FetchPostService extends _$FetchPostService {
   SupabaseClient get supabase => ref.read(supabaseProvider);
 
   List<String> get blockList =>
-      ref.watch(blockListProvider).asData?.value ?? [];
+      ref.read(blockListProvider).asData?.value ?? [];
 
   /// 閲覧者に見える投稿を取得（本人とフレンド以外の非公開は除く）
   Future<List<Map<String, dynamic>>> getPosts() async {

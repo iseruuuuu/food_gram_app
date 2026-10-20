@@ -21,7 +21,7 @@ class MapPostService extends _$MapPostService {
   SupabaseClient get supabase => ref.read(supabaseProvider);
 
   List<String> get blockList =>
-      ref.watch(blockListProvider).asData?.value ?? <String>[];
+      ref.read(blockListProvider).asData?.value ?? <String>[];
 
   @override
   Future<void> build() async {}

@@ -14,6 +14,7 @@ import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/app_translatable_text.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
+import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -97,6 +98,9 @@ class RestaurantReviewScreen extends HookConsumerWidget {
           ),
           child: reviews.when(
             success: (data) {
+              if (data.isEmpty) {
+                return const AppEmpty();
+              }
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

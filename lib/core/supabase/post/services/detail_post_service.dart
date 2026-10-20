@@ -31,7 +31,7 @@ class DetailPostService extends _$DetailPostService {
   SupabaseClient get supabase => ref.read(supabaseProvider);
 
   List<String> get blockList =>
-      ref.watch(blockListProvider).asData?.value ?? [];
+      ref.read(blockListProvider).asData?.value ?? [];
 
   @override
   Future<void> build() async {}
