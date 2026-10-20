@@ -124,9 +124,7 @@ class CacheManager {
     }
     final inflightKeys =
         _inflight.keys.where((k) => k.startsWith(prefix)).toList();
-    for (final key in inflightKeys) {
-      _invalidateGeneration(key);
-    }
+    inflightKeys.forEach(_invalidateGeneration);
   }
 
   /// ブロックリスト更新時に関連する投稿キャッシュを無効化
