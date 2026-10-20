@@ -45,7 +45,9 @@ Future<List<Map<String, dynamic>>> fetchStoredPostRowsForIds(
 @riverpod
 class FetchPostService extends _$FetchPostService {
   @override
-  Future<void> build() async {}
+  Future<void> build() async {
+    ref.watch(blockListProvider);
+  }
 
   final logger = Logger();
   final _cacheManager = CacheManager();
@@ -53,7 +55,7 @@ class FetchPostService extends _$FetchPostService {
   SupabaseClient get supabase => ref.read(supabaseProvider);
 
   List<String> get blockList =>
-      ref.watch(blockListProvider).asData?.value ?? [];
+      ref.read(blockListProvider).asData?.value ?? [];
 
   /// 閲覧者に見える投稿を取得（本人とフレンド以外の非公開は除く）
   Future<List<Map<String, dynamic>>> getPosts() async {
@@ -85,11 +87,13 @@ class FetchPostService extends _$FetchPostService {
   /// 自分とフレンドのプロフィールでは非公開も含める。
   Future<List<Map<String, dynamic>>> getPostsFromUser(String userId) async {
     final friendIds = await ref.read(friendUserIdsProvider.future);
+    final blockedIds = await ref.read(blockListProvider.future);
     final includePrivate =
         ref.read(currentUserProvider) == userId || friendIds.contains(userId);
     return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'user_posts_${userId}_$includePrivate',
-      fetcher: () {
+      key: 'user_posts_${userId}_${includePrivate}_'
+          '${blockListCacheToken(blockedIds)}',
+      fetcher: () async {
         var query = supabase
             .from('posts')
             .select(postsSelectColumns)
@@ -97,7 +101,10 @@ class FetchPostService extends _$FetchPostService {
         if (!includePrivate) {
           query = query.eq('is_anonymous', false);
         }
-        return query.order('created_at', ascending: false);
+        final posts = await query.order('created_at', ascending: false);
+        return posts
+            .where((post) => !blockedIds.contains(post['user_id']))
+            .toList();
       },
       duration: const Duration(minutes: 5),
     );
@@ -110,15 +117,14 @@ class FetchPostService extends _$FetchPostService {
     return fetchStoredPostRowsForIds(supabase, postIds);
   }
 
-  /// レストラン名で投稿を取得（新しい順。他人の非公開は除く）
+  /// レストラン名で投稿を取得（新しい順。ブロックユーザーを除く）
   Future<List<Map<String, dynamic>>> getPostsByRestaurantName(
     String restaurant,
   ) async {
-    final viewerId = ref.read(currentUserProvider);
-    final friendIds = await ref.read(friendUserIdsProvider.future);
+    final blockedIds = await ref.read(blockListProvider.future);
     return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'restaurant_name_posts_${restaurant}_${viewerId}_'
-          '${friendIdsCacheToken(friendIds)}',
+      key: 'restaurant_name_posts_${restaurant}_'
+          '${blockListCacheToken(blockedIds)}',
       fetcher: () async {
         final posts = await supabase
             .from('posts')
@@ -128,15 +134,7 @@ class FetchPostService extends _$FetchPostService {
         final visible = <Map<String, dynamic>>[];
         for (final post in posts) {
           final authorId = post['user_id'] as String? ?? '';
-          if (blockList.contains(authorId)) {
-            continue;
-          }
-          if (!isPostVisibleToViewer(
-            isPrivate: post['is_anonymous'] == true,
-            authorId: authorId,
-            viewerId: viewerId,
-            friendUserIds: friendIds,
-          )) {
+          if (blockedIds.contains(authorId)) {
             continue;
           }
           visible.add(post);

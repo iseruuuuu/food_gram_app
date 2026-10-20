@@ -21,10 +21,12 @@ class MapPostService extends _$MapPostService {
   SupabaseClient get supabase => ref.read(supabaseProvider);
 
   List<String> get blockList =>
-      ref.watch(blockListProvider).asData?.value ?? <String>[];
+      ref.read(blockListProvider).asData?.value ?? <String>[];
 
   @override
-  Future<void> build() async {}
+  Future<void> build() async {
+    ref.watch(blockListProvider);
+  }
 
   /// ユーザーIDからユーザーデータを取得（Map向けに提供）
   Future<Map<String, dynamic>> getUserData(String userId) async {
@@ -43,13 +45,12 @@ class MapPostService extends _$MapPostService {
     required double lat,
     required double lng,
   }) async {
-    final viewerId = ref.read(currentUserProvider);
-    final friendIds = await ref.read(friendUserIdsProvider.future);
+    final blockedIds = await ref.read(blockListProvider.future);
     try {
       return Success(
         await _cacheManager.get<List<Map<String, dynamic>>>(
-          key: 'restaurant_posts_${lat}_${lng}_${viewerId}_'
-              '${friendIdsCacheToken(friendIds)}',
+          key: 'restaurant_posts_${lat}_${lng}_'
+              '${blockListCacheToken(blockedIds)}',
           fetcher: () async {
             final posts = await supabase
                 .from('posts')
@@ -59,10 +60,9 @@ class MapPostService extends _$MapPostService {
                 .gte('lng', lng - 0.00001)
                 .lte('lng', lng + 0.00001)
                 .order('created_at');
-            return _rowsVisibleToViewer(
+            return _rowsWithoutBlocked(
               posts,
-              blockedUserIds: blockList,
-              friendUserIds: friendIds,
+              blockedUserIds: blockedIds,
             );
           },
           duration: const Duration(minutes: 5),
@@ -78,10 +78,11 @@ class MapPostService extends _$MapPostService {
   Future<List<Map<String, dynamic>>> getMapPosts() async {
     final viewerId = ref.read(currentUserProvider);
     final friendIds = await ref.read(friendUserIdsProvider.future);
+    final currentBlockList = await ref.read(blockListProvider.future);
     return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'map_posts_${viewerId}_${friendIdsCacheToken(friendIds)}',
+      key: 'map_posts_${viewerId}_${friendIdsCacheToken(friendIds)}_'
+          '${blockListCacheToken(currentBlockList)}',
       fetcher: () async {
-        final currentBlockList = await ref.read(blockListProvider.future);
         final posts = await supabase
             .from('posts')
             .select(postsSelectColumns)
@@ -110,9 +111,11 @@ class MapPostService extends _$MapPostService {
   ) async {
     final viewerId = ref.read(currentUserProvider);
     final friendIds = await ref.read(friendUserIdsProvider.future);
+    final blockedIds = await ref.read(blockListProvider.future);
     return _cacheManager.get<List<Map<String, dynamic>>>(
       key: 'restaurant_name_${restaurantName}_${viewerId}_'
-          '${friendIdsCacheToken(friendIds)}',
+          '${friendIdsCacheToken(friendIds)}_'
+          '${blockListCacheToken(blockedIds)}',
       fetcher: () async {
         final posts = await supabase
             .from('posts')
@@ -121,12 +124,29 @@ class MapPostService extends _$MapPostService {
             .order('created_at', ascending: false);
         return _rowsVisibleToViewer(
           posts,
-          blockedUserIds: blockList,
+          blockedUserIds: blockedIds,
           friendUserIds: friendIds,
         );
       },
       duration: const Duration(minutes: 5),
     );
+  }
+
+  /// ブロックユーザーを除く（匿名投稿は残し、UI側で匿名表記にする）。
+  List<Map<String, dynamic>> _rowsWithoutBlocked(
+    List<dynamic> rows, {
+    required List<String> blockedUserIds,
+  }) {
+    final visible = <Map<String, dynamic>>[];
+    for (final row in rows) {
+      final map = Map<String, dynamic>.from(row as Map);
+      final authorId = map['user_id'] as String? ?? '';
+      if (blockedUserIds.contains(authorId)) {
+        continue;
+      }
+      visible.add(map);
+    }
+    return visible;
   }
 
   /// ブロックユーザーと、本人・フレンド以外の非公開投稿を除く。
