@@ -3,11 +3,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/component/dialog/app_paywall_success_dialog.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AppPremiumMembershipCard extends ConsumerWidget {
-  const AppPremiumMembershipCard({super.key});
+  const AppPremiumMembershipCard({
+    this.source = 'membership_card',
+    super.key,
+  });
+
+  final String source;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -59,9 +65,12 @@ class AppPremiumMembershipCard extends ConsumerWidget {
                 onTap: () async {
                   try {
                     await ref.read(revenueCatServiceProvider.future);
-                    await ref
+                    final purchased = await ref
                         .read(revenueCatServiceProvider.notifier)
-                        .presentPaywallGuarded();
+                        .presentPaywallGuarded(source: source);
+                    if (purchased && context.mounted) {
+                      await showPaywallSuccessDialog(context: context);
+                    }
                   } on Exception catch (e) {
                     debugPrint('presentPaywallGuarded failed: $e');
                   }

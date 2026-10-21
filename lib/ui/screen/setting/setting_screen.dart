@@ -187,9 +187,13 @@ class SettingScreen extends HookConsumerWidget {
                       isSubscribeAsync.when(
                         data: (isSubscribed) => isSubscribed
                             ? const SizedBox.shrink()
-                            : const AppPremiumMembershipCard(),
+                            : const AppPremiumMembershipCard(
+                                source: 'setting_card',
+                              ),
                         loading: () => const SizedBox.shrink(),
-                        error: (_, __) => const AppPremiumMembershipCard(),
+                        error: (_, __) => const AppPremiumMembershipCard(
+                          source: 'setting_card',
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(

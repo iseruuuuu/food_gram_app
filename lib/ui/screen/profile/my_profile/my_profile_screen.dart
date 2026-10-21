@@ -150,7 +150,9 @@ class MyProfileScreen extends HookConsumerWidget {
                             return Column(
                               children: [
                                 if (!premiumUnlocked)
-                                  const AppPremiumMembershipCard(),
+                                  const AppPremiumMembershipCard(
+                                    source: 'my_page_card',
+                                  ),
                                 AppProfileHeader(
                                   users: users,
                                   length: postCount,

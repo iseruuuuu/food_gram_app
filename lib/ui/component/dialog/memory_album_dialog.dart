@@ -9,6 +9,7 @@ import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/dialog/app_paywall_success_dialog.dart';
 import 'package:food_gram_app/ui/screen/memory_album/memory_album_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,10 +20,16 @@ Future<void> _openPremiumPaywall(BuildContext context) async {
   }
   final container = ProviderScope.containerOf(context);
   try {
+    container
+        .read(firebaseAnalyticsServiceProvider)
+        .logPremiumFeatureTap(AnalyticsEvent.premiumAlbumTap);
     await container.read(revenueCatServiceProvider.future);
-    await container
+    final purchased = await container
         .read(revenueCatServiceProvider.notifier)
-        .presentPaywallGuarded();
+        .presentPaywallGuarded(source: 'memory_album_limit');
+    if (purchased && context.mounted) {
+      await showPaywallSuccessDialog(context: context);
+    }
   } on Object catch (e, st) {
     debugPrint('openPremiumPaywall: $e\n$st');
   }

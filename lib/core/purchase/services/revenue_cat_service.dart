@@ -76,15 +76,23 @@ class RevenueCatService extends _$RevenueCatService {
   /// 非アクティブ→アクティブに変化した時は同期処理を行う。
   /// 年間プランなどで反映が遅れる場合に備え、閉じた直後と少し遅れて2回同期を試す。
   /// 反映中はグローバル Loading でオーバーレイ表示する。
-  Future<bool> presentPaywallGuarded() async {
+  Future<bool> presentPaywallGuarded({String? source}) async {
     final beforeInfo = await Purchases.getCustomerInfo();
     final wasActive =
         beforeInfo.entitlements.all[entitlementId]?.isActive ?? false;
     final analytics = ref.read(firebaseAnalyticsServiceProvider);
+    final sourceParams =
+        source != null ? <String, Object>{AnalyticsParam.source: source} : null;
     analytics.logScreen(AnalyticsScreen.paywall);
-    analytics.logEventUnawaited(name: AnalyticsEvent.paywallOpen);
+    analytics.logEventUnawaited(
+      name: AnalyticsEvent.paywallOpen,
+      parameters: sourceParams,
+    );
     if (!wasActive) {
-      analytics.logEventUnawaited(name: AnalyticsEvent.purchaseStart);
+      analytics.logEventUnawaited(
+        name: AnalyticsEvent.purchaseStart,
+        parameters: sourceParams,
+      );
     }
 
     final latest = await Purchases.getOfferings();
@@ -99,7 +107,10 @@ class RevenueCatService extends _$RevenueCatService {
     );
     if (offering == null) {
       logger.e('No offering available for paywall');
-      analytics.logEventUnawaited(name: AnalyticsEvent.purchaseFailed);
+      analytics.logEventUnawaited(
+        name: AnalyticsEvent.purchaseFailed,
+        parameters: sourceParams,
+      );
       return false;
     }
 
@@ -107,7 +118,10 @@ class RevenueCatService extends _$RevenueCatService {
       await RevenueCatUI.presentPaywall(offering: offering);
     } on PlatformException catch (e) {
       logger.e('presentPaywall failed: $e');
-      analytics.logEventUnawaited(name: AnalyticsEvent.purchaseFailed);
+      analytics.logEventUnawaited(
+        name: AnalyticsEvent.purchaseFailed,
+        parameters: sourceParams,
+      );
       return false;
     }
 
@@ -121,10 +135,16 @@ class RevenueCatService extends _$RevenueCatService {
       if (isActiveNow && !wasActive) {
         final synced = await syncAfterPaywall();
         if (synced) {
-          analytics.logEventUnawaited(name: AnalyticsEvent.purchaseSuccess);
+          analytics.logEventUnawaited(
+            name: AnalyticsEvent.purchaseSuccess,
+            parameters: sourceParams,
+          );
           return true;
         }
-        analytics.logEventUnawaited(name: AnalyticsEvent.purchaseFailed);
+        analytics.logEventUnawaited(
+          name: AnalyticsEvent.purchaseFailed,
+          parameters: sourceParams,
+        );
         return false;
       }
       // 即時には有効になっていなくても、年間プランなどで遅れて反映されることがあるため1回同期
@@ -134,10 +154,16 @@ class RevenueCatService extends _$RevenueCatService {
         await Future<void>.delayed(const Duration(seconds: 2));
         final retryActive = await syncAfterPaywall();
         if (retryActive) {
-          analytics.logEventUnawaited(name: AnalyticsEvent.purchaseSuccess);
+          analytics.logEventUnawaited(
+            name: AnalyticsEvent.purchaseSuccess,
+            parameters: sourceParams,
+          );
           return true;
         }
-        analytics.logEventUnawaited(name: AnalyticsEvent.purchaseFailed);
+        analytics.logEventUnawaited(
+          name: AnalyticsEvent.purchaseFailed,
+          parameters: sourceParams,
+        );
         return false;
       }
       // すでに active でも DB 反映に失敗したら成功扱いにしない
