@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
+import 'package:food_gram_app/core/purchase/paywall_launch_guard.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/dialog/app_paywall_success_dialog.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AppPremiumMembershipCard extends ConsumerWidget {
+class AppPremiumMembershipCard extends HookConsumerWidget {
   const AppPremiumMembershipCard({
     this.source = 'membership_card',
     super.key,
@@ -18,6 +19,7 @@ class AppPremiumMembershipCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
+    final paywallGuard = useMemoized(PaywallLaunchGuard.new);
     return Column(
       children: [
         Padding(
@@ -67,16 +69,13 @@ class AppPremiumMembershipCard extends ConsumerWidget {
                   ),
                 ),
                 onTap: () async {
-                  try {
-                    await ref.read(revenueCatServiceProvider.future);
-                    final purchased = await ref
-                        .read(revenueCatServiceProvider.notifier)
-                        .presentPaywallGuarded(source: source);
-                    if (purchased && context.mounted) {
-                      await showPaywallSuccessDialog(context: context);
-                    }
-                  } on Exception catch (e) {
-                    debugPrint('presentPaywallGuarded failed: $e');
+                  final purchased = await paywallGuard.present(
+                    context: context,
+                    ref: ref,
+                    source: source,
+                  );
+                  if (purchased && context.mounted) {
+                    await showPaywallSuccessDialog(context: context);
                   }
                 },
               ),

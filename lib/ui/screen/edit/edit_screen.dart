@@ -5,7 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
-import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
+import 'package:food_gram_app/core/purchase/paywall_launch_guard.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/theme/style/edit_style.dart';
@@ -32,6 +32,7 @@ class EditScreen extends HookConsumerWidget {
     final loading = ref.watch(loadingProvider);
     final adInterstitial =
         useMemoized(() => ref.read(admobInterstitialNotifierProvider));
+    final paywallGuard = useMemoized(PaywallLaunchGuard.new);
     useEffect(
       () {
         adInterstitial.createAd();
@@ -165,15 +166,11 @@ class EditScreen extends HookConsumerWidget {
                                           AnalyticsEvent
                                               .premiumProfileCustomizationTap,
                                         );
-                                    await ref
-                                        .read(revenueCatServiceProvider.future);
-                                    final purchased = await ref
-                                        .read(
-                                          revenueCatServiceProvider.notifier,
-                                        )
-                                        .presentPaywallGuarded(
-                                          source: 'edit_custom_icon',
-                                        );
+                                    final purchased = await paywallGuard.present(
+                                      context: context,
+                                      ref: ref,
+                                      source: 'edit_custom_icon',
+                                    );
                                     if (purchased) {
                                       await ref
                                           .read(

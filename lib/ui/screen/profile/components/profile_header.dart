@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/users.dart';
-import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
+import 'package:food_gram_app/core/purchase/paywall_launch_guard.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
@@ -20,9 +20,10 @@ import 'package:food_gram_app/ui/screen/profile/components/profile_stat.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class AppProfileHeader extends ConsumerWidget {
+class AppProfileHeader extends HookConsumerWidget {
   const AppProfileHeader({
     required this.users,
     required this.length,
@@ -37,6 +38,7 @@ class AppProfileHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
+    final paywallGuard = useMemoized(PaywallLaunchGuard.new);
     final currentUser = ref.watch(currentUserProvider);
     final isViewerSubscribed =
         ref.watch(isSubscribeProvider).valueOrNull ?? false;
@@ -63,6 +65,7 @@ class AppProfileHeader extends ConsumerWidget {
                     users: users,
                     isOwnProfile: isOwnProfile,
                     isViewerSubscribed: isViewerSubscribed,
+                    paywallGuard: paywallGuard,
                   ),
                   child: _ProfileAvatar(
                     imagePath: users.image,
@@ -131,6 +134,7 @@ class AppProfileHeader extends ConsumerWidget {
                             context: context,
                             ref: ref,
                             source: 'profile_icon_hint',
+                            paywallGuard: paywallGuard,
                           ),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -307,6 +311,7 @@ class AppProfileHeader extends ConsumerWidget {
     required Users users,
     required bool isOwnProfile,
     required bool isViewerSubscribed,
+    required PaywallLaunchGuard paywallGuard,
   }) async {
     if (!isOwnProfile) {
       if (!context.mounted) {
@@ -329,6 +334,7 @@ class AppProfileHeader extends ConsumerWidget {
       context: context,
       ref: ref,
       source: 'profile_avatar',
+      paywallGuard: paywallGuard,
     );
   }
 
@@ -346,13 +352,16 @@ class AppProfileHeader extends ConsumerWidget {
     required BuildContext context,
     required WidgetRef ref,
     required String source,
+    required PaywallLaunchGuard paywallGuard,
   }) async {
     ref.read(firebaseAnalyticsServiceProvider).logPremiumFeatureTap(
           AnalyticsEvent.premiumProfileCustomizationTap,
         );
-    final purchased = await ref
-        .read(revenueCatServiceProvider.notifier)
-        .presentPaywallGuarded(source: source);
+    final purchased = await paywallGuard.present(
+      context: context,
+      ref: ref,
+      source: source,
+    );
     if (!purchased || !context.mounted) {
       return;
     }

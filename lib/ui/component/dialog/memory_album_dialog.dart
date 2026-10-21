@@ -14,16 +14,22 @@ import 'package:food_gram_app/ui/screen/memory_album/memory_album_view_model.dar
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+var _albumPaywallInFlight = false;
+
 Future<void> _openPremiumPaywall(BuildContext context) async {
-  if (!context.mounted) {
+  if (!context.mounted || _albumPaywallInFlight) {
     return;
   }
+  _albumPaywallInFlight = true;
   final container = ProviderScope.containerOf(context);
   try {
     container
         .read(firebaseAnalyticsServiceProvider)
         .logPremiumFeatureTap(AnalyticsEvent.premiumAlbumTap);
     await container.read(revenueCatServiceProvider.future);
+    if (!context.mounted) {
+      return;
+    }
     final purchased = await container
         .read(revenueCatServiceProvider.notifier)
         .presentPaywallGuarded(source: 'memory_album_limit');
@@ -32,6 +38,15 @@ Future<void> _openPremiumPaywall(BuildContext context) async {
     }
   } on Object catch (e, st) {
     debugPrint('openPremiumPaywall: $e\n$st');
+    if (context.mounted) {
+      SnackBarHelper().openErrorSnackBar(
+        context,
+        Translations.of(context).setting.purchaseError,
+        '',
+      );
+    }
+  } finally {
+    _albumPaywallInFlight = false;
   }
 }
 

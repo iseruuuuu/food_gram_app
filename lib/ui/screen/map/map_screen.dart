@@ -10,7 +10,7 @@ import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
-import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
+import 'package:food_gram_app/core/purchase/paywall_launch_guard.dart';
 import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
@@ -46,6 +46,7 @@ class MapScreen extends HookConsumerWidget {
     final mapService = ref.watch(mapRepositoryProvider);
     final isEarthStyle = useState(false);
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
+    final paywallGuard = useMemoized(PaywallLaunchGuard.new);
     final pinTapCount = useRef(0);
     final isHandlingPinTap = useRef(false);
     final didApplyGpsCamera = useRef(false);
@@ -237,13 +238,11 @@ class MapScreen extends HookConsumerWidget {
                                     .logPremiumFeatureTap(
                                       AnalyticsEvent.premiumSatelliteMapTap,
                                     );
-                                await ref
-                                    .read(revenueCatServiceProvider.future);
-                                final purchased = await ref
-                                    .read(revenueCatServiceProvider.notifier)
-                                    .presentPaywallGuarded(
-                                      source: 'map_earth_style',
-                                    );
+                                final purchased = await paywallGuard.present(
+                                  context: context,
+                                  ref: ref,
+                                  source: 'map_earth_style',
+                                );
                                 if (purchased) {
                                   isEarthStyle.value = true;
                                   controller.handleStyleChange();

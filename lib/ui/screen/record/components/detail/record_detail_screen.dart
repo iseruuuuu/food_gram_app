@@ -5,7 +5,7 @@ import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
+import 'package:food_gram_app/core/purchase/paywall_launch_guard.dart';
 import 'package:food_gram_app/core/supabase/post/analyzer/record_food_traits_analyzer.dart';
 import 'package:food_gram_app/core/supabase/post/analyzer/record_insight_analyzer.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
@@ -66,6 +66,7 @@ class RecordDetailScreen extends HookConsumerWidget {
     );
     useFuture(useMemoized(CountryDetector.ensureLoaded));
     final selectedYear = useState<int?>(null);
+    final paywallGuard = useMemoized(PaywallLaunchGuard.new);
     final isSubscribe = ref.watch(isSubscribeProvider).valueOrNull ?? false;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = isDark ? const Color(0xFF161616) : Colors.white;
@@ -93,10 +94,11 @@ class RecordDetailScreen extends HookConsumerWidget {
       ref.read(firebaseAnalyticsServiceProvider).logPremiumFeatureTap(
             AnalyticsEvent.premiumRankingTap,
           );
-      await ref.read(revenueCatServiceProvider.future);
-      final purchased = await ref
-          .read(revenueCatServiceProvider.notifier)
-          .presentPaywallGuarded(source: source);
+      final purchased = await paywallGuard.present(
+        context: context,
+        ref: ref,
+        source: source,
+      );
       if (purchased && context.mounted) {
         await showPaywallSuccessDialog(context: context);
       }
