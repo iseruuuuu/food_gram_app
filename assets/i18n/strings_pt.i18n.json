@@ -282,7 +282,8 @@
     "sortOldest": "Mais antigos",
     "sortHighestRating": "Melhor avaliados",
     "sortLowestRating": "Pior avaliados",
-    "sortMostLiked": "Mais curtidos"
+    "sortMostLiked": "Mais curtidos",
+    "changeIconHint": "Foto própria no Premium"
   },
   "tagDex": {
     "title": "Coleção de tags",

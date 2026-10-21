@@ -282,7 +282,8 @@
     "sortOldest": "Cũ nhất",
     "sortHighestRating": "Đánh giá cao nhất",
     "sortLowestRating": "Đánh giá thấp nhất",
-    "sortMostLiked": "Nhiều lượt thích nhất"
+    "sortMostLiked": "Nhiều lượt thích nhất",
+    "changeIconHint": "Đổi ảnh đại diện với Premium"
   },
   "tagDex": {
     "title": "Bộ sưu tập thẻ",

@@ -282,7 +282,8 @@
     "sortOldest": "Älteste",
     "sortHighestRating": "Beste Bewertung",
     "sortLowestRating": "Niedrigste Bewertung",
-    "sortMostLiked": "Meiste Likes"
+    "sortMostLiked": "Meiste Likes",
+    "changeIconHint": "Eigenes Foto mit Premium"
   },
   "tagDex": {
     "title": "Tag-Sammlung",

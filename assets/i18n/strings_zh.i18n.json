@@ -282,7 +282,8 @@
     "sortOldest": "最早",
     "sortHighestRating": "高分优先",
     "sortLowestRating": "低分优先",
-    "sortMostLiked": "最多点赞"
+    "sortMostLiked": "最多点赞",
+    "changeIconHint": "开通高级会员即可更换头像"
   },
   "tagDex": {
     "title": "标签图鉴",

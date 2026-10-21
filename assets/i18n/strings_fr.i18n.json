@@ -282,7 +282,8 @@
     "sortOldest": "Plus anciens",
     "sortHighestRating": "Mieux notés",
     "sortLowestRating": "Moins bien notés",
-    "sortMostLiked": "Plus aimés"
+    "sortMostLiked": "Plus aimés",
+    "changeIconHint": "Photo perso avec Premium"
   },
   "tagDex": {
     "title": "Collection de tags",

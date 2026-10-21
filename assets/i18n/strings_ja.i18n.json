@@ -281,7 +281,8 @@
     "sortOldest": "古い順",
     "sortHighestRating": "高評価順",
     "sortLowestRating": "低評価順",
-    "sortMostLiked": "いいね順"
+    "sortMostLiked": "いいね順",
+    "changeIconHint": "プレミアムで好きな写真に変更"
   },
   "tagDex": {
     "title": "タグ図鑑",

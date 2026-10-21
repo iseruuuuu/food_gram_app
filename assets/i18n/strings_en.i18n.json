@@ -281,7 +281,8 @@
     "sortOldest": "Oldest",
     "sortHighestRating": "Highest rated",
     "sortLowestRating": "Lowest rated",
-    "sortMostLiked": "Most liked"
+    "sortMostLiked": "Most liked",
+    "changeIconHint": "Set your own photo with Premium"
   },
   "tagDex": {
     "title": "Tag Collection",

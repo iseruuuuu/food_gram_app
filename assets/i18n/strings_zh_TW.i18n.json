@@ -282,7 +282,8 @@
     "sortOldest": "最早",
     "sortHighestRating": "高分優先",
     "sortLowestRating": "低分優先",
-    "sortMostLiked": "最多按讚"
+    "sortMostLiked": "最多按讚",
+    "changeIconHint": "成為進階會員即可更換頭像"
   },
   "tagDex": {
     "title": "標籤圖鑑",

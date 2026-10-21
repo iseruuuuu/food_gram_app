@@ -282,7 +282,8 @@
     "sortOldest": "เก่าสุด",
     "sortHighestRating": "คะแนนสูงสุด",
     "sortLowestRating": "คะแนนต่ำสุด",
-    "sortMostLiked": "ถูกใจมากสุด"
+    "sortMostLiked": "ถูกใจมากสุด",
+    "changeIconHint": "ตั้งรูปโปรไฟล์ด้วยพรีเมียม"
   },
   "tagDex": {
     "title": "สมุดแท็ก",

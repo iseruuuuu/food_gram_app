@@ -282,7 +282,8 @@
     "sortOldest": "오래된순",
     "sortHighestRating": "높은 평점순",
     "sortLowestRating": "낮은 평점순",
-    "sortMostLiked": "좋아요순"
+    "sortMostLiked": "좋아요순",
+    "changeIconHint": "프리미엄으로 원하는 사진으로 변경"
   },
   "tagDex": {
     "title": "태그 도감",

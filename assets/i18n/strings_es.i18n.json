@@ -282,7 +282,8 @@
     "sortOldest": "Más antiguos",
     "sortHighestRating": "Mejor valorados",
     "sortLowestRating": "Peor valorados",
-    "sortMostLiked": "Más gustados"
+    "sortMostLiked": "Más gustados",
+    "changeIconHint": "Cambia tu foto con Premium"
   },
   "tagDex": {
     "title": "Colección de etiquetas",
