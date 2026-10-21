@@ -166,6 +166,7 @@ abstract final class AnalyticsEvent {
   static const String premiumRankingTap = 'premium_ranking_tap';
   static const String premiumProfileCustomizationTap =
       'premium_profile_customization_tap';
+  static const String premiumRemoveAdsTap = 'premium_remove_ads_tap';
 
   // --- マイルストーン / FoodGram ---
   static const String firstRecordOpen = 'first_record_open';

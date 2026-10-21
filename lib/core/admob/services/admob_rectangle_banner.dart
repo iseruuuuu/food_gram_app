@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/admob/admob_gate.dart';
 import 'package:food_gram_app/core/admob/config/admob_config.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/ui/component/app_remove_ads_cta.dart';
+import 'package:gap/gap.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 /// レクタングル広告の状態を管理するプロバイダー
@@ -91,12 +93,21 @@ class RectangleBanner extends ConsumerWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 24),
-      child: Container(
-        width: 300,
-        height: 250,
-        alignment: Alignment.center,
-        child: AdWidget(ad: bannerAd),
+      padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
+      child: SizedBox(
+        width: double.infinity,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: 300,
+              height: 250,
+              child: AdWidget(ad: bannerAd),
+            ),
+            const Gap(12),
+            const AppRemoveAdsCta(source: 'ad_feed'),
+          ],
+        ),
       ),
     );
   }
