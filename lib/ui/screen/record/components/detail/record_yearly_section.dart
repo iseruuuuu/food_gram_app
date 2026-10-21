@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/tag.dart';
@@ -92,7 +94,27 @@ class RecordYearlySection extends StatelessWidget {
             ),
           ),
           const Gap(12),
-          if (!isSubscribed)
+          if (!isSubscribed && recap != null) ...[
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: onTapPremiumCta,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: ImageFiltered(
+                  imageFilter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                  child: IgnorePointer(
+                    child: _YearRecapBody(recap: recap),
+                  ),
+                ),
+              ),
+            ),
+            const Gap(12),
+            RecordPremiumLockBanner(
+              message: t.myMapRecord.insight.yearStorySubtitle,
+              ctaLabel: t.myMapRecord.insight.lockedDiscoveriesCta,
+              onTap: onTapPremiumCta,
+            ),
+          ] else if (!isSubscribed)
             RecordPremiumLockBanner(
               message: t.myMapRecord.insight.yearStorySubtitle,
               ctaLabel: t.myMapRecord.insight.lockedDiscoveriesCta,

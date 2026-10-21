@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
@@ -75,7 +77,6 @@ class RecordSummarySection extends StatelessWidget {
                         accent: const Color(0xFFEF4444),
                         value: localeFormat.format(mealsCount),
                         label: t.myMapRecord.recordedMealsLabel,
-                        locked: !isSubscribed,
                       ),
                       VerticalDivider(
                         width: 1,
@@ -88,6 +89,7 @@ class RecordSummarySection extends StatelessWidget {
                         value: localeFormat.format(shopsCount),
                         label: t.myMapRecord.visitedShopsLabel,
                         locked: !isSubscribed,
+                        onLockedTap: onTapPremiumCta,
                       ),
                       VerticalDivider(
                         width: 1,
@@ -100,6 +102,7 @@ class RecordSummarySection extends StatelessWidget {
                         value: '$prefecturesCount',
                         label: t.myMapRecord.prefecturesUnit,
                         locked: !isSubscribed,
+                        onLockedTap: onTapPremiumCta,
                       ),
                       VerticalDivider(
                         width: 1,
@@ -112,6 +115,7 @@ class RecordSummarySection extends StatelessWidget {
                         value: '$countriesCount',
                         label: t.myMapRecord.countriesUnit,
                         locked: !isSubscribed,
+                        onLockedTap: onTapPremiumCta,
                       ),
                     ],
                   ),
@@ -141,6 +145,7 @@ class _JourneyStatColumn extends StatelessWidget {
     required this.value,
     required this.label,
     this.locked = false,
+    this.onLockedTap,
   });
 
   final IconData icon;
@@ -148,50 +153,93 @@ class _JourneyStatColumn extends StatelessWidget {
   final String value;
   final String label;
   final bool locked;
+  final VoidCallback? onLockedTap;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4),
-        child: Column(
-          children: [
-            Icon(
-              locked ? Icons.lock_outline_rounded : icon,
-              color:
-                  locked ? (isDark ? Colors.white38 : Colors.black38) : accent,
-              size: 28,
-            ),
-            const Gap(4),
+    final content = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Column(
+        children: [
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Icon(
+                icon,
+                color: locked ? accent.withValues(alpha: 0.75) : accent,
+                size: 28,
+              ),
+              if (locked)
+                Positioned(
+                  right: -4,
+                  bottom: -2,
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF262626) : Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.lock_rounded,
+                      size: 11,
+                      color: AppTheme.primaryOrange,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          const Gap(4),
+          if (locked)
+            ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+              child: FittedBox(
+                child: Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w900,
+                    color: accent,
+                    height: 1,
+                  ),
+                ),
+              ),
+            )
+          else
             FittedBox(
               child: Text(
-                locked ? '—' : value,
+                value,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w900,
-                  color: locked
-                      ? AppTheme.primaryOrange.withValues(alpha: 0.4)
-                      : accent,
+                  color: accent,
                   height: 1,
                 ),
               ),
             ),
-            const Gap(4),
-            Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: isDark ? Colors.white70 : Colors.black87,
-              ),
+          const Gap(4),
+          Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: isDark ? Colors.white70 : Colors.black87,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
+    );
+    return Expanded(
+      child: locked && onLockedTap != null
+          ? GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: onLockedTap,
+              child: content,
+            )
+          : content,
     );
   }
 }

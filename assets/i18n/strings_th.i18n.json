@@ -144,7 +144,7 @@
     "restoreFailureSubtitle": "ไม่มีประวัติซื้อ? ติดต่อสนับสนุน",
     "restore": "กู้คืน",
     "purchaseError": "เกิดข้อผิดพลาดระหว่างการซื้อ",
-    "premiumMembership": "เป็นพรีเมียม",
+    "premiumMembership": "ทดลองพรีเมียมฟรี 7 วัน",
     "clearCache": "ล้างแคช",
     "clearCacheSuccessTitle": "ล้างแคชแล้ว",
     "clearCacheSuccessSubtitle": "ลบข้อมูลชั่วคราว เช่น รูปภาพแล้ว",
@@ -282,7 +282,8 @@
     "sortOldest": "เก่าสุด",
     "sortHighestRating": "คะแนนสูงสุด",
     "sortLowestRating": "คะแนนต่ำสุด",
-    "sortMostLiked": "ถูกใจมากสุด"
+    "sortMostLiked": "ถูกใจมากสุด",
+    "changeIconHint": "ตั้งรูปโปรไฟล์ด้วยพรีเมียม"
   },
   "tagDex": {
     "title": "สมุดแท็ก",
@@ -604,6 +605,7 @@
     "iconDesc": "โดดเด่นจากผู้โพสต์คนอื่นๆ",
     "adTitle": "ไม่มีโฆษณา",
     "adDesc": "ลบโฆษณาทั้งหมด",
+    "removeAdsCta": "ปิดโฆษณาฟรี 7 วัน",
     "comingSoon": "เร็วๆ นี้...",
     "newFeatures": "ฟีเจอร์พิเศษสำหรับพรีเมียมใหม่\nเร็วๆ นี้!",
     "subscribeButton": "เป็นพรีเมียม",

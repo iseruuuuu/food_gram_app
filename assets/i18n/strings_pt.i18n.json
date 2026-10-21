@@ -144,7 +144,7 @@
     "restoreFailureSubtitle": "Sem histórico de compras? Entre em contato com o suporte",
     "restore": "Restaurar",
     "purchaseError": "Ocorreu um erro durante a compra",
-    "premiumMembership": "Torne-se membro Premium",
+    "premiumMembership": "7 dias grátis de Premium",
     "clearCache": "Limpar cache",
     "clearCacheSuccessTitle": "Cache limpo",
     "clearCacheSuccessSubtitle": "Dados temporários como imagens foram removidos",
@@ -282,7 +282,8 @@
     "sortOldest": "Mais antigos",
     "sortHighestRating": "Melhor avaliados",
     "sortLowestRating": "Pior avaliados",
-    "sortMostLiked": "Mais curtidos"
+    "sortMostLiked": "Mais curtidos",
+    "changeIconHint": "Foto própria no Premium"
   },
   "tagDex": {
     "title": "Coleção de tags",
@@ -604,6 +605,7 @@
     "iconDesc": "Destaque-se de outros criadores",
     "adTitle": "Sem Anúncios",
     "adDesc": "Remove todos os anúncios",
+    "removeAdsCta": "7 dias sem anúncios",
     "comingSoon": "Em breve...",
     "newFeatures": "Novos recursos exclusivos premium\nchegando em breve!",
     "subscribeButton": "Tornar-se Membro Premium",

@@ -144,7 +144,7 @@
     "restoreFailureSubtitle": "Keine Kaufhistorie? Kontaktieren Sie den Support",
     "restore": "Wiederherstellen",
     "purchaseError": "Beim Kauf ist ein Fehler aufgetreten",
-    "premiumMembership": "Premium-Mitglied werden",
+    "premiumMembership": "7 Tage Premium kostenlos",
     "clearCache": "Cache leeren",
     "clearCacheSuccessTitle": "Cache geleert",
     "clearCacheSuccessSubtitle": "Temporäre Daten wie Bilder wurden entfernt",
@@ -282,7 +282,8 @@
     "sortOldest": "Älteste",
     "sortHighestRating": "Beste Bewertung",
     "sortLowestRating": "Niedrigste Bewertung",
-    "sortMostLiked": "Meiste Likes"
+    "sortMostLiked": "Meiste Likes",
+    "changeIconHint": "Eigenes Foto mit Premium"
   },
   "tagDex": {
     "title": "Tag-Sammlung",
@@ -604,6 +605,7 @@
     "iconDesc": "Hebe dich von anderen ab",
     "adTitle": "Werbefrei",
     "adDesc": "Entfernt alle Werbung",
+    "removeAdsCta": "7 Tage werbefrei",
     "comingSoon": "Demnächst verfügbar...",
     "newFeatures": "Neue Premium-exklusive Funktionen\nkommen bald!",
     "subscribeButton": "Premium-Mitglied werden",

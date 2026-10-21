@@ -144,7 +144,7 @@
     "restoreFailureSubtitle": "Không có lịch sử mua? Liên hệ hỗ trợ",
     "restore": "Khôi phục",
     "purchaseError": "Đã xảy ra lỗi trong quá trình mua",
-    "premiumMembership": "Trở thành Premium",
+    "premiumMembership": "Dùng Premium miễn phí 7 ngày",
     "clearCache": "Xóa bộ nhớ đệm",
     "clearCacheSuccessTitle": "Đã xóa bộ nhớ đệm",
     "clearCacheSuccessSubtitle": "Đã xóa dữ liệu tạm như hình ảnh",
@@ -282,7 +282,8 @@
     "sortOldest": "Cũ nhất",
     "sortHighestRating": "Đánh giá cao nhất",
     "sortLowestRating": "Đánh giá thấp nhất",
-    "sortMostLiked": "Nhiều lượt thích nhất"
+    "sortMostLiked": "Nhiều lượt thích nhất",
+    "changeIconHint": "Đổi ảnh đại diện với Premium"
   },
   "tagDex": {
     "title": "Bộ sưu tập thẻ",
@@ -604,6 +605,7 @@
     "iconDesc": "Nổi bật so với các người đăng khác",
     "adTitle": "Không quảng cáo",
     "adDesc": "Loại bỏ tất cả quảng cáo",
+    "removeAdsCta": "Tắt quảng cáo miễn phí 7 ngày",
     "comingSoon": "Sắp ra mắt...",
     "newFeatures": "Tính năng độc quyền Premium mới\nsắp ra mắt!",
     "subscribeButton": "Trở thành Premium",

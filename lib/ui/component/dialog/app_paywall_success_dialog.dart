@@ -78,10 +78,15 @@ class PaywallSuccessDialog extends StatelessWidget {
 
 Future<void> showPaywallSuccessDialog({
   required BuildContext context,
-  required ConfettiController controller,
+  ConfettiController? controller,
   Duration timeoutDuration = const Duration(seconds: 3),
 }) async {
   final t = Translations.of(context);
+  final ownedController = controller == null
+      ? ConfettiController(duration: timeoutDuration)
+      : null;
+  final effectiveController = controller ?? ownedController!;
+  effectiveController.play();
   try {
     await showDialog<void>(
       context: context,
@@ -89,7 +94,7 @@ Future<void> showPaywallSuccessDialog({
       barrierDismissible: false,
       builder: (_) {
         return PaywallSuccessDialog(
-          controller: controller,
+          controller: effectiveController,
           t: t,
           timeoutDuration: timeoutDuration,
         );
@@ -99,6 +104,8 @@ Future<void> showPaywallSuccessDialog({
     if (context.mounted) {
       context.pop();
     }
+  } finally {
+    ownedController?.dispose();
   }
 }
 

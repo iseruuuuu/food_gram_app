@@ -144,7 +144,7 @@
     "restoreFailureSubtitle": "No purchase history? Contact support",
     "restore": "Restore",
     "purchaseError": "An error occurred during purchase",
-    "premiumMembership": "Become a Premium Member",
+    "premiumMembership": "Try Premium free for 7 days",
     "clearCache": "Clear cache",
     "clearCacheSuccessTitle": "Cache cleared",
     "clearCacheSuccessSubtitle": "Temporary data such as images has been removed",
@@ -281,7 +281,8 @@
     "sortOldest": "Oldest",
     "sortHighestRating": "Highest rated",
     "sortLowestRating": "Lowest rated",
-    "sortMostLiked": "Most liked"
+    "sortMostLiked": "Most liked",
+    "changeIconHint": "Set your own photo with Premium"
   },
   "tagDex": {
     "title": "Tag Collection",
@@ -603,6 +604,7 @@
     "iconDesc": "Stand out from other posters",
     "adTitle": "Ad-Free",
     "adDesc": "Remove all advertisements",
+    "removeAdsCta": "Go ad-free for 7 days",
     "comingSoon": "Coming Soon...",
     "newFeatures": "New premium-exclusive features\ncoming soon!",
     "subscribeButton": "Become a Premium Member",

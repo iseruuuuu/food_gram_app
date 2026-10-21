@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/users.dart';
-import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
+import 'package:food_gram_app/core/purchase/paywall_launch_guard.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
@@ -11,15 +13,17 @@ import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
+import 'package:food_gram_app/ui/component/dialog/app_paywall_success_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/app_profile_dialog.dart';
 import 'package:food_gram_app/ui/screen/memory_album/components/memory_album_entry_card.dart';
 import 'package:food_gram_app/ui/screen/profile/components/profile_stat.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class AppProfileHeader extends ConsumerWidget {
+class AppProfileHeader extends HookConsumerWidget {
   const AppProfileHeader({
     required this.users,
     required this.length,
@@ -34,6 +38,7 @@ class AppProfileHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
+    final paywallGuard = useMemoized(PaywallLaunchGuard.new);
     final currentUser = ref.watch(currentUserProvider);
     final isViewerSubscribed =
         ref.watch(isSubscribeProvider).valueOrNull ?? false;
@@ -54,30 +59,18 @@ class AppProfileHeader extends ConsumerWidget {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () async {
-                    final isDefaultIcon =
-                        AppProfileImage.isDefaultIcon(users.image);
-                    final isSubscribed =
-                        users.isSubscribe || isViewerSubscribed;
-                    if (isOwnProfile && isDefaultIcon && !isSubscribed) {
-                      await ref
-                          .read(revenueCatServiceProvider.notifier)
-                          .presentPaywallGuarded();
-                      return;
-                    }
-                    if (!context.mounted) {
-                      return;
-                    }
-                    await showDialog<void>(
-                      context: context,
-                      builder: (_) {
-                        return AppProfileDialog(image: users.image);
-                      },
-                    );
-                  },
-                  child: AppProfileImage(
+                  onTap: () => _onAvatarTap(
+                    context: context,
+                    ref: ref,
+                    users: users,
+                    isOwnProfile: isOwnProfile,
+                    isViewerSubscribed: isViewerSubscribed,
+                    paywallGuard: paywallGuard,
+                  ),
+                  child: _ProfileAvatar(
                     imagePath: users.image,
                     radius: avatarRadius,
+                    showCameraBadge: isOwnProfile,
                   ),
                 ),
                 const Gap(16),
@@ -133,6 +126,53 @@ class AppProfileHeader extends ConsumerWidget {
                                 level.toString(),
                               ),
                       ),
+                      if (isOwnProfile &&
+                          !(users.isSubscribe || isViewerSubscribed)) ...[
+                        const Gap(8),
+                        GestureDetector(
+                          onTap: () => _openIconPaywall(
+                            context: context,
+                            ref: ref,
+                            source: 'profile_icon_hint',
+                            paywallGuard: paywallGuard,
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppTheme.primaryOrange.withValues(
+                                alpha: 0.12,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.photo_camera,
+                                  size: 13,
+                                  color: AppTheme.primaryOrange,
+                                ),
+                                const Gap(4),
+                                Expanded(
+                                  child: Text(
+                                    t.profile.changeIconHint,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.primaryOrange,
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -241,15 +281,7 @@ class AppProfileHeader extends ConsumerWidget {
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
-                  onPressed: () {
-                    context.pushNamed(RouterPath.edit).then((value) {
-                      if (value != null) {
-                        ref
-                            .read(myProfileViewModelProvider().notifier)
-                            .setUser(value as Users);
-                      }
-                    });
-                  },
+                  onPressed: () => _openEditScreen(context: context, ref: ref),
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: dividerColor),
                     shape: RoundedRectangleBorder(
@@ -271,6 +303,72 @@ class AppProfileHeader extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _onAvatarTap({
+    required BuildContext context,
+    required WidgetRef ref,
+    required Users users,
+    required bool isOwnProfile,
+    required bool isViewerSubscribed,
+    required PaywallLaunchGuard paywallGuard,
+  }) async {
+    if (!isOwnProfile) {
+      if (!context.mounted) {
+        return;
+      }
+      await showDialog<void>(
+        context: context,
+        builder: (_) {
+          return AppProfileDialog(image: users.image);
+        },
+      );
+      return;
+    }
+    final isSubscribed = users.isSubscribe || isViewerSubscribed;
+    if (isSubscribed) {
+      await _openEditScreen(context: context, ref: ref);
+      return;
+    }
+    await _openIconPaywall(
+      context: context,
+      ref: ref,
+      source: 'profile_avatar',
+      paywallGuard: paywallGuard,
+    );
+  }
+
+  Future<void> _openEditScreen({
+    required BuildContext context,
+    required WidgetRef ref,
+  }) async {
+    final value = await context.pushNamed(RouterPath.edit);
+    if (value != null) {
+      ref.read(myProfileViewModelProvider().notifier).setUser(value as Users);
+    }
+  }
+
+  Future<void> _openIconPaywall({
+    required BuildContext context,
+    required WidgetRef ref,
+    required String source,
+    required PaywallLaunchGuard paywallGuard,
+  }) async {
+    ref.read(firebaseAnalyticsServiceProvider).logPremiumFeatureTap(
+          AnalyticsEvent.premiumProfileCustomizationTap,
+        );
+    final purchased = await paywallGuard.present(
+      context: context,
+      ref: ref,
+      source: source,
+    );
+    if (!purchased || !context.mounted) {
+      return;
+    }
+    await showPaywallSuccessDialog(context: context);
+    if (context.mounted) {
+      await _openEditScreen(context: context, ref: ref);
+    }
   }
 
   String _getRank(BuildContext context, int postCount) {
@@ -304,6 +402,59 @@ class AppProfileHeader extends ConsumerWidget {
       return Assets.trophy.trophySilver.path;
     }
     return Assets.trophy.trophyBronze.path;
+  }
+}
+
+class _ProfileAvatar extends StatelessWidget {
+  const _ProfileAvatar({
+    required this.imagePath,
+    required this.radius,
+    required this.showCameraBadge,
+  });
+
+  final String imagePath;
+  final double radius;
+  final bool showCameraBadge;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        AppProfileImage(
+          imagePath: imagePath,
+          radius: radius,
+        ),
+        if (showCameraBadge)
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: AppTheme.primaryOrange,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppTheme.backgroundOf(context),
+                  width: 2,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.12),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.photo_camera,
+                color: Colors.white,
+                size: 16,
+              ),
+            ),
+          ),
+      ],
+    );
   }
 }
 

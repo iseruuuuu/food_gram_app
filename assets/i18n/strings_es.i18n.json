@@ -144,7 +144,7 @@
     "restoreFailureSubtitle": "¿Sin historial de compras? Contacte soporte",
     "restore": "Restaurar compra",
     "purchaseError": "Ha ocurrido un error durante la compra",
-    "premiumMembership": "Hazte miembro Premium",
+    "premiumMembership": "Prueba Premium 7 días gratis",
     "clearCache": "Borrar caché",
     "clearCacheSuccessTitle": "Caché borrada",
     "clearCacheSuccessSubtitle": "Se eliminaron datos temporales como imágenes",
@@ -282,7 +282,8 @@
     "sortOldest": "Más antiguos",
     "sortHighestRating": "Mejor valorados",
     "sortLowestRating": "Peor valorados",
-    "sortMostLiked": "Más gustados"
+    "sortMostLiked": "Más gustados",
+    "changeIconHint": "Cambia tu foto con Premium"
   },
   "tagDex": {
     "title": "Colección de etiquetas",
@@ -604,6 +605,7 @@
     "iconDesc": "Destaca entre otros creadores",
     "adTitle": "Sin Anuncios",
     "adDesc": "Elimina todos los anuncios",
+    "removeAdsCta": "7 días sin anuncios",
     "comingSoon": "Próximamente...",
     "newFeatures": "¡Nuevas funciones exclusivas premium\npróximamente!",
     "subscribeButton": "Convertirse en Miembro Premium",

@@ -144,7 +144,7 @@
     "restoreFailureSubtitle": "購入履歴がない場合はサポートにご連絡を",
     "restore": "購入を復元",
     "purchaseError": "購入処理中にエラーが発生しました",
-    "premiumMembership": "プレミアム会員になって特別な体験を",
+    "premiumMembership": "7日間無料でプレミアム会員に",
     "clearCache": "キャッシュ削除",
     "clearCacheSuccessTitle": "キャッシュを削除しました",
     "clearCacheSuccessSubtitle": "画像など一時データを削除しました",
@@ -281,7 +281,8 @@
     "sortOldest": "古い順",
     "sortHighestRating": "高評価順",
     "sortLowestRating": "低評価順",
-    "sortMostLiked": "いいね順"
+    "sortMostLiked": "いいね順",
+    "changeIconHint": "プレミアムで好きな写真に変更"
   },
   "tagDex": {
     "title": "タグ図鑑",
@@ -603,6 +604,7 @@
     "iconDesc": "他の投稿者よりも目立つようになる",
     "adTitle": "広告が一切表示されなくなる",
     "adDesc": "中断されずにFoodGramを楽しめる",
+    "removeAdsCta": "7日間無料で広告を消す",
     "comingSoon": "Coming Soon...",
     "newFeatures": "プレミアム会員限定の新機能を\n随時リリース予定！",
     "subscribeButton": "プレミアム会員になる",

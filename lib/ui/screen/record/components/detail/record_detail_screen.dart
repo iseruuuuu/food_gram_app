@@ -5,13 +5,15 @@ import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
-import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
+import 'package:food_gram_app/core/purchase/paywall_launch_guard.dart';
 import 'package:food_gram_app/core/supabase/post/analyzer/record_food_traits_analyzer.dart';
 import 'package:food_gram_app/core/supabase/post/analyzer/record_insight_analyzer.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/dialog/app_paywall_success_dialog.dart';
+import 'package:food_gram_app/ui/screen/record/components/detail/record_highlights_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_intro_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_memories_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_summary_section.dart';
@@ -64,6 +66,7 @@ class RecordDetailScreen extends HookConsumerWidget {
     );
     useFuture(useMemoized(CountryDetector.ensureLoaded));
     final selectedYear = useState<int?>(null);
+    final paywallGuard = useMemoized(PaywallLaunchGuard.new);
     final isSubscribe = ref.watch(isSubscribeProvider).valueOrNull ?? false;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = isDark ? const Color(0xFF161616) : Colors.white;
@@ -87,11 +90,18 @@ class RecordDetailScreen extends HookConsumerWidget {
     const viewTypeTabHeight = 68.0;
     const bottomPadding = 96.0;
 
-    void openPaywall() {
+    Future<void> openPaywall({required String source}) async {
       ref.read(firebaseAnalyticsServiceProvider).logPremiumFeatureTap(
             AnalyticsEvent.premiumRankingTap,
           );
-      ref.read(revenueCatServiceProvider.notifier).presentPaywallGuarded();
+      final purchased = await paywallGuard.present(
+        context: context,
+        ref: ref,
+        source: source,
+      );
+      if (purchased && context.mounted) {
+        await showPaywallSuccessDialog(context: context);
+      }
     }
 
     return Stack(
@@ -144,7 +154,15 @@ class RecordDetailScreen extends HookConsumerWidget {
                         prefecturesCount: recordVisitedPrefecturesCount(posts),
                         countriesCount: recordVisitedCountriesCount(posts),
                         isSubscribed: isSubscribe,
-                        onTapPremiumCta: openPaywall,
+                        onTapPremiumCta: () =>
+                            openPaywall(source: 'record_summary'),
+                      ),
+                      const Gap(14),
+                      RecordHighlightsSection(
+                        posts: posts,
+                        isSubscribed: isSubscribe,
+                        onTapPremiumCta: () =>
+                            openPaywall(source: 'record_highlights'),
                       ),
                       const Gap(14),
                       RecordYearlySection(
@@ -154,7 +172,8 @@ class RecordDetailScreen extends HookConsumerWidget {
                           selectedYear.value = year;
                         },
                         isSubscribed: isSubscribe,
-                        onTapPremiumCta: openPaywall,
+                        onTapPremiumCta: () =>
+                            openPaywall(source: 'record_yearly'),
                       ),
                       if (displayedPastPosts.isNotEmpty) ...[
                         const Gap(14),

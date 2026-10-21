@@ -144,7 +144,7 @@
     "restoreFailureSubtitle": "沒有購買記錄？請聯絡客服",
     "restore": "還原購買",
     "purchaseError": "購買過程中發生錯誤",
-    "premiumMembership": "成為進階會員，享受特別體驗",
+    "premiumMembership": "免費試用進階會員7天",
     "clearCache": "清除快取",
     "clearCacheSuccessTitle": "已清除快取",
     "clearCacheSuccessSubtitle": "已刪除圖片等暫存資料",
@@ -282,7 +282,8 @@
     "sortOldest": "最早",
     "sortHighestRating": "高分優先",
     "sortLowestRating": "低分優先",
-    "sortMostLiked": "最多按讚"
+    "sortMostLiked": "最多按讚",
+    "changeIconHint": "成為進階會員即可更換頭像"
   },
   "tagDex": {
     "title": "標籤圖鑑",
@@ -604,6 +605,7 @@
     "iconDesc": "更顯眼，脫穎而出",
     "adTitle": "無廣告",
     "adDesc": "移除所有廣告",
+    "removeAdsCta": "免費7天關閉廣告",
     "comingSoon": "即將推出...",
     "newFeatures": "進階會員專屬新功能\n即將推出！",
     "subscribeButton": "成為進階會員",
