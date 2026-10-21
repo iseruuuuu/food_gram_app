@@ -3,12 +3,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
+import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
+import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/theme/style/edit_style.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_icon.dart';
 import 'package:food_gram_app/ui/component/app_profile_image.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
+import 'package:food_gram_app/ui/component/dialog/app_paywall_success_dialog.dart';
 import 'package:food_gram_app/ui/component/loading/app_overlay_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
 import 'package:food_gram_app/ui/screen/edit/edit_view_model.dart';
@@ -142,44 +148,111 @@ class EditScreen extends HookConsumerWidget {
                               );
                             },
                           ),
-                          if (state.isSubscribe)
-                            GestureDetector(
-                              onTap: () async {
-                                primaryFocus?.unfocus();
-                                await showModalBottomSheet<void>(
-                                  context: context,
-                                  builder: (context) {
-                                    return AppPostImageModalSheet(
-                                      camera: () async {
-                                        await ref
-                                            .read(
-                                              editViewModelProvider().notifier,
-                                            )
-                                            .camera();
-                                      },
-                                      album: () async {
-                                        await ref
-                                            .read(
-                                              editViewModelProvider().notifier,
-                                            )
-                                            .album();
-                                      },
-                                    );
-                                  },
-                                );
-                              },
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 8,
-                                height: MediaQuery.of(context).size.width / 8,
-                                child: const CircleAvatar(
-                                  backgroundColor: Colors.black,
-                                  child: Icon(
-                                    Icons.linked_camera,
-                                    color: Colors.white,
+                          Builder(
+                            builder: (context) {
+                              final isPremium = state.isSubscribe ||
+                                  (ref.watch(isSubscribeProvider).valueOrNull ??
+                                      false);
+                              final iconSize =
+                                  MediaQuery.of(context).size.width / 8;
+                              return GestureDetector(
+                                onTap: () async {
+                                  primaryFocus?.unfocus();
+                                  if (!isPremium) {
+                                    ref
+                                        .read(firebaseAnalyticsServiceProvider)
+                                        .logPremiumFeatureTap(
+                                          AnalyticsEvent
+                                              .premiumProfileCustomizationTap,
+                                        );
+                                    await ref
+                                        .read(revenueCatServiceProvider.future);
+                                    final purchased = await ref
+                                        .read(
+                                          revenueCatServiceProvider.notifier,
+                                        )
+                                        .presentPaywallGuarded(
+                                          source: 'edit_custom_icon',
+                                        );
+                                    if (purchased) {
+                                      await ref
+                                          .read(
+                                            editViewModelProvider().notifier,
+                                          )
+                                          .getProfile();
+                                      if (context.mounted) {
+                                        await showPaywallSuccessDialog(
+                                          context: context,
+                                        );
+                                      }
+                                    }
+                                    return;
+                                  }
+                                  if (!context.mounted) {
+                                    return;
+                                  }
+                                  await showModalBottomSheet<void>(
+                                    context: context,
+                                    builder: (context) {
+                                      return AppPostImageModalSheet(
+                                        camera: () async {
+                                          await ref
+                                              .read(
+                                                editViewModelProvider()
+                                                    .notifier,
+                                              )
+                                              .camera();
+                                        },
+                                        album: () async {
+                                          await ref
+                                              .read(
+                                                editViewModelProvider()
+                                                    .notifier,
+                                              )
+                                              .album();
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                                child: SizedBox(
+                                  width: iconSize,
+                                  height: iconSize,
+                                  child: Stack(
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      const Positioned.fill(
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.black,
+                                          child: Icon(
+                                            Icons.linked_camera,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      if (!isPremium)
+                                        Positioned(
+                                          right: -2,
+                                          bottom: -2,
+                                          child: Container(
+                                            padding: const EdgeInsets.all(3),
+                                            decoration: const BoxDecoration(
+                                              color: AppTheme.primaryOrange,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: const Icon(
+                                              Icons.lock_rounded,
+                                              size: 11,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                            ),
+                              );
+                            },
+                          ),
                         ],
                       ),
                       const Gap(30),
