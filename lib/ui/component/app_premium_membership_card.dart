@@ -48,15 +48,19 @@ class AppPremiumMembershipCard extends ConsumerWidget {
                         color: AppTheme.primaryOrange,
                         size: 22,
                       ),
-                      const Gap(18),
-                      Text(
-                        t.setting.premiumMembership,
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.isDarkOf(context)
-                              ? AppTheme.textPrimaryDark
-                              : AppTheme.orangeDark,
+                      const Gap(12),
+                      Flexible(
+                        child: Text(
+                          t.setting.premiumMembership,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.isDarkOf(context)
+                                ? AppTheme.textPrimaryDark
+                                : AppTheme.orangeDark,
+                          ),
                         ),
                       ),
                     ],
