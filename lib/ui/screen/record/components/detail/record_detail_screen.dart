@@ -12,6 +12,8 @@ import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/utils/location/country_detector.dart';
 import 'package:food_gram_app/router/router.dart';
+import 'package:food_gram_app/ui/component/dialog/app_paywall_success_dialog.dart';
+import 'package:food_gram_app/ui/screen/record/components/detail/record_highlights_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_intro_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_memories_section.dart';
 import 'package:food_gram_app/ui/screen/record/components/detail/record_summary_section.dart';
@@ -87,11 +89,17 @@ class RecordDetailScreen extends HookConsumerWidget {
     const viewTypeTabHeight = 68.0;
     const bottomPadding = 96.0;
 
-    void openPaywall() {
+    Future<void> openPaywall({required String source}) async {
       ref.read(firebaseAnalyticsServiceProvider).logPremiumFeatureTap(
             AnalyticsEvent.premiumRankingTap,
           );
-      ref.read(revenueCatServiceProvider.notifier).presentPaywallGuarded();
+      await ref.read(revenueCatServiceProvider.future);
+      final purchased = await ref
+          .read(revenueCatServiceProvider.notifier)
+          .presentPaywallGuarded(source: source);
+      if (purchased && context.mounted) {
+        await showPaywallSuccessDialog(context: context);
+      }
     }
 
     return Stack(
@@ -144,7 +152,15 @@ class RecordDetailScreen extends HookConsumerWidget {
                         prefecturesCount: recordVisitedPrefecturesCount(posts),
                         countriesCount: recordVisitedCountriesCount(posts),
                         isSubscribed: isSubscribe,
-                        onTapPremiumCta: openPaywall,
+                        onTapPremiumCta: () =>
+                            openPaywall(source: 'record_summary'),
+                      ),
+                      const Gap(14),
+                      RecordHighlightsSection(
+                        posts: posts,
+                        isSubscribed: isSubscribe,
+                        onTapPremiumCta: () =>
+                            openPaywall(source: 'record_highlights'),
                       ),
                       const Gap(14),
                       RecordYearlySection(
@@ -154,7 +170,8 @@ class RecordDetailScreen extends HookConsumerWidget {
                           selectedYear.value = year;
                         },
                         isSubscribed: isSubscribe,
-                        onTapPremiumCta: openPaywall,
+                        onTapPremiumCta: () =>
+                            openPaywall(source: 'record_yearly'),
                       ),
                       if (displayedPastPosts.isNotEmpty) ...[
                         const Gap(14),
