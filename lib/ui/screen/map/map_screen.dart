@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/admob_gate.dart';
 import 'package:food_gram_app/core/admob/services/admob_interstitial.dart';
+import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
+import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
@@ -20,6 +22,7 @@ import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
+import 'package:food_gram_app/ui/component/dialog/app_paywall_success_dialog.dart';
 import 'package:food_gram_app/ui/component/loading/app_overlay_loading.dart';
 import 'package:food_gram_app/ui/component/loading/app_tab_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/map_restaurant_detail_sheet.dart';
@@ -218,22 +221,46 @@ class MapScreen extends HookConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          if (isSubscribed)
-                            _MapSideFab(
-                              heroTag: 'style_toggle',
-                              fabBg: fabBg,
-                              fabFg: fabFg,
-                              fabBorder: fabBorder,
-                              icon: isEarthStyle.value
-                                  ? CupertinoIcons.globe
-                                  : CupertinoIcons.map,
-                              onPressed: () {
-                                isEarthStyle.value = !isEarthStyle.value;
-                                controller.handleStyleChange();
-                              },
-                            ),
+                          _MapSideFab(
+                            heroTag: 'style_toggle',
+                            fabBg: fabBg,
+                            fabFg: fabFg,
+                            fabBorder: fabBorder,
+                            showLockBadge: !isSubscribed,
+                            icon: isEarthStyle.value
+                                ? CupertinoIcons.globe
+                                : CupertinoIcons.map,
+                            onPressed: () async {
+                              if (!isSubscribed) {
+                                ref
+                                    .read(firebaseAnalyticsServiceProvider)
+                                    .logPremiumFeatureTap(
+                                      AnalyticsEvent.premiumSatelliteMapTap,
+                                    );
+                                await ref
+                                    .read(revenueCatServiceProvider.future);
+                                final purchased = await ref
+                                    .read(revenueCatServiceProvider.notifier)
+                                    .presentPaywallGuarded(
+                                      source: 'map_earth_style',
+                                    );
+                                if (purchased) {
+                                  isEarthStyle.value = true;
+                                  controller.handleStyleChange();
+                                  if (context.mounted) {
+                                    await showPaywallSuccessDialog(
+                                      context: context,
+                                    );
+                                  }
+                                }
+                                return;
+                              }
+                              isEarthStyle.value = !isEarthStyle.value;
+                              controller.handleStyleChange();
+                            },
+                          ),
                           if (isLocationEnabled) ...[
-                            if (isSubscribed) const Gap(8),
+                            const Gap(8),
                             _MapSideFab(
                               heroTag: 'map_current_location',
                               fabBg: fabBg,
@@ -360,6 +387,7 @@ class _MapSideFab extends StatelessWidget {
     required this.icon,
     required this.onPressed,
     this.iconSize = 22,
+    this.showLockBadge = false,
   });
 
   static const double _size = 54 / 1.2;
@@ -371,38 +399,65 @@ class _MapSideFab extends StatelessWidget {
   final IconData icon;
   final double iconSize;
   final VoidCallback onPressed;
+  final bool showLockBadge;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: _size,
       height: _size,
-      child: Theme(
-        data: Theme.of(context).copyWith(
-          highlightColor: fabBg,
-          floatingActionButtonTheme: const FloatingActionButtonThemeData(
-            sizeConstraints: BoxConstraints.tightFor(
-              width: _size,
-              height: _size,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned.fill(
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                highlightColor: fabBg,
+                floatingActionButtonTheme: const FloatingActionButtonThemeData(
+                  sizeConstraints: BoxConstraints.tightFor(
+                    width: _size,
+                    height: _size,
+                  ),
+                ),
+              ),
+              child: FloatingActionButton(
+                heroTag: heroTag,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(color: fabBorder),
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                ),
+                foregroundColor: fabBg,
+                backgroundColor: fabBg,
+                focusColor: fabBg,
+                splashColor: fabBg,
+                hoverColor: fabBg,
+                elevation: 10,
+                onPressed: onPressed,
+                child: Icon(icon, color: fabFg, size: iconSize),
+              ),
             ),
           ),
-        ),
-        child: FloatingActionButton(
-          heroTag: heroTag,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          shape: RoundedRectangleBorder(
-            side: BorderSide(color: fabBorder),
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-          ),
-          foregroundColor: fabBg,
-          backgroundColor: fabBg,
-          focusColor: fabBg,
-          splashColor: fabBg,
-          hoverColor: fabBg,
-          elevation: 10,
-          onPressed: onPressed,
-          child: Icon(icon, color: fabFg, size: iconSize),
-        ),
+          if (showLockBadge)
+            Positioned(
+              right: -3,
+              top: -3,
+              child: IgnorePointer(
+                child: Container(
+                  padding: const EdgeInsets.all(2.5),
+                  decoration: const BoxDecoration(
+                    color: AppTheme.primaryOrange,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.lock_rounded,
+                    size: 10,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
