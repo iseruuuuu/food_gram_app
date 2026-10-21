@@ -109,8 +109,7 @@ class CalendarHomeWidgetSync {
 
       final postedTagByDate = <String, String>{};
       for (final post in sortedPosts) {
-        final localDate = post.createdAt.toLocal();
-        final dateKey = _dateFormatter.format(localDate);
+        final dateKey = _dateFormatter.format(post.createdAt);
         final tag = _extractFirstTag(post.foodTag);
 
         final existing = postedTagByDate[dateKey];

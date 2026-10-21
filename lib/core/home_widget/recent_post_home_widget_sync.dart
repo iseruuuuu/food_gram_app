@@ -92,7 +92,7 @@ class RecentPostHomeWidgetSync {
               ? '${locale.languageCode}_${locale.countryCode}'
               : locale.languageCode;
       final formattedDate = DateFormat.yMMMd(localeTag).format(
-        latest.createdAt.toLocal(),
+        latest.createdAt,
       );
 
       final payload = <String, dynamic>{
