@@ -27,7 +27,7 @@ class _KeepAlivePageViewState extends State<KeepAlivePageView>
   late Animation<Offset> _slide;
   late Animation<double> _fade;
   late List<bool> _activated;
-  int _direction = 1;
+  var _direction = 1;
 
   @override
   void initState() {

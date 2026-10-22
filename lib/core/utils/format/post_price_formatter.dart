@@ -7,7 +7,7 @@ import 'package:intl/number_symbols.dart';
 import 'package:intl/number_symbols_data.dart';
 
 /// ISO 4217 通貨コード（カンマ区切り・アルファベット順）。記号未定義はコードそのものを表示。
-const String _kSupportedPostPriceCurrencyCsv =
+const _kSupportedPostPriceCurrencyCsv =
     'AED,AFN,ALL,AMD,ANG,AOA,ARS,AUD,AWG,AZN,BAM,BBD,BDT,BGN,BHD,BIF,BMD,BND,'
     'BOB,BRL,BSD,BTN,BWP,BYN,BZD,CAD,CDF,CHF,CLP,CNY,COP,CRC,CUP,CVE,CZK,DJF,'
     'DKK,DOP,DZD,EGP,ERN,ETB,EUR,FJD,FKP,GBP,GEL,GHS,GIP,GMD,GNF,GTQ,GYD,HKD,'
@@ -34,7 +34,7 @@ List<String> _currencyPickerOrder() {
 }
 
 /// 表示用記号（未設定は [postPriceCurrencySymbol] がコードを返す）
-const Map<String, String> _kCurrencySymbols = {
+const _kCurrencySymbols = <String, String>{
   'AED': 'د.إ',
   'AFN': '؋',
   'ALL': 'L',
@@ -466,7 +466,7 @@ String defaultPostPriceCurrencyForCountry(String countryCode) {
 /// ISO 4217 の **minor unit exponent = 0** の通貨（公式テーブルに基づく）。
 /// [_kSupportedPostPriceCurrencyCsv] に載るコードのうち指数 0 のものをすべて含める。
 /// CSV に通貨を追加したら、SIX / ISO 4217 の指数に合わせてこの集合を更新すること。
-const Set<String> _kIso4217ZeroMinorUnitCodes = {
+const _kIso4217ZeroMinorUnitCodes = <String>{
   'BIF', // Burundi Franc
   'CLP', // Chilean Peso
   'DJF', // Djibouti Franc
@@ -522,7 +522,7 @@ Iterable<String> _localeTagsForNumberFormat(Locale locale) sync* {
   yield locale.languageCode;
 }
 
-const List<String> _kDecimalPatternFallbackLocales = [
+const _kDecimalPatternFallbackLocales = <String>[
   'de_DE',
   'fr_FR',
   'es_ES',

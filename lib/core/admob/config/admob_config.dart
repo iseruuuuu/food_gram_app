@@ -54,13 +54,13 @@ String get appOpenAdUnitId {
 }
 
 // 広告の表示間隔
-const Duration minInterstitialDuration = Duration(minutes: 5);
+const minInterstitialDuration = Duration(minutes: 5);
 
 /// アプリオープンを再表示するまでの最短間隔。
-const Duration minAppOpenDuration = Duration(hours: 4);
+const minAppOpenDuration = Duration(hours: 4);
 
 /// この時間以上バックグラウンドにいた復帰でのみアプリオープンを出す。
-const Duration minBackgroundForAppOpen = Duration(minutes: 10);
+const minBackgroundForAppOpen = Duration(minutes: 10);
 
 // 投稿詳細を閉じるN回ごとのインタースティシャル広告
 const postDetailCloseAdInterval = 7;

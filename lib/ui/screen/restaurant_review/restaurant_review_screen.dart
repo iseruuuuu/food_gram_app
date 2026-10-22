@@ -80,19 +80,23 @@ class RestaurantReviewScreen extends HookConsumerWidget {
       body: AsyncValueSwitcher(
         asyncValue: reviewsAsync,
         onLoading: const AppPostDetailSkeleton(),
-        onErrorTap: () async => ref.refresh(
-          restaurantReviewsProvider(
-            lat: posts.lat,
-            lng: posts.lng,
-          ),
-        ),
-        onData: (reviews) => RefreshIndicator(
-          onRefresh: () async => ref.refresh(
+        onErrorTap: () {
+          ref.invalidate(
             restaurantReviewsProvider(
               lat: posts.lat,
               lng: posts.lng,
             ),
-          ),
+          );
+        },
+        onData: (reviews) => RefreshIndicator(
+          onRefresh: () {
+            return ref.refresh(
+              restaurantReviewsProvider(
+                lat: posts.lat,
+                lng: posts.lng,
+              ).future,
+            );
+          },
           child: reviews.when(
             success: (data) {
               if (data.isEmpty) {

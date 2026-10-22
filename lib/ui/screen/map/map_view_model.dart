@@ -44,15 +44,15 @@ class MapViewModel extends _$MapViewModel {
   List<Posts>? _cachedPosts;
   Map<String, String>? _cachedImageKeys;
   Set<String> _cachedOwnLatLngKeys = const {};
-  bool _heatmapLayerAdded = false;
-  bool _dotsLayerReady = false;
-  bool _symbolLayerReady = false;
-  bool _tapHandlerRegistered = false;
-  bool _isHandlingPinTap = false;
-  bool _styleReady = false;
-  bool _styleLoadPending = false;
-  int _styleEpoch = 0;
-  Future<void> _mapMutation = Future<void>.value();
+  var _heatmapLayerAdded = false;
+  var _dotsLayerReady = false;
+  var _symbolLayerReady = false;
+  var _tapHandlerRegistered = false;
+  var _isHandlingPinTap = false;
+  var _styleReady = false;
+  var _styleLoadPending = false;
+  var _styleEpoch = 0;
+  var _mapMutation = Future<void>.value();
   void Function(List<Posts> posts)? _onPinTapHandler;
 
   /// 地名検索で選んだ地点（スプライト marker_11）
@@ -65,10 +65,10 @@ class MapViewModel extends _$MapViewModel {
   double? _lastPinIconZoom;
 
   /// この差以上ズームが動いたらピンサイズを付け直す
-  static const double _pinSizeRefreshZoomDelta = 0.5;
+  static const _pinSizeRefreshZoomDelta = 0.5;
 
   /// heatmap など重い処理用（ピン切替とは別）
-  static const Duration _cameraIdleDebounceDuration =
+  static const _cameraIdleDebounceDuration =
       Duration(milliseconds: 350);
   Timer? _cameraIdleDebounceTimer;
 
@@ -427,7 +427,7 @@ class MapViewModel extends _$MapViewModel {
 
   Future<void> moveToCurrentLocation() async {
     await ref.read(locationProvider).whenOrNull(
-          data: (loc) async => state.mapController?.animateCamera(
+          data: (loc) => state.mapController?.animateCamera(
             CameraUpdate.newLatLngZoom(
               LatLng(loc.latitude, loc.longitude),
               MapOverlayConstants.currentLocation,

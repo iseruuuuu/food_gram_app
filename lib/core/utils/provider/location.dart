@@ -8,7 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'location.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<LatLng> location(Ref ref) async {
+Future<LatLng> location(Ref ref) {
   return getLocation();
 }
 

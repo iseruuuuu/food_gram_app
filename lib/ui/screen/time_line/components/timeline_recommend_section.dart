@@ -36,16 +36,16 @@ class TimelineRecommendSection extends HookConsumerWidget {
   final String? categoryName;
 
   /// 中央カードの枠（画面幅比）。左右にチラ見せを残す
-  static const double viewportFraction = 0.82;
+  static const viewportFraction = 0.82;
 
   /// カルーセル高さ（画面幅比）
-  static const double heightRatio = 0.62;
+  static const heightRatio = 0.62;
 
   /// 中央カードのスケール
   static const double centerScale = 1;
 
   /// 左右カードのスケール（中央の約83%）
-  static const double sideScale = 0.83;
+  static const sideScale = 0.83;
 
   /// 左右カードをわずかに下げる量
   static const double sideTranslateY = 10;

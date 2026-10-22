@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:food_gram_app/core/model/post_count_ranking.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
@@ -12,12 +14,12 @@ part 'user_repository.g.dart';
 @riverpod
 class UserRepository extends _$UserRepository {
   @override
-  Future<void> build() async {}
+  Future<void> build() => Future.value();
 
   final logger = Logger();
 
   /// 自分のユーザー情報を取得
-  Future<Result<Users, Exception>> getCurrentUser() async {
+  Future<Result<Users, Exception>> getCurrentUser() {
     return _handleDatabaseOperation(() async {
       final data =
           await ref.read(userServiceProvider.notifier).getCurrentUser();
@@ -26,7 +28,7 @@ class UserRepository extends _$UserRepository {
   }
 
   /// 他のユーザー情報を取得
-  Future<Result<Users, Exception>> getOtherUser(String userId) async {
+  Future<Result<Users, Exception>> getOtherUser(String userId) {
     return _handleDatabaseOperation(() async {
       final data =
           await ref.read(userServiceProvider.notifier).getOtherUser(userId);
@@ -35,23 +37,23 @@ class UserRepository extends _$UserRepository {
   }
 
   /// 自分のユーザーのいいね数合計を取得
-  Future<Result<int, Exception>> getCurrentUserHeartAmount() async {
-    return _handleDatabaseOperation(() async {
-      return ref.read(userServiceProvider.notifier).getCurrentUserHeartAmount();
-    });
+  Future<Result<int, Exception>> getCurrentUserHeartAmount() {
+    return _handleDatabaseOperation(
+      () => ref.read(userServiceProvider.notifier).getCurrentUserHeartAmount(),
+    );
   }
 
   /// 特定のユーザーのいいね数合計を取得
-  Future<Result<int, Exception>> getOtherUserHeartAmount(String userId) async {
-    return _handleDatabaseOperation(() async {
-      return ref
+  Future<Result<int, Exception>> getOtherUserHeartAmount(String userId) {
+    return _handleDatabaseOperation(
+      () => ref
           .read(userServiceProvider.notifier)
-          .getOtherUserHeartAmount(userId);
-    });
+          .getOtherUserHeartAmount(userId),
+    );
   }
 
   /// 投稿からユーザー情報を取得
-  Future<Result<Users, Exception>> getUserFromPost(Posts post) async {
+  Future<Result<Users, Exception>> getUserFromPost(Posts post) {
     return _handleDatabaseOperation(() async {
       final data =
           await ref.read(userServiceProvider.notifier).getUserFromPost(post);
@@ -67,10 +69,10 @@ class UserRepository extends _$UserRepository {
   }
 
   /// 投稿数ベースの全体ランキング順位（1始まり）
-  Future<Result<int, Exception>> getPostCountRank(String userId) async {
-    return _handleDatabaseOperation(() async {
-      return ref.read(userServiceProvider.notifier).getPostCountRank(userId);
-    });
+  Future<Result<int, Exception>> getPostCountRank(String userId) {
+    return _handleDatabaseOperation(
+      () => ref.read(userServiceProvider.notifier).getPostCountRank(userId),
+    );
   }
 
   /// エラーハンドリング用のヘルパーメソッド

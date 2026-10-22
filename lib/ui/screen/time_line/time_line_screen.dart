@@ -27,7 +27,7 @@ class TimeLineScreen extends HookConsumerWidget {
   const TimeLineScreen({super.key});
 
   static const int _tabIndex = TabIndex.home;
-  static const int _recommendCount = 4;
+  static const _recommendCount = 4;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

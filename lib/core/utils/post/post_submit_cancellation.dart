@@ -1,6 +1,6 @@
 /// 投稿処理の協調的キャンセル（タイムアウト時に後続ステップを止める）
 class PostSubmitCancellation {
-  bool _cancelled = false;
+  var _cancelled = false;
 
   bool get isCancelled => _cancelled;
 

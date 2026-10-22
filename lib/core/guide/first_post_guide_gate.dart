@@ -2,7 +2,7 @@ import 'package:food_gram_app/core/local/shared_preference.dart';
 
 /// デバッグ用の強制表示。
 /// 確認したいときは `true` にする（本番では必ず `false` のまま）。
-const bool debugForceFirstPostGuide = false;
+const debugForceFirstPostGuide = false;
 
 /// 投稿ボタンへの初回誘導ガイドを表示すべきか。
 Future<bool> shouldShowFirstPostGuide({

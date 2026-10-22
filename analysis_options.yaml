@@ -1,4 +1,4 @@
-include: package:yumemi_lints/flutter/3.27/recommended.yaml
+include: package:yumemi_lints/flutter/3.44/recommended.yaml
 
 analyzer:
   plugins: # https://riverpod.dev/docs/introduction/getting_started#enabling-riverpod_lintcustom_lint
@@ -23,3 +23,9 @@ linter:
     
     # nullに関する警告
     unreachable_from_main: false
+
+    # 公開APIの型注釈（type_annotate_public_apis）と衝突するため無効化
+    omit_obvious_property_types: false
+
+    # ジェネリックなコールバック型で誤検知しやすいため無効化
+    unsafe_variance: false

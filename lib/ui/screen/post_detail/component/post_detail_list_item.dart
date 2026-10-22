@@ -429,7 +429,7 @@ class PostDetailListItem extends HookConsumerWidget {
                                 address: '',
                               ),
                             )
-                                .then((value) async {
+                                .then((value) {
                               if (value != null) {
                                 ref.invalidate(postsStreamProvider);
                               }

@@ -20,7 +20,7 @@ class PostShareCafe extends StatelessWidget {
   final Posts posts;
   final WidgetRef ref;
 
-  static const Size size = Size(360, 520);
+  static const size = Size(360, 520);
   static const _accentColor = Color(0xFFD4AF6A);
 
   @override

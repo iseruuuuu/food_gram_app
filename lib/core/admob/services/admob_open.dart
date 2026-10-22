@@ -18,19 +18,19 @@ class AdmobOpen {
   }) : _isAdsBlocked = isAdsBlocked;
 
   AppOpenAd? _appOpenAd;
-  bool _isAdShowing = false;
-  bool _isAdLoading = false;
-  int _loadAttempts = 0;
+  var _isAdShowing = false;
+  var _isAdLoading = false;
+  var _loadAttempts = 0;
   DateTime? _lastAdShowTime;
   DateTime? _appOpenLoadTime;
   DateTime? _backgroundedAt;
-  bool _ignoreBackground = false;
+  var _ignoreBackground = false;
   final logger = Logger();
   final bool Function() _isAdsBlocked;
 
-  static const int maxLoadAttempts = 2;
-  static const Duration adReadyTimeout = Duration(seconds: 5);
-  static const Duration maxCacheDuration = Duration(hours: 4);
+  static const maxLoadAttempts = 2;
+  static const adReadyTimeout = Duration(seconds: 5);
+  static const maxCacheDuration = Duration(hours: 4);
 
   bool get isAdReady => _appOpenAd != null;
 

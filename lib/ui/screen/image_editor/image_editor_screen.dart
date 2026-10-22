@@ -21,7 +21,7 @@ class ImageEditorScreen extends StatefulWidget {
 }
 
 class _ImageEditorScreenState extends State<ImageEditorScreen> {
-  bool _hasPopped = false;
+  var _hasPopped = false;
 
   void _popOnce([Uint8List? bytes]) {
     if (_hasPopped) {

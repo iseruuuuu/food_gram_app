@@ -14,11 +14,10 @@ part 'notification_service.g.dart';
 class NotificationService {
   factory NotificationService() => _instance;
   NotificationService._internal();
-  static final NotificationService _instance = NotificationService._internal();
+  static final _instance = NotificationService._internal();
 
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-  final Logger _logger = Logger();
+  final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final _logger = Logger();
 
   /// ロケールに基づいて適切なTranslationsインスタンスを取得
   Translations _getTranslations() {

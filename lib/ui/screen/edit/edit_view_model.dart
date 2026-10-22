@@ -27,7 +27,7 @@ class EditViewModel extends _$EditViewModel {
   final selfIntroduceTextController = TextEditingController();
 
   Loading get loading => ref.read(loadingProvider.notifier);
-  final picker = ImagePicker();
+  final ImagePicker picker = ImagePicker();
   String uploadImage = '';
   Uint8List? imageBytes;
 

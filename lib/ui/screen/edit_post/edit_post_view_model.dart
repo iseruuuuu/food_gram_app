@@ -34,9 +34,9 @@ class EditPostViewModel extends _$EditPostViewModel {
   final _picker = ImagePicker();
   final Map<String, Uint8List> _imageBytesMap = {};
   late Posts _posts;
-  bool _priceCurrencyManuallySet = false;
-  bool _disposed = false;
-  int _currencyAutoDetectSeq = 0;
+  var _priceCurrencyManuallySet = false;
+  var _disposed = false;
+  var _currencyAutoDetectSeq = 0;
   TextEditingController get foodController => _foodController;
   TextEditingController get commentController => _commentController;
   TextEditingController get priceController => _priceController;
@@ -176,15 +176,15 @@ class EditPostViewModel extends _$EditPostViewModel {
   }
 
   // --- 画像 ---
-  Future<bool> camera(BuildContext context) async {
-    return _pickImage(
+  Future<bool> camera(BuildContext context) {
+    return _pickImage(    
       context,
       ImageSource.camera,
       EditStatus.cameraPermission.name,
     );
   }
 
-  Future<bool> album(BuildContext context) async {
+  Future<bool> album(BuildContext context) {
     return _pickMultiImage(context, EditStatus.albumPermission.name);
   }
 

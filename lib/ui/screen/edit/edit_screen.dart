@@ -166,7 +166,8 @@ class EditScreen extends HookConsumerWidget {
                                           AnalyticsEvent
                                               .premiumProfileCustomizationTap,
                                         );
-                                    final purchased = await paywallGuard.present(
+                                    final purchased =
+                                        await paywallGuard.present(
                                       context: context,
                                       ref: ref,
                                       source: 'edit_custom_icon',

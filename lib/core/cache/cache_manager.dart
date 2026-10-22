@@ -22,12 +22,12 @@ class _InflightRequest {
 class CacheManager {
   factory CacheManager() => _instance;
   CacheManager._internal();
-  static final CacheManager _instance = CacheManager._internal();
+  static final _instance = CacheManager._internal();
 
   final _cache = <String, CacheEntry<dynamic>>{};
   final _inflight = <String, _InflightRequest>{};
   final _keyGeneration = <String, int>{};
-  int _epoch = 0;
+  var _epoch = 0;
 
   // デフォルトのキャッシュ期間
   static const defaultDuration = Duration(minutes: 5);

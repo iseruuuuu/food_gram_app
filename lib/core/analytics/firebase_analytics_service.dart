@@ -30,15 +30,15 @@ class FirebaseAnalyticsService {
   FirebaseAnalyticsService._(this._analytics);
 
   /// アプリ全体で共有する唯一のインスタンス
-  static final FirebaseAnalyticsService instance =
+  static final instance =
       FirebaseAnalyticsService._(FirebaseAnalytics.instance);
 
   /// Riverpod 外（FCM / ATT 等）から使うエイリアス
   static FirebaseAnalyticsService get shared => instance;
 
   final FirebaseAnalytics _analytics;
-  final Logger _logger = Logger();
-  bool _collectionEnabled = false;
+  final _logger = Logger();
+  var _collectionEnabled = false;
   FirebaseAnalyticsObserver? _navigatorObserver;
 
   bool get isCollectionEnabled => _collectionEnabled;

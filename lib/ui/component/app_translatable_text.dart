@@ -38,15 +38,15 @@ class AppTranslatableText extends ConsumerStatefulWidget {
 
 class _TranslatableTextState extends ConsumerState<AppTranslatableText> {
   String? _translated;
-  bool _isTranslating = false;
+  var _isTranslating = false;
   // ユーザーが原文表示を選んだ場合は自動翻訳結果を出さない
-  bool _showOriginal = false;
+  var _showOriginal = false;
   Locale? _lastLocale;
   String? _lastSourceText;
   // テキスト / ロケール変更のたびに増え、古い翻訳結果を捨てる
-  int _generation = 0;
+  var _generation = 0;
   // 翻訳中に新しい自動翻訳要求が来た場合に再実行する
-  bool _pendingAutoTranslate = false;
+  var _pendingAutoTranslate = false;
 
   @override
   void didChangeDependencies() {

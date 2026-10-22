@@ -32,12 +32,12 @@ class MemoryAlbumSharePoster extends StatelessWidget {
 
   /// ベース解像度（360×640 = 9:16）。
   /// キャプチャ時に pixelRatio: 4 を掛けることで 1440×2560px の超高画質出力となる。
-  static const Size size = Size(360, 640);
+  static const size = Size(360, 640);
 
-  static const Color _bgCream = Color(0xFFFBF8F3);
-  static const Color _inkPrimary = Color(0xFF29231F);
-  static const Color _inkSecondary = Color(0xFF7A7067);
-  static const Color _borderLine = Color(0xFFE8DFD5);
+  static const _bgCream = Color(0xFFFBF8F3);
+  static const _inkPrimary = Color(0xFF29231F);
+  static const _inkSecondary = Color(0xFF7A7067);
+  static const _borderLine = Color(0xFFE8DFD5);
 
   static String get _serifFamily => Platform.isIOS ? 'Georgia' : 'serif';
 

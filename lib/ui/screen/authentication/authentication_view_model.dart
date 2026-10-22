@@ -39,7 +39,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     primaryFocus?.unfocus();
     final result = await ref.read(authServiceProvider).loginApple();
     await result.when(
-      success: (_) async {
+      success: (_) {
         _logLogin('apple');
         state = state.copyWith(
           loginStatus: Translations.of(context).auth.loginSuccessful,
@@ -60,7 +60,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     primaryFocus?.unfocus();
     final result = await ref.read(authServiceProvider).loginGoogle();
     await result.when(
-      success: (_) async {
+      success: (_) {
         _logLogin('google');
         state = state.copyWith(
           loginStatus: Translations.of(context).auth.loginSuccessful,
@@ -104,7 +104,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
     primaryFocus?.unfocus();
     final result = await ref.read(authServiceProvider).loginTwitter();
     await result.when(
-      success: (_) async {
+      success: (_) {
         _logLogin('twitter');
         state = state.copyWith(
           loginStatus: Translations.of(context).auth.loginSuccessful,

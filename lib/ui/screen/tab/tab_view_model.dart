@@ -19,8 +19,8 @@ final scrollToTopForTabProvider =
 
 @riverpod
 class TabViewModel extends _$TabViewModel {
-  bool _isHandlingTap = false;
-  bool _didLogInitialTab = false;
+  var _isHandlingTap = false;
+  var _didLogInitialTab = false;
 
   @override
   TabState build({

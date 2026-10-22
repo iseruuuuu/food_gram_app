@@ -25,7 +25,7 @@ class SettingViewModel extends _$SettingViewModel {
   }
 
   Loading get loading => ref.read(loadingProvider.notifier);
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
   Future<void> getData() async {
     final packageInfo = await PackageInfo.fromPlatform();

@@ -21,7 +21,7 @@ class RecentPostHomeWidgetSync {
 
   static final _log = Logger();
 
-  static const appGroupId = MapStatsHomeWidgetSync.appGroupId;
+  static const String appGroupId = MapStatsHomeWidgetSync.appGroupId;
   static const iosWidgetKind = 'RecentPostWidget';
   static const payloadKey = 'recent_post_payload';
   static const _cachedStorageKeyPref = 'recent_post_cached_storage_key';

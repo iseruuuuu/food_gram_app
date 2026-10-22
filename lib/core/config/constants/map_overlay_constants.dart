@@ -3,13 +3,13 @@ class MapOverlayConstants {
   MapOverlayConstants._();
 
   // ランタイムスタイル（SymbolLayer）
-  static const String runtimeSourceId = 'fg_posts_source';
-  static const String runtimeLayerId = 'fg_posts_layer';
-  static const String runtimeDotsLayerId = 'fg_posts_dots_layer';
+  static const runtimeSourceId = 'fg_posts_source';
+  static const runtimeLayerId = 'fg_posts_layer';
+  static const runtimeDotsLayerId = 'fg_posts_dots_layer';
 
   // ヒートマップ
-  static const String heatmapSourceId = 'fg_heatmap_source';
-  static const String heatmapLayerId = 'fg_heatmap_layer';
+  static const heatmapSourceId = 'fg_heatmap_source';
+  static const heatmapLayerId = 'fg_heatmap_layer';
 
   /// ズームこの値以下でヒートマップ表示（0 なら実質オフ）
   static const double heatmapZoomThreshold = 0;
@@ -19,23 +19,23 @@ class MapOverlayConstants {
   static const double smallDotZoomThreshold = 8;
 
   /// 小さな赤ドットの iconSize（Annotation フォールバック用）
-  static const double smallRedDotIconSize = 0.55;
+  static const smallRedDotIconSize = 0.55;
 
   /// OSM Bright スプライトの標準マーカー（local / earth 共通 sprite URL）
-  static const String styleDefaultMarkerIconId = 'marker_11';
+  static const styleDefaultMarkerIconId = 'marker_11';
 
   // カメラズーム
   /// 初期表示（現在地あり）
-  static const double initial = 13.5;
+  static const initial = 13.5;
 
   /// 現在地ボタン
-  static const double currentLocation = 15.2;
+  static const currentLocation = 15.2;
 
   /// 地名検索など、明示的に寄るときのズーム
-  static const double pinTap = 16.5;
+  static const pinTap = 16.5;
 
   /// ピンタップ時、詳細シート上端からピンを上げる余白（マップ高さ比）
-  static const double pinTapFocusGapFraction = 0.08;
+  static const pinTapFocusGapFraction = 0.08;
 
   /// マップ高さが取れないときのフォールバック（px）
   static const double pinTapFocusOffsetYFallback = 220;
@@ -53,14 +53,14 @@ class MapOverlayConstants {
   static const double fromPostDetail = 17;
 
   /// 位置情報なし時（日本全体）※互換・広域表示用
-  static const double countryOverview = 3.8;
+  static const countryOverview = 3.8;
 
   /// ★位置情報なしの初期ズーム★（国全体なら 3.5〜5 付近）
   static const double localeFallback = 4;
 
   // 下シート
   /// 近くの店舗一覧（Overview）折りたたみ時（ハンドルのみ）※互換用
-  static const double overviewCollapsedSize = 0.042;
+  static const overviewCollapsedSize = 0.042;
 
   /// 折りたたみ時、ボトムナビ上にちょこっと見せる高さ（px）
   static const double collapsedPeekPx = 52;
@@ -70,9 +70,9 @@ class MapOverlayConstants {
   static const double overviewOpenPeekPx = 232;
 
   /// 近くの店舗一覧（Overview）の初期高さ上限・中間スナップ
-  static const double overviewExpandedSize = 0.68;
+  static const overviewExpandedSize = 0.68;
 
   /// 店舗詳細（Detail）の初期高さ比率（ヒーロー画像＋情報が見える高さ）
   /// 画面の高さに対する割合。大きくするとシートが高くなる
-  static const double detailInitialChildSize = 0.50;
+  static const detailInitialChildSize = 0.50;
 }

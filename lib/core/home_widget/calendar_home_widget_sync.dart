@@ -22,7 +22,7 @@ class CalendarHomeWidgetSync {
 
   static final _log = Logger();
 
-  static const appGroupId = MapStatsHomeWidgetSync.appGroupId;
+  static const String appGroupId = MapStatsHomeWidgetSync.appGroupId;
   static const iosWidgetKind = 'PostCalendarWidget';
   static const payloadKey = 'post_calendar_payload';
 
@@ -34,7 +34,7 @@ class CalendarHomeWidgetSync {
   static final Map<String, String> _customTagBase64Cache = {};
 
   /// カスタムタグ画像が読み込めない場合や旧ウィジェット向けのフォールバック絵文字
-  static const Map<String, String> _customTagFallbackEmoji = {
+  static const _customTagFallbackEmoji = <String, String>{
     'tag:meibutsu': '🍱',
     'tag:souvenir': '🎁',
     'tag:udon': '🍜',

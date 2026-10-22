@@ -13,7 +13,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 const mapPrimaryCategoryNames = ['ご当地', '麺類', '肉料理', '軽食系'];
 
 /// マップカテゴリフィルターのアクセントカラー（アプリのオレンジ）
-const _mapCategoryOrange = AppTheme.primaryOrange;
+const Color _mapCategoryOrange = AppTheme.primaryOrange;
 
 class MapCategoryChipBar extends ConsumerWidget {
   const MapCategoryChipBar({

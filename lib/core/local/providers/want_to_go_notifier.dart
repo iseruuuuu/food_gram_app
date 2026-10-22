@@ -10,7 +10,7 @@ class WantToGoNotifier extends _$WantToGoNotifier {
   final _preference = Preference();
 
   @override
-  Future<List<WantToGoItem>> build() async => _preference.getWantToGoList();
+  Future<List<WantToGoItem>> build() => _preference.getWantToGoList();
 
   /// build() 完了後の一覧を使う（読み込み中のディスク再読込はしない）
   Future<List<WantToGoItem>> _currentList() async =>

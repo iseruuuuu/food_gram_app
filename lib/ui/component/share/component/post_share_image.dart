@@ -9,7 +9,7 @@ class PostShareImage extends StatelessWidget {
 
   final String imageUrl;
 
-  static const Color _fallbackColor = Color(0xFFE8E2D8);
+  static const _fallbackColor = Color(0xFFE8E2D8);
 
   static Widget _fallback() {
     return const ColoredBox(

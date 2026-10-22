@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 
-final Map<String, List<String>> foodCategory = {
+final foodCategory = <String, List<String>>{
   'ご当地': ['tag:meibutsu', 'tag:souvenir'],
   '麺類': ['🍝', '🍜', 'tag:udon', 'tag:soba', 'tag:yakisoba', 'tag:tantanmen', '🥣'],
   '肉料理': ['🥩', 'tag:yakiniku', 'tag:gyutan', 'tag:hamburg', '🍗', 'tag:chikinnanban', 'tag:tsukune', 'tag:tonkatsu', '🥓', '🍖'],

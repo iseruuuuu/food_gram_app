@@ -23,7 +23,7 @@ class RevenueCatService extends _$RevenueCatService {
   final logger = Logger();
   bool isSubscribed = false;
   late Offerings offerings;
-  bool _isInitialized = false;
+  var _isInitialized = false;
   String? get user => ref.read(currentUserProvider);
   String get entitlementId => Env.entitlementId;
   String get entitlementOffering => Env.entitlementOffering;

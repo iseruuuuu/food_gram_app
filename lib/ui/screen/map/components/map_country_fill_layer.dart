@@ -10,10 +10,10 @@ import 'package:maplibre_gl/maplibre_gl.dart';
 class MapCountryFillLayer {
   MapCountryFillLayer._();
 
-  static const String _sourceId = 'fg_country_fill_source';
-  static const String _fillLayerId = 'fg_country_fill_layer';
-  static const String _lineLayerId = 'fg_country_border_layer';
-  static const String _geoJsonAssetPath = 'assets/map/world_countries.geojson';
+  static const _sourceId = 'fg_country_fill_source';
+  static const _fillLayerId = 'fg_country_fill_layer';
+  static const _lineLayerId = 'fg_country_border_layer';
+  static const _geoJsonAssetPath = 'assets/map/world_countries.geojson';
   static List<Map<String, dynamic>>? _baseFeatures;
   static List<Map<String, dynamic>>? _simplifiedFeatures;
 

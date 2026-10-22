@@ -56,11 +56,11 @@ class _RecordJapanFillMapState extends State<RecordJapanFillMap> {
   );
 
   MapLibreMapController? _controller;
-  bool _layersReady = false;
-  bool _didFitJapan = false;
-  bool _androidPinsReady = false;
+  var _layersReady = false;
+  var _didFitJapan = false;
+  var _androidPinsReady = false;
   Future<void>? _androidPinsInit;
-  Future<void> _androidPinMutation = Future<void>.value();
+  var _androidPinMutation = Future<void>.value();
   Uint8List? _pinPng;
   DateTime? _lastPinTapAt;
 

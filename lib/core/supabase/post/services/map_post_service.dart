@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
@@ -24,19 +26,20 @@ class MapPostService extends _$MapPostService {
       ref.read(blockListProvider).asData?.value ?? <String>[];
 
   @override
-  Future<void> build() async {
+  Future<void> build() {
     ref.watch(blockListProvider);
+    return Future.value();
   }
 
   /// ユーザーIDからユーザーデータを取得（Map向けに提供）
-  Future<Map<String, dynamic>> getUserData(String userId) async {
+  Future<Map<String, dynamic>> getUserData(String userId) {
     return ref.read(userServiceProvider.notifier).getOtherUser(userId);
   }
 
   /// 複数ユーザーをまとめて取得する
   Future<Map<String, Map<String, dynamic>>> getUsersData(
     Iterable<String> userIds,
-  ) async {
+  ) {
     return ref.read(userServiceProvider.notifier).getUsersByIds(userIds);
   }
 
@@ -101,7 +104,7 @@ class MapPostService extends _$MapPostService {
   /// カテゴリ等の可視性フィルタと近い順の20件選定は overview 側で行う。
   Future<List<Map<String, dynamic>>> getNearbyPosts({
     maplibre.LatLng? centerLatLng,
-  }) async {
+  }) {
     return getMapPosts();
   }
 
