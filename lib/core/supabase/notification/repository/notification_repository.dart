@@ -13,7 +13,7 @@ part 'notification_repository.g.dart';
 class NotificationRepository {
   NotificationRepository(this._ref);
   final Ref _ref;
-  final Logger _logger = Logger();
+  final _logger = Logger();
   SupabaseClient get _supabase => _ref.read(supabaseProvider);
   NotificationService get _service => _ref.read(notificationServiceProvider);
 
@@ -62,7 +62,7 @@ class NotificationRepository {
 @riverpod
 Future<List<Notification>> myLikeNotifications(
   Ref ref,
-) async {
+) {
   final repo = NotificationRepository(ref);
   return repo.getMyLikeNotifications();
 }

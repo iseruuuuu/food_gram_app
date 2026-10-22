@@ -30,12 +30,12 @@ class UserService extends _$UserService {
   static const _userIdChunkSize = 50;
 
   /// 自分のユーザー情報を取得
-  Future<Map<String, dynamic>> getCurrentUser() async {
+  Future<Map<String, dynamic>> getCurrentUser() {
     return getOtherUser(_currentUserId);
   }
 
   /// 特定のユーザー情報を取得
-  Future<Map<String, dynamic>> getOtherUser(String userId) async {
+  Future<Map<String, dynamic>> getOtherUser(String userId) {
     return _cacheManager.get<Map<String, dynamic>>(
       key: 'user_$userId',
       fetcher: () =>
@@ -106,7 +106,7 @@ class UserService extends _$UserService {
   }
 
   /// 自分の全投稿に対するいいね数の合計を取得（非公開投稿含む）
-  Future<int> getCurrentUserHeartAmount() async {
+  Future<int> getCurrentUserHeartAmount() {
     return _cacheManager.get<int>(
       key: 'heart_amount_${_currentUserId}_incl_anon',
       fetcher: () async {
@@ -121,7 +121,7 @@ class UserService extends _$UserService {
   }
 
   /// 特定ユーザーの投稿のいいねの合計数を取得（非公開投稿除く）
-  Future<int> getOtherUserHeartAmount(String userId) async {
+  Future<int> getOtherUserHeartAmount(String userId) {
     return _cacheManager.get<int>(
       key: 'heart_amount_${userId}_excl_anon',
       fetcher: () async {
@@ -136,12 +136,12 @@ class UserService extends _$UserService {
   }
 
   /// 投稿から指定したユーザー情報を取得
-  Future<Map<String, dynamic>> getUserFromPost(Posts post) async {
+  Future<Map<String, dynamic>> getUserFromPost(Posts post) {
     return getOtherUser(post.userId);
   }
 
   /// 全ユーザーの投稿数に基づく順位（1始まり）。RPC `get_post_count_rank` が必要。
-  Future<int> getPostCountRank(String userId) async {
+  Future<int> getPostCountRank(String userId) {
     return _cacheManager.get<int>(
       key: 'post_count_rank_$userId',
       fetcher: () async {

@@ -30,7 +30,7 @@ class _AppConvertiblePriceTextState
   String? _dependencyLocaleTag;
 
   /// 無効化すると進行中の変換結果を破棄する（amount / 通貨 / ロケール変更時）
-  Object _conversionValidity = Object();
+  var _conversionValidity = Object();
 
   String get _originalDisplay => formatPostPriceDisplay(
         amount: widget.amount,

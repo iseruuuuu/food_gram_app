@@ -18,7 +18,7 @@ class PostShareClassic extends StatelessWidget {
   final Posts posts;
   final WidgetRef ref;
 
-  static const Size size = Size(350, 420);
+  static const size = Size(350, 420);
 
   @override
   Widget build(BuildContext context) {

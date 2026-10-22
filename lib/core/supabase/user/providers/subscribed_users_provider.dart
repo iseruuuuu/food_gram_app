@@ -13,7 +13,8 @@ final subscribedUsersProvider = FutureProvider<List<String>>((ref) async {
 
 /// 指定した userId がサブスクユーザーに含まれるかどうか。
 /// 行単位で watch することで、サブスク一覧更新時に該当行だけ再ビルドされる。
-final isSubscribedProvider = Provider.family<bool, String?>((ref, userId) {
+final ProviderFamily<bool, String?> isSubscribedProvider =
+    Provider.family<bool, String?>((ref, userId) {
   final subscribed = ref.watch(subscribedUsersProvider);
   return subscribed.when(
     data: (list) => userId != null && list.contains(userId),

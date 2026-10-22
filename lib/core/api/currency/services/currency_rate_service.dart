@@ -17,8 +17,8 @@ class CurrencyRateService {
       : _supabase = supabase;
 
   final SupabaseClient _supabase;
-  static const String _functionName = 'currency-convert';
-  static const Duration _invokeTimeout = Duration(seconds: 12);
+  static const _functionName = 'currency-convert';
+  static const _invokeTimeout = Duration(seconds: 12);
 
   Future<double> fetchRate({
     required String fromCurrency,

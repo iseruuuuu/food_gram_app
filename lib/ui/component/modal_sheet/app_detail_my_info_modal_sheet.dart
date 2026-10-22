@@ -122,7 +122,7 @@ class AppDetailMyInfoModalSheet extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(0),
                     ),
                   ),
-                  onPressed: () async {
+                  onPressed: () {
                     DialogHelper().openDialog(
                       title: t.dialog.deleteTitle,
                       text: '${t.dialog.deleteDescription1}'

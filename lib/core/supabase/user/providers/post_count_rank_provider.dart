@@ -2,7 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 
 /// 投稿数に基づく全体ランキング（1始まり）。プロフィール表示対象の userId を family に渡す。
-final postCountRankProvider = FutureProvider.family<int, String>(
+final FutureProviderFamily<int, String> postCountRankProvider =
+    FutureProvider.family<int, String>(
   (ref, userId) async {
     final result =
         await ref.read(userRepositoryProvider.notifier).getPostCountRank(

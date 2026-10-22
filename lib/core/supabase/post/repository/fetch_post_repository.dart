@@ -102,6 +102,6 @@ class FetchPostRepository extends _$FetchPostRepository {
 Future<List<Map<String, dynamic>>> profileRepository(
   Ref ref, {
   required String userId,
-}) async {
+}) {
   return ref.read(fetchPostServiceProvider.notifier).getPostsFromUser(userId);
 }

@@ -183,7 +183,7 @@ class PostDetailScreen extends HookConsumerWidget {
                           users: users,
                           posts: currentPosts,
                           loading: menuLoading,
-                          block: (userId) async {
+                          block: (userId) {
                             return ref
                                 .read(postDetailViewModelProvider().notifier)
                                 .block(userId);

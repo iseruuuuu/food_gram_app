@@ -35,7 +35,7 @@ class RecordViewModel extends _$RecordViewModel {
   final screenshotController = ScreenshotController();
   final Map<String, Uint8List> _imageCache = {};
   final Set<String> _registeredImageKeys = {};
-  bool _symbolTapHandlerRegistered = false;
+  var _symbolTapHandlerRegistered = false;
 
   List<Posts>? _cachedPosts;
   Map<String, String>? _cachedImageKeys;

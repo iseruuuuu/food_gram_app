@@ -5,7 +5,9 @@ import 'package:food_gram_app/core/summary/monthly/monthly_summary_period.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 
-final monthlySummaryProvider = FutureProvider.autoDispose<MonthlySummary?>(
+final AutoDisposeFutureProvider<MonthlySummary?>
+    monthlySummaryProvider =
+    FutureProvider.autoDispose<MonthlySummary?>(
   (ref) async {
     final userId = ref.watch(currentUserProvider);
     if (userId == null) {

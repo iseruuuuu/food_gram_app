@@ -3,7 +3,7 @@ import 'package:image/image.dart' as img;
 
 /// 従来の [Image Picker] 設定（maxWidth/maxHeight: 960, imageQuality: 100）に合わせる
 const double kUploadImageMaxDimension = 960;
-const int kUploadImageJpegQuality = 100;
+const kUploadImageJpegQuality = 100;
 
 /// 編集後の画像をアップロード用 JPEG に変換（長辺最大 [kUploadImageMaxDimension]）
 Future<Uint8List> prepareUploadImageBytes(Uint8List bytes) {

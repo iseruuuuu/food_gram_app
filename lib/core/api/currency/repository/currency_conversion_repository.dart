@@ -16,8 +16,8 @@ class CurrencyConversionRepository {
       : _rateService = rateService;
 
   final CurrencyRateService _rateService;
-  final Map<String, _RateCacheEntry> _rateCache = <String, _RateCacheEntry>{};
-  static const Duration _cacheTtl = Duration(hours: 6);
+  final _rateCache = <String, _RateCacheEntry>{};
+  static const _cacheTtl = Duration(hours: 6);
 
   Future<double> convert({
     required double amount,

@@ -136,7 +136,7 @@ class PostDetailViewModel extends _$PostDetailViewModel {
     final result =
         await ref.read(deleteRepositoryProvider.notifier).deletePost(posts);
     await result.when(
-      success: (_) async {
+      success: (_) {
         state = state.copyWith(isSuccess: true);
         unawaited(
           ref.read(firebaseAnalyticsServiceProvider).logEvent(
@@ -267,7 +267,7 @@ class PostDetailViewModel extends _$PostDetailViewModel {
   }
 
   /// ユーザーデータを取得
-  Future<Map<String, dynamic>> getUserData(String userId) async {
+  Future<Map<String, dynamic>> getUserData(String userId) {
     return ref.read(detailPostRepositoryProvider.notifier).getUserData(userId);
   }
 }
@@ -362,8 +362,8 @@ class PostDetailListInput {
 class PostDetailList extends _$PostDetailList {
   late PostDetailListInput _listInput;
   final _logger = Logger();
-  bool _loadingNewer = false;
-  bool _loadingOlder = false;
+  var _loadingNewer = false;
+  var _loadingOlder = false;
 
   @override
   Future<PostDetailListResult> build(PostDetailListInput listInput) {

@@ -12,7 +12,7 @@ class RestaurantSearchHistoryNotifier
   final _preference = Preference();
 
   @override
-  Future<List<Restaurant>> build() async =>
+  Future<List<Restaurant>> build() =>
       _preference.getRestaurantSearchHistory();
 
   /// build() 完了後の一覧を使う（読み込み中のディスク再読込はしない）

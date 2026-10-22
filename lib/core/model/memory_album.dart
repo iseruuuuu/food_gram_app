@@ -141,8 +141,8 @@ class MemoryAlbumPostIdsKey {
 }
 
 abstract final class MemoryAlbumLimits {
-  static const int freeMaxAlbums = 1;
-  static const int premiumMaxAlbums = 10000;
+  static const freeMaxAlbums = 1;
+  static const premiumMaxAlbums = 10000;
 }
 
 enum MemoryAlbumError {

@@ -28,7 +28,7 @@ class RestaurantSearchHistoryStore {
     }
   }
 
-  static const int maxItems = 20;
+  static const maxItems = 20;
 
   final List<Restaurant> items;
 

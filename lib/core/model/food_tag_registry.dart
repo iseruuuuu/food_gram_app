@@ -14,7 +14,7 @@ class CustomFoodTag {
   final String assetPath;
 }
 
-const Map<String, CustomFoodTag> customFoodTags = {
+const customFoodTags = <String, CustomFoodTag>{
   'tag:meibutsu': CustomFoodTag(
     id: 'tag:meibutsu',
     assetPath: 'assets/tag/meibutsu.png',

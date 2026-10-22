@@ -16,7 +16,7 @@ class Prefecture {
 // 日本の47都道府県の中心座標データ
 class PrefectureDetector {
   PrefectureDetector._();
-  static const List<Prefecture> prefectures = [
+  static const prefectures = <Prefecture>[
     Prefecture(name: '北海道', latitude: 43.064, longitude: 141.347),
     Prefecture(name: '青森県', latitude: 40.824, longitude: 140.740),
     Prefecture(name: '岩手県', latitude: 39.703, longitude: 141.153),

@@ -19,8 +19,8 @@ class MapPinImageLoader {
   Map<String, Uint8List> get cache => _cache;
   Set<String> get registeredKeys => _registeredKeys;
 
-  static const String smallRedDotKey = 'small_red_dot';
-  static const String smallOrangeDotKey = 'small_orange_dot';
+  static const smallRedDotKey = 'small_red_dot';
+  static const smallOrangeDotKey = 'small_orange_dot';
 
   /// デフォルト・赤ドットを事前生成
   Future<void> preload() {

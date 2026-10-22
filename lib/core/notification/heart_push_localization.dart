@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:food_gram_app/gen/strings.g.dart';
 
-const int heartPushVariantCount = 5;
+const heartPushVariantCount = 5;
 
 Translations devicePushTranslations() {
   final rawLocale = Platform.localeName.replaceAll('_', '-');

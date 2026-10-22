@@ -266,7 +266,7 @@ class SettingScreen extends HookConsumerWidget {
                                 DialogHelper().openDialog(
                                   title: t.dialog.deleteAccountConfirmTitle,
                                   text: t.dialog.deleteAccountConfirmText,
-                                  onTap: () async {
+                                  onTap: () {
                                     context.pop();
                                     DialogHelper().openDialog(
                                       title: t.dialog.deleteAccountFinalTitle,

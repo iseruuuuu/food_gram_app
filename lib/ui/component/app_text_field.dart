@@ -128,7 +128,7 @@ class AppMapPlaceSearchTextField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppSearchTextField(
-      onSubmitted: (value) async {
+      onSubmitted: (value) {
         final keyword = value.trim();
         if (keyword.isEmpty) {
           return;

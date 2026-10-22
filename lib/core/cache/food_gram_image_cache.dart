@@ -21,10 +21,10 @@ final class FoodGramImageCache {
   static Future<void>? _clearInFlight;
 
   /// ディスク上限。1枚 300〜800KB 想定で、だいたい 60〜160MB 程度。
-  static const int maxCachedImages = 200;
-  static const Duration stalePeriod = Duration(days: 14);
+  static const maxCachedImages = 200;
+  static const stalePeriod = Duration(days: 14);
 
-  static final fcm.CacheManager instance = fcm.CacheManager(
+  static final instance = fcm.CacheManager(
     fcm.Config(
       _key,
       stalePeriod: stalePeriod,

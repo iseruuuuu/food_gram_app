@@ -19,10 +19,10 @@ enum MapPrefectureFillPalette {
 class MapPrefectureFillLayer {
   MapPrefectureFillLayer._();
 
-  static const String _sourceId = 'fg_prefecture_fill_source';
-  static const String _fillLayerId = 'fg_prefecture_fill_layer';
-  static const String _lineLayerId = 'fg_prefecture_border_layer';
-  static const String _geoJsonAssetPath =
+  static const _sourceId = 'fg_prefecture_fill_source';
+  static const _fillLayerId = 'fg_prefecture_fill_layer';
+  static const _lineLayerId = 'fg_prefecture_border_layer';
+  static const _geoJsonAssetPath =
       'assets/map/japan_prefectures.geojson';
   static List<Map<String, dynamic>>? _baseFeatures;
   static List<Map<String, dynamic>>? _simplifiedFeatures;

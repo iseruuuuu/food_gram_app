@@ -25,11 +25,11 @@ part 'firebase_messaging_service.g.dart';
 class FirebaseMessagingService {
   factory FirebaseMessagingService() => _instance;
   FirebaseMessagingService._internal();
-  static final FirebaseMessagingService _instance =
+  static final _instance =
       FirebaseMessagingService._internal();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  final Logger _logger = Logger();
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+  final _logger = Logger();
+  final _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   String? _fcmToken;
   WidgetRef? _ref;
@@ -575,7 +575,7 @@ FirebaseMessagingService firebaseMessagingService(Ref ref) {
 }
 
 @Riverpod(keepAlive: true)
-Future<String?> fcmToken(Ref ref) async {
+Future<String?> fcmToken(Ref ref) {
   final service = ref.read(firebaseMessagingServiceProvider);
   return service.getFCMToken();
 }

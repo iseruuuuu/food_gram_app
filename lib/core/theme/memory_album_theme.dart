@@ -5,13 +5,13 @@ import 'package:food_gram_app/core/theme/app_theme.dart';
 class MemoryAlbumTheme {
   MemoryAlbumTheme._();
 
-  static const creamBackground = AppTheme.backgroundLight;
-  static const cardBackground = AppTheme.cardLight;
-  static const chipBackground = AppTheme.orangeLight;
-  static const chipBorder = AppTheme.primaryOrange;
-  static const accentYellow = AppTheme.primaryOrange;
-  static const heroGradientStart = AppTheme.orangeLight;
-  static const heroGradientEnd = AppTheme.backgroundLight;
+  static const Color creamBackground = AppTheme.backgroundLight;
+  static const Color cardBackground = AppTheme.cardLight;
+  static const Color chipBackground = AppTheme.orangeLight;
+  static const Color chipBorder = AppTheme.primaryOrange;
+  static const Color accentYellow = AppTheme.primaryOrange;
+  static const Color heroGradientStart = AppTheme.orangeLight;
+  static const Color heroGradientEnd = AppTheme.backgroundLight;
 
   static BoxDecoration cardDecoration({required bool isDark}) {
     if (isDark) {

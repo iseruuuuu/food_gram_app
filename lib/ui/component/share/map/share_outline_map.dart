@@ -253,8 +253,8 @@ class _ShareFillMapPainter extends CustomPainter {
 
   static const _blank = Color(0xFFF6E6D4);
   static const _blankStroke = Color(0xFFE7D3C0);
-  static const _visited = AppTheme.primaryOrange;
-  static const _visitedStroke = AppTheme.orangeDark;
+  static const Color _visited = AppTheme.primaryOrange;
+  static const Color _visitedStroke = AppTheme.orangeDark;
 
   @override
   void paint(Canvas canvas, Size size) {

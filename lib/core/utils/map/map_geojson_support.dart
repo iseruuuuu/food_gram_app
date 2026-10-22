@@ -8,10 +8,10 @@ import 'package:device_info_plus/device_info_plus.dart';
 class MapGeoJsonSupport {
   MapGeoJsonSupport._();
 
-  static const int minSafeAndroidSdk = 29;
+  static const minSafeAndroidSdk = 29;
 
-  static bool _loaded = false;
-  static bool _androidAllows = false;
+  static var _loaded = false;
+  static var _androidAllows = false;
 
   static Future<void> load() async {
     if (!Platform.isAndroid) {

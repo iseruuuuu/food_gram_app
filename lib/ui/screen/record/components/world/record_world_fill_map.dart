@@ -31,7 +31,7 @@ class _RecordWorldFillMapState extends State<RecordWorldFillMap> {
   );
 
   MapLibreMapController? _controller;
-  bool _layersReady = false;
+  var _layersReady = false;
 
   @override
   void didUpdateWidget(covariant RecordWorldFillMap oldWidget) {
