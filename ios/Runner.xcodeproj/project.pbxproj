@@ -16,6 +16,7 @@
 		6D518B792B3168B7005D6CB9 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D518B782B3168B7005D6CB9 /* Environment.swift */; };
 		6DE199652D047DB30082E947 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DE199642D047DB30082E947 /* StoreKit.framework */; };
 		6DF614811ED2DC5600515811 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF614801ED2DC5600515811 /* SceneDelegate.swift */; };
+		C4D4A7022F10000100C4D4A7 /* OpenCalendarDayIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D4A7012F10000100C4D4A7 /* OpenCalendarDayIntent.swift */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		82D2413079220D5D3F75CD06 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7B5D1A9EFD654F3112B37FBC /* GoogleService-Info.plist */; };
 		89DD1E713A057071CB0A1F2D /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E22BC7CB4DC941AF48EB1DE9 /* Pods_RunnerTests.framework */; };
@@ -108,6 +109,7 @@
 		6DF614792ECC6D0200795E98 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Main.strings; sourceTree = "<group>"; };
 		6DF6147A2ECC6D0200795E98 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		6DF614801ED2DC5600515811 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		C4D4A7012F10000100C4D4A7 /* OpenCalendarDayIntent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenCalendarDayIntent.swift; path = "../HomeWidgetSample/OpenCalendarDayIntent.swift"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				6DF614801ED2DC5600515811 /* SceneDelegate.swift */,
+				C4D4A7012F10000100C4D4A7 /* OpenCalendarDayIntent.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 				6D518B782B3168B7005D6CB9 /* Environment.swift */,
 			);
@@ -561,6 +564,7 @@
 				6D518B792B3168B7005D6CB9 /* Environment.swift in Sources */,
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				6DF614811ED2DC5600515811 /* SceneDelegate.swift in Sources */,
+				C4D4A7022F10000100C4D4A7 /* OpenCalendarDayIntent.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

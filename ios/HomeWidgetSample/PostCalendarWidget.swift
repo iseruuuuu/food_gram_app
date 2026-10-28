@@ -3,6 +3,7 @@
 //  HomeWidgetSample
 //
 
+import AppIntents
 import SwiftUI
 import UIKit
 import WidgetKit
@@ -10,6 +11,7 @@ import WidgetKit
 struct PostCalendarEntry: TimelineEntry {
     let date: Date
     let postedDayStamps: [Int: PostCalendarDayStamp]
+    let postedDayCounts: [Int: Int]
 }
 
 private let samplePreviewStamps: [Int: PostCalendarDayStamp] = [
@@ -26,29 +28,43 @@ private let samplePreviewStamps: [Int: PostCalendarDayStamp] = [
     29: .emoji("🍱"),
 ]
 
+/// プレビューで、1日に複数あるときの件数バッジを見せる。
+private let samplePreviewCounts: [Int: Int] = [
+    16: 3,
+]
+
 struct PostCalendarTimelineProvider: TimelineProvider {
     func placeholder(in context: Context) -> PostCalendarEntry {
         PostCalendarEntry(
             date: Date(),
-            postedDayStamps: samplePreviewStamps
+            postedDayStamps: samplePreviewStamps,
+            postedDayCounts: samplePreviewCounts
         )
     }
 
     func getSnapshot(in context: Context, completion: @escaping (PostCalendarEntry) -> Void) {
         let now = Date()
         let payload = loadPostCalendarPayload()
-        let dayStamps = postedDayStampsInMonth(for: now, payload: payload)
-        let effectiveStamps = (context.isPreview && dayStamps.isEmpty)
-            ? samplePreviewStamps
-            : dayStamps
-        completion(PostCalendarEntry(date: now, postedDayStamps: effectiveStamps))
+        let marks = postedMonthMarks(for: now, payload: payload)
+        let useSample = context.isPreview && marks.stamps.isEmpty
+        completion(
+            PostCalendarEntry(
+                date: now,
+                postedDayStamps: useSample ? samplePreviewStamps : marks.stamps,
+                postedDayCounts: useSample ? samplePreviewCounts : marks.counts
+            )
+        )
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<PostCalendarEntry>) -> Void) {
         let now = Date()
         let payload = loadPostCalendarPayload()
-        let dayStamps = postedDayStampsInMonth(for: now, payload: payload)
-        let entry = PostCalendarEntry(date: now, postedDayStamps: dayStamps)
+        let marks = postedMonthMarks(for: now, payload: payload)
+        let entry = PostCalendarEntry(
+            date: now,
+            postedDayStamps: marks.stamps,
+            postedDayCounts: marks.counts
+        )
 
         // 次の日付変更タイミング、または1時間後の早い方で更新
         let calendar = Calendar.current
@@ -261,7 +277,6 @@ struct PostCalendarWidgetEntryView: View {
                                 emojiFontSize: emojiFontSize,
                                 circleSize: circleSize
                             )
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                     }
                     .frame(maxHeight: .infinity)
@@ -274,6 +289,39 @@ struct PostCalendarWidgetEntryView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
+    /// 表示中の月のその日。アプリ側の `yyyy-MM-dd` と揃える。
+    private func mealDateKey(for day: Int) -> String? {
+        let comps = calendar.dateComponents([.year, .month], from: entry.date)
+        guard let year = comps.year, let month = comps.month else {
+            return nil
+        }
+        return String(format: "%04d-%02d-%02d", year, month, day)
+    }
+
+    private func dayAccessibilityLabel(day: Int, count: Int) -> String {
+        let comps = calendar.dateComponents([.year, .month], from: entry.date)
+        guard let year = comps.year,
+              let month = comps.month,
+              let date = calendar.date(from: DateComponents(year: year, month: month, day: day)) else {
+            return "\(day)"
+        }
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        formatter.setLocalizedDateFormatFromTemplate("MMMMd")
+        let dateText = formatter.string(from: date)
+        if count > 1 {
+            return String(
+                format: String(localized: "calendarWidget.day.openCount"),
+                dateText,
+                count
+            )
+        }
+        return String(
+            format: String(localized: "calendarWidget.day.open"),
+            dateText
+        )
+    }
+
     @ViewBuilder
     private func dayCell(
         day: Int?,
@@ -281,8 +329,46 @@ struct PostCalendarWidgetEntryView: View {
         emojiFontSize: CGFloat,
         circleSize: CGFloat
     ) -> some View {
+        if let day, let dateKey = mealDateKey(for: day) {
+            Button(intent: OpenCalendarDayIntent(dateKey: dateKey)) {
+                dayCellContent(
+                    day: day,
+                    dayFontSize: dayFontSize,
+                    emojiFontSize: emojiFontSize,
+                    circleSize: circleSize
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .accessibilityLabel(
+                dayAccessibilityLabel(
+                    day: day,
+                    count: entry.postedDayCounts[day] ?? 0
+                )
+            )
+        } else {
+            dayCellContent(
+                day: day,
+                dayFontSize: dayFontSize,
+                emojiFontSize: emojiFontSize,
+                circleSize: circleSize
+            )
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+
+    @ViewBuilder
+    private func dayCellContent(
+        day: Int?,
+        dayFontSize: CGFloat,
+        emojiFontSize: CGFloat,
+        circleSize: CGFloat
+    ) -> some View {
         if let day {
             let postedStamp = entry.postedDayStamps[day]
+            let mealCount = entry.postedDayCounts[day] ?? (postedStamp == nil ? 0 : 1)
             let isToday = (day == todayDayNumber)
 
             ZStack {
@@ -326,6 +412,19 @@ struct PostCalendarWidgetEntryView: View {
                     Text("\(day)")
                         .font(.system(size: dayFontSize, weight: .regular, design: .rounded))
                         .foregroundStyle(Color.primary.opacity(0.72))
+                }
+            }
+            .overlay(alignment: .bottomTrailing) {
+                if mealCount > 1 {
+                    Text(mealCount > 9 ? "9+" : "\(mealCount)")
+                        .font(.system(size: max(8, circleSize * 0.28), weight: .bold, design: .rounded))
+                        .foregroundStyle(brandOrange)
+                        .frame(minWidth: 14, minHeight: 14)
+                        .background(Color(UIColor.systemBackground), in: Circle())
+                        .overlay(
+                            Circle().strokeBorder(brandOrange, lineWidth: 1)
+                        )
+                        .offset(x: 4, y: 4)
                 }
             }
         } else {

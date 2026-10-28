@@ -17,4 +17,7 @@
 "recentWidget.empty.title" = "Latest Post";
 "recentWidget.empty.subtitle" = "Open FoodGram or add a post to show your latest meal here.";
 "calendarWidget.config.displayName" = "Post Calendar";
-"calendarWidget.config.description" = "Marks the days you posted meals this month on a calendar.";
+"calendarWidget.config.description" = "Shows the days you logged meals this month. Tap a day to open those meals.";
+"calendarWidget.day.intent" = "Open meals for this day";
+"calendarWidget.day.open" = "Open meals on %@";
+"calendarWidget.day.openCount" = "Open %2$d meals on %1$@";
