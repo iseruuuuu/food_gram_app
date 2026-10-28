@@ -18,22 +18,22 @@ class AdmobInterstitial {
   }) : _isAdsBlocked = isAdsBlocked;
 
   final logger = Logger();
-  static const int maxLoadAttempts = 2;
-  static const Duration adReadyTimeout = Duration(seconds: 5);
+  static const maxLoadAttempts = 2;
+  static const adReadyTimeout = Duration(seconds: 5);
 
   final bool Function() _isAdsBlocked;
   final void Function({required bool isReady})? onAdStateChanged;
 
   InterstitialAd? _interstitialAd;
-  bool _isAdReady = false;
-  bool _isAdLoading = false;
-  bool _isDisposed = false;
-  int _loadGeneration = 0;
-  int _loadAttempts = 0;
-  bool _isAdShowing = false;
+  var _isAdReady = false;
+  var _isAdLoading = false;
+  var _isDisposed = false;
+  var _loadGeneration = 0;
+  var _loadAttempts = 0;
+  var _isAdShowing = false;
   DateTime? _lastAdShowTime;
-  int _postDetailCloseCount = 0;
-  bool _hasPendingPostDetailAd = false;
+  var _postDetailCloseCount = 0;
+  var _hasPendingPostDetailAd = false;
 
   bool get isAdReady => _isAdReady;
 

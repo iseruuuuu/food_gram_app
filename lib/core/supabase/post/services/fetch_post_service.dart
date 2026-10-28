@@ -113,7 +113,7 @@ class FetchPostService extends _$FetchPostService {
   /// 保存した投稿IDのリストから投稿を取得
   Future<List<Map<String, dynamic>>> getStoredPosts(
     List<String> postIds,
-  ) async {
+  ) {
     return fetchStoredPostRowsForIds(supabase, postIds);
   }
 

@@ -28,7 +28,8 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
   const MapRestaurantDetailSheet({super.key});
 
   /// Repository経由で特定店舗（位置）の投稿を取得
-  static final restaurantPostsProvider =
+  static final FutureProviderFamily<List<Posts>, (String, double, double)>
+      restaurantPostsProvider =
       FutureProvider.family<List<Posts>, (String, double, double)>(
     (ref, key) async {
       final (_, lat, lng) = key;

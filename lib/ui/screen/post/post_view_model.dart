@@ -39,12 +39,12 @@ class PostViewModel extends _$PostViewModel {
   late final TextEditingController _priceController;
   final Map<String, Uint8List> _imageBytesMap = {};
   final Map<String, ({double latitude, double longitude})> _imageGpsByPath = {};
-  bool _restoredFromDraft = false;
-  bool _priceCurrencyManuallySet = false;
-  bool _disposed = false;
-  bool _isPosting = false;
-  int _currencyAutoDetectSeq = 0;
-  int _activePostSubmitId = 0;
+  var _restoredFromDraft = false;
+  var _priceCurrencyManuallySet = false;
+  var _disposed = false;
+  var _isPosting = false;
+  var _currencyAutoDetectSeq = 0;
+  var _activePostSubmitId = 0;
   PostSubmitCancellation? _postSubmitCancellation;
   TextEditingController get foodController => _foodController;
   TextEditingController get commentController => _commentController;
@@ -250,7 +250,7 @@ class PostViewModel extends _$PostViewModel {
   }
 
   // --- 画像 ---
-  Future<bool> camera(BuildContext context) async {
+  Future<bool> camera(BuildContext context) {
     return _pickImage(
       context,
       ImageSource.camera,
@@ -258,7 +258,7 @@ class PostViewModel extends _$PostViewModel {
     );
   }
 
-  Future<bool> album(BuildContext context) async {
+  Future<bool> album(BuildContext context) {
     return _pickMultiImage(context, PostStatus.albumPermission.name);
   }
 

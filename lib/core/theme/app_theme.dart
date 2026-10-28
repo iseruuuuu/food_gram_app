@@ -6,28 +6,28 @@ class AppTheme {
   AppTheme._();
 
   /// アプリのブランドオレンジ（primary / アクセント）
-  static const Color primaryOrange = Color(0xFFE88932);
-  static const Color orangeDark = Color(0xFFC96F24);
-  static const Color orangeLight = Color(0xFFFFF0DE);
-  static const Color darkOrangeBackground = Color(0xFF4A321F);
+  static const primaryOrange = Color(0xFFE88932);
+  static const orangeDark = Color(0xFFC96F24);
+  static const orangeLight = Color(0xFFFFF0DE);
+  static const darkOrangeBackground = Color(0xFF4A321F);
 
-  static const Color backgroundLight = Color(0xFFFFFDF9);
-  static const Color cardLight = Color(0xFFFFFFFF);
-  static const Color textPrimaryLight = Color(0xFF29231F);
-  static const Color textSecondaryLight = Color(0xFF8B8178);
-  static const Color dividerLight = Color(0xFFEEE7E0);
+  static const backgroundLight = Color(0xFFFFFDF9);
+  static const cardLight = Color(0xFFFFFFFF);
+  static const textPrimaryLight = Color(0xFF29231F);
+  static const textSecondaryLight = Color(0xFF8B8178);
+  static const dividerLight = Color(0xFFEEE7E0);
 
-  static const Color backgroundDark = Color(0xFF1C1B1A);
-  static const Color cardDark = Color(0xFF252321);
-  static const Color textPrimaryDark = Color(0xFFFFF8F1);
-  static const Color textSecondaryDark = Color(0xFFA9A19A);
-  static const Color dividerDark = Color(0xFF3A3531);
+  static const backgroundDark = Color(0xFF1C1B1A);
+  static const cardDark = Color(0xFF252321);
+  static const textPrimaryDark = Color(0xFFFFF8F1);
+  static const textSecondaryDark = Color(0xFFA9A19A);
+  static const dividerDark = Color(0xFF3A3531);
 
   /// 特別な達成・称号でのみ使うゴールド
-  static const Color achievementGold = Color(0xFFD6A441);
+  static const achievementGold = Color(0xFFD6A441);
 
   /// 成功・情報系 SnackBar の背景色（ブランドオレンジ）
-  static const SnackBarThemeData snackBarTheme = SnackBarThemeData(
+  static const snackBarTheme = SnackBarThemeData(
     backgroundColor: primaryOrange,
     contentTextStyle: TextStyle(color: Colors.white),
     actionTextColor: Colors.white,

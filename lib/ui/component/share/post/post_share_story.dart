@@ -19,7 +19,7 @@ class PostShareStory extends StatelessWidget {
   final Posts posts;
   final WidgetRef ref;
 
-  static const Size size = Size(360, 640);
+  static const size = Size(360, 640);
 
   @override
   Widget build(BuildContext context) {

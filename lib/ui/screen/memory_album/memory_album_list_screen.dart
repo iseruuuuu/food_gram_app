@@ -100,7 +100,7 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
                 ListTile(
                   leading: const Icon(Icons.delete_outline, color: Colors.red),
                   title: Text(t.memoryAlbum.deleteTitle),
-                  onTap: () async {
+                  onTap: () {
                     Navigator.pop(context);
                     DialogHelper().openDialog(
                       context: context,

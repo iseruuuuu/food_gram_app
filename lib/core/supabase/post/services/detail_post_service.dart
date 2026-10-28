@@ -31,8 +31,7 @@ class DetailPostService extends _$DetailPostService {
 
   SupabaseClient get supabase => ref.read(supabaseProvider);
 
-  List<String> get blockList =>
-      ref.read(blockListProvider).asData?.value ?? [];
+  List<String> get blockList => ref.read(blockListProvider).asData?.value ?? [];
 
   @override
   Future<void> build() async {
@@ -110,14 +109,14 @@ class DetailPostService extends _$DetailPostService {
   }
 
   /// ユーザーデータを取得
-  Future<Map<String, dynamic>> getUserData(String userId) async {
+  Future<Map<String, dynamic>> getUserData(String userId) {
     return ref.read(userServiceProvider.notifier).getOtherUser(userId);
   }
 
   /// 複数ユーザーをまとめて取得する
   Future<Map<String, Map<String, dynamic>>> getUsersData(
     Iterable<String> userIds,
-  ) async {
+  ) {
     return ref.read(userServiceProvider.notifier).getUsersByIds(userIds);
   }
 

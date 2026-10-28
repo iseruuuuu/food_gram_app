@@ -5,8 +5,8 @@ import 'package:logger/logger.dart';
 /// In-App Reviewを管理するサービス
 class InAppReviewService {
   final InAppReview _inAppReview = InAppReview.instance;
-  final Preference _preference = Preference();
-  final Logger _logger = Logger();
+  final _preference = Preference();
+  final _logger = Logger();
 
   /// 最後のレビュー表示日と経過日数から、表示可能かどうかを判定する
   /// [lastReviewDateStr] 最後のレビュー表示日（ISO8601）。空の場合は初回として true

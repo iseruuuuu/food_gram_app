@@ -9,7 +9,7 @@ class MemoryAlbumLocalRepository {
 
   final Random _random;
   final _preference = Preference();
-  Future<void> _writeQueue = Future<void>.value();
+  var _writeQueue = Future<void>.value();
 
   Future<T> _serialized<T>(Future<T> Function() action) {
     final future = _writeQueue.then((_) => action());

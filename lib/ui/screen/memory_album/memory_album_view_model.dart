@@ -13,7 +13,7 @@ class MemoryAlbumListViewModel extends _$MemoryAlbumListViewModel {
   final _repo = MemoryAlbumLocalRepository();
 
   @override
-  Future<List<MemoryAlbum>> build() async {
+  Future<List<MemoryAlbum>> build() {
     return _repo.getAll();
   }
 
@@ -59,7 +59,7 @@ class MemoryAlbumDetailViewModel extends _$MemoryAlbumDetailViewModel {
   final _repo = MemoryAlbumLocalRepository();
 
   @override
-  Future<MemoryAlbum?> build(String albumId) async {
+  Future<MemoryAlbum?> build(String albumId) {
     return _repo.getById(albumId);
   }
 

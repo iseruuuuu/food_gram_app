@@ -20,7 +20,7 @@ class TranslationService {
   final OnDeviceTranslatorModelManager _modelManager;
 
   /// 超軽量のメモリキャッシュ。アプリ再起動で消える。
-  final Map<String, String> _memoryCache = <String, String>{};
+  final _memoryCache = <String, String>{};
 
   /// 指定 BCP-47 言語コードのモデルが無ければダウンロードする（内部用）。
   /// 既に存在する場合は true を返す。

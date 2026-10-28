@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/admob/admob_gate.dart';
@@ -6,7 +8,8 @@ import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 /// バナー広告の状態を管理するプロバイダー
-final bannerAdProvider =
+final StateNotifierProviderFamily<BannerAdNotifier, BannerAd?, String>
+    bannerAdProvider =
     StateNotifierProvider.family<BannerAdNotifier, BannerAd?, String>(
   BannerAdNotifier.new,
 );
@@ -33,9 +36,9 @@ class BannerAdNotifier extends StateNotifier<BannerAd?> {
   final Ref ref;
   final String id;
   int? _width;
-  int _loadGeneration = 0;
-  bool _isLoading = false;
-  bool _disposed = false;
+  var _loadGeneration = 0;
+  var _isLoading = false;
+  var _disposed = false;
 
   /// 広告を破棄する（サブスクリプション時に使用）
   void disposeAd() {
@@ -56,7 +59,7 @@ class BannerAdNotifier extends StateNotifier<BannerAd?> {
     _width = width;
     final generation = ++_loadGeneration;
     _isLoading = true;
-    state?.dispose();
+    await state?.dispose();
     state = null;
 
     final size = await _anchoredSize(width);
@@ -64,31 +67,33 @@ class BannerAdNotifier extends StateNotifier<BannerAd?> {
       return;
     }
 
-    BannerAd(
-      adUnitId: bannerAdUnitId,
-      size: size,
-      request: const AdRequest(),
-      listener: BannerAdListener(
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-          if (generation != _loadGeneration) {
-            return;
-          }
-          _isLoading = false;
-          state = null;
-        },
-        onAdLoaded: (ad) {
-          if (_disposed ||
-              generation != _loadGeneration ||
-              !canRequestAdsFrom(ref)) {
+    unawaited(
+      BannerAd(
+        adUnitId: bannerAdUnitId,
+        size: size,
+        request: const AdRequest(),
+        listener: BannerAdListener(
+          onAdFailedToLoad: (ad, error) {
             ad.dispose();
-            return;
-          }
-          _isLoading = false;
-          state = ad as BannerAd;
-        },
-      ),
-    ).load();
+            if (generation != _loadGeneration) {
+              return;
+            }
+            _isLoading = false;
+            state = null;
+          },
+          onAdLoaded: (ad) {
+            if (_disposed ||
+                generation != _loadGeneration ||
+                !canRequestAdsFrom(ref)) {
+              ad.dispose();
+              return;
+            }
+            _isLoading = false;
+            state = ad as BannerAd;
+          },
+        ),
+      ).load(),
+    );
   }
 
   Future<AdSize> _anchoredSize(int width) async {
@@ -171,4 +176,4 @@ class _AdmobBannerState extends ConsumerState<AdmobBanner> {
 }
 
 const adEvery = 30;
-final adRowInterval = (adEvery / 3).floor();
+final int adRowInterval = (adEvery / 3).floor();

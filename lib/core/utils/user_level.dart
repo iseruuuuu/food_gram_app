@@ -20,7 +20,7 @@ class UserLevel {
   }();
 
   /// 最大レベル（このレベル以上は同じ扱い）
-  static const int maxLevel = 150;
+  static const maxLevel = 150;
 
   /// 累計投稿数から現在のレベルを算出（1始まり）
   /// ループは _thresholds.length から開始し、index 149 で Lv150 が返るようにする

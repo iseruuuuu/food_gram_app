@@ -23,7 +23,7 @@ class RestaurantMapScreen extends StatefulWidget {
 
 class _RestaurantMapScreenState extends State<RestaurantMapScreen> {
   MapLibreMapController? _mapController;
-  bool _isPinAdded = false;
+  var _isPinAdded = false;
 
   @override
   void dispose() {

@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'block_list_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<List<String>> blockList(Ref ref) async {
+Future<List<String>> blockList(Ref ref) {
   CacheManager().invalidateBlockRelatedCaches();
   final preference = Preference();
   return preference.getStringList(PreferenceKey.blockList);

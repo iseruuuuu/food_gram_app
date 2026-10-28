@@ -8,7 +8,8 @@ import 'package:gap/gap.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 /// レクタングル広告の状態を管理するプロバイダー
-final rectangleBannerProvider =
+final StateNotifierProviderFamily<RectangleBannerNotifier, BannerAd?, String>
+    rectangleBannerProvider =
     StateNotifierProvider.family<RectangleBannerNotifier, BannerAd?, String>(
   RectangleBannerNotifier.new,
 );

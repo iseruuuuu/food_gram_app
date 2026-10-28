@@ -12,7 +12,7 @@ part 'notification_service.g.dart';
 class NotificationService {
   NotificationService(this._ref);
   final Ref _ref;
-  final Logger _logger = Logger();
+  final _logger = Logger();
   SupabaseClient get _supabase => _ref.read(supabaseProvider);
   String? get _currentUserId => _supabase.auth.currentUser?.id;
 

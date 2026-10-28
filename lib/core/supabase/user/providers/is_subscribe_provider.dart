@@ -30,7 +30,7 @@ class IsSubscribe extends _$IsSubscribe {
     try {
       final result =
           await ref.read(userRepositoryProvider.notifier).getCurrentUser();
-      return result.when(
+      return await result.when(
         success: (user) => user.isSubscribe,
         failure: (error) {
           logger.e('Failed to fetch current user data: $error');

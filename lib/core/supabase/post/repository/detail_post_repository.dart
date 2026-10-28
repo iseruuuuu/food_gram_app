@@ -47,7 +47,7 @@ class DetailPostRepository extends _$DetailPostRepository {
     try {
       final service = ref.read(detailPostServiceProvider.notifier);
       final result = await service.getPost(postId);
-      return result.when(
+      return await result.when(
         success: (data) =>
             Success(Posts.fromJson(data['post'] as Map<String, dynamic>)),
         failure: Failure.new,
@@ -70,7 +70,7 @@ class DetailPostRepository extends _$DetailPostRepository {
   }
 
   /// ユーザーデータを取得
-  Future<Map<String, dynamic>> getUserData(String userId) async {
+  Future<Map<String, dynamic>> getUserData(String userId) {
     final service = ref.read(detailPostServiceProvider.notifier);
     return service.getUserData(userId);
   }
@@ -161,7 +161,7 @@ class DetailPostRepository extends _$DetailPostRepository {
           final models = await _modelsFromPostRows(filtered);
           return Success<List<Model>, Exception>(models);
         },
-        failure: (e) async => Failure<List<Model>, Exception>(e),
+        failure: Failure<List<Model>, Exception>.new,
       );
     } on PostgrestException catch (e) {
       return Failure<List<Model>, Exception>(e);

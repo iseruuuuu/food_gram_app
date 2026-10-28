@@ -114,7 +114,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
           .read(accountServiceProvider)
           .ensureUserRegistered()
           .timeout(const Duration(seconds: 10));
-      return result.when(
+      return await result.when(
         success: (isNewUser) => isNewUser
             ? _SplashDestination.registrationWelcome
             : _SplashDestination.tab,

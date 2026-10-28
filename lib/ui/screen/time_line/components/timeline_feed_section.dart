@@ -28,7 +28,7 @@ class TimelineFeedSection extends HookConsumerWidget {
   final List<Posts> allPosts;
   final VoidCallback refresh;
   final String? categoryName;
-  static const int _adEvery = 12;
+  static const _adEvery = 12;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -23,7 +23,7 @@ List<Map<String, dynamic>> simplifyGeoJsonFeatures(
   ];
 }
 
-const int _thinStep = 12;
+const _thinStep = 12;
 
 Map<String, dynamic>? _simplifiedGeometry(Map<String, dynamic> feature) {
   final geometry = feature['geometry'];

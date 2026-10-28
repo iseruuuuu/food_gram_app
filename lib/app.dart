@@ -56,7 +56,6 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         }
         // 画像キャッシュはバックグラウンドでは消さない。
         // 完全終了後の次回起動時 / 設定の「キャッシュ削除」でクリアする。
-        break;
     }
   }
 

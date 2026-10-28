@@ -38,13 +38,13 @@ class MapStatsShare extends StatelessWidget {
   static const double _bottomPadding = 18;
 
   /// 左右の余白を除いた幅に [japanShareMapScale] を掛けた一辺。日本も世界も同じ。
-  static const mapSide =
+  static const double mapSide =
       (compositionWidth - _sidePadding * 2) * japanShareMapScale;
 
   /// 地図以外の高さ。上下の余白・見出し・数字・バー・ロゴを含む。
   static const _chromeHeight = 186.0;
   static const double compositionHeight = _chromeHeight + mapSide;
-  static const Size size = Size(compositionWidth, compositionHeight);
+  static const size = Size(compositionWidth, compositionHeight);
 
   /// 国旗・地球儀と「JAPAN / WORLD FOOD MAP」。
   static const kickerIconSize = 26.0;
@@ -53,7 +53,7 @@ class MapStatsShare extends StatelessWidget {
   static Size sizeFor(MapViewType _) => size;
 
   static const _muted = Color(0xFF667386);
-  static const _mapBg = AppTheme.orangeLight;
+  static const Color _mapBg = AppTheme.orangeLight;
 
   bool get _isJapan => viewType == MapViewType.japan;
 
