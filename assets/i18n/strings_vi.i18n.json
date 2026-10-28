@@ -971,5 +971,15 @@
     "viewMap": "Xem bản đồ",
     "viewAlbum": "Xem album",
     "seeLater": "Xem sau"
+  },
+  "calendarDay": {
+    "mealCount": {
+      "one": "$n bữa",
+      "other": "$n bữa"
+    },
+    "emptyTitle": "Không có bữa ăn nào trong ngày này",
+    "emptyBody": "Các bữa bạn ghi lại trong ngày này sẽ hiện ở đây.",
+    "stampHint": "Dấu là một bữa đại diện của ngày. Nếu có nhiều bữa, hãy chọn bữa muốn mở trong danh sách.",
+    "stamp": "Dấu"
   }
 }

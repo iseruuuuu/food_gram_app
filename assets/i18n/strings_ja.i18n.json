@@ -970,5 +970,15 @@
     "viewMap": "地図を見る",
     "viewAlbum": "アルバムを見る",
     "seeLater": "あとで見る"
+  },
+  "calendarDay": {
+    "mealCount": {
+      "one": "$n件の食事",
+      "other": "$n件の食事"
+    },
+    "emptyTitle": "この日の食事はありません",
+    "emptyBody": "この日に記録した食事がここに表示されます。",
+    "stampHint": "スタンプは、この日の代表の1件です。複数あるときは、一覧から開けたい食事を選べます。",
+    "stamp": "スタンプ"
   }
 }
