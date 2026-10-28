@@ -3,20 +3,21 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:food_gram_app/core/home_widget/calendar_day.dart';
 import 'package:food_gram_app/core/home_widget/map_stats_home_widget_sync.dart';
 import 'package:food_gram_app/core/model/food_tag_registry.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:image/image.dart' as img;
-import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
 /// 投稿した日付と料理タグ（絵文字またはカスタムタグ画像）を
 /// iOS ホームウィジェット（PostCalendarWidget）へ同期する。
 ///
-/// ローカルタイムゾーン基準の `yyyy-MM-dd` ごとに、その日の最新投稿の料理タグを
+/// ローカル日付の `yyyy-MM-dd` ごとに、その日の代表投稿の料理タグを
 /// App Group（`group.com.FoodGram.ios`）の `UserDefaults` に保存し、
 /// WidgetKit 側で当月のカレンダー上にスタンプを描画する。
+/// 同じ日に複数あるときは件数も渡し、タップでその日の一覧を開けるようにする。
 class CalendarHomeWidgetSync {
   CalendarHomeWidgetSync._();
 
@@ -27,7 +28,6 @@ class CalendarHomeWidgetSync {
   static const payloadKey = 'post_calendar_payload';
 
   static const _syncDebounceDuration = Duration(milliseconds: 500);
-  static final _dateFormatter = DateFormat('yyyy-MM-dd');
   static const _defaultFoodEmoji = '🍽️';
   static const _customTagIconDimension = 72;
 
@@ -97,28 +97,24 @@ class CalendarHomeWidgetSync {
       return;
     }
     try {
-      // 新しい投稿を優先するため、createdAt 降順でソートして同じ日の最新タグを採用する
-      final sortedPosts = List<Posts>.from(posts)
-        ..sort((a, b) {
-          final cmp = b.createdAt.compareTo(a.createdAt);
-          if (cmp != 0) {
-            return cmp;
-          }
-          return b.id.compareTo(a.id);
-        });
+      final postsByDate = <String, List<Posts>>{};
+      for (final post in posts) {
+        postsByDate.putIfAbsent(calendarDayKey(post.createdAt), () => []).add(
+              post,
+            );
+      }
 
       final postedTagByDate = <String, String>{};
-      for (final post in sortedPosts) {
-        final dateKey = _dateFormatter.format(post.createdAt);
-        final tag = _extractFirstTag(post.foodTag);
-
-        final existing = postedTagByDate[dateKey];
-        if (existing == null) {
-          postedTagByDate[dateKey] = tag.isNotEmpty ? tag : _defaultFoodEmoji;
-        } else if (existing == _defaultFoodEmoji && tag.isNotEmpty) {
-          // 最新投稿にタグが無く、同日の別の投稿にタグがある場合はそちらを使う
-          postedTagByDate[dateKey] = tag;
-        }
+      final postedCountByDate = <String, int>{};
+      for (final entry in postsByDate.entries) {
+        final dayPosts = List<Posts>.from(entry.value)
+          ..sort(compareCalendarPostsNewestFirst);
+        postedCountByDate[entry.key] = dayPosts.length;
+        final representative = calendarDayRepresentative(dayPosts);
+        final tag = representative == null
+            ? ''
+            : calendarDayFirstTag(representative.foodTag);
+        postedTagByDate[entry.key] = tag.isNotEmpty ? tag : _defaultFoodEmoji;
       }
 
       // 当月（および前後）で使われているカスタムタグ画像を Base64 辞書として用意する
@@ -147,6 +143,7 @@ class CalendarHomeWidgetSync {
       final payload = <String, dynamic>{
         'postedDates': sortedDates,
         'postedEmojis': postedEmojisByDate,
+        'postedCounts': postedCountByDate,
         'customTagIcons': customTagIconsBase64,
         'updatedAt': DateTime.now().toIso8601String(),
       };
@@ -166,19 +163,6 @@ class CalendarHomeWidgetSync {
         stackTrace: st,
       );
     }
-  }
-
-  static String _extractFirstTag(String foodTag) {
-    if (foodTag.trim().isEmpty) {
-      return '';
-    }
-    for (final raw in foodTag.split(',')) {
-      final trimmed = raw.trim();
-      if (trimmed.isNotEmpty) {
-        return trimmed;
-      }
-    }
-    return '';
   }
 
   /// `tag:xxx` に対応する `assets/tag/xxx.png` を小さくリサイズして Base64 化する。
