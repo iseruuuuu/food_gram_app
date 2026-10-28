@@ -329,7 +329,9 @@ struct PostCalendarWidgetEntryView: View {
         emojiFontSize: CGFloat,
         circleSize: CGFloat
     ) -> some View {
-        if let day, let dateKey = mealDateKey(for: day) {
+        if let day,
+           let dateKey = mealDateKey(for: day),
+           let count = entry.postedDayCounts[day] {
             Button(intent: OpenCalendarDayIntent(dateKey: dateKey)) {
                 dayCellContent(
                     day: day,
@@ -345,7 +347,7 @@ struct PostCalendarWidgetEntryView: View {
             .accessibilityLabel(
                 dayAccessibilityLabel(
                     day: day,
-                    count: entry.postedDayCounts[day] ?? 0
+                    count: count
                 )
             )
         } else {

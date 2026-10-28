@@ -27,6 +27,7 @@ class CalendarDayLaunch {
   static GoRouter? _router;
   static WidgetRef? _ref;
   static StreamSubscription<Uri?>? _subscription;
+  static Future<void>? _consumeInFlight;
   static var _started = false;
 
   static void start() {
@@ -73,10 +74,26 @@ class CalendarDayLaunch {
   }
 
   /// ウィジェットが書いた日付を読み、あれば画面遷移を予約して消す。
-  static Future<void> consumeStoredLaunch() async {
+  ///
+  /// 起動時と前面復帰で同時に呼ばれても、読み取りは1本にまとめる。
+  static Future<void> consumeStoredLaunch() {
     if (!Platform.isIOS) {
-      return;
+      return Future<void>.value();
     }
+    final current = _consumeInFlight;
+    if (current != null) {
+      return current;
+    }
+    final future = _consumeStoredLaunchBody();
+    _consumeInFlight = future;
+    return future.whenComplete(() {
+      if (identical(_consumeInFlight, future)) {
+        _consumeInFlight = null;
+      }
+    });
+  }
+
+  static Future<void> _consumeStoredLaunchBody() async {
     for (var attempt = 0; attempt < 8; attempt++) {
       if (attempt > 0) {
         await Future<void>.delayed(const Duration(milliseconds: 300));
