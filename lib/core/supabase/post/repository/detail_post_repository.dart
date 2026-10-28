@@ -47,7 +47,7 @@ class DetailPostRepository extends _$DetailPostRepository {
     try {
       final service = ref.read(detailPostServiceProvider.notifier);
       final result = await service.getPost(postId);
-      return result.when(
+      return await result.when(
         success: (data) =>
             Success(Posts.fromJson(data['post'] as Map<String, dynamic>)),
         failure: Failure.new,

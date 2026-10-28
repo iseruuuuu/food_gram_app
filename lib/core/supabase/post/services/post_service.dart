@@ -64,7 +64,7 @@ class PostService extends _$PostService {
       final imagePaths = <String>[];
       for (final uploadImage in uploadImages) {
         if (cancellation?.isCancelled ?? false) {
-          return cancelAndRollback(imagePaths);
+          return await cancelAndRollback(imagePaths);
         }
         final fileName = uploadImage.split('/').last;
         // 先頭 `/` は付けない（DB・getPublicUrl とオブジェクトキーを一致させる）
@@ -81,7 +81,7 @@ class PostService extends _$PostService {
               );
           imagePaths.add(imagePath);
           if (cancellation?.isCancelled ?? false) {
-            return cancelAndRollback(imagePaths);
+            return await cancelAndRollback(imagePaths);
           }
         }
       }
@@ -115,7 +115,7 @@ class PostService extends _$PostService {
       }
 
       if (cancellation?.isCancelled ?? false) {
-        return cancelAndRollback(imagePaths);
+        return await cancelAndRollback(imagePaths);
       }
 
       // 投稿の insert は Edge Function 経由で行う
@@ -127,8 +127,8 @@ class PostService extends _$PostService {
       final ok = data is Map<String, dynamic> && data['ok'] == true;
       if (!ok) {
         if (cancellation?.isCancelled ?? false) {
-          return cancelAndRollback(imagePaths);
-        }
+          return await cancelAndRollback(imagePaths);
+        } 
         final errorMsg = data is Map<String, dynamic>
             ? (data['error']?.toString() ?? 'status: ${res.status}')
             : 'status: ${res.status}';
