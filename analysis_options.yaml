@@ -8,6 +8,9 @@ analyzer:
     avoid_dynamic_calls: ignore
   exclude:
     - lib/gen/**
+    - build/**
+    - android/**
+    - ios/**
 
 linter:
   rules:
