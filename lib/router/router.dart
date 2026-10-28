@@ -227,8 +227,7 @@ final class RouterPath {
   static const myProfileEditPost = 'my_profile_edit_post';
   static const myProfileDetailPost = 'my_profile_detail_post';
   static const myProfileRestaurant = 'my_profile_restaurant';
-  static const myProfileRestaurantReview =
-      'my_profile_restaurant_review';
+  static const myProfileRestaurantReview = 'my_profile_restaurant_review';
   static const restaurantMapMyProfile = 'restaurant_map_myProfile';
   // /tab/time_line
   static const timeLinePost = 'time_line_post';

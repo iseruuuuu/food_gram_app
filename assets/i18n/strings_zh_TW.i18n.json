@@ -971,5 +971,15 @@
     "viewMap": "查看地圖",
     "viewAlbum": "查看相簿",
     "seeLater": "稍後再看"
+  },
+  "calendarDay": {
+    "mealCount": {
+      "one": "$n 餐",
+      "other": "$n 餐"
+    },
+    "emptyTitle": "這一天沒有用餐紀錄",
+    "emptyBody": "你在這一天記錄的用餐會顯示在這裡。",
+    "stampHint": "印章是這一天的代表性用餐。有多筆時，請從列表中選擇要開啟的紀錄。",
+    "stamp": "印章"
   }
 }

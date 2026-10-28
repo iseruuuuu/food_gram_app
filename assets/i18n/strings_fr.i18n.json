@@ -971,5 +971,15 @@
     "viewMap": "Voir la carte",
     "viewAlbum": "Voir l'album",
     "seeLater": "Plus tard"
+  },
+  "calendarDay": {
+    "mealCount": {
+      "one": "$n repas",
+      "other": "$n repas"
+    },
+    "emptyTitle": "Aucun repas ce jour-là",
+    "emptyBody": "Les repas enregistrés ce jour-là s’affichent ici.",
+    "stampHint": "Le tampon représente un repas de ce jour. S’il y en a plusieurs, choisissez celui à ouvrir.",
+    "stamp": "Tampon"
   }
 }

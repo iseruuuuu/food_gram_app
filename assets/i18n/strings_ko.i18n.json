@@ -971,5 +971,15 @@
     "viewMap": "지도 보기",
     "viewAlbum": "앨범 보기",
     "seeLater": "나중에 보기"
+  },
+  "calendarDay": {
+    "mealCount": {
+      "one": "식사 $n개",
+      "other": "식사 $n개"
+    },
+    "emptyTitle": "이 날짜의 식사가 없습니다",
+    "emptyBody": "이 날짜에 기록한 식사가 여기에 표시됩니다.",
+    "stampHint": "스탬프는 그날의 대표 식사 1개입니다. 여러 개면 목록에서 열고 싶은 식사를 고르세요.",
+    "stamp": "스탬프"
   }
 }

@@ -971,5 +971,15 @@
     "viewMap": "Ver mapa",
     "viewAlbum": "Ver álbum",
     "seeLater": "Ver más tarde"
+  },
+  "calendarDay": {
+    "mealCount": {
+      "one": "$n comida",
+      "other": "$n comidas"
+    },
+    "emptyTitle": "No hay comidas este día",
+    "emptyBody": "Las comidas que registres este día aparecerán aquí.",
+    "stampHint": "El sello es una comida de este día. Si hay varias, elige la que quieras abrir.",
+    "stamp": "Sello"
   }
 }

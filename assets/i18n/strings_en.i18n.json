@@ -970,5 +970,15 @@
     "viewMap": "View Map",
     "viewAlbum": "View Album",
     "seeLater": "See later"
+  },
+  "calendarDay": {
+    "mealCount": {
+      "one": "$n meal",
+      "other": "$n meals"
+    },
+    "emptyTitle": "No meals on this day",
+    "emptyBody": "Meals you record on this day will show up here.",
+    "stampHint": "The stamp is one meal from this day. When there are several, pick the one you want from the list.",
+    "stamp": "Stamp"
   }
 }

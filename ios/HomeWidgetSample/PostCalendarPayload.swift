@@ -9,8 +9,14 @@ import UIKit
 struct PostCalendarPayloadDTO: Codable {
     let postedDates: [String]
     let postedEmojis: [String: String]?
+    let postedCounts: [String: Int]?
     let customTagIcons: [String: String]?
     let updatedAt: String?
+}
+
+struct PostCalendarMonthMarks {
+    let stamps: [Int: PostCalendarDayStamp]
+    let counts: [Int: Int]
 }
 
 enum PostCalendarDayStamp {
@@ -78,10 +84,10 @@ private func resolveDayStamp(
     return .emoji(trimmed)
 }
 
-/// 指定した日付（月）に含まれる投稿日とスタンプのマップ（Day 1...31 -> Stamp）を返す。
-func postedDayStampsInMonth(for referenceDate: Date, payload: PostCalendarPayloadDTO?) -> [Int: PostCalendarDayStamp] {
+/// 指定した月のスタンプと、その日の投稿件数を返す。
+func postedMonthMarks(for referenceDate: Date, payload: PostCalendarPayloadDTO?) -> PostCalendarMonthMarks {
     guard let payload else {
-        return [:]
+        return PostCalendarMonthMarks(stamps: [:], counts: [:])
     }
     let calendar = Calendar.current
     let targetYear = calendar.component(.year, from: referenceDate)
@@ -98,23 +104,26 @@ func postedDayStampsInMonth(for referenceDate: Date, payload: PostCalendarPayloa
         }
     }
 
-    var result: [Int: PostCalendarDayStamp] = [:]
+    var stamps: [Int: PostCalendarDayStamp] = [:]
+    var counts: [Int: Int] = [:]
     let emojiMap = payload.postedEmojis ?? [:]
+    let countMap = payload.postedCounts ?? [:]
 
-    for dateStr in payload.postedDates where dateStr.hasPrefix(prefix) {
+    func apply(dateStr: String, rawTag: String) {
+        guard dateStr.hasPrefix(prefix) else { return }
         let dayPart = dateStr.dropFirst(prefix.count).prefix(2)
-        if let day = Int(dayPart), (1...31).contains(day) {
-            let rawTag = emojiMap[dateStr] ?? ""
-            result[day] = resolveDayStamp(rawTag: rawTag, customTagImages: customTagImages)
-        }
+        guard let day = Int(dayPart), (1...31).contains(day) else { return }
+        stamps[day] = resolveDayStamp(rawTag: rawTag, customTagImages: customTagImages)
+        let count = countMap[dateStr] ?? 1
+        counts[day] = max(count, 1)
     }
 
-    for (dateStr, rawTag) in emojiMap where dateStr.hasPrefix(prefix) {
-        let dayPart = dateStr.dropFirst(prefix.count).prefix(2)
-        if let day = Int(dayPart), (1...31).contains(day) {
-            result[day] = resolveDayStamp(rawTag: rawTag, customTagImages: customTagImages)
-        }
+    for dateStr in payload.postedDates {
+        apply(dateStr: dateStr, rawTag: emojiMap[dateStr] ?? "")
+    }
+    for (dateStr, rawTag) in emojiMap {
+        apply(dateStr: dateStr, rawTag: rawTag)
     }
 
-    return result
+    return PostCalendarMonthMarks(stamps: stamps, counts: counts)
 }

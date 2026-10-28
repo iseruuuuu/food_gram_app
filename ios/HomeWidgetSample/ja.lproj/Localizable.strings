@@ -17,4 +17,7 @@
 "recentWidget.empty.title" = "最新の投稿";
 "recentWidget.empty.subtitle" = "アプリを開いて食事を記録すると、ここに写真と店名が表示されます。";
 "calendarWidget.config.displayName" = "投稿カレンダー";
-"calendarWidget.config.description" = "今月食事を記録した日をカレンダーに丸印で表示します。";
+"calendarWidget.config.description" = "今月食事を記録した日を表示します。日付をタップすると、その日の食事を開けます。";
+"calendarWidget.day.intent" = "その日の食事を開く";
+"calendarWidget.day.open" = "%@の食事を開く";
+"calendarWidget.day.openCount" = "%1$@の食事を開く（%2$d件）";

@@ -971,5 +971,15 @@
     "viewMap": "Karte ansehen",
     "viewAlbum": "Album ansehen",
     "seeLater": "Später ansehen"
+  },
+  "calendarDay": {
+    "mealCount": {
+      "one": "$n Mahlzeit",
+      "other": "$n Mahlzeiten"
+    },
+    "emptyTitle": "Keine Mahlzeiten an diesem Tag",
+    "emptyBody": "Mahlzeiten, die du an diesem Tag festhältst, erscheinen hier.",
+    "stampHint": "Der Stempel ist eine Mahlzeit dieses Tages. Bei mehreren wählst du unten die gewünschte aus.",
+    "stamp": "Stempel"
   }
 }

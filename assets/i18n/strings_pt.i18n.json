@@ -971,5 +971,15 @@
     "viewMap": "Ver mapa",
     "viewAlbum": "Ver álbum",
     "seeLater": "Ver depois"
+  },
+  "calendarDay": {
+    "mealCount": {
+      "one": "$n refeição",
+      "other": "$n refeições"
+    },
+    "emptyTitle": "Nenhuma refeição neste dia",
+    "emptyBody": "As refeições que você registrar neste dia aparecem aqui.",
+    "stampHint": "O carimbo é uma refeição deste dia. Se houver várias, escolha a que quer abrir.",
+    "stamp": "Carimbo"
   }
 }
