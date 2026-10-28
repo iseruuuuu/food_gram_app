@@ -6,6 +6,7 @@ import 'package:food_gram_app/core/admob/app_open_policy.dart';
 import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
+import 'package:food_gram_app/core/home_widget/calendar_day_launch.dart';
 import 'package:food_gram_app/core/notification/firebase_messaging_service.dart';
 import 'package:food_gram_app/core/supabase/auth/providers/auth_state_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
@@ -28,10 +29,19 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     // Firebase Messaging ServiceにRefを設定（ディープリンク用）
     ref.read(firebaseMessagingServiceProvider).setRef(ref);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      final router = ref.read(routerProvider);
+      CalendarDayLaunch.attach(router, ref);
+      openPendingCalendarDay(router);
+    });
   }
 
   @override
   void dispose() {
+    CalendarDayLaunch.detach();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -43,6 +53,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       case AppLifecycleState.resumed:
         analytics.logEventUnawaited(name: AnalyticsEvent.appForeground);
         _showAppOpenIfReturning();
+        CalendarDayLaunch.consumeStoredLaunch();
       case AppLifecycleState.paused:
       case AppLifecycleState.inactive:
         if (state == AppLifecycleState.paused) {
@@ -54,23 +65,18 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         if (state == AppLifecycleState.hidden) {
           ref.read(admobOpenNotifierProvider).noteEnteredBackground();
         }
-        // 画像キャッシュはバックグラウンドでは消さない。
-        // 完全終了後の次回起動時 / 設定の「キャッシュ削除」でクリアする。
+      // 画像キャッシュはバックグラウンドでは消さない。
+      // 完全終了後の次回起動時 / 設定の「キャッシュ削除」でクリアする。
     }
   }
 
   void _showAppOpenIfReturning() {
-    final location = ref
-        .read(routerProvider)
-        .routerDelegate
-        .currentConfiguration
-        .uri
-        .path;
+    final location =
+        ref.read(routerProvider).routerDelegate.currentConfiguration.uri.path;
     // タブ画面以外で読むと、起動前にタブ状態を作ってしまう。
     final onTabShell = location == '/tab' || location == '/tab/';
-    final selectedTab = onTabShell
-        ? ref.read(tabViewModelProvider()).selectedIndex
-        : null;
+    final selectedTab =
+        onTabShell ? ref.read(tabViewModelProvider()).selectedIndex : null;
     ref.read(admobOpenNotifierProvider).onAppResumed(
           screenBlocksAd: appOpenBlockedByScreen(
             location: location,
@@ -81,6 +87,12 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(routerProvider, (_, next) {
+      CalendarDayLaunch.attach(next, ref);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        openPendingCalendarDay(next);
+      });
+    });
     ref.listen(authStateProvider, (_, next) {
       next.when(
         data: (authState) {

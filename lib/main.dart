@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/app.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/cache/food_gram_image_cache.dart';
+import 'package:food_gram_app/core/home_widget/calendar_day_launch.dart';
 import 'package:food_gram_app/core/home_widget/map_stats_home_widget_sync.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
 import 'package:food_gram_app/core/review/in_app_review_service.dart';
@@ -27,6 +28,7 @@ void main() async {
   LocaleSettings.useDeviceLocale();
   await _initializeAppDateFormatting();
   await MapStatsHomeWidgetSync.configure();
+  CalendarDayLaunch.start();
   await initializeSystemSettings();
   await initializeThirdPartyServices();
   await Future.wait<void>([
