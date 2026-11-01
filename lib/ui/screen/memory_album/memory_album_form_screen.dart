@@ -47,7 +47,7 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
           ref.watch(memoryAlbumDetailViewModelProvider(albumId!));
       useEffect(
         () {
-          final album = albumAsync.valueOrNull;
+          final album = albumAsync.value;
           if (album != null && !didPrefill.value) {
             didPrefill.value = true;
             titleCtrl.text = album.title;
@@ -83,7 +83,7 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
       );
       showGeneralDialog<void>(
         context: context,
-        pageBuilder: (_, __, ___) {
+        pageBuilder: (_, _, _) {
           return AppMemoryAlbumShareDialog(
             album: tempAlbum,
             posts: chosen,
@@ -188,7 +188,7 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
       selectedIds.value = list;
     }
 
-    final postsValue = myPosts.valueOrNull ?? const <Posts>[];
+    final postsValue = myPosts.value ?? const <Posts>[];
     final postsById = {for (final p in postsValue) p.id: p};
     final selectedPosts = <Posts>[
       for (final id in selectedIds.value)
@@ -312,7 +312,7 @@ class MemoryAlbumFormScreen extends HookConsumerWidget {
             Expanded(
               child: myPosts.when(
                 loading: () => const AppListViewSkeleton(),
-                error: (_, __) => AppTabError.myPage(
+                error: (_, _) => AppTabError.myPage(
                   onRetry: () => ref.invalidate(myPostStreamProvider),
                 ),
                 data: (posts) {
@@ -508,7 +508,7 @@ class _QuickPresetChipsBar extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
         scrollDirection: Axis.horizontal,
         itemCount: chips.length,
-        separatorBuilder: (_, __) => const Gap(8),
+        separatorBuilder: (_, _) => const Gap(8),
         itemBuilder: (context, index) {
           final chip = chips[index];
           return ActionChip(

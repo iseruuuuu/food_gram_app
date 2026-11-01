@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'want_to_go_notifier.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class WantToGoNotifier extends _$WantToGoNotifier {
   final _preference = Preference();
 
@@ -18,7 +18,7 @@ class WantToGoNotifier extends _$WantToGoNotifier {
 
   bool contains(Restaurant restaurant) {
     final key = WantToGoItem.identityKeyForRestaurant(restaurant);
-    return state.valueOrNull?.any((e) => e.id == key) ?? false;
+    return state.value?.any((e) => e.id == key) ?? false;
   }
 
   Future<bool> toggle(Restaurant restaurant) async {

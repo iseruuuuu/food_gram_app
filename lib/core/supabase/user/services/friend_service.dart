@@ -6,7 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'friend_service.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class FriendService extends _$FriendService {
   final _preference = Preference();
   final logger = Logger();
@@ -19,7 +19,7 @@ class FriendService extends _$FriendService {
     return userId;
   }
 
-  SupabaseClient get supabase => ref.read(supabaseProvider);
+  SupabaseClient get _supabase => ref.read(supabaseProvider);
 
   @override
   Future<void> build() async {}
@@ -103,7 +103,7 @@ class FriendService extends _$FriendService {
   }
 
   Future<Map<String, dynamic>?> _lookupByFriendCode(String code) async {
-    final rows = await supabase
+    final rows = await _supabase
         .from('users')
         .select()
         .eq('friend_code', code)

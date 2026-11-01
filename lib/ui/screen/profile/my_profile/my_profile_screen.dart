@@ -19,6 +19,7 @@ import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/loading/app_tab_loading.dart';
 import 'package:food_gram_app/ui/screen/profile/components/profile_header.dart';
 import 'package:food_gram_app/ui/screen/profile/components/profile_sort_chip_bar.dart';
+import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_state.dart';
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_screen.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
@@ -34,11 +35,11 @@ class MyProfileScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final postList = ref.watch(myPostStreamProvider);
-    final postCount = postList.valueOrNull?.length ?? 0;
+    final postCount = postList.value?.length ?? 0;
     final users = ref.watch(myProfileViewModelProvider());
     final sortOrder = useState(MyProfilePostSortOrder.newest);
     final scrollController = useScrollController();
-    final hasData = postList.valueOrNull != null;
+    final hasData = postList.value != null;
     useScrollToTopOnTabTrigger(
       ref: ref,
       scrollController: scrollController,
@@ -146,7 +147,7 @@ class MyProfileScreen extends HookConsumerWidget {
                         child: users.when(
                           data: (users, heartAmount) {
                             final premiumUnlocked = users.isSubscribe ||
-                                (isSubscribeAsync.valueOrNull ?? false);
+                                (isSubscribeAsync.value ?? false);
                             return Column(
                               children: [
                                 if (!premiumUnlocked)

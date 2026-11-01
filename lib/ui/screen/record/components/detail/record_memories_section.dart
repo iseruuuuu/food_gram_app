@@ -1,6 +1,7 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/supabase/post/analyzer/record_food_traits_analyzer.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
@@ -207,7 +208,7 @@ class RecordRecentSection extends ConsumerWidget {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: pastPosts.length,
-              separatorBuilder: (_, __) => const Gap(12),
+              separatorBuilder: (_, _) => const Gap(12),
               itemBuilder: (context, index) {
                 final post = pastPosts[index];
                 return _PastMemoryCard(

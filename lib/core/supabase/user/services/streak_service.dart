@@ -5,12 +5,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'streak_service.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class StreakService extends _$StreakService {
   final logger = Logger();
 
   String? get _currentUserId => ref.read(currentUserProvider);
-  SupabaseClient get supabase => ref.read(supabaseProvider);
+  SupabaseClient get _supabase => ref.read(supabaseProvider);
 
   @override
   Future<void> build() async {}
@@ -24,7 +24,7 @@ class StreakService extends _$StreakService {
     }
 
     try {
-      final res = await supabase.functions.invoke(
+      final res = await _supabase.functions.invoke(
         'streak-update',
         body: <String, dynamic>{},
       );
@@ -52,7 +52,7 @@ class StreakService extends _$StreakService {
     }
 
     try {
-      final userData = await supabase
+      final userData = await _supabase
           .from('users')
           .select('streak_weeks')
           .eq('user_id', _currentUserId!)

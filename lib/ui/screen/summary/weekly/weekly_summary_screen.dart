@@ -102,7 +102,7 @@ class WeeklySummaryScreen extends HookConsumerWidget {
               );
             },
             loading: () => const AppListSkeleton(),
-            error: (_, __) => Center(
+            error: (_, _) => Center(
               child: TextButton(
                 onPressed: () => context.pop(),
                 child: Text(t.close),

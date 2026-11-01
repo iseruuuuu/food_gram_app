@@ -170,8 +170,12 @@ jobs:
       - name: Install dependencies
         run: flutter pub get --enforce-lockfile
 
+      # slang → build_runner の順（Makefile の codegen と同じ）
+      - name: Generate i18n (slang)
+        run: dart run slang
+
       - name: build runner
-        run: dart run build_runner build --delete-conflicting-outputs
+        run: dart run build_runner build
 
       - name: Test
         run: |

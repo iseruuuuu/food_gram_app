@@ -3,10 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/services/detail_post_service.dart';
 import 'package:food_gram_app/core/supabase/post/services/post_service.dart';
@@ -28,28 +29,24 @@ part 'edit_post_view_model.g.dart';
 @riverpod
 class EditPostViewModel extends _$EditPostViewModel {
   final logger = Logger();
-  final _foodController = TextEditingController();
-  final _commentController = TextEditingController();
-  final _priceController = TextEditingController();
+  final foodController = TextEditingController();
+  final commentController = TextEditingController();
+  final priceController = TextEditingController();
   final _picker = ImagePicker();
   final Map<String, Uint8List> _imageBytesMap = {};
   late Posts _posts;
   var _priceCurrencyManuallySet = false;
   var _disposed = false;
   var _currencyAutoDetectSeq = 0;
-  TextEditingController get foodController => _foodController;
-  TextEditingController get commentController => _commentController;
-  TextEditingController get priceController => _priceController;
-  Loading get loading => ref.read(loadingProvider.notifier);
-  Map<String, Uint8List> get imageBytesMap => _imageBytesMap;
+  Loading get _loading => ref.read(loadingProvider.notifier);
 
   @override
   EditPostState build({EditPostState? initState}) {
     ref.onDispose(() {
       _disposed = true;
-      _foodController.dispose();
-      _commentController.dispose();
-      _priceController.dispose();
+      foodController.dispose();
+      commentController.dispose();
+      priceController.dispose();
       _imageBytesMap.clear();
       _currencyAutoDetectSeq++;
     });
@@ -63,9 +60,9 @@ class EditPostViewModel extends _$EditPostViewModel {
       ref.read(editPostRemovingPathsProvider.notifier).state = {};
     });
     _posts = posts;
-    _foodController.text = posts.foodName;
-    _commentController.text = posts.comment;
-    _priceController.text =
+    foodController.text = posts.foodName;
+    commentController.text = posts.comment;
+    priceController.text =
         formatPostPriceForEditing(posts.priceAmount, posts.priceCurrency);
     // 既存の画像パス（表示・Storage 用。ローカル一時パス等は [Posts.foodImageList] で除外）
     final existingImages = posts.foodImageList;
@@ -90,18 +87,18 @@ class EditPostViewModel extends _$EditPostViewModel {
     Locale? locale,
   }) async {
     primaryFocus?.unfocus();
-    loading.state = true;
+    _loading.state = true;
     state = state.copyWith(status: EditStatus.loading.name);
     final currency = state.priceCurrency.isEmpty
         ? defaultPostPriceCurrencyForLocale()
         : state.priceCurrency;
     final parsed = parsePostPriceInput(
-      rawAmount: _priceController.text,
+      rawAmount: priceController.text,
       currencyCode: currency,
       locale: locale,
     );
     if (parsed.isInvalid) {
-      loading.state = false;
+      _loading.state = false;
       state = state.copyWith(status: EditStatus.invalidPrice.name);
       return false;
     }
@@ -112,7 +109,7 @@ class EditPostViewModel extends _$EditPostViewModel {
       }
       return state.isSuccess;
     } finally {
-      loading.state = false;
+      _loading.state = false;
     }
   }
 
@@ -122,8 +119,8 @@ class EditPostViewModel extends _$EditPostViewModel {
   ) async {
     final result = await ref.read(postServiceProvider.notifier).updatePost(
           posts: _posts,
-          foodName: _foodController.text.trim(),
-          comment: _commentController.text,
+          foodName: foodController.text.trim(),
+          comment: commentController.text,
           restaurant: state.restaurant,
           foodTag: foodTag,
           lat: state.lat,

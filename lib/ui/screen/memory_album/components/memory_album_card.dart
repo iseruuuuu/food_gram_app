@@ -47,7 +47,7 @@ class MemoryAlbumCard extends ConsumerWidget {
                     height: 88,
                     radius: 8,
                   ),
-                  error: (_, __) => const SizedBox(
+                  error: (_, _) => const SizedBox(
                     width: 88,
                     height: 88,
                     child: Icon(Icons.photo_album_outlined),

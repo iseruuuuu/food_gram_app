@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
@@ -52,7 +53,7 @@ class RecordMapPostSheet extends HookConsumerWidget {
             shrinkWrap: true,
             padding: const EdgeInsets.symmetric(vertical: 4),
             itemCount: entries.length,
-            separatorBuilder: (_, __) => Divider(
+            separatorBuilder: (_, _) => Divider(
               height: 1,
               color: isDark ? Colors.white12 : Colors.black12,
             ),
@@ -152,7 +153,7 @@ class _RecordMapPostTile extends ConsumerWidget {
                         : CachedNetworkImage(
                             imageUrl: imageUrl,
                             fit: BoxFit.cover,
-                            errorWidget: (_, __, ___) => Image.asset(
+                            errorWidget: (_, _, _) => Image.asset(
                               isDark
                                   ? Assets.image.emptyDark.path
                                   : Assets.image.empty.path,

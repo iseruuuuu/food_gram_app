@@ -25,7 +25,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // デバイスのロケールで初期化
-  LocaleSettings.useDeviceLocale();
+  await LocaleSettings.useDeviceLocale();
   await _initializeAppDateFormatting();
   await MapStatsHomeWidgetSync.configure();
   CalendarDayLaunch.start();
@@ -38,8 +38,12 @@ void main() async {
   // 画像ディスクキャッシュを適用する。起動時は消さず、件数・期限の上限で自動整理する。
   FoodGramImageCache.installAsDefault();
   await MapGeoJsonSupport.load();
-  // TranslationProviderでラップ
-  runApp(TranslationProvider(child: const ProviderScope(child: MyApp())));
+  // Riverpod はルートに ProviderScope が必要。その内側で翻訳を包む。
+  runApp(
+    ProviderScope(
+      child: TranslationProvider(child: const MyApp()),
+    ),
+  );
   // アプリ起動後、表示が落ち着いてから7日経過時レビューをチェック
   Future.delayed(const Duration(seconds: 3), () {
     InAppReviewService().maybeRequestReviewFor7DayMilestone();

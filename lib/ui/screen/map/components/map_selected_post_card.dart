@@ -271,7 +271,7 @@ class MapSelectedPostCard extends HookConsumerWidget {
                 primary: false,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: posts.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 8),
+                separatorBuilder: (_, _) => const SizedBox(width: 8),
                 itemBuilder: (context, i) {
                   final item = posts[i];
                   final thumbUrl = _imageUrl(supabase, item);
@@ -340,7 +340,7 @@ class _FoodImage extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: imageUrl!,
       fit: BoxFit.cover,
-      errorWidget: (_, __, ___) => Image.asset(
+      errorWidget: (_, _, _) => Image.asset(
         isDark ? Assets.image.emptyDark.path : Assets.image.empty.path,
         fit: BoxFit.cover,
       ),

@@ -1,19 +1,22 @@
 .PHONY: setup gen ci
+
 ci:
 	fvm flutter pub get --enforce-lockfile
-	fvm dart run build_runner build --delete-conflicting-outputs
+	fvm dart run slang
+	fvm dart run build_runner build
 	fvm flutter test
 
 setup:
 	fvm flutter pub get
-	fvm dart run build_runner build --delete-conflicting-outputs
-	fvm dart run flutter_launcher_icons
 	fvm dart run slang
+	fvm dart run build_runner build
+	fvm dart run flutter_launcher_icons
 	fvm dart run flutter_native_splash:create
 
 gen:
 	fvm flutter pub get
-	fvm dart run build_runner build --delete-conflicting-outputs
+	fvm dart run slang
+	fvm dart run build_runner build
 
 submit_android:
 	fvm flutter clean

@@ -161,7 +161,7 @@ class MapCategoryChipBar extends ConsumerWidget {
       name: AnalyticsEvent.mapFilterApply,
       parameters: {
         AnalyticsParam.category: mainCategory,
-        if (subTagId != null) 'sub_tag': subTagId,
+        'sub_tag': ?subTagId,
       },
     );
     await onCategoryChanged();

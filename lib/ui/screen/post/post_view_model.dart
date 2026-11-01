@@ -9,6 +9,7 @@ import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/photo_restaurant_candidate.dart';
 import 'package:food_gram_app/core/model/post_draft.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
@@ -34,9 +35,9 @@ class PostViewModel extends _$PostViewModel {
   final _logger = Logger();
   final _picker = ImagePicker();
   final _preference = Preference();
-  late final TextEditingController _foodController;
-  late final TextEditingController _commentController;
-  late final TextEditingController _priceController;
+  late final TextEditingController foodController;
+  late final TextEditingController commentController;
+  late final TextEditingController priceController;
   final Map<String, Uint8List> _imageBytesMap = {};
   final Map<String, ({double latitude, double longitude})> _imageGpsByPath = {};
   var _restoredFromDraft = false;
@@ -46,31 +47,28 @@ class PostViewModel extends _$PostViewModel {
   var _currencyAutoDetectSeq = 0;
   var _activePostSubmitId = 0;
   PostSubmitCancellation? _postSubmitCancellation;
-  TextEditingController get foodController => _foodController;
-  TextEditingController get commentController => _commentController;
-  TextEditingController get priceController => _priceController;
-  Loading get loading => ref.read(loadingProvider.notifier);
-  Map<String, Uint8List> get imageBytesMap => _imageBytesMap;
+  Loading get _loading => ref.read(loadingProvider.notifier);
 
   @override
-  PostState build({PostState initState = const PostState()}) {
+  PostState build({PostState? initState}) {
+    final initial = initState ?? const PostState();
     _initializeControllers();
-    final withCurrency = initState.priceCurrency.isEmpty
-        ? initState.copyWith(priceCurrency: defaultPostPriceCurrencyForLocale())
-        : initState;
+    final withCurrency = initial.priceCurrency.isEmpty
+        ? initial.copyWith(priceCurrency: defaultPostPriceCurrencyForLocale())
+        : initial;
     return withCurrency;
   }
 
   void _initializeControllers() {
-    _foodController = TextEditingController();
-    _commentController = TextEditingController();
-    _priceController = TextEditingController();
+    foodController = TextEditingController();
+    commentController = TextEditingController();
+    priceController = TextEditingController();
     ref.onDispose(() {
       _disposed = true;
       _isPosting = false;
-      _foodController.dispose();
-      _commentController.dispose();
-      _priceController.dispose();
+      foodController.dispose();
+      commentController.dispose();
+      priceController.dispose();
       _imageBytesMap.clear();
       _imageGpsByPath.clear();
       _currencyAutoDetectSeq++;
@@ -94,7 +92,7 @@ class PostViewModel extends _$PostViewModel {
     final cancellation = PostSubmitCancellation();
     _postSubmitCancellation = cancellation;
     bool isActiveSubmit() => !_disposed && submitId == _activePostSubmitId;
-    loading.state = true;
+    _loading.state = true;
     state = state.copyWith(status: PostStatus.loading.name);
     try {
       if (_isPostMissing()) {
@@ -104,7 +102,7 @@ class PostViewModel extends _$PostViewModel {
           ? defaultPostPriceCurrencyForLocale()
           : state.priceCurrency;
       final parsed = parsePostPriceInput(
-        rawAmount: _priceController.text,
+        rawAmount: priceController.text,
         currencyCode: currency,
         locale: locale,
       );
@@ -153,7 +151,7 @@ class PostViewModel extends _$PostViewModel {
         if (_postSubmitCancellation == cancellation) {
           _postSubmitCancellation = null;
         }
-        loading.state = false;
+        _loading.state = false;
         _isPosting = false;
       }
     }
@@ -525,9 +523,9 @@ class PostViewModel extends _$PostViewModel {
         ? defaultPostPriceCurrencyForLocale()
         : state.priceCurrency;
     final draft = PostDraft(
-      foodName: _foodController.text,
-      comment: _commentController.text,
-      priceInput: _priceController.text,
+      foodName: foodController.text,
+      comment: commentController.text,
+      priceInput: priceController.text,
       restaurant: state.restaurant,
       lat: state.lat,
       lng: state.lng,
@@ -545,9 +543,9 @@ class PostViewModel extends _$PostViewModel {
   }
 
   void applyDraft(PostDraft draft, {required bool applyRestaurant}) {
-    _foodController.text = draft.foodName;
-    _commentController.text = draft.comment;
-    _priceController.text = draft.priceInput;
+    foodController.text = draft.foodName;
+    commentController.text = draft.comment;
+    priceController.text = draft.priceInput;
     final draftCurrency = draft.priceCurrency.trim();
     if (draftCurrency.isNotEmpty) {
       _priceCurrencyManuallySet = true;

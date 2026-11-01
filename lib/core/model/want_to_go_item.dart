@@ -6,7 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'want_to_go_item.freezed.dart';
 
 @freezed
-class WantToGoItem with _$WantToGoItem {
+abstract class WantToGoItem with _$WantToGoItem {
   const factory WantToGoItem({
     required String name,
     required String address,

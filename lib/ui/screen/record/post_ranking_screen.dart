@@ -82,7 +82,7 @@ class PostRankingScreen extends HookConsumerWidget {
                   physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.only(bottom: 24),
                   itemCount: entries.length,
-                  separatorBuilder: (_, __) {
+                  separatorBuilder: (_, _) {
                     return Divider(
                       height: 1,
                       thickness: 1,
@@ -161,7 +161,7 @@ class PostRankingScreen extends HookConsumerWidget {
             color: AppTheme.primaryOrange,
           ),
         ),
-        error: (_, __) => Center(
+        error: (_, _) => Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(

@@ -41,7 +41,7 @@ class AppProfileHeader extends HookConsumerWidget {
     final paywallGuard = useMemoized(PaywallLaunchGuard.new);
     final currentUser = ref.watch(currentUserProvider);
     final isViewerSubscribed =
-        ref.watch(isSubscribeProvider).valueOrNull ?? false;
+        ref.watch(isSubscribeProvider).value ?? false;
     const avatarRadius = 60.0;
     final level = UserLevel.levelFromPostCount(length);
     final isOwnProfile = currentUser == users.userId;

@@ -67,7 +67,7 @@ class RecordDetailScreen extends HookConsumerWidget {
     useFuture(useMemoized(CountryDetector.ensureLoaded));
     final selectedYear = useState<int?>(null);
     final paywallGuard = useMemoized(PaywallLaunchGuard.new);
-    final isSubscribe = ref.watch(isSubscribeProvider).valueOrNull ?? false;
+    final isSubscribe = ref.watch(isSubscribeProvider).value ?? false;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = isDark ? const Color(0xFF161616) : Colors.white;
     final recentPosts = [...posts]

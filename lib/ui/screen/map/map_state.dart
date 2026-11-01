@@ -7,7 +7,7 @@ part 'map_state.freezed.dart';
 typedef VisibleAreaTagCount = ({String emoji, int count});
 
 @freezed
-class MapState with _$MapState {
+abstract class MapState with _$MapState {
   const factory MapState({
     MapLibreMapController? mapController,
     @Default(false) bool isLoading,

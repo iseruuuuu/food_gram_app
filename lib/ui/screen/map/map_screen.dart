@@ -50,14 +50,14 @@ class MapScreen extends HookConsumerWidget {
     final pinTapCount = useRef(0);
     final isHandlingPinTap = useRef(false);
     final didApplyGpsCamera = useRef(false);
-    final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
-    final isSubscribed = isSubscribeAsync.valueOrNull ?? false;
+    final adInterstitial = ref.watch(admobInterstitialProvider);
+    final isSubscribed = isSubscribeAsync.value ?? false;
     final loading = ref.watch(loadingProvider);
     final fallbackLocation = useMemoized(defaultLocationFromDeviceLocale);
-    final loc = location.valueOrNull;
+    final loc = location.value;
     final isLocationEnabled =
         loc != null && (loc.latitude != 0 || loc.longitude != 0);
-    final postsFailed = mapService.hasError && mapService.valueOrNull == null;
+    final postsFailed = mapService.hasError && mapService.value == null;
     final dataReady = mapService.hasValue;
     final showMapLoading = !postsFailed && !dataReady;
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -79,7 +79,7 @@ class MapScreen extends HookConsumerWidget {
       }
     });
     ref.listen(locationProvider, (_, next) {
-      final gps = next.valueOrNull;
+      final gps = next.value;
       if (didApplyGpsCamera.value || gps == null) {
         return;
       }
@@ -93,14 +93,14 @@ class MapScreen extends HookConsumerWidget {
       unawaited(controller.applyInitialCameraZoom(gps));
     });
     ref.listen(isSubscribeProvider, (previous, next) {
-      if ((next.valueOrNull ?? false) || !isEarthStyle.value) {
+      if ((next.value ?? false) || !isEarthStyle.value) {
         return;
       }
       isEarthStyle.value = false;
       controller.handleStyleChange();
     });
     ref.listen(filteredMapPostsProvider, (previous, next) {
-      if (!next.hasValue || previous?.valueOrNull == next.valueOrNull) {
+      if (!next.hasValue || previous?.value == next.value) {
         return;
       }
       unawaited(controller.setPin());
@@ -178,7 +178,7 @@ class MapScreen extends HookConsumerWidget {
                           initialCenter:
                               isLocationEnabled ? loc : fallbackLocation,
                         );
-                        final gps = ref.read(locationProvider).valueOrNull;
+                        final gps = ref.read(locationProvider).value;
                         if (gps != null &&
                             (gps.latitude != 0 || gps.longitude != 0)) {
                           didApplyGpsCamera.value = true;
@@ -186,7 +186,7 @@ class MapScreen extends HookConsumerWidget {
                         }
                       },
                       onStyleLoadedCallback: controller.onStyleLoaded,
-                      onMapClick: (_, __) => primaryFocus?.unfocus(),
+                      onMapClick: (_, _) => primaryFocus?.unfocus(),
                       onCameraIdle: () {
                         controller.scheduleUpdateAfterCameraIdle();
                         syncCompassVisibility(

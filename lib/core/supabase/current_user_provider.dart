@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -11,30 +10,18 @@ SupabaseClient supabase(Ref ref) {
 
 @Riverpod(keepAlive: true)
 class CurrentUser extends _$CurrentUser {
-  String? _cachedUserId;
-
   @override
   String? build() {
-    // キャッシュがある場合はそれを返す
-    if (_cachedUserId != null) {
-      return _cachedUserId;
-    }
-
-    // キャッシュがない場合はSupabaseから取得して返す
-    return _cachedUserId = ref.read(supabaseProvider).auth.currentUser?.id;
+    return ref.read(supabaseProvider).auth.currentUser?.id;
   }
 
-  String? get value => state;
-
-  // ログイン時に更新
+  /// ログイン時に更新
   void update() {
-    _cachedUserId = ref.read(supabaseProvider).auth.currentUser?.id;
-    state = _cachedUserId;
+    state = ref.read(supabaseProvider).auth.currentUser?.id;
   }
 
-  // ログアウト時にクリア
+  /// ログアウト時にクリア
   void clear() {
-    _cachedUserId = null;
     state = null;
   }
 }

@@ -174,7 +174,7 @@ class _PostSharePreview extends HookConsumerWidget {
     final t = Translations.of(context);
     final loading = useState(false);
     final adInterstitial =
-        useMemoized(() => ref.read(admobInterstitialNotifierProvider));
+        useMemoized(() => ref.read(admobInterstitialProvider));
     useEffect(
       () {
         adInterstitial.createAd();

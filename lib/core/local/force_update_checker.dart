@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'force_update_checker.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class ForceUpdateChecker extends _$ForceUpdateChecker {
   @override
   void build() {}

@@ -34,7 +34,7 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
     final albumsAsync = ref.watch(memoryAlbumListViewModelProvider);
     final myPostsAsync = ref.watch(myPostStreamProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
+    final adInterstitial = ref.watch(admobInterstitialProvider);
     final isOpeningAlbum = useRef(false);
 
     void openInstantMonthlyShare(List<Posts> allPosts) {
@@ -66,7 +66,7 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
       );
       showGeneralDialog<void>(
         context: context,
-        pageBuilder: (_, __, ___) {
+        pageBuilder: (_, _, _) {
           return AppMemoryAlbumShareDialog(
             album: tempAlbum,
             posts: targetPosts,
@@ -148,7 +148,7 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
         ),
         actions: [
           if (postsWithImages(
-            myPostsAsync.valueOrNull ?? const <Posts>[],
+            myPostsAsync.value ?? const <Posts>[],
             max: 1,
           ).isNotEmpty)
             IconButton(
@@ -159,7 +159,7 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
               ),
               tooltip: t.share.shareButton,
               onPressed: () => openInstantMonthlyShare(
-                myPostsAsync.valueOrNull ?? const <Posts>[],
+                myPostsAsync.value ?? const <Posts>[],
               ),
             ),
           IconButton(
@@ -183,7 +183,7 @@ class MemoryAlbumListScreen extends HookConsumerWidget {
       ),
       body: albumsAsync.when(
         loading: () => const AppListSkeleton(),
-        error: (_, __) => AppTabError.myPage(onRetry: reload),
+        error: (_, _) => AppTabError.myPage(onRetry: reload),
         data: (albums) {
           if (albums.isEmpty) {
             return AppMemoryAlbumEmpty(

@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/api/currency/services/currency_rate_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

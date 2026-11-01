@@ -1,6 +1,10 @@
 targets:
   $default:
     builders:
+      # i18n は `dart run slang`（slang.yaml）を単一ソースにする。
+      # slang_build_runner と併用すると InvalidOutput / Asset already exists になる。
+      slang_build_runner:
+        enabled: false
       source_gen|combining_builder:
         options:
           ignore_for_file:

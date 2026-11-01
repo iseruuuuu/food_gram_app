@@ -9,7 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'friend_repository.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class FriendRepository extends _$FriendRepository {
   @override
   Future<void> build() async {}

@@ -343,12 +343,12 @@ class _BestPhoto extends ConsumerWidget {
                       : CachedNetworkImage(
                           imageUrl: imageUrl,
                           fit: BoxFit.cover,
-                          placeholder: (_, __) => ColoredBox(
+                          placeholder: (_, _) => ColoredBox(
                             color: isDark
                                 ? Colors.grey.shade800
                                 : Colors.grey.shade200,
                           ),
-                          errorWidget: (_, __, ___) => Image.asset(
+                          errorWidget: (_, _, _) => Image.asset(
                             isDark
                                 ? Assets.image.emptyDark.path
                                 : Assets.image.empty.path,

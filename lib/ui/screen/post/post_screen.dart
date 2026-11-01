@@ -481,7 +481,7 @@ class PostScreen extends HookConsumerWidget {
                                 if (result) {
                                   final postCount = (ref
                                               .read(myPostStreamProvider)
-                                              .valueOrNull
+                                              .value
                                               ?.length ??
                                           0) +
                                       1;

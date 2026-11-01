@@ -1,5 +1,6 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/auth/services/auth_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -18,13 +19,13 @@ part 'setting_view_model.g.dart';
 class SettingViewModel extends _$SettingViewModel {
   @override
   SettingState build({
-    SettingState initState = const SettingState(),
+    SettingState? initState,
   }) {
     getData();
-    return initState;
+    return initState ?? const SettingState();
   }
 
-  Loading get loading => ref.read(loadingProvider.notifier);
+  Loading get _loading => ref.read(loadingProvider.notifier);
   final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
   Future<void> getData() async {
@@ -35,18 +36,18 @@ class SettingViewModel extends _$SettingViewModel {
   }
 
   Future<void> review() async {
-    loading.state = true;
+    _loading.state = true;
     final inAppReview = InAppReview.instance;
     if (await inAppReview.isAvailable()) {
       await inAppReview.openStoreListing(
         appStoreId: '6474065183',
       );
     }
-    loading.state = false;
+    _loading.state = false;
   }
 
   Future<void> checkNewVersion(BuildContext context) async {
-    loading.state = true;
+    _loading.state = true;
     final t = Translations.of(context);
     final newVersion = NewVersionPlus();
     final status = await newVersion.getVersionStatus();
@@ -55,7 +56,7 @@ class SettingViewModel extends _$SettingViewModel {
         double.parse(status!.storeVersion.replaceAll('.', '')) / 100;
     final appVersion =
         double.parse(packageInfo.version.replaceAll('.', '')) / 100;
-    loading.state = false;
+    _loading.state = false;
     if (storeVersion > appVersion) {
       newVersion.showUpdateDialog(
         context: context,
@@ -74,18 +75,18 @@ class SettingViewModel extends _$SettingViewModel {
   }
 
   Future<bool> restore() async {
-    loading.state = true;
+    _loading.state = true;
     try {
       return await ref
           .read(revenueCatServiceProvider.notifier)
           .restorePurchase();
     } finally {
-      loading.state = false;
+      _loading.state = false;
     }
   }
 
   Future<bool> signOut() async {
-    loading.state = true;
+    _loading.state = true;
     await Future<void>.delayed(const Duration(seconds: 2));
     final result = await ref.read(authServiceProvider).signOut();
     final isSuccess = result.when(
@@ -95,15 +96,15 @@ class SettingViewModel extends _$SettingViewModel {
       },
       failure: (_) => false,
     );
-    loading.state = false;
+    _loading.state = false;
     return isSuccess;
   }
 
   /// アカウント削除
   Future<bool> deleteAccount() async {
-    loading.state = true;
+    _loading.state = true;
     final ok = await ref.read(authServiceProvider).delete();
-    loading.state = false;
+    _loading.state = false;
     return ok;
   }
 }

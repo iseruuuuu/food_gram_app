@@ -18,8 +18,8 @@ class MemoryAlbumEntryCard extends ConsumerWidget {
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final albumsAsync = ref.watch(memoryAlbumListViewModelProvider);
-    final firstAlbum = albumsAsync.valueOrNull?.isNotEmpty ?? false
-        ? albumsAsync.valueOrNull!.first
+    final firstAlbum = albumsAsync.value?.isNotEmpty ?? false
+        ? albumsAsync.value!.first
         : null;
     final previewAsync = firstAlbum == null
         ? null
@@ -84,7 +84,7 @@ class MemoryAlbumEntryCard extends ConsumerWidget {
                           size: 72,
                         ),
                         loading: () => const SizedBox.shrink(),
-                        error: (_, __) => Icon(
+                        error: (_, _) => Icon(
                           Icons.photo_library_outlined,
                           color: AppTheme.textSecondaryOf(context),
                         ),

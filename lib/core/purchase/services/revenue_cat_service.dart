@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -6,6 +5,7 @@ import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/analytics_screen.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/cache/cache_manager.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
@@ -18,15 +18,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'revenue_cat_service.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class RevenueCatService extends _$RevenueCatService {
-  final logger = Logger();
-  bool isSubscribed = false;
-  late Offerings offerings;
+  final _logger = Logger();
   var _isInitialized = false;
-  String? get user => ref.read(currentUserProvider);
-  String get entitlementId => Env.entitlementId;
-  String get entitlementOffering => Env.entitlementOffering;
 
   @override
   Future<bool> build() {
@@ -35,10 +30,10 @@ class RevenueCatService extends _$RevenueCatService {
 
   Future<bool> initInAppPurchase() async {
     try {
+      final entitlementId = Env.entitlementId;
       if (_isInitialized) {
-        offerings = await Purchases.getOfferings();
+        await Purchases.getOfferings();
         final customerInfo = await Purchases.getCustomerInfo();
-        await _getPurchaserInfo(customerInfo);
         final active =
             customerInfo.entitlements.all[entitlementId]?.isActive ?? false;
         final synced = await _syncSubscriptionToDatabase(active: active);
@@ -53,10 +48,10 @@ class RevenueCatService extends _$RevenueCatService {
       }
       await Purchases.configure(configuration);
       // Offerings を取得
-      offerings = await Purchases.getOfferings();
+      await Purchases.getOfferings();
       // Supabase の UID を使用してログイン
-      final result = await Purchases.logIn(user!);
-      await _getPurchaserInfo(result.customerInfo);
+      final userId = ref.read(currentUserProvider);
+      final result = await Purchases.logIn(userId!);
       _isInitialized = true;
       final active =
           result.customerInfo.entitlements.all[entitlementId]?.isActive ??
@@ -66,7 +61,7 @@ class RevenueCatService extends _$RevenueCatService {
       // active なのに DB 反映できなければ購読済み扱いにしない
       return active && synced;
     } on PlatformException catch (e) {
-      logger.e('initInAppPurchase error caught! $e');
+      _logger.e('initInAppPurchase error caught! $e');
       // 取得失敗時は誤って false に落とさない
       return false;
     }
@@ -77,6 +72,7 @@ class RevenueCatService extends _$RevenueCatService {
   /// 年間プランなどで反映が遅れる場合に備え、閉じた直後と少し遅れて2回同期を試す。
   /// 反映中はグローバル Loading でオーバーレイ表示する。
   Future<bool> presentPaywallGuarded({String? source}) async {
+    final entitlementId = Env.entitlementId;
     final beforeInfo = await Purchases.getCustomerInfo();
     final wasActive =
         beforeInfo.entitlements.all[entitlementId]?.isActive ?? false;
@@ -96,17 +92,16 @@ class RevenueCatService extends _$RevenueCatService {
     }
 
     final latest = await Purchases.getOfferings();
-    offerings = latest;
     final offering =
-        latest.getOffering(entitlementOffering) ?? latest.current;
-    logger.d(
+        latest.getOffering(Env.entitlementOffering) ?? latest.current;
+    _logger.d(
       'Paywall offerings current=${latest.current?.identifier} '
       'keys=${latest.all.keys.toList()} '
       'selected=${offering?.identifier} '
       'packages=${offering?.availablePackages.length}',
     );
     if (offering == null) {
-      logger.e('No offering available for paywall');
+      _logger.e('No offering available for paywall');
       analytics.logEventUnawaited(
         name: AnalyticsEvent.purchaseFailed,
         parameters: sourceParams,
@@ -117,7 +112,7 @@ class RevenueCatService extends _$RevenueCatService {
     try {
       await RevenueCatUI.presentPaywall(offering: offering);
     } on PlatformException catch (e) {
-      logger.e('presentPaywall failed: $e');
+      _logger.e('presentPaywall failed: $e');
       analytics.logEventUnawaited(
         name: AnalyticsEvent.purchaseFailed,
         parameters: sourceParams,
@@ -178,14 +173,15 @@ class RevenueCatService extends _$RevenueCatService {
   Future<bool> syncAfterPaywall() async {
     try {
       final info = await Purchases.getCustomerInfo();
-      final active = info.entitlements.all[entitlementId]?.isActive ?? false;
+      final active =
+          info.entitlements.all[Env.entitlementId]?.isActive ?? false;
       final synced = await _syncSubscriptionToDatabase(active: active);
       if (active && !synced) {
         return false;
       }
       return active;
     } on PlatformException catch (e) {
-      logger.e('syncAfterPaywall error $e');
+      _logger.e('syncAfterPaywall error $e');
       return false;
     }
   }
@@ -195,16 +191,15 @@ class RevenueCatService extends _$RevenueCatService {
   Future<bool> restorePurchase() async {
     try {
       final customerInfo = await Purchases.restorePurchases();
-      final isActive = await _updatePurchases(customerInfo, entitlementId);
-      await _getPurchaserInfo(customerInfo);
+      final isActive = _isEntitlementActive(customerInfo, Env.entitlementId);
       final synced = await _syncSubscriptionToDatabase(active: isActive);
       if (!isActive) {
-        logger.w('購入情報なし');
+        _logger.w('購入情報なし');
         return false;
       }
       return synced;
     } on PlatformException catch (e) {
-      logger.e('purchase repo  restorePurchase error $e');
+      _logger.e('purchase repo  restorePurchase error $e');
       return false;
     }
   }
@@ -224,36 +219,22 @@ class RevenueCatService extends _$RevenueCatService {
         return true;
       },
       failure: (e) {
-        logger.e('updateIsSubscribe(isSubscribe: $active) failed: $e');
+        _logger.e('updateIsSubscribe(isSubscribe: $active) failed: $e');
         return false;
       },
     );
     await ref.read(isSubscribeProvider.notifier).refresh();
     if (!ok) {
-      logger.w('DB sync failed; local provider refreshed from current DB');
+      _logger.w('DB sync failed; local provider refreshed from current DB');
     }
     return ok;
   }
 
-  Future<void> _getPurchaserInfo(CustomerInfo customerInfo) async {
-    try {
-      isSubscribed = await _updatePurchases(customerInfo, entitlementId);
-    } on PlatformException catch (e) {
-      logger.e('getPurchaserInfo error $e');
-    }
-  }
-
-  Future<bool> _updatePurchases(
-    CustomerInfo purchaserInfo,
-    String entitlement,
-  ) async {
-    var isPurchased = false;
+  bool _isEntitlementActive(CustomerInfo purchaserInfo, String entitlement) {
     final entitlements = purchaserInfo.entitlements.all;
     if (entitlements.isEmpty || !entitlements.containsKey(entitlement)) {
-      isPurchased = false;
-    } else if (entitlements[entitlement]!.isActive) {
-      isPurchased = true;
+      return false;
     }
-    return isPurchased;
+    return entitlements[entitlement]!.isActive;
   }
 }

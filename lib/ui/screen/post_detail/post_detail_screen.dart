@@ -57,7 +57,7 @@ class PostDetailScreen extends HookConsumerWidget {
         // 閉じる瞬間に待たせないため、滞在時間を使って先読みしておく
         if (canRequestAds(ref.read(isSubscribeProvider))) {
           ref
-              .read(admobInterstitialNotifierProvider)
+              .read(admobInterstitialProvider)
               .createAd(resetAttempts: true);
         }
         return;
@@ -113,7 +113,7 @@ class PostDetailScreen extends HookConsumerWidget {
       [listInput],
     );
     final isInitialLoading = listState.isLoading;
-    final adInterstitial = ref.watch(admobInterstitialNotifierProvider);
+    final adInterstitial = ref.watch(admobInterstitialProvider);
     final isClosing = useState(false);
 
     void closeDetail() {

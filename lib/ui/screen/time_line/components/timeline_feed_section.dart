@@ -267,7 +267,7 @@ class _TimelineFeedCard extends ConsumerWidget {
                   ),
                 ),
               ),
-              if (multiImageBadge != null) multiImageBadge,
+              ?multiImageBadge,
             ],
           ),
         ),
@@ -293,7 +293,7 @@ class _TimelineFeedCard extends ConsumerWidget {
           child: Stack(
             children: [
               cardBody,
-              if (multiImageBadge != null) multiImageBadge,
+              ?multiImageBadge,
             ],
           ),
         ),

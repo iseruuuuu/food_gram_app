@@ -12,7 +12,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'post_repository.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class PostRepository extends _$PostRepository {
   final logger = Logger();
   final _cacheManager = CacheManager();

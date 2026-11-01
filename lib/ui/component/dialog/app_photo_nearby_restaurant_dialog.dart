@@ -55,7 +55,7 @@ Future<void> showPhotoNearbyRestaurantDialog({
                 itemCount: 3,
                 shrinkWrap: true,
               ),
-              error: (_, __) {
+              error: (_, _) {
                 ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
                       name: AnalyticsEvent.postRestaurantAutoDetectFail,
                     );
@@ -87,7 +87,7 @@ Future<void> showPhotoNearbyRestaurantDialog({
                   child: ListView.separated(
                     shrinkWrap: true,
                     itemCount: candidates.length,
-                    separatorBuilder: (_, __) => const Divider(height: 1),
+                    separatorBuilder: (_, _) => const Divider(height: 1),
                     itemBuilder: (context, index) {
                       final candidate = candidates[index];
                       final distance =

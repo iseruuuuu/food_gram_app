@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:food_gram_app/core/admob/services/admob_open.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/analytics_screen.dart';
@@ -24,16 +24,16 @@ class TabViewModel extends _$TabViewModel {
 
   @override
   TabState build({
-    TabState initState = const TabState(),
+    TabState? initState,
   }) {
     // タブ表示中にアプリオープンを先読みする。表示は前面復帰側で行う。
-    ref.read(admobOpenNotifierProvider);
+    ref.read(admobOpenProvider);
     // 初回表示タブの ScreenView（Observer では取れない）
     Future.microtask(_logInitialTabIfNeeded);
-    return initState;
+    return initState ?? const TabState();
   }
 
-  List<Widget> pageList = [
+  final List<Widget> pageList = [
     const MapScreen(),
     const TimeLineScreen(),
     const RecordScreen(),

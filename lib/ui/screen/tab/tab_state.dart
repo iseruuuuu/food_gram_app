@@ -11,7 +11,7 @@ abstract final class TabIndex {
 }
 
 @freezed
-class TabState with _$TabState {
+abstract class TabState with _$TabState {
   const factory TabState({
     /// 起動時はマップ（左端）。未表示の他タブは遅延構築する。
     @Default(TabIndex.map) int selectedIndex,

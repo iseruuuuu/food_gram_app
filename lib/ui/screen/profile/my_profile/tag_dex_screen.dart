@@ -222,7 +222,7 @@ class TagDexScreen extends ConsumerWidget {
             color: AppTheme.primaryOrange,
           ),
         ),
-        error: (_, __) => Center(
+        error: (_, _) => Center(
           child: TextButton(
             onPressed: () => ref.invalidate(myPostStreamProvider),
             child: Text(t.retry),

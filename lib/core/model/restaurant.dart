@@ -9,7 +9,7 @@ bool isUnknownRestaurantName(String name) =>
     name.trim() == unknownRestaurantName;
 
 @freezed
-class Restaurant with _$Restaurant {
+abstract class Restaurant with _$Restaurant {
   const factory Restaurant({
     required String name,
     required String address,
@@ -18,20 +18,20 @@ class Restaurant with _$Restaurant {
   }) = _Restaurant;
 
   factory Restaurant.fromJson(Map<String, dynamic> json) {
-    final geometry = json['geometry'] as Map<String, dynamic>;
-    final location = geometry['location'] as Map<String, dynamic>;
+    final geometry = Map<String, dynamic>.from(json['geometry'] as Map);
+    final location = Map<String, dynamic>.from(geometry['location'] as Map);
     return Restaurant(
       name: json['name'] as String,
-      address: json['formatted_address'] as String,
-      lat: location['lat'] as double,
-      lng: location['lng'] as double,
+      address: (json['formatted_address'] as String?) ?? '',
+      lat: (location['lat'] as num).toDouble(),
+      lng: (location['lng'] as num).toDouble(),
     );
   }
 
   factory Restaurant.fromKakaoJson(Map<String, dynamic> json) {
     return Restaurant(
       name: json['place_name'] as String,
-      address: json['address_name'] as String,
+      address: (json['address_name'] as String?) ?? '',
       lat: double.parse(json['y'] as String),
       lng: double.parse(json['x'] as String),
     );

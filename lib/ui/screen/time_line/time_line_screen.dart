@@ -42,7 +42,7 @@ class TimeLineScreen extends HookConsumerWidget {
             : categoriesData[selectedCategoryIndex.value].name);
     final state = ref.watch(postsStreamProvider);
     final blockList =
-        ref.watch(blockListProvider).valueOrNull ?? const <String>[];
+        ref.watch(blockListProvider).value ?? const <String>[];
     final isFriendsFeed = feedMode.value == TimelineFeedMode.friends;
     final friendIdsAsync =
         isFriendsFeed ? ref.watch(friendUserIdsProvider) : null;
@@ -174,7 +174,7 @@ class TimeLineScreen extends HookConsumerWidget {
       final friendAsync = friendIdsAsync;
       if (friendAsync != null &&
           friendAsync.hasError &&
-          friendAsync.valueOrNull == null) {
+          friendAsync.value == null) {
         return [
           SliverFillRemaining(
             hasScrollBody: false,
@@ -184,7 +184,7 @@ class TimeLineScreen extends HookConsumerWidget {
           ),
         ];
       }
-      final friendIds = friendAsync?.valueOrNull;
+      final friendIds = friendAsync?.value;
       if (friendIds != null && friendIds.isEmpty) {
         return [
           SliverFillRemaining(
@@ -205,7 +205,7 @@ class TimeLineScreen extends HookConsumerWidget {
       }
     }
 
-    final rawPosts = state.valueOrNull;
+    final rawPosts = state.value;
     if (rawPosts == null) {
       if (state.hasError) {
         return [
@@ -229,7 +229,7 @@ class TimeLineScreen extends HookConsumerWidget {
     if (isFriendsFeed) {
       visiblePosts = filterFriendPosts(
         posts: visiblePosts,
-        friendUserIds: friendIdsAsync?.valueOrNull ?? const <String>[],
+        friendUserIds: friendIdsAsync?.value ?? const <String>[],
         currentUserId: currentUserId,
       );
     }

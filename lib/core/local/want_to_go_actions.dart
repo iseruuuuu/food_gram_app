@@ -8,7 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 bool isWantToGoListed(WidgetRef ref, Restaurant restaurant) {
   final items =
-      ref.watch(wantToGoNotifierProvider).valueOrNull ?? const <WantToGoItem>[];
+      ref.watch(wantToGoProvider).value ?? const <WantToGoItem>[];
   return items.any((e) => e.matchesRestaurant(restaurant));
 }
 
@@ -19,7 +19,7 @@ Future<void> toggleWantToGoWithFeedback({
 }) async {
   final t = Translations.of(context);
   final added =
-      await ref.read(wantToGoNotifierProvider.notifier).toggle(restaurant);
+      await ref.read(wantToGoProvider.notifier).toggle(restaurant);
   if (!context.mounted) {
     return;
   }

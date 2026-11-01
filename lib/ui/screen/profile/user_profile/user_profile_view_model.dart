@@ -1,3 +1,4 @@
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/ui/screen/profile/user_profile/user_profile_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -9,10 +10,10 @@ class UserProfileViewModel extends _$UserProfileViewModel {
   @override
   UserProfileState build(
     String userId, {
-    UserProfileState initState = const UserProfileState(),
+    UserProfileState? initState,
   }) {
     getData(userId);
-    return initState;
+    return initState ?? const UserProfileState();
   }
 
   Future<void> getData(String userId) async {

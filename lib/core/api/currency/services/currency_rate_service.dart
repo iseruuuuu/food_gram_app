@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -14,7 +13,7 @@ CurrencyRateService currencyRateService(Ref ref) {
 
 class CurrencyRateService {
   CurrencyRateService({required SupabaseClient supabase})
-      : _supabase = supabase;
+    : _supabase = supabase;
 
   final SupabaseClient _supabase;
   static const _functionName = 'currency-convert';
@@ -29,17 +28,19 @@ class CurrencyRateService {
 
     final FunctionResponse res;
     try {
-      res = await _supabase.functions.invoke(
-        _functionName,
-        body: <String, dynamic>{
-          'from': from,
-          'to': to,
-          'base': from,
-          'symbols': [to],
-          'quotes': [to],
-          'target': to,
-        },
-      ).timeout(_invokeTimeout);
+      res = await _supabase.functions
+          .invoke(
+            _functionName,
+            body: <String, dynamic>{
+              'from': from,
+              'to': to,
+              'base': from,
+              'symbols': [to],
+              'quotes': [to],
+              'target': to,
+            },
+          )
+          .timeout(_invokeTimeout);
     } on TimeoutException catch (e, st) {
       throw CurrencyRateException(
         type: CurrencyRateFailureType.timeout,

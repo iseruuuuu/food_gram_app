@@ -9,7 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'user_service.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class UserService extends _$UserService {
   final _cacheManager = CacheManager();
 
@@ -21,7 +21,7 @@ class UserService extends _$UserService {
     return userId;
   }
 
-  SupabaseClient get supabase => ref.read(supabaseProvider);
+  SupabaseClient get _supabase => ref.read(supabaseProvider);
 
   @override
   Future<void> build() async {}
@@ -39,7 +39,7 @@ class UserService extends _$UserService {
     return _cacheManager.get<Map<String, dynamic>>(
       key: 'user_$userId',
       fetcher: () =>
-          supabase.from('users').select().eq('user_id', userId).single(),
+          _supabase.from('users').select().eq('user_id', userId).single(),
       duration: _userCacheDuration,
     );
   }
@@ -63,7 +63,7 @@ class UserService extends _$UserService {
     for (var i = 0; i < missing.length; i += _userIdChunkSize) {
       final end = math.min(i + _userIdChunkSize, missing.length);
       final chunk = missing.sublist(i, end);
-      final rows = await supabase.from('users').select().inFilter(
+      final rows = await _supabase.from('users').select().inFilter(
             'user_id',
             chunk,
           );
@@ -90,7 +90,7 @@ class UserService extends _$UserService {
     required bool includeAnonymous,
     int latestLimit = 0,
   }) async {
-    final res = await supabase.functions.invoke(
+    final res = await _supabase.functions.invoke(
       'user-stats',
       body: {
         'user_id': userId,
@@ -145,7 +145,7 @@ class UserService extends _$UserService {
     return _cacheManager.get<int>(
       key: 'post_count_rank_$userId',
       fetcher: () async {
-        final res = await supabase.rpc<dynamic>(
+        final res = await _supabase.rpc<dynamic>(
           'get_post_count_rank',
           params: <String, dynamic>{'p_user_id': userId},
         );
@@ -175,7 +175,7 @@ class UserService extends _$UserService {
     final counts = <String, int>{};
     var from = 0;
     while (true) {
-      final rows = await supabase
+      final rows = await _supabase
           .from('posts')
           .select('user_id, is_anonymous')
           .eq('is_anonymous', false)

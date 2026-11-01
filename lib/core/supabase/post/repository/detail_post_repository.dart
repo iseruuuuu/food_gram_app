@@ -36,7 +36,7 @@ bool _sameRelatedInstant(DateTime? a, DateTime? b) {
   return a.toUtc().microsecondsSinceEpoch == b.toUtc().microsecondsSinceEpoch;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class DetailPostRepository extends _$DetailPostRepository {
   @override
   Future<void> build() async {}

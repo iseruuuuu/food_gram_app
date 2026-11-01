@@ -7,6 +7,7 @@ import 'package:food_gram_app/core/local/want_to_go_actions.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
@@ -28,8 +29,8 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
   const MapRestaurantDetailSheet({super.key});
 
   /// Repository経由で特定店舗（位置）の投稿を取得
-  static final FutureProviderFamily<List<Posts>, (String, double, double)>
-      restaurantPostsProvider =
+  // ignore: specify_nonobvious_property_types
+  static final restaurantPostsProvider =
       FutureProvider.family<List<Posts>, (String, double, double)>(
     (ref, key) async {
       final (_, lat, lng) = key;
@@ -249,7 +250,7 @@ class MapRestaurantDetailSheet extends HookConsumerWidget {
             loading: () => const SliverToBoxAdapter(
               child: AppNearbyRestaurantsSkeleton(),
             ),
-            error: (_, __) => SliverToBoxAdapter(
+            error: (_, _) => SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: AppTabError.map(

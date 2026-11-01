@@ -76,7 +76,7 @@ class RecordYearlySection extends StatelessWidget {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: years.length,
-              separatorBuilder: (_, __) => const Gap(10),
+              separatorBuilder: (_, _) => const Gap(10),
               itemBuilder: (context, index) {
                 final year = years[index];
                 final yearPosts = recentPosts
