@@ -14,8 +14,6 @@ const postDetailNewerPageSize = 5;
 const postDetailOlderPageSize = 10;
 
 /// 投稿詳細フィードの追加1ページ。
-///
-/// [hasMore] は残件数ではなく、この方向の取得元がまだ尽きていないこと。
 @immutable
 class PostDetailPageResult {
   const PostDetailPageResult({
