@@ -121,17 +121,24 @@ class DetailPostService extends _$DetailPostService {
   }
 
   /// 指定した投稿IDより古い投稿のリストを取得する（件数指定可能・カテゴリフィルタは呼び出し側で実施）
+  /// [userIds] を渡すとそのユーザーの投稿だけを、ID 順のまま返す。
   Future<Result<List<Map<String, dynamic>>, Exception>> getSequentialPosts({
     required int currentPostId,
     int limit = 10,
+    List<String>? userIds,
   }) async {
     try {
-      final prevPosts = await _supabase
+      if (userIds != null && userIds.isEmpty) {
+        return const Success([]);
+      }
+      var query = _supabase
           .from('posts')
           .select(postsSelectColumns)
-          .lt('id', currentPostId)
-          .order('id', ascending: false)
-          .limit(limit);
+          .lt('id', currentPostId);
+      if (userIds != null) {
+        query = query.inFilter('user_id', userIds);
+      }
+      final prevPosts = await query.order('id', ascending: false).limit(limit);
       return Success(prevPosts);
     } on PostgrestException catch (e) {
       return Failure(e);
@@ -139,18 +146,25 @@ class DetailPostService extends _$DetailPostService {
   }
 
   /// 指定した投稿IDの直後から、近い順に新しい投稿を取得する。
+  /// [userIds] を渡すとそのユーザーの投稿だけを、ID 順のまま返す。
   Future<Result<List<Map<String, dynamic>>, Exception>>
   getNewerSequentialPosts({
     required int currentPostId,
     int limit = 5,
+    List<String>? userIds,
   }) async {
     try {
-      final nextPosts = await _supabase
+      if (userIds != null && userIds.isEmpty) {
+        return const Success([]);
+      }
+      var query = _supabase
           .from('posts')
           .select(postsSelectColumns)
-          .gt('id', currentPostId)
-          .order('id', ascending: true)
-          .limit(limit);
+          .gt('id', currentPostId);
+      if (userIds != null) {
+        query = query.inFilter('user_id', userIds);
+      }
+      final nextPosts = await query.order('id', ascending: true).limit(limit);
       return Success(nextPosts);
     } on PostgrestException catch (e) {
       return Failure(e);

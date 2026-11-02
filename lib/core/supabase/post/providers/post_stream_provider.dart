@@ -42,8 +42,10 @@ Stream<List<Posts>> _postsStreamWithReconnect({
         stackTrace: st,
       );
       await Future<void>.delayed(backoff);
-      final nextSeconds =
-          (backoff.inSeconds * 2).clamp(1, maxBackoff.inSeconds);
+      final nextSeconds = (backoff.inSeconds * 2).clamp(
+        1,
+        maxBackoff.inSeconds,
+      );
       backoff = Duration(seconds: nextSeconds);
     }
   }
@@ -78,19 +80,15 @@ List<Posts> filterBlockedPosts(List<Posts> posts, List<String> blockList) {
   return posts.where((post) => !blockList.contains(post.userId)).toList();
 }
 
-/// 自分 + 登録済みフレンドの投稿だけ残す。
+/// 登録済みフレンドの投稿だけ残す。自分の投稿は含めない。
 List<Posts> filterFriendPosts({
   required List<Posts> posts,
   required List<String> friendUserIds,
-  required String? currentUserId,
 }) {
-  final allowed = <String>{
-    ...friendUserIds,
-    if (currentUserId != null && currentUserId.isNotEmpty) currentUserId,
-  };
-  if (allowed.isEmpty) {
+  if (friendUserIds.isEmpty) {
     return const [];
   }
+  final allowed = friendUserIds.toSet();
   return posts.where((post) => allowed.contains(post.userId)).toList();
 }
 
@@ -104,8 +102,10 @@ Stream<List<Posts>> postsStream(Ref ref) async* {
   final supabase = ref.read(supabaseProvider);
 
   Stream<List<Posts>> createMappedStream() {
-    final query =
-        supabase.from('posts').stream(primaryKey: ['id']).order('created_at');
+    final query = supabase
+        .from('posts')
+        .stream(primaryKey: ['id'])
+        .order('created_at');
     return query.asyncMap(
       (events) {
         final mapped = <Posts>[];

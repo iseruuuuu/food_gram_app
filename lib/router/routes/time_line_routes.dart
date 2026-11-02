@@ -63,12 +63,17 @@ final timeLineRouter = GoRoute(
         }
         final Model model;
         final String? categoryName;
+        final PostDetailScreenType screenType;
         if (extra is TimelineDetailExtra) {
           model = extra.model;
           categoryName = extra.categoryName;
+          screenType = extra.friendsFeed
+              ? PostDetailScreenType.friends
+              : PostDetailScreenType.timeline;
         } else if (extra is Model) {
           model = extra;
           categoryName = null;
+          screenType = PostDetailScreenType.timeline;
         } else {
           return slideUpTransition(
             const Scaffold(body: RouterErrorWidget()),
@@ -79,7 +84,7 @@ final timeLineRouter = GoRoute(
           PostDetailScreen(
             posts: model.posts,
             users: model.users,
-            type: PostDetailScreenType.timeline,
+            type: screenType,
             categoryName: categoryName,
           ),
           key: state.pageKey,

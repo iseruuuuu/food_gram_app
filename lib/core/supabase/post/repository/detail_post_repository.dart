@@ -107,8 +107,9 @@ class DetailPostRepository extends _$DetailPostRepository {
   }) async {
     try {
       final service = ref.read(detailPostServiceProvider.notifier);
-      final fetchLimit =
-          (categoryName != null && categoryName.isNotEmpty) ? 50 : limit;
+      final fetchLimit = (categoryName != null && categoryName.isNotEmpty)
+          ? 50
+          : limit;
       final result = await service.getSequentialPosts(
         currentPostId: currentPostId,
         limit: fetchLimit,
@@ -130,9 +131,11 @@ class DetailPostRepository extends _$DetailPostRepository {
           } else {
             foodEmojis = null;
           }
-          final sorted = [...data]..sort(
-              (a, b) => ((b['id'] as num).toInt())
-                  .compareTo((a['id'] as num).toInt()),
+          final sorted = [...data]
+            ..sort(
+              (a, b) => ((b['id'] as num).toInt()).compareTo(
+                (a['id'] as num).toInt(),
+              ),
             );
           final seen = <int>{};
           final picked = <Map<String, dynamic>>[];
@@ -202,6 +205,11 @@ class DetailPostRepository extends _$DetailPostRepository {
           initialPost: initialPost,
           categoryName: categoryName,
         );
+      case PostDetailListMode.friends:
+        return _friendsFeed(
+          initialPost: initialPost,
+          categoryName: categoryName,
+        );
       case PostDetailListMode.myprofile:
         {
           final currentUser = ref.watch(currentUserProvider);
@@ -259,6 +267,21 @@ class DetailPostRepository extends _$DetailPostRepository {
             newer: isNewer,
             limit: limit,
             categoryName: categoryName,
+          );
+          return isNewer ? items.reversed.toList() : items;
+        }
+      case PostDetailListMode.friends:
+        {
+          final friendIds = await _friendFeedUserIds();
+          if (friendIds.isEmpty) {
+            return const [];
+          }
+          final items = await _sequentialPostItems(
+            currentPostId: cursorPost.id,
+            newer: isNewer,
+            limit: limit,
+            categoryName: categoryName,
+            userIds: friendIds,
           );
           return isNewer ? items.reversed.toList() : items;
         }
@@ -339,21 +362,47 @@ class DetailPostRepository extends _$DetailPostRepository {
     );
   }
 
+  Future<List<String>> _friendFeedUserIds() async {
+    final viewerId = ref.read(currentUserProvider);
+    final friendIds = await ref.read(friendUserIdsProvider.future);
+    return friendIds
+        .where((id) => id.isNotEmpty && id != viewerId)
+        .toList(growable: false);
+  }
+
+  Future<PostDetailListResult> _friendsFeed({
+    required Posts initialPost,
+    String? categoryName,
+  }) async {
+    final friendIds = await _friendFeedUserIds();
+    if (friendIds.isEmpty) {
+      return _single(initialPost);
+    }
+    return _timelineFeed(
+      initialPost: initialPost,
+      categoryName: categoryName,
+      userIds: friendIds,
+    );
+  }
+
   Future<PostDetailListResult> _timelineFeed({
     required Posts initialPost,
     String? categoryName,
+    List<String>? userIds,
   }) async {
     final newerFuture = _sequentialPostItems(
       currentPostId: initialPost.id,
       newer: true,
       limit: postDetailNewerPageSize,
       categoryName: categoryName,
+      userIds: userIds,
     );
     final olderFuture = _sequentialPostItems(
       currentPostId: initialPost.id,
       newer: false,
       limit: postDetailOlderPageSize,
       categoryName: categoryName,
+      userIds: userIds,
     );
     final newerClosestFirst = await newerFuture;
     final olderClosestFirst = await olderFuture;
@@ -434,18 +483,22 @@ class DetailPostRepository extends _$DetailPostRepository {
     required bool newer,
     required int limit,
     String? categoryName,
+    List<String>? userIds,
   }) async {
     final service = ref.read(detailPostServiceProvider.notifier);
-    final fetchLimit =
-        (categoryName != null && categoryName.isNotEmpty) ? limit * 5 : limit;
+    final fetchLimit = (categoryName != null && categoryName.isNotEmpty)
+        ? limit * 5
+        : limit;
     final result = newer
         ? await service.getNewerSequentialPosts(
             currentPostId: currentPostId,
             limit: fetchLimit,
+            userIds: userIds,
           )
         : await service.getSequentialPosts(
             currentPostId: currentPostId,
             limit: fetchLimit,
+            userIds: userIds,
           );
     return result.when(
       success: (data) => _pickSequentialPosts(
@@ -481,7 +534,8 @@ class DetailPostRepository extends _$DetailPostRepository {
     } else {
       foodEmojis = null;
     }
-    final sorted = [...data]..sort((a, b) {
+    final sorted = [...data]
+      ..sort((a, b) {
         final aId = (a['id'] as num).toInt();
         final bId = (b['id'] as num).toInt();
         return newer ? aId.compareTo(bId) : bId.compareTo(aId);
@@ -616,7 +670,8 @@ class DetailPostRepository extends _$DetailPostRepository {
       final last = rows.last;
       final lastId = (last['id'] as num).toInt();
       final lastCreated = _relatedCreatedAt(last['created_at']);
-      final cursorStuck = _sameRelatedInstant(
+      final cursorStuck =
+          _sameRelatedInstant(
             newer ? after : before,
             lastCreated,
           ) &&
@@ -658,7 +713,8 @@ class DetailPostRepository extends _$DetailPostRepository {
     final result = await postRepo.getByRestaurantName(restaurant: name);
     return result.when(
       success: (posts) {
-        final sorted = [...posts]..sort((a, b) {
+        final sorted = [...posts]
+          ..sort((a, b) {
             final created = b.createdAt.compareTo(a.createdAt);
             if (created != 0) {
               return created;
@@ -698,8 +754,9 @@ class DetailPostRepository extends _$DetailPostRepository {
   Future<List<Model>> _modelsFromPostRows(
     List<Map<String, dynamic>> rows,
   ) async {
-    final userIds =
-        rows.map((row) => row['user_id'] as String?).whereType<String>();
+    final userIds = rows
+        .map((row) => row['user_id'] as String?)
+        .whereType<String>();
     final usersById = await ref
         .read(detailPostServiceProvider.notifier)
         .getUsersData(userIds);

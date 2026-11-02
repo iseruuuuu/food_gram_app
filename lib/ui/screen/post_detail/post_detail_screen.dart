@@ -56,9 +56,7 @@ class PostDetailScreen extends HookConsumerWidget {
             .initializeHeartState(posts.id, posts.heart);
         // 閉じる瞬間に待たせないため、滞在時間を使って先読みしておく
         if (canRequestAds(ref.read(isSubscribeProvider))) {
-          ref
-              .read(admobInterstitialProvider)
-              .createAd(resetAttempts: true);
+          ref.read(admobInterstitialProvider).createAd(resetAttempts: true);
         }
         return;
       },
@@ -76,16 +74,19 @@ class PostDetailScreen extends HookConsumerWidget {
         initialPost: memoizedPosts,
         mode: switch (type) {
           PostDetailScreenType.timeline => PostDetailListMode.timeline,
+          PostDetailScreenType.friends => PostDetailListMode.friends,
           PostDetailScreenType.myprofile => PostDetailListMode.myprofile,
           PostDetailScreenType.profile => PostDetailListMode.profile,
           PostDetailScreenType.map => PostDetailListMode.nearby,
           PostDetailScreenType.search => PostDetailListMode.search,
           PostDetailScreenType.stored => PostDetailListMode.stored,
         },
-        profileUserId:
-            type == PostDetailScreenType.profile ? users.userId : null,
-        restaurant:
-            type == PostDetailScreenType.search ? posts.restaurant : null,
+        profileUserId: type == PostDetailScreenType.profile
+            ? users.userId
+            : null,
+        restaurant: type == PostDetailScreenType.search
+            ? posts.restaurant
+            : null,
         categoryName: categoryName,
       ),
       [memoizedPosts.id, type, users.userId, posts.restaurant, categoryName],
@@ -123,7 +124,8 @@ class PostDetailScreen extends HookConsumerWidget {
       isClosing.value = true;
       // 準備済みの広告があるときだけ表示する。未準備ならこの回は諦め、
       // 表示権は次に閉じたときへ持ち越される。
-      final showAdOnClose = canRequestAds(ref.read(isSubscribeProvider)) &&
+      final showAdOnClose =
+          canRequestAds(ref.read(isSubscribeProvider)) &&
           adInterstitial.registerPostDetailCloseAndShouldShow();
       context.pop();
       if (showAdOnClose) {
@@ -206,8 +208,9 @@ class PostDetailScreen extends HookConsumerWidget {
                             };
                             ref
                                 .read(
-                                  postsViewModelProvider(updatedPosts.id)
-                                      .notifier,
+                                  postsViewModelProvider(
+                                    updatedPosts.id,
+                                  ).notifier,
                                 )
                                 .setUser(updatedPosts);
                           },
@@ -366,6 +369,7 @@ class _PostDetailFeedView extends StatelessWidget {
 
 enum PostDetailScreenType {
   timeline,
+  friends,
   myprofile,
   profile,
   stored,
