@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
-import 'package:food_gram_app/core/model/photo_restaurant_candidate.dart';
 import 'package:food_gram_app/core/model/post_draft.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/result.dart';
@@ -14,7 +13,6 @@ import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/utils/image/upload_image_bytes.dart';
-import 'package:food_gram_app/core/utils/location/image_gps_reader.dart';
 import 'package:food_gram_app/core/utils/location/post_price_currency_from_location.dart';
 import 'package:food_gram_app/core/utils/post/post_submit_cancellation.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
@@ -39,7 +37,6 @@ class PostViewModel extends _$PostViewModel {
   late final TextEditingController commentController;
   late final TextEditingController priceController;
   final Map<String, Uint8List> _imageBytesMap = {};
-  final Map<String, ({double latitude, double longitude})> _imageGpsByPath = {};
   var _restoredFromDraft = false;
   var _priceCurrencyManuallySet = false;
   var _disposed = false;
@@ -70,7 +67,6 @@ class PostViewModel extends _$PostViewModel {
       commentController.dispose();
       priceController.dispose();
       _imageBytesMap.clear();
-      _imageGpsByPath.clear();
       _currencyAutoDetectSeq++;
       _postSubmitCancellation?.cancel();
       _postSubmitCancellation = null;
@@ -127,7 +123,6 @@ class PostViewModel extends _$PostViewModel {
       }
       if (state.isSuccess) {
         _imageBytesMap.clear();
-        _imageGpsByPath.clear();
       }
       return state.isSuccess;
     } on TimeoutException catch (e, st) {
@@ -210,7 +205,6 @@ class PostViewModel extends _$PostViewModel {
         );
         if (cancellation.isCancelled) {
           _imageBytesMap.clear();
-          _imageGpsByPath.clear();
         }
         final hasComment = commentController.text.trim().isNotEmpty;
         final hasRestaurant = state.restaurant != defaultRestaurantText &&
@@ -262,15 +256,9 @@ class PostViewModel extends _$PostViewModel {
 
   void removeImage(String imagePath) {
     _imageBytesMap.remove(imagePath);
-    _imageGpsByPath.remove(imagePath);
     final updatedImages =
         state.foodImages.where((path) => path != imagePath).toList();
-    state = state.copyWith(
-      foodImages: updatedImages,
-      nearbySuggestionDismissed:
-          updatedImages.isNotEmpty && state.nearbySuggestionDismissed,
-    );
-    _applyPhotoGpsFromImages(updatedImages);
+    state = state.copyWith(foodImages: updatedImages);
   }
 
   Future<bool> _pickImage(
@@ -286,12 +274,11 @@ class PostViewModel extends _$PostViewModel {
         return false;
       }
       unawaited(_tryApplyCurrencyFromImage(image.path));
-      final photoGps = await readGpsFromImagePath(image.path);
       final bytes = await _openImageEditor(context, image.path);
       if (bytes == null) {
         return false;
       }
-      await _processImageFromBytes(bytes, photoGps: photoGps);
+      await _processImageFromBytes(bytes);
       ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
             name: AnalyticsEvent.postPhotoSelected,
           );
@@ -318,10 +305,9 @@ class PostViewModel extends _$PostViewModel {
       );
       for (final image in images) {
         unawaited(_tryApplyCurrencyFromImage(image.path));
-        final photoGps = await readGpsFromImagePath(image.path);
         final bytes = await _openImageEditor(context, image.path);
         if (bytes != null) {
-          await _processImageFromBytes(bytes, photoGps: photoGps);
+          await _processImageFromBytes(bytes);
         }
       }
       return state.foodImages.isNotEmpty;
@@ -346,23 +332,17 @@ class PostViewModel extends _$PostViewModel {
     return result;
   }
 
-  Future<void> _processImageFromBytes(
-    Uint8List bytes, {
-    ({double latitude, double longitude})? photoGps,
-  }) async {
+  Future<void> _processImageFromBytes(Uint8List bytes) async {
     final uploadBytes = await prepareUploadImageBytes(bytes);
     final dir = await getTemporaryDirectory();
     final file = File(
       '${dir.path}/food_gram_${DateTime.now().millisecondsSinceEpoch}.jpg',
     );
     await file.writeAsBytes(uploadBytes);
-    await _processImage(file, photoGps: photoGps);
+    await _processImage(file);
   }
 
-  Future<void> _processImage(
-    File cropImage, {
-    ({double latitude, double longitude})? photoGps,
-  }) async {
+  Future<void> _processImage(File cropImage) async {
     final imageBytes = await cropImage.readAsBytes();
     final imagePath = cropImage.path;
     _imageBytesMap[imagePath] = imageBytes;
@@ -370,36 +350,6 @@ class PostViewModel extends _$PostViewModel {
     state = state.copyWith(
       foodImages: updatedImages,
       status: PostStatus.photoSuccess.name,
-    );
-    if (photoGps != null) {
-      _imageGpsByPath[imagePath] = photoGps;
-    }
-    if (state.restaurant == defaultRestaurantText) {
-      _applyPhotoGpsFromImages(updatedImages);
-    }
-  }
-
-  /// 残っている画像のうち先頭の GPS を photoLat/photoLng に反映する
-  void _applyPhotoGpsFromImages(List<String> imagePaths) {
-    for (final path in imagePaths) {
-      final gps = _imageGpsByPath[path];
-      if (gps != null) {
-        final gpsChanged =
-            state.photoLat != gps.latitude || state.photoLng != gps.longitude;
-        state = state.copyWith(
-          photoLat: gps.latitude,
-          photoLng: gps.longitude,
-          nearbySuggestionDismissed:
-              !gpsChanged && state.nearbySuggestionDismissed,
-        );
-        return;
-      }
-    }
-    state = state.copyWith(
-      photoLat: null,
-      photoLng: null,
-      nearbySuggestionDismissed:
-          imagePaths.isNotEmpty && state.nearbySuggestionDismissed,
     );
   }
 
@@ -418,32 +368,11 @@ class PostViewModel extends _$PostViewModel {
         );
   }
 
-  void selectNearbyCandidate(PhotoRestaurantCandidate candidate) {
-    _updateRestaurantState(candidate.toRestaurant());
-    ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
-          name: AnalyticsEvent.postRestaurantAutoDetectSelected,
-        );
-  }
-
-  void dismissNearbySuggestion() {
-    state = state.copyWith(nearbySuggestionDismissed: true);
-  }
-
-  void postWithoutRestaurant() {
-    state = state.copyWith(
-      restaurant: unknownRestaurantName,
-      lat: 0,
-      lng: 0,
-      nearbySuggestionDismissed: true,
-    );
-  }
-
   void _updateRestaurantState(Restaurant restaurant) {
     state = state.copyWith(
       restaurant: restaurant.name,
       lat: restaurant.lat,
       lng: restaurant.lng,
-      nearbySuggestionDismissed: true,
     );
     unawaited(
       _tryApplyCurrencyFromCoordinates(restaurant.lat, restaurant.lng),

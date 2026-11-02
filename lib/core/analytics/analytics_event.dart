@@ -42,16 +42,6 @@ abstract final class AnalyticsEvent {
   static const postPhotoSelected = 'post_photo_selected';
   static const postMultiplePhotoSelected =
       'post_multiple_photo_selected';
-  static const postRestaurantAutoDetectSuccess =
-      'post_restaurant_auto_detect_success';
-  static const postRestaurantAutoDetectFail =
-      'post_restaurant_auto_detect_fail';
-  static const postRestaurantAutoDetectSelected =
-      'post_restaurant_auto_detect_selected';
-  static const postRestaurantAutoDetectChanged =
-      'post_restaurant_auto_detect_changed';
-  static const postRestaurantManualSearch =
-      'post_restaurant_manual_search';
   static const postRestaurantManualSelected =
       'post_restaurant_manual_selected';
   static const postTagSelected = 'post_tag_selected';
