@@ -6,7 +6,6 @@ import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/tag.dart';
-import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/friend_user_ids_provider.dart';
@@ -38,15 +37,14 @@ class TimeLineScreen extends HookConsumerWidget {
     final selectedCategoryName = categoriesData.isEmpty
         ? ''
         : (categoriesData[selectedCategoryIndex.value].isAllCategory
-            ? ''
-            : categoriesData[selectedCategoryIndex.value].name);
+              ? ''
+              : categoriesData[selectedCategoryIndex.value].name);
     final state = ref.watch(postsStreamProvider);
-    final blockList =
-        ref.watch(blockListProvider).value ?? const <String>[];
+    final blockList = ref.watch(blockListProvider).value ?? const <String>[];
     final isFriendsFeed = feedMode.value == TimelineFeedMode.friends;
-    final friendIdsAsync =
-        isFriendsFeed ? ref.watch(friendUserIdsProvider) : null;
-    final currentUserId = ref.watch(currentUserProvider);
+    final friendIdsAsync = isFriendsFeed
+        ? ref.watch(friendUserIdsProvider)
+        : null;
     final scrollController = useScrollController();
     useScrollToTopOnTabTrigger(
       ref: ref,
@@ -149,7 +147,6 @@ class TimeLineScreen extends HookConsumerWidget {
               refreshProviders: refreshProviders,
               isFriendsFeed: isFriendsFeed,
               friendIdsAsync: friendIdsAsync,
-              currentUserId: currentUserId,
             ),
           ],
         ),
@@ -168,7 +165,6 @@ class TimeLineScreen extends HookConsumerWidget {
     required VoidCallback refreshProviders,
     required bool isFriendsFeed,
     required AsyncValue<List<String>>? friendIdsAsync,
-    required String? currentUserId,
   }) {
     if (isFriendsFeed) {
       final friendAsync = friendIdsAsync;
@@ -230,7 +226,6 @@ class TimeLineScreen extends HookConsumerWidget {
       visiblePosts = filterFriendPosts(
         posts: visiblePosts,
         friendUserIds: friendIdsAsync?.value ?? const <String>[],
-        currentUserId: currentUserId,
       );
     }
     final posts = filterPostsByCategory(visiblePosts, selectedCategoryName);
@@ -247,11 +242,13 @@ class TimeLineScreen extends HookConsumerWidget {
       seed: recommendSeed ^ selectedCategoryName.hashCode,
     );
     final recommendedIds = recommended.map((post) => post.id).toSet();
-    final remainingPosts =
-        sorted.where((post) => !recommendedIds.contains(post.id)).toList();
+    final remainingPosts = sorted
+        .where((post) => !recommendedIds.contains(post.id))
+        .toList();
     final feedPosts = remainingPosts.isNotEmpty ? remainingPosts : sorted;
-    final categoryName =
-        selectedCategoryName.isEmpty ? null : selectedCategoryName;
+    final categoryName = selectedCategoryName.isEmpty
+        ? null
+        : selectedCategoryName;
 
     return [
       SliverToBoxAdapter(
@@ -260,6 +257,7 @@ class TimeLineScreen extends HookConsumerWidget {
           allPosts: sorted,
           refresh: refreshProviders,
           categoryName: categoryName,
+          friendsFeed: isFriendsFeed,
         ),
       ),
       TimelineFeedSection(
@@ -267,6 +265,7 @@ class TimeLineScreen extends HookConsumerWidget {
         allPosts: sorted,
         refresh: refreshProviders,
         categoryName: categoryName,
+        friendsFeed: isFriendsFeed,
       ),
     ];
   }

@@ -21,6 +21,7 @@ class TimelineFeedSection extends HookConsumerWidget {
     required this.allPosts,
     required this.refresh,
     this.categoryName,
+    this.friendsFeed = false,
     super.key,
   });
 
@@ -28,6 +29,7 @@ class TimelineFeedSection extends HookConsumerWidget {
   final List<Posts> allPosts;
   final VoidCallback refresh;
   final String? categoryName;
+  final bool friendsFeed;
   static const _adEvery = 12;
 
   @override
@@ -100,9 +102,9 @@ class TimelineFeedSection extends HookConsumerWidget {
                         ref
                             .read(firebaseAnalyticsServiceProvider)
                             .logEventUnawaited(
-                          name: AnalyticsEvent.timelinePostImpression,
-                          parameters: {AnalyticsParam.postId: postId},
-                        );
+                              name: AnalyticsEvent.timelinePostImpression,
+                              parameters: {AnalyticsParam.postId: postId},
+                            );
                       },
                       child: _TimelineFeedCard(
                         post: post,
@@ -113,6 +115,7 @@ class TimelineFeedSection extends HookConsumerWidget {
                           post: post,
                           refresh: refresh,
                           categoryName: categoryName,
+                          friendsFeed: friendsFeed,
                         ),
                       ),
                     ),
@@ -150,10 +153,11 @@ class _TimelineFeedCard extends ConsumerWidget {
     final hasMultipleImages = post.foodImageList.length > 1;
     final surface = Theme.of(context).colorScheme.surface;
     final onSurface = Theme.of(context).colorScheme.onSurface;
-    final cacheWidth = ((MediaQuery.sizeOf(context).width / 2) *
-            MediaQuery.devicePixelRatioOf(context))
-        .round()
-        .clamp(200, 800);
+    final cacheWidth =
+        ((MediaQuery.sizeOf(context).width / 2) *
+                MediaQuery.devicePixelRatioOf(context))
+            .round()
+            .clamp(200, 800);
     const radius = 16.0;
 
     final image = storageKey.isEmpty
