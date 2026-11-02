@@ -79,7 +79,8 @@ class DetailPostService extends _$DetailPostService {
     final includePrivate =
         ref.read(currentUserProvider) == userId || friendIds.contains(userId);
     return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'user_posts_paged_${userId}_${includePrivate}_'
+      key:
+          'user_posts_paged_${userId}_${includePrivate}_'
           '${beforeId ?? 'null'}_${afterId ?? 'null'}_${limit}_'
           '${blockListCacheToken(blockedIds)}',
       fetcher: () async {
@@ -96,8 +97,9 @@ class DetailPostService extends _$DetailPostService {
         if (afterId != null) {
           query = query.gt('id', afterId);
         }
-        final posts =
-            await query.order('id', ascending: afterId != null).limit(limit);
+        final posts = await query
+            .order('id', ascending: afterId != null)
+            .limit(limit);
         return posts
             .where((post) => !blockedIds.contains(post['user_id']))
             .toList();
@@ -138,7 +140,7 @@ class DetailPostService extends _$DetailPostService {
 
   /// 指定した投稿IDの直後から、近い順に新しい投稿を取得する。
   Future<Result<List<Map<String, dynamic>>, Exception>>
-      getNewerSequentialPosts({
+  getNewerSequentialPosts({
     required int currentPostId,
     int limit = 5,
   }) async {
