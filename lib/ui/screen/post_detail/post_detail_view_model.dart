@@ -98,10 +98,12 @@ class PostDetailViewModel extends _$PostDetailViewModel {
         state.heartList,
       );
       unawaited(
-        ref.read(firebaseAnalyticsServiceProvider).logEvent(
-          name: AnalyticsEvent.postLike,
-          parameters: {AnalyticsParam.postId: posts.id},
-        ),
+        ref
+            .read(firebaseAnalyticsServiceProvider)
+            .logEvent(
+              name: AnalyticsEvent.postLike,
+              parameters: {AnalyticsParam.postId: posts.id},
+            ),
       );
       unawaited(
         () async {
@@ -133,16 +135,19 @@ class PostDetailViewModel extends _$PostDetailViewModel {
 
   Future<bool> delete(Posts posts) async {
     _loading.state = true;
-    final result =
-        await ref.read(deleteRepositoryProvider.notifier).deletePost(posts);
+    final result = await ref
+        .read(deleteRepositoryProvider.notifier)
+        .deletePost(posts);
     await result.when(
       success: (_) {
         state = state.copyWith(isSuccess: true);
         unawaited(
-          ref.read(firebaseAnalyticsServiceProvider).logEvent(
-            name: AnalyticsEvent.postDelete,
-            parameters: {AnalyticsParam.postId: posts.id},
-          ),
+          ref
+              .read(firebaseAnalyticsServiceProvider)
+              .logEvent(
+                name: AnalyticsEvent.postDelete,
+                parameters: {AnalyticsParam.postId: posts.id},
+              ),
         );
         ref
           ..invalidate(postsStreamProvider)
@@ -285,8 +290,9 @@ class PostsViewModel extends _$PostsViewModel {
   Future<void> getData(int postId) async {
     state = const PostState.loading();
     try {
-      final result =
-          await ref.read(detailPostRepositoryProvider.notifier).getPost(postId);
+      final result = await ref
+          .read(detailPostRepositoryProvider.notifier)
+          .getPost(postId);
       final friendIds = await ref.read(friendUserIdsProvider.future);
       result.when(
         success: (posts) {
@@ -350,12 +356,12 @@ class PostDetailListInput {
 
   @override
   int get hashCode => Object.hash(
-        mode,
-        profileUserId,
-        restaurant,
-        categoryName,
-        initialPost.id,
-      );
+    mode,
+    profileUserId,
+    restaurant,
+    categoryName,
+    initialPost.id,
+  );
 }
 
 @riverpod
@@ -369,7 +375,9 @@ class PostDetailList extends _$PostDetailList {
   Future<PostDetailListResult> build(PostDetailListInput listInput) {
     _listInput = listInput;
     ref.watch(blockListProvider);
-    return ref.read(detailPostRepositoryProvider.notifier).getPostDetailList(
+    return ref
+        .read(detailPostRepositoryProvider.notifier)
+        .getPostDetailList(
           initialPost: listInput.initialPost,
           mode: listInput.mode,
           profileUserId: listInput.profileUserId,
@@ -400,11 +408,11 @@ class PostDetailList extends _$PostDetailList {
             categoryName: _listInput.categoryName,
           );
       final latest = state.asData?.value ?? current;
-      final merged = mergePostsNewestFirst(latest.posts, extra);
+      final merged = mergePostsNewestFirst(latest.posts, extra.posts);
       state = AsyncData(
         latest.copyWith(
           posts: merged,
-          hasMoreNewer: extra.length >= postDetailNewerPageSize,
+          hasMoreNewer: extra.hasMore,
           isLoadingNewer: false,
         ),
       );
@@ -439,11 +447,11 @@ class PostDetailList extends _$PostDetailList {
             categoryName: _listInput.categoryName,
           );
       final latest = state.asData?.value ?? current;
-      final merged = mergePostsNewestFirst(latest.posts, extra);
+      final merged = mergePostsNewestFirst(latest.posts, extra.posts);
       state = AsyncData(
         latest.copyWith(
           posts: merged,
-          hasMoreOlder: extra.length >= postDetailOlderPageSize,
+          hasMoreOlder: extra.hasMore,
           isLoadingOlder: false,
         ),
       );

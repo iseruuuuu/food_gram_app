@@ -36,6 +36,17 @@ bool _sameRelatedInstant(DateTime? a, DateTime? b) {
   return a.toUtc().microsecondsSinceEpoch == b.toUtc().microsecondsSinceEpoch;
 }
 
+/// 時系列詳細の1方向分。近い順。
+class _SequentialSlice {
+  const _SequentialSlice({
+    required this.posts,
+    required this.hasMore,
+  });
+
+  final List<Posts> posts;
+  final bool hasMore;
+}
+
 @Riverpod(keepAlive: true)
 class DetailPostRepository extends _$DetailPostRepository {
   @override
@@ -249,7 +260,7 @@ class DetailPostRepository extends _$DetailPostRepository {
   }
 
   /// 投稿詳細フィードの追加ページを取得する
-  Future<List<Posts>> getPostDetailPage({
+  Future<PostDetailPageResult> getPostDetailPage({
     required Posts cursorPost,
     required PostDetailListMode mode,
     required PostDetailPageDirection direction,
@@ -261,70 +272,71 @@ class DetailPostRepository extends _$DetailPostRepository {
     final limit = isNewer ? postDetailNewerPageSize : postDetailOlderPageSize;
     switch (mode) {
       case PostDetailListMode.timeline:
-        {
-          final items = await _sequentialPostItems(
-            currentPostId: cursorPost.id,
-            newer: isNewer,
-            limit: limit,
-            categoryName: categoryName,
-          );
-          return isNewer ? items.reversed.toList() : items;
-        }
+        return _sequentialDetailPage(
+          cursorPost: cursorPost,
+          newer: isNewer,
+          limit: limit,
+          categoryName: categoryName,
+        );
       case PostDetailListMode.friends:
         {
           final friendIds = await _friendFeedUserIds();
           if (friendIds.isEmpty) {
-            return const [];
+            return const PostDetailPageResult(posts: [], hasMore: false);
           }
-          final items = await _sequentialPostItems(
-            currentPostId: cursorPost.id,
+          return _sequentialDetailPage(
+            cursorPost: cursorPost,
             newer: isNewer,
             limit: limit,
             categoryName: categoryName,
             userIds: friendIds,
           );
-          return isNewer ? items.reversed.toList() : items;
         }
       case PostDetailListMode.myprofile:
         {
           final currentUser = ref.watch(currentUserProvider);
           if (currentUser == null) {
-            return const [];
+            return const PostDetailPageResult(posts: [], hasMore: false);
           }
-          return _userPostItems(
+          final posts = await _userPostItems(
             userId: currentUser,
             cursorId: cursorPost.id,
             newer: isNewer,
             limit: limit,
           );
+          return _countedPage(posts, limit);
         }
       case PostDetailListMode.profile:
         {
           final userId = profileUserId;
           if (userId == null || userId.isEmpty) {
-            return const [];
+            return const PostDetailPageResult(posts: [], hasMore: false);
           }
-          return _userPostItems(
+          final posts = await _userPostItems(
             userId: userId,
             cursorId: cursorPost.id,
             newer: isNewer,
             limit: limit,
           );
+          return _countedPage(posts, limit);
         }
       case PostDetailListMode.nearby:
-        return _relatedPostItems(
-          currentPostId: cursorPost.id,
-          lat: cursorPost.lat,
-          lng: cursorPost.lng,
-          newer: isNewer,
-          limit: limit,
-          createdAt: cursorPost.createdAt,
-        );
+        {
+          final posts = await _relatedPostItems(
+            currentPostId: cursorPost.id,
+            lat: cursorPost.lat,
+            lng: cursorPost.lng,
+            newer: isNewer,
+            limit: limit,
+            createdAt: cursorPost.createdAt,
+          );
+          return _countedPage(posts, limit);
+        }
       case PostDetailListMode.search:
         {
           final name = restaurant ?? cursorPost.restaurant;
           final posts = await _restaurantPosts(name);
-          return isNewer
+          final page = isNewer
               ? takeNewerPage(
                   sortedNewestFirst: posts,
                   cursor: cursorPost,
@@ -335,11 +347,12 @@ class DetailPostRepository extends _$DetailPostRepository {
                   cursor: cursorPost,
                   limit: limit,
                 );
+          return _countedPage(page, limit);
         }
       case PostDetailListMode.stored:
         {
           final ordered = await _storedPosts();
-          return isNewer
+          final page = isNewer
               ? takeNewerPage(
                   sortedNewestFirst: ordered,
                   cursor: cursorPost,
@@ -350,6 +363,7 @@ class DetailPostRepository extends _$DetailPostRepository {
                   cursor: cursorPost,
                   limit: limit,
                 );
+          return _countedPage(page, limit);
         }
     }
   }
@@ -408,12 +422,12 @@ class DetailPostRepository extends _$DetailPostRepository {
     final olderClosestFirst = await olderFuture;
     return PostDetailListResult(
       posts: [
-        ...newerClosestFirst.reversed,
+        ...newerClosestFirst.posts.reversed,
         initialPost,
-        ...olderClosestFirst,
+        ...olderClosestFirst.posts,
       ],
-      hasMoreNewer: newerClosestFirst.length >= postDetailNewerPageSize,
-      hasMoreOlder: olderClosestFirst.length >= postDetailOlderPageSize,
+      hasMoreNewer: newerClosestFirst.hasMore,
+      hasMoreOlder: olderClosestFirst.hasMore,
     );
   }
 
@@ -478,95 +492,144 @@ class DetailPostRepository extends _$DetailPostRepository {
     );
   }
 
-  Future<List<Posts>> _sequentialPostItems({
+  PostDetailPageResult _countedPage(List<Posts> posts, int limit) {
+    return PostDetailPageResult(
+      posts: posts,
+      hasMore: posts.length >= limit,
+    );
+  }
+
+  Future<PostDetailPageResult> _sequentialDetailPage({
+    required Posts cursorPost,
+    required bool newer,
+    required int limit,
+    String? categoryName,
+    List<String>? userIds,
+  }) async {
+    final slice = await _sequentialPostItems(
+      currentPostId: cursorPost.id,
+      newer: newer,
+      limit: limit,
+      categoryName: categoryName,
+      userIds: userIds,
+    );
+    return PostDetailPageResult(
+      posts: newer ? slice.posts.reversed.toList() : slice.posts,
+      hasMore: slice.hasMore,
+    );
+  }
+
+  /// カテゴリとブロックを除いたあとで [limit] 件になるまで取得する。
+  /// 生のバッチが尽きたときだけ、見える件数が足りなくても終える。
+  Future<_SequentialSlice> _sequentialPostItems({
     required int currentPostId,
     required bool newer,
     required int limit,
     String? categoryName,
     List<String>? userIds,
   }) async {
-    final service = ref.read(detailPostServiceProvider.notifier);
-    final fetchLimit = (categoryName != null && categoryName.isNotEmpty)
-        ? limit * 5
-        : limit;
-    final result = newer
-        ? await service.getNewerSequentialPosts(
-            currentPostId: currentPostId,
-            limit: fetchLimit,
-            userIds: userIds,
-          )
-        : await service.getSequentialPosts(
-            currentPostId: currentPostId,
-            limit: fetchLimit,
-            userIds: userIds,
-          );
-    return result.when(
-      success: (data) => _pickSequentialPosts(
-        data,
-        currentPostId: currentPostId,
-        newer: newer,
-        limit: limit,
-        categoryName: categoryName,
-      ),
-      failure: (_) => const [],
-    );
-  }
-
-  List<Posts> _pickSequentialPosts(
-    List<Map<String, dynamic>> data, {
-    required int currentPostId,
-    required bool newer,
-    required int limit,
-    String? categoryName,
-  }) {
-    final blockList =
-        ref.read(blockListProvider).asData?.value ?? const <String>[];
+    final hasCategory = categoryName != null && categoryName.isNotEmpty;
     final List<String>? foodEmojis;
-    if (categoryName != null && categoryName.isNotEmpty) {
+    if (hasCategory) {
       final emojis = foodCategory[categoryName];
       if (emojis == null) {
         logger.w(
           'Unknown category passed to sequential posts: '
           '"$categoryName". No posts will match.',
         );
+        return const _SequentialSlice(posts: [], hasMore: false);
       }
-      foodEmojis = emojis ?? <String>[];
+      foodEmojis = emojis;
     } else {
       foodEmojis = null;
     }
-    final sorted = [...data]
-      ..sort((a, b) {
-        final aId = (a['id'] as num).toInt();
-        final bId = (b['id'] as num).toInt();
-        return newer ? aId.compareTo(bId) : bId.compareTo(aId);
-      });
+    final service = ref.read(detailPostServiceProvider.notifier);
+    final blockList =
+        ref.read(blockListProvider).asData?.value ?? const <String>[];
+    final page = VisiblePage<Map<String, dynamic>>(limit: limit);
     final seen = <int>{};
-    final picked = <Posts>[];
-    for (final row in sorted) {
-      final id = (row['id'] as num).toInt();
-      if (newer ? id <= currentPostId : id >= currentPostId) {
-        continue;
-      }
-      if (foodEmojis != null) {
-        final tag = row['food_tag'] as String? ?? '';
-        final postTags = parseFoodTagIds(tag);
-        if (!postTags.any(foodEmojis.contains)) {
-          continue;
-        }
-      }
-      if (!seen.add(id)) {
-        continue;
-      }
-      final userId = row['user_id'] as String? ?? '';
-      if (blockList.contains(userId)) {
-        continue;
-      }
-      picked.add(Posts.fromJson(row));
-      if (picked.length >= limit) {
+    final batchSize = hasCategory ? limit * 5 : limit;
+    var cursor = currentPostId;
+
+    while (!page.isComplete) {
+      final result = newer
+          ? await service.getNewerSequentialPosts(
+              currentPostId: cursor,
+              limit: batchSize,
+              userIds: userIds,
+            )
+          : await service.getSequentialPosts(
+              currentPostId: cursor,
+              limit: batchSize,
+              userIds: userIds,
+            );
+      final rows = result.when(
+        success: (data) => data,
+        failure: (_) => null,
+      );
+      if (rows == null) {
+        page.sourceExhausted = true;
         break;
       }
+      final sorted = [...rows]
+        ..sort((a, b) {
+          final aId = (a['id'] as num).toInt();
+          final bId = (b['id'] as num).toInt();
+          return newer ? aId.compareTo(bId) : bId.compareTo(aId);
+        });
+      page.addBatch(
+        sorted,
+        batchSize: batchSize,
+        isVisible: (row) => _isSequentialRowVisible(
+          row,
+          currentPostId: currentPostId,
+          newer: newer,
+          foodEmojis: foodEmojis,
+          blockList: blockList,
+          seen: seen,
+        ),
+      );
+      if (page.isComplete || sorted.isEmpty) {
+        break;
+      }
+      final nextCursor = (sorted.last['id'] as num).toInt();
+      if (nextCursor == cursor) {
+        page.sourceExhausted = true;
+        break;
+      }
+      cursor = nextCursor;
     }
-    return picked;
+
+    return _SequentialSlice(
+      posts: page.items.map(Posts.fromJson).toList(growable: false),
+      hasMore: !page.sourceExhausted,
+    );
+  }
+
+  bool _isSequentialRowVisible(
+    Map<String, dynamic> row, {
+    required int currentPostId,
+    required bool newer,
+    required List<String>? foodEmojis,
+    required List<String> blockList,
+    required Set<int> seen,
+  }) {
+    final id = (row['id'] as num).toInt();
+    if (newer ? id <= currentPostId : id >= currentPostId) {
+      return false;
+    }
+    if (foodEmojis != null) {
+      final tag = row['food_tag'] as String? ?? '';
+      final postTags = parseFoodTagIds(tag);
+      if (!postTags.any(foodEmojis.contains)) {
+        return false;
+      }
+    }
+    if (!seen.add(id)) {
+      return false;
+    }
+    final userId = row['user_id'] as String? ?? '';
+    return !blockList.contains(userId);
   }
 
   Future<List<Posts>> _userPostItems({

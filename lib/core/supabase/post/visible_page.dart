@@ -1,7 +1,9 @@
 /// フィルタ後の件数で 1 ページを埋める。
 ///
-/// 取得バッチに見えない行が混ざっても、バッチが上限まで返っているあいだは
-/// ページを完了にしない。
+/// 取得バッチに見えない行が混ざっても、そのバッチを最後まで見て
+/// 件数が要求サイズ未満のときだけ [sourceExhausted] にする。
+/// ページがバッチの途中で埋まったときは、同じバッチの続きが残っているので
+/// 取得元は尽きていない。
 class VisiblePage<T> {
   VisiblePage({required this.limit});
 
@@ -14,8 +16,10 @@ class VisiblePage<T> {
     required int batchSize,
     required bool Function(T item) isVisible,
   }) {
+    var scannedAll = true;
     for (final item in batch) {
       if (items.length >= limit) {
+        scannedAll = false;
         break;
       }
       if (!isVisible(item)) {
@@ -23,7 +27,7 @@ class VisiblePage<T> {
       }
       items.add(item);
     }
-    if (batch.length < batchSize) {
+    if (scannedAll && batch.length < batchSize) {
       sourceExhausted = true;
     }
   }
