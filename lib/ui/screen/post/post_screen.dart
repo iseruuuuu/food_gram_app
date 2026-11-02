@@ -15,7 +15,6 @@ import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
-import 'package:food_gram_app/ui/component/dialog/app_photo_nearby_restaurant_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/app_streak_dialog.dart';
 import 'package:food_gram_app/ui/component/loading/app_overlay_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
@@ -52,19 +51,6 @@ class PostScreen extends HookConsumerWidget {
         ),
       ),
     );
-    final nearbyTrigger = ref.watch(
-      postViewModelProvider().select(
-        (s) => (
-          photoLat: s.photoLat,
-          photoLng: s.photoLng,
-          dismissed: s.nearbySuggestionDismissed,
-          restaurant: s.restaurant,
-          hasImages: s.foodImages.isNotEmpty,
-          status: s.status,
-        ),
-      ),
-    );
-    final lastShownNearbyGps = useRef<String?>(null);
     final loading = ref.watch(loadingProvider);
     final foodTags = useState<List<String>>([]);
     final isOptionalExpanded = useState(false);
@@ -121,50 +107,6 @@ class PostScreen extends HookConsumerWidget {
         return null;
       },
       [restaurant],
-    );
-    useEffect(
-      () {
-        final lat = nearbyTrigger.photoLat;
-        final lng = nearbyTrigger.photoLng;
-        if (!nearbyTrigger.hasImages || lat == null || lng == null) {
-          lastShownNearbyGps.value = null;
-          return null;
-        }
-        if (nearbyTrigger.dismissed) {
-          return null;
-        }
-        if (nearbyTrigger.restaurant != PostViewModel.defaultRestaurantText) {
-          return null;
-        }
-
-        final gpsKey = '${lat}_$lng';
-        if (lastShownNearbyGps.value == gpsKey) {
-          return null;
-        }
-
-        WidgetsBinding.instance.addPostFrameCallback((_) async {
-          if (!context.mounted) {
-            return;
-          }
-          lastShownNearbyGps.value = gpsKey;
-          await showPhotoNearbyRestaurantDialog(
-            context: context,
-            ref: ref,
-            routerPath: routerPath,
-            latitude: lat,
-            longitude: lng,
-          );
-        });
-        return null;
-      },
-      [
-        nearbyTrigger.photoLat,
-        nearbyTrigger.photoLng,
-        nearbyTrigger.dismissed,
-        nearbyTrigger.restaurant,
-        nearbyTrigger.hasImages,
-        nearbyTrigger.status,
-      ],
     );
     final viewModel = ref.read(postViewModelProvider().notifier);
     const requiredAccent = PostStyle.requiredAccent;
