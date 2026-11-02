@@ -27,6 +27,7 @@ class TimelineRecommendSection extends HookConsumerWidget {
     required this.allPosts,
     required this.refresh,
     this.categoryName,
+    this.friendsFeed = false,
     super.key,
   });
 
@@ -34,6 +35,7 @@ class TimelineRecommendSection extends HookConsumerWidget {
   final List<Posts> allPosts;
   final VoidCallback refresh;
   final String? categoryName;
+  final bool friendsFeed;
 
   /// 中央カードの枠（画面幅比）。左右にチラ見せを残す
   static const viewportFraction = 0.82;
@@ -63,8 +65,9 @@ class TimelineRecommendSection extends HookConsumerWidget {
 
     useEffect(
       () {
-        final maxIndex =
-            recommendedPosts.isEmpty ? 0 : recommendedPosts.length - 1;
+        final maxIndex = recommendedPosts.isEmpty
+            ? 0
+            : recommendedPosts.length - 1;
         if (currentPage.value > maxIndex) {
           currentPage.value = maxIndex;
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -86,8 +89,9 @@ class TimelineRecommendSection extends HookConsumerWidget {
     final cardHeight = screenWidth * heightRatio;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final onSurface = Theme.of(context).colorScheme.onSurface;
-    final bgColor =
-        isDark ? Theme.of(context).colorScheme.surface : Colors.white;
+    final bgColor = isDark
+        ? Theme.of(context).colorScheme.surface
+        : Colors.white;
 
     return ColoredBox(
       color: bgColor,
@@ -160,6 +164,7 @@ class TimelineRecommendSection extends HookConsumerWidget {
                                 post: post,
                                 refresh: refresh,
                                 categoryName: categoryName,
+                                friendsFeed: friendsFeed,
                               ),
                             ),
                           ),
@@ -241,12 +246,15 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
         ? ''
         : supabase.storage.from('food').getPublicUrl(storageKey);
     final tagIds = parseFoodTagIds(post.foodTag);
-    final tagLabel =
-        tagIds.isEmpty ? null : getLocalizedFoodName(tagIds.first, context);
+    final tagLabel = tagIds.isEmpty
+        ? null
+        : getLocalizedFoodName(tagIds.first, context);
     final prefecture = PrefectureDetector.detectPrefecture(post.lat, post.lng);
     final dpr = MediaQuery.devicePixelRatioOf(context);
-    final cacheWidth =
-        (MediaQuery.sizeOf(context).width * dpr).round().clamp(400, 1200);
+    final cacheWidth = (MediaQuery.sizeOf(context).width * dpr).round().clamp(
+      400,
+      1200,
+    );
     final isExpanded = focus > 0.55;
     final titleSize = lerpDouble(14, 20, focus.clamp(0.0, 1.0))!;
     const radius = 26.0;
@@ -262,15 +270,18 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
     useEffect(
       () {
         var cancelled = false;
-        Preference().getStringList(PreferenceKey.storeList).then((list) {
-          if (!cancelled) {
-            isStored.value = list.contains(post.id.toString());
-          }
-        }).catchError((_) {
-          if (!cancelled) {
-            isStored.value = false;
-          }
-        });
+        Preference()
+            .getStringList(PreferenceKey.storeList)
+            .then((list) {
+              if (!cancelled) {
+                isStored.value = list.contains(post.id.toString());
+              }
+            })
+            .catchError((_) {
+              if (!cancelled) {
+                isStored.value = false;
+              }
+            });
         return () {
           cancelled = true;
         };
@@ -300,8 +311,9 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
               Positioned.fill(
                 child: Card(
                   elevation: 0,
-                  margin:
-                      isSubscribed ? const EdgeInsets.all(5) : EdgeInsets.zero,
+                  margin: isSubscribed
+                      ? const EdgeInsets.all(5)
+                      : EdgeInsets.zero,
                   clipBehavior: Clip.antiAlias,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
@@ -420,8 +432,9 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
                       if (!context.mounted) {
                         return;
                       }
-                      final list = await Preference()
-                          .getStringList(PreferenceKey.storeList);
+                      final list = await Preference().getStringList(
+                        PreferenceKey.storeList,
+                      );
                       if (!context.mounted) {
                         return;
                       }
@@ -507,8 +520,9 @@ class _TimelineFeaturedCard extends HookConsumerWidget {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      color:
-                                          Colors.white.withValues(alpha: 0.9),
+                                      color: Colors.white.withValues(
+                                        alpha: 0.9,
+                                      ),
                                       fontSize: isExpanded ? 12 : 10,
                                     ),
                                   ),

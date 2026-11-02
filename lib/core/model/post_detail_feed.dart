@@ -13,6 +13,18 @@ const postDetailNewerPageSize = 5;
 /// 投稿詳細で下方向（より古い投稿）に一度に足す件数。
 const postDetailOlderPageSize = 10;
 
+/// 投稿詳細フィードの追加1ページ。
+@immutable
+class PostDetailPageResult {
+  const PostDetailPageResult({
+    required this.posts,
+    required this.hasMore,
+  });
+
+  final List<Posts> posts;
+  final bool hasMore;
+}
+
 /// 投稿詳細フィードの1画面分。
 @immutable
 class PostDetailListResult {

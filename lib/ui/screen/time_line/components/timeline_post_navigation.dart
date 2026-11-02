@@ -18,6 +18,7 @@ void openTimelinePostDetail({
   required Posts post,
   required VoidCallback refresh,
   String? categoryName,
+  bool friendsFeed = false,
 }) {
   EasyDebounce.debounce(
     'click_detail',
@@ -27,19 +28,23 @@ void openTimelinePostDetail({
       if (index < 0) {
         return;
       }
-      ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
-        name: AnalyticsEvent.timelinePostOpen,
-        parameters: {AnalyticsParam.postId: post.id},
-      );
+      ref
+          .read(firebaseAnalyticsServiceProvider)
+          .logEventUnawaited(
+            name: AnalyticsEvent.timelinePostOpen,
+            parameters: {AnalyticsParam.postId: post.id},
+          );
       final postResult = await ref
           .read(detailPostRepositoryProvider.notifier)
           .getPostData(allPosts, index);
       await postResult.whenOrNull(
         success: (model) async {
-          final extra = (categoryName != null && categoryName.isNotEmpty)
+          final hasCategory = categoryName != null && categoryName.isNotEmpty;
+          final extra = (friendsFeed || hasCategory)
               ? TimelineDetailExtra(
                   model: model,
                   categoryName: categoryName,
+                  friendsFeed: friendsFeed,
                 )
               : model;
           if (!context.mounted) {
