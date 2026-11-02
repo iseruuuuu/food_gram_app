@@ -119,6 +119,7 @@ class AuthService {
   Future<Result<void, Exception>> signOut() async {
     try {
       await supabase.auth.signOut();
+      ref.read(currentUserProvider.notifier).clear();
       return const Success(null);
     } on AuthException catch (error) {
       logger.e('Sign out failed: $error');

@@ -86,25 +86,40 @@ class SettingViewModel extends _$SettingViewModel {
   }
 
   Future<bool> signOut() async {
-    _loading.state = true;
-    await Future<void>.delayed(const Duration(seconds: 2));
-    final result = await ref.read(authServiceProvider).signOut();
-    final isSuccess = result.when(
-      success: (_) {
-        ref.read(currentUserProvider.notifier).clear();
-        return true;
-      },
-      failure: (_) => false,
-    );
-    _loading.state = false;
-    return isSuccess;
+    // ログアウト後に auth redirect で本 ViewModel が dispose されても
+    // Loading を確実に落とせるよう、notifier を先に掴む。
+    final loading = ref.read(loadingProvider.notifier);
+    loading.state = true;
+    try {
+      await Future<void>.delayed(const Duration(seconds: 2));
+      final result = await ref.read(authServiceProvider).signOut();
+      final isSuccess = result.when(
+        success: (_) {
+          if (ref.mounted) {
+            ref.read(currentUserProvider.notifier).clear();
+          }
+          return true;
+        },
+        failure: (_) => false,
+      );
+      return isSuccess;
+    } on Object {
+      return false;
+    } finally {
+      loading.state = false;
+    }
   }
 
   /// アカウント削除
   Future<bool> deleteAccount() async {
-    _loading.state = true;
-    final ok = await ref.read(authServiceProvider).delete();
-    _loading.state = false;
-    return ok;
+    final loading = ref.read(loadingProvider.notifier);
+    loading.state = true;
+    try {
+      return await ref.read(authServiceProvider).delete();
+    } on Object {
+      return false;
+    } finally {
+      loading.state = false;
+    }
   }
 }
