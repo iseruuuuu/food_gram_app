@@ -6,7 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'heart_service.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class HeartService extends _$HeartService {
   final _logger = Logger();
 

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
@@ -98,7 +99,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
     unawaited(
       future.then<void>(
         (_) {},
-        onError: (Object _, StackTrace __) {},
+        onError: (Object _, StackTrace _) {},
       ),
     );
   }

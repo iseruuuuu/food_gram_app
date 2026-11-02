@@ -8,6 +8,7 @@ import 'package:food_gram_app/core/home_widget/map_stats_home_widget_sync.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:food_gram_app/core/utils/location/country_detector.dart';
@@ -31,8 +32,8 @@ class RecordViewModel extends _$RecordViewModel {
     return const RecordState();
   }
 
-  bool isInitialLoading = true;
-  final screenshotController = ScreenshotController();
+  var _isInitialLoading = true;
+  final _screenshotController = ScreenshotController();
   final Map<String, Uint8List> _imageCache = {};
   final Set<String> _registeredImageKeys = {};
   var _symbolTapHandlerRegistered = false;
@@ -44,7 +45,7 @@ class RecordViewModel extends _$RecordViewModel {
   /// タグがないピンのビットマップを一度だけキャッシュする。
   Future<void> _preloadDefaultImages() async {
     if (!_imageCache.containsKey('default')) {
-      final screenshotBytes = await screenshotController.captureFromWidget(
+      final screenshotBytes = await _screenshotController.captureFromWidget(
         const AppFoodTagPinWidget(foodTag: '', isOwn: true),
       );
       _imageCache['default'] = screenshotBytes.buffer.asUint8List();
@@ -67,7 +68,7 @@ class RecordViewModel extends _$RecordViewModel {
     required void Function(List<Posts> posts) onPinTap,
     required double iconSize,
   }) async {
-    if (!isInitialLoading) {
+    if (!_isInitialLoading) {
       await state.mapController!.clearSymbols();
     }
     try {
@@ -162,7 +163,7 @@ class RecordViewModel extends _$RecordViewModel {
               CameraUpdate.newLatLng(latLng),
               duration: const Duration(seconds: 1),
             );
-            isInitialLoading = false;
+            _isInitialLoading = false;
             state = state.copyWith(hasError: false);
           } finally {
             state = state.copyWith(isLoading: false);
@@ -201,7 +202,7 @@ class RecordViewModel extends _$RecordViewModel {
           orElse: () => posts.first,
         );
         imageTasks.add(() async {
-          final screenshotBytes = await screenshotController.captureFromWidget(
+          final screenshotBytes = await _screenshotController.captureFromWidget(
             AppFoodTagPinWidget(foodTag: samplePost.foodTag, isOwn: true),
           );
           _imageCache[imageType] = screenshotBytes.buffer.asUint8List();

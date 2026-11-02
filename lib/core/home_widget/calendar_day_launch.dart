@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/home_widget/calendar_day.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/router/router.dart';

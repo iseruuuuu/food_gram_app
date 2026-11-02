@@ -121,7 +121,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       return;
     }
 
-    LocaleSettings.useDeviceLocale();
+    await LocaleSettings.useDeviceLocale();
     final copy = heartPushCopy(
       translations: devicePushTranslations(),
       variant: parseHeartPushVariant(message.data['messageVariant']),

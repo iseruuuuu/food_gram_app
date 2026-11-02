@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/notification/repository/notification_repository.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
@@ -57,7 +58,7 @@ class NotificationsScreen extends HookConsumerWidget {
       ),
       body: async.when(
         loading: () => const AppListSkeleton(),
-        error: (e, __) => Center(
+        error: (e, _) => Center(
           child: Text(
             Translations.of(context).notification.loadFailed,
             style: TextStyle(
@@ -76,7 +77,7 @@ class NotificationsScreen extends HookConsumerWidget {
           final posts = notifications.map((n) => n.post).toList();
           return ListView.separated(
             itemCount: notifications.length,
-            separatorBuilder: (_, __) => const Divider(height: 1),
+            separatorBuilder: (_, _) => const Divider(height: 1),
             itemBuilder: (context, index) {
               final n = notifications[index];
               final post = n.post;

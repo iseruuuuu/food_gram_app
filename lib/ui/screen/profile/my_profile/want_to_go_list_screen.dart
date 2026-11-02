@@ -6,6 +6,7 @@ import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/local/providers/want_to_go_notifier.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/want_to_go_item.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
@@ -36,7 +37,7 @@ class WantToGoListScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTab = useState(_WantToGoHubTab.places);
     final hasLoggedSavedOpen = useRef(false);
-    final listAsync = ref.watch(wantToGoNotifierProvider);
+    final listAsync = ref.watch(wantToGoProvider);
     final savedAsync = ref.watch(storedPostListProvider);
     final t = Translations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -45,7 +46,7 @@ class WantToGoListScreen extends HookConsumerWidget {
     final muted = isDark ? Colors.white70 : const Color(0xFF6B6B6B);
     final border = isDark ? Colors.white24 : const Color(0xFFE5E5E5);
 
-    final savedPosts = savedAsync.valueOrNull ?? const <Posts>[];
+    final savedPosts = savedAsync.value ?? const <Posts>[];
     final postsByPlace = <String, List<Posts>>{};
     for (final post in savedPosts) {
       final key = WantToGoItem.identityKey(
@@ -119,8 +120,8 @@ class WantToGoListScreen extends HookConsumerWidget {
               children: [
                 listAsync.when(
                   loading: () => const AppListSkeleton(),
-                  error: (_, __) => AppTabError.myPage(
-                    onRetry: () => ref.invalidate(wantToGoNotifierProvider),
+                  error: (_, _) => AppTabError.myPage(
+                    onRetry: () => ref.invalidate(wantToGoProvider),
                   ),
                   data: (items) {
                     if (items.isEmpty) {
@@ -150,7 +151,7 @@ class WantToGoListScreen extends HookConsumerWidget {
                     return ListView.separated(
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
                       itemCount: sorted.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 10),
+                      separatorBuilder: (_, _) => const SizedBox(height: 10),
                       itemBuilder: (context, index) {
                         final item = sorted[index];
                         final dateLabel =
@@ -203,7 +204,7 @@ class WantToGoListScreen extends HookConsumerWidget {
                                       onPressed: () async {
                                         await ref
                                             .read(
-                                              wantToGoNotifierProvider
+                                              wantToGoProvider
                                                   .notifier,
                                             )
                                             .removeById(item.id);
@@ -335,7 +336,7 @@ class _RelatedSavedPostStrip extends ConsumerWidget {
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: posts.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        separatorBuilder: (_, _) => const SizedBox(width: 8),
         itemBuilder: (context, index) {
           final post = posts[index];
           final storageKey = post.firstFoodImage;
@@ -393,12 +394,12 @@ class _RelatedSavedPostStrip extends ConsumerWidget {
                     : CachedNetworkImage(
                         imageUrl: imageUrl,
                         fit: BoxFit.cover,
-                        placeholder: (_, __) => ColoredBox(
+                        placeholder: (_, _) => ColoredBox(
                           color: isDark
                               ? Colors.grey.shade800
                               : Colors.grey.shade200,
                         ),
-                        errorWidget: (_, __, ___) => Image.asset(
+                        errorWidget: (_, _, _) => Image.asset(
                           isDark
                               ? Assets.image.emptyDark.path
                               : Assets.image.empty.path,

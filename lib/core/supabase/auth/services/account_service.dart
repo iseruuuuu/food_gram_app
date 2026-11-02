@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/cache/cache_manager.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -11,7 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'account_service.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 AccountService accountService(Ref ref) => AccountService(ref);
 
 class AccountService {

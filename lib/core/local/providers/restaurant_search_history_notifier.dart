@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'restaurant_search_history_notifier.g.dart';
 
 /// 投稿のレストラン検索で確定した店舗履歴。
-@riverpod
+@Riverpod(keepAlive: true)
 class RestaurantSearchHistoryNotifier
     extends _$RestaurantSearchHistoryNotifier {
   final _preference = Preference();

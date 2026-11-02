@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/user/friend_result.dart';
 import 'package:food_gram_app/core/supabase/user/providers/friend_user_ids_provider.dart';
 import 'package:food_gram_app/core/supabase/user/repository/friend_repository.dart';
@@ -23,7 +24,7 @@ class FriendAddViewModel extends _$FriendAddViewModel {
     return initState;
   }
 
-  Loading get loading => ref.read(loadingProvider.notifier);
+  Loading get _loading => ref.read(loadingProvider.notifier);
 
   void _logAddFailed() {
     ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
@@ -50,11 +51,11 @@ class FriendAddViewModel extends _$FriendAddViewModel {
   /// フレンド追加。成功時 true。
   Future<bool> addFriend(BuildContext context, String rawCode) async {
     final t = Translations.of(context);
-    loading.state = true;
+    _loading.state = true;
     final result = await ref
         .read(friendRepositoryProvider.notifier)
         .addFriendByCode(rawCode);
-    loading.state = false;
+    _loading.state = false;
     if (!context.mounted) {
       return result == AddFriendResult.success;
     }

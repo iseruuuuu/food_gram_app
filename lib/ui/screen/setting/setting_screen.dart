@@ -191,7 +191,7 @@ class SettingScreen extends HookConsumerWidget {
                                 source: 'setting_card',
                               ),
                         loading: () => const SizedBox.shrink(),
-                        error: (_, __) => const AppPremiumMembershipCard(
+                        error: (_, _) => const AppPremiumMembershipCard(
                           source: 'setting_card',
                         ),
                       ),

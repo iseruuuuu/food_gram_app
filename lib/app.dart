@@ -57,13 +57,13 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       case AppLifecycleState.paused:
       case AppLifecycleState.inactive:
         if (state == AppLifecycleState.paused) {
-          ref.read(admobOpenNotifierProvider).noteEnteredBackground();
+          ref.read(admobOpenProvider).noteEnteredBackground();
         }
         analytics.logEventUnawaited(name: AnalyticsEvent.appBackground);
       case AppLifecycleState.detached:
       case AppLifecycleState.hidden:
         if (state == AppLifecycleState.hidden) {
-          ref.read(admobOpenNotifierProvider).noteEnteredBackground();
+          ref.read(admobOpenProvider).noteEnteredBackground();
         }
       // 画像キャッシュはバックグラウンドでは消さない。
       // 完全終了後の次回起動時 / 設定の「キャッシュ削除」でクリアする。
@@ -71,13 +71,20 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   }
 
   void _showAppOpenIfReturning() {
-    final location =
-        ref.read(routerProvider).routerDelegate.currentConfiguration.uri.path;
+    final location = ref
+        .read(routerProvider)
+        .routerDelegate
+        .currentConfiguration
+        .uri
+        .path;
     // タブ画面以外で読むと、起動前にタブ状態を作ってしまう。
     final onTabShell = location == '/tab' || location == '/tab/';
-    final selectedTab =
-        onTabShell ? ref.read(tabViewModelProvider()).selectedIndex : null;
-    ref.read(admobOpenNotifierProvider).onAppResumed(
+    final selectedTab = onTabShell
+        ? ref.read(tabViewModelProvider()).selectedIndex
+        : null;
+    ref
+        .read(admobOpenProvider)
+        .onAppResumed(
           screenBlocksAd: appOpenBlockedByScreen(
             location: location,
             selectedTab: selectedTab,
@@ -100,7 +107,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
           ref.read(firebaseAnalyticsServiceProvider).setUserId(userId);
         },
         loading: () {},
-        error: (_, __) {},
+        error: (_, _) {},
       );
     });
     return ToastificationWrapper(

@@ -98,7 +98,7 @@ class _StoredPostContent extends HookConsumerWidget {
           ],
         );
       },
-      error: (_, __) => AppTabError.myPage(onRetry: reloadPosts),
+      error: (_, _) => AppTabError.myPage(onRetry: reloadPosts),
     );
   }
 }

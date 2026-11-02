@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/auth/services/auth_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -19,14 +20,14 @@ part 'authentication_view_model.g.dart';
 class AuthenticationViewModel extends _$AuthenticationViewModel {
   @override
   AuthenticationState build({
-    AuthenticationState initState = const AuthenticationState(),
+    AuthenticationState? initState,
   }) {
-    return initState;
+    return initState ?? const AuthenticationState();
   }
 
   final logger = Logger();
 
-  Loading get loading => ref.read(loadingProvider.notifier);
+  Loading get _loading => ref.read(loadingProvider.notifier);
 
   void _logLogin(String method) {
     ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
@@ -80,7 +81,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
   /// SNSログイン後にプロフィールが無ければ仮名で作成する。
   /// `true` は新規作成、`false` は既存、`null` は失敗。
   Future<bool?> completeSignIn() async {
-    loading.state = true;
+    _loading.state = true;
     ref.read(currentUserProvider.notifier).update();
     try {
       for (var i = 0; i < 2; i++) {
@@ -96,7 +97,7 @@ class AuthenticationViewModel extends _$AuthenticationViewModel {
       }
       return null;
     } finally {
-      loading.state = false;
+      _loading.state = false;
     }
   }
 

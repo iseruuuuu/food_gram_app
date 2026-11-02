@@ -1,8 +1,14 @@
 include: package:yumemi_lints/flutter/3.44/recommended.yaml
 
+plugins:
+  riverpod_lint:
+    version: 3.1.9
+    diagnostics:
+      # ViewModel から BuildContext を渡す既存実装を許容する
+      # ゆくゆくは許容できないようにしたい
+      avoid_build_context_in_providers: false
+
 analyzer:
-  plugins: # https://riverpod.dev/docs/introduction/getting_started#enabling-riverpod_lintcustom_lint
-    - custom_lint
   errors: # https://pub.dev/packages/freezed#install
     invalid_annotation_target: ignore
     avoid_dynamic_calls: ignore

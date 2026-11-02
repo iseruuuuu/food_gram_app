@@ -5,7 +5,7 @@ import 'package:maplibre_gl/maplibre_gl.dart';
 part 'record_state.freezed.dart';
 
 @freezed
-class RecordState with _$RecordState {
+abstract class RecordState with _$RecordState {
   const factory RecordState({
     MapLibreMapController? mapController,
     @Default(false) bool isLoading,
@@ -24,7 +24,7 @@ class RecordState with _$RecordState {
 
 /// 投稿一覧から算出したマップ用統計
 @freezed
-class RecordMapStats with _$RecordMapStats {
+abstract class RecordMapStats with _$RecordMapStats {
   const factory RecordMapStats({
     required int visitedCitiesCount,
     required int postsCount,

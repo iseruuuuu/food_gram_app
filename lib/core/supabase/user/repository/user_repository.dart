@@ -11,7 +11,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'user_repository.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class UserRepository extends _$UserRepository {
   @override
   Future<void> build() => Future.value();

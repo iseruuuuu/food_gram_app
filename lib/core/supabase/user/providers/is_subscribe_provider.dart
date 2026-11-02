@@ -1,3 +1,4 @@
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/repository/user_repository.dart';
 import 'package:logger/logger.dart';

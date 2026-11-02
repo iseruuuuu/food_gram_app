@@ -5,6 +5,7 @@ import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/post_visibility.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
@@ -54,7 +55,7 @@ class RestaurantReviewScreen extends HookConsumerWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
     final currentUser = ref.watch(currentUserProvider);
     final friendIds =
-        ref.watch(friendUserIdsProvider).valueOrNull ?? const <String>[];
+        ref.watch(friendUserIdsProvider).value ?? const <String>[];
     String getImageUrl(String imagePath) {
       return ref
           .watch(supabaseProvider)

@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/admob/services/admob_banner.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/core/utils/helpers/dialog_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
@@ -47,7 +48,7 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
       loading: () => const Scaffold(
         body: AppListSkeleton(),
       ),
-      error: (_, __) => Scaffold(
+      error: (_, _) => Scaffold(
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new, size: 20),
@@ -105,7 +106,7 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
           ),
           body: postsAsync.when(
             loading: () => const AppListSkeleton(),
-            error: (_, __) => AppTabError.myPage(
+            error: (_, _) => AppTabError.myPage(
               onRetry: () =>
                   ref.invalidate(memoryAlbumPostsProvider(album.postIdsKey)),
             ),
@@ -142,7 +143,7 @@ class MemoryAlbumDetailScreen extends HookConsumerWidget {
                           onPressed: () {
                             showGeneralDialog<void>(
                               context: context,
-                              pageBuilder: (_, __, ___) {
+                              pageBuilder: (_, _, _) {
                                 return AppMemoryAlbumShareDialog(
                                   album: album,
                                   posts: sorted,

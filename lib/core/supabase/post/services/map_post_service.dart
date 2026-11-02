@@ -15,15 +15,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'map_post_service.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class MapPostService extends _$MapPostService {
   final logger = Logger();
   final _cacheManager = CacheManager();
 
-  SupabaseClient get supabase => ref.read(supabaseProvider);
+  SupabaseClient get _supabase => ref.read(supabaseProvider);
 
-  List<String> get blockList =>
-      ref.read(blockListProvider).asData?.value ?? <String>[];
 
   @override
   Future<void> build() {
@@ -55,7 +53,7 @@ class MapPostService extends _$MapPostService {
           key: 'restaurant_posts_${lat}_${lng}_'
               '${blockListCacheToken(blockedIds)}',
           fetcher: () async {
-            final posts = await supabase
+            final posts = await _supabase
                 .from('posts')
                 .select(postsSelectColumns)
                 .gte('lat', lat - 0.00001)
@@ -86,7 +84,7 @@ class MapPostService extends _$MapPostService {
       key: 'map_posts_${viewerId}_${friendIdsCacheToken(friendIds)}_'
           '${blockListCacheToken(currentBlockList)}',
       fetcher: () async {
-        final posts = await supabase
+        final posts = await _supabase
             .from('posts')
             .select(postsSelectColumns)
             .order('created_at');
@@ -120,7 +118,7 @@ class MapPostService extends _$MapPostService {
           '${friendIdsCacheToken(friendIds)}_'
           '${blockListCacheToken(blockedIds)}',
       fetcher: () async {
-        final posts = await supabase
+        final posts = await _supabase
             .from('posts')
             .select(postsSelectColumns)
             .eq('restaurant', restaurantName)
@@ -189,7 +187,7 @@ class MapPostService extends _$MapPostService {
     return _cacheManager.get<List<Map<String, dynamic>>>(
       key: 'my_map_posts_$user',
       fetcher: () async {
-        final posts = await supabase
+        final posts = await _supabase
             .from('posts')
             .select(postsSelectColumns)
             .eq('user_id', user)

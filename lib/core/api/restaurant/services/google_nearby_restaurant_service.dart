@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/api/restaurant/google_places_language.dart';
 import 'package:food_gram_app/core/api/restaurant/photo_nearby_food_types.dart';
 import 'package:food_gram_app/core/model/photo_restaurant_candidate.dart';

@@ -18,12 +18,12 @@ String _normalizeFoodImageStoragePath(String path) {
   return p;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class PostService extends _$PostService {
   final logger = Logger();
 
   String? get _currentUserId => ref.read(currentUserProvider);
-  SupabaseClient get supabase => ref.read(supabaseProvider);
+  SupabaseClient get _supabase => ref.read(supabaseProvider);
 
   @override
   Future<void> build() async {}
@@ -71,7 +71,9 @@ class PostService extends _$PostService {
         final imagePath = '$uid/$fileName';
         final imageBytes = imageBytesMap[uploadImage];
         if (imageBytes != null) {
-          await supabase.storage.from('food').uploadBinary(
+          await _supabase.storage
+              .from('food')
+              .uploadBinary(
                 imagePath,
                 imageBytes,
                 fileOptions: const FileOptions(
@@ -119,7 +121,7 @@ class PostService extends _$PostService {
       }
 
       // 投稿の insert は Edge Function 経由で行う
-      final res = await supabase.functions.invoke(
+      final res = await _supabase.functions.invoke(
         'post-create',
         body: post,
       );
@@ -128,7 +130,7 @@ class PostService extends _$PostService {
       if (!ok) {
         if (cancellation?.isCancelled ?? false) {
           return await cancelAndRollback(imagePaths);
-        } 
+        }
         final errorMsg = data is Map<String, dynamic>
             ? (data['error']?.toString() ?? 'status: ${res.status}')
             : 'status: ${res.status}';
@@ -152,7 +154,7 @@ class PostService extends _$PostService {
       return;
     }
     try {
-      await supabase.storage.from('food').remove(imagePaths);
+      await _supabase.storage.from('food').remove(imagePaths);
     } on StorageException catch (e) {
       logger.e('Failed to rollback uploaded images: ${e.message}');
     }
@@ -204,7 +206,9 @@ class PostService extends _$PostService {
         final imageBytes = imageBytesMap[imagePath];
         if (imageBytes != null) {
           try {
-            await supabase.storage.from('food').uploadBinary(
+            await _supabase.storage
+                .from('food')
+                .uploadBinary(
                   storagePath,
                   imageBytes,
                   fileOptions: const FileOptions(
@@ -236,8 +240,9 @@ class PostService extends _$PostService {
       final oldImagePaths = posts.foodImage.isNotEmpty
           ? posts.foodImage.split(',').where((path) => path.isNotEmpty).toList()
           : <String>[];
-      final existingNormalized =
-          existingImagePaths.map(_normalizeFoodImageStoragePath).toSet();
+      final existingNormalized = existingImagePaths
+          .map(_normalizeFoodImageStoragePath)
+          .toSet();
       final imagesToDelete = oldImagePaths
           .map(_normalizeFoodImageStoragePath)
           .where((oldPath) => !existingNormalized.contains(oldPath))
@@ -247,7 +252,10 @@ class PostService extends _$PostService {
 
       // Edge Function 経由で投稿データを更新
       final payload = {'post_id': posts.id, ...updates};
-      final res = await supabase.functions.invoke('post-update', body: payload);
+      final res = await _supabase.functions.invoke(
+        'post-update',
+        body: payload,
+      );
       final data = res.data;
       final ok = data is Map<String, dynamic> && data['ok'] == true;
       if (!ok) {
@@ -258,7 +266,7 @@ class PostService extends _$PostService {
             .toList();
         if (rollbackPaths.isNotEmpty) {
           try {
-            await supabase.storage.from('food').remove(rollbackPaths);
+            await _supabase.storage.from('food').remove(rollbackPaths);
           } on StorageException catch (e) {
             logger.e('Failed to rollback new images: ${e.message}');
           }
@@ -274,7 +282,7 @@ class PostService extends _$PostService {
       // DB 更新が成功したあとに、不要になった旧画像を削除
       if (imagesToDelete.isNotEmpty) {
         try {
-          await supabase.storage.from('food').remove(imagesToDelete);
+          await _supabase.storage.from('food').remove(imagesToDelete);
         } on StorageException catch (e) {
           logger.e('Failed to delete old images: ${e.message}');
           // 削除に失敗しても処理は継続（DB とストレージの整合性は保たれている）

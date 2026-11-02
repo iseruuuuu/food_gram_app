@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
@@ -177,7 +178,7 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
                           primary: false,
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           itemCount: filteredGroups.length,
-                          separatorBuilder: (_, __) {
+                          separatorBuilder: (_, _) {
                             return const SizedBox(width: 12);
                           },
                           itemBuilder: (context, index) {
@@ -222,7 +223,7 @@ class MapRestaurantOverviewModalSheet extends ConsumerWidget {
               loading: () => const SliverToBoxAdapter(
                 child: AppNearbyRestaurantsSkeleton(),
               ),
-              error: (_, __) => SliverToBoxAdapter(
+              error: (_, _) => SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(24),
                   child: AppTabError.map(

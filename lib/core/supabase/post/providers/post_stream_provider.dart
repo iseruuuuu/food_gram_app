@@ -146,7 +146,8 @@ Stream<List<Posts>> myPostStream(Ref ref) {
   final supabase = ref.read(supabaseProvider);
   final user = ref.watch(currentUserProvider);
   if (user == null) {
-    return const Stream<List<Posts>>.empty();
+    // empty() は一度も emit しないため StreamProvider.future が永久に完了しない。
+    return Stream<List<Posts>>.value(const []);
   }
 
   Stream<List<Posts>> createMappedStream() {

@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/notification.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:logger/logger.dart';
@@ -71,7 +70,7 @@ class NotificationService {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 NotificationService notificationService(Ref ref) {
   return NotificationService(ref);
 }

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:crypto/crypto.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/env.dart';
@@ -14,7 +13,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'auth_service.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 AuthService authService(Ref ref) => AuthService(ref);
 
 class AuthService {
@@ -120,6 +119,7 @@ class AuthService {
   Future<Result<void, Exception>> signOut() async {
     try {
       await supabase.auth.signOut();
+      ref.read(currentUserProvider.notifier).clear();
       return const Success(null);
     } on AuthException catch (error) {
       logger.e('Sign out failed: $error');

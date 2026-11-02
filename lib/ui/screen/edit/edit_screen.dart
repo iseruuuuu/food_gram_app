@@ -31,7 +31,7 @@ class EditScreen extends HookConsumerWidget {
     final state = ref.watch(editViewModelProvider());
     final loading = ref.watch(loadingProvider);
     final adInterstitial =
-        useMemoized(() => ref.read(admobInterstitialNotifierProvider));
+        useMemoized(() => ref.read(admobInterstitialProvider));
     final paywallGuard = useMemoized(PaywallLaunchGuard.new);
     useEffect(
       () {
@@ -152,7 +152,7 @@ class EditScreen extends HookConsumerWidget {
                           Builder(
                             builder: (context) {
                               final isPremium = state.isSubscribe ||
-                                  (ref.watch(isSubscribeProvider).valueOrNull ??
+                                  (ref.watch(isSubscribeProvider).value ??
                                       false);
                               final iconSize =
                                   MediaQuery.of(context).size.width / 8;

@@ -100,7 +100,7 @@ class PostDetailListItem extends HookConsumerWidget {
     }
     final users = snapshot.data!;
     final friendIds =
-        ref.watch(friendUserIdsProvider).valueOrNull ?? const <String>[];
+        ref.watch(friendUserIdsProvider).value ?? const <String>[];
     final showIdentity = isPostVisibleToViewer(
       isPrivate: posts.isAnonymous,
       authorId: users.userId,
@@ -130,7 +130,7 @@ class PostDetailListItem extends HookConsumerWidget {
           ),
         ),
       ),
-      error: (_, __) => _PostRankChip(
+      error: (_, _) => _PostRankChip(
         valueText: t.profile.rankingHiddenPosition,
         label: t.profile.rankingStats,
         isDark: isDark,
@@ -447,7 +447,7 @@ class PostDetailListItem extends HookConsumerWidget {
                             isOpeningSearch.value = true;
                             try {
                               final adInterstitial =
-                                  ref.read(admobInterstitialNotifierProvider);
+                                  ref.read(admobInterstitialProvider);
                               await adInterstitial.ensureAdReady(
                                 resetAttempts: true,
                               );

@@ -54,7 +54,7 @@ class MapAreaRestaurantCard extends StatelessWidget {
                       : CachedNetworkImage(
                           imageUrl: imageUrl!,
                           fit: BoxFit.cover,
-                          errorWidget: (_, __, ___) => Image.asset(
+                          errorWidget: (_, _, _) => Image.asset(
                             isDark
                                 ? Assets.image.emptyDark.path
                                 : Assets.image.empty.path,

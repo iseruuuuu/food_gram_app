@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/config/constants/map_overlay_constants.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/map_category_filter_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
@@ -204,7 +205,7 @@ class MapViewModel extends _$MapViewModel {
       return const [];
     }
     final all =
-        ref.read(filteredMapPostsProvider).valueOrNull ?? const <Posts>[];
+        ref.read(filteredMapPostsProvider).value ?? const <Posts>[];
     final others = all.where(
       (post) =>
           post.id != anchor.id &&

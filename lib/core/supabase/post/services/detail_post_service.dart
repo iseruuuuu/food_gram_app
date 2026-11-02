@@ -25,13 +25,11 @@ String _createdAtIdCursor({
   return 'created_at.lt.$timestamp,and(created_at.eq.$timestamp,id.lt.$id)';
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class DetailPostService extends _$DetailPostService {
   final _cacheManager = CacheManager();
 
-  SupabaseClient get supabase => ref.read(supabaseProvider);
-
-  List<String> get blockList => ref.read(blockListProvider).asData?.value ?? [];
+  SupabaseClient get _supabase => ref.read(supabaseProvider);
 
   @override
   Future<void> build() async {
@@ -45,12 +43,12 @@ class DetailPostService extends _$DetailPostService {
         await _cacheManager.get<Map<String, dynamic>>(
           key: 'post_data_$postId',
           fetcher: () async {
-            final postData = await supabase
+            final postData = await _supabase
                 .from('posts')
                 .select(postsSelectColumns)
                 .eq('id', postId)
                 .single();
-            final userData = await supabase
+            final userData = await _supabase
                 .from('users')
                 .select()
                 .eq('user_id', postData['user_id'] as String)
@@ -85,7 +83,7 @@ class DetailPostService extends _$DetailPostService {
           '${beforeId ?? 'null'}_${afterId ?? 'null'}_${limit}_'
           '${blockListCacheToken(blockedIds)}',
       fetcher: () async {
-        var query = supabase
+        var query = _supabase
             .from('posts')
             .select(postsSelectColumns)
             .eq('user_id', userId);
@@ -126,7 +124,7 @@ class DetailPostService extends _$DetailPostService {
     int limit = 10,
   }) async {
     try {
-      final prevPosts = await supabase
+      final prevPosts = await _supabase
           .from('posts')
           .select(postsSelectColumns)
           .lt('id', currentPostId)
@@ -145,7 +143,7 @@ class DetailPostService extends _$DetailPostService {
     int limit = 5,
   }) async {
     try {
-      final nextPosts = await supabase
+      final nextPosts = await _supabase
           .from('posts')
           .select(postsSelectColumns)
           .gt('id', currentPostId)
@@ -172,7 +170,7 @@ class DetailPostService extends _$DetailPostService {
     int? afterId,
   }) async {
     try {
-      var query = supabase
+      var query = _supabase
           .from('posts')
           .select(postsSelectColumns)
           .neq('id', currentPostId)

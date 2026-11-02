@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:food_gram_app/core/admob/admob_gate.dart';
 import 'package:food_gram_app/core/admob/config/admob_config.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';

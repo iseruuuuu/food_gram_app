@@ -9,7 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'delete_repository.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class DeleteRepository extends _$DeleteRepository {
   final logger = Logger();
   final _cacheManager = CacheManager();

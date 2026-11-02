@@ -37,7 +37,7 @@ class RestaurantScreen extends HookConsumerWidget {
     final keyword = useState('');
     final isKakao = useState(false);
     final history =
-        ref.watch(restaurantSearchHistoryNotifierProvider).valueOrNull ??
+        ref.watch(restaurantSearchHistoryProvider).value ??
             const <Restaurant>[];
     final restaurant =
         ref.watch(googleRestaurantRepositoryProvider(keyword.value));
@@ -276,7 +276,7 @@ class RestaurantScreen extends HookConsumerWidget {
       return;
     }
     await ref
-        .read(restaurantSearchHistoryNotifierProvider.notifier)
+        .read(restaurantSearchHistoryProvider.notifier)
         .add(result);
     if (context.mounted) {
       context.pop(result);
@@ -344,7 +344,7 @@ class RestaurantScreen extends HookConsumerWidget {
                   ),
                   onPressed: () {
                     ref
-                        .read(restaurantSearchHistoryNotifierProvider.notifier)
+                        .read(restaurantSearchHistoryProvider.notifier)
                         .remove(restaurant);
                   },
                 ),

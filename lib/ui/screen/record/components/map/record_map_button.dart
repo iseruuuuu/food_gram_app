@@ -91,10 +91,10 @@ class RecordMapButton extends ConsumerWidget {
                   elevation: 10,
                   onPressed: () {
                     final renderedPosts =
-                        ref.read(myMapRepositoryProvider).valueOrNull;
+                        ref.read(myMapRepositoryProvider).value;
                     showGeneralDialog<void>(
                       context: context,
-                      pageBuilder: (_, __, ___) {
+                      pageBuilder: (_, _, _) {
                         return AppMapStatsShareDialog(
                           posts: renderedPosts,
                           postsCount: postsCount,

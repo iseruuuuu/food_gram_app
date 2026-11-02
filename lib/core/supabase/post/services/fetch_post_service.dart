@@ -12,7 +12,7 @@ part 'fetch_post_service.g.dart';
 
 /// 保存した投稿 ID 列から `posts` 行を取得する
 Future<List<Map<String, dynamic>>> fetchStoredPostRowsForIds(
-  SupabaseClient supabase,
+  SupabaseClient client,
   List<String> postIds,
 ) async {
   if (postIds.isEmpty) {
@@ -28,7 +28,7 @@ Future<List<Map<String, dynamic>>> fetchStoredPostRowsForIds(
   return CacheManager().get<List<Map<String, dynamic>>>(
     key: 'saved_posts_${sortedIds.join('_')}',
     fetcher: () async {
-      final rows = await supabase
+      final rows = await client
           .from('posts')
           .select(postsSelectColumns)
           .inFilter('id', sortedIds);
@@ -42,7 +42,7 @@ Future<List<Map<String, dynamic>>> fetchStoredPostRowsForIds(
   );
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class FetchPostService extends _$FetchPostService {
   @override
   Future<void> build() async {
@@ -52,10 +52,8 @@ class FetchPostService extends _$FetchPostService {
   final logger = Logger();
   final _cacheManager = CacheManager();
 
-  SupabaseClient get supabase => ref.read(supabaseProvider);
+  SupabaseClient get _supabase => ref.read(supabaseProvider);
 
-  List<String> get blockList =>
-      ref.read(blockListProvider).asData?.value ?? [];
 
   /// 閲覧者に見える投稿を取得（本人とフレンド以外の非公開は除く）
   Future<List<Map<String, dynamic>>> getPosts() async {
@@ -64,7 +62,7 @@ class FetchPostService extends _$FetchPostService {
     return _cacheManager.get<List<Map<String, dynamic>>>(
       key: 'all_posts_${viewerId}_${friendIdsCacheToken(friendIds)}',
       fetcher: () async {
-        final posts = await supabase
+        final posts = await _supabase
             .from('posts')
             .select(postsSelectColumns)
             .order('created_at', ascending: false);
@@ -94,7 +92,7 @@ class FetchPostService extends _$FetchPostService {
       key: 'user_posts_${userId}_${includePrivate}_'
           '${blockListCacheToken(blockedIds)}',
       fetcher: () async {
-        var query = supabase
+        var query = _supabase
             .from('posts')
             .select(postsSelectColumns)
             .eq('user_id', userId);
@@ -114,7 +112,7 @@ class FetchPostService extends _$FetchPostService {
   Future<List<Map<String, dynamic>>> getStoredPosts(
     List<String> postIds,
   ) {
-    return fetchStoredPostRowsForIds(supabase, postIds);
+    return fetchStoredPostRowsForIds(_supabase, postIds);
   }
 
   /// レストラン名で投稿を取得（新しい順。ブロックユーザーを除く）
@@ -126,7 +124,7 @@ class FetchPostService extends _$FetchPostService {
       key: 'restaurant_name_posts_${restaurant}_'
           '${blockListCacheToken(blockedIds)}',
       fetcher: () async {
-        final posts = await supabase
+        final posts = await _supabase
             .from('posts')
             .select(postsSelectColumns)
             .eq('restaurant', restaurant)

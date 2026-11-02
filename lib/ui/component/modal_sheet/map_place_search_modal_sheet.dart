@@ -8,6 +8,7 @@ import 'package:food_gram_app/core/api/restaurant/services/google_restaurant_ser
 import 'package:food_gram_app/core/local/want_to_go_actions.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/restaurant_group.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/post/repository/map_post_repository.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_text_field.dart';

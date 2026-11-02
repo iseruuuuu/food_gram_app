@@ -191,16 +191,14 @@ class TabScreen extends HookConsumerWidget {
             );
       }
 
-      // valueOrNull ?? 0 だと loading 中に「初回投稿」と誤判定されるため、
-      // future で確定件数を取る。失敗時は初回扱いしない。
-      int? previousPostCount;
-      try {
-        previousPostCount =
-            (await ref.read(myPostStreamProvider.future)).length;
-      } on Object {
-        previousPostCount = null;
-      }
+      // loading 中の 0 誤判定を避けるため、確定済み件数だけ使う。
+      // future を await すると Realtime 未接続時に遷移が永久にブロックされる。
+      final previousPostCount =
+          ref.read(myPostStreamProvider).asData?.value.length;
       final isFirstPost = previousPostCount == 0;
+      if (!context.mounted) {
+        return;
+      }
       final result = await context.pushNamed(RouterPath.timeLinePost);
       if (result == null || !context.mounted) {
         return;

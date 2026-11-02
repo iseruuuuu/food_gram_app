@@ -56,14 +56,14 @@ class MemoryAlbum {
   static const _version = 1;
 
   Map<String, dynamic> toJson() => {
-        'v': _version,
-        'id': id,
-        'title': title,
-        'description': description,
-        'postIds': postIds,
-        'createdAt': createdAt.toIso8601String(),
-        'updatedAt': updatedAt.toIso8601String(),
-      };
+    'v': _version,
+    'id': id,
+    'title': title,
+    'description': description,
+    'postIds': postIds,
+    'createdAt': createdAt.toIso8601String(),
+    'updatedAt': updatedAt.toIso8601String(),
+  };
 
   MemoryAlbum copyWith({
     String? title,
@@ -97,8 +97,7 @@ class MemoryAlbumStore {
       final rawList = decoded['albums'];
       final list = rawList is List ? rawList : const <dynamic>[];
       final albums = <MemoryAlbum>[
-        for (final item in list)
-          if (MemoryAlbum.tryFromJson(item) case final album?) album,
+        for (final item in list) ?MemoryAlbum.tryFromJson(item),
       ];
       return MemoryAlbumStore(albums: albums);
     } on Object {
@@ -111,9 +110,9 @@ class MemoryAlbumStore {
   static const _version = 1;
 
   Map<String, dynamic> toJson() => {
-        'v': _version,
-        'albums': albums.map((a) => a.toJson()).toList(),
-      };
+    'v': _version,
+    'albums': albums.map((a) => a.toJson()).toList(),
+  };
 
   String toJsonString() => jsonEncode(toJson());
 }

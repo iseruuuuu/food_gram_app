@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/model/map_view_type.dart';
 import 'package:food_gram_app/core/model/posts.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/post/analyzer/record_food_traits_analyzer.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
@@ -195,7 +196,7 @@ class _JapanAtlasCard extends StatelessWidget {
                 onPressed: () {
                   showGeneralDialog<void>(
                     context: context,
-                    pageBuilder: (_, __, ___) {
+                    pageBuilder: (_, _, _) {
                       return AppMapStatsShareDialog(
                         posts: posts,
                         postsCount: posts.length,
@@ -321,7 +322,7 @@ class _JapanPinPostList extends ConsumerWidget {
                 ? const AlwaysScrollableScrollPhysics()
                 : const NeverScrollableScrollPhysics(),
             itemCount: posts.length,
-            separatorBuilder: (_, __) => Divider(
+            separatorBuilder: (_, _) => Divider(
               height: 1,
               color: isDark ? Colors.white12 : Colors.black12,
             ),

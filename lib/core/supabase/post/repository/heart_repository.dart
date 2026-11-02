@@ -7,7 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'heart_repository.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class HeartRepository extends _$HeartRepository {
   final _cacheManager = CacheManager();
 

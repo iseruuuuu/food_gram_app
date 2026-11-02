@@ -67,7 +67,7 @@ class _RecordRankSectionState extends ConsumerState<RecordRankSection>
         onTap: openRanking,
       ),
       loading: () => _RankCard(onTap: openRanking, loading: true),
-      error: (_, __) => _RankCard(onTap: openRanking),
+      error: (_, _) => _RankCard(onTap: openRanking),
     );
   }
 }

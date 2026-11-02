@@ -36,8 +36,15 @@ class $AssetsIconGen {
   AssetGenImage get icon6 => const AssetGenImage('assets/icon/icon6.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [icon0, icon1, icon2, icon3, icon4, icon5, icon6];
+  List<AssetGenImage> get values => [
+    icon0,
+    icon1,
+    icon2,
+    icon3,
+    icon4,
+    icon5,
+    icon6,
+  ];
 }
 
 class $AssetsImageGen {
@@ -136,32 +143,32 @@ class $AssetsImageGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-        appIcon,
-        authImage,
-        empty,
-        emptyDark,
-        error,
-        errorFood,
-        errorMap,
-        errorMypage,
-        errorRecord,
-        food,
-        foodgramer,
-        frame,
-        loadingFood,
-        loadingMap,
-        loadingMypage,
-        loadingRecord,
-        logoGoogle,
-        paywallBackground,
-        pin,
-        pinIcon,
-        pinRamen,
-        present,
-        profileHeader,
-        profileIcon,
-        record
-      ];
+    appIcon,
+    authImage,
+    empty,
+    emptyDark,
+    error,
+    errorFood,
+    errorMap,
+    errorMypage,
+    errorRecord,
+    food,
+    foodgramer,
+    frame,
+    loadingFood,
+    loadingMap,
+    loadingMypage,
+    loadingRecord,
+    logoGoogle,
+    paywallBackground,
+    pin,
+    pinIcon,
+    pinRamen,
+    present,
+    profileHeader,
+    profileIcon,
+    record,
+  ];
 }
 
 class $AssetsLottieGen {
@@ -220,24 +227,24 @@ class $AssetsLottieGen {
 
   /// List of all assets
   List<String> get values => [
-        empty,
-        error,
-        heart,
-        loading,
-        location,
-        noFriend,
-        noNotification,
-        noRecord,
-        notification,
-        permission,
-        postSuccess,
-        recordFootprints,
-        recordNopost,
-        restaurantSearch,
-        sammaryDog,
-        tutorial1,
-        welcome
-      ];
+    empty,
+    error,
+    heart,
+    loading,
+    location,
+    noFriend,
+    noNotification,
+    noRecord,
+    notification,
+    permission,
+    postSuccess,
+    recordFootprints,
+    recordNopost,
+    restaurantSearch,
+    sammaryDog,
+    tutorial1,
+    welcome,
+  ];
 }
 
 class $AssetsMapGen {
@@ -283,19 +290,19 @@ class $AssetsMapGen {
 
   /// List of all assets
   List<String> get values => [
-        earthEn,
-        earthJa,
-        foodgram,
-        japanPrefectures,
-        localEn,
-        localJa,
-        overlayPostsDotsLayer,
-        overlayPostsLayer,
-        overlayPostsSelectedLayer,
-        shareJapanOutline,
-        shareWorldOutline,
-        worldCountries
-      ];
+    earthEn,
+    earthJa,
+    foodgram,
+    japanPrefectures,
+    localEn,
+    localJa,
+    overlayPostsDotsLayer,
+    overlayPostsLayer,
+    overlayPostsSelectedLayer,
+    shareJapanOutline,
+    shareWorldOutline,
+    worldCountries,
+  ];
 }
 
 class $AssetsSplashGen {
@@ -408,36 +415,36 @@ class $AssetsTagGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-        chahan,
-        chikinnanban,
-        churro,
-        frenchtoast,
-        gyutan,
-        hamburg,
-        kaisendon,
-        katsudon,
-        mapo,
-        meibutsu,
-        melonpan,
-        mochi,
-        montblanc,
-        okonomiyaki,
-        omurice,
-        shu,
-        soba,
-        souvenir,
-        stew,
-        takoyaki,
-        tamagoyaki,
-        tantanmen,
-        tendon,
-        tonkatsu,
-        tsukune,
-        udon,
-        xiaolongbao,
-        yakiniku,
-        yakisoba
-      ];
+    chahan,
+    chikinnanban,
+    churro,
+    frenchtoast,
+    gyutan,
+    hamburg,
+    kaisendon,
+    katsudon,
+    mapo,
+    meibutsu,
+    melonpan,
+    mochi,
+    montblanc,
+    okonomiyaki,
+    omurice,
+    shu,
+    soba,
+    souvenir,
+    stew,
+    takoyaki,
+    tamagoyaki,
+    tantanmen,
+    tendon,
+    tonkatsu,
+    tsukune,
+    udon,
+    xiaolongbao,
+    yakiniku,
+    yakisoba,
+  ];
 }
 
 class $AssetsTrophyGen {
@@ -464,8 +471,13 @@ class $AssetsTrophyGen {
       const AssetGenImage('assets/trophy/trophy_silver.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [trophyBronze, trophyDiamond, trophyEmerald, trophyGold, trophySilver];
+  List<AssetGenImage> get values => [
+    trophyBronze,
+    trophyDiamond,
+    trophyEmerald,
+    trophyGold,
+    trophySilver,
+  ];
 }
 
 class Assets {
@@ -547,15 +559,8 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({
-    AssetBundle? bundle,
-    String? package,
-  }) {
-    return AssetImage(
-      _assetName,
-      bundle: bundle,
-      package: package,
-    );
+  ImageProvider provider({AssetBundle? bundle, String? package}) {
+    return AssetImage(_assetName, bundle: bundle, package: package);
   }
 
   String get path => _assetName;

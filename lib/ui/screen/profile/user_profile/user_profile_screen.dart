@@ -67,7 +67,7 @@ class UserProfileScreen extends HookConsumerWidget {
                   users: users,
                   length: posts.when(
                     data: (value) => value.length,
-                    error: (_, __) => 0,
+                    error: (_, _) => 0,
                     loading: () => 0,
                   ),
                   heartAmount: state.heartAmount,
@@ -89,7 +89,7 @@ class UserProfileScreen extends HookConsumerWidget {
                             child: AppEmpty(),
                           );
                   },
-                  error: (_, __) => SliverFillRemaining(
+                  error: (_, _) => SliverFillRemaining(
                     hasScrollBody: false,
                     child: AppTabError.myPage(
                       onRetry: () {

@@ -127,7 +127,7 @@ class _ProfileRankingUnlockedState
           ),
         ],
       ),
-      error: (_, __) => GestureDetector(
+      error: (_, _) => GestureDetector(
         onTap: () => ref.invalidate(postCountRankProvider(widget.userId)),
         child: Column(
           children: [

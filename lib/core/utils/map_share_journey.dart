@@ -75,7 +75,7 @@ MapShareJourney buildJapanShareJourney(List<MapSharePlace> places) {
   final visited = unique.map((place) => place.id).toSet();
   final regions = <String>{
     for (final place in unique)
-      if (_regionOf(place.id) case final region?) region,
+      ?_regionOf(place.id),
   };
   final latest = unique.first;
   final focus = _regionOf(latest.id);

@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -13,7 +12,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'fetch_post_repository.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class FetchPostRepository extends _$FetchPostRepository {
   @override
   Future<void> build() async {}

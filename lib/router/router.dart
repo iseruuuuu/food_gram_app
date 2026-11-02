@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/analytics/analytics_screen.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/local/shared_preference.dart';
@@ -33,7 +32,7 @@ Future<bool> _isFinishedTutorial() async {
   return value;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 GoRouter router(Ref ref) {
   final authState = ref.watch(authStateProvider);
   final analyticsObserver =

@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/api/restaurant/services/google_nearby_restaurant_service.dart';
 import 'package:food_gram_app/core/model/photo_restaurant_candidate.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

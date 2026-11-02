@@ -11,10 +11,10 @@ part 'my_profile_view_model.g.dart';
 class MyProfileViewModel extends _$MyProfileViewModel {
   @override
   MyProfileState build({
-    MyProfileState initState = const MyProfileStateLoading(),
+    MyProfileState? initState,
   }) {
     getData();
-    return initState;
+    return initState ?? const MyProfileStateLoading();
   }
 
   final logger = Logger();

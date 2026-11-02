@@ -32,12 +32,12 @@ part 'post_detail_view_model.g.dart';
 class PostDetailViewModel extends _$PostDetailViewModel {
   @override
   PostDetailState build({
-    PostDetailState initState = const PostDetailState(),
+    PostDetailState? initState,
   }) {
-    return initState;
+    return initState ?? const PostDetailState();
   }
 
-  Loading get loading => ref.read(loadingProvider.notifier);
+  Loading get _loading => ref.read(loadingProvider.notifier);
   final preference = Preference();
   final logger = Logger();
 
@@ -132,7 +132,7 @@ class PostDetailViewModel extends _$PostDetailViewModel {
   }
 
   Future<bool> delete(Posts posts) async {
-    loading.state = true;
+    _loading.state = true;
     final result =
         await ref.read(deleteRepositoryProvider.notifier).deletePost(posts);
     await result.when(
@@ -152,18 +152,18 @@ class PostDetailViewModel extends _$PostDetailViewModel {
         state = state.copyWith(isSuccess: false);
       },
     );
-    loading.state = false;
+    _loading.state = false;
     return state.isSuccess;
   }
 
   Future<bool> block(String userId) async {
-    loading.state = true;
+    _loading.state = true;
     final blockList = await preference.getStringList(PreferenceKey.blockList);
     blockList.add(userId);
     await Preference().setStringList(PreferenceKey.blockList, blockList);
     ref.invalidate(blockListProvider);
     await Future<void>.delayed(const Duration(seconds: 2));
-    loading.state = false;
+    _loading.state = false;
     return true;
   }
 

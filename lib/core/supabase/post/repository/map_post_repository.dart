@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_gram_app/core/home_widget/calendar_home_widget_sync.dart';
 import 'package:food_gram_app/core/model/model.dart';
 import 'package:food_gram_app/core/model/posts.dart';
@@ -10,7 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'map_post_repository.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class MapPostRepository extends _$MapPostRepository {
   @override
   Future<void> build() async {}
@@ -41,8 +40,10 @@ class MapPostRepository extends _$MapPostRepository {
 }
 
 /// マップ表示のレストランの投稿を全部取得するProvider
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<Posts>> mapRepository(Ref ref) async {
+  // 取得中にサービスが dispose されないよう依存を張る
+  ref.watch(mapPostServiceProvider);
   final response =
       await ref.read(mapPostServiceProvider.notifier).getMapPosts();
   return response.map(Posts.fromJson).toList();
@@ -91,8 +92,9 @@ Future<Result<List<Model>, Exception>> restaurantReviews(
 }
 
 /// 自分の投稿だけを取得するマップ用Provider
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<Posts>> myMapRepository(Ref ref) async {
+  ref.watch(mapPostServiceProvider);
   final response =
       await ref.read(mapPostServiceProvider.notifier).getMyMapPosts();
   final posts = response.map(Posts.fromJson).toList();

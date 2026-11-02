@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
@@ -15,10 +16,10 @@ part 'edit_view_model.g.dart';
 class EditViewModel extends _$EditViewModel {
   @override
   EditState build({
-    EditState initState = const EditState(),
+    EditState? initState,
   }) {
     getProfile();
-    return initState;
+    return initState ?? const EditState();
   }
 
   final logger = Logger();
@@ -26,14 +27,13 @@ class EditViewModel extends _$EditViewModel {
   final nameTextController = TextEditingController();
   final selfIntroduceTextController = TextEditingController();
 
-  Loading get loading => ref.read(loadingProvider.notifier);
-  final ImagePicker picker = ImagePicker();
-  String uploadImage = '';
-  Uint8List? imageBytes;
+  Loading get _loading => ref.read(loadingProvider.notifier);
+  var _uploadImage = '';
+  Uint8List? _imageBytes;
 
   Future<void> getProfile() async {
     await Future<void>.delayed(Duration.zero);
-    loading.state = true;
+    _loading.state = true;
     final userId = ref.watch(currentUserProvider);
     final supabase = ref.watch(supabaseProvider);
     final data =
@@ -47,7 +47,7 @@ class EditViewModel extends _$EditViewModel {
       isSubscribe: user.isSubscribe,
       user: user,
     );
-    loading.state = false;
+    _loading.state = false;
   }
 
   String extractNumber(String path) {
@@ -58,13 +58,13 @@ class EditViewModel extends _$EditViewModel {
 
   Future<bool> update() async {
     primaryFocus?.unfocus();
-    loading.state = true;
+    _loading.state = true;
     final result = await ref.read(accountServiceProvider).update(
           name: nameTextController.text,
           selfIntroduce: selfIntroduceTextController.text,
           image: state.number.toString(),
-          uploadImage: uploadImage,
-          imageBytes: imageBytes,
+          uploadImage: _uploadImage,
+          imageBytes: _imageBytes,
         );
     var success = false;
     await result.when(
@@ -77,7 +77,7 @@ class EditViewModel extends _$EditViewModel {
         success = false;
       },
     );
-    loading.state = false;
+    _loading.state = false;
     return success;
   }
 
@@ -100,8 +100,8 @@ class EditViewModel extends _$EditViewModel {
       if (image == null) {
         return false;
       }
-      imageBytes = await image.readAsBytes();
-      uploadImage = image.name;
+      _imageBytes = await image.readAsBytes();
+      _uploadImage = image.name;
       state = state.copyWith(
         uploadImage: image.path,
         isSelectedIcon: false,
@@ -123,8 +123,8 @@ class EditViewModel extends _$EditViewModel {
       if (image == null) {
         return false;
       }
-      imageBytes = await image.readAsBytes();
-      uploadImage = image.name;
+      _imageBytes = await image.readAsBytes();
+      _uploadImage = image.name;
       state = state.copyWith(
         uploadImage: image.path,
         isSelectedIcon: false,
