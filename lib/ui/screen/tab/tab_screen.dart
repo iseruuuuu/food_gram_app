@@ -34,6 +34,7 @@ import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 class TabScreen extends HookConsumerWidget {
   const TabScreen({super.key});
@@ -94,10 +95,10 @@ class TabScreen extends HookConsumerWidget {
                 await ref
                     .read(forceUpdateCheckerProvider.notifier)
                     .checkForceUpdate(
-                  openDialog: () {
-                    DialogHelper().forceUpdateDialog(context);
-                  },
-                );
+                      openDialog: () {
+                        DialogHelper().forceUpdateDialog(context);
+                      },
+                    );
               } finally {
                 try {
                   await initializeNotifications();
@@ -153,7 +154,9 @@ class TabScreen extends HookConsumerWidget {
               return;
             }
             showFirstPostGuide.value = true;
-            ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+            ref
+                .read(firebaseAnalyticsServiceProvider)
+                .logEventUnawaited(
                   name: AnalyticsEvent.firstPostGuideShow,
                 );
           } on Object {
@@ -186,15 +189,20 @@ class TabScreen extends HookConsumerWidget {
       HapticFeedbackHelper.medium();
       final selectedIndex = state.selectedIndex;
       if (selectedIndex == TabIndex.myMap) {
-        ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+        ref
+            .read(firebaseAnalyticsServiceProvider)
+            .logEventUnawaited(
               name: AnalyticsEvent.recordPostOpen,
             );
       }
 
       // loading 中の 0 誤判定を避けるため、確定済み件数だけ使う。
       // future を await すると Realtime 未接続時に遷移が永久にブロックされる。
-      final previousPostCount =
-          ref.read(myPostStreamProvider).asData?.value.length;
+      final previousPostCount = ref
+          .read(myPostStreamProvider)
+          .asData
+          ?.value
+          .length;
       final isFirstPost = previousPostCount == 0;
       if (!context.mounted) {
         return;
@@ -231,8 +239,9 @@ class TabScreen extends HookConsumerWidget {
           // 初回投稿完了ガイドがある場合はレベルアップ演出と重ねない
           if (!isFirstPost && previousPostCount != null) {
             try {
-              final refreshedPosts =
-                  await ref.read(myPostStreamProvider.future);
+              final refreshedPosts = await ref.read(
+                myPostStreamProvider.future,
+              );
               final newPostCount = refreshedPosts.length;
               if (UserLevel.levelFromPostCount(newPostCount) >
                       UserLevel.levelFromPostCount(previousPostCount) &&
@@ -265,7 +274,9 @@ class TabScreen extends HookConsumerWidget {
             // プレビューなしでもガイドは出す
           }
           if (context.mounted) {
-            ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+            ref
+                .read(firebaseAnalyticsServiceProvider)
+                .logEventUnawaited(
                   name: AnalyticsEvent.firstPostSuccessGuideShow,
                 );
             action = await showFirstPostSuccessGuide(
@@ -341,22 +352,7 @@ class TabScreen extends HookConsumerWidget {
                       left: 0,
                       right: 0,
                       bottom: 0,
-                      child: Container(
-                        height: _barHeight,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(_barHeight / 2),
-                          border: Border.all(
-                            color: AppTheme.dividerOf(context),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.08),
-                              blurRadius: 12,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
+                      child: _TabGlassBar(
                         child: Row(
                           children: [
                             Expanded(
@@ -408,7 +404,8 @@ class TabScreen extends HookConsumerWidget {
                       ),
                     ),
                     Positioned(
-                      bottom: (_barHeight - _postButtonSize) / 2 +
+                      bottom:
+                          (_barHeight - _postButtonSize) / 2 +
                           _postButtonOverlap,
                       child: Semantics(
                         button: true,
@@ -417,8 +414,9 @@ class TabScreen extends HookConsumerWidget {
                           key: postButtonKey,
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap:
-                                showFirstPostGuide.value ? null : onPostPressed,
+                            onTap: showFirstPostGuide.value
+                                ? null
+                                : onPostPressed,
                             customBorder: const CircleBorder(),
                             child: Ink(
                               width: _postButtonSize,
@@ -498,6 +496,66 @@ class _TabItem extends StatelessWidget {
       ),
     );
   }
+}
+
+/// タブのすりガラス。
+///
+/// 通常は地図を直接ぼかす。システムのハイコントラストでは、その経路を
+/// 外してパッケージの透明度低減フォールバックに入る。フォールバックは
+/// 下地の不透明度を上げるので、地図がバー越しに残りすぎない。
+class _TabGlassBar extends StatelessWidget {
+  const _TabGlassBar({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final reduceTransparency = MediaQuery.highContrastOf(context);
+    final glass = GlassContainer(
+      height: TabScreen._barHeight,
+      useOwnLayer: true,
+      quality: GlassQuality.premium,
+      platformViewBackdrop: !reduceTransparency,
+      clipBehavior: Clip.antiAlias,
+      shape: const LiquidRoundedSuperellipse(
+        borderRadius: TabScreen._barHeight / 2,
+      ),
+      settings: _tabBarGlassSettings(context),
+      child: child,
+    );
+    if (!reduceTransparency) {
+      return glass;
+    }
+    // フォールバックは角丸のクリップを地図へ渡さない。ここで丸く切る。
+    return ClipRRect(
+      borderRadius: const BorderRadius.all(
+        Radius.circular(TabScreen._barHeight / 2),
+      ),
+      child: glass,
+    );
+  }
+}
+
+/// 全タブ同じ薄さ。ダークモードだけ背面を沈め、明るい写真の上の白文字を守る。
+LiquidGlassSettings _tabBarGlassSettings(BuildContext context) {
+  final isDark = Theme.of(context).brightness == Brightness.dark;
+  final base = isDark
+      ? LiquidGlassSettings.ios27Dark
+      : LiquidGlassSettings.ios27Light;
+  return base.copyWith(
+    bodyMode: GlassBodyMode.clear,
+    glassColor: isDark ? const Color(0x38FFFFFF) : const Color(0x2EFFFFFF),
+    blur: 16,
+    backerColor: isDark ? const Color(0xBF000000) : null,
+    shadowElevation: 0,
+    shadow: const [
+      BoxShadow(
+        color: Color(0x14000000),
+        blurRadius: 12,
+        offset: Offset(0, 4),
+      ),
+    ],
+  );
 }
 
 String _routeNameForSummary(SummaryLaunchType type) {

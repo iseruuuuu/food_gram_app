@@ -5,10 +5,10 @@ class TabStyle {
   TabStyle._();
 
   /// タブ（アイコン・文言）の色。
-  /// 選択時はブランドオレンジ / 未選択はグレー。
+  /// 選択時はブランドオレンジ。未選択はライトが黒、ダークが白。
   static Color tabColor(BuildContext context, {required bool selected}) {
     if (!selected) {
-      return AppTheme.textSecondaryOf(context);
+      return AppTheme.isDarkOf(context) ? Colors.white : Colors.black;
     }
     return AppTheme.primaryOrange;
   }

@@ -225,6 +225,8 @@ PODS:
   - in_app_review (2.0.0):
     - Flutter
   - leveldb-library (1.22.6)
+  - liquid_glass_widgets (0.0.1):
+    - Flutter
   - map_launcher (0.0.1):
     - Flutter
   - MapLibre (6.19.1)
@@ -324,6 +326,7 @@ DEPENDENCIES:
   - home_widget (from `.symlinks/plugins/home_widget/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - in_app_review (from `.symlinks/plugins/in_app_review/ios`)
+  - liquid_glass_widgets (from `.symlinks/plugins/liquid_glass_widgets/ios`)
   - map_launcher (from `.symlinks/plugins/map_launcher/ios`)
   - maplibre_gl (from `.symlinks/plugins/maplibre_gl/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
@@ -427,6 +430,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   in_app_review:
     :path: ".symlinks/plugins/in_app_review/ios"
+  liquid_glass_widgets:
+    :path: ".symlinks/plugins/liquid_glass_widgets/ios"
   map_launcher:
     :path: ".symlinks/plugins/map_launcher/ios"
   maplibre_gl:
@@ -508,6 +513,7 @@ SPEC CHECKSUMS:
   image_picker_ios: e0ece4aa2a75771a7de3fa735d26d90817041326
   in_app_review: 7dd1ea365263f834b8464673f9df72c80c17c937
   leveldb-library: cc8b8f8e013647a295ad3f8cd2ddf49a6f19be19
+  liquid_glass_widgets: b18ae3ebb4ddb3c58b0b8552566362fcc9791e22
   map_launcher: fe43bda6720bb73c12fcc1bdd86123ff49a4d4d6
   MapLibre: 7f24faba45439f80ccb0f83393c29fa32cb81952
   maplibre_gl: d83126f1b19adee5e1071c453b421efd5fc99883
