@@ -19,6 +19,7 @@ import 'package:food_gram_app/env.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -34,6 +35,8 @@ void main() async {
   await Future.wait<void>([
     initializePurchases(),
     MobileAds.instance.initialize(),
+    // ボトムバーのガラス用。シェーダーを先に読んで、初回表示の白飛びを避ける。
+    LiquidGlassWidgets.initialize(enablePerformanceMonitor: false),
   ]);
   // 画像ディスクキャッシュを適用する。起動時は消さず、件数・期限の上限で自動整理する。
   FoodGramImageCache.installAsDefault();
@@ -41,7 +44,11 @@ void main() async {
   // Riverpod はルートに ProviderScope が必要。その内側で翻訳を包む。
   runApp(
     ProviderScope(
-      child: TranslationProvider(child: const MyApp()),
+      child: LiquidGlassWidgets.wrap(
+        brightnessResolver: Theme.maybeBrightnessOf,
+        theme: const GlassThemeData.ios27(),
+        child: TranslationProvider(child: const MyApp()),
+      ),
     ),
   );
   // アプリ起動後、表示が落ち着いてから7日経過時レビューをチェック
