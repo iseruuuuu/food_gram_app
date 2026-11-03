@@ -352,18 +352,7 @@ class TabScreen extends HookConsumerWidget {
                       left: 0,
                       right: 0,
                       bottom: 0,
-                      child: GlassContainer(
-                        height: _barHeight,
-                        useOwnLayer: true,
-                        quality: GlassQuality.premium,
-                        // 全タブ同じすりガラスにする。地図はシェーダーで
-                        // 取り込めないので、どのタブも直接ぼかす。
-                        platformViewBackdrop: true,
-                        clipBehavior: Clip.antiAlias,
-                        shape: const LiquidRoundedSuperellipse(
-                          borderRadius: _barHeight / 2,
-                        ),
-                        settings: _tabBarGlassSettings(context),
+                      child: _TabGlassBar(
                         child: Row(
                           children: [
                             Expanded(
@@ -509,7 +498,45 @@ class _TabItem extends StatelessWidget {
   }
 }
 
-/// タブバーのガラス。全タブ同じ薄さで、後ろの画面を透かす。
+/// タブのすりガラス。
+///
+/// 通常は地図を直接ぼかす。システムのハイコントラストでは、その経路を
+/// 外してパッケージの透明度低減フォールバックに入る。フォールバックは
+/// 下地の不透明度を上げるので、地図がバー越しに残りすぎない。
+class _TabGlassBar extends StatelessWidget {
+  const _TabGlassBar({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final reduceTransparency = MediaQuery.highContrastOf(context);
+    final glass = GlassContainer(
+      height: TabScreen._barHeight,
+      useOwnLayer: true,
+      quality: GlassQuality.premium,
+      platformViewBackdrop: !reduceTransparency,
+      clipBehavior: Clip.antiAlias,
+      shape: const LiquidRoundedSuperellipse(
+        borderRadius: TabScreen._barHeight / 2,
+      ),
+      settings: _tabBarGlassSettings(context),
+      child: child,
+    );
+    if (!reduceTransparency) {
+      return glass;
+    }
+    // フォールバックは角丸のクリップを地図へ渡さない。ここで丸く切る。
+    return ClipRRect(
+      borderRadius: const BorderRadius.all(
+        Radius.circular(TabScreen._barHeight / 2),
+      ),
+      child: glass,
+    );
+  }
+}
+
+/// 全タブ同じ薄さ。ダークモードだけ背面を沈め、明るい写真の上の白文字を守る。
 LiquidGlassSettings _tabBarGlassSettings(BuildContext context) {
   final isDark = Theme.of(context).brightness == Brightness.dark;
   final base = isDark
@@ -519,6 +546,7 @@ LiquidGlassSettings _tabBarGlassSettings(BuildContext context) {
     bodyMode: GlassBodyMode.clear,
     glassColor: isDark ? const Color(0x38FFFFFF) : const Color(0x2EFFFFFF),
     blur: 16,
+    backerColor: isDark ? const Color(0xBF000000) : null,
     shadowElevation: 0,
     shadow: const [
       BoxShadow(
