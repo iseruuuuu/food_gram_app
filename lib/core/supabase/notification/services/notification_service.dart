@@ -25,10 +25,13 @@ class NotificationService {
     }
     final fromTable = await _fetchLikeNotificationRows(userId);
     final fromEdge = await _fetchLikeNotificationKeysFromEdge();
-    return mergeLikeNotificationKeys([...fromTable, ...fromEdge]);
+    if (_currentUserId != userId) {
+      return [];
+    }
+    return newestLikeNotificationKeys([...fromTable, ...fromEdge]);
   }
 
-  /// `like_notifications` に残っているいいね履歴をすべて読む。
+  /// `like_notifications` の新しい履歴を [likeNotificationListLimit] 件読む。
   Future<List<NotificationKey>> _fetchLikeNotificationRows(
     String userId,
   ) async {
@@ -37,7 +40,10 @@ class NotificationService {
           .from('like_notifications')
           .select('post_id, liker_user_id, created_at')
           .eq('user_id', userId)
-          .order('created_at', ascending: false);
+          .order('created_at', ascending: false)
+          .order('post_id', ascending: false)
+          .order('liker_user_id', ascending: true)
+          .limit(likeNotificationListLimit);
       return _keysFromRows(rows);
     } on Exception catch (e) {
       _logger.e('like_notifications の取得に失敗: $e');

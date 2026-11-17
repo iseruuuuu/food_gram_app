@@ -62,6 +62,10 @@ class NotificationRepository {
 Future<List<Notification>> myLikeNotifications(
   Ref ref,
 ) {
+  final userId = ref.watch(currentUserProvider);
+  if (userId == null) {
+    return Future.value(const []);
+  }
   final repo = NotificationRepository(ref);
   return repo.getMyLikeNotifications();
 }
