@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/notification/like_notification_seen.dart';
+import 'package:food_gram_app/core/supabase/notification/repository/notification_repository.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
@@ -23,6 +25,7 @@ import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_state.dart
 import 'package:food_gram_app/ui/screen/profile/my_profile/my_profile_view_model.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_screen.dart';
 import 'package:food_gram_app/ui/screen/tab/tab_state.dart';
+import 'package:food_gram_app/ui/screen/tab/tab_view_model.dart';
 import 'package:food_gram_app/ui/screen/tab/use_scroll_to_top_on_tab_trigger.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -47,6 +50,33 @@ class MyProfileScreen extends HookConsumerWidget {
       extraDeps: [hasData],
     );
     final isSubscribeAsync = ref.watch(isSubscribeProvider);
+    final hasUnseenLikes = ref.watch(hasUnseenLikeNotificationsProvider);
+    final selectedTab = ref.watch(
+      tabViewModelProvider().select((state) => state.selectedIndex),
+    );
+    final hasOpenedMyPage = useRef(false);
+    useEffect(
+      () {
+        if (selectedTab != TabIndex.myPage) {
+          return null;
+        }
+        if (!hasOpenedMyPage.value) {
+          hasOpenedMyPage.value = true;
+          return null;
+        }
+        var active = true;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!active) {
+            return;
+          }
+          ref.invalidate(myLikeNotificationsProvider);
+        });
+        return () {
+          active = false;
+        };
+      },
+      [selectedTab],
+    );
     final loading = ref.watch(loadingProvider);
     // フローティングボトムナビの下に最終行が隠れないよう、末尾に余白を確保する
     final bottomInset = TabScreen.bottomNavOccupiedHeight(context) + 30;
@@ -66,9 +96,11 @@ class MyProfileScreen extends HookConsumerWidget {
                   IconButton(
                     onPressed: () =>
                         context.pushNamed(RouterPath.notifications),
-                    icon: const Icon(
-                      Icons.favorite_border,
-                      color: AppTheme.primaryOrange,
+                    icon: Icon(
+                      hasUnseenLikes ? Icons.favorite : Icons.favorite_border,
+                      color: hasUnseenLikes
+                          ? AppTheme.primaryOrange
+                          : AppTheme.textSecondaryOf(context),
                     ),
                   ),
                   IconButton(
@@ -119,7 +151,9 @@ class MyProfileScreen extends HookConsumerWidget {
                   color: Theme.of(context).colorScheme.primary,
                   backgroundColor: Theme.of(context).colorScheme.surface,
                   onRefresh: () async {
-                    ref.invalidate(myPostStreamProvider);
+                    ref
+                      ..invalidate(myPostStreamProvider)
+                      ..invalidate(myLikeNotificationsProvider);
                     final uid = ref.read(currentUserProvider);
                     if (uid != null) {
                       ref.invalidate(postCountRankProvider(uid));

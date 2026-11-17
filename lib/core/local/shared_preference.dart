@@ -33,6 +33,7 @@ enum PreferenceKey {
   hasSeenFirstPostSuccessGuide,
   restaurantSearchHistory,
   postRankHistory,
+  likeNotificationsSeenAt,
 }
 
 class Preference {
@@ -87,6 +88,42 @@ class Preference {
   ) async {
     final pref = await _prefs;
     return pref.getStringList(_getUserKey(key, userId)) ?? [];
+  }
+
+  Future<String> getStringForUser(PreferenceKey key, String userId) async {
+    final pref = await _prefs;
+    return pref.getString(_getUserKey(key, userId)) ?? '';
+  }
+
+  Future<void> setStringForUser(
+    PreferenceKey key,
+    String userId,
+    String value,
+  ) async {
+    final pref = await _prefs;
+    await pref.setString(_getUserKey(key, userId), value);
+  }
+
+  Future<DateTime?> getLikeNotificationsSeenAt(String userId) async {
+    final raw = await getStringForUser(
+      PreferenceKey.likeNotificationsSeenAt,
+      userId,
+    );
+    if (raw.isEmpty) {
+      return null;
+    }
+    return DateTime.tryParse(raw)?.toUtc();
+  }
+
+  Future<void> setLikeNotificationsSeenAt(
+    String userId,
+    DateTime seenAt,
+  ) {
+    return setStringForUser(
+      PreferenceKey.likeNotificationsSeenAt,
+      userId,
+      seenAt.toUtc().toIso8601String(),
+    );
   }
 
   /// 同一ユーザーキーへの read-modify-write を直列化する。

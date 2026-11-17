@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -6,6 +8,7 @@ import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/notification/like_notification_seen.dart';
 import 'package:food_gram_app/core/supabase/notification/repository/notification_repository.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -20,12 +23,24 @@ class NotificationsScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final container = ProviderScope.containerOf(context, listen: false);
     useEffect(
       () {
         ref
             .read(firebaseAnalyticsServiceProvider)
             .logEventUnawaited(name: AnalyticsEvent.notificationOpen);
-        return null;
+        return () {
+          final notifications =
+              container.read(myLikeNotificationsProvider).asData?.value;
+          if (notifications == null || notifications.isEmpty) {
+            return;
+          }
+          unawaited(
+            container.read(likeNotificationSeenAtProvider.notifier).markSeen(
+                  notifications.map((notification) => notification.updatedAt),
+                ),
+          );
+        };
       },
       const [],
     );
