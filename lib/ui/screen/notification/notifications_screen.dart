@@ -57,6 +57,7 @@ class NotificationsScreen extends HookConsumerWidget {
         ),
       ),
       body: async.when(
+        skipLoadingOnReload: false,
         loading: () => const AppListSkeleton(),
         error: (e, _) => Center(
           child: Text(
