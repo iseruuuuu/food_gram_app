@@ -38,6 +38,7 @@ class PostViewModel extends _$PostViewModel {
   late final TextEditingController priceController;
   final Map<String, Uint8List> _imageBytesMap = {};
   var _restoredFromDraft = false;
+  String? _activeDraftId;
   var _priceCurrencyManuallySet = false;
   var _disposed = false;
   var _isPosting = false;
@@ -172,7 +173,9 @@ class PostViewModel extends _$PostViewModel {
   }) async {
     bool isActiveSubmit() => !_disposed && submitId == _activePostSubmitId;
 
-    final result = await ref.read(postRepositoryProvider.notifier).createPost(
+    final result = await ref
+        .read(postRepositoryProvider.notifier)
+        .createPost(
           foodName: foodController.text.trim(),
           comment: commentController.text,
           uploadImages: state.foodImages,
@@ -194,11 +197,15 @@ class PostViewModel extends _$PostViewModel {
         }
         HapticFeedbackHelper.heavy();
         final fromDraft = _restoredFromDraft;
+        final activeDraftId = _activeDraftId;
         _restoredFromDraft = false;
-        final existingDraft = await _preference.getPostDraft();
-        final hadUnusedDraft =
-            !fromDraft && (existingDraft?.hasRestorableContent ?? false);
-        await _preference.clearPostDraft();
+        _activeDraftId = null;
+        if (activeDraftId != null) {
+          await _removeStoredDrafts({activeDraftId});
+        }
+        if (!isActiveSubmit()) {
+          return;
+        }
         state = state.copyWith(
           status: PostStatus.success.name,
           isSuccess: true,
@@ -207,7 +214,8 @@ class PostViewModel extends _$PostViewModel {
           _imageBytesMap.clear();
         }
         final hasComment = commentController.text.trim().isNotEmpty;
-        final hasRestaurant = state.restaurant != defaultRestaurantText &&
+        final hasRestaurant =
+            state.restaurant != defaultRestaurantText &&
             state.restaurant != unknownRestaurantName;
         final analytics = ref.read(firebaseAnalyticsServiceProvider);
         unawaited(
@@ -217,9 +225,6 @@ class PostViewModel extends _$PostViewModel {
             hasRestaurant: hasRestaurant,
           ),
         );
-        if (hadUnusedDraft) {
-          analytics.logEventUnawaited(name: AnalyticsEvent.draftDelete);
-        }
       },
       failure: (error) {
         if (!isActiveSubmit()) {
@@ -256,8 +261,9 @@ class PostViewModel extends _$PostViewModel {
 
   void removeImage(String imagePath) {
     _imageBytesMap.remove(imagePath);
-    final updatedImages =
-        state.foodImages.where((path) => path != imagePath).toList();
+    final updatedImages = state.foodImages
+        .where((path) => path != imagePath)
+        .toList();
     state = state.copyWith(foodImages: updatedImages);
   }
 
@@ -279,7 +285,9 @@ class PostViewModel extends _$PostViewModel {
         return false;
       }
       await _processImageFromBytes(bytes);
-      ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+      ref
+          .read(firebaseAnalyticsServiceProvider)
+          .logEventUnawaited(
             name: AnalyticsEvent.postPhotoSelected,
           );
       return true;
@@ -299,10 +307,12 @@ class PostViewModel extends _$PostViewModel {
       if (images.isEmpty) {
         return false;
       }
-      ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
-        name: AnalyticsEvent.postMultiplePhotoSelected,
-        parameters: {AnalyticsParam.photoCount: images.length},
-      );
+      ref
+          .read(firebaseAnalyticsServiceProvider)
+          .logEventUnawaited(
+            name: AnalyticsEvent.postMultiplePhotoSelected,
+            parameters: {AnalyticsParam.photoCount: images.length},
+          );
       for (final image in images) {
         unawaited(_tryApplyCurrencyFromImage(image.path));
         final bytes = await _openImageEditor(context, image.path);
@@ -363,7 +373,9 @@ class PostViewModel extends _$PostViewModel {
 
   void getPlace(Restaurant restaurant) {
     _updateRestaurantState(restaurant);
-    ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+    ref
+        .read(firebaseAnalyticsServiceProvider)
+        .logEventUnawaited(
           name: AnalyticsEvent.postRestaurantManualSelected,
         );
   }
@@ -383,7 +395,9 @@ class PostViewModel extends _$PostViewModel {
   void setPriceCurrency(String code) {
     _priceCurrencyManuallySet = true;
     state = state.copyWith(priceCurrency: code.toUpperCase());
-    ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
+    ref
+        .read(firebaseAnalyticsServiceProvider)
+        .logEventUnawaited(
           name: AnalyticsEvent.postPriceInput,
         );
   }
@@ -430,10 +444,12 @@ class PostViewModel extends _$PostViewModel {
 
   void setStar(double value) {
     state = state.copyWith(star: value);
-    ref.read(firebaseAnalyticsServiceProvider).logEventUnawaited(
-      name: AnalyticsEvent.postRatingInput,
-      parameters: {AnalyticsParam.rating: value},
-    );
+    ref
+        .read(firebaseAnalyticsServiceProvider)
+        .logEventUnawaited(
+          name: AnalyticsEvent.postRatingInput,
+          parameters: {AnalyticsParam.rating: value},
+        );
   }
 
   void resetStatus() {
@@ -445,33 +461,117 @@ class PostViewModel extends _$PostViewModel {
     _restoredFromDraft = true;
   }
 
-  Future<PostDraft?> loadSavedDraft() => _preference.getPostDraft();
+  Future<List<PostDraft>> loadSavedDrafts() => _preference.getPostDrafts();
 
-  Future<void> saveDraft({required List<String> foodTags}) async {
-    final currency = state.priceCurrency.isEmpty
-        ? defaultPostPriceCurrencyForLocale()
-        : state.priceCurrency;
-    final draft = PostDraft(
-      foodName: foodController.text,
-      comment: commentController.text,
-      priceInput: priceController.text,
-      restaurant: state.restaurant,
-      lat: state.lat,
-      lng: state.lng,
-      foodTags: List<String>.from(foodTags),
-      star: state.star,
-      isAnonymous: state.isAnonymous,
-      priceCurrency: currency,
+  bool hasContentToDiscard({
+    required List<String> foodTags,
+    required bool keepRestaurant,
+  }) {
+    final hasText =
+        foodController.text.trim().isNotEmpty ||
+        commentController.text.trim().isNotEmpty ||
+        priceController.text.trim().isNotEmpty ||
+        foodTags.isNotEmpty ||
+        state.star > 0 ||
+        state.isAnonymous;
+    if (hasText) {
+      return true;
+    }
+    if (keepRestaurant) {
+      return false;
+    }
+    return state.restaurant != defaultRestaurantText &&
+        state.restaurant != unknownRestaurantName;
+  }
+
+  Future<PostDraftSaveResult> saveDraft({
+    required List<String> foodTags,
+  }) async {
+    final now = DateTime.now();
+    final provisional = _buildDraft(
+      id: 'pending',
+      savedAt: now,
+      foodTags: foodTags,
     );
-    await _preference.savePostDraft(draft);
+    if (!provisional.hasRestorableContent) {
+      return PostDraftSaveResult.empty;
+    }
+    final current = await _preference.getPostDrafts();
+    final existing = _draftWithSameContent(current, provisional);
+    if (existing != null) {
+      _activeDraftId = existing.id;
+      return PostDraftSaveResult.unchanged;
+    }
+    final draft = _buildDraft(
+      id: now.microsecondsSinceEpoch.toString(),
+      savedAt: now,
+      foodTags: foodTags,
+    );
+    final updated = PostDraftList(current).upsert(draft);
+    await _preference.savePostDrafts(updated.items);
+    _activeDraftId = draft.id;
+    _restoredFromDraft = false;
     unawaited(
-      ref.read(firebaseAnalyticsServiceProvider).logEvent(
+      ref
+          .read(firebaseAnalyticsServiceProvider)
+          .logEvent(
             name: AnalyticsEvent.draftSave,
           ),
+    );
+    if (current.length >= PostDraftList.maxCount) {
+      return PostDraftSaveResult.trimmed;
+    }
+    if (current.isNotEmpty) {
+      return PostDraftSaveResult.created;
+    }
+    return PostDraftSaveResult.saved;
+  }
+
+  PostDraft? _draftWithSameContent(List<PostDraft> drafts, PostDraft draft) {
+    for (final item in drafts) {
+      if (item.hasSameContentAs(draft)) {
+        return item;
+      }
+    }
+    return null;
+  }
+
+  Future<void> deleteDrafts(Set<String> ids) async {
+    if (ids.isEmpty) {
+      return;
+    }
+    await _removeStoredDrafts(ids);
+    if (_activeDraftId != null && ids.contains(_activeDraftId)) {
+      _activeDraftId = null;
+      _restoredFromDraft = false;
+    }
+    ref
+        .read(firebaseAnalyticsServiceProvider)
+        .logEventUnawaited(
+          name: AnalyticsEvent.draftDelete,
+        );
+  }
+
+  void startNewDraft({required bool keepRestaurant}) {
+    _activeDraftId = null;
+    _restoredFromDraft = false;
+    foodController.clear();
+    commentController.clear();
+    priceController.clear();
+    _priceCurrencyManuallySet = false;
+    state = state.copyWith(
+      restaurant: keepRestaurant ? state.restaurant : defaultRestaurantText,
+      lat: keepRestaurant ? state.lat : 0,
+      lng: keepRestaurant ? state.lng : 0,
+      star: 0,
+      isAnonymous: false,
+      priceCurrency: defaultPostPriceCurrencyForLocale(),
+      status: PostStatus.initial.name,
     );
   }
 
   void applyDraft(PostDraft draft, {required bool applyRestaurant}) {
+    _activeDraftId = draft.id;
     foodController.text = draft.foodName;
     commentController.text = draft.comment;
     priceController.text = draft.priceInput;
@@ -489,6 +589,42 @@ class PostViewModel extends _$PostViewModel {
           ? state.priceCurrency
           : draftCurrency.toUpperCase(),
     );
+  }
+
+  PostDraft _buildDraft({
+    required String id,
+    required DateTime savedAt,
+    required List<String> foodTags,
+  }) {
+    final currency = state.priceCurrency.isEmpty
+        ? defaultPostPriceCurrencyForLocale()
+        : state.priceCurrency;
+    return PostDraft(
+      id: id,
+      savedAt: savedAt,
+      foodName: foodController.text,
+      comment: commentController.text,
+      priceInput: priceController.text,
+      restaurant: state.restaurant,
+      lat: state.lat,
+      lng: state.lng,
+      foodTags: List<String>.from(foodTags),
+      star: state.star,
+      isAnonymous: state.isAnonymous,
+      priceCurrency: currency,
+    );
+  }
+
+  Future<void> _removeStoredDrafts(Set<String> ids) async {
+    if (ids.isEmpty) {
+      return;
+    }
+    final current = await _preference.getPostDrafts();
+    if (!current.any((draft) => ids.contains(draft.id))) {
+      return;
+    }
+    final updated = PostDraftList(current).removeByIds(ids);
+    await _preference.savePostDrafts(updated.items);
   }
 }
 
