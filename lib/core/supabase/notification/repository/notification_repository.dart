@@ -19,11 +19,14 @@ class NotificationRepository {
   /// 自分の投稿に届いた「いいね」通知の一覧を返す
   Future<List<Notification>> getMyLikeNotifications() async {
     final keys = await _service.fetchMyLikeNotificationKeys();
-    if (keys.isEmpty) {
+    if (!_ref.mounted || keys.isEmpty) {
       return [];
     }
     final ids = keys.map((k) => k.postId).toSet().toList();
     try {
+      if (!_ref.mounted) {
+        return [];
+      }
       final rows = await _supabase
           .from('posts')
           .select(postsSelectColumns)
