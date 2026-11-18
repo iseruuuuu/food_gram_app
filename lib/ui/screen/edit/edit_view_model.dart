@@ -4,6 +4,8 @@ import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/utils/instagram_username.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/ui/screen/edit/edit_state.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,10 +24,13 @@ class EditViewModel extends _$EditViewModel {
     return initState ?? const EditState();
   }
 
+  static const invalidInstagramStatus = 'invalid_instagram';
+
   final logger = Logger();
 
   final nameTextController = TextEditingController();
   final selfIntroduceTextController = TextEditingController();
+  final instagramTextController = TextEditingController();
 
   Loading get _loading => ref.read(loadingProvider.notifier);
   var _uploadImage = '';
@@ -36,11 +41,15 @@ class EditViewModel extends _$EditViewModel {
     _loading.state = true;
     final userId = ref.watch(currentUserProvider);
     final supabase = ref.watch(supabaseProvider);
-    final data =
-        await supabase.from('users').select().eq('user_id', userId!).single();
+    final data = await supabase
+        .from('users')
+        .select()
+        .eq('user_id', userId!)
+        .single();
     final user = Users.fromJson(data);
     nameTextController.text = user.name;
     selfIntroduceTextController.text = user.selfIntroduce;
+    instagramTextController.text = user.instagram;
     state = state.copyWith(
       number: int.parse(extractNumber(user.image)),
       initialImage: user.image,
@@ -58,11 +67,28 @@ class EditViewModel extends _$EditViewModel {
 
   Future<bool> update() async {
     primaryFocus?.unfocus();
+    final isPremium =
+        state.isSubscribe || (ref.read(isSubscribeProvider).value ?? false);
+    String? instagram;
+    if (isPremium) {
+      final normalized = normalizeInstagramUsername(
+        instagramTextController.text,
+      );
+      if (normalized == null) {
+        state = state.copyWith(status: invalidInstagramStatus);
+        return false;
+      }
+      instagramTextController.text = normalized;
+      instagram = normalized;
+    }
     _loading.state = true;
-    final result = await ref.read(accountServiceProvider).update(
+    final result = await ref
+        .read(accountServiceProvider)
+        .update(
           name: nameTextController.text,
           selfIntroduce: selfIntroduceTextController.text,
           image: state.number.toString(),
+          instagram: instagram,
           uploadImage: _uploadImage,
           imageBytes: _imageBytes,
         );
