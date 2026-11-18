@@ -251,7 +251,11 @@
     "editPostButton": "Sửa bài đăng",
     "updateButton": "Cập nhật",
     "bio": "Tiểu sử",
-    "bioInputField": "Nhập tiểu sử"
+    "bioInputField": "Nhập tiểu sử",
+    "instagram": "Instagram",
+    "instagramInputField": "Tên tài khoản",
+    "instagramLocked": "Thêm Instagram với Premium",
+    "instagramInvalid": "Chỉ dùng chữ, số, dấu chấm và gạch dưới (tối đa 30)"
   },
   "search": {
     "emptyResult": "Không tìm thấy kết quả.",

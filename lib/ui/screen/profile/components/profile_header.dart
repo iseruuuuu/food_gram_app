@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/users.dart';
@@ -8,6 +9,7 @@ import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/theme/style/profile_style.dart';
+import 'package:food_gram_app/core/utils/helpers/url_launch_helper.dart';
 import 'package:food_gram_app/core/utils/user_level.dart';
 import 'package:food_gram_app/gen/assets.gen.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -40,8 +42,7 @@ class AppProfileHeader extends HookConsumerWidget {
     final t = Translations.of(context);
     final paywallGuard = useMemoized(PaywallLaunchGuard.new);
     final currentUser = ref.watch(currentUserProvider);
-    final isViewerSubscribed =
-        ref.watch(isSubscribeProvider).value ?? false;
+    final isViewerSubscribed = ref.watch(isSubscribeProvider).value ?? false;
     const avatarRadius = 60.0;
     final level = UserLevel.levelFromPostCount(length);
     final isOwnProfile = currentUser == users.userId;
@@ -185,6 +186,10 @@ class AppProfileHeader extends HookConsumerWidget {
                 textAlign: TextAlign.left,
                 style: ProfileStyle.bio(context),
               ),
+            ],
+            if (users.isSubscribe && users.instagram.isNotEmpty) ...[
+              Gap(users.selfIntroduce.isNotEmpty ? 10 : 14),
+              _InstagramLink(username: users.instagram),
             ],
             if (isOwnProfile && level < UserLevel.maxLevel) ...[
               const Gap(8),
@@ -354,7 +359,9 @@ class AppProfileHeader extends HookConsumerWidget {
     required String source,
     required PaywallLaunchGuard paywallGuard,
   }) async {
-    ref.read(firebaseAnalyticsServiceProvider).logPremiumFeatureTap(
+    ref
+        .read(firebaseAnalyticsServiceProvider)
+        .logPremiumFeatureTap(
           AnalyticsEvent.premiumProfileCustomizationTap,
         );
     final purchased = await paywallGuard.present(
@@ -504,6 +511,45 @@ class _RankBadge extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _InstagramLink extends StatelessWidget {
+  const _InstagramLink({required this.username});
+
+  final String username;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: '@$username',
+      child: GestureDetector(
+        onTap: () => LaunchUrlHelper().openInstagramProfile(username),
+        child: Row(
+          children: [
+            const FaIcon(
+              FontAwesomeIcons.instagram,
+              size: 15,
+              color: AppTheme.primaryOrange,
+            ),
+            const Gap(6),
+            Flexible(
+              child: Text(
+                '@$username',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.primaryOrange,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

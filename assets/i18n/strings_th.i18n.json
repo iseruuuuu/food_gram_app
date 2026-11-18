@@ -251,7 +251,11 @@
     "editPostButton": "แก้โพสต์",
     "updateButton": "อัปเดต",
     "bio": "ประวัติ",
-    "bioInputField": "กรอกประวัติ"
+    "bioInputField": "กรอกประวัติ",
+    "instagram": "Instagram",
+    "instagramInputField": "ชื่อบัญชี",
+    "instagramLocked": "เพิ่ม Instagram ด้วยพรีเมียม",
+    "instagramInvalid": "ใช้ตัวอักษร ตัวเลข จุด และขีดล่างได้ไม่เกิน 30 ตัว"
   },
   "search": {
     "emptyResult": "ไม่พบผลลัพธ์",

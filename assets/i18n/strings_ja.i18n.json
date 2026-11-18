@@ -251,7 +251,11 @@
     "editPostButton": "編集する",
     "updateButton": "更新",
     "bio": "自己紹介",
-    "bioInputField": "自己紹介を入力してください"
+    "bioInputField": "自己紹介を入力してください",
+    "instagram": "Instagram",
+    "instagramInputField": "アカウント名",
+    "instagramLocked": "プレミアムでInstagramを載せる",
+    "instagramInvalid": "英数字・ピリオド・アンダースコアで30文字以内にしてください"
   },
   "search": {
     "emptyResult": "該当する場所が見つかりませんでした",

@@ -9,6 +9,7 @@ import 'package:food_gram_app/core/purchase/paywall_launch_guard.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/theme/style/edit_style.dart';
+import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/ui/component/app_icon.dart';
@@ -30,8 +31,11 @@ class EditScreen extends HookConsumerWidget {
     final controller = ref.watch(editViewModelProvider().notifier);
     final state = ref.watch(editViewModelProvider());
     final loading = ref.watch(loadingProvider);
-    final adInterstitial =
-        useMemoized(() => ref.read(admobInterstitialProvider));
+    final isPremium =
+        state.isSubscribe || (ref.watch(isSubscribeProvider).value ?? false);
+    final adInterstitial = useMemoized(
+      () => ref.read(admobInterstitialProvider),
+    );
     final paywallGuard = useMemoized(PaywallLaunchGuard.new);
     useEffect(
       () {
@@ -75,16 +79,28 @@ class EditScreen extends HookConsumerWidget {
                     final success = await ref
                         .read(editViewModelProvider().notifier)
                         .update();
-                    if (success) {
-                      while (loading) {
-                        await Future<void>.delayed(
-                          const Duration(milliseconds: 100),
+                    if (!success) {
+                      final status = ref.read(editViewModelProvider()).status;
+                      if (status == EditViewModel.invalidInstagramStatus &&
+                          context.mounted) {
+                        final t = Translations.of(context);
+                        SnackBarHelper().openErrorSnackBar(
+                          context,
+                          t.edit.instagram,
+                          t.edit.instagramInvalid,
                         );
                       }
-                      final updatedUser =
-                          ref.read(editViewModelProvider()).user;
-                      if (updatedUser != null) {
-                        await adInterstitial.showAd();
+                      return;
+                    }
+                    while (loading) {
+                      await Future<void>.delayed(
+                        const Duration(milliseconds: 100),
+                      );
+                    }
+                    final updatedUser = ref.read(editViewModelProvider()).user;
+                    if (updatedUser != null) {
+                      await adInterstitial.showAd();
+                      if (context.mounted) {
                         context.pop(updatedUser);
                       }
                     }
@@ -107,8 +123,9 @@ class EditScreen extends HookConsumerWidget {
                     children: [
                       if (state.uploadImage != '')
                         CircleAvatar(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.surface,
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.surface,
                           backgroundImage: FileImage(
                             File(state.uploadImage),
                           ),
@@ -121,10 +138,12 @@ class EditScreen extends HookConsumerWidget {
                         )
                       else
                         CircleAvatar(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.surface,
-                          backgroundImage:
-                              AssetImage('assets/icon/icon${state.number}.png'),
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.surface,
+                          backgroundImage: AssetImage(
+                            'assets/icon/icon${state.number}.png',
+                          ),
                           radius: 70,
                         ),
                       Padding(
@@ -151,9 +170,6 @@ class EditScreen extends HookConsumerWidget {
                           ),
                           Builder(
                             builder: (context) {
-                              final isPremium = state.isSubscribe ||
-                                  (ref.watch(isSubscribeProvider).value ??
-                                      false);
                               final iconSize =
                                   MediaQuery.of(context).size.width / 8;
                               return GestureDetector(
@@ -166,12 +182,12 @@ class EditScreen extends HookConsumerWidget {
                                           AnalyticsEvent
                                               .premiumProfileCustomizationTap,
                                         );
-                                    final purchased =
-                                        await paywallGuard.present(
-                                      context: context,
-                                      ref: ref,
-                                      source: 'edit_custom_icon',
-                                    );
+                                    final purchased = await paywallGuard
+                                        .present(
+                                          context: context,
+                                          ref: ref,
+                                          source: 'edit_custom_icon',
+                                        );
                                     if (purchased) {
                                       await ref
                                           .read(
@@ -261,6 +277,16 @@ class EditScreen extends HookConsumerWidget {
                       AppSelfIntroductionTextField(
                         controller: controller.selfIntroduceTextController,
                       ),
+                      const Gap(30),
+                      AppInstagramTextField(
+                        controller: controller.instagramTextController,
+                        locked: !isPremium,
+                        onLockedTap: () => _openInstagramPaywall(
+                          context: context,
+                          ref: ref,
+                          paywallGuard: paywallGuard,
+                        ),
+                      ),
                       const Gap(20),
                     ],
                   ),
@@ -275,5 +301,30 @@ class EditScreen extends HookConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+Future<void> _openInstagramPaywall({
+  required BuildContext context,
+  required WidgetRef ref,
+  required PaywallLaunchGuard paywallGuard,
+}) async {
+  primaryFocus?.unfocus();
+  ref
+      .read(firebaseAnalyticsServiceProvider)
+      .logPremiumFeatureTap(
+        AnalyticsEvent.premiumInstagramTap,
+      );
+  final purchased = await paywallGuard.present(
+    context: context,
+    ref: ref,
+    source: 'edit_instagram',
+  );
+  if (!purchased || !context.mounted) {
+    return;
+  }
+  await ref.read(editViewModelProvider().notifier).refreshSubscription();
+  if (context.mounted) {
+    await showPaywallSuccessDialog(context: context);
   }
 }

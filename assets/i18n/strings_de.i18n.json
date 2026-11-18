@@ -251,7 +251,11 @@
     "editPostButton": "Beitrag bearbeiten",
     "updateButton": "Aktualisieren",
     "bio": "Biografie",
-    "bioInputField": "Biografie eingeben"
+    "bioInputField": "Biografie eingeben",
+    "instagram": "Instagram",
+    "instagramInputField": "Benutzername",
+    "instagramLocked": "Instagram mit Premium hinzufügen",
+    "instagramInvalid": "Nur Buchstaben, Zahlen, Punkte und Unterstriche (max. 30)"
   },
   "search": {
     "emptyResult": "Keine Ergebnisse für Ihre Suche gefunden.",

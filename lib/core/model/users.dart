@@ -17,6 +17,7 @@ abstract class Users with _$Users {
     DateTime? lastPostDate,
     @Default(0) int streakWeeks,
     @Default('') String friendCode,
+    @Default('') String instagram,
   }) = _Users;
 
   const Users._();

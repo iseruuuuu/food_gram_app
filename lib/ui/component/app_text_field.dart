@@ -75,17 +75,15 @@ class AppSearchTextField extends HookWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 3),
                     child: Icon(Icons.search, color: textColor, size: 24),
                   ),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: hintColor),
+                  hintStyle: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium!.copyWith(color: hintColor),
                   label: Text(
                     Translations.of(context).restaurant.searchPlaceholder,
                   ),
-                  labelStyle: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: textColor),
+                  labelStyle: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium!.copyWith(color: textColor),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(18)),
                     borderSide: BorderSide(color: borderColor),
@@ -412,6 +410,100 @@ class AppSelfIntroductionTextField extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: scheme.onSurface,
                     fontSize: 17,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AppInstagramTextField extends StatelessWidget {
+  const AppInstagramTextField({
+    required this.controller,
+    required this.locked,
+    this.onLockedTap,
+    super.key,
+  });
+
+  final TextEditingController controller;
+  final bool locked;
+  final VoidCallback? onLockedTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final t = Translations.of(context).edit;
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Row(
+        children: [
+          const SizedBox(width: 10),
+          Expanded(
+            child: Semantics(
+              label: 'instagramField',
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: scheme.surface,
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: scheme.outlineVariant),
+                ),
+                child: TextField(
+                  key: ValueKey(locked),
+                  contextMenuBuilder: (context, state) {
+                    if (SystemContextMenu.isSupported(context)) {
+                      return SystemContextMenu.editableText(
+                        editableTextState: state,
+                      );
+                    }
+                    return AdaptiveTextSelectionToolbar.editableText(
+                      editableTextState: state,
+                    );
+                  },
+                  selectionHeightStyle: BoxHeightStyle.strut,
+                  readOnly: locked,
+                  enableInteractiveSelection: !locked,
+                  onTap: locked ? onLockedTap : null,
+                  decoration: InputDecoration(
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+                    hintText: locked
+                        ? t.instagramLocked
+                        : t.instagramInputField,
+                    hintStyle: TextStyle(color: scheme.onSurfaceVariant),
+                    label: Text(
+                      t.instagram,
+                      style: TextStyle(color: scheme.onSurfaceVariant),
+                    ),
+                    prefixText: locked ? null : '@',
+                    prefixStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: scheme.onSurface,
+                      fontSize: 16,
+                    ),
+                    suffixIcon: locked
+                        ? Icon(
+                            Icons.lock_rounded,
+                            size: 18,
+                            color: scheme.onSurfaceVariant,
+                          )
+                        : null,
+                  ),
+                  controller: locked ? null : controller,
+                  autocorrect: false,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: scheme.onSurface,
+                    fontSize: 16,
                   ),
                 ),
               ),
