@@ -251,7 +251,11 @@
     "editPostButton": "编辑帖子",
     "updateButton": "更新",
     "bio": "个人简介",
-    "bioInputField": "输入个人简介"
+    "bioInputField": "输入个人简介",
+    "instagram": "Instagram",
+    "instagramInputField": "用户名",
+    "instagramLocked": "高级会员可添加 Instagram",
+    "instagramInvalid": "仅限字母、数字、句点和底线，最多30个字符"
   },
   "search": {
     "emptyResult": "未找到搜索结果。",

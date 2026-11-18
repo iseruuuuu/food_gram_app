@@ -251,7 +251,11 @@
     "editPostButton": "Edit Post",
     "updateButton": "Update",
     "bio": "Bio",
-    "bioInputField": "Enter bio"
+    "bioInputField": "Enter bio",
+    "instagram": "Instagram",
+    "instagramInputField": "Username",
+    "instagramLocked": "Add Instagram with Premium",
+    "instagramInvalid": "Use letters, numbers, periods, and underscores (up to 30)"
   },
   "search": {
     "emptyResult": "No results found for your search.",

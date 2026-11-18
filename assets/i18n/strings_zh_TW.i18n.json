@@ -251,7 +251,11 @@
     "editPostButton": "編輯貼文",
     "updateButton": "更新",
     "bio": "個人簡介",
-    "bioInputField": "輸入個人簡介"
+    "bioInputField": "輸入個人簡介",
+    "instagram": "Instagram",
+    "instagramInputField": "帳號名稱",
+    "instagramLocked": "高級會員可加入 Instagram",
+    "instagramInvalid": "僅限英數、句點和底線，最多30個字元"
   },
   "search": {
     "emptyResult": "未找到搜尋結果。",
