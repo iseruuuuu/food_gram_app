@@ -126,6 +126,7 @@ enum PostDraftSaveResult {
   unchanged,
   created,
   trimmed,
+  subscriptionRequired,
 }
 
 /// 端末内の下書き一覧。先頭が新しい。
@@ -160,7 +161,16 @@ class PostDraftList {
   }
 
   static const maxCount = 20;
+  static const freeMaxCount = 5;
   static const _storeVersion = 2;
+
+  /// 新しい下書きを追加するにはサブスクが必要か。
+  static bool needsSubscriptionToAdd({
+    required int savedCount,
+    required bool isPremium,
+  }) {
+    return !isPremium && savedCount >= freeMaxCount;
+  }
 
   final List<PostDraft> items;
 

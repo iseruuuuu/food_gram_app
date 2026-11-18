@@ -8,6 +8,7 @@ import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/model/post_draft.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
+import 'package:food_gram_app/core/purchase/paywall_launch_guard.dart';
 import 'package:food_gram_app/core/review/in_app_review_service.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/services/streak_service.dart';
@@ -17,6 +18,7 @@ import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/component/dialog/app_paywall_success_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/app_streak_dialog.dart';
 import 'package:food_gram_app/ui/component/loading/app_overlay_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
@@ -61,6 +63,7 @@ class PostScreen extends HookConsumerWidget {
     final draftCount = useState(0);
     final didPromptDrafts = useRef(false);
     final isDraftPickerOpen = useRef(false);
+    final paywallGuard = useMemoized(PaywallLaunchGuard.new);
     final foodTexts = useMemoized(
       () => ValueNotifier<List<String>>(
         foodTags.value
@@ -106,6 +109,45 @@ class PostScreen extends HookConsumerWidget {
         draftCount.value = drafts.length;
       }
       return drafts;
+    }
+
+    Future<void> finishDraftSave(PostDraftSaveResult result) async {
+      if (!context.mounted) {
+        return;
+      }
+      if (result != PostDraftSaveResult.empty &&
+          result != PostDraftSaveResult.subscriptionRequired) {
+        ref
+            .read(postViewModelProvider().notifier)
+            .captureCompositionBaseline(foodTags: foodTags.value);
+      }
+      switch (result) {
+        case PostDraftSaveResult.empty:
+          SnackBarHelper().openSimpleSnackBar(
+            context,
+            t.post.draftNothingToSave,
+          );
+        case PostDraftSaveResult.unchanged:
+        case PostDraftSaveResult.subscriptionRequired:
+          break;
+        case PostDraftSaveResult.saved:
+        case PostDraftSaveResult.created:
+        case PostDraftSaveResult.trimmed:
+          await reloadDrafts();
+          if (!context.mounted) {
+            return;
+          }
+          final message = switch (result) {
+            PostDraftSaveResult.trimmed => t.post.draftSavedTrimmed,
+            PostDraftSaveResult.created => t.post.draftSavedAsNew,
+            _ => t.post.draftSaved,
+          };
+          SnackBarHelper().openSuccessSnackBar(
+            context,
+            t.post.saveDraft,
+            message,
+          );
+      }
     }
 
     Future<bool> confirmDiscard({
@@ -527,47 +569,41 @@ class PostScreen extends HookConsumerWidget {
                       child: OutlinedButton(
                         onPressed: () async {
                           primaryFocus?.unfocus();
-                          final result = await ref
-                              .read(postViewModelProvider().notifier)
-                              .saveDraft(foodTags: foodTags.value);
+                          final notifier = ref.read(
+                            postViewModelProvider().notifier,
+                          );
+                          final result = await notifier.saveDraft(
+                            foodTags: foodTags.value,
+                          );
                           if (!context.mounted) {
                             return;
                           }
-                          if (result != PostDraftSaveResult.empty) {
+                          if (result ==
+                              PostDraftSaveResult.subscriptionRequired) {
                             ref
-                                .read(postViewModelProvider().notifier)
-                                .captureCompositionBaseline(
-                                  foodTags: foodTags.value,
+                                .read(firebaseAnalyticsServiceProvider)
+                                .logPremiumFeatureTap(
+                                  AnalyticsEvent.premiumDraftLimitTap,
                                 );
+                            final purchased = await paywallGuard.present(
+                              context: context,
+                              ref: ref,
+                              source: 'post_draft_limit',
+                            );
+                            if (!purchased || !context.mounted) {
+                              return;
+                            }
+                            await showPaywallSuccessDialog(context: context);
+                            if (!context.mounted) {
+                              return;
+                            }
+                            final saved = await notifier.saveDraft(
+                              foodTags: foodTags.value,
+                            );
+                            await finishDraftSave(saved);
+                            return;
                           }
-                          switch (result) {
-                            case PostDraftSaveResult.empty:
-                              SnackBarHelper().openSimpleSnackBar(
-                                context,
-                                t.post.draftNothingToSave,
-                              );
-                            case PostDraftSaveResult.unchanged:
-                              break;
-                            case PostDraftSaveResult.saved:
-                            case PostDraftSaveResult.created:
-                            case PostDraftSaveResult.trimmed:
-                              await reloadDrafts();
-                              if (!context.mounted) {
-                                return;
-                              }
-                              final message = switch (result) {
-                                PostDraftSaveResult.trimmed =>
-                                  t.post.draftSavedTrimmed,
-                                PostDraftSaveResult.created =>
-                                  t.post.draftSavedAsNew,
-                                _ => t.post.draftSaved,
-                              };
-                              SnackBarHelper().openSuccessSnackBar(
-                                context,
-                                t.post.saveDraft,
-                                message,
-                              );
-                          }
+                          await finishDraftSave(result);
                         },
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(

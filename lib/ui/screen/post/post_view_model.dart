@@ -10,6 +10,7 @@ import 'package:food_gram_app/core/model/post_draft.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/post/repository/post_repository.dart';
+import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/utils/format/post_price_formatter.dart';
 import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/utils/image/upload_image_bytes.dart';
@@ -522,6 +523,13 @@ class PostViewModel extends _$PostViewModel {
       _activeDraftId = existing.id;
       return PostDraftSaveResult.unchanged;
     }
+    if (current.length >= PostDraftList.freeMaxCount &&
+        PostDraftList.needsSubscriptionToAdd(
+          savedCount: current.length,
+          isPremium: await _isPremium(),
+        )) {
+      return PostDraftSaveResult.subscriptionRequired;
+    }
     final draft = _buildDraft(
       id: now.microsecondsSinceEpoch.toString(),
       savedAt: now,
@@ -545,6 +553,14 @@ class PostViewModel extends _$PostViewModel {
       return PostDraftSaveResult.created;
     }
     return PostDraftSaveResult.saved;
+  }
+
+  Future<bool> _isPremium() async {
+    try {
+      return await ref.read(isSubscribeProvider.future);
+    } on Object {
+      return false;
+    }
   }
 
   bool _differsOnlyByCurrency(PostDraft current, PostDraft baseline) {
