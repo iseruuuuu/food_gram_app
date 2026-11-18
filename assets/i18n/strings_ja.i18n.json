@@ -229,6 +229,9 @@
     "newDraft": "新しく書く",
     "newDraftConfirmTitle": "新しく書く",
     "newDraftConfirmMessage": "いまの入力を破棄しますか？保存済みの下書きは残ります",
+    "replaceDraftConfirmTitle": "下書きを読み込む",
+    "replaceDraftConfirmMessage": "いまの入力を破棄して、この下書きを読み込みますか？保存済みの下書きは残ります",
+    "replaceDraftConfirmAction": "読み込む",
     "draftPickHint": "タップで読み込めます。選択するとまとめて削除できます"
   },
   "share": {

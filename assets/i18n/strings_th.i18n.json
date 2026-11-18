@@ -229,6 +229,9 @@
     "newDraft": "เขียนใหม่",
     "newDraftConfirmTitle": "เขียนใหม่",
     "newDraftConfirmMessage": "ละทิ้งสิ่งที่กำลังพิมพ์อยู่หรือไม่? แบบร่างที่บันทึกไว้จะยังอยู่",
+    "replaceDraftConfirmTitle": "โหลดแบบร่าง",
+    "replaceDraftConfirmMessage": "ละทิ้งสิ่งที่กำลังพิมพ์และโหลดแบบร่างนี้หรือไม่? แบบร่างที่บันทึกไว้จะยังอยู่",
+    "replaceDraftConfirmAction": "โหลด",
     "draftPickHint": "แตะเพื่อโหลด ใช้เลือกเพื่อลบหลายรายการพร้อมกัน"
   },
   "share": {

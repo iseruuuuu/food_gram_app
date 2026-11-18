@@ -74,9 +74,11 @@ class PostDraft {
     'priceCurrency': priceCurrency,
   };
 
+  static bool isCurrentItemVersion(Object? version) => version == _version;
+
   static PostDraft? fromJson(Map<String, dynamic> decoded) {
     try {
-      if (decoded['v'] is! int) {
+      if (!isCurrentItemVersion(decoded['v'])) {
         return null;
       }
       final tags = decoded['foodTags'];
@@ -142,6 +144,9 @@ class PostDraftList {
       final map = Map<String, dynamic>.from(decoded);
       final storedItems = map['items'];
       if (storedItems is List) {
+        if (map['v'] != _storeVersion) {
+          return const PostDraftList([]);
+        }
         return PostDraftList(_parseItems(storedItems));
       }
       final single = PostDraft.fromJson(map);
@@ -195,7 +200,10 @@ class PostDraftList {
       if (decoded is! Map) {
         return false;
       }
-      return decoded['items'] is! List;
+      if (decoded['items'] is List) {
+        return false;
+      }
+      return PostDraft.isCurrentItemVersion(decoded['v']);
     } on Object {
       return false;
     }

@@ -229,6 +229,9 @@
     "newDraft": "Nouveau texte",
     "newDraftConfirmTitle": "Nouveau texte",
     "newDraftConfirmMessage": "Abandonner la saisie en cours ? Les brouillons enregistrés restent",
+    "replaceDraftConfirmTitle": "Charger le brouillon",
+    "replaceDraftConfirmMessage": "Abandonner la saisie en cours et charger ce brouillon ? Les brouillons enregistrés restent",
+    "replaceDraftConfirmAction": "Charger",
     "draftPickHint": "Touchez un brouillon pour le charger. Sélectionner permet d'en supprimer plusieurs"
   },
   "share": {

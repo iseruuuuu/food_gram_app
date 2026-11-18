@@ -229,6 +229,9 @@
     "newDraft": "Empezar de nuevo",
     "newDraftConfirmTitle": "Empezar de nuevo",
     "newDraftConfirmMessage": "¿Descartar lo que has escrito? Los borradores guardados se mantienen",
+    "replaceDraftConfirmTitle": "Cargar borrador",
+    "replaceDraftConfirmMessage": "¿Descartar lo que has escrito y cargar este borrador? Los borradores guardados se mantienen",
+    "replaceDraftConfirmAction": "Cargar",
     "draftPickHint": "Toca un borrador para cargarlo. Seleccionar permite borrar varios"
   },
   "share": {

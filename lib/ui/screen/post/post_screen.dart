@@ -84,6 +84,7 @@ class PostScreen extends HookConsumerWidget {
         applyRestaurant: restaurant == null,
       );
       foodTags.value = List<String>.from(draft.foodTags);
+      viewModel.captureCompositionBaseline(foodTags: foodTags.value);
       isOptionalExpanded.value =
           draft.foodName.trim().isNotEmpty ||
           draft.foodTags.isNotEmpty ||
@@ -107,6 +108,34 @@ class PostScreen extends HookConsumerWidget {
       return drafts;
     }
 
+    Future<bool> confirmDiscard({
+      required BuildContext dialogContext,
+      required String title,
+      required String message,
+      required String action,
+    }) async {
+      final accepted = await showDialog<bool>(
+        context: dialogContext,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(t.cancel),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text(action),
+              ),
+            ],
+          );
+        },
+      );
+      return accepted == true && dialogContext.mounted;
+    }
+
     Future<void> openDraftPicker() async {
       if (isDraftPickerOpen.value || !context.mounted) {
         return;
@@ -124,7 +153,25 @@ class PostScreen extends HookConsumerWidget {
           builder: (sheetContext) {
             return PostDraftPickerSheet(
               drafts: drafts,
-              onSelect: (draft) {
+              onSelect: (draft) async {
+                final notifier = ref.read(postViewModelProvider().notifier);
+                final discard = notifier.hasUnsavedDraftEdits(
+                  foodTags: foodTags.value,
+                );
+                if (discard) {
+                  final accepted = await confirmDiscard(
+                    dialogContext: sheetContext,
+                    title: t.post.replaceDraftConfirmTitle,
+                    message: t.post.replaceDraftConfirmMessage,
+                    action: t.post.replaceDraftConfirmAction,
+                  );
+                  if (!accepted || !sheetContext.mounted) {
+                    return;
+                  }
+                }
+                if (!sheetContext.mounted) {
+                  return;
+                }
                 Navigator.of(sheetContext).pop();
                 applyLoadedDraft(draft);
               },
@@ -149,34 +196,20 @@ class PostScreen extends HookConsumerWidget {
                   keepRestaurant: restaurant != null,
                 );
                 if (discard) {
-                  final accepted = await showDialog<bool>(
-                    context: sheetContext,
-                    builder: (dialogContext) {
-                      return AlertDialog(
-                        title: Text(t.post.newDraftConfirmTitle),
-                        content: Text(t.post.newDraftConfirmMessage),
-                        actions: [
-                          TextButton(
-                            onPressed: () =>
-                                Navigator.of(dialogContext).pop(false),
-                            child: Text(t.cancel),
-                          ),
-                          TextButton(
-                            onPressed: () =>
-                                Navigator.of(dialogContext).pop(true),
-                            child: Text(t.post.newDraft),
-                          ),
-                        ],
-                      );
-                    },
+                  final accepted = await confirmDiscard(
+                    dialogContext: sheetContext,
+                    title: t.post.newDraftConfirmTitle,
+                    message: t.post.newDraftConfirmMessage,
+                    action: t.post.newDraft,
                   );
-                  if (accepted != true || !sheetContext.mounted) {
+                  if (!accepted || !sheetContext.mounted) {
                     return;
                   }
                 }
                 Navigator.of(sheetContext).pop();
                 notifier.startNewDraft(keepRestaurant: restaurant != null);
                 foodTags.value = [];
+                notifier.captureCompositionBaseline(foodTags: foodTags.value);
                 isOptionalExpanded.value = false;
               },
             );
@@ -202,6 +235,9 @@ class PostScreen extends HookConsumerWidget {
                 .read(postViewModelProvider().notifier)
                 .loadRestaurant(restaurant);
           }
+          ref
+              .read(postViewModelProvider().notifier)
+              .captureCompositionBaseline(foodTags: foodTags.value);
           final drafts = await reloadDrafts();
           if (!context.mounted || drafts.isEmpty) {
             return;
@@ -496,6 +532,13 @@ class PostScreen extends HookConsumerWidget {
                               .saveDraft(foodTags: foodTags.value);
                           if (!context.mounted) {
                             return;
+                          }
+                          if (result != PostDraftSaveResult.empty) {
+                            ref
+                                .read(postViewModelProvider().notifier)
+                                .captureCompositionBaseline(
+                                  foodTags: foodTags.value,
+                                );
                           }
                           switch (result) {
                             case PostDraftSaveResult.empty:

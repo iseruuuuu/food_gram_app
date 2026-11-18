@@ -39,11 +39,13 @@ class PostViewModel extends _$PostViewModel {
   final Map<String, Uint8List> _imageBytesMap = {};
   var _restoredFromDraft = false;
   String? _activeDraftId;
+  PostDraft? _compositionBaseline;
   var _priceCurrencyManuallySet = false;
   var _disposed = false;
   var _isPosting = false;
   var _currencyAutoDetectSeq = 0;
   var _activePostSubmitId = 0;
+  Future<void> _draftStoreQueue = Future<void>.value();
   PostSubmitCancellation? _postSubmitCancellation;
   Loading get _loading => ref.read(loadingProvider.notifier);
 
@@ -467,6 +469,9 @@ class PostViewModel extends _$PostViewModel {
     required List<String> foodTags,
     required bool keepRestaurant,
   }) {
+    if (state.foodImages.isNotEmpty) {
+      return true;
+    }
     final hasText =
         foodController.text.trim().isNotEmpty ||
         commentController.text.trim().isNotEmpty ||
@@ -484,7 +489,22 @@ class PostViewModel extends _$PostViewModel {
         state.restaurant != unknownRestaurantName;
   }
 
+  Future<T> _withDraftStoreLock<T>(Future<T> Function() action) {
+    final previous = _draftStoreQueue;
+    final result = previous.catchError((Object _) {}).then((_) => action());
+    _draftStoreQueue = result.then<void>((_) {}, onError: (Object _) {});
+    return result;
+  }
+
   Future<PostDraftSaveResult> saveDraft({
+    required List<String> foodTags,
+  }) {
+    return _withDraftStoreLock(
+      () => _saveDraftUnlocked(foodTags: foodTags),
+    );
+  }
+
+  Future<PostDraftSaveResult> _saveDraftUnlocked({
     required List<String> foodTags,
   }) async {
     final now = DateTime.now();
@@ -527,6 +547,23 @@ class PostViewModel extends _$PostViewModel {
     return PostDraftSaveResult.saved;
   }
 
+  bool _differsOnlyByCurrency(PostDraft current, PostDraft baseline) {
+    return PostDraft(
+      id: current.id,
+      savedAt: current.savedAt,
+      foodName: current.foodName,
+      comment: current.comment,
+      priceInput: current.priceInput,
+      restaurant: current.restaurant,
+      lat: current.lat,
+      lng: current.lng,
+      foodTags: current.foodTags,
+      star: current.star,
+      isAnonymous: current.isAnonymous,
+      priceCurrency: baseline.priceCurrency,
+    ).hasSameContentAs(baseline);
+  }
+
   PostDraft? _draftWithSameContent(List<PostDraft> drafts, PostDraft draft) {
     for (final item in drafts) {
       if (item.hasSameContentAs(draft)) {
@@ -536,30 +573,60 @@ class PostViewModel extends _$PostViewModel {
     return null;
   }
 
-  Future<void> deleteDrafts(Set<String> ids) async {
+  Future<void> deleteDrafts(Set<String> ids) {
     if (ids.isEmpty) {
-      return;
+      return Future<void>.value();
     }
-    await _removeStoredDrafts(ids);
-    if (_activeDraftId != null && ids.contains(_activeDraftId)) {
-      _activeDraftId = null;
-      _restoredFromDraft = false;
+    return _withDraftStoreLock(() async {
+      await _writeDraftRemoval(ids);
+      if (_activeDraftId != null && ids.contains(_activeDraftId)) {
+        _activeDraftId = null;
+        _restoredFromDraft = false;
+      }
+      ref
+          .read(firebaseAnalyticsServiceProvider)
+          .logEventUnawaited(
+            name: AnalyticsEvent.draftDelete,
+          );
+    });
+  }
+
+  void captureCompositionBaseline({required List<String> foodTags}) {
+    _compositionBaseline = _buildDraft(
+      id: _activeDraftId ?? '',
+      savedAt: DateTime.fromMillisecondsSinceEpoch(0),
+      foodTags: foodTags,
+    );
+  }
+
+  bool hasUnsavedDraftEdits({required List<String> foodTags}) {
+    final current = _buildDraft(
+      id: '',
+      savedAt: DateTime.fromMillisecondsSinceEpoch(0),
+      foodTags: foodTags,
+    );
+    final baseline = _compositionBaseline;
+    if (baseline == null) {
+      return current.hasRestorableContent;
     }
-    ref
-        .read(firebaseAnalyticsServiceProvider)
-        .logEventUnawaited(
-          name: AnalyticsEvent.draftDelete,
-        );
+    if (current.hasSameContentAs(baseline)) {
+      return false;
+    }
+    return _priceCurrencyManuallySet ||
+        !_differsOnlyByCurrency(current, baseline);
   }
 
   void startNewDraft({required bool keepRestaurant}) {
+    _currencyAutoDetectSeq++;
     _activeDraftId = null;
     _restoredFromDraft = false;
     foodController.clear();
     commentController.clear();
     priceController.clear();
     _priceCurrencyManuallySet = false;
+    _imageBytesMap.clear();
     state = state.copyWith(
+      foodImages: const <String>[],
       restaurant: keepRestaurant ? state.restaurant : defaultRestaurantText,
       lat: keepRestaurant ? state.lat : 0,
       lng: keepRestaurant ? state.lng : 0,
@@ -615,7 +682,11 @@ class PostViewModel extends _$PostViewModel {
     );
   }
 
-  Future<void> _removeStoredDrafts(Set<String> ids) async {
+  Future<void> _removeStoredDrafts(Set<String> ids) {
+    return _withDraftStoreLock(() => _writeDraftRemoval(ids));
+  }
+
+  Future<void> _writeDraftRemoval(Set<String> ids) async {
     if (ids.isEmpty) {
       return;
     }

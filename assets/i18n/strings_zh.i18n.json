@@ -229,6 +229,9 @@
     "newDraft": "重新撰写",
     "newDraftConfirmTitle": "重新撰写",
     "newDraftConfirmMessage": "要丢弃当前输入吗？已保存的草稿会保留",
+    "replaceDraftConfirmTitle": "加载草稿",
+    "replaceDraftConfirmMessage": "要丢弃当前输入并加载这条草稿吗？已保存的草稿会保留",
+    "replaceDraftConfirmAction": "加载",
     "draftPickHint": "点击即可加载。使用选择可一次删除多条"
   },
   "share": {

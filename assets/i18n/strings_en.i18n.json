@@ -229,6 +229,9 @@
     "newDraft": "Start new",
     "newDraftConfirmTitle": "Start new",
     "newDraftConfirmMessage": "Discard what you have entered? Saved drafts will stay in the list",
+    "replaceDraftConfirmTitle": "Load draft",
+    "replaceDraftConfirmMessage": "Discard what you have entered and load this draft? Saved drafts will stay in the list",
+    "replaceDraftConfirmAction": "Load",
     "draftPickHint": "Tap a draft to load it. Select lets you delete several at once"
   },
   "share": {

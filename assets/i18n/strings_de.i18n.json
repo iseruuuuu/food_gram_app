@@ -229,6 +229,9 @@
     "newDraft": "Neu schreiben",
     "newDraftConfirmTitle": "Neu schreiben",
     "newDraftConfirmMessage": "Aktuelle Eingabe verwerfen? Gespeicherte Entwürfe bleiben erhalten",
+    "replaceDraftConfirmTitle": "Entwurf laden",
+    "replaceDraftConfirmMessage": "Aktuelle Eingabe verwerfen und diesen Entwurf laden? Gespeicherte Entwürfe bleiben erhalten",
+    "replaceDraftConfirmAction": "Laden",
     "draftPickHint": "Tippe auf einen Entwurf, um ihn zu laden. Mit Auswählen löschst du mehrere"
   },
   "share": {

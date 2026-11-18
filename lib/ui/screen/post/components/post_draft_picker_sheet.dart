@@ -18,7 +18,7 @@ class PostDraftPickerSheet extends HookWidget {
   });
 
   final List<PostDraft> drafts;
-  final ValueChanged<PostDraft> onSelect;
+  final Future<void> Function(PostDraft draft) onSelect;
   final Future<List<PostDraft>> Function(Set<String> ids) onDelete;
   final Future<void> Function() onStartNew;
 
@@ -31,6 +31,7 @@ class PostDraftPickerSheet extends HookWidget {
     final selected = useState<Set<String>>(const {});
     final deleting = useState(false);
     final startingNew = useState(false);
+    final selectingDraft = useState(false);
     final dateFormat = useMemoized(() => DateFormat('yyyy/MM/dd HH:mm'));
 
     void toggle(String id) {
@@ -216,12 +217,24 @@ class PostDraftPickerSheet extends HookWidget {
                           dateLabel: dateFormat.format(draft.savedAt.toLocal()),
                           selecting: selecting.value,
                           selected: isSelected,
-                          onTap: () {
+                          onTap: () async {
                             if (selecting.value) {
                               toggle(draft.id);
                               return;
                             }
-                            onSelect(draft);
+                            if (selectingDraft.value ||
+                                startingNew.value ||
+                                deleting.value) {
+                              return;
+                            }
+                            selectingDraft.value = true;
+                            try {
+                              await onSelect(draft);
+                            } finally {
+                              if (context.mounted) {
+                                selectingDraft.value = false;
+                              }
+                            }
                           },
                         );
                       },

@@ -229,6 +229,9 @@
     "newDraft": "Viết mới",
     "newDraftConfirmTitle": "Viết mới",
     "newDraftConfirmMessage": "Hủy nội dung đang nhập? Bản nháp đã lưu vẫn được giữ",
+    "replaceDraftConfirmTitle": "Tải bản nháp",
+    "replaceDraftConfirmMessage": "Hủy nội dung đang nhập và tải bản nháp này? Bản nháp đã lưu vẫn được giữ",
+    "replaceDraftConfirmAction": "Tải",
     "draftPickHint": "Chạm để tải. Dùng Chọn để xóa nhiều bản nháp cùng lúc"
   },
   "share": {

@@ -229,6 +229,9 @@
     "newDraft": "새로 작성",
     "newDraftConfirmTitle": "새로 작성",
     "newDraftConfirmMessage": "현재 입력을 취소할까요? 저장된 임시 저장은 남습니다",
+    "replaceDraftConfirmTitle": "임시 저장 불러오기",
+    "replaceDraftConfirmMessage": "현재 입력을 취소하고 이 임시 저장을 불러올까요? 저장된 임시 저장은 남습니다",
+    "replaceDraftConfirmAction": "불러오기",
     "draftPickHint": "탭하면 불러옵니다. 선택하면 여러 개를 삭제할 수 있습니다"
   },
   "share": {
