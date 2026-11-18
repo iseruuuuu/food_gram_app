@@ -59,6 +59,15 @@ class EditViewModel extends _$EditViewModel {
     _loading.state = false;
   }
 
+  /// 購入後に入力中の名前・自己紹介・アイコンを残したままサブスク状態だけ更新する。
+  Future<void> refreshSubscription() async {
+    state = state.copyWith(
+      isSubscribe: true,
+      user: state.user?.copyWith(isSubscribe: true),
+    );
+    await ref.read(isSubscribeProvider.notifier).refresh();
+  }
+
   String extractNumber(String path) {
     final regExp = RegExp(r'\d+');
     final Match? match = regExp.firstMatch(path);

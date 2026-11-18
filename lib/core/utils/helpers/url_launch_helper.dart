@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:food_gram_app/core/utils/instagram_username.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -32,7 +33,17 @@ class LaunchUrlHelper {
     }
     final appUri = instagramAppUri(handle);
     if (await canLaunchUrl(appUri)) {
-      return launchUrl(appUri, mode: LaunchMode.externalApplication);
+      try {
+        final launched = await launchUrl(
+          appUri,
+          mode: LaunchMode.externalApplication,
+        );
+        if (launched) {
+          return true;
+        }
+      } on PlatformException {
+        // 起動判定のあとでアプリが開けないときはブラウザへ戻す。
+      }
     }
     return open(instagramWebUri(handle).toString());
   }

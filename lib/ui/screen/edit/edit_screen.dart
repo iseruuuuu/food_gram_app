@@ -323,7 +323,7 @@ Future<void> _openInstagramPaywall({
   if (!purchased || !context.mounted) {
     return;
   }
-  await ref.read(editViewModelProvider().notifier).getProfile();
+  await ref.read(editViewModelProvider().notifier).refreshSubscription();
   if (context.mounted) {
     await showPaywallSuccessDialog(context: context);
   }
