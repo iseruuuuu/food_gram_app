@@ -81,10 +81,14 @@ class AccountService {
     }
   }
 
+  /// [instagram] はサブスク会員のときだけ渡す。
+  /// null のときは `account-update` に含めず、保存済みの値を残す。
+  /// 空文字は未設定に戻す。
   Future<Result<void, Exception>> update({
     required String name,
     required String selfIntroduce,
     required String image,
+    String? instagram,
     Uint8List? imageBytes,
     String? uploadImage,
   }) async {
@@ -114,6 +118,9 @@ class AccountService {
       if (updates.containsKey('image')) {
         payload['image'] = updates['image'];
       }
+      if (instagram != null) {
+        payload['instagram'] = instagram;
+      }
       final res = await supabase.functions.invoke(
         'account-update',
         body: payload,
@@ -128,6 +135,7 @@ class AccountService {
         logger.e('Failed to update user via function: $errorMsg');
         return Failure(Exception(errorMsg));
       }
+      CacheManager().invalidate('user_$_currentUserId');
       return const Success(null);
     } on PostgrestException catch (error) {
       logger.e('Failed to update user: ${error.message}');
