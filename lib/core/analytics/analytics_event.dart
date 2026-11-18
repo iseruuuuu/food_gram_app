@@ -157,6 +157,7 @@ abstract final class AnalyticsEvent {
   static const premiumProfileCustomizationTap =
       'premium_profile_customization_tap';
   static const premiumRemoveAdsTap = 'premium_remove_ads_tap';
+  static const premiumDraftLimitTap = 'premium_draft_limit_tap';
 
   // --- マイルストーン / FoodGram ---
   static const firstRecordOpen = 'first_record_open';

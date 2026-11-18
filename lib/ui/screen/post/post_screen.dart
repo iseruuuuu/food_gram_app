@@ -5,19 +5,24 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/analytics_screen.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
+import 'package:food_gram_app/core/model/post_draft.dart';
 import 'package:food_gram_app/core/model/restaurant.dart';
 import 'package:food_gram_app/core/model/tag.dart';
+import 'package:food_gram_app/core/purchase/paywall_launch_guard.dart';
 import 'package:food_gram_app/core/review/in_app_review_service.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/services/streak_service.dart';
+import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/core/theme/style/post_style.dart';
 import 'package:food_gram_app/core/utils/helpers/haptic_feedback_helper.dart';
 import 'package:food_gram_app/core/utils/helpers/snack_bar_helper.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
+import 'package:food_gram_app/ui/component/dialog/app_paywall_success_dialog.dart';
 import 'package:food_gram_app/ui/component/dialog/app_streak_dialog.dart';
 import 'package:food_gram_app/ui/component/loading/app_overlay_loading.dart';
 import 'package:food_gram_app/ui/component/modal_sheet/app_post_image_modal_sheet.dart';
+import 'package:food_gram_app/ui/screen/post/components/post_draft_picker_sheet.dart';
 import 'package:food_gram_app/ui/screen/post/components/post_form_widgets.dart';
 import 'package:food_gram_app/ui/screen/post/post_view_model.dart';
 import 'package:gap/gap.dart';
@@ -55,6 +60,10 @@ class PostScreen extends HookConsumerWidget {
     final foodTags = useState<List<String>>([]);
     final isOptionalExpanded = useState(false);
     final isSubmittingPost = useState(false);
+    final draftCount = useState(0);
+    final didPromptDrafts = useRef(false);
+    final isDraftPickerOpen = useRef(false);
+    final paywallGuard = useMemoized(PaywallLaunchGuard.new);
     final foodTexts = useMemoized(
       () => ValueNotifier<List<String>>(
         foodTags.value
@@ -64,45 +73,222 @@ class PostScreen extends HookConsumerWidget {
       [foodTags.value],
     );
 
+    void applyLoadedDraft(PostDraft draft) {
+      if (!context.mounted) {
+        return;
+      }
+      final analytics = ref.read(firebaseAnalyticsServiceProvider);
+      final viewModel = ref.read(postViewModelProvider().notifier);
+      viewModel.markRestoredFromDraft();
+      analytics.logScreen(AnalyticsScreen.draft);
+      analytics.logEventUnawaited(name: AnalyticsEvent.draftOpen);
+      viewModel.applyDraft(
+        draft,
+        applyRestaurant: restaurant == null,
+      );
+      foodTags.value = List<String>.from(draft.foodTags);
+      viewModel.captureCompositionBaseline(foodTags: foodTags.value);
+      isOptionalExpanded.value =
+          draft.foodName.trim().isNotEmpty ||
+          draft.foodTags.isNotEmpty ||
+          draft.comment.trim().isNotEmpty ||
+          draft.priceInput.trim().isNotEmpty ||
+          draft.star > 0;
+      SnackBarHelper().openSuccessSnackBar(
+        context,
+        t.post.title,
+        t.post.draftRestored,
+      );
+    }
+
+    Future<List<PostDraft>> reloadDrafts() async {
+      final drafts = await ref
+          .read(postViewModelProvider().notifier)
+          .loadSavedDrafts();
+      if (context.mounted) {
+        draftCount.value = drafts.length;
+      }
+      return drafts;
+    }
+
+    Future<void> finishDraftSave(PostDraftSaveResult result) async {
+      if (!context.mounted) {
+        return;
+      }
+      if (result != PostDraftSaveResult.empty &&
+          result != PostDraftSaveResult.subscriptionRequired) {
+        ref
+            .read(postViewModelProvider().notifier)
+            .captureCompositionBaseline(foodTags: foodTags.value);
+      }
+      switch (result) {
+        case PostDraftSaveResult.empty:
+          SnackBarHelper().openSimpleSnackBar(
+            context,
+            t.post.draftNothingToSave,
+          );
+        case PostDraftSaveResult.unchanged:
+        case PostDraftSaveResult.subscriptionRequired:
+          break;
+        case PostDraftSaveResult.saved:
+        case PostDraftSaveResult.created:
+        case PostDraftSaveResult.trimmed:
+          await reloadDrafts();
+          if (!context.mounted) {
+            return;
+          }
+          final message = switch (result) {
+            PostDraftSaveResult.trimmed => t.post.draftSavedTrimmed,
+            PostDraftSaveResult.created => t.post.draftSavedAsNew,
+            _ => t.post.draftSaved,
+          };
+          SnackBarHelper().openSuccessSnackBar(
+            context,
+            t.post.saveDraft,
+            message,
+          );
+      }
+    }
+
+    Future<bool> confirmDiscard({
+      required BuildContext dialogContext,
+      required String title,
+      required String message,
+      required String action,
+    }) async {
+      final accepted = await showDialog<bool>(
+        context: dialogContext,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(t.cancel),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text(action),
+              ),
+            ],
+          );
+        },
+      );
+      return accepted == true && dialogContext.mounted;
+    }
+
+    Future<void> openDraftPicker() async {
+      if (isDraftPickerOpen.value || !context.mounted) {
+        return;
+      }
+      isDraftPickerOpen.value = true;
+      try {
+        final drafts = await reloadDrafts();
+        if (!context.mounted || drafts.isEmpty) {
+          return;
+        }
+        await showModalBottomSheet<void>(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (sheetContext) {
+            return PostDraftPickerSheet(
+              drafts: drafts,
+              onSelect: (draft) async {
+                final notifier = ref.read(postViewModelProvider().notifier);
+                final discard = notifier.hasUnsavedDraftEdits(
+                  foodTags: foodTags.value,
+                );
+                if (discard) {
+                  final accepted = await confirmDiscard(
+                    dialogContext: sheetContext,
+                    title: t.post.replaceDraftConfirmTitle,
+                    message: t.post.replaceDraftConfirmMessage,
+                    action: t.post.replaceDraftConfirmAction,
+                  );
+                  if (!accepted || !sheetContext.mounted) {
+                    return;
+                  }
+                }
+                if (!sheetContext.mounted) {
+                  return;
+                }
+                Navigator.of(sheetContext).pop();
+                applyLoadedDraft(draft);
+              },
+              onDelete: (ids) async {
+                await ref
+                    .read(postViewModelProvider().notifier)
+                    .deleteDrafts(ids);
+                final latest = await reloadDrafts();
+                if (sheetContext.mounted) {
+                  SnackBarHelper().openSuccessSnackBar(
+                    sheetContext,
+                    t.post.draftsTitle,
+                    t.post.draftsDeleted,
+                  );
+                }
+                return latest;
+              },
+              onStartNew: () async {
+                final notifier = ref.read(postViewModelProvider().notifier);
+                final discard = notifier.hasContentToDiscard(
+                  foodTags: foodTags.value,
+                  keepRestaurant: restaurant != null,
+                );
+                if (discard) {
+                  final accepted = await confirmDiscard(
+                    dialogContext: sheetContext,
+                    title: t.post.newDraftConfirmTitle,
+                    message: t.post.newDraftConfirmMessage,
+                    action: t.post.newDraft,
+                  );
+                  if (!accepted || !sheetContext.mounted) {
+                    return;
+                  }
+                }
+                Navigator.of(sheetContext).pop();
+                notifier.startNewDraft(keepRestaurant: restaurant != null);
+                foodTags.value = [];
+                notifier.captureCompositionBaseline(foodTags: foodTags.value);
+                isOptionalExpanded.value = false;
+              },
+            );
+          },
+        );
+      } finally {
+        isDraftPickerOpen.value = false;
+      }
+    }
+
     useEffect(
       () {
         final analytics = ref.read(firebaseAnalyticsServiceProvider);
         // ScreenView(Post) は GoRouter Observer が送信。Draft のみ手動。
         unawaited(analytics.logPostStart(source: routerPath));
         WidgetsBinding.instance.addPostFrameCallback((_) async {
+          if (didPromptDrafts.value) {
+            return;
+          }
+          didPromptDrafts.value = true;
           if (restaurant != null) {
             ref
                 .read(postViewModelProvider().notifier)
                 .loadRestaurant(restaurant);
           }
-          final draft =
-              await ref.read(postViewModelProvider().notifier).loadSavedDraft();
-          if (!context.mounted) {
+          ref
+              .read(postViewModelProvider().notifier)
+              .captureCompositionBaseline(foodTags: foodTags.value);
+          final drafts = await reloadDrafts();
+          if (!context.mounted || drafts.isEmpty) {
             return;
           }
-          if (draft != null && draft.hasRestorableContent) {
-            ref.read(postViewModelProvider().notifier).markRestoredFromDraft();
-            analytics.logScreen(AnalyticsScreen.draft);
-            analytics.logEventUnawaited(name: AnalyticsEvent.draftOpen);
-            ref.read(postViewModelProvider().notifier).applyDraft(
-                  draft,
-                  applyRestaurant: restaurant == null,
-                );
-            foodTags.value = List<String>.from(draft.foodTags);
-            final hasOptionalDraft = draft.foodName.trim().isNotEmpty ||
-                draft.foodTags.isNotEmpty ||
-                draft.comment.trim().isNotEmpty ||
-                draft.priceInput.trim().isNotEmpty ||
-                draft.star > 0;
-            if (hasOptionalDraft) {
-              isOptionalExpanded.value = true;
-            }
-            SnackBarHelper().openSuccessSnackBar(
-              context,
-              t.post.title,
-              t.post.draftRestored,
-            );
+          if (drafts.length == 1) {
+            applyLoadedDraft(drafts.single);
+            return;
           }
+          await openDraftPicker();
         });
         return null;
       },
@@ -240,11 +426,11 @@ class PostScreen extends HookConsumerWidget {
                                 ref
                                     .read(firebaseAnalyticsServiceProvider)
                                     .logEventUnawaited(
-                                  name: AnalyticsEvent.postTagSelected,
-                                  parameters: {
-                                    AnalyticsParam.tag: tags.join(','),
-                                  },
-                                );
+                                      name: AnalyticsEvent.postTagSelected,
+                                      parameters: {
+                                        AnalyticsParam.tag: tags.join(','),
+                                      },
+                                    );
                               }
                             },
                             accent: optionalAccent,
@@ -296,17 +482,18 @@ class PostScreen extends HookConsumerWidget {
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
-                                    color:
-                                        Theme.of(context).colorScheme.onSurface,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
                                   ),
                                 ),
                                 Text(
                                   t.private.postDescription,
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurfaceVariant,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
                                   ),
                                 ),
                               ],
@@ -314,20 +501,20 @@ class PostScreen extends HookConsumerWidget {
                           ),
                           Switch(
                             value: postState.isAnonymous,
-                            activeThumbColor:
-                                Theme.of(context).colorScheme.primary,
-                            activeTrackColor: Theme.of(context)
-                                .colorScheme
-                                .primary
-                                .withValues(alpha: 0.3),
+                            activeThumbColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            activeTrackColor: Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(alpha: 0.3),
                             inactiveTrackColor:
                                 Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.grey[700]
-                                    : Colors.grey[300],
+                                ? Colors.grey[700]
+                                : Colors.grey[300],
                             inactiveThumbColor:
                                 Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.grey[400]
-                                    : Colors.white,
+                                ? Colors.grey[400]
+                                : Colors.white,
                             onChanged: (value) {
                               viewModel.setAnonymous(value: value);
                             },
@@ -352,22 +539,71 @@ class PostScreen extends HookConsumerWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    if (draftCount.value > 0) ...[
+                      SizedBox(
+                        width: double.infinity,
+                        height: 40,
+                        child: TextButton(
+                          onPressed: () {
+                            primaryFocus?.unfocus();
+                            openDraftPicker();
+                          },
+                          child: Text(
+                            t.post.openDrafts.replaceAll(
+                              '{count}',
+                              '${draftCount.value}',
+                            ),
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: AppTheme.primaryOrange,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Gap(4),
+                    ],
                     SizedBox(
                       width: double.infinity,
                       height: 48,
                       child: OutlinedButton(
                         onPressed: () async {
                           primaryFocus?.unfocus();
-                          await ref
-                              .read(postViewModelProvider().notifier)
-                              .saveDraft(foodTags: foodTags.value);
-                          if (context.mounted) {
-                            SnackBarHelper().openSuccessSnackBar(
-                              context,
-                              t.post.saveDraft,
-                              t.post.draftSaved,
-                            );
+                          final notifier = ref.read(
+                            postViewModelProvider().notifier,
+                          );
+                          final result = await notifier.saveDraft(
+                            foodTags: foodTags.value,
+                          );
+                          if (!context.mounted) {
+                            return;
                           }
+                          if (result ==
+                              PostDraftSaveResult.subscriptionRequired) {
+                            ref
+                                .read(firebaseAnalyticsServiceProvider)
+                                .logPremiumFeatureTap(
+                                  AnalyticsEvent.premiumDraftLimitTap,
+                                );
+                            final purchased = await paywallGuard.present(
+                              context: context,
+                              ref: ref,
+                              source: 'post_draft_limit',
+                            );
+                            if (!purchased || !context.mounted) {
+                              return;
+                            }
+                            await showPaywallSuccessDialog(context: context);
+                            if (!context.mounted) {
+                              return;
+                            }
+                            final saved = await notifier.saveDraft(
+                              foodTags: foodTags.value,
+                            );
+                            await finishDraftSave(saved);
+                            return;
+                          }
+                          await finishDraftSave(result);
                         },
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(
@@ -421,7 +657,8 @@ class PostScreen extends HookConsumerWidget {
                                   return;
                                 }
                                 if (result) {
-                                  final postCount = (ref
+                                  final postCount =
+                                      (ref
                                               .read(myPostStreamProvider)
                                               .value
                                               ?.length ??
@@ -433,17 +670,19 @@ class PostScreen extends HookConsumerWidget {
                                         .logPostCountMilestones(postCount),
                                   );
                                   // ストリークを更新
-                                  final streakService =
-                                      ref.read(streakServiceProvider.notifier);
-                                  final streakResult =
-                                      await streakService.updateStreak();
+                                  final streakService = ref.read(
+                                    streakServiceProvider.notifier,
+                                  );
+                                  final streakResult = await streakService
+                                      .updateStreak();
                                   if (!context.mounted) {
                                     return;
                                   }
                                   // ストリークが更新された場合のみダイアログを表示
                                   if (streakResult.isUpdated) {
-                                    final analytics = ref
-                                        .read(firebaseAnalyticsServiceProvider);
+                                    final analytics = ref.read(
+                                      firebaseAnalyticsServiceProvider,
+                                    );
                                     analytics.logEventUnawaited(
                                       name: AnalyticsEvent.streakView,
                                       parameters: {
@@ -465,8 +704,9 @@ class PostScreen extends HookConsumerWidget {
                                         streakResult.newStreakWeeks == 1;
                                     // ストリークの節目（3週、5週、10週）を判定
                                     final milestoneWeeks = [3, 5, 10];
-                                    final isMilestone = milestoneWeeks
-                                        .contains(streakResult.newStreakWeeks);
+                                    final isMilestone = milestoneWeeks.contains(
+                                      streakResult.newStreakWeeks,
+                                    );
 
                                     await showStreakDialog(
                                       context: context,
@@ -496,9 +736,11 @@ class PostScreen extends HookConsumerWidget {
                                   }
                                 } else {
                                   isSubmittingPost.value = false;
-                                  final latestStatus =
-                                      ref.read(postViewModelProvider()).status;
-                                  final isNetworkError = latestStatus ==
+                                  final latestStatus = ref
+                                      .read(postViewModelProvider())
+                                      .status;
+                                  final isNetworkError =
+                                      latestStatus ==
                                       PostStatus.networkError.name;
                                   SnackBarHelper().openErrorSnackBar(
                                     context,
@@ -517,8 +759,8 @@ class PostScreen extends HookConsumerWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
                               Theme.of(context).brightness == Brightness.dark
-                                  ? Colors.white
-                                  : Colors.black,
+                              ? Colors.white
+                              : Colors.black,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -534,8 +776,8 @@ class PostScreen extends HookConsumerWidget {
                           style: TextStyle(
                             color:
                                 Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.black
-                                    : Colors.white,
+                                ? Colors.black
+                                : Colors.white,
                           ),
                         ),
                       ),

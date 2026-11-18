@@ -195,17 +195,21 @@ class Preference {
     });
   }
 
-  Future<PostDraft?> getPostDraft() async {
+  Future<List<PostDraft>> getPostDrafts() async {
     final raw = await getString(PreferenceKey.postDraft);
-    return PostDraft.fromJsonString(raw);
+    final decoded = PostDraftList.decode(raw);
+    if (PostDraftList.isLegacyPayload(raw)) {
+      await savePostDrafts(decoded.items);
+    }
+    return decoded.items;
   }
 
-  Future<void> savePostDraft(PostDraft draft) async {
-    await setString(PreferenceKey.postDraft, draft.toJsonString());
-  }
-
-  Future<void> clearPostDraft() async {
-    await setString(PreferenceKey.postDraft, '');
+  Future<void> savePostDrafts(List<PostDraft> drafts) async {
+    if (drafts.isEmpty) {
+      await setString(PreferenceKey.postDraft, '');
+      return;
+    }
+    await setString(PreferenceKey.postDraft, PostDraftList(drafts).encode());
   }
 
   Future<List<WantToGoItem>> getWantToGoList() async {
@@ -238,9 +242,9 @@ class Preference {
   }
 
   Future<void> saveWantToGoList(List<WantToGoItem> items) => setString(
-        PreferenceKey.wantToGoList,
-        WantToGoStore(items).toJsonString(),
-      );
+    PreferenceKey.wantToGoList,
+    WantToGoStore(items).toJsonString(),
+  );
 
   Future<List<Restaurant>> getRestaurantSearchHistory() async {
     final raw = await getString(PreferenceKey.restaurantSearchHistory);
@@ -248,7 +252,7 @@ class Preference {
   }
 
   Future<void> saveRestaurantSearchHistory(List<Restaurant> items) => setString(
-        PreferenceKey.restaurantSearchHistory,
-        RestaurantSearchHistoryStore(items).toJsonString(),
-      );
+    PreferenceKey.restaurantSearchHistory,
+    RestaurantSearchHistoryStore(items).toJsonString(),
+  );
 }
