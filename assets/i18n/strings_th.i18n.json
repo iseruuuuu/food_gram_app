@@ -294,6 +294,8 @@
     "sortHighestRating": "คะแนนสูงสุด",
     "sortLowestRating": "คะแนนต่ำสุด",
     "sortMostLiked": "ถูกใจมากสุด",
+    "sortLikedPlaces": "ร้านที่ถูกใจ",
+    "likedPlacesEmpty": "ยังไม่มีโพสต์ที่ถูกใจ",
     "changeIconHint": "ตั้งรูปโปรไฟล์ด้วยพรีเมียม"
   },
   "tagDex": {

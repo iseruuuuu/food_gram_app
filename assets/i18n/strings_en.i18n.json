@@ -293,6 +293,8 @@
     "sortHighestRating": "Highest rated",
     "sortLowestRating": "Lowest rated",
     "sortMostLiked": "Most liked",
+    "sortLikedPlaces": "Liked places",
+    "likedPlacesEmpty": "No liked posts yet",
     "changeIconHint": "Set your own photo with Premium"
   },
   "tagDex": {

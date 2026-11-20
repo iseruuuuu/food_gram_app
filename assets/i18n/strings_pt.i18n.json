@@ -294,6 +294,8 @@
     "sortHighestRating": "Melhor avaliados",
     "sortLowestRating": "Pior avaliados",
     "sortMostLiked": "Mais curtidos",
+    "sortLikedPlaces": "Lugares curtidos",
+    "likedPlacesEmpty": "Ainda não há publicações curtidas",
     "changeIconHint": "Foto própria no Premium"
   },
   "tagDex": {

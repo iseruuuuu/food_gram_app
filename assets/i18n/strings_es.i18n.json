@@ -294,6 +294,8 @@
     "sortHighestRating": "Mejor valorados",
     "sortLowestRating": "Peor valorados",
     "sortMostLiked": "Más gustados",
+    "sortLikedPlaces": "Lugares que te gustan",
+    "likedPlacesEmpty": "Aún no hay publicaciones que te gusten",
     "changeIconHint": "Cambia tu foto con Premium"
   },
   "tagDex": {

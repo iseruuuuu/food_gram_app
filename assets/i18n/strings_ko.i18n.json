@@ -294,6 +294,8 @@
     "sortHighestRating": "높은 평점순",
     "sortLowestRating": "낮은 평점순",
     "sortMostLiked": "좋아요순",
+    "sortLikedPlaces": "좋아요한 가게",
+    "likedPlacesEmpty": "아직 좋아요한 게시물이 없습니다",
     "changeIconHint": "프리미엄으로 원하는 사진으로 변경"
   },
   "tagDex": {

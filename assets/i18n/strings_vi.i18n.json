@@ -294,6 +294,8 @@
     "sortHighestRating": "Đánh giá cao nhất",
     "sortLowestRating": "Đánh giá thấp nhất",
     "sortMostLiked": "Nhiều lượt thích nhất",
+    "sortLikedPlaces": "Quán đã thích",
+    "likedPlacesEmpty": "Chưa có bài viết đã thích",
     "changeIconHint": "Đổi ảnh đại diện với Premium"
   },
   "tagDex": {

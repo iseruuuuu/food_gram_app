@@ -293,6 +293,8 @@
     "sortHighestRating": "高評価順",
     "sortLowestRating": "低評価順",
     "sortMostLiked": "いいね順",
+    "sortLikedPlaces": "いいねしたお店",
+    "likedPlacesEmpty": "まだいいねした投稿がありません",
     "changeIconHint": "プレミアムで好きな写真に変更"
   },
   "tagDex": {
