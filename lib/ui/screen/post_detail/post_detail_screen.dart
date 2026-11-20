@@ -80,6 +80,7 @@ class PostDetailScreen extends HookConsumerWidget {
           PostDetailScreenType.map => PostDetailListMode.nearby,
           PostDetailScreenType.search => PostDetailListMode.search,
           PostDetailScreenType.stored => PostDetailListMode.stored,
+          PostDetailScreenType.liked => PostDetailListMode.liked,
         },
         profileUserId: type == PostDetailScreenType.profile
             ? users.userId
@@ -375,4 +376,5 @@ enum PostDetailScreenType {
   stored,
   map,
   search,
+  liked,
 }

@@ -35,8 +35,9 @@ Future<bool> _isFinishedTutorial() async {
 @Riverpod(keepAlive: true)
 GoRouter router(Ref ref) {
   final authState = ref.watch(authStateProvider);
-  final analyticsObserver =
-      ref.read(firebaseAnalyticsServiceProvider).navigatorObserver;
+  final analyticsObserver = ref
+      .read(firebaseAnalyticsServiceProvider)
+      .navigatorObserver;
   return GoRouter(
     initialLocation: '/${RouterPath.splash}',
     observers: [analyticsObserver],
@@ -214,6 +215,8 @@ final class RouterPath {
   static const notifications = 'notifications';
   static const storedPost = 'stored_post';
   static const wantToGoList = 'want_to_go_list';
+  static const likedPostDetail = 'liked_post_detail';
+  static const likedPostDetailPost = 'liked_post_detail_post';
   static const tagDex = 'tag_dex';
   static const storedPostDetail = 'stored_post_detail';
   static const memoryAlbumList = 'memory_album_list';

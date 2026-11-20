@@ -41,6 +41,51 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
+      path: RouterPath.likedPostDetail,
+      name: RouterPath.likedPostDetail,
+      pageBuilder: (context, state) {
+        final extra = state.extra;
+        final model = extra is Model ? extra : null;
+        if (model == null) {
+          return slideUpTransition(
+            const Scaffold(body: RouterErrorWidget()),
+            key: state.pageKey,
+          );
+        }
+        return slideUpTransition(
+          PostDetailScreen(
+            posts: model.posts,
+            users: model.users,
+            type: PostDetailScreenType.liked,
+          ),
+          key: state.pageKey,
+          name: AnalyticsScreen.postDetail,
+        );
+      },
+    ),
+    GoRoute(
+      path: '${RouterPath.likedPostDetail}/${RouterPath.likedPostDetailPost}',
+      name: RouterPath.likedPostDetailPost,
+      pageBuilder: (context, state) {
+        final extra = state.extra;
+        final model = extra is Restaurant ? extra : null;
+        if (model == null) {
+          return whiteOut(
+            const Scaffold(body: RouterErrorWidget()),
+            key: state.pageKey,
+          );
+        }
+        return whiteOut(
+          PostScreen(
+            routerPath: RouterPath.myProfileRestaurant,
+            restaurant: model,
+          ),
+          key: state.pageKey,
+          name: AnalyticsScreen.post,
+        );
+      },
+    ),
+    GoRoute(
       path: RouterPath.tagDex,
       name: RouterPath.tagDex,
       pageBuilder: (context, state) {

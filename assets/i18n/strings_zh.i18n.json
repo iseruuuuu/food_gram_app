@@ -294,6 +294,8 @@
     "sortHighestRating": "高分优先",
     "sortLowestRating": "低分优先",
     "sortMostLiked": "最多点赞",
+    "sortLikedPlaces": "点赞的店",
+    "likedPlacesEmpty": "还没有点赞的帖子",
     "changeIconHint": "开通高级会员即可更换头像"
   },
   "tagDex": {

@@ -294,6 +294,8 @@
     "sortHighestRating": "Mieux notés",
     "sortLowestRating": "Moins bien notés",
     "sortMostLiked": "Plus aimés",
+    "sortLikedPlaces": "Lieux aimés",
+    "likedPlacesEmpty": "Pas encore de publications aimées",
     "changeIconHint": "Photo perso avec Premium"
   },
   "tagDex": {

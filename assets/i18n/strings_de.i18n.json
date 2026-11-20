@@ -294,6 +294,8 @@
     "sortHighestRating": "Beste Bewertung",
     "sortLowestRating": "Niedrigste Bewertung",
     "sortMostLiked": "Meiste Likes",
+    "sortLikedPlaces": "Gelikte Orte",
+    "likedPlacesEmpty": "Noch keine gelikten Beiträge",
     "changeIconHint": "Eigenes Foto mit Premium"
   },
   "tagDex": {

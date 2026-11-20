@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/notification/like_notification_seen.dart';
 import 'package:food_gram_app/core/supabase/notification/repository/notification_repository.dart';
+import 'package:food_gram_app/core/supabase/post/providers/liked_post_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
@@ -13,9 +15,9 @@ import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_premium_membership_card.dart';
-import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
+import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/loading/app_overlay_loading.dart';
 import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/loading/app_tab_loading.dart';
@@ -41,6 +43,8 @@ class MyProfileScreen extends HookConsumerWidget {
     final postCount = postList.value?.length ?? 0;
     final users = ref.watch(myProfileViewModelProvider());
     final sortOrder = useState(MyProfilePostSortOrder.newest);
+    final showingLiked = sortOrder.value == MyProfilePostSortOrder.likedPlaces;
+    final likedAsync = showingLiked ? ref.watch(likedPostListProvider) : null;
     final scrollController = useScrollController();
     final hasData = postList.value != null;
     useScrollToTopOnTabTrigger(
@@ -134,105 +138,100 @@ class MyProfileScreen extends HookConsumerWidget {
                 ),
               ],
             ),
-            body: AsyncValueSwitcher(
-              asyncValue: postList,
-              onLoading: const AppTabLoading.myPage(),
-              errorType: TabLoadingType.myPage,
-              skipError: true,
-              onErrorTap: () {
+            body: RefreshIndicator(
+              color: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              onRefresh: () async {
                 ref
                   ..invalidate(myPostStreamProvider)
-                  ..invalidate(isSubscribeProvider);
-                ref.read(myProfileViewModelProvider().notifier).getData();
+                  ..invalidate(myLikeNotificationsProvider);
+                await rebuildLikedPostProviders(
+                  () => ref.invalidate(likedPostIdsProvider),
+                );
+                final uid = ref.read(currentUserProvider);
+                if (uid != null) {
+                  ref.invalidate(postCountRankProvider(uid));
+                }
+                try {
+                  await Future.wait<void>([
+                    ref.read(myPostStreamProvider.future).then<void>((_) {}),
+                    ref.read(myProfileViewModelProvider().notifier).getData(),
+                    if (showingLiked)
+                      ref.read(likedPostListProvider.future).then<void>((_) {}),
+                  ]);
+                } on Object {
+                  // 再取得失敗時もインジケータは閉じる
+                }
               },
-              onData: (value) {
-                final sortedPosts = sortMyProfilePosts(value, sortOrder.value);
-                return RefreshIndicator(
-                  color: Theme.of(context).colorScheme.primary,
-                  backgroundColor: Theme.of(context).colorScheme.surface,
-                  onRefresh: () async {
-                    ref
-                      ..invalidate(myPostStreamProvider)
-                      ..invalidate(myLikeNotificationsProvider);
-                    final uid = ref.read(currentUserProvider);
-                    if (uid != null) {
-                      ref.invalidate(postCountRankProvider(uid));
-                    }
-                    try {
-                      await Future.wait<void>([
+              child: CustomScrollView(
+                controller: scrollController,
+                physics: const AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics(),
+                ),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: users.when(
+                      data: (users, heartAmount) {
+                        final premiumUnlocked =
+                            users.isSubscribe ||
+                            (isSubscribeAsync.value ?? false);
+                        return Column(
+                          children: [
+                            if (!premiumUnlocked)
+                              const AppPremiumMembershipCard(
+                                source: 'my_page_card',
+                              ),
+                            AppProfileHeader(
+                              users: users,
+                              length: postCount,
+                              heartAmount: heartAmount,
+                            ),
+                          ],
+                        );
+                      },
+                      loading: () {
+                        return const AppProfileHeaderSkeleton();
+                      },
+                      error: SizedBox.shrink,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: ProfileSortChipBar(
+                      selectedSort: sortOrder.value,
+                      onSortChanged: (order) {
+                        sortOrder.value = order;
+                        if (scrollController.hasClients) {
+                          scrollController.jumpTo(0);
+                        }
+                      },
+                    ),
+                  ),
+                  if (showingLiked)
+                    ..._likedPostSlivers(
+                      context: context,
+                      ref: ref,
+                      likedAsync: likedAsync!,
+                      bottomInset: bottomInset,
+                      scrollController: scrollController,
+                    )
+                  else
+                    ..._personalPostSlivers(
+                      postsAsync: postList,
+                      sortOrder: sortOrder.value,
+                      bottomInset: bottomInset,
+                      scrollController: scrollController,
+                      onRetry: () {
                         ref
-                            .read(myPostStreamProvider.future)
-                            .then<void>((_) {}),
+                          ..invalidate(myPostStreamProvider)
+                          ..invalidate(isSubscribeProvider);
                         ref
                             .read(myProfileViewModelProvider().notifier)
-                            .getData(),
-                      ]);
-                    } on Object {
-                      // 再取得失敗時もインジケータは閉じる
-                    }
-                  },
-                  child: CustomScrollView(
-                    controller: scrollController,
-                    physics: const AlwaysScrollableScrollPhysics(
-                      parent: BouncingScrollPhysics(),
+                            .getData();
+                      },
+                      refresh: () => ref.refresh(myPostStreamProvider),
                     ),
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: users.when(
-                          data: (users, heartAmount) {
-                            final premiumUnlocked = users.isSubscribe ||
-                                (isSubscribeAsync.value ?? false);
-                            return Column(
-                              children: [
-                                if (!premiumUnlocked)
-                                  const AppPremiumMembershipCard(
-                                    source: 'my_page_card',
-                                  ),
-                                AppProfileHeader(
-                                  users: users,
-                                  length: postCount,
-                                  heartAmount: heartAmount,
-                                ),
-                              ],
-                            );
-                          },
-                          loading: () {
-                            return const AppProfileHeaderSkeleton();
-                          },
-                          error: SizedBox.shrink,
-                        ),
-                      ),
-                      if (sortedPosts.isNotEmpty) ...[
-                        SliverToBoxAdapter(
-                          child: ProfileSortChipBar(
-                            selectedSort: sortOrder.value,
-                            onSortChanged: (order) {
-                              sortOrder.value = order;
-                            },
-                          ),
-                        ),
-                        SliverPadding(
-                          padding: EdgeInsets.only(top: 4, bottom: bottomInset),
-                          sliver: AppListView(
-                            posts: sortedPosts,
-                            routerPath: RouterPath.myProfileDetail,
-                            type: AppListViewType.myprofile,
-                            controller: scrollController,
-                            sortOrder: sortOrder.value,
-                            refresh: () => ref.refresh(myPostStreamProvider),
-                          ),
-                        ),
-                      ] else
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: bottomInset),
-                            child: const AppMyPostEmpty(),
-                          ),
-                        ),
-                    ],
-                  ),
-                );
-              },
+                ],
+              ),
             ),
           ),
         ),
@@ -243,4 +242,134 @@ class MyProfileScreen extends HookConsumerWidget {
       ],
     );
   }
+}
+
+/// 自分の投稿が必要な部分だけを待つ。並び替えチップはここより外に置く。
+List<Widget> _personalPostSlivers({
+  required AsyncValue<List<Posts>> postsAsync,
+  required MyProfilePostSortOrder sortOrder,
+  required double bottomInset,
+  required ScrollController scrollController,
+  required VoidCallback onRetry,
+  required VoidCallback refresh,
+}) {
+  return postsAsync.when(
+    skipLoadingOnReload: true,
+    skipLoadingOnRefresh: true,
+    skipError: true,
+    loading: () => const [
+      SliverFillRemaining(
+        hasScrollBody: false,
+        child: AppTabLoading.myPage(),
+      ),
+    ],
+    error: (_, _) => [
+      SliverFillRemaining(
+        hasScrollBody: false,
+        child: AppTabError.myPage(onRetry: onRetry),
+      ),
+    ],
+    data: (posts) {
+      final sortedPosts = sortMyProfilePosts(posts, sortOrder);
+      if (sortedPosts.isEmpty) {
+        return [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: bottomInset),
+              child: const AppMyPostEmpty(),
+            ),
+          ),
+        ];
+      }
+      return [
+        SliverPadding(
+          padding: EdgeInsets.only(top: 4, bottom: bottomInset),
+          sliver: AppListView(
+            posts: sortedPosts,
+            routerPath: RouterPath.myProfileDetail,
+            type: AppListViewType.myprofile,
+            controller: scrollController,
+            sortOrder: sortOrder,
+            refresh: refresh,
+          ),
+        ),
+      ];
+    },
+  );
+}
+
+List<Widget> _likedPostSlivers({
+  required BuildContext context,
+  required WidgetRef ref,
+  required AsyncValue<List<Posts>> likedAsync,
+  required double bottomInset,
+  required ScrollController scrollController,
+}) {
+  return likedAsync.when(
+    skipLoadingOnReload: true,
+    skipLoadingOnRefresh: true,
+    loading: () => const [
+      SliverFillRemaining(
+        hasScrollBody: false,
+        child: Center(
+          child: CircularProgressIndicator(
+            color: AppTheme.primaryOrange,
+          ),
+        ),
+      ),
+    ],
+    error: (_, _) => [
+      SliverFillRemaining(
+        hasScrollBody: false,
+        child: AppTabError.myPage(
+          onRetry: () {
+            rebuildLikedPostProviders(
+              () => ref.invalidate(likedPostIdsProvider),
+            );
+          },
+        ),
+      ),
+    ],
+    data: (posts) {
+      if (posts.isEmpty) {
+        return [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(28, 24, 28, bottomInset),
+              child: Center(
+                child: Text(
+                  Translations.of(context).profile.likedPlacesEmpty,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15,
+                    height: 1.5,
+                    color: Theme.of(context).colorScheme.onSurface.withValues(
+                      alpha: 0.7,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ];
+      }
+      return [
+        SliverPadding(
+          padding: EdgeInsets.only(top: 4, bottom: bottomInset),
+          sliver: AppListView(
+            posts: posts,
+            routerPath: RouterPath.likedPostDetail,
+            type: AppListViewType.stored,
+            controller: scrollController,
+            refresh: () {
+              rebuildLikedPostProviders(
+                () => ref.invalidate(likedPostIdsProvider),
+              );
+            },
+          ),
+        ),
+      ];
+    },
+  );
 }

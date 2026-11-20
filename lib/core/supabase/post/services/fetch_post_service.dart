@@ -10,6 +10,27 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'fetch_post_service.g.dart';
 
+/// `saved_posts_` キャッシュのキー。ID の並びが違っても同じになる。
+String savedPostsCacheKey(List<String> postIds) {
+  final intIds = postIds
+      .map(int.tryParse)
+      .whereType<int>()
+      .toList(growable: false);
+  if (intIds.isEmpty) {
+    return 'saved_posts_';
+  }
+  final sortedIds = List<int>.from(intIds)..sort();
+  return 'saved_posts_${sortedIds.join('_')}';
+}
+
+/// いいね一覧を取り直す直前に、同じ ID 列の行キャッシュだけを捨てる。
+void invalidateSavedPostsCache(List<String> postIds) {
+  if (postIds.isEmpty) {
+    return;
+  }
+  CacheManager().invalidate(savedPostsCacheKey(postIds));
+}
+
 /// 保存した投稿 ID 列から `posts` 行を取得する
 Future<List<Map<String, dynamic>>> fetchStoredPostRowsForIds(
   SupabaseClient client,
@@ -18,15 +39,17 @@ Future<List<Map<String, dynamic>>> fetchStoredPostRowsForIds(
   if (postIds.isEmpty) {
     return [];
   }
-  final intIds =
-      postIds.map(int.tryParse).whereType<int>().toList(growable: false);
+  final intIds = postIds
+      .map(int.tryParse)
+      .whereType<int>()
+      .toList(growable: false);
   if (intIds.isEmpty) {
     return [];
   }
   final sortedIds = List<int>.from(intIds)..sort();
   // 表示順は呼び出し側の ID 列で決める。.order は通知取得と同形のクエリに寄せる。
   return CacheManager().get<List<Map<String, dynamic>>>(
-    key: 'saved_posts_${sortedIds.join('_')}',
+    key: savedPostsCacheKey(postIds),
     fetcher: () async {
       final rows = await client
           .from('posts')
@@ -53,7 +76,6 @@ class FetchPostService extends _$FetchPostService {
   final _cacheManager = CacheManager();
 
   SupabaseClient get _supabase => ref.read(supabaseProvider);
-
 
   /// 閲覧者に見える投稿を取得（本人とフレンド以外の非公開は除く）
   Future<List<Map<String, dynamic>>> getPosts() async {
@@ -89,7 +111,8 @@ class FetchPostService extends _$FetchPostService {
     final includePrivate =
         ref.read(currentUserProvider) == userId || friendIds.contains(userId);
     return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'user_posts_${userId}_${includePrivate}_'
+      key:
+          'user_posts_${userId}_${includePrivate}_'
           '${blockListCacheToken(blockedIds)}',
       fetcher: () async {
         var query = _supabase
@@ -121,7 +144,8 @@ class FetchPostService extends _$FetchPostService {
   ) async {
     final blockedIds = await ref.read(blockListProvider.future);
     return _cacheManager.get<List<Map<String, dynamic>>>(
-      key: 'restaurant_name_posts_${restaurant}_'
+      key:
+          'restaurant_name_posts_${restaurant}_'
           '${blockListCacheToken(blockedIds)}',
       fetcher: () async {
         final posts = await _supabase
