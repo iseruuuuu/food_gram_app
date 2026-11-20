@@ -16,6 +16,9 @@ enum MyProfilePostSortOrder {
 
   /// いいね順（いいね数の降順）
   likesHigh,
+
+  /// いいねした他人の投稿。自分の投稿の並び替えではなく、一覧の切り替えに使う。
+  likedPlaces,
 }
 
 int _compareNewestFirst(Posts a, Posts b) {
@@ -77,6 +80,8 @@ List<Posts> sortMyProfilePosts(
         }
         return _compareNewestFirst(a, b);
       });
+    case MyProfilePostSortOrder.likedPlaces:
+      break;
   }
   return sorted;
 }
