@@ -83,7 +83,9 @@ class PostDetailViewModel extends _$PostDetailViewModel {
           PreferenceKey.heartList,
           state.heartList,
         );
-        ref.invalidate(likedPostIdsProvider);
+        await rebuildLikedPostProviders(
+          () => ref.invalidate(likedPostIdsProvider),
+        );
         return true;
       }
       logger.e('いいねの減算に失敗しました: ${(result as Failure).error}');
@@ -99,7 +101,9 @@ class PostDetailViewModel extends _$PostDetailViewModel {
         PreferenceKey.heartList,
         state.heartList,
       );
-      ref.invalidate(likedPostIdsProvider);
+      await rebuildLikedPostProviders(
+        () => ref.invalidate(likedPostIdsProvider),
+      );
       unawaited(
         ref
             .read(firebaseAnalyticsServiceProvider)
@@ -400,18 +404,24 @@ class PostDetailList extends _$PostDetailList {
     _loadingNewer = true;
     state = AsyncData(current.copyWith(isLoadingNewer: true));
     try {
+      final browsing = current.posts;
       final extra = await ref
           .read(detailPostRepositoryProvider.notifier)
           .getPostDetailPage(
-            cursorPost: current.posts.first,
+            cursorPost: browsing.first,
             mode: _listInput.mode,
             direction: PostDetailPageDirection.newer,
             profileUserId: _listInput.profileUserId,
             restaurant: _listInput.restaurant,
             categoryName: _listInput.categoryName,
+            browsingPosts: browsing,
           );
       final latest = state.asData?.value ?? current;
-      final merged = mergePostsNewestFirst(latest.posts, extra.posts);
+      final merged = _mergeDetailPage(
+        current: latest.posts,
+        extra: extra.posts,
+        newer: true,
+      );
       state = AsyncData(
         latest.copyWith(
           posts: merged,
@@ -439,18 +449,24 @@ class PostDetailList extends _$PostDetailList {
     _loadingOlder = true;
     state = AsyncData(current.copyWith(isLoadingOlder: true));
     try {
+      final browsing = current.posts;
       final extra = await ref
           .read(detailPostRepositoryProvider.notifier)
           .getPostDetailPage(
-            cursorPost: current.posts.last,
+            cursorPost: browsing.last,
             mode: _listInput.mode,
             direction: PostDetailPageDirection.older,
             profileUserId: _listInput.profileUserId,
             restaurant: _listInput.restaurant,
             categoryName: _listInput.categoryName,
+            browsingPosts: browsing,
           );
       final latest = state.asData?.value ?? current;
-      final merged = mergePostsNewestFirst(latest.posts, extra.posts);
+      final merged = _mergeDetailPage(
+        current: latest.posts,
+        extra: extra.posts,
+        newer: false,
+      );
       state = AsyncData(
         latest.copyWith(
           posts: merged,
@@ -465,5 +481,20 @@ class PostDetailList extends _$PostDetailList {
     } finally {
       _loadingOlder = false;
     }
+  }
+
+  List<Posts> _mergeDetailPage({
+    required List<Posts> current,
+    required List<Posts> extra,
+    required bool newer,
+  }) {
+    if (_listInput.mode == PostDetailListMode.liked) {
+      return mergePostsPreservingOrder(
+        current: current,
+        extra: extra,
+        prepend: newer,
+      );
+    }
+    return mergePostsNewestFirst(current, extra);
   }
 }

@@ -216,6 +216,7 @@ final class RouterPath {
   static const storedPost = 'stored_post';
   static const wantToGoList = 'want_to_go_list';
   static const likedPostDetail = 'liked_post_detail';
+  static const likedPostDetailPost = 'liked_post_detail_post';
   static const tagDex = 'tag_dex';
   static const storedPostDetail = 'stored_post_detail';
   static const memoryAlbumList = 'memory_album_list';

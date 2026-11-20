@@ -64,6 +64,28 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
+      path: '${RouterPath.likedPostDetail}/${RouterPath.likedPostDetailPost}',
+      name: RouterPath.likedPostDetailPost,
+      pageBuilder: (context, state) {
+        final extra = state.extra;
+        final model = extra is Restaurant ? extra : null;
+        if (model == null) {
+          return whiteOut(
+            const Scaffold(body: RouterErrorWidget()),
+            key: state.pageKey,
+          );
+        }
+        return whiteOut(
+          PostScreen(
+            routerPath: RouterPath.myProfileRestaurant,
+            restaurant: model,
+          ),
+          key: state.pageKey,
+          name: AnalyticsScreen.post,
+        );
+      },
+    ),
+    GoRoute(
       path: RouterPath.tagDex,
       name: RouterPath.tagDex,
       pageBuilder: (context, state) {

@@ -33,6 +33,7 @@ Future<List<Posts>> fetchLikedPosts({
   required SupabaseClient client,
   required String? viewerId,
   Iterable<String> friendUserIds = const [],
+  Iterable<String> blockedUserIds = const [],
   List<String>? postIds,
 }) async {
   final orderedIds = postIds ?? await readLikedPostIds();
@@ -48,7 +49,12 @@ Future<List<Posts>> fetchLikedPosts({
     for (final row in rows) {
       try {
         final post = Posts.fromJson(row);
-        if (!_isVisibleLikedPost(post, viewerId, friendUserIds)) {
+        if (!isVisibleLikedPost(
+          post: post,
+          viewerId: viewerId,
+          friendUserIds: friendUserIds,
+          blockedUserIds: blockedUserIds,
+        )) {
           continue;
         }
         byId[post.id] = post;
@@ -74,13 +80,18 @@ Future<List<Posts>> fetchLikedPosts({
   }
 }
 
-/// いいねした店は、他人の投稿で気になった店。自分の投稿は含めない。
-bool _isVisibleLikedPost(
-  Posts post,
-  String? viewerId,
-  Iterable<String> friendUserIds,
-) {
+/// いいねした店は、他人の投稿で気になった店。
+/// 自分の投稿と、ブロックした人の投稿は出さない。
+bool isVisibleLikedPost({
+  required Posts post,
+  required String? viewerId,
+  required Iterable<String> friendUserIds,
+  required Iterable<String> blockedUserIds,
+}) {
   if (viewerId != null && viewerId.isNotEmpty && post.userId == viewerId) {
+    return false;
+  }
+  if (blockedUserIds.contains(post.userId)) {
     return false;
   }
   return isPostVisibleToViewer(

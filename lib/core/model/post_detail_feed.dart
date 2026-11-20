@@ -137,6 +137,83 @@ List<Posts> takeOlderPage({
   return sortedNewestFirst.sublist(index + 1, end);
 }
 
+/// いいね順を保ったまま追加ページを結合する。作成日時では並べ替えない。
+List<Posts> mergePostsPreservingOrder({
+  required List<Posts> current,
+  required List<Posts> extra,
+  required bool prepend,
+}) {
+  if (extra.isEmpty) {
+    return current;
+  }
+  final seen = <int>{};
+  final merged = <Posts>[];
+  final sequence = prepend ? [...extra, ...current] : [...current, ...extra];
+  for (final post in sequence) {
+    if (seen.add(post.id)) {
+      merged.add(post);
+    }
+  }
+  return merged;
+}
+
+/// いいね順の追加ページ。
+/// カーソルが解除で消えていても、画面に残っている端の投稿から続きを取る。
+List<Posts> takeLikedDetailPage({
+  required List<Posts> ordered,
+  required Posts cursor,
+  required List<Posts> browsingOrder,
+  required bool newer,
+  int limit = postDetailNewerPageSize,
+}) {
+  final anchor = _containsPost(ordered, cursor.id)
+      ? cursor
+      : _survivingBoundary(
+          ordered: ordered,
+          browsingOrder: browsingOrder,
+          newer: newer,
+        );
+  if (anchor == null) {
+    return const [];
+  }
+  if (newer) {
+    return takeNewerPage(
+      sortedNewestFirst: ordered,
+      cursor: anchor,
+      limit: limit,
+    );
+  }
+  return takeOlderPage(
+    sortedNewestFirst: ordered,
+    cursor: anchor,
+    limit: limit,
+  );
+}
+
+bool _containsPost(List<Posts> posts, int id) {
+  for (final post in posts) {
+    if (post.id == id) {
+      return true;
+    }
+  }
+  return false;
+}
+
+Posts? _survivingBoundary({
+  required List<Posts> ordered,
+  required List<Posts> browsingOrder,
+  required bool newer,
+}) {
+  final ids = <int>{for (final post in ordered) post.id};
+  final candidates = newer ? browsingOrder : browsingOrder.reversed;
+  for (final post in candidates) {
+    if (ids.contains(post.id)) {
+      return post;
+    }
+  }
+  return null;
+}
+
 /// 新しい順のリストへ重複なくマージする。
 List<Posts> mergePostsNewestFirst(List<Posts> current, List<Posts> extra) {
   if (extra.isEmpty) {

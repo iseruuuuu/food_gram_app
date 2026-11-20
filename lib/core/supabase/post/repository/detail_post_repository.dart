@@ -276,6 +276,7 @@ class DetailPostRepository extends _$DetailPostRepository {
     String? profileUserId,
     String? restaurant,
     String? categoryName,
+    List<Posts> browsingPosts = const [],
   }) async {
     final isNewer = direction == PostDetailPageDirection.newer;
     final limit = isNewer ? postDetailNewerPageSize : postDetailOlderPageSize;
@@ -377,17 +378,13 @@ class DetailPostRepository extends _$DetailPostRepository {
       case PostDetailListMode.liked:
         {
           final ordered = await _likedPosts();
-          final page = isNewer
-              ? takeNewerPage(
-                  sortedNewestFirst: ordered,
-                  cursor: cursorPost,
-                  limit: limit,
-                )
-              : takeOlderPage(
-                  sortedNewestFirst: ordered,
-                  cursor: cursorPost,
-                  limit: limit,
-                );
+          final page = takeLikedDetailPage(
+            ordered: ordered,
+            cursor: cursorPost,
+            browsingOrder: browsingPosts,
+            newer: isNewer,
+            limit: limit,
+          );
           return _countedPage(page, limit);
         }
     }
@@ -815,13 +812,15 @@ class DetailPostRepository extends _$DetailPostRepository {
     );
   }
 
-  /// いいねした順。先頭ほど新しくハートしたもの。
+  /// いいねした順。先頭ほど新しくハートしたもの。ブロックした人は除く。
   Future<List<Posts>> _likedPosts() async {
     final friendIds = await ref.read(friendUserIdsProvider.future);
+    final blockedIds = await ref.read(blockListProvider.future);
     return fetchLikedPosts(
       client: ref.read(supabaseProvider),
       viewerId: ref.read(currentUserProvider),
       friendUserIds: friendIds,
+      blockedUserIds: blockedIds,
     );
   }
 

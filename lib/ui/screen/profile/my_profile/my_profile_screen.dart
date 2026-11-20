@@ -15,7 +15,6 @@ import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
 import 'package:food_gram_app/router/router.dart';
 import 'package:food_gram_app/ui/component/app_premium_membership_card.dart';
-import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
 import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
@@ -139,126 +138,100 @@ class MyProfileScreen extends HookConsumerWidget {
                 ),
               ],
             ),
-            body: AsyncValueSwitcher(
-              asyncValue: postList,
-              onLoading: const AppTabLoading.myPage(),
-              errorType: TabLoadingType.myPage,
-              skipError: true,
-              onErrorTap: () {
+            body: RefreshIndicator(
+              color: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              onRefresh: () async {
                 ref
                   ..invalidate(myPostStreamProvider)
-                  ..invalidate(isSubscribeProvider);
-                ref.read(myProfileViewModelProvider().notifier).getData();
+                  ..invalidate(myLikeNotificationsProvider);
+                await rebuildLikedPostProviders(
+                  () => ref.invalidate(likedPostIdsProvider),
+                );
+                final uid = ref.read(currentUserProvider);
+                if (uid != null) {
+                  ref.invalidate(postCountRankProvider(uid));
+                }
+                try {
+                  await Future.wait<void>([
+                    ref.read(myPostStreamProvider.future).then<void>((_) {}),
+                    ref.read(myProfileViewModelProvider().notifier).getData(),
+                    if (showingLiked)
+                      ref.read(likedPostListProvider.future).then<void>((_) {}),
+                  ]);
+                } on Object {
+                  // 再取得失敗時もインジケータは閉じる
+                }
               },
-              onData: (value) {
-                final sortedPosts = showingLiked
-                    ? const <Posts>[]
-                    : sortMyProfilePosts(value, sortOrder.value);
-                return RefreshIndicator(
-                  color: Theme.of(context).colorScheme.primary,
-                  backgroundColor: Theme.of(context).colorScheme.surface,
-                  onRefresh: () async {
-                    ref
-                      ..invalidate(myPostStreamProvider)
-                      ..invalidate(myLikeNotificationsProvider)
-                      ..invalidate(likedPostIdsProvider);
-                    final uid = ref.read(currentUserProvider);
-                    if (uid != null) {
-                      ref.invalidate(postCountRankProvider(uid));
-                    }
-                    try {
-                      await Future.wait<void>([
+              child: CustomScrollView(
+                controller: scrollController,
+                physics: const AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics(),
+                ),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: users.when(
+                      data: (users, heartAmount) {
+                        final premiumUnlocked =
+                            users.isSubscribe ||
+                            (isSubscribeAsync.value ?? false);
+                        return Column(
+                          children: [
+                            if (!premiumUnlocked)
+                              const AppPremiumMembershipCard(
+                                source: 'my_page_card',
+                              ),
+                            AppProfileHeader(
+                              users: users,
+                              length: postCount,
+                              heartAmount: heartAmount,
+                            ),
+                          ],
+                        );
+                      },
+                      loading: () {
+                        return const AppProfileHeaderSkeleton();
+                      },
+                      error: SizedBox.shrink,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: ProfileSortChipBar(
+                      selectedSort: sortOrder.value,
+                      onSortChanged: (order) {
+                        sortOrder.value = order;
+                        if (scrollController.hasClients) {
+                          scrollController.jumpTo(0);
+                        }
+                      },
+                    ),
+                  ),
+                  if (showingLiked)
+                    ..._likedPostSlivers(
+                      context: context,
+                      ref: ref,
+                      likedAsync: likedAsync!,
+                      bottomInset: bottomInset,
+                      scrollController: scrollController,
+                    )
+                  else
+                    ..._personalPostSlivers(
+                      postsAsync: postList,
+                      sortOrder: sortOrder.value,
+                      bottomInset: bottomInset,
+                      scrollController: scrollController,
+                      onRetry: () {
                         ref
-                            .read(myPostStreamProvider.future)
-                            .then<void>((_) {}),
+                          ..invalidate(myPostStreamProvider)
+                          ..invalidate(isSubscribeProvider);
                         ref
                             .read(myProfileViewModelProvider().notifier)
-                            .getData(),
-                        if (showingLiked)
-                          ref
-                              .read(likedPostListProvider.future)
-                              .then<void>(
-                                (_) {},
-                              ),
-                      ]);
-                    } on Object {
-                      // 再取得失敗時もインジケータは閉じる
-                    }
-                  },
-                  child: CustomScrollView(
-                    controller: scrollController,
-                    physics: const AlwaysScrollableScrollPhysics(
-                      parent: BouncingScrollPhysics(),
+                            .getData();
+                      },
+                      refresh: () => ref.refresh(myPostStreamProvider),
                     ),
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: users.when(
-                          data: (users, heartAmount) {
-                            final premiumUnlocked =
-                                users.isSubscribe ||
-                                (isSubscribeAsync.value ?? false);
-                            return Column(
-                              children: [
-                                if (!premiumUnlocked)
-                                  const AppPremiumMembershipCard(
-                                    source: 'my_page_card',
-                                  ),
-                                AppProfileHeader(
-                                  users: users,
-                                  length: postCount,
-                                  heartAmount: heartAmount,
-                                ),
-                              ],
-                            );
-                          },
-                          loading: () {
-                            return const AppProfileHeaderSkeleton();
-                          },
-                          error: SizedBox.shrink,
-                        ),
-                      ),
-                      SliverToBoxAdapter(
-                        child: ProfileSortChipBar(
-                          selectedSort: sortOrder.value,
-                          onSortChanged: (order) {
-                            sortOrder.value = order;
-                            if (scrollController.hasClients) {
-                              scrollController.jumpTo(0);
-                            }
-                          },
-                        ),
-                      ),
-                      if (showingLiked)
-                        ..._likedPostSlivers(
-                          context: context,
-                          ref: ref,
-                          likedAsync: likedAsync!,
-                          bottomInset: bottomInset,
-                          scrollController: scrollController,
-                        )
-                      else if (sortedPosts.isNotEmpty)
-                        SliverPadding(
-                          padding: EdgeInsets.only(top: 4, bottom: bottomInset),
-                          sliver: AppListView(
-                            posts: sortedPosts,
-                            routerPath: RouterPath.myProfileDetail,
-                            type: AppListViewType.myprofile,
-                            controller: scrollController,
-                            sortOrder: sortOrder.value,
-                            refresh: () => ref.refresh(myPostStreamProvider),
-                          ),
-                        )
-                      else
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: bottomInset),
-                            child: const AppMyPostEmpty(),
-                          ),
-                        ),
-                    ],
-                  ),
-                );
-              },
+                ],
+              ),
             ),
           ),
         ),
@@ -269,6 +242,60 @@ class MyProfileScreen extends HookConsumerWidget {
       ],
     );
   }
+}
+
+/// 自分の投稿が必要な部分だけを待つ。並び替えチップはここより外に置く。
+List<Widget> _personalPostSlivers({
+  required AsyncValue<List<Posts>> postsAsync,
+  required MyProfilePostSortOrder sortOrder,
+  required double bottomInset,
+  required ScrollController scrollController,
+  required VoidCallback onRetry,
+  required VoidCallback refresh,
+}) {
+  return postsAsync.when(
+    skipLoadingOnReload: true,
+    skipLoadingOnRefresh: true,
+    skipError: true,
+    loading: () => const [
+      SliverFillRemaining(
+        hasScrollBody: false,
+        child: AppTabLoading.myPage(),
+      ),
+    ],
+    error: (_, _) => [
+      SliverFillRemaining(
+        hasScrollBody: false,
+        child: AppTabError.myPage(onRetry: onRetry),
+      ),
+    ],
+    data: (posts) {
+      final sortedPosts = sortMyProfilePosts(posts, sortOrder);
+      if (sortedPosts.isEmpty) {
+        return [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: bottomInset),
+              child: const AppMyPostEmpty(),
+            ),
+          ),
+        ];
+      }
+      return [
+        SliverPadding(
+          padding: EdgeInsets.only(top: 4, bottom: bottomInset),
+          sliver: AppListView(
+            posts: sortedPosts,
+            routerPath: RouterPath.myProfileDetail,
+            type: AppListViewType.myprofile,
+            controller: scrollController,
+            sortOrder: sortOrder,
+            refresh: refresh,
+          ),
+        ),
+      ];
+    },
+  );
 }
 
 List<Widget> _likedPostSlivers({
@@ -295,7 +322,11 @@ List<Widget> _likedPostSlivers({
       SliverFillRemaining(
         hasScrollBody: false,
         child: AppTabError.myPage(
-          onRetry: () => ref.invalidate(likedPostIdsProvider),
+          onRetry: () {
+            rebuildLikedPostProviders(
+              () => ref.invalidate(likedPostIdsProvider),
+            );
+          },
         ),
       ),
     ],
@@ -331,7 +362,11 @@ List<Widget> _likedPostSlivers({
             routerPath: RouterPath.likedPostDetail,
             type: AppListViewType.stored,
             controller: scrollController,
-            refresh: () => ref.invalidate(likedPostIdsProvider),
+            refresh: () {
+              rebuildLikedPostProviders(
+                () => ref.invalidate(likedPostIdsProvider),
+              );
+            },
           ),
         ),
       ];

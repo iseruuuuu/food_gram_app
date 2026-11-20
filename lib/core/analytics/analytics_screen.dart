@@ -92,6 +92,7 @@ abstract final class AnalyticsScreen {
     'stored_post': savedPosts,
     'want_to_go_list': wantToGoList,
     'liked_post_detail': postDetail,
+    'liked_post_detail_post': post,
     'tag_dex': tagDex,
     'stored_post_detail': postDetail,
     'memory_album_list': album,
