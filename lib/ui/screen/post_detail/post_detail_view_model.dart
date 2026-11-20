@@ -13,6 +13,7 @@ import 'package:food_gram_app/core/notification/firebase_messaging_service.dart'
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/post_visibility.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
+import 'package:food_gram_app/core/supabase/post/providers/liked_post_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/delete_repository.dart';
 import 'package:food_gram_app/core/supabase/post/repository/detail_post_repository.dart';
@@ -82,6 +83,7 @@ class PostDetailViewModel extends _$PostDetailViewModel {
           PreferenceKey.heartList,
           state.heartList,
         );
+        ref.invalidate(likedPostIdsProvider);
         return true;
       }
       logger.e('いいねの減算に失敗しました: ${(result as Failure).error}');
@@ -97,6 +99,7 @@ class PostDetailViewModel extends _$PostDetailViewModel {
         PreferenceKey.heartList,
         state.heartList,
       );
+      ref.invalidate(likedPostIdsProvider);
       unawaited(
         ref
             .read(firebaseAnalyticsServiceProvider)

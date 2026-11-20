@@ -6,4 +6,5 @@ enum PostDetailListMode {
   nearby,
   search,
   stored,
+  liked,
 }

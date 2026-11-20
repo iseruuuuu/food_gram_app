@@ -41,6 +41,29 @@ final myProfileRouter = GoRoute(
       },
     ),
     GoRoute(
+      path: RouterPath.likedPostDetail,
+      name: RouterPath.likedPostDetail,
+      pageBuilder: (context, state) {
+        final extra = state.extra;
+        final model = extra is Model ? extra : null;
+        if (model == null) {
+          return slideUpTransition(
+            const Scaffold(body: RouterErrorWidget()),
+            key: state.pageKey,
+          );
+        }
+        return slideUpTransition(
+          PostDetailScreen(
+            posts: model.posts,
+            users: model.users,
+            type: PostDetailScreenType.liked,
+          ),
+          key: state.pageKey,
+          name: AnalyticsScreen.postDetail,
+        );
+      },
+    ),
+    GoRoute(
       path: RouterPath.tagDex,
       name: RouterPath.tagDex,
       pageBuilder: (context, state) {
