@@ -91,6 +91,7 @@ abstract final class AnalyticsScreen {
     'notifications': notification,
     'stored_post': savedPosts,
     'want_to_go_list': wantToGoList,
+    'liked_post_detail': postDetail,
     'tag_dex': tagDex,
     'stored_post_detail': postDetail,
     'memory_album_list': album,
