@@ -7,6 +7,7 @@ import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/model/tag.dart';
 import 'package:food_gram_app/core/model/users.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
+import 'package:food_gram_app/core/supabase/post/liked_posts.dart';
 import 'package:food_gram_app/core/supabase/post/post_visibility.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
 import 'package:food_gram_app/core/supabase/post/repository/fetch_post_repository.dart';
@@ -256,6 +257,14 @@ class DetailPostRepository extends _$DetailPostRepository {
             initial: initialPost,
           );
         }
+      case PostDetailListMode.liked:
+        {
+          final ordered = await _likedPosts();
+          return takePostsAround(
+            sortedNewestFirst: ordered,
+            initial: initialPost,
+          );
+        }
     }
   }
 
@@ -352,6 +361,22 @@ class DetailPostRepository extends _$DetailPostRepository {
       case PostDetailListMode.stored:
         {
           final ordered = await _storedPosts();
+          final page = isNewer
+              ? takeNewerPage(
+                  sortedNewestFirst: ordered,
+                  cursor: cursorPost,
+                  limit: limit,
+                )
+              : takeOlderPage(
+                  sortedNewestFirst: ordered,
+                  cursor: cursorPost,
+                  limit: limit,
+                );
+          return _countedPage(page, limit);
+        }
+      case PostDetailListMode.liked:
+        {
+          final ordered = await _likedPosts();
           final page = isNewer
               ? takeNewerPage(
                   sortedNewestFirst: ordered,
@@ -787,6 +812,16 @@ class DetailPostRepository extends _$DetailPostRepository {
         return sorted;
       },
       failure: (_) => const [],
+    );
+  }
+
+  /// いいねした順。先頭ほど新しくハートしたもの。
+  Future<List<Posts>> _likedPosts() async {
+    final friendIds = await ref.read(friendUserIdsProvider.future);
+    return fetchLikedPosts(
+      client: ref.read(supabaseProvider),
+      viewerId: ref.read(currentUserProvider),
+      friendUserIds: friendIds,
     );
   }
 
