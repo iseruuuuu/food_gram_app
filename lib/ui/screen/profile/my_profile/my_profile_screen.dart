@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/notification/like_notification_seen.dart';
 import 'package:food_gram_app/core/supabase/notification/repository/notification_repository.dart';
+import 'package:food_gram_app/core/supabase/post/providers/liked_post_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/post_stream_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/post_count_rank_provider.dart';
@@ -16,6 +18,7 @@ import 'package:food_gram_app/ui/component/app_premium_membership_card.dart';
 import 'package:food_gram_app/ui/component/common/app_async_value_group.dart';
 import 'package:food_gram_app/ui/component/common/app_empty.dart';
 import 'package:food_gram_app/ui/component/common/app_list_view.dart';
+import 'package:food_gram_app/ui/component/common/app_tab_error.dart';
 import 'package:food_gram_app/ui/component/loading/app_overlay_loading.dart';
 import 'package:food_gram_app/ui/component/loading/app_skeleton.dart';
 import 'package:food_gram_app/ui/component/loading/app_tab_loading.dart';
@@ -41,6 +44,8 @@ class MyProfileScreen extends HookConsumerWidget {
     final postCount = postList.value?.length ?? 0;
     final users = ref.watch(myProfileViewModelProvider());
     final sortOrder = useState(MyProfilePostSortOrder.newest);
+    final showingLiked = sortOrder.value == MyProfilePostSortOrder.likedPlaces;
+    final likedAsync = showingLiked ? ref.watch(likedPostListProvider) : null;
     final scrollController = useScrollController();
     final hasData = postList.value != null;
     useScrollToTopOnTabTrigger(
@@ -146,14 +151,17 @@ class MyProfileScreen extends HookConsumerWidget {
                 ref.read(myProfileViewModelProvider().notifier).getData();
               },
               onData: (value) {
-                final sortedPosts = sortMyProfilePosts(value, sortOrder.value);
+                final sortedPosts = showingLiked
+                    ? const <Posts>[]
+                    : sortMyProfilePosts(value, sortOrder.value);
                 return RefreshIndicator(
                   color: Theme.of(context).colorScheme.primary,
                   backgroundColor: Theme.of(context).colorScheme.surface,
                   onRefresh: () async {
                     ref
                       ..invalidate(myPostStreamProvider)
-                      ..invalidate(myLikeNotificationsProvider);
+                      ..invalidate(myLikeNotificationsProvider)
+                      ..invalidate(likedPostIdsProvider);
                     final uid = ref.read(currentUserProvider);
                     if (uid != null) {
                       ref.invalidate(postCountRankProvider(uid));
@@ -166,6 +174,12 @@ class MyProfileScreen extends HookConsumerWidget {
                         ref
                             .read(myProfileViewModelProvider().notifier)
                             .getData(),
+                        if (showingLiked)
+                          ref
+                              .read(likedPostListProvider.future)
+                              .then<void>(
+                                (_) {},
+                              ),
                       ]);
                     } on Object {
                       // 再取得失敗時もインジケータは閉じる
@@ -180,7 +194,8 @@ class MyProfileScreen extends HookConsumerWidget {
                       SliverToBoxAdapter(
                         child: users.when(
                           data: (users, heartAmount) {
-                            final premiumUnlocked = users.isSubscribe ||
+                            final premiumUnlocked =
+                                users.isSubscribe ||
                                 (isSubscribeAsync.value ?? false);
                             return Column(
                               children: [
@@ -202,15 +217,26 @@ class MyProfileScreen extends HookConsumerWidget {
                           error: SizedBox.shrink,
                         ),
                       ),
-                      if (sortedPosts.isNotEmpty) ...[
-                        SliverToBoxAdapter(
-                          child: ProfileSortChipBar(
-                            selectedSort: sortOrder.value,
-                            onSortChanged: (order) {
-                              sortOrder.value = order;
-                            },
-                          ),
+                      SliverToBoxAdapter(
+                        child: ProfileSortChipBar(
+                          selectedSort: sortOrder.value,
+                          onSortChanged: (order) {
+                            sortOrder.value = order;
+                            if (scrollController.hasClients) {
+                              scrollController.jumpTo(0);
+                            }
+                          },
                         ),
+                      ),
+                      if (showingLiked)
+                        ..._likedPostSlivers(
+                          context: context,
+                          ref: ref,
+                          likedAsync: likedAsync!,
+                          bottomInset: bottomInset,
+                          scrollController: scrollController,
+                        )
+                      else if (sortedPosts.isNotEmpty)
                         SliverPadding(
                           padding: EdgeInsets.only(top: 4, bottom: bottomInset),
                           sliver: AppListView(
@@ -221,8 +247,8 @@ class MyProfileScreen extends HookConsumerWidget {
                             sortOrder: sortOrder.value,
                             refresh: () => ref.refresh(myPostStreamProvider),
                           ),
-                        ),
-                      ] else
+                        )
+                      else
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.only(bottom: bottomInset),
@@ -243,4 +269,72 @@ class MyProfileScreen extends HookConsumerWidget {
       ],
     );
   }
+}
+
+List<Widget> _likedPostSlivers({
+  required BuildContext context,
+  required WidgetRef ref,
+  required AsyncValue<List<Posts>> likedAsync,
+  required double bottomInset,
+  required ScrollController scrollController,
+}) {
+  return likedAsync.when(
+    skipLoadingOnReload: true,
+    skipLoadingOnRefresh: true,
+    loading: () => const [
+      SliverFillRemaining(
+        hasScrollBody: false,
+        child: Center(
+          child: CircularProgressIndicator(
+            color: AppTheme.primaryOrange,
+          ),
+        ),
+      ),
+    ],
+    error: (_, _) => [
+      SliverFillRemaining(
+        hasScrollBody: false,
+        child: AppTabError.myPage(
+          onRetry: () => ref.invalidate(likedPostIdsProvider),
+        ),
+      ),
+    ],
+    data: (posts) {
+      if (posts.isEmpty) {
+        return [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(28, 24, 28, bottomInset),
+              child: Center(
+                child: Text(
+                  Translations.of(context).profile.likedPlacesEmpty,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15,
+                    height: 1.5,
+                    color: Theme.of(context).colorScheme.onSurface.withValues(
+                      alpha: 0.7,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ];
+      }
+      return [
+        SliverPadding(
+          padding: EdgeInsets.only(top: 4, bottom: bottomInset),
+          sliver: AppListView(
+            posts: posts,
+            routerPath: RouterPath.likedPostDetail,
+            type: AppListViewType.stored,
+            controller: scrollController,
+            refresh: () => ref.invalidate(likedPostIdsProvider),
+          ),
+        ),
+      ];
+    },
+  );
 }
