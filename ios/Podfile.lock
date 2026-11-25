@@ -467,7 +467,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   app_links: 3dbc685f76b1693c66a6d9dd1e9ab6f73d97dc0a
   app_tracking_transparency: 3d84f147f67ca82d3c15355c36b1fa6b66ca7c92
-  AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
+  AppAuth: 58e37c546bb9bf2073c1392ccba8cef35ff283cb
   AppCheckCore: be8fce5469f68d7f6a29aa94b25f097409ff7fdc
   device_info_plus: 71ffc6ab7634ade6267c7a93088ed7e4f74e5896
   Firebase: d99ac19b909cd2c548339c2241ecd0d1599ab02e
@@ -503,11 +503,11 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: 700dce7541804bec33db590a5c496b663fbe2539
   GoogleDataTransport: a24e58982ab3ba2f64d79613e027fe7f57e88539
   GoogleMLKit: eff9e23ec1d90ea4157a1ee2e32a4f610c5b3318
-  GoogleSignIn: ce8c89bb9b37fb624b92e7514cc67335d1e277e4
+  GoogleSignIn: e6b83a7093495f8ba4b7547460485f1e308c8df5
   GoogleToolboxForMac: d1a2cbf009c453f4d6ded37c105e2f67a32206d8
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   GoogleUtilities: 7dc09b3fa9ecb5c2298b952313d14628b61b9da3
-  GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
+  GTMAppAuth: 4a3fbbb34098b327feaa51cfbf98b0b12f6892e7
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   home_widget: 54b4f6b36ed8d64cfee594a476225c35c3e45091
   image_picker_ios: e0ece4aa2a75771a7de3fa735d26d90817041326
