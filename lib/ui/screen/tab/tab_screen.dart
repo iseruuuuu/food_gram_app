@@ -11,6 +11,7 @@ import 'package:food_gram_app/core/guide/first_post_guide_gate.dart';
 import 'package:food_gram_app/core/local/force_update_checker.dart';
 import 'package:food_gram_app/core/model/posts.dart';
 import 'package:food_gram_app/core/notification/notification_initializer.dart';
+import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/summary/summary_launch_gate.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/post/providers/block_list_provider.dart';
@@ -91,6 +92,7 @@ class TabScreen extends HookConsumerWidget {
                 return;
               }
               unawaited(AdTrackingPermission().requestTracking());
+              ref.read(revenueCatServiceProvider.future).ignore();
               try {
                 await ref
                     .read(forceUpdateCheckerProvider.notifier)

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,6 +10,7 @@ import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/home_widget/calendar_day_launch.dart';
 import 'package:food_gram_app/core/notification/firebase_messaging_service.dart';
+import 'package:food_gram_app/core/purchase/services/revenue_cat_service.dart';
 import 'package:food_gram_app/core/supabase/auth/providers/auth_state_provider.dart';
 import 'package:food_gram_app/core/theme/app_theme.dart';
 import 'package:food_gram_app/gen/strings.g.dart';
@@ -54,6 +57,9 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         analytics.logEventUnawaited(name: AnalyticsEvent.appForeground);
         _showAppOpenIfReturning();
         CalendarDayLaunch.consumeStoredLaunch();
+        unawaited(
+          ref.read(revenueCatServiceProvider.notifier).refreshOnResume(),
+        );
       case AppLifecycleState.paused:
       case AppLifecycleState.inactive:
         if (state == AppLifecycleState.paused) {
