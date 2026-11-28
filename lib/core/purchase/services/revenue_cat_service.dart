@@ -43,6 +43,7 @@ class RevenueCatService extends _$RevenueCatService {
   var _awaitingCodeRedemption = false;
   DateTime? _lastStoreSyncAt;
   var _databaseWriteTail = Future<void>.value();
+  Future<String?>? _loginInFlight;
 
   @override
   Future<bool> build() {
@@ -76,10 +77,47 @@ class RevenueCatService extends _$RevenueCatService {
     }
   }
 
+  /// 今のユーザーで RevenueCat にログインできていなければ、やり直す。
+  /// 起動時の logIn が通信エラーなどで失敗したまま固まるのを防ぐ。
+  /// ログインできなければ null。
+  Future<String?> _ensureLoggedIn() {
+    final userId = ref.read(currentUserProvider);
+    if (userId == null) {
+      return Future.value();
+    }
+    if (_loggedInUserId == userId) {
+      return Future.value(userId);
+    }
+    return _loginInFlight ??= _retryLogIn(
+      userId,
+    ).whenComplete(() => _loginInFlight = null);
+  }
+
+  Future<String?> _retryLogIn(String userId) async {
+    try {
+      await Purchases.logIn(userId);
+    } on PlatformException catch (e) {
+      _logger.e(
+        'logIn retry error code=${PurchasesErrorHelper.getErrorCode(e)} '
+        'message=${e.message}',
+      );
+      return null;
+    }
+    if (!ref.mounted || ref.read(currentUserProvider) != userId) {
+      return null;
+    }
+    _loggedInUserId = userId;
+    return userId;
+  }
+
   /// 前面復帰時の再確認。ストアでコードを引き換えて戻った時など。
   Future<void> refreshOnResume() async {
-    final userId = ref.read(currentUserProvider);
-    if (userId == null || userId != _loggedInUserId) {
+    // 初期化中は build 側の logIn と同期に任せる
+    if (state.isLoading) {
+      return;
+    }
+    final userId = await _ensureLoggedIn();
+    if (userId == null) {
       return;
     }
     try {
@@ -222,6 +260,10 @@ class RevenueCatService extends _$RevenueCatService {
   /// 年間プランなどで反映が遅れる場合に備え、閉じた直後と少し遅れて2回同期を試す。
   /// 反映中はグローバル Loading でオーバーレイ表示する。
   Future<bool> presentPaywallGuarded({String? source}) async {
+    // 未ログインのまま買うと匿名ユーザーに購入が付くので、呼び出し側でエラー表示させる
+    if (await _ensureLoggedIn() == null) {
+      throw StateError('RevenueCat logIn is not available');
+    }
     final entitlementId = Env.entitlementId;
     final beforeInfo = await Purchases.getCustomerInfo();
     final wasActive =
@@ -341,7 +383,7 @@ class RevenueCatService extends _$RevenueCatService {
     try {
       // logIn 前に復元すると匿名ユーザー側に購入が付いてしまう
       await future;
-      final userId = _loggedInUserId;
+      final userId = await _ensureLoggedIn();
       if (userId == null) {
         return false;
       }
