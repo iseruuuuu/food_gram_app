@@ -22,14 +22,16 @@ import 'package:url_launcher/url_launcher.dart';
 
 part 'revenue_cat_service.g.dart';
 
-/// サブスク判定は RevenueCat の entitlement を正とし、DB の `is_subscribe` はその写し。
+/// サブスクの購入・復元と、サブスクの状態の判定をする。
 ///
-/// DB へ反映するタイミング:
-/// - ログインユーザーが決まった時（[build]。ユーザーが変われば再実行）
-/// - CustomerInfo の更新通知（プロモーションコード・オファーコードの引き換え、
-///   ストア側での更新・期限切れなど、ペイウォール外で起きた変化）
-/// - アプリの前面復帰（[refreshOnResume]）
-/// - ペイウォールを閉じた後・購入の復元後
+/// サブスクに加入しているかどうかは RevenueCat の entitlement から取得し、
+/// DB の `is_subscribe` はその結果を反映する。
+///
+/// DB に同期するタイミング:
+/// - ログインをした時（アカウントを切り替えた時も含む）
+/// - CustomerInfo の更新通知を受けた時
+/// - App Store でプロモーションコードを引き換えて、アプリに戻ってきた
+/// - ペイウォールを閉じた後、購入を復元した後
 ///
 /// ログイン時と前面復帰時は、未加入なら syncPurchases で端末のストア購入も送る。
 @Riverpod(keepAlive: true)
@@ -54,13 +56,14 @@ class RevenueCatService extends _$RevenueCatService {
     return initInAppPurchase();
   }
 
+  /// Supabase の UID で RevenueCat にログインし、会員状態を DB に同期する。
+  /// `Purchases.configure` は main.dart で済ませている前提。
   Future<bool> initInAppPurchase() async {
     final userId = ref.read(currentUserProvider);
     if (userId == null) {
       return false;
     }
     try {
-      // Supabase の UID で RevenueCat にログイン（configure は main.dart で済んでいる）
       await Purchases.logIn(userId);
       _loggedInUserId = userId;
       return await _syncCustomerInfo(
@@ -77,9 +80,10 @@ class RevenueCatService extends _$RevenueCatService {
     }
   }
 
-  /// 今のユーザーで RevenueCat にログインできていなければ、やり直す。
-  /// 起動時の logIn が通信エラーなどで失敗したまま固まるのを防ぐ。
-  /// ログインできなければ null。
+  /// 今のユーザーで RevenueCat にログインできていなければ、ログインし直す。
+  /// 起動時の logIn が通信エラーで失敗したままになるのを防ぐ。
+  /// ログインできたらその UID を、できなければ null を返す。
+  /// 同時に呼ばれても logIn は1回にまとめる。
   Future<String?> _ensureLoggedIn() {
     final userId = ref.read(currentUserProvider);
     if (userId == null) {
@@ -103,6 +107,7 @@ class RevenueCatService extends _$RevenueCatService {
       );
       return null;
     }
+    // logIn を待っている間にユーザーが切り替わっていたら、ログイン済みにしない
     if (!ref.mounted || ref.read(currentUserProvider) != userId) {
       return null;
     }
@@ -110,7 +115,8 @@ class RevenueCatService extends _$RevenueCatService {
     return userId;
   }
 
-  /// 前面復帰時の再確認。ストアでコードを引き換えて戻った時など。
+  /// アプリが前面に戻った時に、会員状態を取り直して DB に同期する。
+  /// ストアでコードを引き換えて戻ってきた場合も、ここで拾う。
   Future<void> refreshOnResume() async {
     // 初期化中は build 側の logIn と同期に任せる
     if (state.isLoading) {
@@ -133,15 +139,16 @@ class RevenueCatService extends _$RevenueCatService {
     }
   }
 
-  /// 同一ユーザーへの logIn や getCustomerInfo は端末キャッシュを返すため、
-  /// ダッシュボードでの付与など SDK に通知が来ない変化を拾えない。
+  /// 端末のキャッシュを捨ててから CustomerInfo を取得する。
+  /// キャッシュのままだと、ダッシュボードでの付与など
+  /// SDK に通知が来ない変化を拾えない。
   Future<CustomerInfo> _fetchFreshCustomerInfo() async {
     await Purchases.invalidateCustomerInfoCache();
     return Purchases.getCustomerInfo();
   }
 
-  /// RevenueCat 上で未加入なら、端末のストア購入を送ってから取り直す。
-  /// アプリ外でプロモーションコードを引き換えた購入は、
+  /// CustomerInfo を取得し、未加入なら端末のストア購入を送ってから取り直す。
+  /// アプリの外でコードを引き換えた購入は、
   /// syncPurchases しないと RevenueCat に届かないことがある。
   Future<CustomerInfo> _fetchCustomerInfoWithStoreSync() async {
     final info = await _fetchFreshCustomerInfo();
@@ -161,7 +168,9 @@ class RevenueCatService extends _$RevenueCatService {
     return _fetchFreshCustomerInfo();
   }
 
-  /// 引き換え画面から戻った直後は必ず、それ以外は [_storeSyncInterval] に1回まで。
+  /// 今 syncPurchases してよいかを返す。
+  /// 引き換え画面から戻った直後は必ず許可し、それ以外は
+  /// [_storeSyncInterval] に1回までに抑える。
   bool _consumeStoreSyncSlot() {
     final now = DateTime.now();
     final last = _lastStoreSyncAt;
@@ -174,9 +183,9 @@ class RevenueCatService extends _$RevenueCatService {
     return true;
   }
 
-  /// プロモーションコード（iOS: オファーコード）の入力画面を開く。
-  /// 引き換え結果は CustomerInfo の更新通知・前面復帰時の再確認で DB に反映される。
-  /// ストアの引き換え画面を開けたら true。
+  /// ストアのプロモーションコード（iOS ではオファーコード）入力画面を開く。
+  /// 引き換えの結果は、CustomerInfo の更新通知か前面復帰時の同期で DB に反映される。
+  /// 画面を開けたら true を返す。
   Future<bool> presentCodeRedemption() async {
     try {
       final opened = await launchUrl(
@@ -193,16 +202,19 @@ class RevenueCatService extends _$RevenueCatService {
     }
   }
 
+  /// SDK からの CustomerInfo 更新通知を DB に同期する。
   void _onCustomerInfoUpdated(String? userId, CustomerInfo info) {
-    // ユーザー切り替え直後に前ユーザーの情報で DB を書き換えないようにする
+    // ユーザー切り替え直後に、前のユーザーの情報で DB を書き換えないようにする
     if (!ref.mounted || userId == null || userId != _loggedInUserId) {
       return;
     }
     unawaited(_syncCustomerInfo(info, userId: userId));
   }
 
-  /// [userId] は [info] を取得した時点のログインユーザー。
-  /// active なのに DB 反映できなければ購読済み扱いにしない。
+  /// [info] の会員状態を DB に同期する。
+  /// [userId] には [info] を取得した時点のログインユーザーを渡す。
+  /// 会員で、かつ DB に反映できた時だけ true を返す。
+  /// [force] が false なら、前回と同じ値の書き込みは省く。
   Future<bool> _syncCustomerInfo(
     CustomerInfo info, {
     required String userId,
@@ -221,8 +233,9 @@ class RevenueCatService extends _$RevenueCatService {
     return active && synced;
   }
 
-  /// DB への書き込みは1件ずつ順に行う。重複判定は受け取った時ではなく実行時に行うので、
-  /// 書き込み中に届いた後の状態変化も取りこぼさない。
+  /// DB への書き込みをキューに積み、1件ずつ順に実行する。
+  /// 重複かどうかは積んだ時ではなく実行する時に判定するので、
+  /// 書き込み中に届いた新しい状態も取りこぼさない。
   Future<bool> _enqueueDatabaseSync({
     required String userId,
     required bool active,
@@ -238,12 +251,13 @@ class RevenueCatService extends _$RevenueCatService {
     return run;
   }
 
+  /// キューの順番が来た書き込みを実行する。書き込まずに済んだ時も true を返す。
   Future<bool> _runDatabaseSync({
     required String userId,
     required bool active,
     required bool force,
   }) async {
-    // 待っている間にユーザーが切り替わっていたら、前ユーザーの状態を書き込まない
+    // 順番を待っている間にユーザーが切り替わっていたら、前のユーザーの状態を書き込まない
     if (!ref.mounted ||
         userId != _loggedInUserId ||
         userId != ref.read(currentUserProvider)) {
@@ -255,12 +269,13 @@ class RevenueCatService extends _$RevenueCatService {
     return _syncSubscriptionToDatabase(userId: userId, active: active);
   }
 
-  /// Paywall表示の前後でエンタイトルメントを比較し、
-  /// 非アクティブ→アクティブに変化した時は同期処理を行う。
-  /// 年間プランなどで反映が遅れる場合に備え、閉じた直後と少し遅れて2回同期を試す。
-  /// 反映中はグローバル Loading でオーバーレイ表示する。
+  /// ペイウォールを表示し、閉じた後に会員状態を DB に同期する。
+  /// 購入して会員になり、DB にも反映できたら true を返す。
+  /// 年間プランなどは反映が遅れることがあるので、まだ有効でなければ
+  /// 少し待ってもう一度同期する。同期中は全画面のローディングを出す。
+  /// RevenueCat にログインできない時は [StateError] を投げる。
   Future<bool> presentPaywallGuarded({String? source}) async {
-    // 未ログインのまま買うと匿名ユーザーに購入が付くので、呼び出し側でエラー表示させる
+    // 未ログインのまま買うと購入が匿名ユーザーに付くので、表示させずにエラーにする
     if (await _ensureLoggedIn() == null) {
       throw StateError('RevenueCat logIn is not available');
     }
@@ -335,10 +350,9 @@ class RevenueCatService extends _$RevenueCatService {
         );
         return false;
       }
-      // 即時には有効になっていなくても、年間プランなどで遅れて反映されることがあるため1回同期
       final synced = await syncAfterPaywall();
       if (!isActiveNow) {
-        // まだ有効でなければ少し待って再取得してからもう1回同期
+        // 年間プランなどで反映が遅れている場合に備え、少し待ってからもう一度同期する
         await Future<void>.delayed(const Duration(seconds: 2));
         final retryActive = await syncAfterPaywall();
         if (retryActive) {
@@ -354,15 +368,15 @@ class RevenueCatService extends _$RevenueCatService {
         );
         return false;
       }
-      // すでに active でも DB 反映に失敗したら成功扱いにしない
+      // もともと会員でも、DB に反映できなければ成功扱いにしない
       return synced;
     } finally {
       loading.isLoading(value: false);
     }
   }
 
-  /// RevenueCat の購入状態を再取得し、DB の is_subscribe を true/false 両方へ同期する。
-  /// active なのに DB 更新が失敗した場合は false を返し、購読済み扱いにしない。
+  /// RevenueCat から会員状態を取り直し、DB に同期する。
+  /// 会員で、かつ DB に反映できた時だけ true を返す。
   Future<bool> syncAfterPaywall() async {
     final userId = _loggedInUserId;
     if (userId == null) {
@@ -377,11 +391,12 @@ class RevenueCatService extends _$RevenueCatService {
     }
   }
 
-  /// 購入の復元
-  /// iosの場合は、購入の復元（以前の購入履歴を復元する）を実装することが必要。
+  /// 端末のストアアカウントの購入を、今のユーザーに復元する。
+  /// iOS では審査上、復元の導線が必須。
+  /// 会員になり、DB にも反映できたら true を返す。
   Future<bool> restorePurchase() async {
     try {
-      // logIn 前に復元すると匿名ユーザー側に購入が付いてしまう
+      // logIn の前に復元すると、購入が匿名ユーザーに付いてしまう
       await future;
       final userId = await _ensureLoggedIn();
       if (userId == null) {
@@ -394,8 +409,8 @@ class RevenueCatService extends _$RevenueCatService {
         force: true,
       );
     } on PlatformException catch (e) {
-      // receiptAlreadyInUseError は Restore Behavior が
-      //「Keep with original App User ID」の時に出る
+      // receiptAlreadyInUseError は、Restore Behavior が
+      // 「Keep with original App User ID」の時に出る
       _logger.e(
         'restore error code=${PurchasesErrorHelper.getErrorCode(e)} '
         'message=${e.message} details=${e.details}',
@@ -404,8 +419,8 @@ class RevenueCatService extends _$RevenueCatService {
     }
   }
 
-  /// RevenueCat の結果を DB / ローカル Provider に反映する。
-  /// 成功時 true、DB 更新失敗時 false。
+  /// [userId] の `is_subscribe` を [active] に更新し、関連するキャッシュと
+  /// Provider も更新する。DB を更新できたら true を返す。
   Future<bool> _syncSubscriptionToDatabase({
     required String userId,
     required bool active,
@@ -413,6 +428,7 @@ class RevenueCatService extends _$RevenueCatService {
     final result = await ref
         .read(accountServiceProvider)
         .updateIsSubscribe(isSubscribe: active, expectedUserId: userId);
+    // ユーザー切り替えで Provider が作り直された後は ref に触れない
     if (!ref.mounted) {
       return result.when(success: (_) => true, failure: (_) => false);
     }
