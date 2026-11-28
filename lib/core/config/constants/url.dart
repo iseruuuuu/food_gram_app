@@ -8,6 +8,9 @@ class URL {
       'https://apps.apple.com/hu/app/foodgram/id6474065183';
   static const googleStore =
       'https://play.google.com/store/apps/details?id=com.food_gram_app.com.com.com';
+  static const appleOfferCodeRedeem =
+      'https://apps.apple.com/redeem?ctx=offercodes&id=6474065183&code=';
+  static const googlePlayRedeem = 'https://play.google.com/redeem';
   static const contact = 'https://forms.gle/mjucjntt3c2SZsUc7';
   static const report =
       'https://docs.google.com/forms/d/1uDNHpaPTNPK7tBjbfNW87ykYH3JZO0D2l10oBtVxaQA/edit';
