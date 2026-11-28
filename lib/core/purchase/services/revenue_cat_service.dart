@@ -38,9 +38,11 @@ class RevenueCatService extends _$RevenueCatService {
   static const _storeSyncInterval = Duration(minutes: 10);
 
   String? _loggedInUserId;
+  String? _lastSyncedUserId;
   bool? _lastSyncedActive;
   var _awaitingCodeRedemption = false;
   DateTime? _lastStoreSyncAt;
+  var _databaseWriteTail = Future<void>.value();
 
   @override
   Future<bool> build() {
@@ -59,12 +61,10 @@ class RevenueCatService extends _$RevenueCatService {
     try {
       // Supabase の UID で RevenueCat にログイン（configure は main.dart で済んでいる）
       await Purchases.logIn(userId);
-      if (_loggedInUserId != userId) {
-        _lastSyncedActive = null;
-      }
       _loggedInUserId = userId;
       return await _syncCustomerInfo(
         await _fetchCustomerInfoWithStoreSync(),
+        userId: userId,
         force: true,
       );
     } on PlatformException catch (e) {
@@ -83,7 +83,10 @@ class RevenueCatService extends _$RevenueCatService {
       return;
     }
     try {
-      await _syncCustomerInfo(await _fetchCustomerInfoWithStoreSync());
+      await _syncCustomerInfo(
+        await _fetchCustomerInfoWithStoreSync(),
+        userId: userId,
+      );
     } on PlatformException catch (e) {
       _logger.e(
         'refreshOnResume error code=${PurchasesErrorHelper.getErrorCode(e)} '
@@ -157,13 +160,14 @@ class RevenueCatService extends _$RevenueCatService {
     if (!ref.mounted || userId == null || userId != _loggedInUserId) {
       return;
     }
-    unawaited(_syncCustomerInfo(info));
+    unawaited(_syncCustomerInfo(info, userId: userId));
   }
 
-  /// [force] が false の時は、前回 DB に反映した値と同じなら書き込まない。
+  /// [userId] は [info] を取得した時点のログインユーザー。
   /// active なのに DB 反映できなければ購読済み扱いにしない。
   Future<bool> _syncCustomerInfo(
     CustomerInfo info, {
+    required String userId,
     bool force = false,
   }) async {
     final active = _isEntitlementActive(info, Env.entitlementId);
@@ -171,11 +175,46 @@ class RevenueCatService extends _$RevenueCatService {
       'RevenueCat active=$active '
       'activeEntitlements=${info.entitlements.active.keys.toList()}',
     );
-    if (!force && _lastSyncedActive == active) {
-      return active;
-    }
-    final synced = await _syncSubscriptionToDatabase(active: active);
+    final synced = await _enqueueDatabaseSync(
+      userId: userId,
+      active: active,
+      force: force,
+    );
     return active && synced;
+  }
+
+  /// DB への書き込みは1件ずつ順に行う。重複判定は受け取った時ではなく実行時に行うので、
+  /// 書き込み中に届いた後の状態変化も取りこぼさない。
+  Future<bool> _enqueueDatabaseSync({
+    required String userId,
+    required bool active,
+    required bool force,
+  }) {
+    final run = _databaseWriteTail.then(
+      (_) => _runDatabaseSync(userId: userId, active: active, force: force),
+    );
+    _databaseWriteTail = run.then<void>(
+      (_) {},
+      onError: (Object _, StackTrace _) {},
+    );
+    return run;
+  }
+
+  Future<bool> _runDatabaseSync({
+    required String userId,
+    required bool active,
+    required bool force,
+  }) async {
+    // 待っている間にユーザーが切り替わっていたら、前ユーザーの状態を書き込まない
+    if (!ref.mounted ||
+        userId != _loggedInUserId ||
+        userId != ref.read(currentUserProvider)) {
+      return false;
+    }
+    if (!force && _lastSyncedUserId == userId && _lastSyncedActive == active) {
+      return true;
+    }
+    return _syncSubscriptionToDatabase(userId: userId, active: active);
   }
 
   /// Paywall表示の前後でエンタイトルメントを比較し、
@@ -283,9 +322,13 @@ class RevenueCatService extends _$RevenueCatService {
   /// RevenueCat の購入状態を再取得し、DB の is_subscribe を true/false 両方へ同期する。
   /// active なのに DB 更新が失敗した場合は false を返し、購読済み扱いにしない。
   Future<bool> syncAfterPaywall() async {
+    final userId = _loggedInUserId;
+    if (userId == null) {
+      return false;
+    }
     try {
       final info = await Purchases.getCustomerInfo();
-      return await _syncCustomerInfo(info, force: true);
+      return await _syncCustomerInfo(info, userId: userId, force: true);
     } on PlatformException catch (e) {
       _logger.e('syncAfterPaywall error $e');
       return false;
@@ -298,8 +341,16 @@ class RevenueCatService extends _$RevenueCatService {
     try {
       // logIn 前に復元すると匿名ユーザー側に購入が付いてしまう
       await future;
+      final userId = _loggedInUserId;
+      if (userId == null) {
+        return false;
+      }
       final customerInfo = await Purchases.restorePurchases();
-      return await _syncCustomerInfo(customerInfo, force: true);
+      return await _syncCustomerInfo(
+        customerInfo,
+        userId: userId,
+        force: true,
+      );
     } on PlatformException catch (e) {
       // receiptAlreadyInUseError は Restore Behavior が
       //「Keep with original App User ID」の時に出る
@@ -313,17 +364,21 @@ class RevenueCatService extends _$RevenueCatService {
 
   /// RevenueCat の結果を DB / ローカル Provider に反映する。
   /// 成功時 true、DB 更新失敗時 false。
-  Future<bool> _syncSubscriptionToDatabase({required bool active}) async {
+  Future<bool> _syncSubscriptionToDatabase({
+    required String userId,
+    required bool active,
+  }) async {
     final result = await ref
         .read(accountServiceProvider)
-        .updateIsSubscribe(isSubscribe: active);
+        .updateIsSubscribe(isSubscribe: active, expectedUserId: userId);
+    if (!ref.mounted) {
+      return result.when(success: (_) => true, failure: (_) => false);
+    }
     final ok = result.when(
       success: (_) {
+        _lastSyncedUserId = userId;
         _lastSyncedActive = active;
-        final userId = ref.read(currentUserProvider);
-        if (userId != null) {
-          CacheManager().invalidateUserCache(userId);
-        }
+        CacheManager().invalidateUserCache(userId);
         ref.invalidate(subscribedUsersProvider);
         return true;
       },

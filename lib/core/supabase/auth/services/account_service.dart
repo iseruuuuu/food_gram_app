@@ -268,11 +268,19 @@ class AccountService {
 
   /// RevenueCat の購読状態を DB の `is_subscribe` に反映する。
   /// [isSubscribe] が true/false のどちらでも Edge Function 経由で更新する。
+  /// Edge Function はリクエスト時点のセッションのユーザーを更新するため、
+  /// セッションが [expectedUserId] でなければ送らない。
+  /// 照合と invoke の間に await を挟まないこと。
   Future<Result<void, Exception>> updateIsSubscribe({
     required bool isSubscribe,
+    required String expectedUserId,
   }) async {
-    if (supabase.auth.currentUser?.id == null) {
+    final sessionUserId = supabase.auth.currentUser?.id;
+    if (sessionUserId == null) {
       return Failure(Exception('User not authenticated'));
+    }
+    if (sessionUserId != expectedUserId) {
+      return Failure(Exception('Session user changed before subscribe update'));
     }
     try {
       final res = await supabase.functions.invoke(
