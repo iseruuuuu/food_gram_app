@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -5,66 +6,176 @@ import 'package:food_gram_app/core/analytics/analytics_event.dart';
 import 'package:food_gram_app/core/analytics/analytics_screen.dart';
 import 'package:food_gram_app/core/analytics/firebase_analytics_service.dart';
 import 'package:food_gram_app/core/cache/cache_manager.dart';
+import 'package:food_gram_app/core/config/constants/url.dart';
 import 'package:food_gram_app/core/model/result.dart';
 import 'package:food_gram_app/core/supabase/auth/services/account_service.dart';
 import 'package:food_gram_app/core/supabase/current_user_provider.dart';
 import 'package:food_gram_app/core/supabase/user/providers/is_subscribe_provider.dart';
+import 'package:food_gram_app/core/supabase/user/providers/subscribed_users_provider.dart';
 import 'package:food_gram_app/core/utils/provider/loading.dart';
 import 'package:food_gram_app/env.dart';
 import 'package:logger/logger.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 part 'revenue_cat_service.g.dart';
 
+/// サブスク判定は RevenueCat の entitlement を正とし、DB の `is_subscribe` はその写し。
+///
+/// DB へ反映するタイミング:
+/// - ログインユーザーが決まった時（[build]。ユーザーが変われば再実行）
+/// - CustomerInfo の更新通知（プロモーションコード・オファーコードの引き換え、
+///   ストア側での更新・期限切れなど、ペイウォール外で起きた変化）
+/// - アプリの前面復帰（[refreshOnResume]）
+/// - ペイウォールを閉じた後・購入の復元後
+///
+/// ログイン時と前面復帰時は、未加入なら syncPurchases で端末のストア購入も送る。
 @Riverpod(keepAlive: true)
 class RevenueCatService extends _$RevenueCatService {
   final _logger = Logger();
-  var _isInitialized = false;
+  static const _storeSyncInterval = Duration(minutes: 10);
+
+  String? _loggedInUserId;
+  bool? _lastSyncedActive;
+  var _awaitingCodeRedemption = false;
+  DateTime? _lastStoreSyncAt;
 
   @override
   Future<bool> build() {
+    final userId = ref.watch(currentUserProvider);
+    void listener(CustomerInfo info) => _onCustomerInfoUpdated(userId, info);
+    Purchases.addCustomerInfoUpdateListener(listener);
+    ref.onDispose(() => Purchases.removeCustomerInfoUpdateListener(listener));
     return initInAppPurchase();
   }
 
   Future<bool> initInAppPurchase() async {
-    try {
-      final entitlementId = Env.entitlementId;
-      if (_isInitialized) {
-        await Purchases.getOfferings();
-        final customerInfo = await Purchases.getCustomerInfo();
-        final active =
-            customerInfo.entitlements.all[entitlementId]?.isActive ?? false;
-        final synced = await _syncSubscriptionToDatabase(active: active);
-        // active なのに DB 反映できなければ購読済み扱いにしない
-        return active && synced;
-      }
-      late PurchasesConfiguration configuration;
-      if (Platform.isAndroid) {
-        configuration = PurchasesConfiguration(Env.androidPurchaseKey);
-      } else if (Platform.isIOS) {
-        configuration = PurchasesConfiguration(Env.iOSPurchaseKey);
-      }
-      await Purchases.configure(configuration);
-      // Offerings を取得
-      await Purchases.getOfferings();
-      // Supabase の UID を使用してログイン
-      final userId = ref.read(currentUserProvider);
-      final result = await Purchases.logIn(userId!);
-      _isInitialized = true;
-      final active =
-          result.customerInfo.entitlements.all[entitlementId]?.isActive ??
-              false;
-      // 起動時に RevenueCat を正として DB の is_subscribe を同期する
-      final synced = await _syncSubscriptionToDatabase(active: active);
-      // active なのに DB 反映できなければ購読済み扱いにしない
-      return active && synced;
-    } on PlatformException catch (e) {
-      _logger.e('initInAppPurchase error caught! $e');
-      // 取得失敗時は誤って false に落とさない
+    final userId = ref.read(currentUserProvider);
+    if (userId == null) {
       return false;
     }
+    try {
+      // Supabase の UID で RevenueCat にログイン（configure は main.dart で済んでいる）
+      await Purchases.logIn(userId);
+      if (_loggedInUserId != userId) {
+        _lastSyncedActive = null;
+      }
+      _loggedInUserId = userId;
+      return await _syncCustomerInfo(
+        await _fetchCustomerInfoWithStoreSync(),
+        force: true,
+      );
+    } on PlatformException catch (e) {
+      _logger.e(
+        'initInAppPurchase error code=${PurchasesErrorHelper.getErrorCode(e)} '
+        'message=${e.message} details=${e.details}',
+      );
+      return false;
+    }
+  }
+
+  /// 前面復帰時の再確認。ストアでコードを引き換えて戻った時など。
+  Future<void> refreshOnResume() async {
+    final userId = ref.read(currentUserProvider);
+    if (userId == null || userId != _loggedInUserId) {
+      return;
+    }
+    try {
+      await _syncCustomerInfo(await _fetchCustomerInfoWithStoreSync());
+    } on PlatformException catch (e) {
+      _logger.e(
+        'refreshOnResume error code=${PurchasesErrorHelper.getErrorCode(e)} '
+        'message=${e.message} details=${e.details}',
+      );
+    }
+  }
+
+  /// 同一ユーザーへの logIn や getCustomerInfo は端末キャッシュを返すため、
+  /// ダッシュボードでの付与など SDK に通知が来ない変化を拾えない。
+  Future<CustomerInfo> _fetchFreshCustomerInfo() async {
+    await Purchases.invalidateCustomerInfoCache();
+    return Purchases.getCustomerInfo();
+  }
+
+  /// RevenueCat 上で未加入なら、端末のストア購入を送ってから取り直す。
+  /// アプリ外でプロモーションコードを引き換えた購入は、
+  /// syncPurchases しないと RevenueCat に届かないことがある。
+  Future<CustomerInfo> _fetchCustomerInfoWithStoreSync() async {
+    final info = await _fetchFreshCustomerInfo();
+    if (_isEntitlementActive(info, Env.entitlementId) ||
+        !_consumeStoreSyncSlot()) {
+      return info;
+    }
+    try {
+      await Purchases.syncPurchases();
+    } on PlatformException catch (e) {
+      _logger.w(
+        'syncPurchases error code=${PurchasesErrorHelper.getErrorCode(e)} '
+        'message=${e.message}',
+      );
+      return info;
+    }
+    return _fetchFreshCustomerInfo();
+  }
+
+  /// 引き換え画面から戻った直後は必ず、それ以外は [_storeSyncInterval] に1回まで。
+  bool _consumeStoreSyncSlot() {
+    final now = DateTime.now();
+    final last = _lastStoreSyncAt;
+    if (_awaitingCodeRedemption) {
+      _awaitingCodeRedemption = false;
+    } else if (last != null && now.difference(last) < _storeSyncInterval) {
+      return false;
+    }
+    _lastStoreSyncAt = now;
+    return true;
+  }
+
+  /// プロモーションコード（iOS: オファーコード）の入力画面を開く。
+  /// 引き換え結果は CustomerInfo の更新通知・前面復帰時の再確認で DB に反映される。
+  /// ストアの引き換え画面を開けたら true。
+  Future<bool> presentCodeRedemption() async {
+    try {
+      final opened = await launchUrl(
+        Uri.parse(
+          Platform.isIOS ? URL.appleOfferCodeRedeem : URL.googlePlayRedeem,
+        ),
+        mode: LaunchMode.externalApplication,
+      );
+      _awaitingCodeRedemption = opened;
+      return opened;
+    } on PlatformException catch (e) {
+      _logger.e('presentCodeRedemption error $e');
+      return false;
+    }
+  }
+
+  void _onCustomerInfoUpdated(String? userId, CustomerInfo info) {
+    // ユーザー切り替え直後に前ユーザーの情報で DB を書き換えないようにする
+    if (!ref.mounted || userId == null || userId != _loggedInUserId) {
+      return;
+    }
+    unawaited(_syncCustomerInfo(info));
+  }
+
+  /// [force] が false の時は、前回 DB に反映した値と同じなら書き込まない。
+  /// active なのに DB 反映できなければ購読済み扱いにしない。
+  Future<bool> _syncCustomerInfo(
+    CustomerInfo info, {
+    bool force = false,
+  }) async {
+    final active = _isEntitlementActive(info, Env.entitlementId);
+    _logger.d(
+      'RevenueCat active=$active '
+      'activeEntitlements=${info.entitlements.active.keys.toList()}',
+    );
+    if (!force && _lastSyncedActive == active) {
+      return active;
+    }
+    final synced = await _syncSubscriptionToDatabase(active: active);
+    return active && synced;
   }
 
   /// Paywall表示の前後でエンタイトルメントを比較し、
@@ -77,8 +188,9 @@ class RevenueCatService extends _$RevenueCatService {
     final wasActive =
         beforeInfo.entitlements.all[entitlementId]?.isActive ?? false;
     final analytics = ref.read(firebaseAnalyticsServiceProvider);
-    final sourceParams =
-        source != null ? <String, Object>{AnalyticsParam.source: source} : null;
+    final sourceParams = source != null
+        ? <String, Object>{AnalyticsParam.source: source}
+        : null;
     analytics.logScreen(AnalyticsScreen.paywall);
     analytics.logEventUnawaited(
       name: AnalyticsEvent.paywallOpen,
@@ -173,13 +285,7 @@ class RevenueCatService extends _$RevenueCatService {
   Future<bool> syncAfterPaywall() async {
     try {
       final info = await Purchases.getCustomerInfo();
-      final active =
-          info.entitlements.all[Env.entitlementId]?.isActive ?? false;
-      final synced = await _syncSubscriptionToDatabase(active: active);
-      if (active && !synced) {
-        return false;
-      }
-      return active;
+      return await _syncCustomerInfo(info, force: true);
     } on PlatformException catch (e) {
       _logger.e('syncAfterPaywall error $e');
       return false;
@@ -190,16 +296,17 @@ class RevenueCatService extends _$RevenueCatService {
   /// iosの場合は、購入の復元（以前の購入履歴を復元する）を実装することが必要。
   Future<bool> restorePurchase() async {
     try {
+      // logIn 前に復元すると匿名ユーザー側に購入が付いてしまう
+      await future;
       final customerInfo = await Purchases.restorePurchases();
-      final isActive = _isEntitlementActive(customerInfo, Env.entitlementId);
-      final synced = await _syncSubscriptionToDatabase(active: isActive);
-      if (!isActive) {
-        _logger.w('購入情報なし');
-        return false;
-      }
-      return synced;
+      return await _syncCustomerInfo(customerInfo, force: true);
     } on PlatformException catch (e) {
-      _logger.e('purchase repo  restorePurchase error $e');
+      // receiptAlreadyInUseError は Restore Behavior が
+      //「Keep with original App User ID」の時に出る
+      _logger.e(
+        'restore error code=${PurchasesErrorHelper.getErrorCode(e)} '
+        'message=${e.message} details=${e.details}',
+      );
       return false;
     }
   }
@@ -212,10 +319,12 @@ class RevenueCatService extends _$RevenueCatService {
         .updateIsSubscribe(isSubscribe: active);
     final ok = result.when(
       success: (_) {
+        _lastSyncedActive = active;
         final userId = ref.read(currentUserProvider);
         if (userId != null) {
           CacheManager().invalidateUserCache(userId);
         }
+        ref.invalidate(subscribedUsersProvider);
         return true;
       },
       failure: (e) {
