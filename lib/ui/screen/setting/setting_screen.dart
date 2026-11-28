@@ -324,6 +324,22 @@ class SettingScreen extends HookConsumerWidget {
                               );
                             },
                           ),
+                          SettingTile(
+                            icon: Icons.redeem,
+                            title: t.setting.redeemCode,
+                            onTap: () async {
+                              final opened = await ref
+                                  .read(settingViewModelProvider().notifier)
+                                  .redeemCode();
+                              if (!opened && context.mounted) {
+                                SnackBarHelper().openErrorSnackBar(
+                                  context,
+                                  t.setting.purchaseError,
+                                  '',
+                                );
+                              }
+                            },
+                          ),
                         ],
                       ),
                       Padding(

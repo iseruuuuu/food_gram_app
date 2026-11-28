@@ -85,6 +85,12 @@ class SettingViewModel extends _$SettingViewModel {
     }
   }
 
+  Future<bool> redeemCode() {
+    return ref
+        .read(revenueCatServiceProvider.notifier)
+        .presentCodeRedemption();
+  }
+
   Future<bool> signOut() async {
     // ログアウト後に auth redirect で本 ViewModel が dispose されても
     // Loading を確実に落とせるよう、notifier を先に掴む。
